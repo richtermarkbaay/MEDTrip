@@ -322,7 +322,7 @@ class SearchService
                         $subSpecializationId = $parameters['sub_specialization_id'];
                         break;
                     case TermDocument::TYPE_TREATMENT:
-                        $routeName .= 'specialization__treatment';
+                        $routeName .= 'specialization_treatment';
                         $specializationId = $parameters['specialization_id'];
                         $treatmentId = $parameters['treatment_id'];
                         break;

@@ -320,6 +320,7 @@ class FrontendController extends Controller
                         $sessionVariables['cityId'] = $searchParams->get('cityId');
                     }
                 } elseif ($searchParams->get('destinationLabel')) {
+                    //Unreachable code?
                     $termDocuments = $this->get('services.search')->getTermDocumentsByDestination($searchParams);
                 }
 
@@ -387,8 +388,20 @@ class FrontendController extends Controller
                     $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
 
                     $routeParameters = array('tag' => $term['slug']);
-                    $route = 'frontend_search_results_related';
+                    $route = 'frontend_search_results_related_terms';
                     $sessionVariables = array('termIds' => array($term['id']));
+
+                    if ($searchParams->get('countryId')) {
+                        $routeParameters['country'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:Country')->find($searchParams->get('countryId'))->getSlug();
+                        $route = 'frontend_search_results_related_terms_country';
+                        $sessionVariables['countryId'] = $searchParams->get('countryId');
+
+                        if ($searchParams->get('cityId')) {
+                            $routeParameters['city'] = $this->getDoctrine()->getEntityManager()->getRepository('HelperBundle:City')->find($searchParams->get('cityId'))->getSlug();
+                            $route = 'frontend_search_results_related_terms_city';
+                            $sessionVariables['cityId'] = $searchParams->get('cityId');
+                        }
+                    }
 
                 } else {
                     //TODO: no results found
@@ -572,52 +585,9 @@ class FrontendController extends Controller
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
                         'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $request->get('tag', ''),
-                        'routeName' => 'frontend_search_results_related',
+                        'routeName' => 'frontend_search_results_related_terms',
                         'paginationParameters' => array('tag' => $request->get('tag', '')),
                         'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($searchTerms)
-        ));
-    }
-
-    /**
-     * TODO: redirect requests that did not originally come from a form submission
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function searchResultsKeywordsAction(Request $request)
-    {
-        $searchTerms = json_decode($request->getSession()->get('search_terms'), true);
-        $termIds = $searchTerms['termIds'];
-
-        $searchLabel = '';
-        $filters = array();
-        if ($termIds) {
-            if (isset($searchTerms['keywords']['treatmentName']) && isset($searchTerms['keywords']['destinationName'])) {
-                $searchLabel = $searchTerms['keywords']['treatmentName'] . ' and ' . $searchTerms['keywords']['destinationName'];
-                //$filters['treatmentName'] = $searchTerms['keywords']['treatmentName'];
-                $filters['destinationName'] = $searchTerms['keywords']['destinationName'];
-            } elseif (isset($searchTerms['keywords']['treatmentName'])) {
-                $searchLabel = $searchTerms['keywords']['treatmentName'];
-                //$filters['treatmentName'] = $searchTerms['keywords']['treatmentName'];
-            } elseif (isset($searchTerms['keywords']['destinationName'])) {
-                $searchLabel = $searchTerms['keywords']['destinationName'];
-                $filters['destinationName'] = $searchTerms['keywords']['destinationName'];
-            }
-        }
-
-        //TODO: This is temporary; use OrmAdapter
-        $searchResults = array();
-        if ($termIds) {
-            $searchResults = $this->get('services.search')->searchByTerms($searchTerms['termIds'], $filters);
-        }
-
-        $adapter = new ArrayAdapter($searchResults);
-
-        return $this->render('SearchBundle:Frontend:resultsKeywords.html.twig', array(
-                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => $searchLabel,
-                        'routeName' => 'frontend_search_results_keywords',
-                        'paginationParameters' => array('keywords' => $request->get('keywords'))
         ));
     }
 

@@ -300,7 +300,7 @@ class DefaultSearchStrategy extends SearchStrategy
             //$stmt->bindValue('destinationName', '%'.$destinationName.'%');
         }
         $stmt->execute();
-
+//print_r($stmt->getWrappedStatement()); exit;
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
