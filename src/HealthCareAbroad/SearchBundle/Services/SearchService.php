@@ -190,8 +190,24 @@ class SearchService
      *
      * @param array $termIds
      */
-    public function searchByTerms(array $termIds = array(), array $filters = array())
+    public function searchByTerms(array $searchTerms = array(), array $filters = array())
     {
+        if (!isset($searchTerms['termIds'])) {
+            return array();
+        }
+
+        $termIds = $searchTerms['termIds'];
+        $filters = array();
+
+        if (isset($searchTerms['countryId']) && $searchTerms['countryId']) {
+            $filters['countryId'] = $searchTerms['countryId'];
+        }
+
+        if (isset($searchTerms['cityId']) && $searchTerms['cityId']) {
+            $filters['cityId'] = $searchTerms['cityId'];
+        }
+
+
         return $this->searchStrategy->searchMedicalCentersByTerms($termIds, $filters);
     }
 
@@ -205,15 +221,39 @@ class SearchService
         return $this->searchStrategy->getTerm($value, $options);
     }
 
-    public function getRelatedTreatments($termId, $urlPrefix = '')
+    public function getTerms(array $termIds, $options)
+    {
+        if (empty($termIds)) {
+            return array();
+        }
+
+        return $this->searchStrategy->getTerms($termIds, $options);
+    }
+
+    public function getRelatedTreatments(array $searchTerms)
     {
         $categorized = array();
+
+        $termIds = isset($searchTerms['termIds']) ? $searchTerms['termIds'] : array();
+        $convertedIds = array();
+        foreach ($termIds as $id) {
+            $convertedIds[] = (int) $id;
+        }
+        $filters = array();
+        if (isset($searchTerms['countryId'])) {
+            $filters['countryId'] = $searchTerms['countryId'];
+        }
+        if (isset($searchTerms['cityId'])) {
+            $filters['cityId'] = $searchTerms['cityId'];
+        }
+
+        $results = $this->searchStrategy->getRelatedTreatments($convertedIds, $filters);
+        $countItems = count($results);
 
         //TODO: merge/optimize loops
         $sId = 0;
         $loopCounter = 1;
-        $results = $this->searchStrategy->getRelatedTreatments($termId);
-        $countItems = count($results);
+
         foreach ($results as $row) {
             if ($sId != $row['specialization_id']) {
                 if ($sId != 0) {
@@ -256,28 +296,6 @@ class SearchService
 
         return $categorized;
     }
-
-    //         specialization 1
-    //             TREATMENTS
-    //                 treatment 1
-    //                 treatment 2
-    //             SUBSPECIALIZATIONS
-    //                 subspecialization 1
-    //                     TREATMENTS
-    //                         treatment 3
-    //                 subspecialization 2
-    //                     TREATMENTS
-    //                         treatment 4
-    //                         treatment 5
-    //         specialization 2
-    //             SUBSPECIALIZATION
-    //                 subspecialization 3
-    //                     TREATMENTS
-    //                         treatment 6
-    //         specialization 3
-    //             TREATMENTS
-    //                 treatment 7
-    //                 treatment 8
 
     public function getRouteConfig($parameters, $doctrine, $context = '')
     {
@@ -388,13 +406,13 @@ class SearchService
 
         if (isset($filters['countryId']) && $filters['countryId']) {
             $routeName = 'frontend_search_results_related_terms_country';
-            $routeParameters['country'] = $doctrine->getRepository('HelperBundle:Country')->find($countryId)->getSlug();
+            $routeParameters['country'] = $doctrine->getRepository('HelperBundle:Country')->find($filters['countryId'])->getSlug();
             $sessionParameters['countryId'] = $filters['countryId'];
         }
 
         if (isset($filters['cityId']) && $filters['cityId']) {
             $routeName = 'frontend_search_results_related_terms_city';
-            $routeParameters['city'] = $doctrine->getRepository('HelperBundle:City')->find($cityId)->getSlug();
+            $routeParameters['city'] = $doctrine->getRepository('HelperBundle:City')->find($filters['cityId'])->getSlug();
             $sessionParameters['cityId'] = $filters['cityId'];
         }
 

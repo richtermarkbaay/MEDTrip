@@ -268,17 +268,16 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($termName = $searchParams['treatmentName']) {
             $sql .= ' AND b.name LIKE :termName ';
         }
-        if ($destinationName = $searchParams['destinationName']) {
-            $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
-        }
-        if ($termId = $searchParams['treatmentId']) {
-            $sql .= ' AND a.term_id = :termId ';
-        }
-        if ($countryId = $searchParams['countryId']) {
-            $sql .= ' AND a.country_id = :countryId ';
-        }
         if ($cityId = $searchParams['cityId']) {
             $sql .= ' AND a.city_id = :cityId ';
+        } elseif ($countryId = $searchParams['countryId']) {
+            $sql .= ' AND a.country_id = :countryId ';
+        } elseif ($destinationName = $searchParams['destinationName']) {
+            $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
+        }
+
+        if ($termId = $searchParams['treatmentId']) {
+            $sql .= ' AND a.term_id = :termId ';
         }
 
         if ($uniqueTermDocument) {
@@ -289,21 +288,17 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($termName) {
             $stmt->bindValue('termName', '%'.$termName.'%');
         }
-        if ($destinationName) {
-            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
-            //$stmt->bindValue('destinationName', '%'.$destinationName.'%');
-        }
         if ($termId) {
             $stmt->bindValue('termId', $termId, \PDO::PARAM_INT);
         }
-        if ($countryId) {
-            $stmt->bindValue('countryId', $countryId, \PDO::PARAM_INT);
-        }
         if ($cityId) {
             $stmt->bindValue('cityId', $cityId, \PDO::PARAM_INT);
+        } elseif ($countryId) {
+            $stmt->bindValue('countryId', $countryId, \PDO::PARAM_INT);
+        } elseif ($destinationName) {
+            $stmt->bindValue('destinationName', '%'.$destinationName.'%');
+            //$stmt->bindValue('destinationName', '%'.$destinationName.'%');
         }
-
-
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -378,9 +373,56 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function getRelatedTreatments($termId)
+    public function getRelatedTreatments(array $termIds, $filters)
     {
+        $connection = $this->container->get('doctrine')->getConnection();
 
+        $parameters = array($this->searchTermActiveStatus, $termIds);
+        $parameterTypes = array(\PDO::PARAM_INT, \Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+
+        $optionalWhereClause = ' ';
+        if (isset($filters['cityId']) && (int) $filters['cityId']) {
+            $optionalWhereClause = ' AND a.city_id = ? ';
+            $parameters[] = $filters['cityId'];
+            $parameterTypes[] = \PDO::PARAM_INT;
+        } elseif (isset($filters['countryId'])) {
+            $optionalWhereClause = ' AND a.country_id = ? ';
+            $parameters[] = $filters['countryId'];
+            $parameterTypes[] = \PDO::PARAM_INT;
+        }
+
+        $sql = "
+            SELECT b.id specialization_id, b.name specialization_name, b.slug specialization_slug, c.id sub_specialization_id, c.name sub_specialization_name, c.slug sub_specialization_slug, d.id treatment_id, d.name treatment_name, d.slug treatment_slug
+            FROM search_terms AS a
+            LEFT JOIN specializations AS b ON a.specialization_id = b.id
+            LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
+            LEFT JOIN treatments AS d ON a.treatment_id = d.id
+            WHERE a.status = ?
+            AND a.term_id IN (?)
+            $optionalWhereClause
+            GROUP BY b.id, c.id, d.id
+            ORDER BY b.id, c.id, d.id";
+
+        $stmt = $connection->executeQuery($sql, $parameters, $parameterTypes);
+
+//         $sql ="
+//         SELECT b.id specialization_id, b.name specialization_name, b.slug specialization_slug, c.id sub_specialization_id, c.name sub_specialization_name, c.slug sub_specialization_slug, d.id treatment_id, d.name treatment_name, d.slug treatment_slug
+//         FROM search_terms AS a
+//         LEFT JOIN specializations AS b ON a.specialization_id = b.id
+//         LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
+//         LEFT JOIN treatments AS d ON a.treatment_id = d.id
+//         WHERE a.status = {$this->searchTermActiveStatus}
+//         a.term_id IN (:termIds)
+//         GROUP BY b.id, c.id, d.id
+//         ORDER BY b.id, c.id, d.id
+
+//         ";
+
+//         $stmt = $connection->prepare($sql);
+//         $stmt->bindValue('termIds', $termIds,\Doctrine\DBAL\Connection::PARAM_INT_ARRAY);
+//         $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
 //         specialization 1
 //             TREATMENTS
 //                 treatment 1
@@ -494,25 +536,6 @@ class DefaultSearchStrategy extends SearchStrategy
             )
         );
 */
-        $connection = $this->container->get('doctrine')->getConnection();
-
-        $sql ="
-            SELECT b.id specialization_id, b.name specialization_name, b.slug specialization_slug, c.id sub_specialization_id, c.name sub_specialization_name, c.slug sub_specialization_slug, d.id treatment_id, d.name treatment_name, d.slug treatment_slug
-            FROM search_terms AS a
-            LEFT JOIN specializations AS b ON a.specialization_id = b.id
-            LEFT JOIN sub_specializations AS c ON a.sub_specialization_id = c.id
-            LEFT JOIN treatments AS d ON a.treatment_id = d.id
-            WHERE a.term_id = :termId AND a.status = {$this->searchTermActiveStatus}
-            GROUP BY b.id, c.id, d.id
-            ORDER BY b.id, c.id, d.id
-
-        ";
-
-        $stmt = $connection->prepare($sql);
-        $stmt->bindValue('termId', $termId);
-        $stmt->execute();
-
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     /**

@@ -113,11 +113,12 @@ class FrontendController extends Controller
         }
 
         $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
+        $context = $request->attributes->get('context');
 
-        if (count($searchTerms) == 1) {
+        if (count($searchTerms) == 1 || $context === 'destination') {
             $searchTerm = $searchTerms[0];
 
-            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $request->attributes->get('context'));
+            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $context);
 
             // this is used to avoid using slugs after redirection
             $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
@@ -127,7 +128,7 @@ class FrontendController extends Controller
 
         $termIds = array();
         foreach ($searchTerms as $term) {
-            $termIds[] = $term['term_id'];
+            $termIds[] = (int) $term['term_id'];
         }
         $uniqueTermIds = array_flip(array_flip($termIds));
 
@@ -350,8 +351,8 @@ class FrontendController extends Controller
                     $term = $this->get('services.search')->getTerm($searchParams->get('treatmentId'));
 
                     $routeParameters = array('tag' => $term['slug']);
-                    $route = 'frontend_search_results_related';
-                    $sessionVariables = array('termId' => $term['id']);
+                    $route = 'frontend_search_results_related_terms';
+                    $sessionVariables = array('termIds' => array($term['id']));
                 } else {
                     //TODO: no results found
                     throw new NotFoundHttpException();
@@ -387,7 +388,7 @@ class FrontendController extends Controller
 
                     $routeParameters = array('tag' => $term['slug']);
                     $route = 'frontend_search_results_related';
-                    $sessionVariables = array('termId' => $term['id']);
+                    $sessionVariables = array('termIds' => array($term['id']));
 
                 } else {
                     //TODO: no results found
@@ -565,25 +566,15 @@ class FrontendController extends Controller
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
-        if (isset($searchTerms['termId'])) {
-            $term = $this->get('services.search')->getTerm($searchTerms['termId']);
-        } else {
-            $term = $this->get('services.search')->getTerm($searchTerms['termId'], array('column' => $request->get('tag')));
-        }
-
-        if (empty($term)) {
-            throw new NotFoundHttpException();
-        }
-
         //TODO: This is temporary; use OrmAdapter
-        $adapter = new ArrayAdapter($this->get('services.search')->searchByTag($term['id']));
+        $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
                         'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $request->get('tag', ''),
                         'routeName' => 'frontend_search_results_related',
                         'paginationParameters' => array('tag' => $request->get('tag', '')),
-                        'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($term['id'])
+                        'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($searchTerms)
         ));
     }
 
@@ -637,7 +628,7 @@ class FrontendController extends Controller
         return new Response(json_encode($results), 200, array('Content-Type'=>'application/json'));
     }
 
-    
+
 
     public function ajaxLoadDestinationsAction(Request $request)
     {
@@ -647,7 +638,7 @@ class FrontendController extends Controller
     }
 
 
-    
+
     /**
      * AJAX handler for narrow search results widget
      *

@@ -287,6 +287,17 @@ class SearchTermRepository extends EntityRepository
                 //$qb->andWhere('ci.name LIKE :destinationName');
                 $qb->setParameter('destinationName', '%'.$value.'%');
             }
+
+            if ($filter == 'countryId') {
+                $qb->andWhere('co.id = :countryId');
+                $qb->setParameter('countryId', $value, \PDO::PARAM_INT);
+            }
+
+            if ($filter == 'cityId') {
+                $qb->andWhere('ci.id IS NOT NULL');
+                $qb->andWhere('ci.id = :cityId');
+                $qb->setParameter('cityId', $value, \PDO::PARAM_INT);
+            }
         }
 
         $qb->groupBy('imc.id');
