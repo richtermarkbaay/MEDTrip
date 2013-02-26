@@ -13,6 +13,23 @@
                         <strong> Error Alert! </strong>
                         Please fill the necessary fields. 
                     </div>
+                {% else %}
+                    {% for alert, message in app.session.flashes %}
+                    	{% if alert == 'warning' %}
+                    	    {% set class = '' %}
+                    	{% elseif alert == 'error' %}
+                    	    {% set class = 'alert-error' %}
+                    	{% elseif alert == 'success' %}
+                    	    {% set class = 'alert-success' %}
+                    	{% elseif (alert == 'notice') or alert == 'info' %}
+                    	    {% set class = 'alert-info' %}
+                    	{% else %}
+                    	    {% set class = '' %}
+                    	{% endif %}
+                        <div class="alert {{ class }}">
+                            <strong>{{ alert | title }}!</strong> {{ message | raw}}
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 <section class="section">
                     <div class="row-fluid">
