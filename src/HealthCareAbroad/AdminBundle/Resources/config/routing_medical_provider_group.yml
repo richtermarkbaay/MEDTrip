@@ -11,7 +11,7 @@ admin_medical_provider_group_add:
         _method:  GET
         
 admin_medical_provider_group_create:
-    pattern:  /admin/medical-provider-group/add
+    pattern:  /admin/medical-provider-group/save
     defaults: { _controller: AdminBundle:MedicalProviderGroup:save }
     requirements:
          _method: POST
