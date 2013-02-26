@@ -118,7 +118,7 @@ class MedicalProviderControllerTest extends AdminBundleWebTestCase
                         'medical_provider_group[description]' => 'test',
                         'medical_provider_group[status]' => 1
         );
-        $crawler = $client->request('GET', '/admin/medical-provider-group/save', $formData);
+        $crawler = $client->request('GET', '/admin/medical-provider-group/test-save', $formData);
         $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
     }
 }

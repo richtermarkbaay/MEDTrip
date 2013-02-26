@@ -14,7 +14,7 @@ admin_medical_provider_group_create:
     pattern:  /admin/medical-provider-group/save
     defaults: { _controller: AdminBundle:MedicalProviderGroup:save }
     requirements:
-         _method: POST|GET
+         _method: POST
          
 admin_medical_provider_group_edit:
     pattern:  /admin/medical-provider-group/edit/{id}
