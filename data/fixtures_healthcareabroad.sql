@@ -950,6 +950,13 @@ CREATE TABLE IF NOT EXISTS `institution_properties` (
   KEY `institution_id` (`institution_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `institution_properties`
+--
+
+INSERT INTO `institution_properties` (`id`, `institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
+(1, 1, 1, 'test', 'test');
+
 -- --------------------------------------------------------
 
 --
