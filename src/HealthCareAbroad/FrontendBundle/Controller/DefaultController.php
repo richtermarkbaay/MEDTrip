@@ -417,11 +417,7 @@ class DefaultController extends Controller
                     $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
                     $em->persist($errorReport);
                     $em->flush();
-
-                    //// create event on sendEmail and dispatch
-                    $event = new CreateErrorReportEvent($errorReport);
-                    $this->get('event_dispatcher')->dispatch(ErrorReportEvent::ON_CREATE_REPORT, $event);
-
+                    
                     $output = "Your report has been submitted. Thank you.";
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
 

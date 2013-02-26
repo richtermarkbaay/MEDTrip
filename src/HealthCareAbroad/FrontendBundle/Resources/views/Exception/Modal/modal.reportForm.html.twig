@@ -5,7 +5,7 @@
             Submit Report
         </h3>
     </div>
-    <form style="margin-top:20px;" action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+    <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
         <div class="modal-body">
             <div class="alertContainer"></div>
             <label for="reportData">
@@ -14,15 +14,12 @@
                 </strong>
             </label>
 	            {{ form_errors(form) }} 
-				{{ form_widget(form.details, { 'attr': {class: 'span12'} })  }}
+				{{ form_widget(form.details, { 'attr': {class: 'span12', cols: 30, rows: 10} })  }}
 				{{ form_rest(form) }}
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
-            <button class="btn orange" onclick="return ErrorReport.submitReportForm(this);">Send Now</button>
+            <button data-loader-text="Sending..." class="btn orange" onclick="return ErrorReport.submitReportForm(this);">Send Now</button>
         </div>
 	</form>
 </div>
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/frontend/js/ErrorReport.js') }}"></script>
-{% endblock %}
