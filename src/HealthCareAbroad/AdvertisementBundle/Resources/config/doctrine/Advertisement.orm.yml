@@ -26,8 +26,8 @@ HealthCareAbroad\AdvertisementBundle\Entity\Advertisement:
             nullable: false
             column: date_expiry
         status:
-            type: boolean
-            nullable: true
+            type: smallint
+            nullable: false
     manyToOne:
         advertisementType:
             targetEntity: HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType

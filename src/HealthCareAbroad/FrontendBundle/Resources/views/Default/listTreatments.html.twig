@@ -6,8 +6,18 @@
         <div id="main_content" class="span10">
             <header class="filters">
                 <h2 class="total">Treatments</h2>
+                
+                <div class="anchor-links">
+                    {% set letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'] %}
+                    <ul>
+                        {% for letter in letters %}
+                         <li><a href="#{{ letter }}" class="btn tiny default">{{ letter|upper }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>  
             </header>
             {#-- media search-matches treatments #}
+        
             <div class="media search-matches treatments">
                 <div class="matches">
 
@@ -15,7 +25,8 @@
                         
                             <ul class="match" >
                                 <li>
-                                    <h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5>
+                                    {% set indexLetter = specialization.name|lower|slice(0, 1) %}
+                                    <h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}" id="{{ indexLetter }}">{{ specialization.name }}</a></h5>
                                 </li>
 
                                 {% set groupedSpecializations = group_treatments_by_subspecialization(specialization.treatments) %}

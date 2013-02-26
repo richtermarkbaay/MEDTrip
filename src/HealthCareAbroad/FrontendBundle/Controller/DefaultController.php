@@ -67,158 +67,6 @@ class DefaultController extends Controller
         return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
     }
 
-    /**
-     * TODO - Improved Implementation!
-     *
-     * Generate Frontend Breadcrumbs based on route name
-     *
-     * @author Adelbert D. Silla
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function renderBreadcrumbAction()
-    {
-        $request = $this->getRequest();
-        $route = $request->get('route');
-        $routeParams = $request->get('routeParams');
-        $templateParams = array();
-
-        switch($route) {
-
-            case 'frontend_single_center_institution_profile' :
-            case 'frontend_multiple_center_institution_profile' :
-                $institution = $request->get('institution');
-                $country = $institution->getCountry();
-                $templateParams['breadcrumbs'][] = array(
-                    'url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())),
-                    'label' => $country->getName()
-                );
-
-                if($city = $institution->getCity()) {
-                    $templateParams['breadcrumbs'][] = array(
-                        'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
-                        'label' => $city->getName());
-                }
-
-                $templateParams['breadcrumbs'][] = array('label' => $institution->getName());
-
-                break;
-
-            case 'frontend_institutionMedicaCenter_profile' :
-                $institutionMedicalCenter = $request->get('institutionMedicalCenter');
-                $institution = $institutionMedicalCenter->getInstitution();
-                $institutionRoute = $this->get('services.institution')->getInstitutionRouteName($institution);
-                $country = $institution->getCountry();
-
-                $templateParams['breadcrumbs'][] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
-
-                if($city = $institution->getCity()) {
-                    $templateParams['breadcrumbs'][] = array(
-                        'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $country->getSlug(),'city' => $city->getSlug())),
-                        'label' => $city->getName());
-                }
-
-                $templateParams['breadcrumbs'][] = array('url' => $this->generateUrl($institutionRoute, array('institutionSlug' => $institution->getSlug())), 'label' => $institution->getName());
-                $templateParams['breadcrumbs'][] = array('label' => $institutionMedicalCenter->getName());
-                break;
-
-            case 'frontend_search_results_countries' :
-                $country = $request->get('country');
-                $templateParams['breadcrumbs'] = array(
-                    array('label' => $country->getName()),
-                );
-                break;
-
-            case 'frontend_search_results_cities' :
-                $country = $request->get('country');
-                $city = $request->get('city');
-                if(!$country) {
-                    $country = $city->getCountry();
-                }
-
-                $templateParams['breadcrumbs'] = array(
-                    array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName()),
-                    array('label' => $city->getName()),
-                );
-                break;
-
-            case 'frontend_search_results_specializations' :
-                $specialization = $request->get('specialization');
-                $templateParams['breadcrumbs'] = array(
-                    array('label' => $specialization->getName())
-                );
-
-                break;
-
-            case 'frontend_search_results_treatments' :
-                $treatment = $request->get('treatment');
-                $specialization = $treatment->getSpecialization();
-
-                $templateParams['breadcrumbs'] = array(
-                    array('url' => $this->generateUrl('frontend_search_results_specializations', array('specialization' => $specialization->getSlug())), 'label' => $specialization->getName()),
-                    array('label' => $treatment->getName())
-                );
-                break;
-
-            case 'frontend_search_combined' :
-                $country = $request->get('country');
-                if ($request->get('specialization')) {
-                    $specialization = $request->get('specialization');
-                }
-                elseif ($subSpecialization = $request->get('subSpecialization')) {
-                    $specialization = $subSpecialization->getSpecialization();
-                }
-
-                $city = $request->get('city');
-                $treatment = $request->get('treatment');
-
-                if($city && !$country) { $country = $city->getCountry(); }
-                if($treatment && !isset($specialization)) { $specialization = $treatment->getSpecialization(); }
-
-                $breadcrumbs[] = array('url' => $this->generateUrl('frontend_search_results_countries', array('country' => $country->getSlug())), 'label' => $country->getName());
-
-                if($city) {
-                    $breadcrumbs[] = array(
-                        'url' => $this->generateUrl('frontend_search_results_cities',
-                            array('country' => $country->getSlug(), 'city' => $city->getSlug())),
-                        'label' => $city->getName()
-                    );
-
-                    $breadcrumbs[] = array(
-                        'url' => $this->generateUrl('frontend_search_combined_countries_cities_specializations',
-                                        array('country' => $country->getSlug(), 'city' => $city->getSlug(), 'specialization' => $specialization->getSlug())),
-                        'label' => $specialization->getName(),
-                    );
-
-                } else {
-                    $breadcrumbs[] = array(
-                        'url' => $this->generateUrl('frontend_search_combined_countries_specializations',
-                                        array('specialization' => $specialization->getSlug(), 'country' => $country->getSlug())),
-                        'label' => $specialization->getName(),
-                    );
-                }
-
-                if($treatment) {
-                    $breadcrumbs[] = array('label' => $treatment->getName());
-                }
-
-                $templateParams['breadcrumbs'] = $breadcrumbs;
-                break;
-
-            default :
-
-                if(isset($routeParams['breadcrumbLabel'])) {
-                    $templateParams['breadcrumbs'] = array(array('label' => $routeParams['breadcrumbLabel']));
-                }
-
-                //$templateParams['breadcrumbs'] = array(array('label' => 'Test'));
-                break;
-        }
-
-        //var_dump($route); var_dump($request->get('routeParams'));
-
-        return $this->render('FrontendBundle:Widgets:breadcrumbs.html.twig', $templateParams);
-    }
-
     /*
      * Newsletter subscribe
      * @author Chaztine Blance
@@ -365,7 +213,7 @@ class DefaultController extends Controller
     public function listCountryTreatmentAction(Request $request)
     {
         $parameters = $request->attributes->get('_route_params');
-var_dump($parameters);
+
         $em = $this->getDoctrine()->getManager();
         if (!$country = $em->getRepository('HelperBundle:Country')->find(isset($parameters['countryId']) ? $parameters['countryId'] : $parameters['country'])) {
             throw new NotFoundHttpException();
@@ -376,6 +224,7 @@ var_dump($parameters);
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($treatment, $country)));
+
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
                         'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
                         'searchLabel' => $country->getName() . ' - ' . $treatment->getName(),

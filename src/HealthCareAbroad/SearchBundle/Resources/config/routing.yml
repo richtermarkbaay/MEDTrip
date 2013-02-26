@@ -21,45 +21,15 @@ institution_medicalCenter_search:
 
 
 ## FRONTEND BUNDLE #############################################################
+
+# Seach widget routes
+SearchBundle_widget:
+    resource: "@SearchBundle/Resources/config/routing.widget.yml"
+    prefix:   /
+
 frontend_search_process:
     pattern: /search-process
     defaults: { _controller: SearchBundle:Frontend:searchProcess }
-
-frontend_search_ajaxLoadAllSearchOptions:
-    pattern: /search/ajaxLoadAllSearchOptions
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadAllSearchOptions }
-
-frontend_search_ajaxLoadTreatments:
-    pattern: /search/ajaxLoadTreatments
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments }
-
-frontend_search_ajaxLoadDestinations:
-    pattern: /search/ajaxLoadDestinations
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations }
-
-frontend_search_ajaxLoadCountries:
-    pattern: /search/ajaxLoadCountries
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'country' }
-
-frontend_search_ajaxLoadCities:
-    pattern: /search/ajaxLoadCities
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadDestinations, filter: 'city' }
-
-frontend_search_ajaxLoadSpecializations:
-    pattern: /search/ajaxLoadSpecializations
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'specialization' }
-
-frontend_search_ajaxLoadSubSpecializations:
-    pattern: /search/ajaxLoadSubSpecializations
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadTreatments, filter: 'subSpecialization' }
-
-frontend_narrowSearch_autocomplete:
-    pattern: /search/ajaxNarrowSearch
-    defaults: { _controller: SearchBundle:Frontend:ajaxLoadNarrowSearch }
-
-#frontend_search_results_keywords:
-#    pattern: /keywords/related-search/{keywords}/{page}
-#    defaults: { _controller: SearchBundle:Frontend:searchResultsKeywords, page: 1 }
 
 frontend_search_results_related_terms:
     pattern: /related-search/{tag}/{page}

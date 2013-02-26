@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Repository;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
+
 use Doctrine\ORM\EntityRepository;
 
 class AdvertisementDenormalizedPropertyRepository extends EntityRepository
@@ -24,7 +26,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->orderBy('a.dateExpiry', 'ASC')
         ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
         ->setParameter('advertisementTypes', $types)
-        ->setParameter('status', 1);
+        ->setParameter('status', AdvertisementStatuses::ACTIVE);
         
         return $qb->getQuery()->getResult();
     }
@@ -46,7 +48,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')
            ->andWhere('a.status = :status')
            ->setParameter('type', 2)
-           ->setParameter('status', 1);
+           ->setParameter('status', AdvertisementStatuses::ACTIVE);
 
         $result = $qb->getQuery()->getResult();
 
@@ -64,7 +66,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->andWhere('a.status = :status')
            ->orderBy('a.dateExpiry', 'ASC')
            ->setParameter('type', 6)
-           ->setParameter('status', 1);
+           ->setParameter('status', AdvertisementStatuses::ACTIVE);
 
         $result = $qb->getQuery()->getResult();
 
@@ -83,7 +85,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->andWhere('a.status = :status')
         ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('type', 7)
-        ->setParameter('status', 1);
+        ->setParameter('status', AdvertisementStatuses::ACTIVE);
 
         $result = $qb->getQuery()->getResult();
 

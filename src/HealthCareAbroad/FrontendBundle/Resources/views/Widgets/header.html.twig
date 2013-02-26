@@ -41,7 +41,10 @@
             </h1>
             {% block searchBox %}
                 {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
-                {% render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} %}
+                
+                {{ render_search_homepage_widget() | raw }}
+                
+                {# render "SearchBundle:Frontend:showWidget" with {"context" : 'homepage'} #}
             {% endblock %}
         </div>
     </div> <!--End of hero unit-->

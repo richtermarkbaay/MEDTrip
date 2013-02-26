@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
+
 use HealthCareAbroad\MediaBundle\Entity\Media;
 
 use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
@@ -107,6 +109,7 @@ class AdvertisementController extends Controller
         }
 
         $params = array(
+            'advertisementStatus' => AdvertisementStatuses::getList(),
             'advertisementTypeId' => $advertisementTypeId,
             'advertisements' => $this->filteredResult,
             'pager' => $this->pager);
@@ -326,7 +329,33 @@ class AdvertisementController extends Controller
 
 		return $response;
     }
+
+    public function updateStatusAction()
+    {
+        $result = false;
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $advertisementId = $this->getRequest()->request->get('advertisementId');
+        $advertisement = $em->getRepository('AdvertisementBundle:Advertisement')->find($advertisementId);
+
+        if ($advertisement) {
+            $status = $this->getRequest()->request->get('status');
+            $advertisement->setStatus($status);
+            $em->persist($advertisement);
+            $em->flush();
+
+            // dispatch event
+            //$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_CITY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_CITY, $city));
+
+            $result = true;
+        }
     
+        $response = new Response(json_encode($result));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
+    }
+
     private function mediaObjectToArray(Media $media)
     {
         $mediaArray = null;
