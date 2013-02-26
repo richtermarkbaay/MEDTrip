@@ -49,8 +49,13 @@
 
             {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
 
-            {% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' 
-                with { doctors: institutionMedicalCenter.doctors } %}
+            {% if institutionMedicalCenter.doctors|length %}
+                {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'DOCTORS', headingClass : 'doctors-heading', class: 'one-col-description content' } %}
+                    {% block sectionContent %}
+                        {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionMedicalCenter.doctors } %}
+                    {% endblock %}                
+                {% endembed %}
+            {% endif %}
 
         </div> <!--End of main_content-->
 

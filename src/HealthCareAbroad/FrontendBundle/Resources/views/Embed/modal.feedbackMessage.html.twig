@@ -1,8 +1,8 @@
 <!-- Feedback Modal -->
-{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'customBodyStyle' : 'max-height:300px; overflow-x: hidden;', 'formId': 'feedbackForm'}} %}
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'formId': 'feedbackForm'}} %}
     {% block modalBody %}
      <div class="alert-box"></div>
-    <form novalidate="novalidate" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
+    <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
         <div class="alert-error"></div>
             {{ form_errors(feedbackForm) }}
         <div class="name control-group">
@@ -22,7 +22,6 @@
                 <strong>{{ feedbackForm.children.message.vars.label }}</strong>
             </label>
               {{ form_widget(feedbackForm.message, { 'attr': {'rows': 4} }) }}
-                <span class="help-inline"></span>   
         </div>
         {{ form_rest(feedbackForm) }}    
     </form>

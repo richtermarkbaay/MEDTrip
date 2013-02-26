@@ -1,10 +1,9 @@
-<div id="main_content" class="tab-pane active">
-	<div>
-	    {{ institution.description | raw }}
-	</div>
+<div>
+    {{ institution.description | raw }}
+</div>
 
-	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
-	
-	{% include 'FrontendBundle:Widgets:profileDoctorsSection.html.twig' with {doctors: institutionDoctors} %}
+{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
 
-</div> <!--End of main_content-->
+{% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
+
+

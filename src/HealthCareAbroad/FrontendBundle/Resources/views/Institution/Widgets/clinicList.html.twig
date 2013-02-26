@@ -1,11 +1,21 @@
-<div id="clinics" class="tab-pane">
+
+<div id="clinics">
+    <h5 class="clinics-heading">CLINICS</h5>
 	<div id="content">
 		<ul class="thumbnails">
 		    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
     				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-            			{% if each.logo %}
-            			    {{ media(each.logo, institution, 'default', {thumbnail: true, style: 'max-width: 165px'}) | raw }}
+    				    {% if each.logo %}
+    				        {% set logo = each.logo %}
+    				        {% set ownerObject = institution %}
+    				    {% else %}
+    				        {% set logo = each.institutionSpecializations[0].specialization.media %}
+    				        {% set ownerObject = each.institutionSpecializations[0].specialization %}
+    				    {% endif %}
+    				    
+            			{% if logo %}
+            			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px'}) | raw }}
             			{% else %}
             			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default" alt="{{ each.name }}"/>
             			    <span>{{ each.name }}</span>

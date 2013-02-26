@@ -1,8 +1,4 @@
 {% if doctors | length %}
-
-<div class="one-col-description content row">
-    <h5 class="doctors-heading">Doctors</h5>
-    
 	<ul class="thumbnails">
 	    {% for doctor in doctors %}
 		<li class="thumbnail">
@@ -17,7 +13,6 @@
 			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
 			    {% endfor %}
 			</p>
-			
 
 			{# <ul class="contact">
 			    {% if doctor.contactEmail %}
@@ -36,6 +31,5 @@
 		</li>
 		{% endfor %}
 	</ul>
-</div>
 
 {% endif %}

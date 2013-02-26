@@ -86,6 +86,8 @@ var InstitutionInquiry = {
         };
         
         InstitutionInquiry.institutionInquiryComponents.modal.live('show', function(){
+        	//console.log();
+        	$('body').append($(this));
             InstitutionInquiry.restoreInitialState();
         });
         
