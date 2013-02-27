@@ -19,12 +19,13 @@
             {% if relatedTreatments %}
             <div class="media search-matches">
                 <div class="matches">
-                    <ul class="match">
+                    
                         {% set sId = 0 %}
                         {% set ssId = 0 %}
                         {% for specialization in relatedTreatments %}
+                        <ul class="match">
                             {% if sId != specialization.id %}
-                                <li><h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                                <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
                                 {% set sId = specialization.id %}
                             {% endif %}
                             <li>
@@ -42,8 +43,9 @@
                                     {% endfor %}
                                 </ul>
                             </li>
+                        </ul>
                         {% endfor %}
-                    </ul>
+                    
                 </div>
             </div>
             {% endif %}
