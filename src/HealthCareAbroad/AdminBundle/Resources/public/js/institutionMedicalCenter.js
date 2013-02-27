@@ -182,8 +182,6 @@ var InstitutionMedicalCenter = {
             url: href,
             data: _formElement.serialize(),
             success: function(response) {
-            	_button.removeAttr('disabled')
-                .html('Submit');
             	_modal.modal('hide');
             }
         });

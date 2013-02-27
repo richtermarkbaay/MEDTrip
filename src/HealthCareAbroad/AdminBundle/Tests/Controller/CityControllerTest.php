@@ -11,7 +11,7 @@ class CityControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/cities');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Cities")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Cities")')->count(), 'No Output!');
     }
     
     public function testAdd()
@@ -32,15 +32,15 @@ class CityControllerTest extends AdminBundleWebTestCase
     	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit City")')->count(), '"Edit City" string not found!');
     }
     
-    public function testEditSave()
+    public function testAddSave()
     {
     	$client = $this->getBrowserWithActualLoggedInUser();
-    	$crawler = $client->request('GET', '/admin/city/edit/1');
+    	$crawler = $client->request('GET', '/admin/city/add');
 
     	$formData = array(
-    			'city[name]' => 'TestCity1 Updated',
-    			'city[country]' => 1,
-    			'city[status]' => 1
+    		'city[name]' => 'TestCity1',
+			'city[country]' => 1,
+    		'city[status]' => 1
     	);
 
     	$form = $crawler->selectButton('submit')->form();
@@ -48,48 +48,65 @@ class CityControllerTest extends AdminBundleWebTestCase
 
     	// check if redirect code 302
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
+    	 
+    	// check if redirect url /admin/cities
+    	$this->assertEquals('/admin/cities', $client->getResponse()->headers->get('location'));
+    	 
+    	 
+    	// redirect request
+    	$crawler = $client->followRedirect(true);
 
+    	// check if the redirected response content has the newly added city
+    	$isAdded = $crawler->filter('#city-list > tr > td:contains("'.$formData['city[name]'].'")')->count() > 0;
+    	$this->assertTrue($isAdded);
     }
     
-//     public function testAddSave()
-//     {
-//     	$client = $this->getBrowserWithActualLoggedInUser();
-//     	$crawler = $client->request('GET', '/admin/city/add');
-
-//     	$formData = array(
-//     		'city[name]' => 'TestCity1 New',
-// 			'city[country]' => 1,
-//     		'city[status]' => 1
-//     	);
-
-//     	$form = $crawler->selectButton('submit')->form();
-//     	$crawler = $client->submit($form, $formData);
-
-//     	// check if redirect code 302
-//     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
-    	 
-//     	// check if redirect url /admin/cities
-//     	$this->assertEquals('/admin/cities', $client->getResponse()->headers->get('location'));
-//     }
+    public function testEditSave()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('GET', '/admin/city/edit/2');
     
-
-//     public function testCreateDuplicate()
-//     {
-//     	$client = $this->getBrowserWithActualLoggedInUser();
-//     	$crawler = $client->request('GET', '/admin/city/add');
+    	$formData = array(
+    			'city[name]' => 'TestCity1 Updated',
+    			'city[country]' => 1,
+    			'city[status]' => 1
+    	);
     
-// 		$formData = array(
-// 			'city[name]' => 'TestCity1 Updated',
-// 			'city[country]' => 1,
-// 			'city[status]' => 1
-// 		);
+    	$form = $crawler->selectButton('submit')->form();
+    	$crawler = $client->submit($form, $formData);
     
-//     	$form = $crawler->selectButton('submit')->form();
-//     	$crawler = $client->submit($form, $formData);
+    	// check if redirect code 302
+    	$this->assertEquals(302, $client->getResponse()->getStatusCode());
+    
+    	// check of redirect url /admin/cities
+    	$this->assertEquals('/admin/cities', $client->getResponse()->headers->get('location'));
+    
+    
+    	// redirect request
+    	$crawler = $client->followRedirect(true);
+    
+    	// check if the redirected response content has the newly added city name
+    	$isAdded = $crawler->filter('#city-list > tr > td:contains("'.$formData['city[name]'].'")')->count() > 0;
+    	$this->assertTrue($isAdded);
+    }
 
-//     	// check if status code is not 302
-//     	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"City" must not be able to create an entry with duplicate name.');
-//     }
+    public function testCreateDuplicate()
+    {
+    	$client = $this->getBrowserWithActualLoggedInUser();
+    	$crawler = $client->request('GET', '/admin/city/add');
+    
+		$formData = array(
+			'city[name]' => 'TestCity1 Updated',
+			'city[country]' => 1,
+			'city[status]' => 1
+		);
+    
+    	$form = $crawler->selectButton('submit')->form();
+    	$crawler = $client->submit($form, $formData);
+
+    	// check if status code is not 302
+    	$this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"City" must not be able to create an entry with duplicate name.');
+    }
 
     public function testUpdateStatusAction(){
     	$client = $this->getBrowserWithActualLoggedInUser();

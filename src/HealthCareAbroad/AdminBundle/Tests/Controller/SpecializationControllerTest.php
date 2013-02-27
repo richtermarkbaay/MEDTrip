@@ -2,7 +2,6 @@
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
 use HealthCareAbroad\AdminBundle\Tests\AdminBundleWebTestCase;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class SpecializationControllerTest extends AdminBundleWebTestCase
 {
@@ -13,7 +12,7 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', $uri);
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Specializations")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Specializations")')->count(), 'No Output!');
     }
     
     public function testAdd()
@@ -50,10 +49,9 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/admin/specialization/add');
-        $file = new UploadedFile('/Users/Chaztine/Pictures/peanut-butter-sandwich.gif', 'peanut-butter-sandwich.gif', 'image/jpeg', 50,149);
+    
         $formData = array(
                         'specialization[name]' => 'addedby Institution fromtest',
-                        'specialization[media]' => $file,
                         'specialization[description]' => 'The quick brown fox added from test.',
                         'specialization[status]' => 1
         );
@@ -65,13 +63,13 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     
         // check of redirect url /admin/medical-centers
-        $this->assertEquals('/admin/specialization/edit/5', $client->getResponse()->headers->get('location'));
+        $this->assertEquals('/admin/specialization/edit/110', $client->getResponse()->headers->get('location'));
     
         // redirect request
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added medical center
-        $isAdded = $crawler->filter('h4:contains("Edit Specialization")')->count() > 0;
+        $isAdded = $crawler->filter('#page-heading h2:contains("Edit Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
         $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
@@ -83,12 +81,12 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/specialization/add');
     
         $formData = array(
-                        'specialization[name]' => 'addedby Institution fromtest',
+                        'specialization[name]' => 'addedby Institution fromtest2',
                         'specialization[description]' => 'The quick brown fox added from test.',
                         'specialization[status]' => 1
         );
     
-        $form = $crawler->selectButton('Save & Add another Specialization')->last()->form();
+        $form = $crawler->selectButton('submit')->last()->form();
         $crawler = $client->submit($form, $formData);
     
         // check if redirect code 302
@@ -101,7 +99,7 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added medical center
-        $isAdded = $crawler->filter('h4:contains("Add Specialization")')->count() > 0;
+        $isAdded = $crawler->filter('#page-heading h2:contains("Add Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
         $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
@@ -131,7 +129,7 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added medical center name
-        $isAdded = $crawler->filter('h4:contains("Edit Specialization")')->count() > 0;
+        $isAdded = $crawler->filter('#page-heading h2:contains("Edit Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     
         $isMessageShow = $crawler->filter('div.alert-success')->count() > 0;
@@ -183,13 +181,5 @@ class SpecializationControllerTest extends AdminBundleWebTestCase
         );
         $crawler = $client->request('GET', '/admin/specialization/test-save', $formData);
         $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Invalid method accepted!');
-    }
-    
-    public function testLoadAvailableSubSpecializations()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $url = '/ns-admin/specialization/load-available-sub-specializations/1';
-        $crawler = $client->request('GET', $url);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 }

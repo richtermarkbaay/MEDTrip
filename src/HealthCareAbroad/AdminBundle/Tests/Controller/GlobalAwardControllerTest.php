@@ -1,6 +1,8 @@
 <?php
 /**
+ * 
  * @author Chaztine Blance
+ *
  */
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
@@ -14,7 +16,7 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/global_award');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Awards, Certificates Or Affiliations")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of GlobalAward")')->count(), 'No Output!');
     }
     
     public function testAdd()
@@ -23,7 +25,7 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/global_award/add');
     
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Add Award, Certificate Or Affiliation")')->count(), '"Add Award, Certificate Or Affiliation " string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Add GlobalAward")')->count(), '"Add GlobalAward" string not found!');
     }
     
     public function testEdit()
@@ -32,7 +34,7 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/global_award/edit/1');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Award, Certificate Or Affiliation")')->count(), '"Edit Award, Certificate Or Affiliation " string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit GlobalAward")')->count(), '"Edit GlobalAward" string not found!');
     }
     
     public function testAddSave()
@@ -42,7 +44,6 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
 
     	$formData = array(
     		'global_award[name]' => 'TestGlobalAward1',
-            'global_award[type]' => 2,
     		'global_award[details]' => 'test Details',
     		'global_award[awardingBody]' => 2,
 			'global_award[country]' => 1,
@@ -73,7 +74,6 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
     			'global_award[name]' => 'TestGlobalAward1 Updated',
-                'global_award[type]' => 2,
     			'global_award[details]' => 'test Details',
     			'global_award[awardingBody]' => 1,
     			'global_award[country]' => 1,
@@ -112,7 +112,6 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
     			'global_award[name]' => '',
-                'global_award[type]' => 2,
     			'global_award[details]' => '',
     			'global_award[awardingBody]' => 2,
     			'global_award[country]' => 1,
@@ -132,7 +131,6 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
     
     	$formData = array(
     			'global_award[name]' => 'saveUsingGet',
-                'global_award[type]' => 2,
     			'global_award[details]' => 'test Details',
     			'global_award[awardingBody]' => 1,
     			'global_award[country]' => 1,
@@ -165,26 +163,5 @@ class GlobalAwardControllerTest extends AdminBundleWebTestCase
         $isFiltered = $crawler->filter('#global_award-list tr > td.country:not(:contains("Philippine"))')->count() == 0;
         $isAllActive = $crawler->filter('#global_award-list tr a.icon-5')->count() == 0;
         $this->assertEquals(true, $isFiltered && $isAllActive, 'Filter contry and status is not working properly!');
-    }
-    
-    public function testCreateDuplicate()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/admin/global_award/add');
-    
-        $formData = array(
-                     		'global_award[name]' => 'test',
-                            'global_award[type]' => 2,
-                			'global_award[details]' => 'test',
-                			'global_award[awardingBody]' => 1,
-                			'global_award[country]' => 1,
-                			'global_award[status]' => 1
-        );
-    
-        $form = $crawler->selectButton('submit')->form();
-        $crawler = $client->submit($form, $formData);
-    
-        // check if status code is not 302
-        $this->assertNotEquals(302, $client->getResponse()->getStatusCode(), '"Property value" must not be able to create an entry with duplicate name.');
     }
 }

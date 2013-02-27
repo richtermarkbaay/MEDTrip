@@ -4,24 +4,24 @@
     <div class="alert-box"></div>
     <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}" id="{{formId}}" method="POST">
         <div class="inquirer_name control-group row-fluid">
-            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3 pull-left">
+            <label for="{{ form.children.inquirer_name.vars.id }}">
                 <strong>{{ form.children.inquirer_name.vars.label }}</strong>
             </label>
             {{ form_widget(form.inquirer_name) }}
         </div>
 
         <div class="inquirer_email control-group row-fluid">
-            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3 pull-left">
+            <label for="{{ form.children.inquirer_email.vars.id }}">
                 <strong>{{ form.children.inquirer_email.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_email, { 'attr': {'placeholder': 'i.e you@domain.com'} }) }}
+            {{ form_widget(form.inquirer_email) }}
         </div>
         
         <div class="message control-group row-fluid">
             <label for="{{ form.children.message.vars.id }}">
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
-            {{ form_widget(form.message, { 'attr': {'rows': 5} }) }}
+            {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
         </div>
         {{ form_rest(form) }}
                             	                        	

@@ -23,11 +23,6 @@ class CommonPageController extends Controller
         return $this->render('FrontendBundle:Static:termsOfUse.html.twig');
     }
     
-    public function viewHistoryAction(){
-    
-        return $this->render('FrontendBundle:Static:history.html.twig');
-    }
-    
     public function saveInquiryAction(Request $request)
     {
         $inquiry = new Inquiry();
