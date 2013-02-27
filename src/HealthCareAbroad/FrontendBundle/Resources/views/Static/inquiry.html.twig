@@ -10,7 +10,6 @@
                 <h1>Get In Contact</h1>
                 {% if error %}
                     <div class="alert alert-error">
-                        <strong> Error Alert! </strong>
                         Please fill the necessary fields. 
                     </div>
                 {% else %}
@@ -27,7 +26,7 @@
                     	    {% set class = '' %}
                     	{% endif %}
                         <div class="alert {{ class }}">
-                            <strong>{{ alert | title }}!</strong> {{ message | raw}}
+                            {{ message | raw}}
                         </div>
                     {% endfor %}
                 {% endif %}

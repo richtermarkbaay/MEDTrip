@@ -3,7 +3,7 @@
     <div class="alert-box"></div>
     <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
         <div class="inquirer_name control-group row-fluid">
-            <label for="{{ form.children.inquirer_name.vars.id }}">
+            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3 pull-left">
                 <strong>{{ form.children.inquirer_name.vars.label }}</strong>
             </label>
             {{ form_widget(form.inquirer_name) }}
@@ -11,10 +11,10 @@
         </div>
         
         <div class="inquirer_email control-group row-fluid">
-            <label for="{{ form.children.inquirer_email.vars.id }}">
+            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3 pull-left">
                 <strong>{{ form.children.inquirer_email.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_email) }}
+            {{ form_widget(form.inquirer_email, { 'attr': {'placeholder': 'i.e you@domain.com'} }) }}
             <span class="help-inline"></span>    
         </div>
         
@@ -22,7 +22,7 @@
             <label for="{{ form.children.message.vars.id }}">
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
-            {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
+            {{ form_widget(form.message, { 'attr': {'rows': 5} }) }}
         </div>
         {{ form_rest(form) }}
                             	                        	

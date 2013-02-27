@@ -1,8 +1,7 @@
 <?php
 /**
- * 
+ * Functional Test for AwardingBodyController
  * @author Chaztine Blance
- *
  */
 namespace HealthCareAbroad\AdminBundle\Tests\Controller;
 
@@ -16,7 +15,7 @@ class AwardingBodyControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/awardingBody');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Awarding Body")')->count(), 'No Output!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Awarding Bodies")')->count(), 'No Output!');
     }
     
     public function testAdd()

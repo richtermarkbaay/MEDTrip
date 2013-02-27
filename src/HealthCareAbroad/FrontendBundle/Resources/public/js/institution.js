@@ -71,9 +71,11 @@ var InstitutionInquiry = {
                 }
             }
         });
+
     }
     
 };
+
 
 
 (function($){
