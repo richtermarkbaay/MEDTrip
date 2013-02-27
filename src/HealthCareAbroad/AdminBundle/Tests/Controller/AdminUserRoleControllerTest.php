@@ -46,7 +46,7 @@ class AdminUserRoleControllerTest extends AdminBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0,$crawler->filter('h1:contains("Admin user permissions")')->count(), 'Page heading should contatin "Admin user permissions"');
+        $this->assertGreaterThan(0,$crawler->filter('h4:contains("User Types")')->count(), 'Page heading should contatin "Admin user permissions"');
         
         // test that this must not be accessed with a user with invalid roles
         $client = $this->getBrowserWithMockLoggedUser();
@@ -88,7 +88,7 @@ class AdminUserRoleControllerTest extends AdminBundleWebTestCase
         // test that it will not accept a GET method
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri, $params);
-        $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Expecting method GET to be not accepted');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting method GET to be not accepted');
         
         // test that this should not be acessed by non-authenticated users
         $client = static::createClient();
@@ -127,7 +127,7 @@ class AdminUserRoleControllerTest extends AdminBundleWebTestCase
         // test that it will not accept a GET method
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', $uri, $params);
-        $this->assertEquals(405, $client->getResponse()->getStatusCode(), 'Expecting method GET to be not accepted');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode(), 'Expecting method GET to be not accepted');
         
         // test that this should not be acessed by non-authenticated users
         $client = static::createClient();
