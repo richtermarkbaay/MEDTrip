@@ -303,26 +303,26 @@ class SearchService
 
         switch ($context) {
             case 'combined':
-                $routeName = 'frontend_search_combined_country_';
+                $routeName = 'frontend_search_combined_countries_';
                 $countryId = $parameters['country_id'];
 
                 if (isset($parameters['city_id']) && $parameters['city_id']) {
-                    $routeName .= 'city_';
+                    $routeName .= 'cities_';
                     $cityId = $parameters['city_id'];
                 }
 
                 switch ($parameters['type']) {
                     case TermDocument::TYPE_SPECIALIZATION:
-                        $routeName .= 'specialization';
+                        $routeName .= 'specializations';
                         $specializationId = $parameters['specialization_id'];
                         break;
                     case TermDocument::TYPE_SUBSPECIALIZATION:
-                        $routeName .= 'specialization__subSpecialization';
+                        $routeName .= 'specializations__subSpecializations';
                         $specializationId = $parameters['specialization_id'];
                         $subSpecializationId = $parameters['sub_specialization_id'];
                         break;
                     case TermDocument::TYPE_TREATMENT:
-                        $routeName .= 'specialization_treatment';
+                        $routeName .= 'specializations_treatments';
                         $specializationId = $parameters['specialization_id'];
                         $treatmentId = $parameters['treatment_id'];
                         break;
