@@ -268,15 +268,15 @@ class DefaultSearchStrategy extends SearchStrategy
         if ($termName = $searchParams['treatmentName']) {
             $sql .= ' AND b.name LIKE :termName ';
         }
-        if ($cityId = $searchParams['cityId']) {
+        if ($cityId = (int) $searchParams['cityId']) {
             $sql .= ' AND a.city_id = :cityId ';
-        } elseif ($countryId = $searchParams['countryId']) {
+        } elseif ($countryId = (int) $searchParams['countryId']) {
             $sql .= ' AND a.country_id = :countryId ';
-        } elseif ($destinationName = $searchParams['destinationName']) {
+        } elseif ($destinationName = (int) $searchParams['destinationName']) {
             $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
         }
 
-        if ($termId = $searchParams['treatmentId']) {
+        if ($termId = (int) $searchParams['treatmentId']) {
             $sql .= ' AND a.term_id = :termId ';
         }
 

@@ -8,8 +8,15 @@
     <div id="details" class="row">
         <div id="main_content" class="span8">
             <header class="filters">
-                <h2 class="total">We have found the following matches:</h2>
+                <h2 class="total">
+                    {% if searchResults.getTotalResults %}
+                    We have found the following matches:
+                    {% else %}
+                    No results found.
+                    {% endif %}
+                </h2>
             </header>
+            {% if relatedTreatments %}
             <div class="media search-matches">
                 <div class="matches">
                     <ul class="match">
@@ -37,9 +44,9 @@
                             </li>
                         {% endfor %}
                     </ul>
-
                 </div>
             </div>
+            {% endif %}
 
             {% for searchResultVo in searchResults %}
                 {# BC for old search results whose result item is a medical center #}

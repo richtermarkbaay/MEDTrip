@@ -581,13 +581,14 @@ class FrontendController extends Controller
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
+        $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchResults' => $searchResults,
                         'searchLabel' => $request->get('tag', ''),
                         'routeName' => 'frontend_search_results_related_terms',
                         'paginationParameters' => array('tag' => $request->get('tag', '')),
-                        'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($searchTerms)
+                        'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
         ));
     }
 

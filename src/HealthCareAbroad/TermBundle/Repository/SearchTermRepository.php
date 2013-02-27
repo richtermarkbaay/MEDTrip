@@ -274,12 +274,19 @@ class SearchTermRepository extends EntityRepository
         ->leftJoin('inst.gallery', 'ga')
         ->leftJoin('a.term', 't')
         ->where('a.status = :searchTermActiveStatus')
-        ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE)
-        ->andWhere($qb->expr()->in('t.id', $termIds));
+        ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
+
+        $hasNoTermIds = false;
+        if (empty($termIds)) {
+            $hasNoTermIds = true;
+        } else {
+            $qb->andWhere($qb->expr()->in('t.id', $termIds));
+        }
 
         foreach ($filters as $filter => $value) {
-            if ($filter == 'treatmentName') {
-                //term id already takes care of this
+            if ($filter == 'treatmentName' && $hasNoTermIds) {
+                $qb->andWhere('t.name LIKE :treatmentName');
+                $qb->setParameter('treatmentName', '%'.$value.'%');
             }
 
             if ($filter == 'destinationName') {
