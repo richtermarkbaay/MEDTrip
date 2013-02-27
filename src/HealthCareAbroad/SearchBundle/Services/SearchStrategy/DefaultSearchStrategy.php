@@ -265,9 +265,6 @@ class DefaultSearchStrategy extends SearchStrategy
             WHERE a.status = 1
         ";
 
-        if ($termName = $searchParams['treatmentName']) {
-            $sql .= ' AND b.name LIKE :termName ';
-        }
         if ($cityId = (int) $searchParams['cityId']) {
             $sql .= ' AND a.city_id = :cityId ';
         } elseif ($countryId = (int) $searchParams['countryId']) {
@@ -278,6 +275,8 @@ class DefaultSearchStrategy extends SearchStrategy
 
         if ($termId = (int) $searchParams['treatmentId']) {
             $sql .= ' AND a.term_id = :termId ';
+        } elseif ($termName = $searchParams['treatmentName']) {
+            $sql .= ' AND b.name LIKE :termName ';
         }
 
         if ($uniqueTermDocument) {
@@ -285,11 +284,10 @@ class DefaultSearchStrategy extends SearchStrategy
         }
 
         $stmt = $connection->prepare($sql);
-        if ($termName) {
-            $stmt->bindValue('termName', '%'.$termName.'%');
-        }
         if ($termId) {
             $stmt->bindValue('termId', $termId, \PDO::PARAM_INT);
+        } elseif ($termName) {
+            $stmt->bindValue('termName', '%'.$termName.'%');
         }
         if ($cityId) {
             $stmt->bindValue('cityId', $cityId, \PDO::PARAM_INT);

@@ -192,8 +192,10 @@ class SearchService
      */
     public function searchByTerms(array $searchTerms = array(), array $filters = array())
     {
-        if (!isset($searchTerms['termIds']) || empty($searchTermIds)) {
-            return array();
+        if (!isset($searchTerms['termIds']) || empty($searchTerms['termIds'])) {
+            if (!isset($searchTerms['treatmentName']) || empty($searchTerms['treatmentName'])) {
+                return array();
+            }
         }
 
         $termIds = $searchTerms['termIds'];
