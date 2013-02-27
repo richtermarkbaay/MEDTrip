@@ -31,6 +31,7 @@ class ProcessSearchListener
         $treatmentName = $request->get('sb_treatment');
         $destinationName = $request->get('sb_destination');
 
+        //TODO: this will break if we are going to force the destination field in our search forms to always submit the ID
         if ((!$treatmentId && !$destinationId) || (!$treatmentId && $treatmentName) || (!$destinationId && $destinationName)) {
 
             $context = '';

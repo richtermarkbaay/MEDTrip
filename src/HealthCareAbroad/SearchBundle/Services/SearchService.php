@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
+use HealthCareAbroad\TermBundle\Entity\TermDocument;
+
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -102,9 +104,14 @@ class SearchService
         return $results;
     }
 
-    public function getTermDocumentsFilteredOn(array $filters)
+    public function getSearchTermsWithUniqueDocumentsFilteredOn(array $filters)
     {
-        return $this->searchStrategy->getTermDocumentsFilteredOn($filters);
+        return $this->searchStrategy->getSearchTermsFilteredOn($filters, true);
+    }
+
+    public function getSearchTermsFilteredOn(array $filters)
+    {
+        return $this->searchStrategy->getSearchTermsFilteredOn($filters);
     }
 
     public function getTermDocumentsByTermName($searchParams)
@@ -183,8 +190,24 @@ class SearchService
      *
      * @param array $termIds
      */
-    public function searchByTerms(array $termIds = array(), array $filters = array())
+    public function searchByTerms(array $searchTerms = array(), array $filters = array())
     {
+        if (!isset($searchTerms['termIds'])) {
+            return array();
+        }
+
+        $termIds = $searchTerms['termIds'];
+        $filters = array();
+
+        if (isset($searchTerms['countryId']) && $searchTerms['countryId']) {
+            $filters['countryId'] = $searchTerms['countryId'];
+        }
+
+        if (isset($searchTerms['cityId']) && $searchTerms['cityId']) {
+            $filters['cityId'] = $searchTerms['cityId'];
+        }
+
+
         return $this->searchStrategy->searchMedicalCentersByTerms($termIds, $filters);
     }
 
@@ -198,15 +221,39 @@ class SearchService
         return $this->searchStrategy->getTerm($value, $options);
     }
 
-    public function getRelatedTreatments($termId, $urlPrefix = '')
+    public function getTerms(array $termIds, $options)
+    {
+        if (empty($termIds)) {
+            return array();
+        }
+
+        return $this->searchStrategy->getTerms($termIds, $options);
+    }
+
+    public function getRelatedTreatments(array $searchTerms)
     {
         $categorized = array();
+
+        $termIds = isset($searchTerms['termIds']) ? $searchTerms['termIds'] : array();
+        $convertedIds = array();
+        foreach ($termIds as $id) {
+            $convertedIds[] = (int) $id;
+        }
+        $filters = array();
+        if (isset($searchTerms['countryId'])) {
+            $filters['countryId'] = $searchTerms['countryId'];
+        }
+        if (isset($searchTerms['cityId'])) {
+            $filters['cityId'] = $searchTerms['cityId'];
+        }
+
+        $results = $this->searchStrategy->getRelatedTreatments($convertedIds, $filters);
+        $countItems = count($results);
 
         //TODO: merge/optimize loops
         $sId = 0;
         $loopCounter = 1;
-        $results = $this->searchStrategy->getRelatedTreatments($termId);
-        $countItems = count($results);
+
         foreach ($results as $row) {
             if ($sId != $row['specialization_id']) {
                 if ($sId != 0) {
@@ -250,26 +297,129 @@ class SearchService
         return $categorized;
     }
 
-    //         specialization 1
-    //             TREATMENTS
-    //                 treatment 1
-    //                 treatment 2
-    //             SUBSPECIALIZATIONS
-    //                 subspecialization 1
-    //                     TREATMENTS
-    //                         treatment 3
-    //                 subspecialization 2
-    //                     TREATMENTS
-    //                         treatment 4
-    //                         treatment 5
-    //         specialization 2
-    //             SUBSPECIALIZATION
-    //                 subspecialization 3
-    //                     TREATMENTS
-    //                         treatment 6
-    //         specialization 3
-    //             TREATMENTS
-    //                 treatment 7
-    //                 treatment 8
+    public function getRouteConfig($parameters, $doctrine, $context = '')
+    {
+        $routeName = '';
 
+        switch ($context) {
+            case 'combined':
+                $routeName = 'frontend_search_combined_countries_';
+                $countryId = $parameters['country_id'];
+
+                if (isset($parameters['city_id']) && $parameters['city_id']) {
+                    $routeName .= 'cities_';
+                    $cityId = $parameters['city_id'];
+                }
+
+                switch ($parameters['type']) {
+                    case TermDocument::TYPE_SPECIALIZATION:
+                        $routeName .= 'specializations';
+                        $specializationId = $parameters['specialization_id'];
+                        break;
+                    case TermDocument::TYPE_SUBSPECIALIZATION:
+                        $routeName .= 'specializations__subSpecializations';
+                        $specializationId = $parameters['specialization_id'];
+                        $subSpecializationId = $parameters['sub_specialization_id'];
+                        break;
+                    case TermDocument::TYPE_TREATMENT:
+                        $routeName .= 'specializations_treatments';
+                        $specializationId = $parameters['specialization_id'];
+                        $treatmentId = $parameters['treatment_id'];
+                        break;
+                }
+
+                break;
+
+            case 'destination':
+                $routeName = 'frontend_search_results_countries';
+                $countryId = $parameters['country_id'];
+
+                if (isset($parameters['city_id']) && $parameters['city_id']) {
+                    $routeName = 'frontend_search_results_cities';
+                    $cityId = $parameters['city_id'];
+                }
+
+                break;
+
+            case 'treatment':
+                switch ($parameters['type']) {
+                    case TermDocument::TYPE_SPECIALIZATION:
+                        $routeName = 'frontend_search_results_specializations';
+                        $specializationId = $parameters['specialization_id'];
+                        break;
+                    case TermDocument::TYPE_SUBSPECIALIZATION:
+                        $routeName = 'frontend_search_results_subSpecializations';
+                        $specializationId = $parameters['specialization_id'];
+                        $subSpecializationId = $parameters['sub_specialization_id'];
+                        break;
+                    case TermDocument::TYPE_TREATMENT:
+                        $routeName = 'frontend_search_results_treatments';
+                        $specializationId = $parameters['specialization_id'];
+                        $treatmentId = $parameters['treatment_id'];
+                        break;
+                }
+
+                break;
+
+            default:
+        }
+
+        $routeParameters = array();
+        $sessionParameters = array();
+
+        if (isset($countryId)) {
+            $sessionParameters['countryId'] = $countryId;
+            $routeParameters['country'] = $doctrine->getRepository('HelperBundle:Country')->find($countryId)->getSlug();
+        }
+        if (isset($cityId)) {
+            $sessionParameters['cityId'] = $cityId;
+            $routeParameters['city'] = $doctrine->getRepository('HelperBundle:City')->find($cityId)->getSlug();
+        }
+        if (isset($specializationId)) {
+            $sessionParameters['specializationId'] = $specializationId;
+            $routeParameters['specialization'] = $doctrine->getRepository('TreatmentBundle:Specialization')->find($specializationId)->getSlug();
+        }
+        if (isset($subSpecializationId)) {
+            $sessionParameters['subSpecializationId'] = $subSpecializationId;
+            $routeParameters['subSpecialization'] = $doctrine->getRepository('TreatmentBundle:SubSpecialization')->find($subSpecializationId)->getSlug();
+        }
+        if (isset($treatmentId)) {
+            $sessionParameters['treatmentId'] = $treatmentId;
+            $routeParameters['treatment'] = $doctrine->getRepository('TreatmentBundle:Treatment')->find($treatmentId)->getSlug();
+        }
+
+        return array(
+            'routeName' => $routeName,
+            'routeParameters' => $routeParameters,
+            'sessionParameters' => $sessionParameters
+        );
+    }
+
+    /*
+     * At this moment the logic inside this function is only applicable for keyword searches
+     */
+    public function getRouteConfigFromFilters($filters, $doctrine, $uniqueTermIds)
+    {
+        $routeName = 'frontend_search_results_related_terms';
+        $routeParameters = array('tag' => $filters['treatmentName']);
+        $sessionParameters = array('termIds' => $uniqueTermIds);
+
+        if (isset($filters['countryId']) && $filters['countryId']) {
+            $routeName = 'frontend_search_results_related_terms_country';
+            $routeParameters['country'] = $doctrine->getRepository('HelperBundle:Country')->find($filters['countryId'])->getSlug();
+            $sessionParameters['countryId'] = $filters['countryId'];
+        }
+
+        if (isset($filters['cityId']) && $filters['cityId']) {
+            $routeName = 'frontend_search_results_related_terms_city';
+            $routeParameters['city'] = $doctrine->getRepository('HelperBundle:City')->find($filters['cityId'])->getSlug();
+            $sessionParameters['cityId'] = $filters['cityId'];
+        }
+
+        return array(
+            'routeName' => $routeName,
+            'routeParameters' => $routeParameters,
+            'sessionParameters' => $sessionParameters
+        );
+    }
 }
