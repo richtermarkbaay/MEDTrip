@@ -1,9 +1,9 @@
-{% extends 'AdminBundle::layout.html.twig' %}
+{% extends 'AdminBundle::layout.institution.html.twig' %}
 
 {% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
 
 {% block content %}
-    <div class="span11">
+    <div class="span9">
 
         {% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 

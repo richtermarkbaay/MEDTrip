@@ -32,6 +32,36 @@ class InstitutionUserController extends Controller
 {
     protected $institution;
 
+    /*
+    public function loginAction()
+    {
+        $user = new InstitutionUser();
+        $form = $this->createForm(new UserLoginType());
+
+        if ($this->getRequest()->isMethod('POST')) {
+
+            $form->bindRequest($this->getRequest());
+            if ($form->isValid()) {
+                if ($this->get('services.institution_user')->login($form->get('email')->getData(), $form->get('password')->getData())) {
+                    // valid login
+                    $this->get('session')->setFlash('success', 'Welcome '.$this->get('security.context')->getToken()->getUser().'!');
+                    return $this->redirect($this->generateUrl('institution_homepage'));
+                }
+                else {
+                    // invalid login
+                    $this->get('session')->setFlash('notice', 'Either your email or password is wrong.');
+                }
+            }
+            else {
+                // invalid login
+                $this->get('session')->setFlash('notice', 'Email and password are required.');
+            }
+        }
+        return $this->render('InstitutionBundle:InstitutionUser:login.html.twig', array(
+            'form' => $form->createView(),
+        ));
+    }*/
+
     public function loginAction()
     {
         // checking for security context here does not work since this is not firewalled
@@ -60,15 +90,23 @@ class InstitutionUserController extends Controller
         ));
     }
 
+
+    public function logoutAction()
+    {
+        $this->get('security.context')->setToken(null);
+        $this->getRequest()->getSession()->invalidate();
+        return $this->redirect($this->generateUrl('institution_login'));
+    }
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
      */
-    public function editAccountAction(Request $request)
+    public function editAccountAction()
     {
         $output = array();
-        $accountId = $request->get('accountId', null);
-        $session = $request->getSession();
-        if (!$accountId ){
+        $accountId = $this->getRequest()->get('accountId', null);
+        $session = $this->getRequest()->getSession();
+        if (!$accountId){
             // no account id in parameter, editing currently logged in account
             $accountId = $session->get('accountId');
         }
@@ -77,15 +115,21 @@ class InstitutionUserController extends Controller
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+
+        if (!$institutionUser) {
+            throw $this->createNotFoundException('Cannot update invalid account.');
+        }
+        
         $formChangePassword = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
         $form = $this->createForm(new UserAccountDetailType(), $institutionUser);
 
-          if($request->isMethod('POST')){
-                if ( $request->get("institutionUserChangePasswordType")) {
-                    $formChangePassword->bind($request);
+          if($this->getRequest()->isMethod('POST')){
+                if ( array_key_exists("institutionUserChangePasswordType",$_POST)) {
+                   
+                    $formChangePassword->bindRequest($this->getRequest());
                     if ($formChangePassword->isValid()) {
-                       
                         $institutionUser->setPassword(SecurityHelper::hash_sha256($formChangePassword->get('new_password')->getData()));
+                        try{
                         // dispatch event
                             $this->get('services.institution_user')->update($institutionUser);
                             $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
@@ -95,22 +139,30 @@ class InstitutionUserController extends Controller
                                             'formChangePassword' => $formChangePassword->createView(),
                                             'institutionUser' => $institutionUser
                             ));
+                        }catch (\Exception $e) {
+                                $response = new Response($e->getMessage(), 500);
+                            }
                     }else{
                         $output['alert'] ="Failed to update password";
                     }
                 }
                 else {
-                    $form->bind($request);
+                    $form->bindRequest($this->getRequest());
                     if ($form->isValid()) {
-                        $institutionUser = $this->get('services.institution_user')->update($institutionUser);
-                        // create event on editAccount and dispatch
-                        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
+                        try{
+                            $institutionUser = $this->get('services.institution_user')->update($institutionUser);
+                            // create event on editAccount and dispatch
+                            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
             
-                        $output['alert'] ="Success! Updated Account";
-                        $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:editProfileForm.html.twig', array(
-                                'form' => $form->createView(),
-                                'institutionUser' => $institutionUser
-                        ));
+                            $output['alert'] ="Success! Updated Account";
+                            $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:editProfileForm.html.twig', array(
+                                            'form' => $form->createView(),
+                                            'institutionUser' => $institutionUser
+                            ));
+                            
+                        }catch (\Exception $e) {
+                            $response = new Response($e->getMessage(), 500);
+                        }
                     }
                 }
                 $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
@@ -190,5 +242,17 @@ class InstitutionUserController extends Controller
 
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
+     */
+    public function viewAllAction()
+    {
+        $institutionService = $this->get('services.institution');
+
+        $users = $institutionService->getAllStaffOfInstitution($this->institution);
+
+        return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array('users' => $users));
+    }
+
 
 }

@@ -50,13 +50,12 @@ class InstitutionSignUpFormType extends AbstractType
             throw new \Exception('Institution sign up form expects an Institution for data');
         }
         $builder ->add('name', 'text', array(
-        				'label' => 'Name of Institution',
-                        'data' => 'i.e Some Awesome Hospital'
+        				'label' => 'Name of Institution'
         			
         ));
         
         $builder->add('email', 'email', array(
-                'label' => 'Email address',
+                'label' => 'Your email',
         		'virtual' => true,
         		'constraints' => array(
 	                new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')) , 
@@ -83,7 +82,8 @@ class InstitutionSignUpFormType extends AbstractType
             ));
         
         $builder ->add('medicalProviderGroups', 'medicalProviderGroup_autocomplete', array(
-                        'label' => 'Medical Provider Group / Network',
+                        'label' => 'Medical Provider Group / Network'
+                         
         ));
         
         if ($options['include_terms_agreement']) {

@@ -96,6 +96,14 @@ admin_institution_medicalCenter_addSpecialization:
         imcId: \d+
         _method: GET|POST
 
+admin_institution_medicalCenter_ajaxAddSpecialization:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddSpecialization
+    defaults: { _controller: AdminBundle:InstitutionSpecialization:ajaxAddSpecialization }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+
 admin_institution_medicalCenter_ajaxSaveSpecializationTreatments:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxSaveSpecializationTreatments
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxSaveSpecializationTreatments }

@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 use HealthCareAbroad\HelperBundle\Form\MedicalProviderGroupFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
-use Symfony\Component\HttpFoundation\Request;
+
 class MedicalProviderGroupController extends Controller
 {
     /**
@@ -56,8 +56,9 @@ class MedicalProviderGroupController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
      */
-    public function saveAction(Request $request)
+    public function saveAction()
     {
+        $request = $this->getRequest();
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
