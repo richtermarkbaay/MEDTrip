@@ -55,6 +55,12 @@ frontend_page_terms_of_use:
     requirements:
        _method:  GET
 
+frontend_page_history:
+    pattern:  /history.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewHistory, breadcrumbLabel: 'History' }
+    requirements:
+       _method:  GET
+       
 frontend_page_inquiry:
     pattern: /inquiry.html
     defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
