@@ -213,6 +213,7 @@ class DefaultController extends Controller
     public function listCountryTreatmentAction(Request $request)
     {
         $parameters = $request->attributes->get('_route_params');
+
         $em = $this->getDoctrine()->getManager();
         if (!$country = $em->getRepository('HelperBundle:Country')->find(isset($parameters['countryId']) ? $parameters['countryId'] : $parameters['country'])) {
             throw new NotFoundHttpException();
