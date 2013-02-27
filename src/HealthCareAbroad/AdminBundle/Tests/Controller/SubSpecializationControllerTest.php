@@ -21,7 +21,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/sub-specialization/add');
     	
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub-specialization")')->count(), '"Add Sub-specialization" string not found!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub Specialization")')->count(), '"Add Sub Specialization " string not found!');
     }
     
     public function testAddFromSpecialization()
@@ -30,7 +30,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/sub-specialization/add?specializationId=1');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub-specialization")')->count(), '"Add Sub-specialization" string not found!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Sub Specialization")')->count(), '"Add Sub Specialization " string not found!');
     }
     
     public function testAddWithInvalidSpecialization()
@@ -47,7 +47,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
     	$crawler = $client->request('GET', '/admin/sub-specialization/edit/2');
 
     	$this->assertEquals(200, $client->getResponse()->getStatusCode());
-    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Sub-specialization")')->count(), '"Edit Sub-specialization" string not found!');
+    	$this->assertGreaterThan(0, $crawler->filter('html:contains("Edit Sub Specialization")')->count(), '"Edit Sub Specialization" string not found!');
     }
     
     public function testEditWithInvalidSubSpecialization()
@@ -77,13 +77,13 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
     	$this->assertEquals(302, $client->getResponse()->getStatusCode());
 
     	// check of redirect url /admin/sub-specializations
-    	$this->assertEquals('/admin/sub-specialization/edit/3', $client->getResponse()->headers->get('location'));
+    	$this->assertEquals('/admin/sub-specialization/edit/4', $client->getResponse()->headers->get('location'));
 
     	// redirect request
 		$crawler = $client->followRedirect(true);
 
 		// check if the redirected response content has the newly added procedure name
-		$isAdded = $crawler->filter('#page-heading > h2:contains("Edit Sub-specialization")')->count() > 0;
+		$isAdded = $crawler->filter('h4:contains("Edit Sub Specialization")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
@@ -112,7 +112,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->followRedirect(true);
     
         // check if the redirected response content has the newly added procedure name
-        $isAdded = $crawler->filter('#page-heading > h2:contains("Add Sub-specialization")')->count() > 0;
+        $isAdded = $crawler->filter('h4:contains("Add Sub Specialization")')->count() > 0;
         $this->assertTrue($isAdded);
     }
 
@@ -142,7 +142,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
 		$crawler = $client->followRedirect(true);
 
     	// check if the redirected response content has the newly added procedure type name
-    	$isAdded = $isAdded = $crawler->filter('#page-heading > h2:contains("Edit Sub-specialization")')->count() > 0;
+    	$isAdded = $isAdded = $crawler->filter('h4:contains("Edit Sub Specialization")')->count() > 0;
     	$this->assertTrue($isAdded);
     }
 
@@ -249,7 +249,7 @@ class SubSpecializationControllerTest extends AdminBundleWebTestCase
         $crawler = $client->request('GET', '/admin/sub-specializations');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("List of Sub-specializations")')->count(), 'Wrong page header');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Sub Specialization")')->count(), 'Wrong page header');
     }
     
     public function testIndexWithFilters()

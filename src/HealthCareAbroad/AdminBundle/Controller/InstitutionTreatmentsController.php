@@ -98,10 +98,10 @@ class InstitutionTreatmentsController extends Controller
         }
     }
 
-
     public function viewAllMedicalCentersAction()
     {
         $institutionService = $this->get('services.institution');
+        //var_dump($this->institution->getName());exit;
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
             if ($firstMedicalCenter) {
@@ -215,31 +215,6 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
-    /*
-     * ajax
-    * This will add medicalSpecialist on InstitutionMedicalCenter
-    */
-    public function ajaxAddMedicalSpecialistAction(Request $request)
-    {
-        $specialist = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
-        
-        if (!$specialist) {
-            throw $this->createNotFoundException();
-        }
-        // check if this medical center already have this property
-        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
-            $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
-        }
-        else {
-            $this->institutionMedicalCenter->addDoctor($specialist);
-            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-            
-            $html = $this->renderView('AdminBundle:InstitutionTreatments:tableRow.specialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        }
-        return $response;
-        
-    }
     
     public function addNewMedicalSpecialistAction(Request $request)
     {
@@ -294,42 +269,6 @@ class InstitutionTreatmentsController extends Controller
         return null;
     }
     
-    public function ajaxRemoveMedicalSpecialistAction(Request $request)
-    {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
-        if (!$doctor) {
-            throw $this->createNotFoundException('Invalid doctor.');
-        }
-    
-        $form = $this->createForm(new \HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType(), $doctor);
-        
-        if ($request->isMethod('POST'))  {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $_id = $doctor->getId();
-                $this->institutionMedicalCenter->removeDoctor($doctor);
-                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
-            }
-            else {
-                $response = new Response("Invalid form", 400);
-            }
-        }
-        else {
-    
-            return $this->render('InstitutionBundle:Widgets:modal.deleteMedicalSpecialist.html.twig', array(
-                            'institutionId' => $this->institution->getId(),
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'doctor' => $doctor,
-                            'form' => $form->createView()
-            ));
-    
-            //$response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        }
-    
-        return $response;
-    
-    }
     /**
      * Ajax handler for searching available doctors for an InstitutionMedicalCenter in HCA Data
      * Expected GET parameters:
@@ -420,30 +359,6 @@ class InstitutionTreatmentsController extends Controller
         }
     }
 
-    public function ajaxUpdateBusinessHoursAction(Request $request)
-    {
-        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
-        $businessHours = $request->get('businessHours', array());
-        foreach ($businessHours as $_day => $data) {
-            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
-        }
-        
-        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
-        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
-        try {
-            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-            //$html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-            $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-            
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
-        }
-        
-        return $response;
-    }
-    
     public function editMedicalCenterAction(Request $request)
     {
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
@@ -462,7 +377,7 @@ class InstitutionTreatmentsController extends Controller
                         'institution' => $this->institution,
                         'form' => $form->createView(),
                         'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(), 
-                                        'institutionId' => $this->institution->getId()))
+                        'institutionId' => $this->institution->getId()))
         ));
     }
 
@@ -503,7 +418,6 @@ class InstitutionTreatmentsController extends Controller
      */
     public function editMedicalCenterStatusAction(Request $request)
     {
-        
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         $output = array();
@@ -511,7 +425,7 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($this->request);
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
-                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" status has been updated!');
+                $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
             }
         }
         else {
@@ -538,6 +452,96 @@ class InstitutionTreatmentsController extends Controller
 
         $params = array('specializations' => $specializations);
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
+    }
+    
+    /*
+     * ajax
+    * This will add medicalSpecialist on InstitutionMedicalCenter
+    */
+    public function ajaxAddMedicalSpecialistAction(Request $request)
+    {
+        $specialist = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
+    
+        if (!$specialist) {
+            throw $this->createNotFoundException();
+        }
+        // check if this medical center already have this property
+        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
+            $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
+        }
+        else {
+            $this->institutionMedicalCenter->addDoctor($specialist);
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+    
+            $html = $this->renderView('AdminBundle:InstitutionTreatments:tableRow.specialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        return $response;
+    
+    }
+    /*
+     * ajax
+    * This will remove medicalSpecialist on InstitutionMedicalCenter
+    */
+    public function ajaxRemoveMedicalSpecialistAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+        if (!$doctor) {
+            throw $this->createNotFoundException('Invalid doctor.');
+        }
+    
+        $form = $this->createForm(new \HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType(), $doctor);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $doctor->getId();
+                $this->institutionMedicalCenter->removeDoctor($doctor);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
+        }
+        else {
+    
+            return $this->render('InstitutionBundle:Widgets:modal.deleteMedicalSpecialist.html.twig', array(
+                            'institutionId' => $this->institution->getId(),
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'doctor' => $doctor,
+                            'form' => $form->createView()
+            ));
+    
+            //$response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+    
+        return $response;
+    
+    }
+    
+    public function ajaxUpdateBusinessHoursAction(Request $request)
+    {
+        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
+        $businessHours = $request->get('businessHours', array());
+        foreach ($businessHours as $_day => $data) {
+            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
+        }
+    
+        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
+        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
+        try {
+            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+            //$html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+            $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
+    
+            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
+    
+        return $response;
     }
     
     public function ajaxAddSpecializationTreatmentAction(Request $request)
@@ -581,10 +585,6 @@ class InstitutionTreatmentsController extends Controller
         return $response;
     }
 
-
-    
-    
-    
     /**
      *
      * @param unknown_type $institutionId
