@@ -19,9 +19,36 @@
             {% if relatedTreatments %}
             <div class="media search-matches">
                 <div class="matches">
+                     {% for specialization in relatedTreatments %}
+                         
+                         <ul class="match">
+                             <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                             {% for subSpecializationId, subCategory in specialization.sub_specializations %}
+                             <li>
+                                 <ul class="match">
+                                     {% if subSpecializationId %}
+                                         <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug }) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
+                                     {% else %}
+                                         {% if specialization.sub_specializations | length > 1 %}
+                                         <li><h5><a href="#">Other Treatments</a></h5></li>
+                                         {% endif %}
+                                         
+                                     {% endif %}
+                                     
+                                     {% for treatment in subCategory.treatments %}
+                                        <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                             </li>
+                             {% endfor %}
+                             
+                         </ul>
+                     {% endfor %}
                 
+                        {# -----
                         {% set sId = 0 %}
                         {% set ssId = 0 %}
+                        
                         {% for specialization in relatedTreatments %}
                         
                         <ul class="match">
@@ -51,7 +78,7 @@
                             </li>
                         </ul>
                         {% endfor %}
-                    
+                        --- #}
                 </div>
             </div>
             {% endif %}
