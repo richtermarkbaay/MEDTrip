@@ -19,10 +19,11 @@
             {% if relatedTreatments %}
             <div class="media search-matches">
                 <div class="matches">
-                    
+                
                         {% set sId = 0 %}
                         {% set ssId = 0 %}
                         {% for specialization in relatedTreatments %}
+                        
                         <ul class="match">
                             {% if sId != specialization.id %}
                                 <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
@@ -38,9 +39,14 @@
                                                 {% set ssId = subCategory.subSpecializationId %}
                                             {% endif %}
                                         {% elseif subCategory.treatmentId is defined %}
+                                            {% if ssId != -1 %}
+                                                <li><h5><a href="#">Other {{ specialization.subCategories| length > 1 ?'treatments':'treatment'}}</a></h5></li>
+                                                {% set ssId = -1 %}
+                                            {% endif %}
                                             <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
                                         {% endif %}
                                     {% endfor %}
+                                    {% set ssId = 0 %}
                                 </ul>
                             </li>
                         </ul>
