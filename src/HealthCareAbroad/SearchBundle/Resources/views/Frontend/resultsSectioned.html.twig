@@ -36,7 +36,7 @@
                                      {% endif %}
                                      
                                      {% for treatment in subCategory.treatments %}
-                                        <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
+                                        <li class="tr"><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
                                     {% endfor %}
                                 </ul>
                              </li>

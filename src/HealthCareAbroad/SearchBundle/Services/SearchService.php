@@ -286,11 +286,14 @@ class SearchService
                 $currentSpecializationData['sub_specializations'][$subSpecializationId]['treatments'] = array();
             }
             // set the treatments
-            $currentSpecializationData['sub_specializations'][$subSpecializationId]['treatments'][$row['treatment_id']] = array(
-                'treatmentId' => $row['treatment_id'],
-                'treatmentName' => $row['treatment_name'],
-                'treatmentSlug' => $row['treatment_slug']
-            );
+            if ($row['treatment_id']) {
+                $currentSpecializationData['sub_specializations'][$subSpecializationId]['treatments'][$row['treatment_id']] = array(
+                    'treatmentId' => $row['treatment_id'],
+                    'treatmentName' => $row['treatment_name'],
+                    'treatmentSlug' => $row['treatment_slug']
+                );
+            }
+            
         }
         
         return $groupedBySubSpecializations;
