@@ -37,7 +37,8 @@ class WidgetTwigExtension extends \Twig_Extension
     public function render_narrow_search_widget(array $widgets, $twigTemplate=null)
     {
         $treatmentsConfig = array(
-            'specialization' => array('label' => 'Specialization'), 
+            'specialization' => array(
+                'label' => 'Specialization'), 
             'sub_specialization' => array('label' => 'Sub-specialization'), 
             'treatment' => array('label' => 'Treatment')
         );

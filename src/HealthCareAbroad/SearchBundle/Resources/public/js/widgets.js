@@ -172,4 +172,24 @@ var BroadSearchWidget = {
         
         return this;
     }
+}/** end of BroadSearchWidget **/
+
+
+var NarrowSearchWidget = {
+    form: null,
+    sourceUri: '',
+    setSourceUri: function(_v){
+        this.sourceUri = _v;
+        return this;
+    },
+    dropdownTrigger: function(){
+        var a = this;
+    },
+    initializeForm: function(_form, _options){
+        this.form = _form;
+        if (_options.dropdown_triggers) {
+            _options.dropdown_triggers.on('click', NarrowSearchWidget.dropdownTrigger);
+        }
+        return this;
+    }
 }

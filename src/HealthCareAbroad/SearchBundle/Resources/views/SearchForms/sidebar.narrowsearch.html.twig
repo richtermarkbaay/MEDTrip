@@ -3,16 +3,16 @@
         {#-- Render treatment widgets --#}
         {% if treatmentWidgets is not empty %}
             <li class="narrow-description">Specific Treatment</li>
-            {% for _widget in treatmentWidgets %}
-                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget} %}
+            {% for _type, _widget in treatmentWidgets %}
+                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget | merge({type: _type}) } %}
             {% endfor %}
         {% endif %}
         
         {#-- Render destination widgets --#}
         {% if destinationWidgets is not empty %}
             <li class="narrow-description">Specific Location</li>
-            {% for _widget in destinationWidgets %}
-                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget} %}
+            {% for _type, _widget in destinationWidgets %}
+                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget| merge({type: _type}) } %}
             {% endfor %}
         {% endif %}
     
@@ -27,12 +27,16 @@
     <input type="hidden" name="term" />
 </form>
 
-
+{% set _isAdded = add_javascript_file(asset('bundles/search/js/widgets.js')) %}
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
-        
+        NarrowSearchWidget
+        .setSourceUri()
+        .initializeForm($('#narrow_search_form'), {
+            'dropdown_triggers': $('button.autocomplete_dropdown_trigger')
+        });
     });
 })(jQuery);
 //-->

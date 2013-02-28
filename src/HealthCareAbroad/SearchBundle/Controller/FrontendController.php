@@ -425,7 +425,7 @@ class FrontendController extends Controller
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
-            'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment', 'city'),
+            'includedNarrowSearchWidgets' => array('specialization', 'city'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId())
         );
 
