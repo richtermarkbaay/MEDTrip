@@ -28,7 +28,7 @@ class InquiryType extends AbstractType
     		->add('firstName', 'text', array('error_bubbling' => false))
     		->add('lastName', 'text', array('error_bubbling' => false))
     		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
-    		->add('city','city_list')
+    		->add('city','city_list', array('empty_value' => 'Select city'))
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))
