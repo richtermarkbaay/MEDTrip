@@ -1,16 +1,40 @@
 <div class="subscribe_item row">
-	<h5>Subscribe To Our Newsletter</h5>
-	
-	<form id="newsletterForm" action="{{ path('frontend_newsletter_new') }}" method="POST" {{ form_enctype(subscribeNewsletterForm) }} class="subscribe_form">
-	    {{ form_errors(subscribeNewsletterForm) }}
-	    {{ form_widget(subscribeNewsletterForm.email, {attr: {'class': 'span4','placeholder':'Enter your email address'}}) }}
-	    <div class="form-inline">
-	        <button class="btn" type="submit">Submit Now</button>
-	    </div>
+    <h5>Subscribe To Our Newsletter</h5>
+
+    <form id="newsletterForm" action="" method="POST" {{ form_enctype(subscribeNewsletterForm) }} class="subscribe_form">
+        {{ form_errors(subscribeNewsletterForm) }}
+        {{ form_widget(subscribeNewsletterForm.email, {attr: {'class': 'span4','placeholder':'Enter your email address'}}) }}
+        <div class="form-inline">
+            <button class="btn" type="submit">Submit Now</button>
+        </div>
      {{ form_rest(subscribeNewsletterForm) }}
-         
+
     </form>
-    <div style="clear:both;">
+    <div id="response" style="clear:both;">
         {% include '::frontend.notice.admin.html.twig' %}
     </div>
 </div>
+
+<script type="text/javascript">
+$("#newsletterForm").submit(function(event) {
+    event.preventDefault();
+
+    var form = $(this);
+
+    $.post(
+        "{{ path('frontend_newsletter_subscribe') }}",
+        form.serialize(),
+        function(response) {
+            var msg = response.message;
+
+            /*TODO: style for the message*/
+            if (response.success) {
+            } else {
+            }
+
+            $("#response").html(msg).fadeToggle(5000);
+        },
+        'json'
+    );
+});
+</script>

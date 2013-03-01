@@ -54,6 +54,7 @@ class AppKernel extends Kernel
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             //new FOQ\ElasticaBundle\FOQElasticaBundle(),
+            new Rezzza\MailChimpBundle\RezzzaMailChimpBundle(),
             new HealthCareAbroad\PagerBundle\PagerBundle(),
             new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),

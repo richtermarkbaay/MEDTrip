@@ -89,7 +89,7 @@ doctrine:
                 user:     %statistics_db_user%
                 password: %statistics_db_password%
                 charset:  UTF8
-                
+
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         #auto_mapping: true
@@ -140,3 +140,8 @@ stfalcon_tinymce:
         advanced: %tinymce_advanced_theme%
         medium: %tinymce_medium_theme%
         bbcode: %tinymce_bbcode_theme%
+
+# MailChimp configuration
+rezzza_mail_chimp:
+    api_key:    c92eb834bde4ae8c737d7de468ee9f4e-us6
+    connection: http
