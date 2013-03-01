@@ -9,9 +9,9 @@
     </div>
 
     <div class="media-body">
-        <h3 class="media-heading">{{ searchResultItem.name }}</h3>
+        <h3 class="media-heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
         {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
-            <small class="institution">{{ searchResultItem.institutionName }}</small>
+            <small class="institution"><a href="{{ searchResultItem.institutionUrl }}">{{ searchResultItem.institutionName }}</a></small>
         {% endif %}
         
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
