@@ -42,7 +42,13 @@ var BroadSearchWidget = {
         if (_type != 'treatments' || _type != 'destinations') {
             var _theOtherType = _type == 'treatments' ? 'destinations' : 'treatments';
             // reset first the hidden value field of the other field
-            $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
+            if ('' == BroadSearchWidget.formComponents[_theOtherType].autocompleteField.val().trim()) {
+                $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
+            }
+            
+            // reset dataSource of the other type
+            BroadSearchWidget.formComponents[_theOtherType].dataSource = {};
+            
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
                 // replace the type since we will be updating the dataSource for the other type
