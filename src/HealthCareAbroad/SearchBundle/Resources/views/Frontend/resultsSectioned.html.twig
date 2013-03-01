@@ -19,12 +19,41 @@
             {% if relatedTreatments %}
             <div class="media search-matches">
                 <div class="matches">
-                    <ul class="match">
+                     {% for specialization in relatedTreatments %}
+                         
+                         <ul class="match">
+                             <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                             {% for subSpecializationId, subCategory in specialization.sub_specializations %}
+                             <li>
+                                 <ul class="match">
+                                     {% if subSpecializationId %}
+                                         <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug }) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
+                                     {% else %}
+                                         {% if specialization.sub_specializations | length > 1 %}
+                                         <li><h5><a href="#">Other Treatments</a></h5></li>
+                                         {% endif %}
+                                         
+                                     {% endif %}
+                                     
+                                     {% for treatment in subCategory.treatments %}
+                                        <li class="tr"><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                             </li>
+                             {% endfor %}
+                             
+                         </ul>
+                     {% endfor %}
+                
+                        {# -----
                         {% set sId = 0 %}
                         {% set ssId = 0 %}
+                        
                         {% for specialization in relatedTreatments %}
+                        
+                        <ul class="match">
                             {% if sId != specialization.id %}
-                                <li><h5><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                                <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
                                 {% set sId = specialization.id %}
                             {% endif %}
                             <li>
@@ -37,13 +66,19 @@
                                                 {% set ssId = subCategory.subSpecializationId %}
                                             {% endif %}
                                         {% elseif subCategory.treatmentId is defined %}
+                                            {% if ssId != -1 %}
+                                                <li><h5><a href="#">Other {{ specialization.subCategories| length > 1 ?'treatments':'treatment'}}</a></h5></li>
+                                                {% set ssId = -1 %}
+                                            {% endif %}
                                             <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
                                         {% endif %}
                                     {% endfor %}
+                                    {% set ssId = 0 %}
                                 </ul>
                             </li>
+                        </ul>
                         {% endfor %}
-                    </ul>
+                        --- #}
                 </div>
             </div>
             {% endif %}

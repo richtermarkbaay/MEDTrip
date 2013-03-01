@@ -255,7 +255,49 @@ class SearchService
         //TODO: merge/optimize loops
         $sId = 0;
         $loopCounter = 1;
-
+        //group this now by sub specialty so we don't have problems rendering in grouped by subs
+        
+        // this will be in a format of
+        // [specialization_id] = {'id': _id, 'name': _name, '', sub_specializations: {} }
+        $groupedBySubSpecializations = array();
+        foreach ($results as $row) {
+            if (!isset($groupedBySubSpecializations[$row['specialization_id']])) {
+                $groupedBySubSpecializations[$row['specialization_id']] = array(
+                    'id' => $row['specialization_id'],
+                    'name' => $row['specialization_name'],
+                    'slug' => $row['specialization_slug'],
+                    'sub_specializations' => array()
+                );
+            }
+            $currentSpecializationData = &$groupedBySubSpecializations[$row['specialization_id']];
+            $subSpecializationId = $row['sub_specialization_id'] ? $row['sub_specialization_id'] : 0;
+            if (!isset($currentSpecializationData['sub_specializations'][$subSpecializationId])) {
+                $currentSpecializationData['sub_specializations'][$subSpecializationId] = $subSpecializationId
+                    ? array(
+                        'subSpecializationId' => $row['sub_specialization_id'],
+                        'subSpecializationName' => $row['sub_specialization_name'],
+                        'subSpecializationSlug' => $row['sub_specialization_slug']
+                    )
+                    : array(
+                        'subSpecializationId' => 0,
+                        'subSpecializationName' => 'Other Treatments',
+                        'subSpecializationSlug' => ''
+                    );
+                $currentSpecializationData['sub_specializations'][$subSpecializationId]['treatments'] = array();
+            }
+            // set the treatments
+            if ($row['treatment_id']) {
+                $currentSpecializationData['sub_specializations'][$subSpecializationId]['treatments'][$row['treatment_id']] = array(
+                    'treatmentId' => $row['treatment_id'],
+                    'treatmentName' => $row['treatment_name'],
+                    'treatmentSlug' => $row['treatment_slug']
+                );
+            }
+            
+        }
+        
+        return $groupedBySubSpecializations;
+        /**
         foreach ($results as $row) {
             if ($sId != $row['specialization_id']) {
                 if ($sId != 0) {
@@ -295,6 +337,7 @@ class SearchService
                 $temps = array();
             }
         }
+        **/
 
         return $categorized;
     }
