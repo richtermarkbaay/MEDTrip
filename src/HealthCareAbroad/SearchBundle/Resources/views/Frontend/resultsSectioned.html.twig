@@ -90,6 +90,7 @@
 
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'searchResultItem' : {
+                              institutionUrl: get_institution_frontend_url(center.institution),
                               url: get_institution_medical_center_frontend_url(center),
                               logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}),
                               name: center.name,
