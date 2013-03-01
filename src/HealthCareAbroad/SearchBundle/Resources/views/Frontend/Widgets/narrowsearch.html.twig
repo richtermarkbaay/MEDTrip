@@ -5,7 +5,7 @@
             <li class="row">
                 <h3>Narrow down search results</h3>
                 
-                {{ render_narrow_search_widget(includedNarrowSearchWidgets) | raw }}
+                {{ render_narrow_search_widget(includedNarrowSearchWidgets, narrowSearchParameters is defined ? narrowSearchParameters : []) | raw }}
 
             </li>
         </ul>

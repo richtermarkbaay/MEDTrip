@@ -25,6 +25,9 @@
     </ul>
     <input type="hidden" name="filter" />
     <input type="hidden" name="term" />
+    {% for _paramName, _paramValue in currentParameters %}
+    <input type="hidden" name="searchParameter[{{ _paramName }}]" value="{{ _paramValue }}" />
+    {% endfor %}
 </form>
 
 {% set _isAdded = add_javascript_file(asset('bundles/search/js/widgets.js')) %}
@@ -33,9 +36,10 @@
 (function($){
     $(function(){
         NarrowSearchWidget
-        .setSourceUri()
+        .setSourceUri('{{ path("frontend_narrowSearch_autocomplete") }}')
         .initializeForm($('#narrow_search_form'), {
-            'dropdown_triggers': $('button.autocomplete_dropdown_trigger')
+            'dropdown_triggers': $('button.autocomplete_dropdown_trigger'),
+            'widget_keys': window.JSON.parse('{{ json_encode(widget_keys) |raw }}')
         });
     });
 })(jQuery);
