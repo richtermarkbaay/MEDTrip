@@ -76,8 +76,8 @@ class DefaultController extends Controller
         $email = $subscriber['email'];
 
         //TODO: externalize
-//         $listId = '6fb06f3765';
-//         $mailChimp->listSubscribe($listId, $email);
+        $listId = '6fb06f3765';
+        $mailChimp->listSubscribe($listId, $email);
 
         $response = array();
         if ($mailChimp->errorCode) {
