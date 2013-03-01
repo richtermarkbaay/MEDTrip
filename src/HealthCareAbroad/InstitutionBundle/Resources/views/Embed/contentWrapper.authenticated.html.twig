@@ -1,19 +1,18 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
 
+<div id="content" class="container">
+    <ul class="breadcrumb">
+        <li>
+            <a href="{{ path('institution_homepage')}}"><i class="icon-home"></i></a>
+            Dashboard
+        </li>
+    </ul>
+            <!-- callout -->
+    {% set callout = app.session.flashbag.get('callout_message') %}
+    {% if callout[0] is defined %}
+        {% include 'InstitutionBundle:Widgets:callout.html.twig' with {callout: callout} %}
+    {% endif %}
 
-<!-- callout -->
-{% set callout = app.session.flashbag.get('callout_message') %}
-{% if callout[0] is defined %}
-    {% include 'InstitutionBundle:Widgets:callout.html.twig' with {callout: callout} %}
-{% endif %}
-
-<div id="content">
-    <div class="container">
-        <div class="row">
-            
-            {% block wrappedContent %}{% endblock %}
-            {% block sidebar %}{% endblock %}
-            
-        </div>
-    </div>
+        {% block wrappedContent %}{% endblock %}
+        {% block sidebar %}{% endblock %}
 </div>        
