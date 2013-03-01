@@ -40,11 +40,13 @@ var BroadSearchWidget = {
     loadSourcesByType: function(params) {
         var _type = params.type || null;
         if (_type != 'treatments' || _type != 'destinations') {
-            
+            var _theOtherType = _type == 'treatments' ? 'destinations' : 'treatments';
+            // reset first the hidden value field of the other field
+            $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
                 // replace the type since we will be updating the dataSource for the other type
-                data: {type: (_type == 'treatments' ? 'destinations' : 'treatments'), 'value': params.id, 'label': params.label}, 
+                data: {type: _theOtherType, 'value': params.id, 'label': params.label}, 
                 dataType: 'json',
                 success: function(response) {
                     // update the value of the dataSource for this type
