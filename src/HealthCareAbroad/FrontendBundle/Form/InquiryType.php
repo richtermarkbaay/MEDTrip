@@ -23,6 +23,10 @@ class InquiryType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $cityId = 0;
+        
+        $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
+
     	$builder
     	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subjects')))))
     		->add('firstName', 'text', array('error_bubbling' => false))
