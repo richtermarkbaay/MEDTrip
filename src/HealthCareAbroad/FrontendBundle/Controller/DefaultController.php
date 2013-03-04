@@ -427,6 +427,15 @@ class DefaultController extends Controller
     public function call404ExcemptionAction(){
         throw $this->createNotFoundException("Only supports AJAX request");
     }
+    
+    /**
+     * 
+     * @throws \Exception 500
+     */
+    public function call500ExcemptionAction(){
+        
+        throw new \Exception('Something went wrong!');
+    }
 
     public function ajaxSendErrorReportAction(){
         $output = array();
