@@ -109,9 +109,15 @@
                         </div>
                     </div>
                 </section>
+                <section class="section">
+                    <div class="control-group row-field {{ (form.captcha.vars.valid ? '' : 'error') }}">
+                        {{ form_label(form.captcha) }}
+                        {{ form_widget(form.captcha) }}
+                    </div>
+                </section>
                 <section>
                     <div class="row-fluid terms">
-                        <p>Please complete all fields marked with *.</p>
+                        <p>Please complete all fields marked with *</p>
                     </div>
                 </section>
                 <section class="section footer">

@@ -20,8 +20,8 @@
             			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px'}) | raw }}
             			{% else %}
             			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default" alt="{{ each.name }}"/>
-            			    <span>{{ each.name }}</span>
             			{% endif %}
+                        <span>{{ each.name }}</span>
     				</a>
     			</li>
 			{% endfor %}

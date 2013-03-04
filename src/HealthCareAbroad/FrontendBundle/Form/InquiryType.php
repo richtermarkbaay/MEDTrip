@@ -32,6 +32,7 @@ class InquiryType extends AbstractType
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))
+    		->add('captcha', 'captcha', array('label'=>'Please type the code'))
     		->add('inquiryCheck', 'checkbox',array('error_bubbling' => false, 'virtual' => true, 'constraints' => array(new NotBlank(array('message' => 'Please agree to Terms of Use and Privacy Policy.')))))
     		;
     }

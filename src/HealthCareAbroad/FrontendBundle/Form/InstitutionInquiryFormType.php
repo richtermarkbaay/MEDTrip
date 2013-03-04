@@ -18,6 +18,7 @@ class InstitutionInquiryFormType extends AbstractType
     	    ->add('inquirer_name', 'text', array('label' => 'Your Name' ))
     		->add('inquirer_email','email', array('label' => 'Your Email Address'))
     		->add('message', 'textarea', array('label' => 'Enter Your Message'))
+    		->add('captcha', 'captcha', array('label'=>'Please type the code'))
     		;
     }
     

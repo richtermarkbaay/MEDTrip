@@ -29,7 +29,9 @@
         "imagine/Imagine": "dev-master",
         "chromedia/utilities": "dev-master",
         "sami/sami": "dev-master",
-        "stfalcon/tinymce-bundle" : "dev-master"
+        "stfalcon/tinymce-bundle" : "dev-master",
+        "gregwar/captcha-bundle": "dev-master",
+        "gregwar/captcha": "v1.0.1"
     },
     "scripts": {
         "post-install-cmd": [
