@@ -120,6 +120,10 @@ frontend_search_combined_countries_cities_specializations_treatments:
 frontend_404:
     pattern: /404
     defaults: { _controller: FrontendBundle:Default:call404Excemption }
+    
+frontend_500:
+    pattern: /500
+    defaults: { _controller: FrontendBundle:Default:call500Excemption }
 
 frontend_main_default:
     pattern:  /
