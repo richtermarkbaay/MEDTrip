@@ -20,48 +20,18 @@
         {#-- added temporary inline styles  --#}
         {% block inlinestyle %}
         <style type="text/css">
-        .modal form textarea{
-            border-radius: 0 0 0 0;
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1) inset;
-            padding: 7px;
-            width: 96%;
-        }
-        form .country-select{
-            background: url("../../images/frontend/down-icon.png") no-repeat scroll right center #FFFFFF;
-            border: 1px solid #CCCCCC;
-            height: 38px;
-            margin-left: 139px;
-            overflow: hidden;
-            position: absolute;
-            width: 305px;
-            z-index: 1000;
-        }
-        .modal form select {
-            -moz-appearance: none !important;
-            background: none repeat scroll 0 0 transparent;
-            border: medium none;
-            color: #666666;
-            font-size: 14px;
-            height: 38px;
-            padding: 5px 10px;
-            width: 343px;
-        }
-        .modal form input{
-            border-radius: 0 0 0 0;
-            box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1) inset;
-            margin-left: 15px;
-            margin-right: 5px;
-            padding: 7px;
-            width: 54.95%;
-        }
 		.captcha input{
-    		float: left;
-            margin: 0 10px 0 0;
+    		float: left !important;
+            margin-right:10px !important;
             width: 100px !important;
 		}		
 		.captcha img{
             margin-right: 10px;
-		}	
+		}
+		.modal .modal-body form select.error {
+            border: 1px solid #CC0000;
+            margin-bottom: 0;
+        }	
     		</style>
         {% endblock %}
        
