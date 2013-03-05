@@ -1,10 +1,5 @@
-<div id="report" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
-        <h3 id="myModalLabel">
-            Submit Report
-        </h3>
-    </div>
+{% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'report', 'title': 'Submit Report', 'formId': 'errorReport'}} %}
+    {% block modalBody %}
     <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
         <div class="modal-body">
             <div class="alertContainer"></div>
@@ -24,9 +19,10 @@
                 </div>
 				{{ form_rest(form) }}
         </div>
-        <div class="modal-footer">
-            <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
-            <button data-loader-text="Sending..." class="btn orange" onclick="return ErrorReport.submitReportForm(this);">Send Now</button>
-        </div>
 	</form>
+   {% endblock %}
+   {% block footerBody %}
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
+        <button data-loader-text="Sending..." class="btn orange" onclick="return ErrorReport.submitReportForm(this);">Send Now</button>
+    {% endblock %}
 </div>
