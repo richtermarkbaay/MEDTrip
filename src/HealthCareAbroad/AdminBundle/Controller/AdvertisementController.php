@@ -154,11 +154,13 @@ class AdvertisementController extends Controller
     public function editAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
+        $this->advertisement->setInstitution($this->institution);
         $form = $this->createForm(new AdvertisementFormType($em), $this->advertisement);
 
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'step' => (int)$request->get('step', 2)
         ));
     }
 
@@ -189,6 +191,8 @@ class AdvertisementController extends Controller
             $advertisement = $this->advertisement;
             $formAction = $this->generateUrl('admin_advertisement_update', array('advertisementId'=>$advertisement->getId()));
         }
+
+        $advertisement->setInstitution($this->institution);
         
         $em = $this->getDoctrine()->getEntityManager();
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
@@ -205,7 +209,8 @@ class AdvertisementController extends Controller
 
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $formAction,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'step' => (int)$request->get('step', 2)
         ));
     }
     
