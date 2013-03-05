@@ -35,7 +35,7 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
         lastName:
             - NotBlank: {message: 'Please provide your last name.'}
         email:
-            - NotBlank: {message: 'Please provide your email address.'}
+            - NotBlank: {message: 'Please provide yourw email address.'}
             - Email: {message: 'The email address you have provided is not valid.'}   
         message:
             - NotBlank: {message: "You've not written your message."}
@@ -56,6 +56,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
             - NotBlank: {message: "You've not written your message."}
         country:
             - NotBlank: {message: 'Please provide your country'}
+        
         
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
     properties:
