@@ -3,8 +3,6 @@
     {% block modalBody %}
      <div class="alert-box"></div>
     <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
-        <div class="alert-error"></div>
-            {{ form_errors(feedbackForm) }}
         <div class="name control-group">
             <label for="{{ feedbackForm.children.name.vars.id }}">
                 <strong>{{ feedbackForm.children.name.vars.label }}</strong>
