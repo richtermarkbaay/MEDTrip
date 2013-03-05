@@ -60,6 +60,7 @@ var Feedback = {
                 Feedback.feedbackComponents.submitButton
                 .html(Feedback.feedbackComponents.submitButton.attr('data-html'))
                 .attr('disabled', false);
+                window.location =  Feedback.feedbackComponents.form.find('a.captcha_reload').attr('href');
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
