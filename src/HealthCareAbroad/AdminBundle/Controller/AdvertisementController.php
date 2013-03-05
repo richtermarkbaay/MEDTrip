@@ -76,11 +76,12 @@ class AdvertisementController extends Controller
             //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e')->from('InstitutionBundle:Institution', 'a')
+            $qb->select('a, b, c, d, e, f')->from('InstitutionBundle:Institution', 'a')
                ->leftJoin('a.institutionMedicalCenters', 'b')
                ->leftJoin('b.institutionSpecializations', 'c')
                ->leftJoin('c.specialization', 'd')
                ->leftJoin('c.treatments', 'e')
+               ->leftJoin('e.subSpecializations', 'f')
                ->where('a.id = :institutionId')
                ->setParameter('institutionId', $institutionId);
             
@@ -135,12 +136,11 @@ class AdvertisementController extends Controller
 
         $em = $this->getDoctrine()->getEntityManager();
         $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
-
-
         
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $this->generateUrl('admin_advertisement_create'),
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'step' => (int)$request->get('step', 1)
         ));
     }
 
