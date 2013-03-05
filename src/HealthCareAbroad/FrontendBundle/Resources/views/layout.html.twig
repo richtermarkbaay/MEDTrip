@@ -30,7 +30,7 @@
     {{ outputInlineJavascript() | raw }}
     
     {# -- stats tracker stuff -- #}
-    
+    {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}      
     {% render 'StatisticsBundle:Tracker:showForm' %}
     <script type="text/javascript">
     <!-- 
