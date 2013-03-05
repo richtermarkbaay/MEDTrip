@@ -13,8 +13,8 @@ class FeedbackFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 
-		$builder->add('subject', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('message', 'textarea', array('constraints'=>array(new NotBlank())));
+		$builder->add('subject', 'text',array('error_bubbling' => false));
+		$builder->add('message', 'textarea',array('error_bubbling' => false));
 	}
 
 	// How does it work?

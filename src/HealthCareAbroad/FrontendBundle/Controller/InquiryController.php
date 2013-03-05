@@ -46,7 +46,6 @@ class InquiryController extends Controller
     			else
     			{
     				$this->get('session')->setFlash('notice', "Unable to send inqueries!");
-    					
     			}
     		} else {
 

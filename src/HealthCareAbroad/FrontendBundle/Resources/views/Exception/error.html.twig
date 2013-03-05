@@ -23,7 +23,8 @@
                                 <p class="message">
                                     <strong>Worry not my friend!</strong>
                                     <br>
-                                    The buttons below shall help you find what you're looking for.
+                                    We're sorry you've not found what you're looking for.
+                                Please try another search below, or contact us for assistance.
                                     <br>
                                 </p>
                             </div>
@@ -34,9 +35,6 @@
                                     <a data-toggle="modal" data-target="#report"  class="btn orange btn-large span4 offset4" onclick="ErrorReport.showCommonModal(this);" href="#">
                                          <i class="icon-envelope icon-white"></i>  REPORT THIS TO US
                                      </a>
-                                     
-                                     {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}                                     
-                                    
                                 </div>
                             </div><!-- .links -->
                         </div>
@@ -65,7 +63,7 @@
                 </div>
             </div>
             <!--End of content-->
-
+    {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}        
 {% endblock %}
 
 {% block inlineJavascriptCode %}

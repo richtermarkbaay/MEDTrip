@@ -30,6 +30,7 @@ class CommonPageController extends Controller
         $inquirySubjects = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findAll();
         $error = false;
         $success = false;
+        $errorArr = array();
         if($request->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
@@ -45,10 +46,16 @@ class CommonPageController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
                 $em->flush();
-                $request->getSession()->setFlash('success', 'Inquiry has been send.');
+                $request->getSession()->setFlash('success', 'Your message has been sent! Thank you for your feedback.');
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }else {
                 $error = true;
+            	
+            	$form_errors = $this->get('validator')->validate($form);
+            	foreach ($form_errors as $_err) {
+            		$errorArr[] = $_err->getMessage();
+            	}
+            	
             }
         } 
         
@@ -56,6 +63,7 @@ class CommonPageController extends Controller
                         array('form' => $form->createView(),
                               'inquirySubjects' => $inquirySubjects,
                               'isInquiry' => 1,
-                              'error' => $error));
+                              'error' => $error,
+                        	  'error_list' => $errorArr));
     }
 }

@@ -17,6 +17,7 @@ class ErrorReportFormType extends AbstractType
     	
 //         $builder->add('reporterName','text', array('constraints' => new NotBlank()));
         $builder->add('details','textarea', array('constraints' => new NotBlank()));          
+        $builder->add('captcha', 'captcha', array('label' => 'Please type the code '));
     
     }
     
