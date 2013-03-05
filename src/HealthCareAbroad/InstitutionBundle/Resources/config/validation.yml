@@ -39,7 +39,11 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
             - Email: {message: 'The email address you have provided is not valid.'}   
         message:
             - NotBlank: {message: "You've not written your message."}
-        
+
+HealthCareAbroad\AdminBundle\Entity\ErrorReport:
+    properties:
+        details:
+            - NotBlank: {message: 'You've not written your message.'}
             
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     properties:

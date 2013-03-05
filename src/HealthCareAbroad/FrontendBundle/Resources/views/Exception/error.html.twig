@@ -32,9 +32,9 @@
                         <div class="helper row-fluid">
                             <div class="links">
                                 <div class="span12">
-                                    <a data-toggle="modal" data-target="#report"  class="btn orange btn-large span4 offset4" onclick="ErrorReport.showCommonModal(this);" href="#">
-                                         <i class="icon-envelope icon-white"></i>  REPORT THIS TO US
+                                     <a class="btn orange btn-large span4 offset4" data-toggle="modal" id="email_multiple" href="#report"><i class="icon-envelope icon-white"></i>  REPORT THIS TO US
                                      </a>
+                                     {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}
                                 </div>
                             </div><!-- .links -->
                         </div>
@@ -63,10 +63,23 @@
                 </div>
             </div>
             <!--End of content-->
-                {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}      
+                      
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/frontend/js/ErrorReport.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('#report').errorReportModalForm({
+           submitButton: $('#errorSubmit'),
+           form: $('form#errorReportForm') 
+        });
+    });
+})(jQuery);
+//-->
+</script>
 {% endblock %}
 

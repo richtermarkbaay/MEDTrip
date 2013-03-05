@@ -44,10 +44,10 @@ frontend_page_exception_report_create:
         _method:  GET|POST
 
 frontend_page_exception_report_send:
-    pattern: /error404
+    pattern: /ajax-send-error404
     defaults: { _controller: FrontendBundle:Default:ajaxSendErrorReport }
     requirements:
-        _method:  GET|POST
+        _method:  POST
 
 frontend_page_privacy_policy:
     pattern:  /privacy-policy.html
