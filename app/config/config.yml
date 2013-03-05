@@ -145,3 +145,11 @@ stfalcon_tinymce:
 rezzza_mail_chimp:
     api_key:    c92eb834bde4ae8c737d7de468ee9f4e-us6
     connection: http
+
+# Captcha configuration    
+gregwar_captcha: 
+    as_url: true
+    reload: true
+    distortion: false
+    text_color: { r: 85, g: 85, b: 85 }
+    background_color: { r: 245, g: 244, b: 237 }

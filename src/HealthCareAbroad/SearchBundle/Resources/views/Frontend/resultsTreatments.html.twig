@@ -17,6 +17,7 @@
 
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                    'searchResultItem' : {
+                          institutionUrl: get_institution_frontend_url(center.institution),
                           url: get_institution_medical_center_frontend_url(center),
                           logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}), 
                           name: center.name,
@@ -35,7 +36,9 @@
 
     </div> <!--End of main_content-->
 
-    {% include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' %}
+    {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+    
+    {# include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' #}
 
     {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %#}
 

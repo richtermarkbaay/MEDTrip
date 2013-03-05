@@ -1,0 +1,47 @@
+<form id="narrow_search_form" action="{{ path('frontend_search_process') }}" method="post">
+    <ul>
+        {#-- Render treatment widgets --#}
+        {% if treatmentWidgets is not empty %}
+            <li class="narrow-description">Specific Treatment</li>
+            {% for _type, _widget in treatmentWidgets %}
+                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget | merge({type: _type}) } %}
+            {% endfor %}
+        {% endif %}
+        
+        {#-- Render destination widgets --#}
+        {% if destinationWidgets is not empty %}
+            <li class="narrow-description">Specific Location</li>
+            {% for _type, _widget in destinationWidgets %}
+                {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget| merge({type: _type}) } %}
+            {% endfor %}
+        {% endif %}
+    
+        <li class="row-fluid combo-box">
+            <button class="btn span8 offset4 orange " type="submit">
+                <i class="icon-refresh icon-white"></i>
+                Filter Results
+            </button>
+        </li>
+    </ul>
+    <input type="hidden" name="filter" />
+    <input type="hidden" name="term" />
+    {% for _paramName, _paramValue in currentParameters %}
+    <input type="hidden" name="searchParameter[{{ _paramName }}]" value="{{ _paramValue }}" />
+    {% endfor %}
+</form>
+
+{% set _isAdded = add_javascript_file(asset('bundles/search/js/widgets.js')) %}
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        NarrowSearchWidget
+        .setSourceUri('{{ path("frontend_narrowSearch_autocomplete") }}')
+        .initializeForm($('#narrow_search_form'), {
+            'dropdown_triggers': $('button.autocomplete_dropdown_trigger'),
+            'widget_keys': window.JSON.parse('{{ json_encode(widget_keys) |raw }}')
+        });
+    });
+})(jQuery);
+//-->
+</script>

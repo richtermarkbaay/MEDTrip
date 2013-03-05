@@ -23,6 +23,13 @@
             </label>
               {{ form_widget(feedbackForm.message, { 'attr': {'rows': 4} }) }}
         </div>
+        
+        <div class="captcha control-group ">
+            <label for="{{ feedbackForm.children.captcha.vars.id }}">
+                <strong>{{ feedbackForm.children.captcha.vars.label }}</strong>
+            </label>
+              {{ form_widget(feedbackForm.captcha) }}
+        </div>
         {{ form_rest(feedbackForm) }}    
     </form>
     {% endblock %}

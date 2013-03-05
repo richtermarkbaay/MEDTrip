@@ -24,6 +24,13 @@
             </label>
             {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
         </div>
+        
+        <div class="captcha control-group row-fluid">
+            <label for="{{ form.children.captcha.vars.id }}">
+                <strong>{{ form.children.captcha.vars.label }}</strong>
+            </label>
+            {{ form_widget(form.captcha, { 'attr': {'rows': 4} }) }}
+        </div>
         {{ form_rest(form) }}
                             	                        	
     </form>

@@ -438,7 +438,7 @@ class FrontendController extends Controller
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
-            'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment', 'city'),
+            'includedNarrowSearchWidgets' => array('specialization', 'city'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId())
         );
 
@@ -578,17 +578,32 @@ class FrontendController extends Controller
     public function searchResultsRelatedAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
+        
+        // FIXME: patch for fixing refresh issue
+        $session_key = \implode(':', $request->attributes->get('_route_params'));
+        if (empty($searchTerms) || \is_null($searchTerms)) {
+            // check if this has been previously accessed by this user
+            $searchTerms = $request->getSession()->get($session_key, null);
+            if (!$searchTerms) {
+                // no search terms in saved session for this related tag, redirect to homepage
+                return $this->redirect($this->generateUrl('frontend_main_homepage'));
+            }
+        }
+        else {
+            $request->getSession()->set($session_key, $searchTerms);
+        }
+        
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
         return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $request->get('tag', ''),
-                        'routeName' => 'frontend_search_results_related_terms',
-                        'paginationParameters' => array('tag' => $request->get('tag', '')),
-                        'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
+            'searchResults' => $searchResults,
+            'searchLabel' => $request->get('tag', ''),
+            'routeName' => 'frontend_search_results_related_terms',
+            'paginationParameters' => array('tag' => $request->get('tag', '')),
+            'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
         ));
     }
 

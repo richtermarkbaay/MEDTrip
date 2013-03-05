@@ -52,13 +52,17 @@
                                 <label for="inquire_lastName">Last Name *</label>
                                 {{ form_widget(form.lastName, {attr: {class: 'span12'} } )}}
                             </div>
-                            <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
+                            <div class="row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_country">Country</label>
-                                {{ form_widget(form.country, {attr: {class: 'span12'} } )}}
+                                <div class="country-select">
+                                    {{ form_widget(form.country )}}
+                                </div>
                             </div>
                             <div class="control-group row-field {{ (form.city.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_city">City</label>
-                                {{ form_widget(form.city, {attr: {class: 'city_dropdown span12'} } )}}
+                                <div class="country-select">
+                                    {{ form_widget(form.city, {attr: {class: 'city_dropdown'} } )}}
+                                </div>
                             </div>
                             <div class="control-group row-field {{ (form.contactNumber.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_contactNumber">Phone</label>
@@ -105,9 +109,15 @@
                         </div>
                     </div>
                 </section>
+                <section class="section">
+                    <div class="control-group row-field {{ (form.captcha.vars.valid ? '' : 'error') }}">
+                        {{ form_label(form.captcha) }}
+                        {{ form_widget(form.captcha) }}
+                    </div>
+                </section>
                 <section>
                     <div class="row-fluid terms">
-                        <p>Please complete all fields marked with *.</p>
+                        <p>Please complete all fields marked with *</p>
                     </div>
                 </section>
                 <section class="section footer">
