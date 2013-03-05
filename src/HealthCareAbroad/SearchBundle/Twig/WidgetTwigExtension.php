@@ -34,8 +34,28 @@ class WidgetTwigExtension extends \Twig_Extension
         return $this->twig->render($twigTemplate);
     }
     
-    public function render_narrow_search_widget($widgets)
+    public function render_narrow_search_widget(array $widgets, array $parameters = array(), $twigTemplate=null)
     {
+        $treatmentsConfig = array(
+            'specialization' => array(
+                'label' => 'Specialization'), 
+            'sub_specialization' => array('label' => 'Sub-specialization'), 
+            'treatment' => array('label' => 'Treatment')
+        );
+        $destinationsConfig = array(
+            'country' => array('label' => 'Country'),
+            'city' => array('label' => 'City')
+        );
         
+        $treatmentWidgets = \array_intersect_key($treatmentsConfig, \array_flip($widgets));
+        $destinationWidgets = \array_intersect_key($destinationsConfig, \array_flip($widgets));
+        
+        $twigTemplate = \is_null($twigTemplate) ? 'SearchBundle:SearchForms:sidebar.narrowsearch.html.twig' : $twigTemplate;
+        return $this->twig->render($twigTemplate, array(
+            'treatmentWidgets' => $treatmentWidgets, 
+            'destinationWidgets' => $destinationWidgets,
+            'widget_keys' => \array_keys(\array_merge($treatmentWidgets, $destinationWidgets)),
+            'currentParameters' => $parameters
+        ));
     }
 }

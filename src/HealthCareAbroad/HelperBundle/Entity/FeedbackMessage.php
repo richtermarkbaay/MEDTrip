@@ -25,6 +25,11 @@ class FeedbackMessage
     private $emailAddress;
 
     /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+    
+    /**
      * @var text $message
      */
     private $message;
@@ -99,6 +104,28 @@ class FeedbackMessage
         return $this->emailAddress;
     }
 
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return FeedbackMessage
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+    
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+    
     /**
      * Set message
      *

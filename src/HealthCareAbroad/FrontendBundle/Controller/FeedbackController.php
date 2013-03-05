@@ -51,10 +51,15 @@ class FeedbackController extends Controller
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
          
-            foreach ($form_errors as $_err) {
-           
+            foreach ($form_errors as $_err) {           
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
+            
+            $captchaError = $form->get('captcha')->getErrors();
+            if(count($captchaError)) {
+                $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
+            }
+
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
         return $response;

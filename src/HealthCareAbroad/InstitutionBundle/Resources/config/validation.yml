@@ -50,6 +50,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
             - Email: {message: 'The email address you have provided is not valid.'}   
         message:
             - NotBlank: {message: "You've not written your message."}
+        country:
+            - NotBlank: {message: 'Please provide your country'}
         
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
     properties:

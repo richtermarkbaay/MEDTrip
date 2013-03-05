@@ -21,6 +21,11 @@ class InstitutionInquiry
     private $inquirer_email;
 
     /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+    
+    /**
      * @var text $message
      */
     private $message;
@@ -100,6 +105,28 @@ class InstitutionInquiry
         return $this->inquirer_email;
     }
 
+    /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return InstitutionInquiry
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+    
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+    
     /**
      * Set message
      *

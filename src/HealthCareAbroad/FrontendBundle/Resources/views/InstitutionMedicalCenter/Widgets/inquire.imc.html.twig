@@ -3,15 +3,22 @@
     <div class="alert-box"></div>
     <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
         <div class="inquirer_name control-group row-fluid">
-            <label for="{{ form.children.inquirer_name.vars.id }}">
+            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3 pull-left">
                 <strong>{{ form.children.inquirer_name.vars.label }}</strong>
             </label>
             {{ form_widget(form.inquirer_name) }}
             <span class="help-inline"></span>    
         </div>
-        
+        <div class="country control-group row-fluid">
+            <label for="{{ form.children.country.vars.id }}" class="span3 pull-left">
+                <strong>{{ form.children.country.vars.label }}</strong>
+            </label>
+            <div class="country-select">
+            {{ form_widget(form.country) }}
+            </div>
+        </div>
         <div class="inquirer_email control-group row-fluid">
-            <label for="{{ form.children.inquirer_email.vars.id }}">
+            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3 pull-left">
                 <strong>{{ form.children.inquirer_email.vars.label }}</strong>
             </label>
             {{ form_widget(form.inquirer_email) }}
@@ -22,7 +29,14 @@
             <label for="{{ form.children.message.vars.id }}">
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
-            {{ form_widget(form.message, { 'attr': {'rows': 4} }) }}
+            {{ form_widget(form.message, { 'attr': {'rows': 5} }) }}
+        </div>
+        
+        <div class="captcha control-group row-fluid">
+            <label for="{{ form.children.captcha.vars.id }}" class="span3 pull-left">
+                <strong>{{ form.children.captcha.vars.label }}</strong>
+            </label>
+            {{ form_widget(form.captcha, { 'attr': {'rows': 4} }) }}
         </div>
         {{ form_rest(form) }}
                             	                        	
