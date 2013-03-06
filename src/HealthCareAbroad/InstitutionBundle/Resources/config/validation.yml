@@ -43,7 +43,7 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
 HealthCareAbroad\AdminBundle\Entity\ErrorReport:
     properties:
         details:
-            - NotBlank: {message: 'You've not written your message.'}
+            - NotBlank: {message: "You've not written your message."}
             
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     properties:

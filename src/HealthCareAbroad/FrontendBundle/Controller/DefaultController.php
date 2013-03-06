@@ -451,8 +451,7 @@ class DefaultController extends Controller
         $form = $this->createForm(New ErrorReportFormType(), $errorReport);
         $form->bind($request);
         
-        var_dump("last");
-         if ($form->isValid()) {
+        if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $errorReport->setLoggedUserId(0);
                 $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
