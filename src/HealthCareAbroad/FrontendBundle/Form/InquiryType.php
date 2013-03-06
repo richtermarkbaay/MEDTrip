@@ -28,7 +28,7 @@ class InquiryType extends AbstractType
         $builder->addEventSubscriber($subscriber);
 
     	$builder
-    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subjects')))))
+    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subject')))))
     		->add('firstName', 'text', array('error_bubbling' => false))
     		->add('lastName', 'text', array('error_bubbling' => false))
     		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
