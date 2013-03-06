@@ -2,7 +2,7 @@
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
-<div id="highlight" class="row">
+<div id="hospital-banner" class="row">
     <div class="top_box span12">
         <div class="description">
             <p>{{ institution.name }}</p>
@@ -11,7 +11,7 @@
         {% if institution.featuredMedia %}
             {{ media(institution.featuredMedia, institution, 'default', {class: 'institution_picture'}) | raw }}
         {% else %}
-            <img class="institution_picture" src="/images/frontend/institution2.png" alt="institution"/>
+            <img class="institution_picture" src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution"/>
         {% endif %}
         
         {#-- institution logo #}
@@ -20,7 +20,7 @@
     </div>
     <div class="bottom_box content span12">
         <div class="address media span4 offset2">
-            <img class="pull-left media-object img-circle" src="/images/frontend/address_icon.png" alt="address"/>
+            <span class="address-icon pull-left media-object img-circle"></span>
             <p>
                 {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
                 <br/>

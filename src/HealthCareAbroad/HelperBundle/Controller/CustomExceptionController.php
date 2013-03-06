@@ -44,7 +44,7 @@ class CustomExceptionController extends ExceptionController
 		$statusTextDescriptions = array(
             401 => 'Access to this page is forbidden!',
             403 => 'Access to this page is forbidden!',
-            404 => 'Sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL.',
+//             404 => 'Sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL.',
             500 => 'Oops! Something is broken'
         );
         if($this->request->server->has('HTTP_REFERER')){
@@ -74,10 +74,10 @@ class CustomExceptionController extends ExceptionController
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
-//         if ($debug) {
-//             // debug 
-//             return parent::findTemplate($templating, $format, $code, $debug);
-//         }
+        if ($debug) {
+            // debug 
+            return parent::findTemplate($templating, $format, $code, $debug);
+        }
         
         if ($this->request->server->has('PATH_INFO')) {
             $pathInfo = $this->request->server->get('PATH_INFO');

@@ -438,37 +438,45 @@ class DefaultController extends Controller
         throw new \Exception('Something went wrong!');
     }
 
-    public function ajaxSendErrorReportAction(){
-        $output = array();
-        $request = $this->getRequest();
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $errorReport = new ErrorReport();
-        $form = $this->createForm(new ErrorReportFormType(), $errorReport);
-
-        if ($request->isMethod('POST')) {
-             $form->bind($request);
-             if ($form->isValid()) {
-                try {
-                    $errorReport->setLoggedUserId(0);
-                    $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
-                    $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
-                    $em->persist($errorReport);
-                    $em->flush();
-
-                    $output = "Your report has been submitted. Thank you.";
-                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-
-                }
-                catch(\Exception $e) {
-                    $response = new Response('Error: '.$e->getMessage(), 500);
-                }
-            }
-            else {
-                $response = new Response('Form error'.$e->getMessage(), 400);
-            }
+    /**
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxSendErrorReportAction(Request $request){
+        
+        if('POST' != $request->getMethod()) {
+            return new Response("Save requires POST method!", 405);
         }
+        $errorReport = new ErrorReport();
+        $form = $this->createForm(New ErrorReportFormType(), $errorReport);
+        $form->bind($request);
+        
+        if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $errorReport->setLoggedUserId(0);
+                $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
+                $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
+                $em->persist($errorReport);
+                $em->flush();
 
+                return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        }
+        else {
+            $errors = array();
+            $form_errors = $this->get('validator')->validate($form);
+            
+            foreach ($form_errors as $_err) {           
+                $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
+            }
+            
+            $captchaError = $form->get('captcha')->getErrors();
+            if(count($captchaError)) {
+                $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
+            }
+            $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+        }
+        
         return $response;
     }
 }
