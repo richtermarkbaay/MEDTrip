@@ -72,15 +72,6 @@
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
         -- #}
-        
-    </head>
-
-
-    <body>
-        {% block body %}{% endblock %}
-
-        {% block inlineJavascriptCode %}{% endblock %}
-        
         <script type="text/javascript">
 
           var _gaq = _gaq || [];
@@ -94,5 +85,12 @@
           })();
         
         </script>
+    </head>
+
+
+    <body>
+        {% block body %}{% endblock %}
+
+        {% block inlineJavascriptCode %}{% endblock %}
     </body>
 </html>
