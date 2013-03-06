@@ -13,10 +13,10 @@
         {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
             <small class="institution"><a href="{{ searchResultItem.institutionUrl }}">{{ searchResultItem.institutionName }}</a></small>
         {% endif %}
-        
+
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
         <div class="description" >
-            <p>{{ searchResultItem.description ~'...'}}</p>
+            <p>{{ searchResultItem.description ~'...' | raw}}</p>
         </div>
         {% endif %}
         <div class="link">
@@ -24,7 +24,7 @@
                 <span class="icon-search icon-white"></span> More Info
             </a>
         </div>
-        
+
         {#---
         <div class="media">
             <div class="pull-left">
@@ -40,7 +40,7 @@
                     <b>{{ searchResultItem.mainAddress }}</b>
                 </small>
             </div>
-            
+
         </div>
         --- #}
     </div>
