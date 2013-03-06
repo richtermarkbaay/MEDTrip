@@ -35,12 +35,10 @@ class CommonPageController extends Controller
             $form->bind($request);
             if($form->isValid()) {
                 
-                //get IP Address
-                $remoteAddress = $this->getRequest()->getClientIp();
-                
                 $inquirySubject = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findOneByName($request->get('inquirySubject'));
                 $inquiry->setInquirySubject($inquirySubject);
-                $inquiry->setRemoteAddress($remoteAddress);
+                $inquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
+                $inquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
                 $inquiry->setStatus(Inquiry::STATUS_ACTIVE);
                 
                 $em = $this->getDoctrine()->getEntityManager();
