@@ -16,7 +16,8 @@
 
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
         <div class="description" >
-            <p>{{ searchResultItem.description ~'...' | raw}}</p>
+            {% set _escapedDescription =  searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0,200) | trim)~'...' : searchResultItem.description %}
+            <p>{{ _escapedDescription | raw}}</p>
         </div>
         {% endif %}
         <div class="link">
