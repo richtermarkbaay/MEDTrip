@@ -112,7 +112,7 @@
                     </div>
                 </section>
                 <section class="section">
-                    <div class="control-group row-field {{ (form.captcha.vars.valid ? '' : 'error') }}">
+                    <div class="captcha control-group row-field {{ (form.captcha.vars.valid ? '' : 'error') }}">
                         {{ form_label(form.captcha) }}
                         {{ form_widget(form.captcha) }}
                     </div>
@@ -122,6 +122,7 @@
                         <p>Please complete all fields marked with *</p>
                     </div>
                 </section>
+                   {{ form_rest(form) }}    
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -130,7 +131,6 @@
                         </div>
                     </div>
                 </section>
-                {{ form_rest(form) }}    
             </form>
         </div>
         <!--End of main_content-->
