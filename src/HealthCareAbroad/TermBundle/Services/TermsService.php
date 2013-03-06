@@ -179,7 +179,7 @@ class TermsService
 
             $nextItem = isset($results[$i + 1]) ? $results[$i + 1] : array();
 
-            if (isset($nextItem['country_name']) && $currentItem['country_name'] != $nextItem['country_name']) {
+            if ((isset($nextItem['country_name']) && $currentItem['country_name'] != $nextItem['country_name']) || empty($nextItem)) {
                 $country['cities'] = $cities;
                 $countries[] = $country;
 
