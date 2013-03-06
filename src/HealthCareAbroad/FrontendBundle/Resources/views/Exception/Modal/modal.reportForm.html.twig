@@ -1,23 +1,27 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'report', 'title': 'Submit Report', 'formId': 'errorReport'}} %}
     {% block modalBody %}
-    <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-        <div class="modal-body">
-            <div class="alertContainer"></div>
-            <label for="reportData">
-                <strong>
-                    What seems to be the problem?
-                </strong>
+      <div class="alert-box"></div>
+    <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form" id="errorReportForm">
+       
+        <div class="details control-group row-fluid">
+            <label for="{{ form.children.details.vars.id }}" >
+                <strong>{{ form.children.details.vars.label }}</strong>
             </label>
-	            {{ form_errors(form) }} 
-				{{ form_widget(form.details, { 'attr': {class: 'span12', cols: 30, rows: 10} })  }}
-                {{ form_row(form.captcha) }}
-				{{ form_rest(form) }}
+           {{ form_widget(form.details, { 'attr': {class: 'span12', cols: 30, rows: 10} })  }}
         </div>
+		 <div class="captcha control-group row-fluid">
+		     <label for="{{ form.children.captcha.vars.id }}" >
+                <strong>{{ form.children.captcha.vars.label }}</strong>
+            </label>
+             {{ form_widget(form.captcha) }}
+        </div>
+			
+		{{ form_rest(form) }}
 	</form>
    {% endblock %}
    {% block footerBody %}
         <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
-        <button data-loader-text="Sending..." class="btn orange" onclick="return ErrorReport.submitReportForm(this);">Send Now</button>
+        <button data-loader-text="Sending..." class="btn orange" id="errorSubmit">Send Now</button>
     {% endblock %}
 {% endembed %}
 

@@ -13,8 +13,8 @@ class ErrorReportFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('details','textarea', array('constraints' => new NotBlank()));          
-        $builder->add('captcha', 'captcha', array('label' => 'Please type the code '));
+        $builder->add('details','textarea', array('label' => 'What seems to be the problem?'));          
+        $builder->add('captcha', 'captcha', array('label' => 'Please type the code'));
     }
     
     // How does it work?
