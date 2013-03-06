@@ -62,7 +62,8 @@ class DefaultController extends Controller
 
     public function destinationListAction()
     {
-        $params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+        //$params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+        $params['countries'] = $this->get('services.terms')->getActiveCountriesWithCities();
 
         return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
     }
@@ -427,13 +428,13 @@ class DefaultController extends Controller
     public function call404ExcemptionAction(){
         throw $this->createNotFoundException("Only supports AJAX request");
     }
-    
+
     /**
-     * 
+     *
      * @throws \Exception 500
      */
     public function call500ExcemptionAction(){
-        
+
         throw new \Exception('Something went wrong!');
     }
 

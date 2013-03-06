@@ -19,7 +19,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 /**
  * Service class for Terms.
  * Service id: services.terms
- * 
+ *
  * @author Allejo Chris G. Velarde
  */
 class TermsService
@@ -28,12 +28,12 @@ class TermsService
      * @var Registry
      */
     private $doctrine;
-    
+
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
-    
+
     static public function getValidDocumentTypes()
     {
         return array(
@@ -42,11 +42,11 @@ class TermsService
             TermDocument::TYPE_TREATMENT => 'treatment',
         );
     }
-    
+
     /**
      * Helper function to create document object
      * NB: maybe this does not fit here...
-     * 
+     *
      * @param int $documentId
      * @param int $type
      */
@@ -54,7 +54,7 @@ class TermsService
     {
         return $this->createDocumentObjectFromDocumentIdAndType($termDocument->getDocumentId(), $termDocument->getType());
     }
-    
+
     public function createDocumentObjectFromDocumentIdAndType($documentId, $documentType)
     {
         $returnObj = null;
@@ -70,23 +70,23 @@ class TermsService
                 $returnObj = $this->doctrine->getRepository('TreatmentBundle:Treatment')->find($documentId);
                 break;
         }
-        
+
         return $returnObj;
     }
-    
+
     public function findByName($name, $limit=null)
     {
         $queryOptions = new QueryOptionBag();
         if ($limit) {
             $queryOptions->add(QueryOption::LIMIT, $limit);
         }
-        
+
         return $this->doctrine->getRepository('TermBundle:Term')
             ->findByName($name, $queryOptions);
     }
-    
+
     /**
-     * 
+     *
      * @param int $documentId
      * @param int $type
      * @param boolean $excludeTermFromDocumentName Do not include the term that is automatically taken from the document object name
@@ -109,30 +109,30 @@ class TermsService
                     ->setParameter('documentObjectName', $documentObject->getName());
             }
         }
-        
+
         return $qb->getQuery()->getResult();
-        
-        
+
+
     }
-    
+
     public function saveTreatmentTerms(Treatment $treatment, array $termIds=array())
     {
         $repo = $this->doctrine->getRepository('TermBundle:Term');
         $currentTerm = $repo->findOneByName($treatment->getName());
         // delete current term documents except for the one that is pointing to the name of this specialization
         $this->_deleteTermDocumentsExceptForCurrentTerm($currentTerm, $treatment->getId(), TermDocument::TYPE_TREATMENT);
-        
+
         if (empty($termIds)) {
-        
+
             return false;
         }
-        
+
         // add the termIds to this document
         $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms($termIds, $treatment->getId(), TermDocument::TYPE_TREATMENT);
-        
+
         return true;
     }
-    
+
     private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
@@ -141,15 +141,53 @@ class TermsService
             ->setParameter('documentId', $documentId)
             ->andWhere('a.type = :type')
             ->setParameter('type', $type);
-        
+
         // if there is a matched term by name
         if ($currentTerm) {
             $qb->andWhere('a.term != :currentTermId')
             ->setParameter('currentTermId', $currentTerm->getId());
         }
-        
+
         $qb->getQuery()->execute();
-        
+
     }
-    
+
+    public function getActiveCountriesWithCities()
+    {
+        $results = $this->doctrine->getRepository('TermBundle:SearchTerm')->findActiveCountriesWithCities();
+
+        $length = count($results);
+        if ($length < 1) {
+            return array();
+        }
+
+        $currentCountryName = '';
+        $countries = array();
+        $cities = array();
+
+        //Asssumptions: array is sorted by country and city name
+        for ($i = 0; $i < $length; $i++) {
+            $currentItem = $results[$i];
+
+            if ($currentItem['country_name'] != $currentCountryName) {
+                $country = array('name' => $currentItem['country_name'], 'slug' => $currentItem['country_slug']);
+            }
+
+            if ($currentItem['city_name']) {
+                $cities[] = array('name' => $currentItem['city_name'], 'slug' => $currentItem['city_slug']);
+            }
+
+            $nextItem = isset($results[$i + 1]) ? $results[$i + 1] : array();
+
+            if (isset($nextItem['country_name']) && $currentItem['country_name'] != $nextItem['country_name']) {
+                $country['cities'] = $cities;
+                $countries[] = $country;
+
+                $cities = array();
+            }
+        }
+
+        return $countries;
+    }
+
 }
