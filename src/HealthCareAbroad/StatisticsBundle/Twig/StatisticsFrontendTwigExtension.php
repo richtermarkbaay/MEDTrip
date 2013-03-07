@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -32,6 +34,11 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
     private $treatmentBundleService = null;
     
     /**
+     * @var LocationService
+     */
+    private $locationService;
+    
+    /**
      * @var ContainerInterface
      */
     protected $container;
@@ -57,6 +64,15 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
         }
         
         return $this->treatmentBundleService;
+    }
+    
+    public function getLocationService()
+    {
+        if (is_null($this->locationService)) {
+            $this->locationService = $this->container->get('services.location');
+        }
+        
+        return $this->locationService;
     }
     
     public function getFunctions()
@@ -158,7 +174,6 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
             }
             $parameters[StatisticParameters::CATEGORY_ID] = StatisticCategories::SEARCH_RESULTS_PAGE_ITEM_CLICKTHROUGHS;
             $parameters[StatisticParameters::TYPE] = StatisticTypes::SEARCH_RESULT_ITEM;
-            
             $encodedParameters = StatisticParameters::encodeParameters($parameters);
         }
         
@@ -179,7 +194,9 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
         $finders = array(
             StatisticParameters::SPECIALIZATION_ID => array($this->getTreatmentBundleService(), 'getSpecializationBySlug'),
             StatisticParameters::TREATMENT_ID => array($this->getTreatmentBundleService(),'getTreatmentBySlug'),
-            StatisticParameters::SUB_SPECIALIZATION_ID => array($this->getTreatmentBundleService(),'getSubSpecializationBySlug')
+            StatisticParameters::SUB_SPECIALIZATION_ID => array($this->getTreatmentBundleService(),'getSubSpecializationBySlug'),
+            StatisticParameters::COUNTRY_ID => array($this->getLocationService(),'getCountryBySlug'),
+            StatisticParameters::CITY_ID => array($this->getLocationService(),'getCityBySlug'),
         );
         
         $passedParameters = \array_intersect_key($routeParameters, \array_flip($routeParamKeyMapping));

@@ -89,6 +89,7 @@
                 {# do this to save query #}
 
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                       'statisticsDataObject': searchResultVo.institutionMedicalCenter,
                        'searchResultItem' : {
                               institutionUrl: get_institution_frontend_url(center.institution),
                               url: get_institution_medical_center_frontend_url(center),

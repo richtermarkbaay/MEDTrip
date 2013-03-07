@@ -22,11 +22,6 @@ class SearchResultsItemStatisticsDaily extends StatisticsDaily
     /**
      * @var integer
      */
-    private $advertisementId;
-
-    /**
-     * @var integer
-     */
     private $institutionId;
 
     /**
@@ -114,29 +109,6 @@ class SearchResultsItemStatisticsDaily extends StatisticsDaily
     public function getCategoryId()
     {
         return $this->categoryId;
-    }
-
-    /**
-     * Set advertisementId
-     *
-     * @param integer $advertisementId
-     * @return SearchResultsItemStatisticsDaily
-     */
-    public function setAdvertisementId($advertisementId)
-    {
-        $this->advertisementId = $advertisementId;
-    
-        return $this;
-    }
-
-    /**
-     * Get advertisementId
-     *
-     * @return integer 
-     */
-    public function getAdvertisementId()
-    {
-        return $this->advertisementId;
     }
 
     /**

@@ -18,11 +18,6 @@ HealthCareAbroad\StatisticsBundle\Entity\SearchResultsItemStatisticsDaily:
             unsigned: false
             nullable: false
             column: category_id
-        advertisementId:
-            type: bigint
-            unsigned: false
-            nullable: false
-            column: advertisement_id
         institutionId:
             type: bigint
             unsigned: false

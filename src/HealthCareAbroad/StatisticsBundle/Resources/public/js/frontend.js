@@ -68,9 +68,9 @@ var FrontendStatsTracker = {
                 async: false, // wait for this request before executing other stuff, find a more better way
                 dataType: 'json',
                 success: function(){},
-                error: function(){ return false; }
+                error: function(){}
             });
-            return false;
+            return true;
         });
         
         return this;

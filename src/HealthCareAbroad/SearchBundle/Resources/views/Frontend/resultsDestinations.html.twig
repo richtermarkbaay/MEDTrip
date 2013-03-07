@@ -14,6 +14,7 @@
             {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
 
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'statisticsDataObject': searchResultVo.institution,
                    'searchResultItem' : {
                        url: get_institution_frontend_url(institution),
                        logo: render_institution_logo(institution, {attr: {class: 'search-entry-thumb', alt: institution.name}}),

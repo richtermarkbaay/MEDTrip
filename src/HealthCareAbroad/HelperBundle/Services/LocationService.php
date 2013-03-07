@@ -135,9 +135,29 @@ class LocationService
 	    return $country;
 	}
 	
+	public function getCountryBySlug($slug)
+	{
+	    static $countryBySlugs = array();
+	    if (!isset($countryBySlugs[$slug])) {
+	        $countryBySlugs[$slug] = $this->doctrine->getRepository('HelperBundle:Country')->findOneBySlug($slug);
+	    }
+	    
+	    return $countryBySlugs[$slug];
+	}
+	
 	public function getCityById($id)
 	{
 	    return $this->doctrine->getRepository('HelperBundle:City')->find($id);
+	}
+	
+	public function getCityBySlug($slug)
+	{
+	    static $cityBySlugs = array();
+	    if (!isset($cityBySlugs[$slug])) {
+	        $cityBySlugs[$slug] = $this->doctrine->getRepository('HelperBundle:City')->findOneBySlug($slug);
+	    }
+	     
+	    return $cityBySlugs[$slug];
 	}
 	
 	public function getGlobalCityById($id)
