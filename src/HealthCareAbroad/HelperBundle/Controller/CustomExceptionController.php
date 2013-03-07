@@ -96,13 +96,6 @@ class CustomExceptionController extends ExceptionController
         }
         else {
             // assume we are in frontend
-            /**if ($code != 404) {
-                $template = new TemplateReference('FrontendBundle', 'Exception', 'error', 'html', 'twig');
-            }
-            else {
-                // render 404 page
-                $template = new TemplateReference('FrontendBundle', 'Exception', 'error404', 'html', 'twig');
-            }**/   
             $template = new TemplateReference('FrontendBundle', 'Exception', 'error', 'html', 'twig');
         }
  
