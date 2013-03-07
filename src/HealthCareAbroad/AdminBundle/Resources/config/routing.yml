@@ -123,9 +123,15 @@ admin_showEditHistory:
         _method: GET
         objectId: \d+
 
+admin_institution_inquire:
+    pattern: /admin/institution-inquiries
+    defaults: { _controller: AdminBundle:Inquiry:viewInstitutionInquiries }
+    requirements:
+        _method:  GET
+
 admin_inquire:
     pattern: /admin/inquiries
-    defaults: { _controller: AdminBundle:Inquiry:index }
+    defaults: { _controller: AdminBundle:Inquiry:viewInquiries }
     requirements:
         _method:  GET
         
