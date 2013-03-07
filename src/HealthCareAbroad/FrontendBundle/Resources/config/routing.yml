@@ -68,13 +68,13 @@ frontend_page_inquiry:
         _method: GET|POST
 
 frontend_treatment_list:
-    pattern: /treatments
+    pattern: /treatments.html
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }
     requirements:
         _method:  GET
 
 frontend_destination_list:
-    pattern: /destinations
+    pattern: /destinations.html
     defaults: { _controller: FrontendBundle:Default:destinationList, breadcrumbLabel: Destinations }
     requirements:
         _method:  GET
