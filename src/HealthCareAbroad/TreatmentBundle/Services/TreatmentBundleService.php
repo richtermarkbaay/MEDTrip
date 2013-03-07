@@ -76,6 +76,16 @@ class TreatmentBundleService
         return $this->doctrine->getRepository('TreatmentBundle:Specialization')->find($id);
     }
     
+    public function getSpecializationBySlug($slug)
+    {
+        static $specializationsBySlug = array();
+        if (!\array_key_exists($slug, $specializationsBySlug)){
+            $specializationsBySlug[$slug] = $this->doctrine->getRepository('TreatmentBundle:Specialization')->findOneBySlug($slug);
+        }
+        
+        return $specializationsBySlug[$slug];
+    }
+    
     /** ----- Endi Specialization related functionalities ------ **/
     
     
@@ -128,6 +138,16 @@ class TreatmentBundleService
     public function getTreatment($id)
     {
         return $this->entityManager->getRepository('TreatmentBundle:Treatment')->find($id);
+    }
+    
+    public function getTreatmentBySlug($slug)
+    {
+        static $treatmentsBySlug = array();
+        if (!\array_key_exists($slug, $treatmentsBySlug)) {
+            $treatmentsBySlug[$slug] = $this->doctrine->getRepository('TreatmentBundle:Treatment')->findOneBySlug($slug);
+        }
+        
+        return $treatmentsBySlug[$slug];
     }
     
     public function findTreatmentsByIds(array $ids)
