@@ -36,6 +36,12 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
         message:
             type: text
             nullable: false
+        clinicName:
+            type: string
+            length: 250
+            fixed: true
+            nullable: true
+            column: clinic_name
         dateCreated:
             type: datetime
             nullable: false
