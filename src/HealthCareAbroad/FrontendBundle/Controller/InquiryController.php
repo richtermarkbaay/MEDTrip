@@ -73,6 +73,8 @@ class InquiryController extends Controller
                 $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
             }
             $institutionInquiry->setInstitution($institution);
+            $institutionInquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
+            $institutionInquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
             $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionInquiry);

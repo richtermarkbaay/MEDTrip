@@ -37,7 +37,7 @@ var InstitutionInquiry = {
         .resetAlertBox()
         .institutionInquiryComponents.modal.find('.alert-box')
         .addClass('alert alert-success')
-        .html('Your message has been sent! Thank you for your feedback.');
+        .html('Your message has been sent! Thank you.');
         return this;
     },
     

@@ -74,10 +74,10 @@ class CustomExceptionController extends ExceptionController
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
-//         if ($debug) {
-//             // debug 
-//             return parent::findTemplate($templating, $format, $code, $debug);
-//         }
+        if ($debug) {
+            // debug 
+            return parent::findTemplate($templating, $format, $code, $debug);
+        }
         
         if ($this->request->server->has('PATH_INFO')) {
             $pathInfo = $this->request->server->get('PATH_INFO');
@@ -96,13 +96,6 @@ class CustomExceptionController extends ExceptionController
         }
         else {
             // assume we are in frontend
-            /**if ($code != 404) {
-                $template = new TemplateReference('FrontendBundle', 'Exception', 'error', 'html', 'twig');
-            }
-            else {
-                // render 404 page
-                $template = new TemplateReference('FrontendBundle', 'Exception', 'error404', 'html', 'twig');
-            }**/   
             $template = new TemplateReference('FrontendBundle', 'Exception', 'error', 'html', 'twig');
         }
  

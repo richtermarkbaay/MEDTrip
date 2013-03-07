@@ -31,6 +31,16 @@ class InstitutionInquiry
     private $message;
 
     /**
+     * @var string $remoteAddress
+     */
+    private $remoteAddress;
+    
+    /**
+     * @var string $httpUseAgent
+     */
+    private $httpUseAgent;
+    
+    /**
      * @var datetime $dateCreated
      */
     private $dateCreated;
@@ -149,6 +159,50 @@ class InstitutionInquiry
         return $this->message;
     }
 
+    /**
+     * Set remoteAddress
+     *
+     * @param string $remoteAddress
+     * @return InstitutionInquiry
+     */
+    public function setRemoteAddress($remoteAddress)
+    {
+        $this->remoteAddress = $remoteAddress;
+        return $this;
+    }
+    
+    /**
+     * Get remoteAddress
+     *
+     * @return string
+     */
+    public function getRemoteAddress()
+    {
+        return $this->remoteAddress;
+    }
+    
+    /**
+     * Set httpUseAgent
+     *
+     * @param string $httpUseAgent
+     * @return InstitutionInquiry
+     */
+    public function setHttpUseAgent($httpUseAgent)
+    {
+        $this->httpUseAgent = $httpUseAgent;
+        return $this;
+    }
+    
+    /**
+     * Get httpUseAgent
+     *
+     * @return string
+     */
+    public function getHttpUseAgent()
+    {
+        return $this->httpUseAgent;
+    }
+    
     /**
      * Set dateCreated
      *

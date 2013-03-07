@@ -55,6 +55,26 @@ class SearchTermRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    public function findActiveCountriesWithCities()
+    {
+        $status = SearchTerm::STATUS_ACTIVE;
+
+        $connection = $this->getEntityManager()->getConnection();
+
+        $sql = "
+            SELECT b.id AS country_id, b.name AS country_name, b.slug AS country_slug, c.name AS city_name, c.slug AS city_slug
+            FROM search_terms AS a
+            LEFT JOIN countries AS b ON a.country_id = b.id
+            LEFT JOIN cities AS c ON a.city_id = c.id
+            WHERE a.status = {$status}
+            GROUP BY country_name, city_name ORDER BY country_name, city_name ASC";
+
+        $stmt = $connection->query($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     public function findByCity(City $city)
     {
         $qb = $this->getQueryBuilderByDestination($city->getCountry(), $city);

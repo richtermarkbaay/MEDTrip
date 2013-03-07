@@ -23,6 +23,14 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
         message:
             type: text
             nullable: false
+        remoteAddress:
+            type: string
+            nullable: false
+            column: remote_address
+        httpUseAgent:
+            type: string
+            nullable: false
+            column: http_user_agent
         dateCreated:
             type: datetime
             nullable: false
