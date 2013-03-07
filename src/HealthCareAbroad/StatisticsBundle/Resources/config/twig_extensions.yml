@@ -2,5 +2,7 @@ services:
     statistics.frontend_twig_extension:
         class: HealthCareAbroad\StatisticsBundle\Twig\StatisticsFrontendTwigExtension
         public: false
+        calls:
+            - [setContainer, [@service_container]]
         tags:
             - { name: twig.extension }

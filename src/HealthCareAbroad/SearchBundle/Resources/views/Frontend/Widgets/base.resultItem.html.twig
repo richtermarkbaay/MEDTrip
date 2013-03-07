@@ -2,9 +2,14 @@
 <article class="media search-entry">
 
     <div class="pull-left thumb">
-        <a href="{{ searchResultItem.url }}">
-            {{ searchResultItem.logo | raw }}
-        </a>
+        {#-- logo link with listing click through --#}
+        {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+    	        'link': {
+    	            url: searchResultItem.url,
+    			    html: searchResultItem.logo
+    	        }
+    	    }
+    	%}
         <div class="location">{{ searchResultItem.mainAddress }}</div>
     </div>
 
@@ -21,9 +26,15 @@
         </div>
         {% endif %}
         <div class="link">
-            <a href="{{ searchResultItem.url }}" class="more-info btn pull-right green">
-                <span class="icon-search icon-white"></span> More Info
-            </a>
+            {#-- more info link --#}
+            {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+        	        'link': {
+        	            url: searchResultItem.url,
+        			    html: '<span class="icon-search icon-white"></span> More Info',
+        			    class: 'more-info btn pull-right green'
+        	        }
+        	    }
+        	%}
         </div>
 
         {#---

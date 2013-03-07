@@ -1,7 +1,7 @@
-HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsDaily:
+HealthCareAbroad\StatisticsBundle\Entity\SearchResultsItemStatisticsDaily:
     type: entity
-    table: institution_medical_center_statistics_daily
-    repositoryClass: HealthCareAbroad\StatisticsBundle\Repository\InstitutionMedicalCenterStatisticsDailyRepository
+    table: search_results_item_statistics_daily
+    repositoryClass: HealthCareAbroad\StatisticsBundle\Repository\SearchResultsItemStatisticsDailyRepository
     fields:
         id:
             id: true

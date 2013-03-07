@@ -16,15 +16,16 @@
             {# do this to save query #}
 
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'statisticsDataObject': searchResultVo.institutionMedicalCenter,
                    'searchResultItem' : {
-                          institutionUrl: get_institution_frontend_url(center.institution),
-                          url: get_institution_medical_center_frontend_url(center),
-                          logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}), 
-                          name: center.name,
-                          institutionName: center.institution.name,
-                          description: center.descriptionHighlight,
-                          mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
-                          streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+                       institutionUrl: get_institution_frontend_url(center.institution),
+                       url: get_institution_medical_center_frontend_url(center),
+                       logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}),
+                       name: center.name,
+                       institutionName: center.institution.name,
+                       description: center.descriptionHighlight,
+                       mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                       streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }
                }
            %}
