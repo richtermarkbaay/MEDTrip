@@ -10,6 +10,9 @@
         <header class="filters">
             <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
         </header>
+
+        {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
+        
         {% for searchResultVo in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}

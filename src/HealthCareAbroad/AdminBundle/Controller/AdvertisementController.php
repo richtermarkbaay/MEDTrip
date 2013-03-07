@@ -53,27 +53,28 @@ class AdvertisementController extends Controller
         $ad = $this->getRequest()->get('advertisement');
         $institutionId = $ad ? $ad['institution'] : null;
 
-        if(!$institutionId) {
-            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findOneByStatus(InstitutionStatus::getBitValueForApprovedStatus());
-
-            if (!$institution) {
-                $this->getRequest()->getSession()->setFlash("notice", "There's no approved institution yet.");
-                return $this->redirect($this->generateUrl('admin_advertisement_index'));
-            } 
-            
-            $institutionId = $institution->getId();
-        }
-
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
-            $this->advertisement = $this->getDoctrine()->getRepository('AdvertisementBundle:Advertisement')->find($advertisementId);
+            $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();            
+            $qb->select('ad, a, b, c, d, e, f')->from('AdvertisementBundle:Advertisement', 'ad')
+               ->leftJoin('ad.institution', 'a')
+               ->leftJoin('a.institutionMedicalCenters', 'b')
+               ->leftJoin('b.institutionSpecializations', 'c')
+               ->leftJoin('c.specialization', 'd')
+               ->leftJoin('c.treatments', 'e')
+               ->leftJoin('e.subSpecializations', 'f')
+               ->where('ad.id = :advertisementId')
+               ->setParameter('advertisementId', $advertisementId);
+
+            $this->advertisement = $qb->getQuery()->getOneOrNullResult();
 
             if (!$this->advertisement) {
                 throw $this->createNotFoundException("Invalid advertisement.");
             }
+
+            $this->institution = $this->advertisement->getInstitution();
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', $institutionId)) {
-            //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+        if ($institutionId = $this->getRequest()->get('institutionId', $institutionId) && !$this->advertisement) {
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f')->from('InstitutionBundle:Institution', 'a')
@@ -154,7 +155,7 @@ class AdvertisementController extends Controller
     public function editAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $this->advertisement->setInstitution($this->institution);
+        //$this->advertisement->setInstitution($this->institution);
         $form = $this->createForm(new AdvertisementFormType($em), $this->advertisement);
 
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
@@ -182,9 +183,6 @@ class AdvertisementController extends Controller
             $advertisement = new Advertisement();
             $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementData['advertisementType']);
             $advertisement->setAdvertisementType($advertisementType);
-            
-            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($advertisementData['institution']);
-            $advertisement->setInstitution($institution);
 
             $formAction = $this->generateUrl('admin_advertisement_create');
         } else {
@@ -195,10 +193,10 @@ class AdvertisementController extends Controller
         $advertisement->setInstitution($this->institution);
         
         $em = $this->getDoctrine()->getEntityManager();
-        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);
-
-        $form->bind($request);
+        $form = $this->createForm(new AdvertisementFormType($em), $advertisement);       
         
+        $form->bind($request);
+
         if ($form->isValid()) {
             $this->saveMedia($advertisement);
             $this->get('services.advertisement')->save($advertisement);

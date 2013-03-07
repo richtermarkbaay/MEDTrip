@@ -114,7 +114,7 @@
         				            <div class="custom-property-values">
                                         {{ form_label(propertyValue.value) }}
             				            {% for adValueId, media in valueObj.value %} 
-    
+
             				                {% if valueObj.advertisementPropertyName.name == 'highlight_featured_images' %}
                                                 {% if media %}
                         				            <div>
@@ -140,8 +140,9 @@
                                 {% elseif valueObj.advertisementPropertyName.name == 'media_id' %}
         				            <div class="custom-property-values">
                                         {{ form_label(propertyValue.value) }}
+
     
-                                        {% if propertyValue.value.get('data').id %}
+                                        {% if propertyValue.value.get('data') and propertyValue.value.get('data').id %}
                                             {{ form_widget(propertyValue.value, {attr: {style: 'display:none;'}}) }}
                                             {{ media(propertyValue.value.get('data'), form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
                                             <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a>
