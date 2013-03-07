@@ -68,8 +68,11 @@ var InstitutionInquiry = {
                         $.each(errors, function(key, item){
                             $('#'+InstitutionInquiry.institutionInquiryFormInputIdPrefix+'_'+item.field).addClass('error');
                             //$('#'+InstitutionInquiry).append(item.error + "</br>");
-                            $('div.alert-error').addClass('alert').append(item.error+"<br>");
-                            $('div.'+item.field).addClass('error');
+                            
+                            InstitutionInquiry.institutionInquiryComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
+                            //$('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            //$('div.'+item.field).addClass('error');
                         });
                     }
                 }

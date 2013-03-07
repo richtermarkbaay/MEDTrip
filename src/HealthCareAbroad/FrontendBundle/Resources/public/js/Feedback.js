@@ -67,7 +67,8 @@ var Feedback = {
                         Feedback.showAlertError();
                         $.each(errors, function(key, item){
                             $('#'+Feedback.feedbackFormInputIdPrefix+'_'+item.field).addClass('error');
-                            $('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            //$('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            Feedback.feedbackComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
                             Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
                         });
                     }
