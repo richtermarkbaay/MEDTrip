@@ -46,7 +46,7 @@ class CommonPageController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
                 $em->flush();
-                $request->getSession()->setFlash('success', 'Your message has been sent! Thank you for your feedback.');
+                $request->getSession()->setFlash('success', 'Your message has been sent! Thank you.');
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }else {
                 $error = true;
