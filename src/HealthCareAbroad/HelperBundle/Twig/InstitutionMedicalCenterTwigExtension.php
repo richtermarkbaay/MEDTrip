@@ -91,7 +91,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             }
             else {
                 // render default
-                $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). '" />'; 
+                $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />'; 
             }
         }
         

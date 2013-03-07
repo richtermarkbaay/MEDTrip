@@ -439,7 +439,8 @@ class FrontendController extends Controller
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
             'includedNarrowSearchWidgets' => array('specialization', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId()),
+            'featuredClinicParams' => array('countryId' => $country->getId())
         );
 
         return  $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
@@ -464,7 +465,8 @@ class FrontendController extends Controller
             'city' => $city,
             'country' => $city->getCountry(),
             'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
+            'featuredClinicParams' => array('cityId' => $city->getId())
         );
 
         return $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
@@ -496,7 +498,8 @@ class FrontendController extends Controller
             'treatmentId' => $termId,
             'specialization' => $specialization,
             'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
+            'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
@@ -534,7 +537,8 @@ class FrontendController extends Controller
             'specialization' => $specialization,
             'subSpecialization' => $subSpecialization,
             'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
+            'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
@@ -550,7 +554,7 @@ class FrontendController extends Controller
         if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'))) {
             throw new NotFoundHttpException();
         }
-
+        
         //TODO: verify if we still need this snippet
         if (isset($searchTerms['termId'])) {
             $termId = $searchTerms['termId'];
@@ -569,7 +573,8 @@ class FrontendController extends Controller
             'treatmentId' => $termId,
             'treatment' => $treatment,
             'includedNarrowSearchWidgets' => array('country', 'city'),
-            'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array()
+            'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
+            'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
 
         return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);

@@ -26,7 +26,10 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             'render_homepage_featured_destinations_ads' => new \Twig_Function_Method($this, 'render_homepage_featured_destinations_ads'),
             'render_homepage_featured_posts_ads' => new \Twig_Function_Method($this, 'render_homepage_featured_posts_ads'),
             'render_homepage_common_treatments_ads' => new \Twig_Function_Method($this, 'render_homepage_common_treatments_ads'),
-            'render_homepage_featured_video_ad' => new \Twig_Function_Method($this, 'render_homepage_featured_video_ad')
+            'render_homepage_featured_video_ad' => new \Twig_Function_Method($this, 'render_homepage_featured_video_ad'),
+
+            'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_institution_ad'),
+            'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad')
         );
     }
 
@@ -78,6 +81,21 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig');
     }
 
+    public function render_search_results_featured_institution_ad($params)
+    {
+        $ads = $this->retrieverService->getSearchResultsFeaturedInstitutionByCriteria($params);
+        $this->twig->addGlobal('featuredAds', $ads);
+
+        return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
+    }
+
+    public function render_search_results_featured_clinic_ad($params)
+    {
+        $ads = $this->retrieverService->getSearchResultsFeaturedClinicByCriteria($params);
+        $this->twig->addGlobal('featuredAds', $ads);
+
+        return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
+    }
 
     public function getName()
     {

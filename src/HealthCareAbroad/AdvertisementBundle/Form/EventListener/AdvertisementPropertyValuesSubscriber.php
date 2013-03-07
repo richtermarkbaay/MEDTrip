@@ -86,22 +86,18 @@ class AdvertisementPropertyValuesSubscriber implements EventSubscriberInterface
                 if($property->getName() == 'highlights') {
                     foreach($each->getValue() as $i => $highlight) {
 
-                        if(!empty($highlight) && isset($newData[$property->getId()]['value'][$i]) && is_null($newData[$property->getId()]['value'][$i]['icon']) && is_object($highlight['icon']) && get_class($highlight['icon']) == $mediaClass) {
+                        if(!empty($highlight) && isset($newData[$property->getId()]['value']) && isset($newData[$property->getId()]['value'][$i]) && is_null($newData[$property->getId()]['value'][$i]['icon']) && is_object($highlight['icon']) && get_class($highlight['icon']) == $mediaClass) {
                             $newData[$property->getId()]['value'][$i]['icon'] = $highlight['icon'];
                         }
                     }
                 }
                 
-                if($property->getName() == 'media_id' && is_null($newData[$property->getId()]['value']) && get_class($each->getValue()) == $mediaClass) {
+                if($property->getName() == 'media_id' && isset($newData[$property->getId()]['value']) && is_null($newData[$property->getId()]['value']) && get_class($each->getValue()) == $mediaClass) {
                     //$newData[$property->getId()]['value'] = $each->getValue()->getId() ? $each->getValue() : '';
                     $newData[$property->getId()]['value'] = $each->getValue();
                 }
             }
         }
-
-//         foreach($newData as $each) {
-//             var_dump($each);
-//         } //exit;
         
         $event->setData(array_values($newData));
     }
