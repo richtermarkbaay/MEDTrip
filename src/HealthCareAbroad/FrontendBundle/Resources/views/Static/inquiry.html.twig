@@ -6,7 +6,9 @@
     <div class="row">
         <div class="span8">
             <form id="inquiryForm" novalidate="novalidate" class="inquiry" method="POST" action="{{ path('frontend_page_inquiry') }}">
-                <h1>Get In Contact</h1>
+                <h1>Advertising Inquiries</h1>
+                <p>This form is for medical providers inquiring about adding or editing their clinics to Healthcare Abroad, or for other account concerns. </p>
+                <p>If you are a patient looking to send feedback to Healthcare Abroad, <a href ="#" id="feedback-form">please use this form</a>.</p>
                 {% if error %}
                     <div class="alert alert-error">
                         {% for each in error_list %}
