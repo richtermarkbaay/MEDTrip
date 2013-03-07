@@ -61,6 +61,10 @@
                                 <label for="inquire_lastName">Last Name *</label>
                                 {{ form_widget(form.lastName, {attr: {class: 'span12'} } )}}
                             </div>
+                             <div class="control-group row-field {{ (form.clinicName.vars.valid ? '' : 'error') }}">
+                                  <label for="inquire_clinicName">Clinic Name</label>
+                                {{ form_widget(form.clinicName, {attr: {class: 'span12'} } )}}
+                            </div>
                             <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                                 <label for="inquire_country">Country</label>
                                 <div class="country-select">

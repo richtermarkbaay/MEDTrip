@@ -68,8 +68,8 @@ var ErrorReport = {
 	                        $.each(errors, function(key, item){
 	                            $('#'+ErrorReport.ErrorReportFormInputIdPrefix+'_'+item.field).addClass('error');
 	                            //$('#'+InstitutionInquiry).append(item.error + "</br>");
-	                            $('div.alert-error').addClass('alert').append(item.error+"<br>");
-	                            $('div.'+item.field).addClass('error');
+	                            ErrorReport.errorReportComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
+	                            ErrorReport.errorReportComponents.form.find('div.'+item.field).addClass('error');
 	                        });
 	                    }
 	                }
