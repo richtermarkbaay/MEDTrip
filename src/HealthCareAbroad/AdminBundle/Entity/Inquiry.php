@@ -54,6 +54,11 @@ class Inquiry
     private $remoteAddress;
 
     /**
+     * @var string $httpUseAgent
+     */
+    private $httpUseAgent;
+    
+    /**
      * @var smallint $status
      */
     private $status;
@@ -239,6 +244,28 @@ class Inquiry
     }
 
     /**
+     * Set httpUseAgent
+     *
+     * @param string $httpUseAgent
+     * @return Inquiry
+     */
+    public function setHttpUseAgent($httpUseAgent)
+    {
+        $this->httpUseAgent = $httpUseAgent;
+        return $this;
+    }
+    
+    /**
+     * Get httpUseAgent
+     *
+     * @return string
+     */
+    public function getHttpUseAgent()
+    {
+        return $this->httpUseAgent;
+    }
+    
+    /**
      * Set status
      *
      * @param smallint $status
@@ -293,11 +320,11 @@ class Inquiry
         $this->country = $country;
         return $this;
     }
-
+    
     /**
      * Get country
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
      */
     public function getCountry()
     {

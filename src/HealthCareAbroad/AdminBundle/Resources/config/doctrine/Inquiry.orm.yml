@@ -46,6 +46,11 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
             fixed: false
             nullable: false
             column: remote_address
+        httpUseAgent:
+            type: string
+            length: 250
+            nullable: false
+            column: http_user_agent
         status:
             type: smallint
             nullable: false
@@ -61,7 +66,7 @@ HealthCareAbroad\AdminBundle\Entity\Inquiry:
             orphanRemoval: false
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
-            cascade: 
+            cascade:
                 - "persist"
             mappedBy: null
             inversedBy: null
