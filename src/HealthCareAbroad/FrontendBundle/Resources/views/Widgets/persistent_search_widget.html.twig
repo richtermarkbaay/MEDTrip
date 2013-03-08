@@ -1,0 +1,40 @@
+<div id="persistent-search">
+    <div class="container"> <!--Hero Unit-->
+        <div class="row">
+<!--             append search widget here -->
+        </div>
+    </div> <!--End of hero unit-->
+</div>
+
+{% block inlineJavascriptCode %}
+ <script type="text/javascript">
+                $(document).ready(function(){
+                    
+                    // fade in #back-top
+                    $(function () {
+                        $(window).scroll(function () {
+                        	_parentDiv = $('#hero_unit');
+                            _form = _parentDiv.find('form');
+                            _persistentDiv = $('#persistent-search');
+                            
+                            if ($(this).scrollTop() > 210) {
+                            	_persistentDiv.fadeIn("fast");
+                                $(_form).appendTo('#persistent-search .row');
+                            } else {
+                            	_persistentDiv.fadeOut("fast");
+                                $(_persistentDiv.find('form')).appendTo(_parentDiv).after('<h1></h1>');
+                            }
+                        });
+
+                        // scroll body to 0px on click
+                        $('#back-top a').click(function () {
+                            $('body,html').animate({
+                                scrollTop: 0
+                            }, 800);
+                            return false;
+                        });
+                    });
+
+                });
+            </script>
+{% endblock %}
