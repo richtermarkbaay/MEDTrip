@@ -19,7 +19,7 @@
             			{% if logo is defined and logo %}
             			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px', class: 'clinic-logo'}) | raw }}
             			{% else %}
-            			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default" alt="{{ each.name }}"/>
+            			    <span class="default clinic-logo ph-clinic"></span>
             			{% endif %}
                         <span class="clinic-name">{{ each.name }}</span>
     				</a>
