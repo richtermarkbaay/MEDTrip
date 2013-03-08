@@ -1,12 +1,5 @@
 <div class="span2">
-	<a href="#">
-	    {% if institution.logo %}
-	        {{ media(institution.logo, institution, 'default') | raw }}
-	    {% else  %}
-	        <img src="{{ imageplaceholder.clinicLogo }}" class="default" alt="logo"/>
-	    {% endif %}
-	</a>
-    
+	<a>{{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {alt: 'hospital logo'}, 'context' : 1}) | raw }}</a>
 </div>
 <div class="span5 address-box">
 	<h1>{{ institution.name }}</h1>
