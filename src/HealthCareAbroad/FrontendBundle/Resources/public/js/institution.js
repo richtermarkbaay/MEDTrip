@@ -23,11 +23,12 @@ var InstitutionInquiry = {
         return this;
     },
     
-    showAlertError: function() {
+    showAlertError: function(_errorString) {
         InstitutionInquiry
             .resetAlertBox()
             .institutionInquiryComponents.modal.find('.alert-box')
-            .addClass('alert alert-error');
+            .addClass('alert alert-error')
+            .html(_errorString);
             //.html('Please fill up the form properly.');
         return this;
     },
@@ -64,16 +65,12 @@ var InstitutionInquiry = {
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        InstitutionInquiry.showAlertError();
+                    	var _errorString = '';
                         $.each(errors, function(key, item){
-                            $('#'+InstitutionInquiry.institutionInquiryFormInputIdPrefix+'_'+item.field).addClass('error');
-                            //$('#'+InstitutionInquiry).append(item.error + "</br>");
-                            
-                            InstitutionInquiry.institutionInquiryComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
+                    		_errorString += item.error+"<br>";
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
-                            //$('div.alert-error').addClass('alert').append(item.error+"<br>");
-                            //$('div.'+item.field).addClass('error');
                         });
+                        InstitutionInquiry.showAlertError(_errorString);
                     }
                 }
             }
