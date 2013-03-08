@@ -45,8 +45,4 @@ HealthCareAbroad\HelperBundle\Entity\GlobalAward:
                 awarding_body_id:
                     referencedColumnName: id
             orphanRemoval: false
-    manyToMany:
-        institutionMedicalCenters:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            mappedBy: institutionGlobalAwards
     lifecycleCallbacks: {  }
