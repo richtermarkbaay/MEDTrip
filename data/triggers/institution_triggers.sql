@@ -43,7 +43,7 @@ BEGIN
     IF OLD.country_id != NEW.country_id THEN
         SELECT name INTO _country_name FROM countries WHERE id = NEW.country_id;
         UPDATE search_terms SET country_id = NEW.country_id, country_name = _country_name WHERE institution_id = OLD.id;
-    ENDIF;
+    END IF;
 
     IF OLD.city_id IS NOT NULL AND NEW.city_id IS NULL THEN
         UPDATE search_terms SET city_id = NULL, city_name = NULL WHERE institution_id = OLD.id;

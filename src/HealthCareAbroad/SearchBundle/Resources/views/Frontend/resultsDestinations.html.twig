@@ -10,15 +10,19 @@
         <header class="filters">
             <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
         </header>
+
+        {{ render_search_results_featured_institution_ad(featuredClinicParams) }}
+        
         {% for searchResultVo in searchResults %}
             {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
 
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'statisticsDataObject': searchResultVo.institution,
                    'searchResultItem' : {
                        url: get_institution_frontend_url(institution),
                        logo: render_institution_logo(institution, {attr: {class: 'search-entry-thumb', alt: institution.name}}),
                        name: institution.name,
-                       description: institution.description | striptags | slice(0,200),
+                       description: institution.description | striptags,
                        mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
                        streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
                    }

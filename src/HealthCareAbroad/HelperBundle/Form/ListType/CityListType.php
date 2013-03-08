@@ -33,7 +33,7 @@ class CityListType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->prependNormTransformer(new CityTransformer($this->service));
+        $builder->addModelTransformer(new CityTransformer($this->service));
     }
     
 	public function setDefaultOptions(OptionsResolverInterface $resolver)

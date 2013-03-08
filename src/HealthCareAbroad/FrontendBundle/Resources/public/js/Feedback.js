@@ -27,8 +27,8 @@ var Feedback = {
         Feedback
             .resetAlertBox()
             .feedbackComponents.modal.find('.alert-box')
-            .addClass('alert alert-error')
-            .html('Please fill up the form properly.');
+            .addClass('alert alert-error');
+            //.html('Please fill up the form properly.');
         return this;
     },
     
@@ -37,7 +37,7 @@ var Feedback = {
         .resetAlertBox()
         .feedbackComponents.modal.find('.alert-box')
         .addClass('alert alert-success')
-        .html('Message sent.');
+        .html('Your message has been sent! Thank you for your feedback.');
         return this;
     },
     
@@ -60,12 +60,16 @@ var Feedback = {
                 Feedback.feedbackComponents.submitButton
                 .html(Feedback.feedbackComponents.submitButton.attr('data-html'))
                 .attr('disabled', false);
+                window.location =  Feedback.feedbackComponents.form.find('a.captcha_reload').attr('href');
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         Feedback.showAlertError();
                         $.each(errors, function(key, item){
                             $('#'+Feedback.feedbackFormInputIdPrefix+'_'+item.field).addClass('error');
+                            //$('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            Feedback.feedbackComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
                         });
                     }
                 }

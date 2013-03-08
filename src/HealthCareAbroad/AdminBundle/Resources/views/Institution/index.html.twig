@@ -34,7 +34,7 @@
                         <td>
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
-                        <td>{{ institution.description }}</td>
+                        <td>{{ institution.description | raw}}</td>
                          
                          {% set institutionTypeLabel = get_institution_type(institution.type)%}
                         <td>{{ institutionTypeLabel}}</td>

@@ -3,8 +3,10 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
+    {% if isHomePage is defined and isHomePage %}
+         {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
+     {% endif %}
     <div id="fixed_container">
-
         {% block header %}
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
@@ -30,7 +32,6 @@
     {{ outputInlineJavascript() | raw }}
     
     {# -- stats tracker stuff -- #}
-    
     {% render 'StatisticsBundle:Tracker:showForm' %}
     <script type="text/javascript">
     <!-- 

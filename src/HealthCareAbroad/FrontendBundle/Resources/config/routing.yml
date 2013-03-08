@@ -44,10 +44,10 @@ frontend_page_exception_report_create:
         _method:  GET|POST
 
 frontend_page_exception_report_send:
-    pattern: /error404
+    pattern: /ajax-send-error404
     defaults: { _controller: FrontendBundle:Default:ajaxSendErrorReport }
     requirements:
-        _method:  GET|POST
+        _method:  POST
 
 frontend_page_privacy_policy:
     pattern:  /privacy-policy.html
@@ -62,19 +62,25 @@ frontend_page_terms_of_use:
        _method:  GET
 
 frontend_page_inquiry:
-    pattern: /inquiry.html
+    pattern: /advertising-inquiry.html
     defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
     requirements:
         _method: GET|POST
-
+        
+frontend_page_about_us:
+    pattern: /about-us.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewAboutUs, breadcrumbLabel: 'About Us' }
+    requirements:
+       _method: GET
+        
 frontend_treatment_list:
-    pattern: /treatments
+    pattern: /treatments.html
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }
     requirements:
         _method:  GET
 
 frontend_destination_list:
-    pattern: /destinations
+    pattern: /destinations.html
     defaults: { _controller: FrontendBundle:Default:destinationList, breadcrumbLabel: Destinations }
     requirements:
         _method:  GET

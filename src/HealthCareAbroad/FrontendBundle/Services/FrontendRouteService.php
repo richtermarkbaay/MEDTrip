@@ -19,6 +19,8 @@ use HealthCareAbroad\FrontendBundle\Entity\FrontendRoute;
  */
 class FrontendRouteService
 {
+    
+    const COMBINED_SEARCH_ROUTE_NAME = 'frontend_search_combined';
 
     /**
      * @var array

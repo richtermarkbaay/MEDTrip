@@ -27,8 +27,8 @@ var InstitutionInquiry = {
         InstitutionInquiry
             .resetAlertBox()
             .institutionInquiryComponents.modal.find('.alert-box')
-            .addClass('alert alert-error')
-            .html('Please fill up the form properly.');
+            .addClass('alert alert-error');
+            //.html('Please fill up the form properly.');
         return this;
     },
     
@@ -37,7 +37,7 @@ var InstitutionInquiry = {
         .resetAlertBox()
         .institutionInquiryComponents.modal.find('.alert-box')
         .addClass('alert alert-success')
-        .html('Your inquiry was sent.');
+        .html('Your message has been sent! Thank you.');
         return this;
     },
     
@@ -60,12 +60,19 @@ var InstitutionInquiry = {
                 InstitutionInquiry.institutionInquiryComponents.submitButton
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false);
+                window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         InstitutionInquiry.showAlertError();
                         $.each(errors, function(key, item){
                             $('#'+InstitutionInquiry.institutionInquiryFormInputIdPrefix+'_'+item.field).addClass('error');
+                            //$('#'+InstitutionInquiry).append(item.error + "</br>");
+                            
+                            InstitutionInquiry.institutionInquiryComponents.form.find('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
+                            //$('div.alert-error').addClass('alert').append(item.error+"<br>");
+                            //$('div.'+item.field).addClass('error');
                         });
                     }
                 }

@@ -12,6 +12,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 {
+	
     /**
      * @var MediaExtension
      */
@@ -67,32 +68,49 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         
         return $contactNumber;
         
-    } 
+    }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
     {
         $defaultOptions = array(
             'attr' => array(),
             'media_format' => 'default',
-            'placeholder' => ''
+            'placeholder' => '',
+            'context' => ''
         );
+        
         $options = \array_merge($defaultOptions, $options);
         $html = '';
         $institution = $institutionMedicalCenter->getInstitution();
+      
         // clinic has its own logo
         if($imcLogo = $institutionMedicalCenter->getLogo()) {
-            $html = $this->mediaExtension->getMedia($imcLogo, $institution, $options['media_format'], $options['attr']);
+        	$html = $this->mediaExtension->getMedia($imcLogo, $institution, $options['media_format'], $options['attr']);
         }
         else {
-            // check if the insitution has a logo
-            if ($institutionLogo = $institution->getLogo())
-            {
-                $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
-            }
-            else {
-                // render default
-                $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). '" />'; 
-            }
+        	
+        	//check context if its for Search_results or for full_page
+        	if($options['context'] == 'full_page') {
+        		if ($specializationLogo = InstitutionMedicalCenterService::getFirstLogoFromInstituionSpecializations($institutionMedicalCenter->getInstitutionSpecializations()))
+        		{
+        			$html = $this->mediaExtension->getMedia($specializationLogo, $institution, $options['media_format'], $options['attr']);
+        		}
+        		else {
+        			// render default
+        			$html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />';
+        		}
+        	}
+        	else {
+        		// check if the insitution has a logo
+        		if ($institutionLogo = $institution->getLogo())
+        		{
+        			$html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+        		}
+        		else {
+        			// render default
+        			$html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />';
+        		}	
+        	}
         }
         
         return $html;

@@ -48,7 +48,9 @@ class Retriever
     // Homepage Featured Clinics
     public function getHomepageFeaturedClinics()
     {
-        return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinic();
+        $criteria = array('advertisementType' => 2);
+
+        return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinicByCriteria($criteria);
     }
 
     // Homepage Featured Destinations Ads
@@ -83,6 +85,43 @@ class Retriever
         return $video;
     }
 
+    
+    // Search Results Featured Clinic by Criteria
+    public function getSearchResultsFeaturedClinicByCriteria(array $criteria = array(), $limit = 1)
+    {
+        if(!count($criteria)) {
+            return null;
+        }
+
+        if(isset($criteria['specializationId'])) {
+            $criteria['advertisementType'] = 8;
+
+        } else if(isset($criteria['subSpecializationId'])) {
+            $criteria['advertisementType'] = 9;
+        
+        } else if(isset($criteria['treatmentId'])) {
+            $criteria['advertisementType'] = 10;
+        }
+
+        return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinicByCriteria($criteria, $limit);
+    }
+    
+    // Search Results Featured Clinic by Criteria
+    public function getSearchResultsFeaturedInstitutionByCriteria(array $criteria = array(), $limit = 1)
+    {
+        if(!count($criteria)) {
+            return null;
+        }
+
+        if(isset($criteria['countryId'])) {
+            $criteria['advertisementType'] = 11;
+    
+        } else if(isset($criteria['cityId'])) {
+            $criteria['advertisementType'] = 12;
+        }
+
+        return $this->adevertisementDenormalizedRepo->getActiveFeaturedInstitutionByCriteria($criteria, $limit);
+    }
 
     public function getHomepageAdvertisementByType($type)
     {

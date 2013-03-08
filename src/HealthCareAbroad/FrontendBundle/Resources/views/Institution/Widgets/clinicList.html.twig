@@ -1,7 +1,7 @@
 
 <div id="clinics">
     <h5 class="clinics-heading">CLINICS</h5>
-	<div id="content">
+	<div id="clinics-listing">
 		<ul class="thumbnails">
 		    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
@@ -17,11 +17,11 @@
     				    {% endif %}
     				    
             			{% if logo is defined and logo %}
-            			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px'}) | raw }}
+            			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px', class: 'clinic-logo'}) | raw }}
             			{% else %}
-            			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default" alt="{{ each.name }}"/>
+            			    <span class="default clinic-logo ph-clinic"></span>
             			{% endif %}
-                        <span>{{ each.name }}</span>
+                        <span class="clinic-name">{{ each.name }}</span>
     				</a>
     			</li>
 			{% endfor %}

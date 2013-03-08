@@ -1,8 +1,8 @@
 <div class="span2">
 	<a href="">
-	    {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}}) | raw }}
+	    {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}, 'context' : 'full_page'}) | raw }}
 	</a>
-    
+	
 </div>
 <div class="span5 address-box">
 	<h1>{{ institutionMedicalCenter.name }}</h1>

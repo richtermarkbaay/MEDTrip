@@ -55,10 +55,12 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
         
         $locationService = LocationService::getCurrentInstance();
         $countryId = !empty($data) && $data['country'] ? $data['country'] : 0;
-        $cities = $locationService->getGlobalCitiesListByContry($countryId);
         $choices = array(0 => null);
-        foreach ($cities as $id => $value){
-            $choices[$id] = $value['name'];
+        if ($countryId) {
+            $cities = $locationService->getGlobalCitiesListByContry($countryId);
+            foreach ($cities as $id => $value){
+                $choices[$id] = $value['name'];
+            }    
         }
         
         $form->add($this->factory->createNamed('city', 'city_list', null, compact('choices')));

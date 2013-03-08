@@ -8,7 +8,7 @@
 						<h5><span>Company</span></h5>
 						<ul>
                             <li>
-                                <a href="#">About Us</a>
+                                <a href="{{ path('frontend_page_about_us') }}">About Us</a>
                             </li>
                             <li>
                                 <a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a>
@@ -19,9 +19,10 @@
                              <li>
                                 <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>
                             </li>
-                            <li>
+                         {#   <li>
                                 <a href="#">Site Map</a>
                             </li>
+                            #}
                         </ul>
                         <h5>
                             <span>Contact Us</span>
@@ -33,7 +34,7 @@
                              	{% render 'FrontendBundle:Feedback:view' %}
                             </li>
                             <li>
-                                <a href="{{ path('frontend_page_inquiry') }}">Inquiry</a>
+                                <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
                             </li>
                         </ul>
 					</div>
@@ -43,17 +44,19 @@
 			<div class="facepile span4"> <!--This is for the Facebook API-->
 				<h4>Like Us on Facebook</h4>
 				<div>
-					<iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:287px; height:363px;" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=558&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false"></iframe>
+					<iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:287px; height:410px;" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
 				</div>
 			</div>
 
 			<div class="subscription span4"> <!--This is for the Subscriptions-->
 				{% render 'FrontendBundle:Default:renderNewsletterForm' %}
 				<div class="register">
-					<h5>Want to register an Institution?</h5>
-					<a class="sign-up" href="#">Sign Up</a>
-					<span class="or-option"></span>
-					<a class="sign-up" href="#">Sign In</a>
+                    <h5 class="bordered">Want to list your Clinic?</h5>
+                    <!--<a href="#" class="sign-up">Sign Up</a>
+                    <span class="or-option"></span>
+                    <a href="#" class="sign-up">Sign In</a>-->
+                    <p>Patients from all over the world are searching <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a> - make sure they can find you!</p>
+                    <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a>
 				</div>
 			</div>
 		</div>
@@ -66,7 +69,7 @@
 					<li class="divider">/</li>
 					<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
 					<li class="divider">/</li>
-					<li><a href="#">History</a></li>
+					<li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
 				</ul>
 			</div>
 			<div class="social span6">
@@ -85,6 +88,11 @@
     <script src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
     <script type="text/javascript">
         $('#feedback-message').click(function(){
+        	$('div#feedbackHca').modal('show');
+            return false;
+        });
+
+        $('#feedback-form').click(function(){
         	$('div#feedbackHca').modal('show');
             return false;
         });
