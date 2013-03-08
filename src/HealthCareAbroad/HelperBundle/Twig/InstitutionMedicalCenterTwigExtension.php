@@ -76,6 +76,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'attr' => array(),
             'media_format' => 'default',
             'placeholder' => '',
+            'context' => ''
         );
         
         $options = \array_merge($defaultOptions, $options);
