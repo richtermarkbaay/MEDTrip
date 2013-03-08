@@ -1,4 +1,17 @@
 <?php
+$pages = <<< PAGES
+<ul>
+    <li><a href="/test/plaintext.html">Plaintext</a></li>
+    <li><a href="/test/institution.html">Institution markup</a></li>
+    <li><a href="/test/database.php">Page with 50 Database Queries</a></li>
+    <li><a href="/symfony-test/baseline">Baseline</a></li>
+    <li><a href="/symfony-test/baseline-resources">Baseline with resources</a></li>
+    <li><a href="/symfony-test/frontend-base">Frontend base</a></li>
+</ul>
+PAGES;
+
+echo $pages;
+
 function microtime_float()
 {
     list($usec, $sec) = explode(" ", microtime());
@@ -23,21 +36,16 @@ $sql = "
 
 
 $time_start = microtime_float();
-
-
-for ($i = 0; $i < 30; $i++) {
+for ($i = 0; $i < 50; $i++) {
     $pdo->query($sql);
 }
-
 $time_end = microtime_float();
 
 $time = $time_end - $time_start;
 
 echo '<b>', $time, '</b><br/>';
 
-foreach ($pdo->query($sql) as $row) {
-    var_dump($row, '<br/>');
-}
-
-
+// foreach ($pdo->query($sql) as $row) {
+//     var_dump($row, '<br/>');
+// }
 $pdo = null;
