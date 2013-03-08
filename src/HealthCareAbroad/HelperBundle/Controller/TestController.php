@@ -56,4 +56,38 @@ class TestController extends Controller
 
         return new Response('Clickthrough ok', 200);
     }
+
+    public function ajaxTestAction(Request $request)
+    {
+        $request->getSession()->set('test', '123456');
+
+        return $this->render('HelperBundle:Test:ajaxTest.html.twig');
+    }
+
+    public function ajaxSleepAction(Request $request)
+    {
+        $request->getSession()->get('test');
+
+        $seconds = 10;
+
+        sleep($seconds);
+
+        $response = array('msg' => 'Slept for '.$seconds.' seconds');
+
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+    }
+
+    public function ajaxCalledAfterwardsAction(Request $request)
+    {
+        $msg = 'No session';
+
+        if ($request->get('hasSession')) {
+            $request->getSession()->get('test');
+            $msg = 'Manipulated session';
+        }
+
+        $response = array('msg' => $msg);
+
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+    }
 }

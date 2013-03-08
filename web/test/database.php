@@ -8,7 +8,7 @@ $pages = <<< PAGES
     <li><a href="/symfony-test/baseline">Baseline</a></li>
     <li><a href="/symfony-test/baseline-resources">Baseline with resources</a></li>
     <li><a href="/symfony-test/frontend-base">Frontend base</a></li>
-    <li><a href="/symfony-test/symfony-multiple-ajax.php">Symfony with multiplte ajax requests</a></li>
+    <li><a href="/symfony-test/ajax">Symfony with multiple ajax requests</a></li>
 </ul>
 PAGES;
 
