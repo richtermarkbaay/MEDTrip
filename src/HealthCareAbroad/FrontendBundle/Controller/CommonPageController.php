@@ -23,6 +23,11 @@ class CommonPageController extends Controller
         return $this->render('FrontendBundle:Static:termsOfUse.html.twig');
     }
     
+    public function viewAboutUsAction(){
+    
+        return $this->render('FrontendBundle:Static:aboutUs.html.twig');
+    }
+    
     public function saveInquiryAction(Request $request)
     {
         $inquiry = new Inquiry();
