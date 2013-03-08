@@ -28,13 +28,13 @@ helper_populate_imc_highlight:
     defaults: { _controller: HelperBundle:Default:populateClinicDescriptionHighlight }
 
 helper_baseline_action:
-    pattern: /test/baseline
+    pattern: /symfony-test/baseline
     defaults: { _controller: HelperBundle:Test:baseline }
 
 helper_baseline_with_resources_at_head_action:
-    pattern: /test/baseline-resources
+    pattern: /symfony-test/baseline-resources
     defaults: { _controller: HelperBundle:Test:baselineResources }
 
 helper_stats:
-    pattern: /test/frontend-base
+    pattern: /symfony-test/frontend-base
     defaults: { _controller: HelperBundle:Test:frontendBase }
