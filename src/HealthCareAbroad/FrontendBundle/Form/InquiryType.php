@@ -37,7 +37,7 @@ class InquiryType extends AbstractType
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))
-    		->add('captcha', 'captcha', array('label'=>'Please type the code'))
+    		->add('captcha', 'captcha', array('label'=>'Please type the code *'))
     		;
     }
     
