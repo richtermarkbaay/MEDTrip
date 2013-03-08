@@ -122,6 +122,16 @@ class TreatmentBundleService
     {
         return $this->entityManager->getRepository('TreatmentBundle:SubSpecialization')->find($id);
     }
+    
+    public function getSubSpecializationBySlug($slug)
+    {
+        static $subSpecializationsBySlug = array();
+        if (!\array_key_exists($slug, $subSpecializationsBySlug)){
+            $subSpecializationsBySlug[$slug] = $this->doctrine->getRepository('TreatmentBundle:SubSpecialization')->findOneBySlug($slug);
+        }
+        
+        return $subSpecializationsBySlug[$slug];
+    }
 
     public function saveSubSpecialization(SubSpecialization $entity)
     {
