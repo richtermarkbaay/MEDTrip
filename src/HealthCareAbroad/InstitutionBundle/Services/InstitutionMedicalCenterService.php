@@ -368,7 +368,20 @@ class InstitutionMedicalCenterService
         }
         return $isOpen;
     }
-    
+    static public function getFirstLogoFromInstituionSpecializations($institutionSpecializations)
+    {
+    	
+    	foreach ($institutionSpecializations as $specialization)
+    	{
+    		if($logo = $specialization->getSpecialization()->getMedia()->getName()) {
+    			
+    			return $specialization->getSpecialization()->getMedia();
+    			break;
+    		}
+    			
+    	}
+    	return $logo;
+    }
     public function getCountByInstitution(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
