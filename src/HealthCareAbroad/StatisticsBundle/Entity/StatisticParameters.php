@@ -17,6 +17,8 @@ final class StatisticParameters
     
     const INSTITUTION_ID = 'institution_id';
     
+    const INSTITUTION_MEDICAL_CENTER_ID = 'institution_medical_center_id';
+    
     const COUNTRY_ID = 'country_id';
     
     const CITY_ID = 'city_id';
