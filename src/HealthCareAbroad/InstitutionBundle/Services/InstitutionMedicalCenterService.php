@@ -370,15 +370,12 @@ class InstitutionMedicalCenterService
     }
     static public function getFirstLogoFromInstituionSpecializations($institutionSpecializations)
     {
-    	
+    	$logo = null;
     	foreach ($institutionSpecializations as $specialization)
     	{
-    		if($logo = $specialization->getSpecialization()->getMedia()->getName()) {
-    			
-    			return $specialization->getSpecialization()->getMedia();
+    		if($logo = $specialization->getSpecialization()->getMedia()) {
     			break;
-    		}
-    			
+    		}	
     	}
     	return $logo;
     }
