@@ -699,14 +699,30 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `email` char(100) NOT NULL,
+  `contact_number` text,
   `message` text NOT NULL,
   `inquiry_subject_id` int(10) unsigned DEFAULT NULL,
+  `clinic_name` varchar(250) DEFAULT NULL,
+  `country_id` int(10) unsigned DEFAULT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `http_user_agent` varchar(250) NOT NULL,
+  `remote_address` varchar(250) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `inquiry_subject_id` (`inquiry_subject_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+  KEY `inquiry_subject_id` (`inquiry_subject_id`),
+  KEY `city_id` (`city_id`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Dumping data for table `inquiries`
+--
+
+INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(1, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'this is test', 1, NULL, NULL, NULL, '2012-08-15 02:10:21', '', '', 1);
+INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(3, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'sad', 2, NULL, NULL, NULL, '2012-08-15 02:15:27', '', '', 1);
+INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(4, 'alnie', 'jaocbe', 'alnite@yahoo.com', NULL, 'adasd asd asdas', 2, NULL, NULL, NULL, '2012-08-30 01:35:42', '', '', 1);
+INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(5, 'sdfsdfsdf', 'sdfsdfdsf', 'sdfsdf@yahoo.com', 'sdfsdfsd', 'sdf sdf dsfsdf sdf', NULL, NULL, 9, 281344, '2013-03-07 03:10:18', '', '127.0.0.1', 1);
 
 -- --------------------------------------------------------
 
@@ -1709,7 +1725,10 @@ ALTER TABLE `global_awards`
 -- Constraints for table `inquiries`
 --
 ALTER TABLE `inquiries`
-  ADD CONSTRAINT `inquiries_ibfk_1` FOREIGN KEY (`inquiry_subject_id`) REFERENCES `inquiry_subjects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `inquiries_ibfk_1` FOREIGN KEY (`inquiry_subject_id`) REFERENCES `inquiry_subjects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `inquiries_ibfk_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `inquiries_ibfk_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
 
 --
 -- Constraints for table `institutions`

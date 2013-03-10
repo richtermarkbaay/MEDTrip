@@ -69,9 +69,9 @@ class InstitutionController extends Controller
 
         if($params['isSingleCenterInstitution']) {
             $centerService = $this->get('services.institution_medical_center');
-            $this->institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter);
-            $params['institutionServices'] = $centerService->getMedicalCenterServices($this->institutionMedicalCenter);
+            $params['institutionMedicalCenter'] = $institutionService->getFirstMedicalCenter($this->institution);
+            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($params['institutionMedicalCenter']);
+            $params['institutionServices'] = $centerService->getMedicalCenterServices($params['institutionMedicalCenter']);
         } else {
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
