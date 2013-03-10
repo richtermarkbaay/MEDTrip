@@ -603,13 +603,25 @@ class FrontendController extends Controller
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-            'searchResults' => $searchResults,
-            'searchLabel' => $request->get('tag', ''),
-            'routeName' => 'frontend_search_results_related_terms',
-            'paginationParameters' => array('tag' => $request->get('tag', '')),
-            'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
-        ));
+        $response = null;
+        if ($searchResults->count()) {
+            $response = $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
+                'searchResults' => $searchResults,
+                'searchLabel' => $request->get('tag', ''),
+                'routeName' => 'frontend_search_results_related_terms',
+                'paginationParameters' => array('tag' => $request->get('tag', '')),
+                'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
+            ));
+        }
+        else {
+            $response = $this->render('SearchBundle:Frontend:noResults.html.twig', array(
+                'searchResults' => $searchResults, 
+                'searchLabel' => $request->get('tag', ''),
+                'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
+            ));
+        }
+        
+        return $response;
     }
 
     public function ajaxLoadTreatmentsAction(Request $request)
