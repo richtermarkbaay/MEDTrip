@@ -50,25 +50,7 @@
                             </div><!-- .links -->
                         </div>
                         <div class="helper row-fluid">
-                            {#--
-                            <form action="post" name="search_box" class="span12 search_box  form-inline">
-                                <label>
-                                    Search
-                                </label>
-                                <input type="text" placeholder="Specialization or Treatment" name="procedure"
-                                />
-                                <label>
-                                    Near
-                                </label>
-                                <input type="text" placeholder="City, Country or Zip" name="location"
-                                />
-                                <button class="btn green" onclick="return false">
-                                    Let's Go
-                                </button>
-                             </form>
-                             -- #}
-                             
-                             {{ render_search_homepage_widget() | raw }}
+                        {{ render_search_homepage_widget({attr: {class: 'search-box-error', error: '1'} }) | raw  }}
                         </div>
                     </div>
                 </div>
