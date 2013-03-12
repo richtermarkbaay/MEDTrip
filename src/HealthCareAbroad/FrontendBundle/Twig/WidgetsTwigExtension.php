@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\FrontendBundle\Entity\NewsletterSubscriber;
+
+use HealthCareAbroad\FrontendBundle\Form\NewsletterSubscriberFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\FeedbackMessage;
 
 use HealthCareAbroad\HelperBundle\Form\FeedbackMessageFormType;
@@ -39,7 +43,7 @@ class WidgetsTwigExtension extends \Twig_Extension
     {
         return array(
             'render_feedback_form' => new \Twig_Function_Method($this, 'render_feedback_form'),
-            'render_newsletter_subscrption_form' => new \Twig_Function_Method($this, 'render_newsletter_subscrption_form'),
+            'render_newsletter_subscription_form' => new \Twig_Function_Method($this, 'render_newsletter_subscription_form'),
         );
     }
     
@@ -52,8 +56,12 @@ class WidgetsTwigExtension extends \Twig_Extension
         ));
     }
     
-    public function render_newsletter_subscrption_form()
+    public function render_newsletter_subscription_form()
     {
+        $form = $this->formFactory->create(new NewsletterSubscriberFormType(), new NewsletterSubscriber());
         
+        return $this->twig->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
+                        'subscribeNewsletterForm' => $form->createView()
+        ));
     }
 }

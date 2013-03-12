@@ -41,15 +41,15 @@ class DefaultController extends Controller
         return $this->render('FrontendBundle:Default:index.html.twig');
     }
 
-    public function renderNewsletterFormAction()
-    {
-        $newsletterSubscriber = new NewsletterSubscriber();
-        $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+//     public function renderNewsletterFormAction()
+//     {
+//         $newsletterSubscriber = new NewsletterSubscriber();
+//         $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
 
-        return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
-                        'subscribeNewsletterForm' => $form->createView()
-        ));
-    }
+//         return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
+//                         'subscribeNewsletterForm' => $form->createView()
+//         ));
+//     }
 
     public function treatmentListAction()
     {
