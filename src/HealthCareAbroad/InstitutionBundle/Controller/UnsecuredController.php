@@ -97,12 +97,18 @@ class UnsecuredController extends Controller
             case 'services':
                 $ancillaryServicesData = array(
                     'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                    'selectedAncillaryServices' => array()
+                    'currentAncillaryData' => array(),
+                    'selected' => array()
                 );
                 
-                foreach ($this->get('services.institution')->getInstitutionServices($this->institution) as $_selectedService) {
-                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService['id'];
+                foreach ($this->get('services.institution_property')->getInstitutionByPropertyType($this->institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+                    $ancillaryServicesData['currentAncillaryData'][] = array(
+                                    'id' => $_selectedService->getId(),
+                                    'value' => $_selectedService->getValue(),
+                    );
+                    $ancillaryServicesData['selected'][] = $_selectedService->getValue();
                 }
+                
                 $parameters['services'] = $ancillaryServicesData;
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', $parameters));
                 break;
@@ -148,14 +154,20 @@ class UnsecuredController extends Controller
         $propertyService = $this->get('services.institution_medical_center_property');
         switch ($content) {
             case 'services':
-                $ancillaryServicesData = array(
+               $ancillaryServicesData = array(
                     'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                    'selectedAncillaryServices' => array()
+                    'selected' => array(),
+                    'currentAncillaryData' => array()
                 );
-        
-                foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
-                    $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
+                
+                foreach ($this->get('services.institution_medical_center_property')->getInstitutionMedicalCenterByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+                    $ancillaryServicesData['currentAncillaryData'][] = array(
+                                    'id' => $_selectedService->getId(),
+                                    'value' => $_selectedService->getValue(),
+                    );
+                    $ancillaryServicesData['selected'][] = $_selectedService->getValue();
                 }
+                
                 $parameters['ancillaryServicesData'] = $ancillaryServicesData;
                 $output['services'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', $parameters));
                 break;
