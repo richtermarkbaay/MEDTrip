@@ -55,7 +55,7 @@ class DefaultRouterListener
             // TODO - This route does not exists! should be change when error occur!
             // Added by: Adelbert Silla
             // Being used in breadcrumbs for combined search.
-            $request->attributes->set('_route', 'frontend_search_combined');
+            $request->attributes->set('_route', FrontendRouteService::COMBINED_SEARCH_ROUTE_NAME);
         }
     }
 

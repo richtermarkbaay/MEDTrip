@@ -103,7 +103,7 @@ class FrontendBreadcrumbService
                 $breadcrumbs[] = array('label' => $treatment->getName());
                 break;
 
-            case 'frontend_search_combined' :
+            case FrontendRouteService::COMBINED_SEARCH_ROUTE_NAME :
                 $em = $this->doctrine->getManager();
                 
                 $country = $em->getRepository('HelperBundle:Country')->find($routeParams['countryId']);

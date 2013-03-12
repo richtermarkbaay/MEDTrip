@@ -1,24 +1,35 @@
+{% set count = searchResults.getTotalResults %}
 
-{% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
-    {% block calloutContent %}
-        <div class="span12">
-            <div class="media">
-                <div class="media-body">
-                    <h1 class="search-info">
-                        {% if isArraySearchLabel is defined and isArraySearchLabel %}
-                            {% set count = searchResults.getTotalResults %}
-                            We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} {{ searchLabel.treatment }} in {{ searchLabel.destination }}
-                        {% else %}
-                            Search Results for <small>{{ searchLabel }}</small>
-                        {% endif %}
-                    </h1>
+<div id="callout" class="container {{ count <= 0 ? 'noresults': ''}}">
+    <div class="callout-inner">
+        <div class="content">
+            {% block calloutContent %}
+                <div class="span12">
+                    <div class="media">
+                        <div class="media-body">
+                            <h1 class="search-info">
+                                
+                                {% if count > 0 %}
+                                    {% if isArraySearchLabel is defined and isArraySearchLabel %}
+                                        We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} {{ searchLabel.treatment }} in {{ searchLabel.destination }}
+                                    {% else %}
+                                        Search Results for <small>{{ searchLabel }}</small>
+                                    {% endif %}
+                                {% else %}
+                                    We have found no clinics that offer <strong>{{ searchLabel }}</strong>
+                                {% endif %}
+                            </h1>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                {#
+                <div class="span3">
+                    <a href="{{ path('frontend_main_homepage') }}" class="all-clinic btn green">Back to Search</a>
+                </div>
+                #}
+            {% endblock %}
         </div>
-        {#
-        <div class="span3">
-            <a href="{{ path('frontend_main_homepage') }}" class="all-clinic btn green">Back to Search</a>
-        </div>
-        #}
-    {% endblock %}
-{% endembed %}
+        <div class="triangle-border"></div>
+    </div>
+</div>
+

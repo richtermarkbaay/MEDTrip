@@ -1,27 +1,12 @@
-
 <div id="clinics">
     <h5 class="clinics-heading">CLINICS</h5>
-	<div id="content">
+	<div id="clinics-listing">
 		<ul class="thumbnails">
 		    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
     				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-    				    {% if each.logo %}
-    				        {% set logo = each.logo %}
-    				        {% set ownerObject = institution %}
-    				    {% else %}
-    				        {% if each.institutionSpecializations|length %}
-        				        {% set logo = each.institutionSpecializations[0].specialization.media %}
-        				        {% set ownerObject = each.institutionSpecializations[0].specialization %}
-        				    {% endif %}
-    				    {% endif %}
-    				    
-            			{% if logo is defined and logo %}
-            			    {{ media(logo, ownerObject, 'default', {thumbnail: true, style: 'max-width: 165px'}) | raw }}
-            			{% else %}
-            			    <img src="{{ imageplaceholder.clinicLogo }}" class="clinic-logo default" alt="{{ each.name }}"/>
-            			{% endif %}
-                        <span>{{ each.name }}</span>
+    				    {{ render_institution_medical_center_logo(each, {context: 2, attr: {style: 'max-width:165px'}}) | raw }}
+                        <span class="clinic-name">{{ each.name }}</span>
     				</a>
     			</li>
 			{% endfor %}

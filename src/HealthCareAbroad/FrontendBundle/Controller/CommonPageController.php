@@ -23,6 +23,11 @@ class CommonPageController extends Controller
         return $this->render('FrontendBundle:Static:termsOfUse.html.twig');
     }
     
+    public function viewAboutUsAction(){
+    
+        return $this->render('FrontendBundle:Static:aboutUs.html.twig');
+    }
+    
     public function saveInquiryAction(Request $request)
     {
         $inquiry = new Inquiry();
@@ -44,7 +49,7 @@ class CommonPageController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
                 $em->flush();
-                $request->getSession()->setFlash('success', 'Your message has been sent! Thank you for your feedback.');
+                $request->getSession()->setFlash('success', 'Your message has been sent! Thank you.');
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }else {
                 $error = true;

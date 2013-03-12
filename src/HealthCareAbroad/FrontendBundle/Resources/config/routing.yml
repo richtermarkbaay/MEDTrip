@@ -62,11 +62,17 @@ frontend_page_terms_of_use:
        _method:  GET
 
 frontend_page_inquiry:
-    pattern: /inquiry.html
+    pattern: /advertising-inquiry.html
     defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
     requirements:
         _method: GET|POST
-
+        
+frontend_page_about_us:
+    pattern: /about-us.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewAboutUs, breadcrumbLabel: 'About Us' }
+    requirements:
+       _method: GET
+        
 frontend_treatment_list:
     pattern: /treatments.html
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }

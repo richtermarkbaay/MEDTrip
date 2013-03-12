@@ -50,7 +50,7 @@ services:
 
     services.invitation:
         class: %services.invitation_class%
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         calls:
             - [setTwig, [@twig]]
             - [setMailer, [@mailer]]
