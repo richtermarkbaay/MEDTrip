@@ -23,8 +23,8 @@
                     </thead>
         			<tbody>
             			{% for _service in services.globalList %}
-                			
-                			{% include 'AdminBundle:InstitutionProperties:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in services.selectedAncillaryServices } %}
+                			{% include 'AdminBundle:InstitutionProperties:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in services.selected ,'properties': services.currentAncillaryData
+                			} %}
                             
             		    {% else %}
                 		  	<tr>
