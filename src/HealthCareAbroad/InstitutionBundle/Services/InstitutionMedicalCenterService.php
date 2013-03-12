@@ -368,7 +368,20 @@ class InstitutionMedicalCenterService
         }
         return $isOpen;
     }
-    
+    static public function getFirstInstitutionSpecialization($institutionMedicalCenter)
+    {
+    	$specialization = null;
+    	$institutionSpecializations = $institutionMedicalCenter->getInstitutionSpecializations();
+
+	    if(is_object($institutionSpecializations)) {
+	        $specialization = $institutionSpecializations->first();
+	    } else {
+	        $specialization = isset($institutionSpecialization[0]) ? $institutionSpecialization[0] : null;
+	    }
+
+    	return $specialization;
+    }
+
     public function getCountByInstitution(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);

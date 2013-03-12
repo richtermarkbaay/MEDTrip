@@ -1,0 +1,5 @@
+{% set _clickThroughStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_search_result_item_clickthrough_parameters(statisticsDataObject)  %}
+{% set _linkOtherAttributes = link.attr is defined and link.attr | length > 0 ? link.attr : [] %}
+<a href="{{ link.url }}" class="{{ (link.class is defined ? link.class : '') ~ ' ' ~ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} {{ _linkOtherAttributes | join(' ') }} >
+{{ link.html | raw }}
+</a>

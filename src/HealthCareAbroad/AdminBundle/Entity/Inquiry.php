@@ -69,6 +69,11 @@ class Inquiry
     private $inquirySubject;
 
     /**
+     * @var string $clinicName
+     */
+    private $clinicName;
+    
+    /**
      * @var HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
@@ -177,6 +182,28 @@ class Inquiry
         return $this->contactNumber;
     }
 
+    /**
+     * Set clinicName
+     *
+     * @param string $clinicName
+     * @return Inquiry
+     */
+    public function setClinicName($clinicName)
+    {
+        $this->clinicName = $clinicName;
+        return $this;
+    }
+    
+    /**
+     * Get clinicName
+     *
+     * @return string
+     */
+    public function getClinicName()
+    {
+        return $this->clinicName;
+    }
+    
     /**
      * Set message
      *

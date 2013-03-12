@@ -11,7 +11,12 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
-{
+{	
+    const FULL_PAGE_CONTEXT = 1; // Full page
+    const LIST_CONTEXT = 2; // Clinic list
+    const SEARCH_RESULTS_CONTEXT = 3; // Search results
+    const ADS_CONTEXT = 4; // Ads results
+
     /**
      * @var MediaExtension
      */
@@ -67,34 +72,48 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         
         return $contactNumber;
         
-    } 
+    }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
     {
         $defaultOptions = array(
             'attr' => array(),
             'media_format' => 'default',
-            'placeholder' => ''
+            'placeholder' => '',
+            'context' => self::SEARCH_RESULTS_CONTEXT
         );
+
         $options = \array_merge($defaultOptions, $options);
-        $html = '';
         $institution = $institutionMedicalCenter->getInstitution();
-        // clinic has its own logo
-        if($imcLogo = $institutionMedicalCenter->getLogo()) {
-            $html = $this->mediaExtension->getMedia($imcLogo, $institution, $options['media_format'], $options['attr']);
-        }
-        else {
-            // check if the insitution has a logo
-            if ($institutionLogo = $institution->getLogo())
-            {
-                $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+
+        // Default image
+        $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />';
+
+        if($institutionMedicalCenter->getLogo()) {
+            $html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);            
+        } else {
+
+            switch($options['context']) {
+
+                case self::FULL_PAGE_CONTEXT:
+                case self::LIST_CONTEXT:
+                    $institutionSpecialization = InstitutionMedicalCenterService::getFirstInstitutionSpecialization($institutionMedicalCenter);
+
+                    if ($institutionSpecialization && $institutionSpecialization->getSpecialization()->getMedia()) {
+                        $specialization = $institutionSpecialization->getSpecialization();
+                        $html = $this->mediaExtension->getMedia($specialization->getMedia(), $specialization, $options['media_format'], $options['attr']);
+                    }
+                    break;
+
+                case self::SEARCH_RESULTS_CONTEXT:
+                case self::ADS_CONTEXT:
+                    if ($institutionLogo = $institution->getLogo()) {
+                        $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+                    }
+                    break;
             }
-            else {
-                // render default
-                $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). '" />'; 
-            }
         }
-        
+
         return $html;
     }
     

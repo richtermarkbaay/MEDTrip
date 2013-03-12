@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Services;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
+
 use HealthCareAbroad\AdvertisementBundle\Exception\AdvertisementPropertyException;
 
 use Doctrine\ORM\Query;
@@ -51,7 +53,7 @@ class AdvertisementService
             }
         }
 
-        $advertisement->setStatus(Advertisement::STATUS_ACTIVE);
+        $advertisement->setStatus(AdvertisementStatuses::ACTIVE);
         $this->em->persist($advertisement);
         $this->em->flush();
 

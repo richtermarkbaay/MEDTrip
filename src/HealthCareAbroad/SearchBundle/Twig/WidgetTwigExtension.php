@@ -30,8 +30,10 @@ class WidgetTwigExtension extends \Twig_Extension
     public function render_search_homepage_widget(array $options=array(), $twigTemplate = null)
     {
         $twigTemplate = \is_null($twigTemplate) ? 'SearchBundle:SearchForms:form.homepage.html.twig' : $twigTemplate;
-        
-        return $this->twig->render($twigTemplate);
+        $defaultOptions = array('attr' => array());
+        $options = array_merge($defaultOptions, $options);
+        $params = $options;
+        return $this->twig->render($twigTemplate, $params);
     }
     
     public function render_narrow_search_widget(array $widgets, array $parameters = array(), $twigTemplate=null)

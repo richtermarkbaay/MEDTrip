@@ -23,11 +23,11 @@ var Feedback = {
         return this;
     },
     
-    showAlertError: function() {
+    showAlertError: function(_errorString) {
         Feedback
             .resetAlertBox()
             .feedbackComponents.modal.find('.alert-box')
-            .addClass('alert alert-error');
+            .addClass('alert alert-error').html(_errorString);
             //.html('Please fill up the form properly.');
         return this;
     },
@@ -64,12 +64,12 @@ var Feedback = {
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        Feedback.showAlertError();
+                        var _errorString = "";
                         $.each(errors, function(key, item){
-                            $('#'+Feedback.feedbackFormInputIdPrefix+'_'+item.field).addClass('error');
-                            $('div.alert-error').addClass('alert').append(item.error+"<br>");
-                            $('div.'+item.field).addClass('error');
+                        	_errorString += item.error+"<br>";
+                            Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
                         });
+                        Feedback.showAlertError(_errorString);
                     }
                 }
             }

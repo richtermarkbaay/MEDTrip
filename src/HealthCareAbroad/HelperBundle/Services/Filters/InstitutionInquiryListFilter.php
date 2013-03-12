@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 use HealthCareAbroad\AdminBundle\Entity\InquirySubject;
 
-class InquiryListFilter extends ListFilter
+class InstitutionInquiryListFilter extends ListFilter
 {
     function __construct($doctrine)
     {
@@ -47,12 +47,11 @@ class InquiryListFilter extends ListFilter
     
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('a')->from('AdminBundle:Inquiry', 'a');
+        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
         
         if ($this->queryParams['field'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('a.firstName LIKE :searchKey');
-            $this->queryBuilder->where('a.middleName LIKE :searchKey');
-            $this->queryBuilder->where('a.lastName LIKE :searchKey');
+            $this->queryBuilder->innerJoin('a.institution', 'b'); 
+            $this->queryBuilder->where('b.name LIKE :searchKey');
             $this->queryBuilder->setParameter('searchKey', '%'.$this->queryParams['field'].'%' );
         }
         
@@ -61,7 +60,7 @@ class InquiryListFilter extends ListFilter
             $this->queryBuilder->setParameter('dateCreated', date("Y-m-d H:i:s", $this->queryParams['dateCreated']) );
         }
         
-    	$sortBy = 'firstName';
+    	$sortBy = 'inquirer_name  ';
     	$sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);

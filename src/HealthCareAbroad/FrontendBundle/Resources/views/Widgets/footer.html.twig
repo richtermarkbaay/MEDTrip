@@ -8,7 +8,7 @@
 						<h5><span>Company</span></h5>
 						<ul>
                             <li>
-                                <a href="#">About Us</a>
+                                <a href="{{ path('frontend_page_about_us') }}">About Us</a>
                             </li>
                             <li>
                                 <a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a>
@@ -34,7 +34,7 @@
                              	{% render 'FrontendBundle:Feedback:view' %}
                             </li>
                             <li>
-                                <a href="{{ path('frontend_page_inquiry') }}">Inquiry</a>
+                                <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
                             </li>
                         </ul>
 					</div>
@@ -69,7 +69,7 @@
 					<li class="divider">/</li>
 					<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
 					<li class="divider">/</li>
-					<li><a href="#">History</a></li>
+					<li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
 				</ul>
 			</div>
 			<div class="social span6">
@@ -88,6 +88,11 @@
     <script src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
     <script type="text/javascript">
         $('#feedback-message').click(function(){
+        	$('div#feedbackHca').modal('show');
+            return false;
+        });
+
+        $('#feedback-form').click(function(){
         	$('div#feedbackHca').modal('show');
             return false;
         });
