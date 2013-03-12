@@ -30,8 +30,8 @@
                         
                         <ul>
                             <li>
-                            <a id="feedback-message" href="#">Feedback</a>
-                             	{% render 'FrontendBundle:Feedback:view' %}
+                                <a id="feedback-message" href="#">Feedback</a>
+                         	    {{ render_feedback_form() | raw }}
                             </li>
                             <li>
                                 <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
