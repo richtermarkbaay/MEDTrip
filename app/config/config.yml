@@ -151,7 +151,8 @@ gregwar_captcha:
     as_url: true
     reload: true
     distortion: false
-    width: 150
+    width: 200
+    height: 55
     invalid_message: Incorrect captcha code.
     text_color: { r: 85, g: 85, b: 85 }
     background_color: { r: 245, g: 244, b: 237 }
