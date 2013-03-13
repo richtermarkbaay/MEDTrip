@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\FrontendBundle\Listener;
 
+use Symfony\Bundle\FrameworkBundle\HttpKernel;
+
 use HealthCareAbroad\FrontendBundle\Services\FrontendRouteService;
 
 use Symfony\Component\HttpKernel\Exception\FlattenException;
@@ -24,7 +26,12 @@ class DefaultRouterListener
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
-
+        // sub requests and ajax requests should not be handled here
+        if (HttpKernel::MASTER_REQUEST != $event->getRequestType() || $request->isXmlHttpRequest()) {
+            
+            return;
+        }
+        
         if (null === $request->attributes->get('_route')){
             $pathInfo = $request->getPathInfo();
 
@@ -39,13 +46,12 @@ class DefaultRouterListener
 
 
             $routeObj = null;
-
             if (is_null($routeObj = $this->routerService->match($pathInfo))) {
                 if (is_null($routeObj = $this->routerService->addRoute($pathInfo))) {
-
                     return;
                 }
             }
+            
 
             $controller = $routeObj->getController() ? $routeObj->getController() : 'FrontendBundle:Default:commonLanding';
             $variables = \json_decode($routeObj->getVariables(), true);

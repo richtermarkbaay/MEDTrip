@@ -1,4 +1,13 @@
 services:
+    frontend.widgets_twig_extension:
+        class: HealthCareAbroad\FrontendBundle\Twig\WidgetsTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [setFormFactory, [@form.factory]]
+            - [setTwig, [@twig]]
+            
     frontend.institution_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\InstitutionTwigExtension
         public: false

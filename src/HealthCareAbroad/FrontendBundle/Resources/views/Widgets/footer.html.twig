@@ -30,8 +30,8 @@
                         
                         <ul>
                             <li>
-                            <a id="feedback-message" href="#">Feedback</a>
-                             	{% render 'FrontendBundle:Feedback:view' %}
+                                <a id="feedback-message" href="#">Feedback</a>
+                         	    {{ render_feedback_form() | raw }}
                             </li>
                             <li>
                                 <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
@@ -49,7 +49,7 @@
 			</div>
 
 			<div class="subscription span4"> <!--This is for the Subscriptions-->
-				{% render 'FrontendBundle:Default:renderNewsletterForm' %}
+				{{ render_newsletter_subscription_form() |raw }}
 				<div class="register">
                     <h5 class="bordered">Want to list your Clinic?</h5>
                     <!--<a href="#" class="sign-up">Sign Up</a>

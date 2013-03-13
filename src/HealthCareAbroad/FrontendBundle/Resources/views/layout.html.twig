@@ -32,7 +32,7 @@
     {{ outputInlineJavascript() | raw }}
     
     {# -- stats tracker stuff -- #}
-    {% render 'StatisticsBundle:Tracker:showForm' %}
+    {{ render_frontend_statistics_tracker_form() |raw }}
     <script type="text/javascript">
     <!-- 
     (function($){

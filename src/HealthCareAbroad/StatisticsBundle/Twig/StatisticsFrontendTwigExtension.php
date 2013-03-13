@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Twig;
 
+use HealthCareAbroad\StatisticsBundle\Form\TrackerFormType;
+
+use Symfony\Component\Form\FormFactory;
+
 use HealthCareAbroad\FrontendBundle\Services\FrontendRouteService;
 
 use HealthCareAbroad\HelperBundle\Services\LocationService;
@@ -41,6 +45,16 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
     private $locationService;
     
     /**
+     * @var FormFactory
+     */
+    private $formFactory;
+    
+    /**
+     * @var \Twig_Environment
+     */
+    private $twig;
+    
+    /**
      * @var ContainerInterface
      */
     protected $container;
@@ -77,6 +91,30 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
         return $this->locationService;
     }
     
+    /**
+     * @return \Symfony\Component\Form\FormFactory
+     */
+    public function getFormFactory()
+    {
+        if (\is_null($this->formFactory)) {
+            $this->formFactory = $this->container->get('form.factory');
+        }
+        
+        return $this->formFactory;
+    }
+    
+    /**
+     * @return Twig_Environment
+     */
+    public function getTwig()
+    {
+        if (\is_null($this->twig)) {
+            $this->twig = $this->container->get('twig');
+        }
+        
+        return $this->twig;
+    }
+    
     public function getFunctions()
     {
         return array(
@@ -89,8 +127,16 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
             'get_clickthrough_tracker_class' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_class'),
             'get_impression_tracker_class' => new \Twig_Function_Method($this, 'get_impression_tracker_class'),
             'get_impression_tracker_form_id' => new \Twig_Function_Method($this, 'get_impression_tracker_form_id'),
-            'get_clickthrough_tracker_form_id' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_form_id')
+            'get_clickthrough_tracker_form_id' => new \Twig_Function_Method($this, 'get_clickthrough_tracker_form_id'),
+            'render_frontend_statistics_tracker_form' => new \Twig_Function_Method($this, 'render_frontend_statistics_tracker_form'),
         );
+    }
+    
+    public function render_frontend_statistics_tracker_form()
+    {
+        $form = $this->getFormFactory()->create(new TrackerFormType());
+        
+        return  $this->getTwig()->render('StatisticsBundle:Tracker:form.html.twig', array('statsTrackerForm' => $form->createView()));
     }
     
     public function get_impression_tracker_form_id()
