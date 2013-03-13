@@ -62,13 +62,15 @@ class DefaultRouterListener
     private function isConfiguredRoute($pathInfo)
     {
         if (
-            strpos($pathInfo, '/admin') !== false ||
-            strpos($pathInfo, '/institution') !== false ||
-            strpos($pathInfo, '/frontend_search') !== false ||
-            strpos($pathInfo, '/hospital') !== false ||
             strpos($pathInfo, '/index.html') !== false ||
-            strpos($pathInfo, '/destinations.html') !== false ||
-            strpos($pathInfo, '/treatments.html') !== false
+            strpos($pathInfo, '/search') !== false ||
+            strpos($pathInfo, '/hospital') !== false ||
+            strpos($pathInfo, '/related-search') !== false ||
+            strpos($pathInfo, '/statistics') !== false ||
+            strpos($pathInfo, '/destination') !== false ||
+            strpos($pathInfo, '/treatment') !== false ||
+            strpos($pathInfo, '/admin') !== false ||
+            strpos($pathInfo, '/institution') !== false
         ) {
             return true;
         }
