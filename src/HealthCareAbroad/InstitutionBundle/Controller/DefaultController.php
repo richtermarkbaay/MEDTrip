@@ -23,7 +23,8 @@ class DefaultController extends InstitutionAwareController
     
     public function indexAction()
     {
-        $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
+        //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
+        $institutionAlerts = array();
         
         // TODO - Deprecated?? 
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
@@ -62,14 +63,14 @@ class DefaultController extends InstitutionAwareController
     }
     public function addClinicAction()
     {
-        $institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
+        //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         $news = $newsRepository->getLatestNews();
          
         $template = 'InstitutionBundle:Default:add.clinic.html.twig';
          
         return $this->render($template, array(
-                        'alerts' => $institutionAlerts,
+                        'alerts' => array(),
                         'news' => $news,
                         'institution' => $this->institution,
         ));
