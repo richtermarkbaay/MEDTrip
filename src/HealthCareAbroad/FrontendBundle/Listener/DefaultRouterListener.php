@@ -37,9 +37,13 @@ class DefaultRouterListener
 
             // check first if it is /admin/ or /institution/, do nothing if it matches since it should be forwarded to the router
             // this check is necessary if this listner's priority is higher than RouterListener priority to save execution time
-            if ((strpos($pathInfo, '/admin') !== false) || (strpos($pathInfo, '/institution') !== false) || (strpos($pathInfo, '/search') !== false)) {
+//             if ((strpos($pathInfo, '/admin') !== false) || (strpos($pathInfo, '/institution') !== false) || (strpos($pathInfo, '/frontend_search') !== false)) {
+//                 return;
+//             }
+            if ($this->isConfiguredRoute($pathInfo)) {
                 return;
             }
+
 
             $routeObj = null;
             if (is_null($routeObj = $this->routerService->match($pathInfo))) {
@@ -55,9 +59,28 @@ class DefaultRouterListener
             $request->attributes->set('_route_params', $variables);
 
             // TODO - This route does not exists! should be change when error occur!
-            // Added by: Adelbert Silla 
+            // Added by: Adelbert Silla
             // Being used in breadcrumbs for combined search.
             $request->attributes->set('_route', FrontendRouteService::COMBINED_SEARCH_ROUTE_NAME);
         }
+    }
+
+    private function isConfiguredRoute($pathInfo)
+    {
+        if (
+            strpos($pathInfo, '/index.html') !== false ||
+            strpos($pathInfo, '/search') !== false ||
+            strpos($pathInfo, '/hospital') !== false ||
+            strpos($pathInfo, '/related-search') !== false ||
+            strpos($pathInfo, '/statistics') !== false ||
+            strpos($pathInfo, '/destination') !== false ||
+            strpos($pathInfo, '/treatment') !== false ||
+            strpos($pathInfo, '/admin') !== false ||
+            strpos($pathInfo, '/institution') !== false
+        ) {
+            return true;
+        }
+
+        return false;
     }
 }
