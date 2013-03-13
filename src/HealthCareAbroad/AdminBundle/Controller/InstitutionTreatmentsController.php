@@ -173,12 +173,18 @@ class InstitutionTreatmentsController extends Controller
         // get global ancillary services
         $ancillaryServicesData = array(
             'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-            'selectedAncillaryServices' => array()
+            'selected' => array(),
+            'currentAncillaryData' => array()
         );
         
-        foreach ($institutionMedicalCenterService->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
-            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
+        foreach ($this->get('services.institution_medical_center_property')->getInstitutionMedicalCenterByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+            $ancillaryServicesData['currentAncillaryData'][] = array(
+                            'id' => $_selectedService->getId(),
+                            'value' => $_selectedService->getValue(),
+            );
+            $ancillaryServicesData['selected'][] = $_selectedService->getValue();
         }
+        
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         $params = array(
             'institution' => $this->institution,
@@ -674,18 +680,13 @@ class InstitutionTreatmentsController extends Controller
      */
     public function ajaxRemoveAncillaryServiceAction(Request $request)
     {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-            ->find($request->get('asId', 0));
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id', 0));
         
-        if (!$ancillaryService) {
-            throw $this->createNotFoundException('Invalid ancillary service id');
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
         
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-
-        // get property value for this ancillary service
-        $property = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId());
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($property->getValue());
         
         try {
             $em = $this->getDoctrine()->getEntityManager();
@@ -693,14 +694,11 @@ class InstitutionTreatmentsController extends Controller
             $em->flush();
         
             $output = array(
-                'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
-                    'institution' => $this->institution,
-                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                    'ancillaryService' => $ancillaryService,
-                    '_isSelected' => false
-                )),
-                'error' => 0
+                    'label' => 'Add Service',
+                    'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
+                    '_isSelected' => false,
             );
+            
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e){
@@ -723,8 +721,7 @@ class InstitutionTreatmentsController extends Controller
      */
     public function ajaxAddAncillaryServiceAction(Request $request)
     {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-            ->find($request->get('asId', 0));
+         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($request->get('id', 0));
     
         if (!$ancillaryService) {
             throw $this->createNotFoundException('Invalid ancillary service id');
@@ -744,22 +741,18 @@ class InstitutionTreatmentsController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-                
-                $output = array(
-                    'html' => $this->renderView('AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig', array(
-                            'institution' => $this->institution,
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'ancillaryService' => $ancillaryService,
-                            '_isSelected' => true
-                        )),
-                    'error' => 0
+    
+               $output = array(
+                    'label' => 'Delete Service',
+                    'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
+                    '_isSelected' => true,
                 );
+                
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
             }
-            
         }
     
         return $response;

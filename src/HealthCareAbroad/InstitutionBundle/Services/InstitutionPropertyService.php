@@ -186,4 +186,23 @@ class InstitutionPropertyService
     
         return $returnVal;
     }
+    /**
+     * Get Institution Properties by Property Type
+     * @author Chaztine Blance
+     * @param Institution $institution
+     * @param  $propertyName
+     * @return properties
+     */
+    public function getInstitutionByPropertyType(Institution $institution, $propertyName)
+    {
+        $propertyType = $this->getAvailablePropertyType($propertyName);
+       
+        $criteria = array(
+            'institution' => $institution,
+            'institutionPropertyType' => $propertyType
+        );
+        
+        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->findBy($criteria);
+        return $properties;
+    }
 }
