@@ -98,32 +98,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onCommonLogAction }
 
-        ## institutoin specialization alert listeners ##
-    listener.alert.institution_medical_center.add:
-        class: HealthCareAbroad\HelperBundle\Listener\Alerts\InstitutionAlertListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_medical_center.add, method: onAddMedicalCenterAction }
-
-    listener.alert.institution_medical_center.edit:
-        class: HealthCareAbroad\HelperBundle\Listener\Alerts\InstitutionAlertListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_medical_center.edit, method: onEditMedicalCenterAction }
-
-    listener.alert.institution_medical_center.update_status:
-        class: HealthCareAbroad\HelperBundle\Listener\Alerts\InstitutionAlertListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_medical_center.update_status, method: onUpdateMedicalCenterStatusAction }
-
-    listener.alert.institution_medical_center.delete:
-        class: HealthCareAbroad\HelperBundle\Listener\Alerts\InstitutionAlertListener
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: event.institution_medical_center.delete, method: onDeleteMedicalCenterAction }
-        ## institutoin specialization alert listners ##
-
+    
     ### --------- end institution specialization event listeners --------- ###
 
     ### --------- institution treatment event listeners --------- ###

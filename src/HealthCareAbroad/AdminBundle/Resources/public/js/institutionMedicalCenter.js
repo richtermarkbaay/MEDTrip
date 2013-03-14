@@ -200,11 +200,7 @@ var InstitutionMedicalCenter = {
         
     },
     
-    addAncillaryService: function(_linkElement) {
-        return this._doAncillaryServiceAction(_linkElement);
-    },
-    
-    removeAncillaryService: function(_linkElement) {
+    addRemoveAncillaryService: function(_linkElement) {
         return this._doAncillaryServiceAction(_linkElement);
     },
     
@@ -242,10 +238,16 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-                _linkElement.parents('tr.ancillaryancillaryServices_row').html($(response.html).html());
-            },
-            error: function(response) {
-                console.log(response);
+            	_linkElement.removeClass('disabled')
+            	_linkElement.attr('href', response.href);
+            	_linkElement.text(response.label);
+            	
+            	//check if newly added service
+            	if(response._isSelected == true ){
+	            	_linkElement.prev('i').attr('class','icon-minus');
+            	}else{
+	            	_linkElement.prev('i').attr('class','icon-plus');
+            	}
             }
         });
         

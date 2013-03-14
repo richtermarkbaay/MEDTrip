@@ -190,4 +190,17 @@ class InstitutionMedicalCenterPropertyService
         
         return $returnVal;
     }
+    
+    public function getInstitutionMedicalCenterByPropertyType(InstitutionMedicalCenter $institutionMedicalCenter, $propertyName)
+    {
+        $propertyType = $this->getAvailablePropertyType($propertyName);
+         
+        $criteria = array(
+            'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
+            'institutionPropertyType' => $propertyType
+        );
+    
+        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        return $properties;
+    }
 }

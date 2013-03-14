@@ -31,7 +31,7 @@ abstract class BaseAlertListener
 
         $this->doctrine = $this->container->get('doctrine');
 
-        $this->alertService = $this->container->get('services.alert');
+        //$this->alertService = $this->container->get('services.alert');
     }
     
 //     abstract function setOnAddAlert();

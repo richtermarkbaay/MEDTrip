@@ -41,20 +41,32 @@ class InstitutionPropertiesController extends Controller
         }
     }
     
+    /**
+     * View Institution Offered Services
+     * @author Chaztine Blance
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction(Request $request)
     {
         $ancillaryServicesData = array(
                         'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                        'selectedAncillaryServices' => array()
+                        'selected' => array(),
+                        'currentAncillaryData' => array()
         );
         
-        foreach ($this->get('services.institution')->getInstitutionServices($this->institution) as $_selectedService) {
-            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService['id'];
+        foreach ($this->get('services.institution_property')->getInstitutionByPropertyType($this->institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+            $ancillaryServicesData['currentAncillaryData'][] = array(
+                                    'id' => $_selectedService->getId(),
+                                    'value' => $_selectedService->getValue(),
+                    );
+            $ancillaryServicesData['selected'][] = $_selectedService->getValue();
+           
         }
 
         return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
                         'services' => $ancillaryServicesData,
-                        'institution' => $this->institution
+                        'institution' => $this->institution,
         ));
         
     }
@@ -97,12 +109,12 @@ class InstitutionPropertiesController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author Chaztin Blance
+     * @author Chaztine Blance
      */
     public function ajaxAddAncillaryServiceAction(Request $request)
     {
         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        ->find($request->get('asId', 0));
+        ->find($request->get('id', 0));
     
         if (!$ancillaryService) {
             throw $this->createNotFoundException('Invalid ancillary service id');
@@ -123,13 +135,10 @@ class InstitutionPropertiesController extends Controller
                 $em->persist($property);
                 $em->flush();
     
-                $output = array(
-                                'html' => $this->renderView('AdminBundle:InstitutionProperties:row.ancillaryService.html.twig', array(
-                                                'institution' => $this->institution,
-                                                'ancillaryService' => $ancillaryService,
-                                                '_isSelected' => true
-                                )),
-                                'error' => 0
+                 $output = array(
+                    'label' => 'Delete Service',
+                    'href' => $this->generateUrl('admin_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $property->getId() )),
+                    '_isSelected' => true,
                 );
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
@@ -150,36 +159,29 @@ class InstitutionPropertiesController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author chaztine Blance
+     * @author Chaztine Blance
      */
     public function ajaxRemoveAncillaryServiceAction(Request $request)
     {
-        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
-        ->find($request->get('asId', 0));
-    
-        if (!$ancillaryService) {
-            throw $this->createNotFoundException('Invalid ancillary service id');
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('id', 0));
+        
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
         }
-    
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
-        // get property value for this ancillary service
-        $property = $this->get('services.institution')->getPropertyValue($this->institution, $propertyType, $ancillaryService->getId());
+        
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($property->getValue());
     
         try {
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($property);
             $em->flush();
-    
+            
             $output = array(
-                            'html' => $this->renderView('AdminBundle:InstitutionProperties:row.ancillaryService.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'ancillaryService' => $ancillaryService,
-                                            '_isSelected' => false
-                            )),
-                            'error' => 0
+                    'label' => 'Add Service',
+                    'href' => $this->generateUrl('admin_institution_ajaxaddAncilliaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),
+                    '_isSelected' => false,
             );
+            
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e){
@@ -237,13 +239,12 @@ class InstitutionPropertiesController extends Controller
             $response = new Response("Property value {$award->getId()} already exists.", 500);
         }
         else {
-            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
+            $property = $propertyService->createInstitutionPropertyByName(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institution);
             $property->setValue($award->getId());
             try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($property);
-                $em->flush();
-    
+                
+                $propertyService->save($property);
+                
                 $html = $this->renderView('AdminBundle:Institution/Partials:row.globalAwards.html.twig', array(
                     'institution' => $this->institution,
                     'award' => $award,
