@@ -32,13 +32,13 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class DefaultController extends ResponseHeadersController
 {
     private $resultsPerPage = 15;
 
     public function indexAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.html.twig');
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
     }
 
 //     public function renderNewsletterFormAction()
@@ -57,7 +57,7 @@ class DefaultController extends Controller
         $params['specializations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization();
         //$params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
 
-        return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listTreatments.html.twig', $params));
     }
 
     public function destinationListAction()
@@ -65,7 +65,7 @@ class DefaultController extends Controller
         //$params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
         $params['countries'] = $this->get('services.terms')->getActiveCountriesWithCities();
 
-        return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listDestinations.html.twig', $params));
     }
 
     public function subscribeNewsletterAction(Request $request)
@@ -203,7 +203,7 @@ class DefaultController extends Controller
                         'specializationId' => $specialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountrySubSpecializationAction(Request $request)
@@ -235,7 +235,7 @@ class DefaultController extends Controller
                         'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountryTreatmentAction(Request $request)
@@ -268,7 +268,7 @@ class DefaultController extends Controller
                         'specializationId' => $treatment->getSpecialization()->getId(),
                         'treatmentId' => $treatment->getId())));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySpecializationAction(Request $request)
@@ -300,7 +300,7 @@ class DefaultController extends Controller
                         'specializationId' => $specialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySubSpecializationAction(Request $request)
@@ -336,7 +336,7 @@ class DefaultController extends Controller
                         'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCityTreatmentAction(Request $request)
@@ -369,7 +369,7 @@ class DefaultController extends Controller
                         'treatmentId' => $treatment->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     private function buildCookie(array $values)
@@ -439,19 +439,19 @@ class DefaultController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSendErrorReportAction(Request $request){
-        
+
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
         $errorReport = new ErrorReport();
         $form = $this->createForm(New ErrorReportFormType(), $errorReport);
         $form->bind($request);
-        
+
         if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $errorReport->setLoggedUserId(0);
@@ -465,18 +465,18 @@ class DefaultController extends Controller
         else {
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
-            
-            foreach ($form_errors as $_err) {           
+
+            foreach ($form_errors as $_err) {
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
-            
+
             $captchaError = $form->get('captcha')->getErrors();
             if(count($captchaError)) {
                 $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
-        
+
         return $response;
     }
 }
