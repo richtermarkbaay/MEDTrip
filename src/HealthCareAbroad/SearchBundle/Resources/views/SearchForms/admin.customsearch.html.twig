@@ -1,7 +1,6 @@
 <style>
     form.search_box {
         margin: 20px 0 30px 6px;
-        width: 960px;
     }
     form.search_box > label {
         color: #468199;
@@ -12,7 +11,7 @@
         text-align: center;
     }
     form.search_box > input {
-        border: 1px solid #7D97A6;
+        border: 1px solid #aaa;
         box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1) inset, 0 0 0 4px rgba(0, 37, 85, 0.09) !important;
         color: #7D97A6;
         font-size: 16px;
@@ -22,7 +21,6 @@
         opacity: 0.9;
         outline: medium none;
         padding: 13px 15px;
-        transition: none 0s ease 0s;
         width: 271px;
     }
     form.search_box .helper-link {
@@ -50,7 +48,11 @@
         border: 1px solid rgba(0, 0, 0, 0.3);
         color: #000000;
     }
-    
+    form > button.btn {
+        padding: 13px;
+        font-size: 2em;
+        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    }
     form.search_box .helper-link .popup .popup-box {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
@@ -70,11 +72,11 @@
     }
     
     form.search_box .helper-link .popup.treatments {
-        left: 250px;
+        left: -4px;
     }
     
     form.search_box .helper-link .popup.destinations {
-        left: 580px;
+        left: 327px;
     }
     
     .input-append.dropdown-menu, .popup-box.dropdown-menu {
@@ -115,7 +117,7 @@
         color: #FFFFFF!important;
     }
 </style>
-<form class="{{ attr.class is defined ? attr.class : 'span12 search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
+<form class="{{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
     <input type="hidden" name="treatment_id" id="treatment_id" />
     <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
@@ -125,8 +127,8 @@
     <div class="helper-link">
         
         <div class="popup row-fluid {{ attr.error is defined ? 'treatments2' : 'treatments' }}">
-            <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
-                <span class="icon-chevron-down pull-right"></span>
+            <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
+                <span class="icon-chevron-down"></span>
             </button>
             <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
                 
@@ -134,8 +136,8 @@
         </div>
         
         <div class="popup row-fluid {{ attr.error is defined ? 'destinations2' : 'destinations' }}">
-            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
-                <span class="icon-chevron-down pull-right"></span>
+            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
+                <span class="icon-chevron-down"></span>
             </button>
             <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu">
                 
