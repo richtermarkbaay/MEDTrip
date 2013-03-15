@@ -94,13 +94,13 @@ var BroadSearchWidget = {
                         });
                        response(matches);
                    },
-                   select: function(event, ui) {
+                   /*select: function(event, ui) {
                        // reload the other sources
                        BroadSearchWidget.loadSourcesByType(ui.item);
                        // set the values
                        $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
                        BroadSearchWidget.submitButton.attr('disabled', false);
-                   },
+                   },*/
                    change: function(event, ui) {
                        if (!ui.item) {
                            $(BroadSearchWidget.formComponents[type].valueField).val(0);
@@ -119,6 +119,12 @@ var BroadSearchWidget = {
             
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                _itemLink.on('click', function(){
+                    $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
+                    BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
+                    BroadSearchWidget.submitButton.attr('disabled', false);
+                    console.log(item.label);
+                });
                 return $("<li>").append(_itemLink).appendTo(ul);
             };
             

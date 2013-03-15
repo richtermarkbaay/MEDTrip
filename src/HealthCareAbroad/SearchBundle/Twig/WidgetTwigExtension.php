@@ -23,8 +23,14 @@ class WidgetTwigExtension extends \Twig_Extension
     {
         return array(
             'render_search_homepage_widget' => new \Twig_Function_Method($this, 'render_search_homepage_widget'),
-            'render_narrow_search_widget' => new \Twig_Function_Method($this, 'render_narrow_search_widget')
+            'render_narrow_search_widget' => new \Twig_Function_Method($this, 'render_narrow_search_widget'),
+            'render_admin_custom_search_widget' => new \Twig_Function_Method($this, 'render_admin_custom_search_widget'),
         );
+    }
+    
+    public function render_admin_custom_search_widget(array $options=array())
+    {
+        return $this->render_search_homepage_widget($options, 'SearchBundle:SearchForms:admin.customsearch.html.twig');
     }
     
     public function render_search_homepage_widget(array $options=array(), $twigTemplate = null)
