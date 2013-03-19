@@ -20,9 +20,9 @@ class CompiledSearchParameter
         $this->searchState = $searchState;    
     }
     
-    public function getUrl() 
+    public function getUrl($isDebug=false) 
     {
-        return $this->url;    
+        return $isDebug ? '/app_dev.php/'.$this->url : $this->url;    
     }
     
     public function getVariables()
