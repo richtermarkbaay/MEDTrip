@@ -13,12 +13,33 @@
             }  
         %}
             {% block sectionContent %}
-            
-                {{ render_admin_custom_search_widget() | raw }}
-                
+                {{ render_admin_custom_search_widget({
+                        'form_action': path('admin_page_metas_process_search_parameters'),
+                        'form_ajax_submit': true,
+                        'form_ajax_submit_handler': 'resultsPageMetaOnSubmitHandler'
+                    }) | raw }}
             {% endblock %}
             
         {% endembed %}
     </div>
+
     
+    <script type="text/javascript">
+    <!--
+    function resultsPageMetaOnSubmitHandler()
+    {
+        var _form = $(this);
+        $.ajax({
+            url: _form.attr('action'),
+            data: _form.serialize(),
+            type: 'post',
+            datType: 'json',
+            success: function() {
+            }
+        })
+        return false;
+    }
+    //-->
+    </script>
 {% endblock %}
+

@@ -120,10 +120,10 @@ var BroadSearchWidget = {
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
                 _itemLink.on('click', function(){
+                    BroadSearchWidget.loadSourcesByType(item);
                     $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
                     BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
                     BroadSearchWidget.submitButton.attr('disabled', false);
-                    console.log(item.label);
                 });
                 return $("<li>").append(_itemLink).appendTo(ul);
             };

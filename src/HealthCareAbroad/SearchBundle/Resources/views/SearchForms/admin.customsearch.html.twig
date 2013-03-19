@@ -117,11 +117,14 @@
         color: #FFFFFF!important;
     }
 </style>
-<form class="{{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
-    <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
-    <input type="hidden" name="treatment_id" id="treatment_id" />
-    <input class="type_in" type="text" name="sb_destination" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
-    <input type="hidden" name="destination_id" id="destination_id"/>
+
+{% set _parameterKeys  = get_broadsearch_parameter_keys() %}
+<form class="{{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
+    <input class="type_in" type="text" name="{{ _parameterKeys.termLabel }}" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
+    <input type="hidden" name="{{ _parameterKeys.termId }}" id="treatment_id" />
+    <input class="type_in" type="text" name="{{ _parameterKeys.destinationLabel }}" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
+    <input type="hidden" name="{{ _parameterKeys.destinationId }}" id="destination_id"/>
+    {{ render_broad_search_context_parameter() | raw }}
     <button type="submit" class="btn">Let's Go</button>
     
     <div class="helper-link">
@@ -153,6 +156,10 @@
 <!--
 (function($){
     $(function(){
+
+        {% if form_ajax_submit is defined and form_ajax_submit and form_ajax_submit_handler is defined %}
+            $('form.broad_search_form').on('submit', {{ form_ajax_submit_handler }});
+        {% endif %}
         
         BroadSearchWidget
             .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
@@ -161,7 +168,7 @@
                     //'mainInputField': $('input#treatment_input_field'),
                     'dropdownButton': $('#treatments_dropdown_button'),
                     'autocompleteField': $('input#treatment_input_field'),
-                    'dropdown': $('#treatments_dropdown_menu') 
+                    'dropdown': $('#treatments_dropdown_menu'), 
                 },
                 destinations: {
                     //'mainInputField': $('input#destination_input_field'),

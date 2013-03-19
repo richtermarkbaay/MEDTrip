@@ -1,3 +1,7 @@
 admin_page_metas_index:
     pattern:  /admin/page_metas/index.html
     defaults: { _controller: AdminBundle:PageMetaConfiguration:index }
+
+admin_page_metas_process_search_parameters:
+    pattern:  /admin/page_metas/ajax-process-search-paramters
+    defaults: { _controller: AdminBundle:PageMetaConfiguration:ajaxProcessSearchParameters }
