@@ -17,12 +17,13 @@ use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
+use HealthCareAbroad\FrontendBundle\Controller\ResponseHeadersController;
 
 /**
  * TODO: Refactor whole class
  *
  */
-class FrontendController extends Controller
+class FrontendController extends ResponseHeadersController
 {
     private $resultsPerPage = 15;
 
@@ -443,7 +444,7 @@ class FrontendController extends Controller
             'featuredClinicParams' => array('countryId' => $country->getId())
         );
 
-        return  $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
+        return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
     public function searchResultsCitiesAction(Request $request)
@@ -469,7 +470,7 @@ class FrontendController extends Controller
             'featuredClinicParams' => array('cityId' => $city->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
     public function searchResultsSpecializationsAction(Request $request)
@@ -502,7 +503,7 @@ class FrontendController extends Controller
             'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsSubSpecializationsAction(Request $request)
@@ -541,7 +542,7 @@ class FrontendController extends Controller
             'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsTreatmentsAction(Request $request)
@@ -554,7 +555,7 @@ class FrontendController extends Controller
         if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'))) {
             throw new NotFoundHttpException();
         }
-        
+
         //TODO: verify if we still need this snippet
         if (isset($searchTerms['termId'])) {
             $termId = $searchTerms['termId'];
@@ -577,13 +578,13 @@ class FrontendController extends Controller
             'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsRelatedAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
-        
+
         // FIXME: patch for fixing refresh issue
         $session_key = \implode(':', $request->attributes->get('_route_params'));
         if (empty($searchTerms) || \is_null($searchTerms)) {
@@ -597,7 +598,7 @@ class FrontendController extends Controller
         else {
             $request->getSession()->set($session_key, $searchTerms);
         }
-        
+
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
@@ -612,15 +613,17 @@ class FrontendController extends Controller
                 'paginationParameters' => array('tag' => $request->get('tag', '')),
                 'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
             ));
+
+            $response = $this->setResponseHeaders($response);
         }
         else {
             $response = $this->render('SearchBundle:Frontend:noResults.html.twig', array(
-                'searchResults' => $searchResults, 
+                'searchResults' => $searchResults,
                 'searchLabel' => $request->get('tag', ''),
                 'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
             ));
         }
-        
+
         return $response;
     }
 
