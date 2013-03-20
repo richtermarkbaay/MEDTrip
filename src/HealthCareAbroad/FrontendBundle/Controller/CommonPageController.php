@@ -11,23 +11,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-class CommonPageController extends Controller
+class CommonPageController extends ResponseHeadersController
 {
     public function viewPrivacyPolicyAction(){
-        
-        return $this->render('FrontendBundle:Static:privacyPolicy.html.twig');
+
+        return $this->setStaticPageResponseHeaders($this->render('FrontendBundle:Static:privacyPolicy.html.twig'));
     }
-    
+
     public function viewTermsOfUseAction(){
-    
-        return $this->render('FrontendBundle:Static:termsOfUse.html.twig');
+
+        return $this->setStaticPageResponseHeaders($this->render('FrontendBundle:Static:termsOfUse.html.twig'));
     }
-    
+
     public function viewAboutUsAction(){
-    
-        return $this->render('FrontendBundle:Static:aboutUs.html.twig');
+
+        return $this->setStaticPageResponseHeaders($this->render('FrontendBundle:Static:aboutUs.html.twig'));
     }
-    
+
     public function saveInquiryAction(Request $request)
     {
         $inquiry = new Inquiry();
@@ -39,13 +39,13 @@ class CommonPageController extends Controller
         if($request->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
-                
+
                 $inquirySubject = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findOneByName($request->get('inquirySubject'));
                 $inquiry->setInquirySubject($inquirySubject);
                 $inquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
                 $inquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
                 $inquiry->setStatus(Inquiry::STATUS_ACTIVE);
-                
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
                 $em->flush();
@@ -53,20 +53,20 @@ class CommonPageController extends Controller
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }else {
                 $error = true;
-            	
-            	$form_errors = $this->get('validator')->validate($form);
-            	foreach ($form_errors as $_err) {
-            		$errorArr[] = $_err->getMessage();
-            	}
-            	
+
+                $form_errors = $this->get('validator')->validate($form);
+                foreach ($form_errors as $_err) {
+                    $errorArr[] = $_err->getMessage();
+                }
+
             }
-        } 
-        
-        return $this->render('FrontendBundle:Static:inquiry.html.twig', 
+        }
+
+        return $this->render('FrontendBundle:Static:inquiry.html.twig',
                         array('form' => $form->createView(),
                               'inquirySubjects' => $inquirySubjects,
                               'isInquiry' => 1,
                               'error' => $error,
-                        	  'error_list' => $errorArr));
+                              'error_list' => $errorArr));
     }
 }

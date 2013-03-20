@@ -22,13 +22,13 @@ use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class InstitutionMedicalCenterController extends Controller
+class InstitutionMedicalCenterController extends ResponseHeadersController
 {
     /**
      * @var InstitutionMedicalCenter
      */
     protected $institutionMedicalCenter;
-    
+
     /**
      * @var Institution
      */
@@ -44,28 +44,28 @@ class InstitutionMedicalCenterController extends Controller
             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
 
             if(!$this->institutionMedicalCenter) {
-                throw $this->createNotFoundException('Invalid institutionMedicalCenter');                
+                throw $this->createNotFoundException('Invalid institutionMedicalCenter');
             }
 
             $this->institution = $this->institutionMedicalCenter->getInstitution();
 
-            $twigService = $this->get('twig'); 
+            $twigService = $this->get('twig');
             $twigService->addGlobal('institution', $this->institution);
             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
         }
         else {
-            
+
             throw $this->createNotFoundException('Medical center slug required.');
         }
     }
 
     public function profileAction($institutionSlug)
     {
-        
+
         if ($this->get('services.institution')->isSingleCenter($this->institution)) {
             // this should redirect to institution profile page if medical center's institution is a single center type
         }
-        
+
         $centerService = $this->get('services.institution_medical_center');
         $params = array(
             'awards' => $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter),
@@ -75,6 +75,6 @@ class InstitutionMedicalCenterController extends Controller
             'formId' => 'imc_inquiry_form'
         );
 
-        return $this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params));
     }
 }
