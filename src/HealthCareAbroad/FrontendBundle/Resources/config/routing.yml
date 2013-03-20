@@ -2,25 +2,31 @@
 FrontendBundle_institution:
     resource: "@FrontendBundle/Resources/config/routing.institution.yml"
     prefix:   /
-    
+
 FrontendBundle_feedback:
     resource: "@FrontendBundle/Resources/config/routing.feedback.yml"
     prefix:   /
 
-frontend_newsletter_new:
-    pattern:  /subscribe-newswletter
-    defaults: { _controller: FrontendBundle:Default:new}
+frontend_newsletter_subscribe:
+    pattern: /subscribe-newswletter
+    defaults: { _controller: FrontendBundle:Default:subscribeNewsletter}
     requirements:
         _method: GET|POST
+
+#frontend_newsletter_new:
+#    pattern:  /subscribe-newswletter
+#    defaults: { _controller: FrontendBundle:Default:new}
+#    requirements:
+#        _method: GET|POST
 
 #frontend_main_homepage_index_html:
 #    pattern:  /index.html
 #    defaults: { _controller: FrontendBundle:Default:new}
-        
+
 frontend_main_homepage:
     pattern:  /index.html
     defaults: { _controller: FrontendBundle:Default:index}
-    
+
 frontend_main_homepage_php:
     pattern:  /index.php
     defaults: { _controller: FrontendBundle:Default:index}
@@ -36,12 +42,12 @@ frontend_page_exception_report_create:
     defaults: { _controller: FrontendBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
-        
+
 frontend_page_exception_report_send:
-    pattern: /error404
+    pattern: /ajax-send-error404
     defaults: { _controller: FrontendBundle:Default:ajaxSendErrorReport }
     requirements:
-        _method:  GET|POST
+        _method:  POST
 
 frontend_page_privacy_policy:
     pattern:  /privacy-policy.html
@@ -62,19 +68,25 @@ frontend_page_history:
        _method:  GET
        
 frontend_page_inquiry:
-    pattern: /inquiry.html
+    pattern: /advertising-inquiry.html
     defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
     requirements:
         _method: GET|POST
         
+frontend_page_about_us:
+    pattern: /about-us.html
+    defaults: { _controller: FrontendBundle:CommonPage:viewAboutUs, breadcrumbLabel: 'About Us' }
+    requirements:
+       _method: GET
+        
 frontend_treatment_list:
-    pattern: /treatments
+    pattern: /treatments.html
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }
     requirements:
         _method:  GET
 
 frontend_destination_list:
-    pattern: /destinations
+    pattern: /destinations.html
     defaults: { _controller: FrontendBundle:Default:destinationList, breadcrumbLabel: Destinations }
     requirements:
         _method:  GET
@@ -91,40 +103,44 @@ frontend_search_combined_countries_specializations__subSpecializations:
     defaults: { _controller: FrontendBundle:Default:listCountrySubSpecialization, page: 1 }
     requirements:
         page: \d+
-        
+
 frontend_search_combined_countries_specializations_treatments:
     pattern: /{country}/{specialization}/{treatment}/treatment
     defaults: { _controller: FrontendBundle:Default:listCountryTreatment, page: 1 }
     requirements:
         page: \d+
 
-# with city        
+# with city
 frontend_search_combined_countries_cities_specializations:
     pattern: /{country}/{city}/{specialization}
     defaults: { _controller: FrontendBundle:Default:listCitySpecialization, page: 1 }
     requirements:
         page: \d+
- 
+
 frontend_search_combined_countries_cities_specializations__subSpecializations:
     pattern: /{country}/{city}/{specialization}/{subSpecializations}
     defaults: { _controller: FrontendBundle:Default:listCitySubSpecialization, page: 1 }
     requirements:
         page: \d+
-        
+
 frontend_search_combined_countries_cities_specializations_treatments:
     pattern: /{country}/{city}/{specialization}/{treatment}/treatment
     defaults: { _controller: FrontendBundle:Default:listCityTreatment, page: 1 }
     requirements:
         page: \d+
-        
+
 frontend_404:
     pattern: /404
     defaults: { _controller: FrontendBundle:Default:call404Excemption }
     
+frontend_500:
+    pattern: /500
+    defaults: { _controller: FrontendBundle:Default:call500Excemption }
+
 frontend_main_default:
     pattern:  /
     defaults: { _controller: FrontendBundle:Default:index}
-    
+
 #splash_page: # this is used for splash page
 #    pattern:  /{url}
 #    defaults: { _controller: FrontendBundle:Default:new, url: /}

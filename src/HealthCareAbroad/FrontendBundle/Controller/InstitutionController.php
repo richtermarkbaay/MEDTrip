@@ -34,22 +34,22 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-class InstitutionController extends Controller
+class InstitutionController extends ResponseHeadersController
 {
     protected $institution;
-    
+
     public function preExecute()
     {
         $request = $this->getRequest();
 
         if($slug = $request->get('institutionSlug')) {
             $this->institution = $this->get('services.institution')->getFullInstitutionBySlug($slug);
-            
+
             if(!$this->institution) {
-                throw $this->createNotFoundException('Invalid institution');                
+                throw $this->createNotFoundException('Invalid institution');
             }
         }
-        
+
     }
 
     public function profileAction($institutionSlug)
@@ -62,79 +62,26 @@ class InstitutionController extends Controller
             'isSingleCenterInstitution' => $institutionService->isSingleCenter($this->institution),
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
-            'formId' => 'institution_inquiry_form'	
-                        	
+            'formId' => 'institution_inquiry_form'
+
 //            'institutionBranches' => $institutionService->getBranches($this->institution)
         );
 
         if($params['isSingleCenterInstitution']) {
             $centerService = $this->get('services.institution_medical_center');
-            $this->institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter);
-            $params['institutionServices'] = $centerService->getMedicalCenterServices($this->institutionMedicalCenter);
+            $params['institutionMedicalCenter'] = $institutionService->getFirstMedicalCenter($this->institution);
+            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($params['institutionMedicalCenter']);
+            $params['institutionServices'] = $centerService->getMedicalCenterServices($params['institutionMedicalCenter']);
         } else {
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
         }
 
-        return $this->render('FrontendBundle:Institution:profile.html.twig', $params);
-    }
-    
-    public function ajaxSaveInstitutionInquiryAction(Request $request)
-    {
-        $institutionInquiry = new InstitutionInquiry();
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
-        $institutionInquiry->setInstitution($institution);
-        $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
-        
-        $form->bindRequest($request);
-        if ($form->isValid()) {
-            $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
-            $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($institutionInquiry);
-            $em->flush();                
-            
-            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
-        }
-        else {
-            $errors = array();
-            $form_errors = $this->get('validator')->validate($form);
-            foreach ($form_errors as $_err) {
-                $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
-            }
-            $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
-        }
-        
-        return $response;
-    }
-
-    public function listingAction()
-    {
-        $request = $this->getRequest();
-
-        if($request->get('centerSlug')) {
-            $criteria = array('status' => MedicalCenter::STATUS_ACTIVE, 'slug' => $request->get('centerSlug'));
-            $medicalCenter = $this->getDoctrine()->getRepository('MedicalProcedureBundle:MedicalCenter')->findOneBy($criteria);
-            
-            if(!$medicalCenter) {
-                throw $this->createNotFoundException('Invalid Medical Center');
-            }
-
-            $criteria = array('status' => InstitutionMedicalCenterGroupStatus::APPROVED, 'medicalCenter' => $medicalCenter);
-            $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findOneBy($criteria);
-
-
-            if(!$institutionMedicalCenter) {
-                throw $this->createNotFoundException('Invalid Institution Medical Center');
-            }
-            
-        }
-
-        return $this->render('FrontendBundle:Institution:fullListing.html.twig', array('center' => $institutionMedicalCenter));
+        return $this->setResponseHeaders($this->render('FrontendBundle:Institution:profile.html.twig', $params));
     }
 
     public function errorReportAction()
     {
-        
+
     }
 }

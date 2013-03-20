@@ -23,7 +23,7 @@ services:
 
     services.inquire:
         class: %services.inquiry_class%
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         calls:
 
     form.inquiry_subject_list:

@@ -64,7 +64,7 @@ class InstitutionMedicalCenterService
 
         if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h, i, j, k')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            $qb->select('a, b, c, d, e, f, g, h, i, j, k, l')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
             ->leftJoin('a.institution', 'b')
             ->leftJoin('b.country', 'c')
             ->leftJoin('b.city', 'd')
@@ -75,6 +75,7 @@ class InstitutionMedicalCenterService
             ->leftJoin('a.media', 'i')
             ->leftJoin('a.logo', 'j')
             ->leftJoin('a.doctors', 'k')
+            ->leftJoin('k.specializations', 'l')
             ->where('a.slug = :centerSlug')
             ->andWhere('a.status = :status')
             ->setParameter('centerSlug', $slug)
@@ -367,7 +368,20 @@ class InstitutionMedicalCenterService
         }
         return $isOpen;
     }
-    
+    static public function getFirstInstitutionSpecialization($institutionMedicalCenter)
+    {
+    	$specialization = null;
+    	$institutionSpecializations = $institutionMedicalCenter->getInstitutionSpecializations();
+
+	    if(is_object($institutionSpecializations)) {
+	        $specialization = $institutionSpecializations->first();
+	    } else {
+	        $specialization = isset($institutionSpecialization[0]) ? $institutionSpecialization[0] : null;
+	    }
+
+    	return $specialization;
+    }
+
     public function getCountByInstitution(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);

@@ -1,22 +1,27 @@
 <tr class="ancillaryancillaryServices_row">
-	<td>{{ ancillaryService.name |title }}</td>
+	<td>{{ each.name |title }}</td>
 	<td>
-	    {% if (_isSelected is defined and _isSelected ) %}
-	
-	        <div class="post-toolbar treatment_action">
-				<i class="icon-minus" title="Delete"></i>
-				<a href="{{ path('admin_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'asId': ancillaryService.id } ) }}" onclick="Institution.removeAncillaryService($(this)); return false;" title="" >
-				    Delete Service
-			    </a>
-			</div>
-		{% else %}
-		    <div class="post-toolbar treatment_action">
-				<i class="icon-plus" title="Add"></i>
-				<a href="{{ path('admin_institution_ajaxaddAncilliaryService', {'institutionId' : institution.id, 'asId': ancillaryService.id } ) }}" onclick="Institution.addAncillaryService($(this)); return false;" title="" >
-				    Add Service
-			    </a>
-			</div>
-	    {% endif %}
-		
+	    {% set status = _isSelected is defined and _isSelected  ? {label: 'Delete', icon: 'icon-minus'} : {label: 'Add', icon: 'icon-plus'} %}
+         <div class="post-toolbar treatment_action">
+        	<i class="{{ status.icon }}" title="{{ status.label }}"></i>
+        	 {% if (_isSelected is defined and _isSelected ) %}
+        		 {% for property in properties %}
+        	        {% if property.value == each.id  %}
+        	        
+            		    <a href="{{ path('admin_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'id': property.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
+            			    {{ status.label }} Service
+            		    </a>
+            		    
+        	    	 {% endif %}
+        		 {% endfor %}  
+        	 {% else %}
+        	 
+        	    <a href="{{ path('admin_institution_ajaxaddAncilliaryService', {'institutionId' : institution.id, 'id': each.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
+        	        {{ status.label }} Service
+                </a>
+                
+            {% endif %}
+        </div>
 	</td>
 </tr>
+

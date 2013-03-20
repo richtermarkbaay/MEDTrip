@@ -1,0 +1,42 @@
+{% extends '::base.frontend.html.twig' %}
+
+{% block body %}
+    {% include 'HelperBundle:Test:links.html.twig' %}
+
+    Extends ::base.frontend.html.twig
+
+    <div id="ajaxSleep" style="display: none">
+    Initiating ajaxSleep... <br/><br/>
+    </div>
+
+    <div id="ajaxCalledAfter" style="display: none">
+    Ajax requests sent 2 seconds after... <br/><br/>
+    </div>
+
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    $('#ajaxSleep').toggle();
+
+    $.get("{{ path('helper_ajax_sleep') }}", function(response) {
+        $('#ajaxSleep').append(response.msg);
+    }, "json");
+
+    setTimeout(function() {
+        $('#ajaxCalledAfter').toggle();
+
+        $.get(
+            "{{ path('helper_ajax_called_afterwards') }}",
+            { hasSession: 1},
+            function(response) {
+                $('#ajaxCalledAfter').append(response.msg + '<br/>');
+        }, "json");
+
+        $.get("{{ path('helper_ajax_called_afterwards') }}", function(response) {
+            $('#ajaxCalledAfter').append(response.msg + '<br/>');
+        }, "json");
+    }, 2000);
+});
+</script>
+{% endblock %}

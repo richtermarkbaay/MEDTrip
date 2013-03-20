@@ -23,16 +23,21 @@ class InquiryType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $cityId = 0;
+        
+        $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
+        $builder->addEventSubscriber($subscriber);
+
     	$builder
-    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subjects')))))
+    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subject')))))
     		->add('firstName', 'text', array('error_bubbling' => false))
     		->add('lastName', 'text', array('error_bubbling' => false))
+    		->add('clinicName', 'text')
     		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
-    		->add('city','city_list')
+    		->add('city','city_list', array('empty_value' => 'Select city'))
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))
-    		->add('inquiryCheck', 'checkbox',array('error_bubbling' => false, 'virtual' => true, 'constraints' => array(new NotBlank(array('message' => 'Please agree to Terms of Use and Privacy Policy.')))))
+    		->add('captcha', 'captcha', array('label'=>'Please type the code *'))
     		;
     }
     

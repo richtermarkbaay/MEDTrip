@@ -17,12 +17,13 @@ use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
+use HealthCareAbroad\FrontendBundle\Controller\ResponseHeadersController;
 
 /**
  * TODO: Refactor whole class
  *
  */
-class FrontendController extends Controller
+class FrontendController extends ResponseHeadersController
 {
     private $resultsPerPage = 15;
 
@@ -438,11 +439,12 @@ class FrontendController extends Controller
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
-            'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId())
+            'includedNarrowSearchWidgets' => array('specialization', 'city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId()),
+            'featuredClinicParams' => array('countryId' => $country->getId())
         );
 
-        return  $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
+        return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
     public function searchResultsCitiesAction(Request $request)
@@ -464,10 +466,11 @@ class FrontendController extends Controller
             'city' => $city,
             'country' => $city->getCountry(),
             'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
+            'featuredClinicParams' => array('cityId' => $city->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
     public function searchResultsSpecializationsAction(Request $request)
@@ -496,10 +499,11 @@ class FrontendController extends Controller
             'treatmentId' => $termId,
             'specialization' => $specialization,
             'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
+            'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsSubSpecializationsAction(Request $request)
@@ -534,10 +538,11 @@ class FrontendController extends Controller
             'specialization' => $specialization,
             'subSpecialization' => $subSpecialization,
             'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
+            'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsTreatmentsAction(Request $request)
@@ -569,27 +574,57 @@ class FrontendController extends Controller
             'treatmentId' => $termId,
             'treatment' => $treatment,
             'includedNarrowSearchWidgets' => array('country', 'city'),
-            'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array()
+            'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
+            'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
 
-        return $this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters);
+        return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
 
     public function searchResultsRelatedAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
+        // FIXME: patch for fixing refresh issue
+        $session_key = \implode(':', $request->attributes->get('_route_params'));
+        if (empty($searchTerms) || \is_null($searchTerms)) {
+            // check if this has been previously accessed by this user
+            $searchTerms = $request->getSession()->get($session_key, null);
+            if (!$searchTerms) {
+                // no search terms in saved session for this related tag, redirect to homepage
+                return $this->redirect($this->generateUrl('frontend_main_homepage'));
+            }
+        }
+        else {
+            $request->getSession()->set($session_key, $searchTerms);
+        }
+
+
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        return $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
-                        'searchResults' => $searchResults,
-                        'searchLabel' => $request->get('tag', ''),
-                        'routeName' => 'frontend_search_results_related_terms',
-                        'paginationParameters' => array('tag' => $request->get('tag', '')),
-                        'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
-        ));
+        $response = null;
+        if ($searchResults->count()) {
+            $response = $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
+                'searchResults' => $searchResults,
+                'searchLabel' => $request->get('tag', ''),
+                'routeName' => 'frontend_search_results_related_terms',
+                'paginationParameters' => array('tag' => $request->get('tag', '')),
+                'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
+            ));
+
+            $response = $this->setResponseHeaders($response);
+        }
+        else {
+            $response = $this->render('SearchBundle:Frontend:noResults.html.twig', array(
+                'searchResults' => $searchResults,
+                'searchLabel' => $request->get('tag', ''),
+                'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
+            ));
+        }
+
+        return $response;
     }
 
     public function ajaxLoadTreatmentsAction(Request $request)

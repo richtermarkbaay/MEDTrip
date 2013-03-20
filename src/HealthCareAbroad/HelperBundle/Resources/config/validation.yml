@@ -22,9 +22,11 @@ HealthCareAbroad\HelperBundle\Entity\City:
 HealthCareAbroad\HelperBundle\Entity\FeedbackMessage:
     properties:
         name:
-            - NotBlank: {message: 'Name is required.'}
+            - NotBlank: {message: 'Please provide your name.'}
         emailAddress:
-            - NotBlank: {message: 'Email address is required.'}
-            - Email: {message: 'Please supply a valid email.'}   
+            - NotBlank: {message: 'Please provide your email address.'}
+            - Email: {message: 'The email address you have provided is not valid.'}   
         message:
-            - NotBlank: {message: 'Message is required.'}
+            - NotBlank: {message: "You've not written your message."}
+        country:
+            - NotBlank: {message: 'Please provide your country.' }

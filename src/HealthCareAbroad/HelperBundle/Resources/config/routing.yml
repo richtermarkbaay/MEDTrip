@@ -1,7 +1,7 @@
 HelperBundle_securedRoutes:
     resource: "@HelperBundle/Resources/config/routing_secured.yml"
     prefix:   /secured-utilities
-    
+
 helper_access_denied:
     pattern:  /helper/access-denied
     defaults: { _controller: HelperBundle:Default:error403 }
@@ -22,7 +22,31 @@ helper_specializationAccordionEntry:
     defaults: { _controller: HelperBundle:Default:getSpecializationAccordionEntry}
     requirements:
         _method: GET
-        
+
 helper_populate_imc_highlight:
     pattern:  /tools/populate_imc_highlight
     defaults: { _controller: HelperBundle:Default:populateClinicDescriptionHighlight }
+
+helper_baseline:
+    pattern: /symfony-test/baseline
+    defaults: { _controller: HelperBundle:Test:baseline }
+
+helper_baseline_with_resources:
+    pattern: /symfony-test/baseline-resources
+    defaults: { _controller: HelperBundle:Test:baselineResources }
+
+helper_frontend_base:
+    pattern: /symfony-test/frontend-base
+    defaults: { _controller: HelperBundle:Test:frontendBase }
+
+helper_ajax_test:
+    pattern: /symfony-test/ajax
+    defaults: { _controller: HelperBundle:Test:ajaxTest }
+
+helper_ajax_sleep:
+    pattern: /symfony-test/ajax-sleep
+    defaults: { _controller: HelperBundle:Test:ajaxSleep }
+
+helper_ajax_called_afterwards:
+    pattern: /symfony-test/called-afterwards
+    defaults: { _controller: HelperBundle:Test:ajaxCalledAfterwards }

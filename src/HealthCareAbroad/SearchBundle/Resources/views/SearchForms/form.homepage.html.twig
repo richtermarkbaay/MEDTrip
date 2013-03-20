@@ -8,7 +8,7 @@
         color: #FFFFFF!important;
     }
 </style>
-<form class="span12 search_box  form-inline broad_search_form" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
+<form class="{{ attr.class is defined ? attr.class : 'span12 search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <label>Search</label>
     <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
     <input type="hidden" name="treatment_id" id="treatment_id" />
@@ -18,11 +18,11 @@
     <button type="submit" class="btn">Let's Go</button>
     
     <div class="helper-link">
-        <a class="helper treatment-link" href="{{ path('frontend_treatment_list') }}"> View all specializations</a>
-        <a class="helper white tiny destination-link" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
+        <a class="helper {{ attr.error is defined ? 'treatment-link2' : 'treatment-link' }}" href="{{ path('frontend_treatment_list') }}"> View all specializations</a>
+        <a class="helper white tiny {{ attr.error is defined ? 'destination-link2' : 'destination-link' }}" href="{{ path('frontend_destination_list') }}"> View all destinations</a>
         
-        <div class="popup treatments row-fluid">
-            <button id="treatments_dropdown_button" data-toggle="dropdown" class="search_dropdown_button btn text-left small default btn-pop">
+        <div class="popup row-fluid {{ attr.error is defined ? 'treatments2' : 'treatments' }}">
+            <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right"></span>
             </button>
             <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
@@ -30,7 +30,7 @@
             </div>
         </div>
         
-        <div class="popup destinations row-fluid">
+        <div class="popup row-fluid {{ attr.error is defined ? 'destinations2' : 'destinations' }}">
             <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down pull-right"></span>
             </button>

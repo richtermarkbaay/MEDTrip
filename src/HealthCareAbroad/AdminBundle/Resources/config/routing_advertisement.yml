@@ -5,9 +5,17 @@ admin_advertisement_index:
         _method:  GET
 
 admin_advertisement_add:
-    pattern:  /admin/advertisement/add
-    defaults: { _controller: AdminBundle:Advertisement:add }
+    pattern:  /admin/advertisement/add-step1
+    defaults: { _controller: AdminBundle:Advertisement:add, step: 1}
     requirements:
+        _method: GET
+
+admin_advertisement_addStep2:
+    pattern:  /admin/advertisement/add-step2
+    defaults: { _controller: AdminBundle:Advertisement:add, step: 2}
+    requirements:
+        institutionId: \d+
+        advertisementTypeId: \d+
         _method: GET
 
 admin_advertisement_create:

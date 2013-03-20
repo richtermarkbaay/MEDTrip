@@ -22,7 +22,14 @@
 	%}
 
     <div class="upper_box row">
-        <h3 class="span6">{{ highlight.institution.name }}</h3><br>
+        <h3 class="span6">
+			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+    		        statisticsDataObject: highlight,
+    		        link: { url: institutionUrl, html: highlight.institution.name }
+			} %}
+        </h3>
+
+        <br>
         <h5 class="span6">{{ highlight.institution.city.name }}, {{ highlight.institution.country.name }}</h5>
     </div>
 	
