@@ -32,24 +32,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class DefaultController extends ResponseHeadersController
 {
     private $resultsPerPage = 15;
 
     public function indexAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.html.twig');
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
     }
 
-    public function renderNewsletterFormAction()
-    {
-        $newsletterSubscriber = new NewsletterSubscriber();
-        $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+//     public function renderNewsletterFormAction()
+//     {
+//         $newsletterSubscriber = new NewsletterSubscriber();
+//         $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
 
-        return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
-                        'subscribeNewsletterForm' => $form->createView()
-        ));
-    }
+//         return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
+//                         'subscribeNewsletterForm' => $form->createView()
+//         ));
+//     }
 
     public function treatmentListAction()
     {
@@ -57,15 +57,43 @@ class DefaultController extends Controller
         $params['specializations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization();
         //$params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
 
-        return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listTreatments.html.twig', $params));
     }
 
     public function destinationListAction()
     {
-        $params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+        //$params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
+        $params['countries'] = $this->get('services.terms')->getActiveCountriesWithCities();
 
-        return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listDestinations.html.twig', $params));
     }
+
+    public function subscribeNewsletterAction(Request $request)
+    {
+        $mailChimp = $this->get('rezzza.mail_chimp.client');
+
+        //var_dump($mailChimp->ping()); exit;
+        $subscriber = $request->get('newsletter_subscriber');
+        $email = $subscriber['email'];
+
+        //TODO: externalize
+        $listId = '6fb06f3765';
+        $mailChimp->listSubscribe($listId, $email);
+
+        $response = array();
+        if ($mailChimp->errorCode) {
+            // echo "\tCode=".$api->errorCode."\n";
+            // echo "\tMsg=".$api->errorMessage."\n";
+            $response['success'] = 0;
+            $response['message'] = 'An error occurred while processing your request. Please try again.';
+        } else {
+            $response['success'] = 1;
+            $response['message'] = 'Thank you! Please check your email to confirm your subscription.';
+        }
+
+        return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
+    }
+
 
     /*
      * Newsletter subscribe
@@ -175,7 +203,7 @@ class DefaultController extends Controller
                         'specializationId' => $specialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountrySubSpecializationAction(Request $request)
@@ -207,7 +235,7 @@ class DefaultController extends Controller
                         'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountryTreatmentAction(Request $request)
@@ -240,7 +268,7 @@ class DefaultController extends Controller
                         'specializationId' => $treatment->getSpecialization()->getId(),
                         'treatmentId' => $treatment->getId())));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySpecializationAction(Request $request)
@@ -272,7 +300,7 @@ class DefaultController extends Controller
                         'specializationId' => $specialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySubSpecializationAction(Request $request)
@@ -308,7 +336,7 @@ class DefaultController extends Controller
                         'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCityTreatmentAction(Request $request)
@@ -341,7 +369,7 @@ class DefaultController extends Controller
                         'treatmentId' => $treatment->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     private function buildCookie(array $values)
@@ -401,35 +429,52 @@ class DefaultController extends Controller
         throw $this->createNotFoundException("Only supports AJAX request");
     }
 
-    public function ajaxSendErrorReportAction(){
-        $output = array();
-        $request = $this->getRequest();
-        $em = $this->getDoctrine()->getEntityManager();
+    /**
+     *
+     * @throws \Exception 500
+     */
+    public function call500ExcemptionAction(){
 
+        throw new \Exception('Something went wrong!');
+    }
+
+    /**
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxSendErrorReportAction(Request $request){
+
+        if('POST' != $request->getMethod()) {
+            return new Response("Save requires POST method!", 405);
+        }
         $errorReport = new ErrorReport();
-        $form = $this->createForm(new ErrorReportFormType(), $errorReport);
+        $form = $this->createForm(New ErrorReportFormType(), $errorReport);
+        $form->bind($request);
 
-        if ($request->isMethod('POST')) {
-             $form->bind($request);
-             if ($form->isValid()) {
-                try {
-                    $errorReport->setLoggedUserId(0);
-                    $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
-                    $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
-                    $em->persist($errorReport);
-                    $em->flush();
+        if ($form->isValid()) {
+                $em = $this->getDoctrine()->getEntityManager();
+                $errorReport->setLoggedUserId(0);
+                $errorReport->setStatus(ErrorReport::STATUS_ACTIVE);
+                $errorReport->setFlag(ErrorReport::FRONTEND_REPORT);
+                $em->persist($errorReport);
+                $em->flush();
 
-                    $output = "Your report has been submitted. Thank you.";
-                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        }
+        else {
+            $errors = array();
+            $form_errors = $this->get('validator')->validate($form);
 
-                }
-                catch(\Exception $e) {
-                    $response = new Response('Error: '.$e->getMessage(), 500);
-                }
+            foreach ($form_errors as $_err) {
+                $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
-            else {
-                $response = new Response('Form error'.$e->getMessage(), 400);
+
+            $captchaError = $form->get('captcha')->getErrors();
+            if(count($captchaError)) {
+                $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
+            $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
 
         return $response;

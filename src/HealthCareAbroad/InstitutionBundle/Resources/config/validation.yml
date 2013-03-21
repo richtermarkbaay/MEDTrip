@@ -31,26 +31,32 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
 HealthCareAbroad\AdminBundle\Entity\Inquiry:
     properties:
         firstName:
-            - NotBlank: {message: 'First Name is required.'}
+            - NotBlank: {message: 'Please provide your first name.'}
         lastName:
-            - NotBlank: {message: 'Last Name is required.'}
+            - NotBlank: {message: 'Please provide your last name.'}
         email:
-            - NotBlank: {message: 'Email Address is required.'}
-            - Email: {message: 'Please supply a valid email address.'}   
+            - NotBlank: {message: 'Please provide your email address.'}
+            - Email: {message: 'The email address you have provided is not valid.'}   
         message:
-            - NotBlank: {message: 'Message is required.'}
-        inquirySubject:
-            - NotBlank: {message: 'Inquiry Subject is required.'}
+            - NotBlank: {message: "You've not written your message."}
+
+HealthCareAbroad\AdminBundle\Entity\ErrorReport:
+    properties:
+        details:
+            - NotBlank: {message: "You've not written your message."}
             
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     properties:
         inquirer_name:
-            - NotBlank: {message: 'Inquirer Name is required.'}
+            - NotBlank: {message: 'Please provide your name.'}
         inquirer_email:
-            - NotBlank: {message: 'Inquirer Email is required.'}
-            - Email: {message: 'Please supply a valid email.'}   
+            - NotBlank: {message: 'Please provide your email address.'}
+            - Email: {message: 'The email address you have provided is not valid.'}   
         message:
-            - NotBlank: {message: 'Inquirer Message is required.'}
+            - NotBlank: {message: "You've not written your message."}
+        country:
+            - NotBlank: {message: 'Please provide your country'}
+        
         
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
     properties:

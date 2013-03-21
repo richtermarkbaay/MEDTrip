@@ -48,12 +48,13 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+//             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new JMS\AopBundle\JMSAopBundle(),
             new JMS\DiExtraBundle\JMSDiExtraBundle($this),
             new JMS\SecurityExtraBundle\JMSSecurityExtraBundle(),
             new Stfalcon\Bundle\TinymceBundle\StfalconTinymceBundle(),
             //new FOQ\ElasticaBundle\FOQElasticaBundle(),
+            new Rezzza\MailChimpBundle\RezzzaMailChimpBundle(),
             new HealthCareAbroad\PagerBundle\PagerBundle(),
             new HealthCareAbroad\AdminBundle\AdminBundle(),
             new HealthCareAbroad\UserBundle\UserBundle(),
@@ -70,12 +71,13 @@ class AppKernel extends Kernel
             new HealthCareAbroad\DoctorBundle\DoctorBundle(),
             new HealthCareAbroad\TermBundle\TermBundle(),
             new HealthCareAbroad\StatisticsBundle\StatisticsBundle(),
+            new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+//             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 
             if ($this->getEnvironment() === 'dev') {
                 $bundles[] = new JMS\DebuggingBundle\JMSDebuggingBundle($this);

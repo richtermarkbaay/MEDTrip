@@ -2,49 +2,32 @@
 {% set selectedTab = 'manage_account'%}
 
 {% block content %}
+<div id="content" class="container">
+     <ul class="breadcrumb">
+        <li>
+            <a href="#"><i class="icon-home"></i></a> <span class="divider"> / </span>
+        </li>
+        <li class="active">
+            Manage Clinic
+        </li>
+    </ul>
 
-<section id="content">
-	<div class="container">
-		<div class="row">
-			<div class="span9">
-				<h1>
-					<span>Manage Account Profile</span>
-				</h1>
-    		<div class="accountsettings">
-    			<div class="accordion" id="accordion2">
-    				<div class="accordion-group">
-    					<div class="accordion-heading">
-    						<h5>Personal Information</h5>
-    						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne"> <i class="icon-pencil" title="Edit"></i><small>Edit</small></a>
-    					</div>
-    					<div id="collapseOne" class="accordion-body collapse">
-    						 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
-    					</div>
-    				</div>
-    				<div class="accordion-group">
-    					<div class="accordion-heading">
-    						<h5>Login Information</h5>
-    						<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo"><span><i class="icon-pencil" title="Edit"></i><small>Edit</small></span></a>
-    					</div>
-    					 
-    					<div id="collapseTwo" class="accordion-body collapse">
-    						<div class="accordion-inner">
-                               {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
-    						</div>
-    					</div>
-    				</div>
-    			</div>
-    		</div>
-                
-			</div>
-			<!--End of span9-->
-			     {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-			</div>
-		<!--End of row-->
-	</div>
-	<!--End of container-->
-</section>
-
+	<div class="row">
+		<div class=span8>
+			<section class="section account-info">
+				<h2>Personal Information</h2>
+				 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
+			</section>
+			<section class="section institution-info">
+    			<h2>Login Information</h2>
+                   {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
+            </section>
+        </div>
+		     {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
+		     
+     </div>
+	<!--End of row-->
+</div>
 {% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
 
 {% endblock %}

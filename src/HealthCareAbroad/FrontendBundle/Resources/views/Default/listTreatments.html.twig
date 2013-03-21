@@ -1,7 +1,7 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block content %}
-
+<div id="back-top"><div class="backtotop img-rounded"><a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a></div></div>
     <div id="details" class="row">
         <div id="main_content" class="span10">
             <header class="filters">
@@ -62,4 +62,30 @@
 
     </div>
 <!--End of content-->
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+(function($){
+    $(function(){
+    // hide #back-top first
+    $("#back-top").hide();
+    
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 100) {
+                $('#back-top').fadeIn();
+            } else {
+                $('#back-top').fadeOut();
+            }
+        });
+        // scroll body to 0px on click
+        $('#back-top a').click(function () {
+            $('body,html').animate({
+                scrollTop: 0
+            }, 800);
+            return false;
+        });
+    });
+})(jQuery);
+</script>
 {% endblock %}

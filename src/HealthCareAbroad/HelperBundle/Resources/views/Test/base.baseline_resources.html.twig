@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}HealthCareAbroad{% endblock %}</title>
+        <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
+
+        {% block stylesheets %}
+
+            <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/frontend/hca.min.css') }}" rel="stylesheet"/>
+            <!--<link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>-->
+
+        {% endblock %}
+
+        {#-- added temporary inline styles  --#}
+        {% block inlinestyle %}
+        <style type="text/css">
+        .captcha input{
+            float: left !important;
+            margin-right:10px !important;
+            width: 100px !important;
+        }
+        .captcha img{
+            margin-right: 10px;
+        }
+        .modal .modal-body form select.error {
+            border: 1px solid #CC0000;
+            margin-bottom: 0;
+        }
+            </style>
+        {% endblock %}
+
+        {#--
+        {% stylesheets
+            'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
+            'css/bootstrap.min.css'
+            'css/frontend/hca.min.css'
+            output='css/compiled-admin.css'
+
+
+        %}
+            <link href="{{ asset_url }}" rel="stylesheet"/>
+        {% endstylesheets %}
+        -- #}
+        <link href="{{ asset('http://fonts.googleapis.com/css?family=Muli') }}" rel="stylesheet"/>
+
+<!-- JS IMPORTANT NOTE: Please do NOT rearange the include Ordering. It should be:
+            'js/jquery/jquery-1.8.2.js'
+            'js/bootstrap.min.js'
+            'js/jquery/jquery-ui-1.9.0.custom.min.js'
+            'bundles/statistics/js/frontend.js'
+        -->
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery/jquery-ui-1.10.1.custom.min.js"></script>
+        <script type="text/javascript" src="/bundles/statistics/js/frontend.js"></script>
+
+       {#--
+        {% javascripts
+            'js/jquery/jquery-1.8.2.js'
+            'js/bootstrap.min.js'
+            'js/jquery/jquery-ui-1.10.1.custom.min.js'
+            'bundles/statistics/js/frontend.js'
+            output='js/compiled-frontend.js'
+        %}
+        <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+        -- #}
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-39024795-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+    </head>
+
+    <body>
+        {% block body %}{% endblock %}
+    </body>
+</html>

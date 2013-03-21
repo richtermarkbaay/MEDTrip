@@ -8,7 +8,7 @@ var InstitutionUserProfile = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.accordion-inner').find('form');
+        _form = _button.parents('form');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
@@ -18,10 +18,10 @@ var InstitutionUserProfile = {
             success: function(response) {
                 switch(_form.attr('id')){
                     case 'editProfile':
-                        $('#collapseOne').html(response.html);
+                        $('.account-info').html(response.html);
                     	break;
                     case 'changePassword':
-                        $('#collapseTwo').html(response.html);
+                        $('.institution-info').html(response.html);
                     	break;
                 } 
                 // Display Modal after submit

@@ -17,12 +17,24 @@
 
         {% endblock %}
 
+        {#-- added temporary inline styles  --#}
+        {% block inlinestyle %}
+        <style type="text/css">
+		.modal .modal-body form select.error {
+            border: 1px solid #CC0000;
+            margin-bottom: 0;
+        }	
+    		</style>
+        {% endblock %}
+       
         {#--
         {% stylesheets 
 			'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
 			'css/bootstrap.min.css'
 			'css/frontend/hca.min.css'
 			output='css/compiled-admin.css'
+		
+			
         %}
             <link href="{{ asset_url }}" rel="stylesheet"/>
         {% endstylesheets %}
@@ -52,7 +64,19 @@
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
         -- #}
+        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-39024795-1']);
+          _gaq.push(['_trackPageview']);
         
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        
+        </script>
     </head>
 
 

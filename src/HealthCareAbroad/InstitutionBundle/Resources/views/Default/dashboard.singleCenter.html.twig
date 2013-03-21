@@ -4,23 +4,25 @@
 
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-			<div class="maincontent">
+			<div class="row">
 			{% include '::notice.admin.html.twig' %}
-				<div class="span9">
-					<h1>
-						<span>Getting Started with HEALTH CARE ABROAD</span>
-					</h1>
-					
-					{% include 'InstitutionBundle:Widgets:dashboard.completedSteps.html.twig' with {
-					dashboardCompletedSteps: [
-					    {label: 'Add Your Contact Information', description: 'Please provide the correct phone numbers and email addresses to make sure you don\'t miss any inquiries.', image: asset('images/institution/phone_ph.png'), done: true },
-					    {label: 'Add Your Location', description: 'Please provide the correct phone numbers and email addresses to make sure you don\'t miss any inquiries.', image: asset('images/institution/location_ph.png'), done: true },
-					    {label: 'Add Your Logo', description: 'This helps with branding and enhances your listing. Users are more likely to click on a complete profile.', image: asset('images/institution/logo_ph.png') },
-					    {label: 'Manage Institution Awards and Certifications', description: 'List your credentials here to show you are a reputable institution.', image: asset('images/institution/awards_ph.png') },
-					    {label: 'Write Your Clinic Profile', description: 'List your credentials here to show you are a reputable institution.', image: asset('images/institution/institution_ph.png') }
-					]} %}
-					
-				</div>
+                <div class="span8">
+                    <section class="section account-info">
+                    <h2> Latest Activity </h2>
+                        <div class="row-fluid">
+                            <div class="span12 activity-feeds">
+                				{% include 'InstitutionBundle:Widgets:dashboard.completedSteps.html.twig' with {
+                				dashboardCompletedSteps: [
+                				    {label: 'Your', description: 'has been updated.', image: asset('images/institution/default_clinic.png'), link: 'Profile', time: '10' },
+                				    {label: '', description: 'has been approved.', image: asset('images/institution/default_clinic.png'), link: 'Listing#1', time: '10'},
+                				    {label: 'You received', description: 'from someone@gmail.com.', image: asset('images/institution/default_clinic.png'), link: 'Listing#2', time: '10' },
+                				    {label: 'You received', description: 'from someone@gmail.com.', image: asset('images/institution/default_clinic.png'), link: 'inquiry#1', time: '10'  },
+                				    {label: 'New account created. See', description: 'for instructions on how to complete your profile.', image: asset('images/institution/default_clinic.png'), link: 'Notifications', time: '10'  }
+                				]} %}
+                		        </div>
+                		    </div>
+                	</section>
+                </div>
 				<!--End of span9-->
 			    
 			    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}

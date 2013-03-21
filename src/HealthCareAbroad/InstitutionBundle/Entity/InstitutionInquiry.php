@@ -21,10 +21,25 @@ class InstitutionInquiry
     private $inquirer_email;
 
     /**
+     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+    
+    /**
      * @var text $message
      */
     private $message;
 
+    /**
+     * @var string $remoteAddress
+     */
+    private $remoteAddress;
+    
+    /**
+     * @var string $httpUseAgent
+     */
+    private $httpUseAgent;
+    
     /**
      * @var datetime $dateCreated
      */
@@ -101,6 +116,28 @@ class InstitutionInquiry
     }
 
     /**
+     * Set country
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return InstitutionInquiry
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+        return $this;
+    }
+    
+    /**
+     * Get country
+     *
+     * @return HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+    
+    /**
      * Set message
      *
      * @param text $message
@@ -122,6 +159,50 @@ class InstitutionInquiry
         return $this->message;
     }
 
+    /**
+     * Set remoteAddress
+     *
+     * @param string $remoteAddress
+     * @return InstitutionInquiry
+     */
+    public function setRemoteAddress($remoteAddress)
+    {
+        $this->remoteAddress = $remoteAddress;
+        return $this;
+    }
+    
+    /**
+     * Get remoteAddress
+     *
+     * @return string
+     */
+    public function getRemoteAddress()
+    {
+        return $this->remoteAddress;
+    }
+    
+    /**
+     * Set httpUseAgent
+     *
+     * @param string $httpUseAgent
+     * @return InstitutionInquiry
+     */
+    public function setHttpUseAgent($httpUseAgent)
+    {
+        $this->httpUseAgent = $httpUseAgent;
+        return $this;
+    }
+    
+    /**
+     * Get httpUseAgent
+     *
+     * @return string
+     */
+    public function getHttpUseAgent()
+    {
+        return $this->httpUseAgent;
+    }
+    
     /**
      * Set dateCreated
      *

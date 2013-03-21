@@ -3,8 +3,10 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
+    {% if isHomePage is defined and isHomePage %}
+         {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
+     {% endif %}
     <div id="fixed_container">
-
         {% block header %}
             {% include 'FrontendBundle:Widgets:header.html.twig' %}
         {% endblock %}
@@ -30,8 +32,7 @@
     {{ outputInlineJavascript() | raw }}
     
     {# -- stats tracker stuff -- #}
-    
-    {% render 'StatisticsBundle:Tracker:showForm' %}
+    {{ render_frontend_statistics_tracker_form() |raw }}
     <script type="text/javascript">
     <!-- 
     (function($){
@@ -53,4 +54,6 @@
     //-->
     </script>
     {# -- end stats tracker stuff -- #}
+    
+    {{ render_javascript_files() | raw }}
 {% endblock %}

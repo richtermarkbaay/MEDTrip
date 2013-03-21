@@ -9,15 +9,15 @@ services:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
     #        # translatable sets locale after router processing
     #        - { name: kernel.event_listener, event: kernel.request, method: onLateKernelRequest, priority: -10 }
-    #        
+    #
 
     # Doctrine Extension listeners to handle behaviors
-    gedmo.listener.timestampable:
-        class: Gedmo\Timestampable\TimestampableListener
-        tags:
-            - { name: doctrine.event_subscriber, connection: default }
-        calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ]
+    #gedmo.listener.timestampable:
+    #    class: Gedmo\Timestampable\TimestampableListener
+    #    tags:
+    #        - { name: doctrine.event_subscriber, connection: default }
+    #    calls:
+    #        - [ setAnnotationReader, [ @annotation_reader ] ]
 
     gedmo.listener.sluggable:
         class: Gedmo\Sluggable\SluggableListener
@@ -25,17 +25,17 @@ services:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
-            
+
     gedmo.listener.tree:
         class: Gedmo\Tree\TreeListener
         tags:
             - { name: doctrine.event_subscriber, connection: default }
         calls:
             - [ setAnnotationReader, [ @annotation_reader ] ]
-            
+
     gedmo.listener.loggable:
         class: Gedmo\Loggable\LoggableListener
         tags:
             - { name: doctrine.event_subscriber, connection: logger }
         calls:
-            - [ setAnnotationReader, [ @annotation_reader ] ] 
+            - [ setAnnotationReader, [ @annotation_reader ] ]

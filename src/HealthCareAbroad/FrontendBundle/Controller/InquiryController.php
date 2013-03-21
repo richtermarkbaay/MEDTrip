@@ -46,8 +46,9 @@ class InquiryController extends Controller
     			else
     			{
     				$this->get('session')->setFlash('notice', "Unable to send inqueries!");
-    					
     			}
+    		} else {
+
     		}
     	}
     	
@@ -72,6 +73,8 @@ class InquiryController extends Controller
                 $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
             }
             $institutionInquiry->setInstitution($institution);
+            $institutionInquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
+            $institutionInquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
             $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionInquiry);
@@ -86,6 +89,12 @@ class InquiryController extends Controller
             foreach ($form_errors as $_err) {
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
+
+            $captchaError = $form->get('captcha')->getErrors();
+            if(count($captchaError)) {
+                $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
+            }
+            
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
     

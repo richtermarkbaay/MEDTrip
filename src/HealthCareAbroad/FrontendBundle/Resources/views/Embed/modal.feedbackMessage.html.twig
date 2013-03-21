@@ -1,10 +1,9 @@
 <!-- Feedback Modal -->
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'formId': 'feedbackForm'}} %}
     {% block modalBody %}
-     <div class="alert-box"></div>
+     
     <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
-        <div class="alert-error"></div>
-            {{ form_errors(feedbackForm) }}
+        <div class="alert-box"></div>
         <div class="name control-group row-fluid">
             <label for="{{ feedbackForm.children.name.vars.id }}" class="span3 pull-left">
                 <strong>{{ feedbackForm.children.name.vars.label }}</strong>
@@ -12,6 +11,15 @@
             
             {{ form_widget(feedbackForm.name)}}
         </div>
+         <div class="country control-group row-fluid">
+            <label for="{{ feedbackForm.children.country.vars.id }}" class="span3 pull-left">
+                <strong>{{ feedbackForm.children.country.vars.label }}</strong>
+            </label>
+            <div class="country-select">
+            {{ form_widget(feedbackForm.country) }}
+            </div>
+        </div>
+
         <div class="emailAddress control-group row-fluid">
             <label for="{{ feedbackForm.children.emailAddress.vars.id }}" class="span3 pull-left">
                 <strong>{{ feedbackForm.children.emailAddress.vars.label }}</strong>
@@ -19,10 +27,17 @@
             {{ form_widget(feedbackForm.emailAddress, { 'attr': {'placeholder': 'i.e you@domain.com'} }) }}
         </div>
         <div class="message control-group row-fluid">
-            <label for="{{ feedbackForm.children.message.vars.id }}">
+            <label for="{{ feedbackForm.children.message.vars.id }}" >
                 <strong>{{ feedbackForm.children.message.vars.label }}</strong>
             </label>
               {{ form_widget(feedbackForm.message, { 'attr': {'rows': 5} }) }}
+        </div>
+        
+        <div class="captcha control-group row-fluid" >
+            <label for="{{ feedbackForm.children.captcha.vars.id }}" class="pull-left">
+                <strong>{{ feedbackForm.children.captcha.vars.label }}</strong>
+            </label>
+              {{ form_widget(feedbackForm.captcha) }}
         </div>
         {{ form_rest(feedbackForm) }}    
     </form>

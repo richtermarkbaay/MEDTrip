@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <!-- meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" -->
+
+        <title>HealthCareAbroad &raquo; Healthcare Abroad</title>
+        <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+
+            <link href="/css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css" rel="stylesheet"/>
+            <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+            <link href="/css/frontend/hca.min.css" rel="stylesheet"/>
+            <!--<link href="/css/frontend/handheld.css?v=1" media="handheld" rel="stylesheet"/>-->
+
+                <style type="text/css">
+        .captcha input{
+            float: left !important;
+            margin-right:10px !important;
+            width: 100px !important;
+        }
+        .captcha img{
+            margin-right: 10px;
+        }
+        .modal .modal-body form select.error {
+            border: 1px solid #CC0000;
+            margin-bottom: 0;
+        }
+            </style>
+                <link href="http://fonts.googleapis.com/css?family=Muli" rel="stylesheet"/>
+
+<!-- JS IMPORTANT NOTE: Please do NOT rearange the include Ordering. It should be:
+            'js/jquery/jquery-1.8.2.js'
+            'js/bootstrap.min.js'
+            'js/jquery/jquery-ui-1.9.0.custom.min.js'
+            'bundles/statistics/js/frontend.js'
+        -->
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/jquery/jquery-ui-1.10.1.custom.min.js"></script>
+        <script type="text/javascript" src="/bundles/statistics/js/frontend.js"></script>        <script type="text/javascript">
+
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', 'UA-39024795-1']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+
+        </script>
+    </head>
+
+
+    <body>
+<ul>
+    <li><a href="/test/plaintext.html">Plaintext</a></li>
+    <li><a href="/test/institution.html">Institution markup</a></li>
+    <li><a href="/test/database.php">Page with 50 Database Queries</a></li>
+    <li><a href="/test/multiple-ajax.php">Multiple ajax</a></li>
+    <li><a href="/symfony-test/baseline">Baseline</a></li>
+    <li><a href="/symfony-test/baseline-resources">Baseline with resources</a></li>
+    <li><a href="/symfony-test/frontend-base">Frontend base</a></li>
+    <li><a href="/symfony-test/ajax">Symfony with multiple ajax requests</a></li>
+</ul>
+        <br/><br/>
+        Source copied from institution page
+
+            <div id="fixed_container">
+
+                    <header id="header"> <!--Header-->
+    <div class="container">
+        <div class="beta-banner">
+            <span class="message">Currently in BETA</span>
+        </div>
+        <a class="logo span5" href="/index.html">
+            <h1 class="title">HealthcareAbroad</h1>
+        </a>
+
+        <nav class="menu">
+            <ul>
+                <!-- li><a href="#">Search</a></li -->
+                <li class="">
+                    <a href="/treatments.html">Treatments</a>
+                </li>
+
+                <li class="">
+                    <a href="/destinations.html">Destinations</a>
+                </li>
+            </ul>
+        </nav>
+
+    </div>
+</header> <!--End of header-->
+
+        <!-- Show Breadcrumbs -->
+        <div id="breadcrumbs" class="container">
+    <ul class="breadcrumb row">
+        <li><a href="/index.html"><span class="home"></span></a></li>
+                                    <li class="active"><a href="/destination/Brazil">Brazil</a>
+                </li>
+                                                <li class="active"><a href="/destination/brazil/sao-paulo">São Paulo</a>
+                </li>
+                                                <li><a>Hospital for the Heart / Hospital do Coração</a>
+                </li>
+                        </ul>
+</div>
+
+        <!-- End of Breadcrumbs -->
+
+
+        <div id="content" class="container  content">
+
+    <!-- Set map coordinates by LatLong or Address -->
+
+
+
+        <div id="hospital-banner" class="row">
+    <div class="top_box span12">
+        <div class="description">
+            <p>Hospital for the Heart / Hospital do Coração</p>
+        </div>
+
+                    <img class="institution_picture" src="/images/frontend/default-hospital-featured-image.png" alt="institution"/>
+                <a><img src="/images/frontend/default-hospital-logo.png" class="institution_logo" /></a>
+
+    </div>
+    <div class="bottom_box content span12">
+        <div class="address media span4 offset2">
+            <span class="address-icon pull-left media-object img-circle"></span>
+            <p>
+                Rua Desembargador Eliseu Guilherme 147 Paraiso
+                <br/>
+                04004-030, São Paulo, Brazil
+            </p>
+        </div>
+        <ul class="contact_now span5">
+                            <li>
+                    <a class="call btn orange" href="#" rel="tooltip" data-contact-number="+55-11-3053-6611" >Call Us</a>
+                </li>
+
+                            <li>
+                    <a class="email btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">Email</a>
+                    <!-- Modal Multiple Institution Inquiry -->
+                    <div id="modal_multiple_institution_inquiry_form" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">Email Hospital for the Heart / Hospital do Coração</h3>
+    </div>
+
+    <div class="modal-body" style="">
+    <div class="alert-box"></div>
+    <form class="form-horizontal"  action="/hospital/132/inquiry" id="institution_inquiry_form" method="POST">
+        <div class="inquirer_name control-group row-fluid">
+            <label for="institutionInquiry_inquirer_name" class="span3 pull-left">
+                <strong>Your Name</strong>
+            </label>
+            <input type="text" id="institutionInquiry_inquirer_name" name="institutionInquiry[inquirer_name]" required="required" />
+        </div>
+        <div class="country control-group row-fluid">
+            <label for="institutionInquiry_country" class="span3 pull-left">
+                <strong>Your Country</strong>
+            </label>
+            <div class="country-select">
+            <select id="institutionInquiry_country" name="institutionInquiry[country]" required="required"><option value="">Select Country</option><option value="101">Afghanistan</option><option value="165">Barbados</option><option value="90">Brazil</option><option value="128">Costa Rica</option><option value="13">France</option><option value="15">Germany</option><option value="6">India</option><option value="7">Malaysia</option><option value="36">Mexico</option><option value="226">Norfolk Island</option><option value="131">Panama</option><option value="11">Philippines</option><option value="84">Singapore</option><option value="8">South Korea</option><option value="5">Thailand</option><option value="44">Turkey</option></select>
+            </div>
+        </div>
+        <div class="inquirer_email control-group row-fluid">
+            <label for="institutionInquiry_inquirer_email" class="span3 pull-left">
+                <strong>Your Email Address</strong>
+            </label>
+            <input type="email" id="institutionInquiry_inquirer_email" name="institutionInquiry[inquirer_email]" required="required" />
+        </div>
+
+        <div class="message control-group row-fluid">
+            <label for="institutionInquiry_message" >
+                <strong>Enter Your Message</strong>
+            </label>
+            <textarea id="institutionInquiry_message" name="institutionInquiry[message]" required="required"    rows="5"></textarea>
+        </div>
+
+        <div class="captcha control-group row-fluid">
+            <label for="institutionInquiry_captcha" class="span3 pull-left">
+                <strong>Please type the code</strong>
+            </label>
+            <img id="captcha_513951f25e138" src="/generate-captcha/gcb_captcha" alt="" title="captcha" width="150" height="50" /><script type="text/javascript">
+        function reload_captcha_513951f25e138() {
+            var img = document.getElementById('captcha_513951f25e138');
+            img.src = '/generate-captcha/gcb_captcha?n=' + (new Date()).getTime();
+        }
+    </script><a class="captcha_reload" href="javascript:reload_captcha_513951f25e138();">Renew</a><input type="text" id="institutionInquiry_captcha" name="institutionInquiry[captcha]" required="required"    rows="4" />
+        </div>
+        <input type="hidden" id="institutionInquiry__token" name="institutionInquiry[_token]" value="1824e4345f115f8a062c3d30e6a26af7d1d06e01" />
+
+    </form>
+
+    </div>
+     <div class="modal-footer button-wrapper">
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-loader-text="Processing..." id="modal_institution_inquiry_submitButton" class="btn btn-primary orange">Send Message</button>
+        </div>
+    <!-- end modal-body -->
+</div>
+ <!-- End Modal Clinic Address -->                   <!-- end Modal Multiple Institution Inquiry -->
+                </li>
+
+                            <!--li><a class="website btn orange" href="http://www.hcor.com.br/" target="_blank">Visit Website</a></li-->
+
+
+        </ul>
+    </div>
+</div>
+
+
+<div id="details" class="row">
+    <div class="tab-content span8">
+        <ul class="nav nav-tabs" id="institutionTab">
+            <li class="active"><a href="#overview">OVERVIEW</a></li>
+                            <li><a href="#doctors">DOCTORS</a></li>
+                    </ul> <!--Twitter bootstrap Tabs-->
+
+        <!-- Tabs Content -->
+        <div id="overview" class="tab-pane active">
+            <div>
+    HCor - Hospital do Cora&ccedil;&atilde;o (Hospital for the Heart) is a specialized hospital providing treatment of cardiovascular diseases, including 37 other medical specialities: orthopedics, traumatology, gastroenterology, oncology, neurology, sports medicine, nutriology, diagnostic imaging and more. <br /><br />HCor occupies three adjoined buildings with 216 beds: 40 are intensive care for children and adults, 13 for the Coronary Department and 8 for emergencies. HCor has Joint International (JCI) accreditation, a certificate of accreditation with total conformity of 98.33% out of the 1,138 measurement elements, meeting quality standards focusing on patient and management.
+</div>
+
+
+    <div class="two-col-description row">
+                <div class="services span4">
+            <h5 class="services-heading">Services</h5>
+            <ul class="default-list"><li>Internet</li><li>Food &amp; Beverage Services</li><li>Flower &amp; Gift Shop</li><li>Information Center</li></ul>
+        </div>
+
+                    <div class="awards span4">
+                <h5 class="awards-heading">Awards &amp; Accreditations</h5>
+                <ul class="default-list"><li>Hospital Accreditation by the Joint Commission International (JCI)</li></ul>
+            </div>
+            </div>
+
+
+<div id="clinics">
+    <h5 class="clinics-heading">CLINICS</h5>
+    <div id="content">
+        <ul class="thumbnails">
+                            <li class="thumbnail">
+                    <a href="/hospital-for-the-heart-hospital-do-coracao/clinic/orthopedics-5">
+
+                                                    <img src="/images/frontend/default-clinic-logo.png" class="clinic-logo default" alt="Orthopedics"/>
+                                                <span>Orthopedics</span>
+                    </a>
+                </li>
+                            <li class="thumbnail">
+                    <a href="/hospital-for-the-heart-hospital-do-coracao/clinic/gastroenterology-and-digestive-tract-surgery">
+
+                                                    <img src="/images/frontend/default-clinic-logo.png" class="clinic-logo default" alt="Gastroenterology and Digestive Tract Surgery"/>
+                                                <span>Gastroenterology and Digestive Tract Surgery</span>
+                    </a>
+                </li>
+                            <li class="thumbnail">
+                    <a href="/hospital-for-the-heart-hospital-do-coracao/clinic/cardiovascular-surgery-6">
+
+                                                    <img src="/images/frontend/default-clinic-logo.png" class="clinic-logo default" alt="Cardiovascular Surgery"/>
+                                                <span>Cardiovascular Surgery</span>
+                    </a>
+                </li>
+                            <li class="thumbnail">
+                    <a href="/hospital-for-the-heart-hospital-do-coracao/clinic/plastic-surgery-14">
+
+                                                    <img src="/images/frontend/default-clinic-logo.png" class="clinic-logo default" alt="Plastic Surgery"/>
+                                                <span>Plastic Surgery</span>
+                    </a>
+                </li>
+                            <li class="thumbnail">
+                    <a href="/hospital-for-the-heart-hospital-do-coracao/clinic/urology-11">
+
+                                                    <img src="/images/frontend/default-clinic-logo.png" class="clinic-logo default" alt="Urology"/>
+                                                <span>Urology</span>
+                    </a>
+                </li>
+                    </ul>
+    </div>
+</div>
+
+        </div>
+
+                    <div id="doctors" class="tab-pane one-col-description borderless">
+                    <ul class="thumbnails">
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Alberto M.  Abussamra Mendes </a>
+            <p class="media-body">
+                                    Orthopedic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Sergio  Augusto Xavier </a>
+            <p class="media-body">
+                                    Orthopedic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Alexandre  Adorno Sattin </a>
+            <p class="media-body">
+                                    Orthopedic Surgery,
+                                    Sports medicine
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Alexandre  de Christo Viegas </a>
+            <p class="media-body">
+                                    Orthopedic Surgery,
+                                    Sports medicine
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Eduardo  Fairbanks Von Vhlendorff </a>
+            <p class="media-body">
+                                    Orthopedic Surgery,
+                                    Sports medicine
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Alberto Luiz M. Meyer </a>
+            <p class="media-body">
+                                    Gastroenterology,
+                                    General Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Leandro  Perandin Castro </a>
+            <p class="media-body">
+                                    Gastroenterology,
+                                    General Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Mateus  Antunes Nogueira </a>
+            <p class="media-body">
+                                    Gastroenterology,
+                                    General Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Thiago  Costa Ribeiro </a>
+            <p class="media-body">
+                                    Gastroenterology,
+                                    General Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Ivan  Cecconello </a>
+            <p class="media-body">
+                                    Gastroenterology,
+                                    General Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Adib  Domingos Jatene </a>
+            <p class="media-body">
+                                    Cardiothoracic Surgery,
+                                    Vascular Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Alexandre  Ueb </a>
+            <p class="media-body">
+                                    Cardiothoracic Surgery,
+                                    Vascular Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Ana Maria  Rocha Pinto e Silva </a>
+            <p class="media-body">
+                                    Cardiothoracic Surgery,
+                                    Vascular Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Anderson  Benicio </a>
+            <p class="media-body">
+                                    Cardiothoracic Surgery,
+                                    Vascular Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Antonio Flavio S. Almeida </a>
+            <p class="media-body">
+                                    Cardiothoracic Surgery,
+                                    Vascular Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. ALEXANDRO  RODRIGO MORI </a>
+            <p class="media-body">
+                                    Plastic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Ana Claudia  Benjamim Burattini </a>
+            <p class="media-body">
+                                    Plastic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. ANDRE LUIZ M. BARBOSA </a>
+            <p class="media-body">
+                                    Plastic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Carlos  Alberto Gameiro </a>
+            <p class="media-body">
+                                    Plastic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Celia  Sampaio Costa </a>
+            <p class="media-body">
+                                    Plastic Surgery
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Antonio Carlos L.  Pompeo </a>
+            <p class="media-body">
+                                    Urology
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Cesar  Milton Marinelli </a>
+            <p class="media-body">
+                                    Urology
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Gustavo  Beojone Messi </a>
+            <p class="media-body">
+                                    Urology
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Leonardo  Otero Pertusier </a>
+            <p class="media-body">
+                                    Urology
+                            </p>
+
+                    </li>
+                <li class="thumbnail">
+                            <img src="/images/frontend/default-doctor-logo.png" class="pull-left img-polaroid"/>
+                        <a class="doctor-name" >Dr. Marcos  Giannetti Machado </a>
+            <p class="media-body">
+                                    Urology
+                            </p>
+
+                    </li>
+            </ul>
+
+            </div>
+                <!-- End of Tabs Content -->
+
+    </div>
+
+    <aside id="aside_content" class="span4">
+
+
+
+
+
+
+    <section class="box-in">
+    <h5 class="heading social">Social</h5>
+                <ul class="network">
+                                                                    <li><a href="https://twitter.com/saude_HCor" target="_blank"><img src="/images/frontend/twitter_icon-dark.png" alt="facebook"/></a></li>
+                            </ul>
+        </section>
+    </aside> <!--End of aside_content-->
+</div>
+
+<script type="text/javascript" src="/bundles/frontend/js/institution.js"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('#modal_multiple_institution_inquiry_form').institutionInquiryModalForm({
+            submitButton: $('#modal_institution_inquiry_submitButton'),
+            form: $('form#institution_inquiry_form')
+        });
+
+        $('a.call[rel="tooltip"]').tooltip({
+            title: function(){
+                return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
+            },
+            html: true,
+            delay: 0,
+            trigger: 'click',
+            animation: false,
+            placement: 'top'
+        }).click(function(){
+            return false;
+        });
+
+        $('#institutionTab a').click(function (e) {
+          e.preventDefault();
+          $(this).tab('show');
+        });
+    });
+})(jQuery);
+//-->
+</script>
+
+
+
+
+        </div>
+
+        <div class="border_pattern_footer">&nbsp;</div>
+
+                    <div id="footer_wrapper">
+    <div class="container">
+        <div class="upper_part row"> <!--This is for the upper part of footer-->
+            <div class="site_map span4"> <!--This is for Site Map-->
+                <h4>Site Map</h4>
+                <div class="row">
+                    <div class="span4">
+                        <h5><span>Company</span></h5>
+                        <ul>
+                            <li>
+                                <a href="#">About Us</a>
+                            </li>
+                            <li>
+                                <a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a>
+                            </li>
+                             <li>
+                                <a href="/terms-of-use.html">Terms of Use</a>
+                            </li>
+                             <li>
+                                <a href="/privacy-policy.html">Privacy Policy</a>
+                            </li>
+                                                 </ul>
+                        <h5>
+                            <span>Contact Us</span>
+                        </h5>
+
+                        <ul>
+                            <li>
+                            <a id="feedback-message" href="#">Feedback</a>
+                                <!-- Feedback Modal -->
+<div id="feedbackHca" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+        <h3 id="myModalLabel">We are glad to hear from you.</h3>
+    </div>
+
+    <div class="modal-body" style="">     <div class="alert-box"></div>
+    <form novalidate="novalidate" class="form-horizontal" action="/send-feedback" method="POST"  id="feedbackForm">
+        <div class="name control-group row-fluid">
+            <label for="feedbackMessage_name" class="span3 pull-left">
+                <strong>Youre Name</strong>
+            </label>
+            <input type="text" id="feedbackMessage_name" name="feedbackMessage[name]" required="required" />
+        </div>
+         <div class="country control-group row-fluid">
+            <label for="feedbackMessage_country" class="span3 pull-left">
+                <strong>Your Country</strong>
+            </label>
+            <div class="country-select">
+            <select id="feedbackMessage_country" name="feedbackMessage[country]" required="required"><option value="">Select Country</option><option value="101">Afghanistan</option><option value="165">Barbados</option><option value="90">Brazil</option><option value="128">Costa Rica</option><option value="13">France</option><option value="15">Germany</option><option value="6">India</option><option value="7">Malaysia</option><option value="36">Mexico</option><option value="226">Norfolk Island</option><option value="131">Panama</option><option value="11">Philippines</option><option value="84">Singapore</option><option value="8">South Korea</option><option value="5">Thailand</option><option value="44">Turkey</option></select>
+            </div>
+        </div>
+        <div class="emailAddress control-group row-fluid">
+            <label for="feedbackMessage_emailAddress" class="span3 pull-left">
+                <strong>Your Email Address </strong>
+            </label>
+            <input type="text" id="feedbackMessage_emailAddress" name="feedbackMessage[emailAddress]" required="required" />
+        </div>
+        <div class="message control-group row-fluid">
+            <label for="feedbackMessage_message" >
+                <strong>Enter your message </strong>
+            </label>
+              <textarea id="feedbackMessage_message" name="feedbackMessage[message]" required="required"    rows="5"></textarea>
+        </div>
+
+        <div class="captcha control-group row-fluid" >
+            <label for="feedbackMessage_captcha" class="span3 pull-left">
+                <strong>Please type the code </strong>
+            </label>
+              <img id="captcha_513951f394513" src="/generate-captcha/gcb_captcha" alt="" title="captcha" width="150" height="50" /><script type="text/javascript">
+        function reload_captcha_513951f394513() {
+            var img = document.getElementById('captcha_513951f394513');
+            img.src = '/generate-captcha/gcb_captcha?n=' + (new Date()).getTime();
+        }
+    </script><a class="captcha_reload" href="javascript:reload_captcha_513951f394513();">Renew</a><input type="text" id="feedbackMessage_captcha" name="feedbackMessage[captcha]" required="required" />
+        </div>
+        <input type="hidden" id="feedbackMessage__token" name="feedbackMessage[_token]" value="1824e4345f115f8a062c3d30e6a26af7d1d06e01" />
+    </form>
+    </div>
+     <div class="modal-footer button-wrapper">
+            <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel </button>
+        <button data-loader-text="Processing..."  class="btn btn-primary orange" data-divParent="#feedbackMessage_"  id="modal_feedback_submitButton" >Send Feedback</button>
+        </div>
+    <!-- end modal-body -->
+</div>
+ <!-- End Modal Clinic Address -->                            </li>
+                            <li>
+                                <a href="/inquiry.html">Inquiry</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="facepile span4"> <!--This is for the Facebook API-->
+                <h4>Like Us on Facebook</h4>
+                <div>
+                    <iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:287px; height:410px;" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
+                </div>
+            </div>
+
+            <div class="subscription span4"> <!--This is for the Subscriptions-->
+                <div class="subscribe_item row">
+    <h5>Subscribe To Our Newsletter</h5>
+
+    <form id="newsletterForm" action="" method="POST"  class="subscribe_form">
+
+        <input type="email" id="newsletter_subscriber_email" name="newsletter_subscriber[email]" required="required"    class="span4" placeholder="Enter your email address" />
+        <div class="form-inline">
+            <button class="btn" type="submit">Submit Now</button>
+        </div>
+     <input type="hidden" id="newsletter_subscriber__token" name="newsletter_subscriber[_token]" value="1824e4345f115f8a062c3d30e6a26af7d1d06e01" />
+
+    </form>
+    <div id="response" style="clear:both;">
+            </div>
+</div>
+
+<script type="text/javascript">
+$("#newsletterForm").submit(function(event) {
+    event.preventDefault();
+
+    var form = $(this);
+
+    $.post(
+        "/subscribe-newswletter",
+        form.serialize(),
+        function(response) {
+            var msg = response.message;
+
+            /*TODO: style for the message*/
+            if (response.success) {
+            } else {
+            }
+
+            $("#response").html(msg).fadeToggle(5000);
+        },
+        'json'
+    );
+});
+</script>               <div class="register">
+                    <h5 class="bordered">Want to list your Clinic?</h5>
+                    <!--<a href="#" class="sign-up">Sign Up</a>
+                    <span class="or-option"></span>
+                    <a href="#" class="sign-up">Sign In</a>-->
+                    <p>Patients from all over the world are searching <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a> - make sure they can find you!</p>
+                    <a class="btn green" href="/inquiry.html">Contact HealthcareAbroad</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="lower_footer row"> <!--This is for the lower part of footer-->
+            <div class="span5 navbar">
+                <p>&copy; Copyright 2013, Healthcareabroad.com Inc. All rights reserved</p>
+                <ul class="nav">
+                    <li><a href="/terms-of-use.html">Terms of Use</a></li>
+                    <li class="divider">/</li>
+                    <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+                    <li class="divider">/</li>
+                    <li><a href="#">History</a></li>
+                </ul>
+            </div>
+            <div class="social span6">
+                <ul class="socials-nav">
+                    <li><a href="https://plus.google.com/u/0/111671188601151092646/posts" target="_blank"><span class="g-icon"></span></a></li>
+                    <li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><span class="facebook-icon"></span></a></li>
+                    <li><a href="https://twitter.com/HCAbroad" target="_blank"><span class="twitter-icon"></span></a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div> <!--End of class container-->
+</div>
+
+    <script src="/bundles/frontend/js/Feedback.js"></script>
+    <script type="text/javascript">
+        $('#feedback-message').click(function(){
+            $('div#feedbackHca').modal('show');
+            return false;
+        });
+
+        $('#feedbackHca').feedbackModalForm({
+            submitButton: $('#modal_feedback_submitButton'),
+            form: $('form#feedbackForm')
+        });
+
+    </script>
+
+    </div>
+
+
+
+        <form action="/statistics/impressions" method="post" id="hca_impressions_tracker_form">
+    <input type="hidden" id="hca_statistics_tracker_form__token" name="hca_statistics_tracker_form[_token]" value="1824e4345f115f8a062c3d30e6a26af7d1d06e01" />
+</form>
+
+<form action="/statistics/clickthrough" method="post" id="hca_clickthrough_tracker_form">
+
+    <input type="hidden" id="hca_statistics_tracker_form__token" name="hca_statistics_tracker_form[_token]" value="1824e4345f115f8a062c3d30e6a26af7d1d06e01" />
+</form>    <script type="text/javascript">
+    <!--
+    (function($){
+        $(function(){
+
+            FrontendStatsTracker
+                .setImpressionTrackerForm('form#hca_impressions_tracker_form')
+                .setClickthroughTrackerForm('form#hca_clickthrough_tracker_form');
+            FrontendStatsTracker.clickthroughTrackerClass = 'hca_statistics_clickthroughs';
+
+            FrontendStatsTracker.trackImpressions();
+
+                        FrontendStatsTracker.trackClickthroughs();
+        });
+    })(jQuery);
+    //-->
+    </script>
+
+
+
+            </body>
+</html>

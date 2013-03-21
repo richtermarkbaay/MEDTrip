@@ -95,10 +95,13 @@
     {% endif %}
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
     <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
-        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Inquiries <b class="caret"></b></a>
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Site Inquiries <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li class="{{ selectedSubTab == 'inquire_index' ? 'active' : '' }}">
-                <a href="{{ path('admin_inquire') }}">View all</a>
+                <a href="{{ path('admin_inquire') }}">Inquiries</a>
+            </li>
+            <li class="{{ selectedSubTab == 'institution_inquire_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_institution_inquire') }}">Institution Inquiries</a>
             </li>
         </ul>
     </li>

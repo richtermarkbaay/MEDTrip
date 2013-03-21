@@ -1,13 +1,16 @@
-<div class="accordion-inner">
     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
-            {{ form_errors(form) }} 
-            {{ form_row(form.firstName) }}
-            {{ form_row(form.middleName) }}
-            {{ form_row(form.lastName) }}
-            
-            {{ form_rest(form) }}
+       <div class="row-fluid">
+            <div class="span12">
+                {{ form_errors(form) }} 
+                {{ form_row(form.firstName, { 'attr': {class: 'span8'} })  }}
+                {{ form_row(form.middleName, { 'attr': {class: 'span8'} })  }}
+                {{ form_row(form.lastName, { 'attr': {class: 'span8'} })  }}
+                
+                {{ form_rest(form) }}
+            </div>
+        </div>
+            <button class="btn pull-right btn-primary btn-large" onclick="return InstitutionUserProfile.submitInstitutionProfileForm(this);">Submit</button> 
+            <input type="reset" value="Reset" class="btn pull-right btn-large btn-link"  />
     </form>
-     <input type="reset" value="Reset" class="btn-medium btn"  />
-    <button class="btn btn-info submit-button" onclick="return InstitutionUserProfile.submitInstitutionProfileForm(this);">Submit</button> 
-</div>
+
 

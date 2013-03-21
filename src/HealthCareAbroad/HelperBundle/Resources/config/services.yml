@@ -4,7 +4,7 @@ parameters:
     services.location_class: HealthCareAbroad\HelperBundle\Services\LocationService
     services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
-    services.alert_class: HealthCareAbroad\HelperBundle\Services\AlertService
+    #services.alert_class: HealthCareAbroad\HelperBundle\Services\AlertService
     services.couch_db_class: HealthCareAbroad\HelperBundle\Services\CouchDbService
     services.tagtype_list: HealthCareAbroad\HelperBundle\Form\ListType\TagTypeListType
     services.news_list: HealthCareAbroad\HelperBundle\Form\ListType\NewsListType
@@ -50,7 +50,7 @@ services:
 
     services.invitation:
         class: %services.invitation_class%
-        arguments: [@doctrine]]
+        arguments: [@doctrine]
         calls:
             - [setTwig, [@twig]]
             - [setMailer, [@mailer]]
@@ -70,16 +70,7 @@ services:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]
 
-    services.alert:
-        class: %services.alert_class%
-        arguments: [@doctrine, @services.couchDb]
-        calls:
-            - [prepareAlertDb, [%couchDbAlert%]]
-
-    services.couchDb:
-        class: %services.couch_db_class%
-        arguments: [ %couchDbBaseUrl%, @listener.log.kernelexception]
-
+    
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
