@@ -30,7 +30,7 @@ class DefaultController extends InstitutionAwareController
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         //$news = $newsRepository->getLatestNews();
         $news = array();
-        
+        $isSingleCenter = false;
 
         $signupStepStatus = $this->institution->getSignupStepStatus();
         
@@ -51,14 +51,17 @@ class DefaultController extends InstitutionAwareController
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }
         else {
+            $isSingleCenter = true;
             $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
         }
-        
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
         return $this->render($template, array(
             'alerts' => $institutionAlerts,
     		'news' => $news,
             'institution' => $this->institution,
-            'isDashBoard' => true
+            'isDashBoard' => true,
+            'institutionUser' => $loggedUser,
+            'isSingleCenter' => $isSingleCenter
         ));
     }
     public function addClinicAction()
