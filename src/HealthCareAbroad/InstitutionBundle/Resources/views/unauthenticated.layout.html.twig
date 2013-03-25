@@ -1,16 +1,24 @@
 {% extends '::base.institution.html.twig' %}
 {% block body %}
-<div id="main-wrap">
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="span4">
-                    <a href="{{ path('frontend_main_homepage') }}"><i class="logo"></i></a>
+    <div id="main-wrap">
+        <div id="header-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="span4">
+                        <a href="{{ path('frontend_main_homepage') }}"><img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"></a>
+                    </div>
+                    <div class="pull-right">
+                        <div class="navbar">
+                            <ul class="nav">
+                                <li>
+                                    <a href="client-login.html"><i class="icon-unlock"></i>Login</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </header>
-    
     <!-- Page content here -->
     {% block content %}{% endblock %}
 </div>
