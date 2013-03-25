@@ -136,7 +136,6 @@ class InstitutionSignUpController  extends Controller
                     return $this->redirect($this->generateUrl('institution_multipleCenter_profile'));
                 }
                 
-                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
 	        }
 	    }
 
