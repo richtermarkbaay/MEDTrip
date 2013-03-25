@@ -10,10 +10,11 @@
                 <img src="images/institution3.png" alt="institution" />
                 <a href="#"><img src="images/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
                 <div class="institution-details">
-                    <p>
+                    <!-- p>
                         Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
                         Malaysia
-                    </p>
+                    </p -->
+                    <p>{{institution.address1}}</p>
                     <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
                 </div>
             </div>
@@ -100,5 +101,11 @@
         
     {% endembed %}
 {% endblock %}
-
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#confirm-message').modal('show');
+    });
+</script>
+{% endblock %}
 

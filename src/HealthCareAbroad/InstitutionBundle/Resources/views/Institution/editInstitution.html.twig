@@ -39,16 +39,14 @@
 	                            {% endif %}
 				  		      
                                 {% for i, contact in arrContactNumber %}
-							
-						 				<label for="institution name">Institution {{contact.type|capitalize}} Number</label>
-										<div class="input-prepend">
-											<div id="phone">
-												<input type="text" maxlength="3" class="span1" name="contactNumber[{{i}}][{{contact.area}}]" value="{{contact.area}}">
-												<input type="text" maxlength="6" name="contactNumber[{{i}}][{{contact.number}}]" value="{{contact.number}}">
-												<input type="hidden" name="contactNumber[{{i}}][{{contact.type}}]" value="phone">
-											</div>
+					 				<label for="institution name">Institution {{contact.type|capitalize}} Number</label>
+									<div class="input-prepend">
+										<div id="phone">
+											<input type="text" maxlength="3" class="span1" name="contactNumber[{{i}}][{{contact.area}}]" value="{{contact.area}}">
+											<input type="text" maxlength="6" name="contactNumber[{{i}}][{{contact.number}}]" value="{{contact.number}}">
+											<input type="hidden" name="contactNumber[{{i}}][{{contact.type}}]" value="phone">
 										</div>
-									
+									</div>
 						 		{% endfor %}	                        
 		                       
 		                        {{ form_rest(form) }}

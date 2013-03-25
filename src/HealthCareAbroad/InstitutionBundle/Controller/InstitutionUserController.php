@@ -121,7 +121,9 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
                         'form' => $form->createView(),
                         'formChangePassword' => $formChangePassword->createView(),
-                        'institutionUser' => $institutionUser ));
+                        'institutionUser' => $institutionUser,
+                        'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution))
+                        );
     }
     
     public function inviteAction()
