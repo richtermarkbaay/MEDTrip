@@ -65,6 +65,17 @@ final class SearchStates
         );
     }
     
+    static public function getSearchUrlParameterKeyToSearchStateValueMapping()
+    {
+        return array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => SearchStates::HAS_COUNTRY,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => SearchStates::HAS_CITY,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => SearchStates::HAS_SPECIALIZATION,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => SearchStates::HAS_SUB_SPECIALIZATION,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => SearchStates::HAS_TREATMENT,
+        );
+    }
+    
     static public function getStateValue($state)
     {
         return isset(self::$searchStateValues[$state])
