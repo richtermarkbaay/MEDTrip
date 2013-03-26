@@ -1,123 +1,114 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
-{% set _layoutSpecificContentId = 'inquiry-content'%}
 
 {% block content %}
+    <h2 class="page-header">Advertising Inquiries</h2>
+    <div class="page-content-wrapper">
+    <form novalidate="novalidate" method="POST" action="{{ path('frontend_page_inquiry') }}" class="span8">
 
-    <div class="row">
-        <div class="span8">
-            <form id="inquiryForm" novalidate="novalidate" class="inquiry" method="POST" action="{{ path('frontend_page_inquiry') }}">
-                <h1>Advertising Inquiries</h1>
-                <p>This form is for medical providers inquiring about adding or editing their clinics to Healthcare Abroad, or for other account concerns. </p>
-                <p>If you are a patient looking to send feedback to Healthcare Abroad, <a href ="#" id="feedback-form">please use this form</a>.</p>
-                {% if error %}
-                    <div class="alert alert-error">
-                        {% for each in error_list %}
-                        	{{ each }} <br>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {% for alert, message in app.session.flashes %}
-                    	{% if alert == 'warning' %}
-                    	    {% set class = '' %}
-                    	{% elseif alert == 'error' %}
-                    	    {% set class = 'alert-error' %}
-                    	{% elseif alert == 'success' %}
-                    	    {% set class = 'alert-success' %}
-                    	{% elseif (alert == 'notice') or alert == 'info' %}
-                    	    {% set class = 'alert-info' %}
-                    	{% else %}
-                    	    {% set class = '' %}
-                    	{% endif %}
-                        <div class="alert {{ class }}">
-                            {{ message | raw}}
-                        </div>
+        <p>This form is for medical providers inquiring about adding or editing their clinics to Healthcare Abroad, or for other account concerns. </p>
+        <p>If you are a patient looking to send feedback to Healthcare Abroad, <a href ="#" id="feedback-form">please use this form</a>.</p>
+        {% if error %}
+            <div class="alert alert-error">
+                {% for each in error_list %}
+                	{{ each }} <br>
+                {% endfor %}
+            </div>
+        {% else %}
+            {% for alert, message in app.session.flashes %}
+            	{% if alert == 'warning' %}
+            	    {% set class = '' %}
+            	{% elseif alert == 'error' %}
+            	    {% set class = 'alert-error' %}
+            	{% elseif alert == 'success' %}
+            	    {% set class = 'alert-success' %}
+            	{% elseif (alert == 'notice') or alert == 'info' %}
+            	    {% set class = 'alert-info' %}
+            	{% else %}
+            	    {% set class = '' %}
+            	{% endif %}
+                <div class="alert {{ class }}">
+                    {{ message | raw}}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="section">
+            <div class="section-content">
+                <div class="{{ (form.inquirySubject.vars.valid ? 'options-wrapper' : 'error') }}">
+                    <label>I'm writing to: *</label>
+                     {% for _key, _typeChoice in form.inquirySubject.vars.choices %}
+                        {% set _inputId =  form.inquirySubject.vars.id ~ '_' ~ _key %}
+                        <label class="required options" for="{{ _inputId }}">
+                            <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.inquirySubject.vars.full_name }}">
+                            {{ _typeChoice.label }}
+                        </label>
                     {% endfor %}
-                {% endif %}
-                <section class="section">
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <div class="row-field {{ (form.inquirySubject.vars.valid ? '' : 'error') }}">
-                                <label>I'm writing to: *</label>
-                                 {% for _key, _typeChoice in form.inquirySubject.vars.choices %}
-                                    {% set _inputId =  form.inquirySubject.vars.id ~ '_' ~ _key %}
-                                    <label class="required radio" for="{{ _inputId }}">{{ _typeChoice.label }}
-                                    <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.inquirySubject.vars.full_name }}">
-                                    </label>
-                                {% endfor %}
-                                
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <section class="section">
-                    <h2>Personal Details</h2>
-                    <div class="row-fluid">
-                        <div class="span12">
-                            <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_firstName">First Name *</label>
-                                {{ form_widget(form.firstName, {attr: {class: 'span12'} } )}}
-                            </div>
-                            <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_lastName">Last Name *</label>
-                                {{ form_widget(form.lastName, {attr: {class: 'span12'} } )}}
-                            </div>
-                             <div class="control-group row-field {{ (form.clinicName.vars.valid ? '' : 'error') }}">
-                                  <label for="inquire_clinicName">Clinic Name</label>
-                                {{ form_widget(form.clinicName, {attr: {class: 'span12'} } )}}
-                            </div>
-                            <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_country">Country</label>
-                                <div class="country-select">
-                                    {{ form_widget(form.country )}}
-                                </div>
-                            </div>
-                            <div class="control-group row-field {{ (form.city.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_city">City</label>
-                                <div class="country-select">
-                                    {{ form_widget(form.city, {attr: {class: 'city_dropdown'} } )}}
-                                </div>
-                            </div>
-                            <div class="control-group row-field {{ (form.contactNumber.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_contactNumber">Phone</label>
-                                {{ form_widget(form.contactNumber, {attr: {class: 'span12'} } )}}
-                            </div>
-                            <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_email">Email Address *</label>
-                                {{ form_widget(form.email, {attr: {class: 'span12'} } )}}
-                            </div>
-                            <div class="control-group row-field {{ (form.message.vars.valid ? '' : 'error') }}">
-                                <label for="inquire_message">Message *</label>
-                                {{ form_widget(form.message, {attr: {class: 'span12', rows: 5, cols: 60} } ) }}
-                            </div>
-                                                        
-                        </div>
-                    </div>
-                </section>
-                <section class="section">
-                    <div class="captcha control-group row-field {{ (form.captcha.vars.valid ? '' : 'error') }}">
-                        {{ form_label(form.captcha) }}
-                        {{ form_widget(form.captcha) }}
-                    </div>
-                </section>
-                <section>
-                    <div class="row-fluid terms">
-                        <p>Please complete all fields marked with *</p>
-                    </div>
-                </section>
-                       
-                <section class="section footer">
-                    <div class="row-fluid terms">
-                        <div class="span12">
-                            <button class="pull-right btn"> Cancel </button>
-                            <button id="inquirySubmit" class="pull-right btn btn-primary orange"> Submit </button>
-                        </div>
-                    </div>
-                </section>
-                {{ form_widget(form._token) }}
-            </form>
+                </div>
+            </div>
         </div>
-        <!--End of main_content-->
-    </div>
+        <div class="section">
+            <h2>Personal Details</h2>
+            <div class="section-content ">
+                <div class="control-group {{ (form.firstName.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_firstName">First Name *</label>
+                    {{ form_widget(form.firstName, {attr: {class: ''} } )}}
+                </div>
+                <div class="control-group {{ (form.lastName.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_lastName">Last Name *</label>
+                    {{ form_widget(form.lastName, {attr: {class: ''} } )}}
+                </div>
+                 <div class="control-group {{ (form.clinicName.vars.valid ? '' : 'error') }}">
+                      <label for="inquire_clinicName">Clinic Name</label>
+                    {{ form_widget(form.clinicName, {attr: {class: ''} } )}}
+                </div>
+                <div class="control-group {{ (form.country.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_country">Country</label>
+                    <!-- div class="custom-select" style="position:relative">  -->
+                        {{ form_widget(form.country, {attr: {style: ''}}) }}
+                        <!-- <a onclick="alert($(this).prev().attr('id'));$(this).prev().attr('size', 5).change(function(){$(this).attr('size', 1)});" style="background: url(../../images/frontend/down-icon.png) no-repeat center center #fff; position:absolute; width: 30px; height: 20px; top: 5px; right: 5px; display: inline-block;"> </a>
+                    </div> -->
+                </div>
+                <div class="control-group {{ (form.city.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_city">City</label>
+                    <div class="custom-select">
+                        {{ form_widget(form.city, {attr: {class: 'city_dropdown'} } )}}
+                    </div>
+                </div>
+                <div class="control-group {{ (form.contactNumber.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_contactNumber">Phone</label>
+                    {{ form_widget(form.contactNumber, {attr: {class: ''} } )}}
+                </div>
+                <div class="control-group {{ (form.email.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_email">Email Address *</label>
+                    {{ form_widget(form.email, {attr: {class: ''} } )}}
+                </div>
+                <div class="control-group {{ (form.message.vars.valid ? '' : 'error') }}">
+                    <label for="inquire_message">Message *</label>
+                    {{ form_widget(form.message, {attr: {class: '', rows: 5, cols: 60} } ) }}
+                </div>
+                                            
+            </div>
+        </div>
+        <div class="section">
+            <div class="captcha control-group {{ (form.captcha.vars.valid ? '' : 'error') }}">
+                {{ form_label(form.captcha) }}
+                {{ form_widget(form.captcha) }}
+            </div>
+        </div>
+        <div>
+            <div class="terms">
+                <p>Please complete all fields marked with *</p>
+            </div>
+        </div>
+               
+        <div class="section footer">
+            <div class="terms">
+                <button class="pull-right btn"> Cancel </button>
+                <button id="inquirySubmit" class="pull-right btn btn-primary orange"> Submit </button>
+            </div>
+        </div>
+        {{ form_widget(form._token) }}
+    </form>
+</div>
 {% endblock %}
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>

@@ -5,115 +5,101 @@
 {% endblock %}
 
 {% block content %}
-    <div id="details" class="row">
-        <div id="main_content" class="span8">
-            <header class="filters">
-                <h2 class="total">
-                    {% if searchResults.getTotalResults %}
-                    We have found the following matches:
-                    {% else %}
-                    No results found.
-                    {% endif %}
-                </h2>
-            </header>
-            {% if relatedTreatments %}
-            <div class="media search-matches">
-                <div class="matches">
-                     {% for specialization in relatedTreatments %}
-                         
+    <div class="search-results-wrapper span8">
+        <h2 class="heading">
+            {% if searchResults.getTotalResults %} We have found the following matches: {% else %} No results found. {% endif %}
+        </h2>
+
+        {% if relatedTreatments %}
+        <div class="search-matches treatments">
+             {% for specialization in relatedTreatments %}
+                 <ul class="match">
+                     <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                     {% for subSpecializationId, subCategory in specialization.sub_specializations %}
+                     <li>
                          <ul class="match">
-                             <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
-                             {% for subSpecializationId, subCategory in specialization.sub_specializations %}
-                             <li>
-                                 <ul class="match">
-                                     {% if subSpecializationId %}
-                                         <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug }) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
-                                     {% else %}
-                                         {% if specialization.sub_specializations | length > 1 %}
-                                         <li><h5><a href="#">Other Treatments</a></h5></li>
-                                         {% endif %}
-                                         
-                                     {% endif %}
-                                     
-                                     {% for treatment in subCategory.treatments %}
-                                        <li class="tr"><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
-                                    {% endfor %}
-                                </ul>
-                             </li>
-                             {% endfor %}
+                             {% if subSpecializationId %}
+                                 <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug }) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
+                             {% else %}
+                                 {% if specialization.sub_specializations | length > 1 %}
+                                     <li><h5><a href="#">Other Treatments</a></h5></li>
+                                 {% endif %}
+                             {% endif %}
                              
-                         </ul>
-                     {% endfor %}
-                
-                        {# -----
-                        {% set sId = 0 %}
-                        {% set ssId = 0 %}
-                        
-                        {% for specialization in relatedTreatments %}
-                        
-                        <ul class="match">
-                            {% if sId != specialization.id %}
-                                <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
-                                {% set sId = specialization.id %}
-                            {% endif %}
-                            <li>
-                                <ul class="match">
-                                    {% for subCategory in specialization.subCategories %}
-                                        {% if subCategory.subSpecializationId is defined %}
-                                            {% if ssId != subCategory.subSpecializationId %}
-                                                <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug}) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
-                                                <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
-                                                {% set ssId = subCategory.subSpecializationId %}
-                                            {% endif %}
-                                        {% elseif subCategory.treatmentId is defined %}
-                                            {% if ssId != -1 %}
-                                                <li><h5><a href="#">Other {{ specialization.subCategories| length > 1 ?'treatments':'treatment'}}</a></h5></li>
-                                                {% set ssId = -1 %}
-                                            {% endif %}
-                                            <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
-                                        {% endif %}
-                                    {% endfor %}
-                                    {% set ssId = 0 %}
-                                </ul>
-                            </li>
+                             {% for treatment in subCategory.treatments %}
+                                <li class="tr"><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: treatment.treatmentSlug }) }}">{{ treatment.treatmentName }}</a></li>
+                            {% endfor %}
                         </ul>
+                     </li>
+                     {% endfor %}
+                 </ul>
+             {% endfor %}
+            
+            {# -----
+            {% set sId = 0 %}
+            {% set ssId = 0 %}
+
+            {% for specialization in relatedTreatments %}
+            <ul class="match">
+                {% if sId != specialization.id %}
+                    <li><h5 class="sp"><a href="{{ path('frontend_search_results_specializations', {specialization: specialization.slug}) }}">{{ specialization.name }}</a></h5></li>
+                    {% set sId = specialization.id %}
+                {% endif %}
+                <li>
+                    <ul class="match">
+                        {% for subCategory in specialization.subCategories %}
+                            {% if subCategory.subSpecializationId is defined %}
+                                {% if ssId != subCategory.subSpecializationId %}
+                                    <li><h5><a href="{{ path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: subCategory.subSpecializationSlug}) }}">{{ subCategory.subSpecializationName }}</a></h5></li>
+                                    <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
+                                    {% set ssId = subCategory.subSpecializationId %}
+                                {% endif %}
+                            {% elseif subCategory.treatmentId is defined %}
+                                {% if ssId != -1 %}
+                                    <li><h5><a href="#">Other {{ specialization.subCategories| length > 1 ?'treatments':'treatment'}}</a></h5></li>
+                                    {% set ssId = -1 %}
+                                {% endif %}
+                                <li><a href="{{ path('frontend_search_results_treatments', {specialization: specialization.slug, treatment: subCategory.treatmentSlug}) }}">{{ subCategory.treatmentName }}</a></li>
+                            {% endif %}
                         {% endfor %}
-                        --- #}
-                </div>
-            </div>
-            {% endif %}
+                        {% set ssId = 0 %}
+                    </ul>
+                </li>
+            </ul>
+            {% endfor %} --- #}
+        </div>
+        {% endif %}
 
-            {% for searchResultVo in searchResults %}
-                {# BC for old search results whose result item is a medical center #}
-                {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
-                {# do this to save query #}
+        {% for searchResultVo in searchResults %}
+            {# BC for old search results whose result item is a medical center #}
+            {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
+            {# do this to save query #}
 
-                {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
-                       'statisticsDataObject': searchResultVo.institutionMedicalCenter,
-                       'searchResultItem' : {
-                              institutionUrl: get_institution_frontend_url(center.institution),
-                              url: get_institution_medical_center_frontend_url(center),
-                              logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}),
-                              name: center.name,
-                              institutionName: center.institution.name,
-                              description: center.descriptionHighlight,
-                              mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
-                              streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
-                       }
+            {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                   'statisticsDataObject': searchResultVo.institutionMedicalCenter,
+                   'searchResultItem' : {
+                          institutionUrl: get_institution_frontend_url(center.institution),
+                          url: get_institution_medical_center_frontend_url(center),
+                          logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
+                          name: center.name,
+                          institutionName: center.institution.name,
+                          description: center.descriptionHighlight,
+                          mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                          streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }
-               %}
+               }
+           %}
 
-            {% endfor %}
+        {% endfor %}
 
-            {% if searchResults.isPaginable %}
-                {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
-            {% endif %}
+        {% if searchResults.isPaginable %}
+            {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
+        {% endif %}
 
-        </div><!--End of main_content-->
-
+    </div><!--End of main_content-->
+    <aside class="aside-wrapper span4">
         {#-- we have not yet integrated broadsearch for sidebar --#}
         {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } #}
-
-    </div>
+    </aside>
 <!--End of content-->
 {% endblock %}

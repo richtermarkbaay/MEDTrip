@@ -3,21 +3,18 @@
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Photos'} %}
     
         {% block asideContent %}
-    		<ul class="large-thumbnail">
-    			<li>
-                    {{ media(media.first, institution, 'frontendGallery') | raw }}
-    			</li>
-    		</ul>
-    
-    		<ul class="thumbnails">
-    		    {% for i, each in media if i > 0 %}
-    		        {% if (logo and each.id != logo.id) %}
-            			<li class="thumbnail">
-            				{{ media(each, institution, 'frontendGallery') | raw }}
-            			</li>
-                    {% endif %}
-    			{% endfor %}
-    		</ul>
+            <div class="gallery-wrapper">
+                {{ media(media.first, institution, 'frontendGallery', {class: 'large-thumbnail thumbnail'}) | raw }}
+        		<ul class="small-thumbnail-list thumbnails">
+        		    {% for i, each in media if i > 0 %}
+        		        {% if (logo and each.id != logo.id) %}
+                			<li class="thumbnail">
+                				{{ media(each, institution, 'frontendGallery') | raw }}
+                			</li>
+                        {% endif %}
+        			{% endfor %}
+        		</ul>
+        	</div>
     	{% endblock %}
     	
     {% endembed %}

@@ -5,14 +5,11 @@
 {% endblock %}
 
 {% block content %}
-<div id="details" class="row">
-    <div id="main_content" class="span8">
-        <header class="filters">
-            <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
-        </header>
+    <div class="search-results-wrapper span8">
+        <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
 
         {{ render_search_results_featured_institution_ad(featuredClinicParams) }}
-        
+
         {% for searchResultVo in searchResults %}
             {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
 
@@ -20,7 +17,7 @@
                    'statisticsDataObject': searchResultVo.institution,
                    'searchResultItem' : {
                        url: get_institution_frontend_url(institution),
-                       logo: render_institution_logo(institution, {attr: {class: 'search-entry-thumb', alt: institution.name}}),
+                       logo: render_institution_logo(institution, {attr: {alt: institution.name, class: 'small'}}),
                        name: institution.name,
                        description: institution.description | striptags,
                        mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
@@ -36,9 +33,11 @@
 
     </div> <!--End of main_content-->
 
-    {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+    <aside class="aside-wrapper span4">
+        {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+    </aside>
     
     {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'destinations', id: destinationId} %#}
-</div>
+
 {% endblock %}
 

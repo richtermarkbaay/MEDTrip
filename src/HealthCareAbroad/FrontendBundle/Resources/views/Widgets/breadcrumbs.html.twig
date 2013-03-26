@@ -1,7 +1,7 @@
 {% if breadcrumbs is defined %}
-<div id="breadcrumbs" class="container">
+<div id="breadcrumbs-wrapper" class="container">
 	<ul class="breadcrumb row">
-		<li><a href="{{ path('frontend_main_homepage')}}"><span class="home"></span></a></li>
+		<li><a href="{{ path('frontend_main_homepage')}}"><span class="hca-sprite home-icon"></span></a></li>
 		{% for each in breadcrumbs %}
     		{% if not loop.last %}
                 <li class="active"><a href="{{ each.url }}">{{ each.label }}</a>

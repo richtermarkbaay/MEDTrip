@@ -1,14 +1,4 @@
-<style>
-    .ui-corner-all {
-        border-radius:0!important;
-        -moz-border-radius:0!important
-    }
-    .ui-state-focus{
-        background-color: #FE6500!important;
-        color: #FFFFFF!important;
-    }
-</style>
-<form class="{{ attr.class is defined ? attr.class : 'span12 search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
+<form class="{{ attr.class is defined ? attr.class : 'search-form broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <label>Search</label>
     <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
     <input type="hidden" name="treatment_id" id="treatment_id" />

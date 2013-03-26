@@ -5,46 +5,41 @@
 {% endblock %}
 
 {% block content %}
-    <div id="details" class="row">
-        <div id="main_content" class="span8">
-            <header class="filters">
-                <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
-            </header>
-            {% for searchResult in searchResults %}
-                {# BC for old search results whose result item is a medical center #}
-                {% set center = searchResult.institutionMedicalCenter is defined ? searchResult.institutionMedicalCenter : searchResult %}
-                {# do this to save query #}
+    <div class="search-results-wrapper span8">
+        <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
+        {% for searchResult in searchResults %}
+            {# BC for old search results whose result item is a medical center #}
+            {% set center = searchResult.institutionMedicalCenter is defined ? searchResult.institutionMedicalCenter : searchResult %}
+            {# do this to save query #}
 
-                {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
-                    'statisticsDataObject': searchResult.institutionMedicalCenter,
-                    'searchResultItem' : {
-                          institutionUrl: get_institution_frontend_url(center.institution),
-                          url: get_institution_medical_center_frontend_url(center),
-                          logo: render_institution_medical_center_logo(center, {attr: {class: 'search-entry-thumb', alt: 'clinic logo'}}),
-                          name: center.name,
-                          institutionName: center.institution.name,
-                          description: center.descriptionHighlight,
-                          mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
-                          streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
-                   }
+            {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                'statisticsDataObject': searchResult.institutionMedicalCenter,
+                'searchResultItem' : {
+                      institutionUrl: get_institution_frontend_url(center.institution),
+                      url: get_institution_medical_center_frontend_url(center),
+                      logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
+                      name: center.name,
+                      institutionName: center.institution.name,
+                      description: center.descriptionHighlight,
+                      mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                      streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                }
-           %}
+           } %}
 
-            {% endfor %}
+        {% endfor %}
 
-            {% if searchResults.isPaginable %}
-                {{ paginate(searchResults, app.request.uri, {hasNoRouteName: 1}, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
-            {% endif %}
+        {% if searchResults.isPaginable %}
+            {{ paginate(searchResults, app.request.uri, {hasNoRouteName: 1}, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
+        {% endif %}
+    </div> <!--End of main_content-->
 
-        </div> <!--End of main_content-->
-
+    <aside class="aside-wrapper span4">
         {% if includedNarrowSearchWidgets %}
             {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
         {% else %}
             {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' #}
         {% endif %}
-
-    </div>
+    </aside>
 {% endblock %}
 
 {% block inlineJavascriptCode %}
