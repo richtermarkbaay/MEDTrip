@@ -1,3 +1,35 @@
+{% block contact_number_with_flag_widget %}
+    {% spaceless %}
+    <div class="span6">
+        <div class="hca-countrycodes">
+            <div class="input-prepend row-field">
+               <label for="Phone Number">
+                    Phone Number
+               </label>
+            {% set phone = "phoneNumberSelector" %}
+                  {{ render_contactNumber_widget(phone) | raw }}
+                <input type="text" class="span9" value="+63" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" id="phoneNumberSelector" onkeyup="ContactNumberForm.contactInputField($(this)); return false;" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}"  id="phoneNumberAbbr">
+            </div>
+        </div>
+    </div>
+        
+     <div class="span6">
+        <div class="hca-countrycodes">
+            <div class="input-prepend row-field">
+                 <label for="Mobile Number">
+                    Mobile Number
+                </label>
+                {% set mobile = "mobileNumberSelector" %}
+                  {{ render_contactNumber_widget(mobile) | raw }}
+                <input type="text" class="span9" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" id="mobileNumberSelector" onkeyup="ContactNumberForm.contactInputField($(this)); return false;" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.full_name ~ '[mobile_number][abbr]' }}"  id="mobileNumberAbbr">
+            </div>
+        </div>
+    </div>
+    {% endspaceless %}
+{% endblock %}
+
 {% block contact_number_widget %}
     {% spaceless %}
     

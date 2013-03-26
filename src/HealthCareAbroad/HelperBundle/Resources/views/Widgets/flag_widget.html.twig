@@ -1,0 +1,22 @@
+    <button class="btn dropdown-toggle" data-toggle="dropdown" >
+        <span class="flag16 ph"> </span>
+        <span class="caret">
+        </span>
+    </button>
+    <ul class="dropdown-menu zipcode">
+        {% for _list in countryList %}
+            <li onclick="ContactNumberForm.dropdownCountryCode($(this), '{{inputId}}' ); return false;"><span class="flag16 {{ _list.abbr | lower}}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span></li>
+        {% endfor %}
+    </ul>
+  
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/helper/js/ContactNumberForm.js') }}" ></script>
+<script language="javascript" type="text/javascript">
+(function($){
+    $(function(){
+    	ContactNumberForm._setJsonValue = $.parseJSON('{{ countryJson | raw}}');
+    	ContactNumberForm._inputId = '{{ inputId }}';
+        });
+    })(jQuery);
+</script>	
+{% endblock %}

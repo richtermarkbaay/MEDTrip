@@ -86,16 +86,19 @@ class InstitutionSignUpController  extends Controller
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
+
 	    
 	    if ($request->isMethod('POST')) {
+
 	        
 	        $form->bind($request);
-	        
+
 	        if ($form->isValid()) {
 	            
 	            $institution = $form->getData();
 	            
 	            // initialize required database fields
+	            $institution->setName(uniqid());
 	          	$institution->setAddress1('');
     			$institution->setContactEmail('');
     			$institution->setContactNumber('');
@@ -106,13 +109,15 @@ class InstitutionSignUpController  extends Controller
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
     			$institution->setSignupStepStatus(InstitutionSignupStepStatus::STEP1);
+
     			$factory->save($institution);
-	            
+
 	            // create Institution user
 	            $institutionUser = new InstitutionUser();
 	            $institutionUser->setEmail($form->get('email')->getData());
-	            $institutionUser->setFirstName($institution->getName());
-	            $institutionUser->setLastName('Admin');
+	            $institutionUser->setFirstName($form->get('firstName')->getData());
+	            $institutionUser->setLastName($form->get('lastName')->getData());
+	            $institutionUser->setContactNumber($form->get('contactNumber')->getData());
 	            $institutionUser->setPassword($form->get('password')->getData());
 	            $institutionUser->setInstitution($institution);
 	            $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);

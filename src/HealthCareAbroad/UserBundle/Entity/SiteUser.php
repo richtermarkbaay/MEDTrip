@@ -14,6 +14,7 @@ abstract class SiteUser implements UserInterface, \Serializable
     protected $firstName;
     protected $middleName;
     protected $lastName;
+    protected $contactNumber;
     protected $accountToken;
     protected $roles = array();
 
@@ -112,6 +113,18 @@ abstract class SiteUser implements UserInterface, \Serializable
 
         return $this->lastName;
     }
+    
+    public function getContactNumber()
+    {
+        return $this->contactNumber;
+    }
+    
+    public function setContactNumber($contactNumber)
+    {
+        $this->contactNumber = $contactNumber;
+    
+        return $this->contactNumber;
+    }
 
     /**
      * UserInterface
@@ -165,6 +178,7 @@ abstract class SiteUser implements UserInterface, \Serializable
                         'password'    => $this->getPassword(),
                         'firstName' => $this->getFirstName(),
                         'middleName' => $this->getMiddleName(),
+                        'contactNumber' => $this->getContactNumber(),
                         'lastName' => $this->getLastName(),
                         'accountToken' => $this->accountToken,
                         'roles' => implode(',', $this->getRoles())
@@ -181,8 +195,9 @@ abstract class SiteUser implements UserInterface, \Serializable
         $this->setFirstName($serialized[3]);
         $this->setMiddleName($serialized[4]);
         $this->setLastName($serialized[5]);
-        $this->accountToken = $serialized[6];
-        $this->setRoles(explode(',', $serialized[7]));
+        $this->contactNumber = $serialized[6];
+        $this->accountToken = $serialized[7];
+        $this->setRoles(explode(',', $serialized[8]));
     }
 
 }
