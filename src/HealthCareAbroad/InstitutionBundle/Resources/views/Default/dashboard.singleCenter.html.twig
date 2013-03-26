@@ -8,14 +8,14 @@
                 <h1>
                     Some Institution name
                 </h1>
-                <img src="images/institution3.png" alt="institution" />
-                <a href="#"><img src="images/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
+                <img src="/images/institution/institution3.png" alt="institution" />
+                <a href="#"><img src="/images/institution/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
                 <div class="institution-details">
                     <!-- p>
                         Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
                         Malaysia
                     </p -->
-                    <p>{{institution.address1}}</p>
+                    <p>{{institution.address1[room_number]}}</p>
                     <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
                 </div>
             </div>
