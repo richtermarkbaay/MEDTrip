@@ -54,8 +54,8 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
                 $metaConfig = new PageMetaConfiguration();
                 // set to default metas
                 $metaConfig->setTitle('HealthcareAbroad.com - Global Medical Tourism Directory');
-                $metaConfig->setDescription('An international comprehensive and unbiased worldwide directory of Healthcare and Dental Clinics and medical providers abroad.');
-                $metaConfig->setKeywords('abroad, medical tourism, cosmetic, dental, dentists, doctors, treatment, surgery, compare, travel');
+                $metaConfig->setDescription('');
+                $metaConfig->setKeywords('');
             }
         }
         
