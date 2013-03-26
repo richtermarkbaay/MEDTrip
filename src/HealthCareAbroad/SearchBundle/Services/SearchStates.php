@@ -46,7 +46,7 @@ final class SearchStates
             SearchStates::COUNTRY_TREATMENT_SEARCH => SearchUrlRoutes::RESULTS_COUNTRY_TREATMENT,
             SearchStates::CITY_SPECIALIZATION_SEARCH => SearchUrlRoutes::RESULTS_CITY_SPECIALIZATION,
             SearchStates::CITY_SUB_SPECIALIZATION_SEARCH => SearchUrlRoutes::RESULTS_CITY_SUB_SPECIALIZATION,
-            SearchStates::CITY_TREATMENT_SEARCH => SearchUrlRoutes::RESULTS_COUNTRY_TREATMENT,
+            SearchStates::CITY_TREATMENT_SEARCH => SearchUrlRoutes::RESULTS_CITY_TREATMENT,
         );
     }
     

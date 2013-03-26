@@ -1,15 +1,15 @@
 {% spaceless %}
-<form class="basic-form" action="{{ path('admin_page_metas_save') }}" method="post" {{ form_enctype(form) }}>
+<form class="" action="{{ path('admin_page_metas_save') }}" method="post" {{ form_enctype(form) }}>
     <div>
         <label>Page URL:</label>
-        <input type="text" disabled="disabled" value="{{ form.url.vars.value }}" />
+        <input type="text" disabled="disabled" value="{{ form.url.vars.value }}" class="input-xxlarge"/>
         <a href="{{ form.url.vars.value }}" target="_blank">View Page</a>
     </div>
     
 
-	{{ form_row(form.title) }}
-	{{ form_row(form.description) }}
-	{{ form_row(form.keywords) }}
+	{{ form_row(form.title, {attr: {class: 'input-xxlarge'}}) }}
+	{{ form_row(form.description, {attr: {class: 'input-xxlarge'}}) }}
+	{{ form_row(form.keywords, {attr: {class: 'input-xxlarge'}}) }}
 	{{ form_rest(form) }}
 	<div class="clear"><br></div>
     <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
