@@ -4,34 +4,110 @@
 
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-			<div class="row">
-			{% include '::notice.admin.html.twig' %}
-                <div class="span8">
-                    <section class="section account-info">
-                    <h2> Latest Activity </h2>
-                        <div class="row-fluid">
-                            <div class="span12 activity-feeds">
-                				{% include 'InstitutionBundle:Widgets:dashboard.completedSteps.html.twig' with {
-                				dashboardCompletedSteps: [
-                				    {label: 'Your', description: 'has been updated.', image: asset('images/institution/default_clinic.png'), link: 'Profile', time: '10' },
-                				    {label: '', description: 'has been approved.', image: asset('images/institution/default_clinic.png'), link: 'Listing#1', time: '10'},
-                				    {label: 'You received', description: 'from someone@gmail.com.', image: asset('images/institution/default_clinic.png'), link: 'Listing#2', time: '10' },
-                				    {label: 'You received', description: 'from someone@gmail.com.', image: asset('images/institution/default_clinic.png'), link: 'inquiry#1', time: '10'  },
-                				    {label: 'New account created. See', description: 'for instructions on how to complete your profile.', image: asset('images/institution/default_clinic.png'), link: 'Notifications', time: '10'  }
-                				]} %}
-                		        </div>
-                		    </div>
-                	</section>
+			<div class="hca-banner">
+                <h1>
+                    Some Institution name
+                </h1>
+                <img src="/images/institution/institution3.png" alt="institution" />
+                <a href="#"><img src="/images/institution/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
+                <div class="institution-details">
+                    <!-- p>
+                        Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
+                        Malaysia
+                    </p -->
+                    <p>{{institution.address1[room_number]}}</p>
+                    <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
                 </div>
-				<!--End of span9-->
-			    
-			    {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-				<!--End of span3-->
-			</div>
+            </div>
+            <div class="span8">
+                <form action="/" method="post">
+                    <section class="section">
+                        <div class="row-heading">
+                            <h2 class="pull-left span6">
+                                Map View
+                            </h2>
+                            <span class="pull-right">
+                                <a class="btn btn-primary" href="#">Update Map</a>
+                            </span>
+                        </div>
+                        <div class="row-field">
+                            <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0"
+                            marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=+&amp;q=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang+50450+Kuala+Lumpur+Malaysia&amp;ie=UTF8&amp;hq=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang&amp;hnear=Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur,+Malaysia&amp;ll=3.157092,101.727192&amp;spn=0.010963,0.038621&amp;t=m&amp;output=embed">
+                            </iframe>
+                            <br>
+                            <small>
+                                <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=+&amp;q=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang+50450+Kuala+Lumpur+Malaysia&amp;ie=UTF8&amp;hq=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang&amp;hnear=Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur,+Malaysia&amp;ll=3.157092,101.727192&amp;spn=0.010963,0.038621&amp;t=m"
+                                style="color:#000;text-align:left">
+                                        View Larger Map
+                                    </a>
+                            </small>
+                            <h4>
+                                <small>
+                                    If the PIN on the map is not accurate, you can change it by clicking the
+                                    "Update Map" button above.
+                                </small>
+                            </h4>
+                        </div>
+                    </section>
+                    <section>
+                    </section>
+                </form>
+            </div>
+            <aside class="span4">
+                <section class="aside-box default dashboard-side">
+                    <h2>
+                        Couple of things need to be done.
+                        <br>
+                        <small>
+                            Your Hospital Profile is almost complete*. Please give some time to complete
+                            the things that are listed below:
+                        </small>
+                    </h2>
+                    <div class="features">
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                1
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Upload Logo and Banner
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                2
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Add Doctors
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                3
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Add Hospital Services
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
 			<!--End of addnewclinic-->
         
         {% endblock %}
         
     {% endembed %}
 
+{% endblock %}
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(window).load(function() {
+        $('#confirm-message').modal('show');
+    });
+</script>
 {% endblock %}

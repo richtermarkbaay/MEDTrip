@@ -135,7 +135,11 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+                if($isSingleCenter = $this->get('services.institution')->isSingleCenter($institution)) {
+                    return $this->redirect($this->generateUrl('institution_singleCenter_profile'));
+                }else {
+                    return $this->redirect($this->generateUrl('institution_multipleCenter_profile'));
+                }
 	        }
 	    }
 
