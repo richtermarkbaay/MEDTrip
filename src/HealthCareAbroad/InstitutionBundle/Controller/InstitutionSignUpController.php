@@ -75,6 +75,9 @@ class InstitutionSignUpController  extends Controller
 	 */
 	public function signUpAction(Request $request)
 	{ 
+	    $error = false;
+	    $success = false;
+	    $errorArr = array();
 	    // checking for security context here does not work since this is not firewalled
 	    // TODO: find a better approach
 	    if ($this->get('session')->get('institutionId')) {
@@ -140,9 +143,16 @@ class InstitutionSignUpController  extends Controller
                 }else {
                     return $this->redirect($this->generateUrl('institution_multipleCenter_profile'));
                 }
-	        }
-	    }
+	        }else {
+                $error = true;
 
+                $form_errors = $this->get('validator')->validate($form);
+                foreach ($form_errors as $_err) {
+                    $errorArr[] = $_err->getMessage();
+                }
+
+            }
+	    }
 	    $medicalProviderGroupArr = array();
 	    
 	    foreach ($medicalProviderGroup as $e) {
@@ -152,7 +162,9 @@ class InstitutionSignUpController  extends Controller
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)    
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+            'error' => $error,
+            'error_list' => $errorArr
         ));
 	}
 	

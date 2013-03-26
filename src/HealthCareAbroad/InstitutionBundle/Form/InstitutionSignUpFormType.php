@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\MinLength;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormViewInterface;
 
@@ -46,13 +47,13 @@ class InstitutionSignUpFormType extends AbstractType
         }
         
         $builder
-        ->add('firstName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Cannot be empty')))))
-        ->add('lastName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Cannot be empty')))))
+        ->add('firstName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your first name. ')))))
+        ->add('lastName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your last name.')))))
         ->add('contactNumber', 'contact_number_with_flag',array('error_bubbling' => false))
-        ->add('email', 'email', array( 'error_bubbling' => false, 'label' => 'Email address','virtual' => true,'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')))))
+        ->add('email', 'email', array( 'error_bubbling' => false,'virtual' => true,'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))))
         ->add('password', 'password', array('label' => 'Password','virtual' => true,'error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')))))
         ->add('confirm_password', 'password', array('label' => 'Re-type password','virtual' => true,'error_bubbling' => false,'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))))
-        ->add('type', 'choice', array('expanded' => true,'multiple' => false,'choices' => InstitutionTypes::getFormChoices(),'error_bubbling' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one')))))
+        ->add('type', 'choice', array('expanded' => true,'multiple' => false,'choices' => InstitutionTypes::getFormChoices(),'error_bubbling' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one type of Institution')))))
         ;
         
         if ($options['include_terms_agreement']) {

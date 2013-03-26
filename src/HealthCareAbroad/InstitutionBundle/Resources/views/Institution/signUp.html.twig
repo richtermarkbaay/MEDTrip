@@ -20,7 +20,7 @@
                                     This will be used as your login credentials
                                 </small>
                             </h2>
-                             {% if error is defined %}
+                             {% if error %}
                                 <div class="alert alert-error">
                                     {% for each in error_list %}
                                     	{{ each }} <br>
