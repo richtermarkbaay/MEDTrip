@@ -5,7 +5,7 @@
     </button>
     <ul class="dropdown-menu zipcode">
         {% for _list in countryList %}
-            <li onclick="ContactNumberForm.dropdownCountryCode($(this), '{{inputId}}' ); return false;"><span class="flag16 {{ _list.abbr | lower}}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span></li>
+            <li onclick="$.ContactNumberFormAction.dropdownCountryCode($(this), '{{inputId}}'); return false;"><span class="flag16 {{ _list.abbr | lower}}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span></li>
         {% endfor %}
     </ul>
   
@@ -14,8 +14,9 @@
 <script language="javascript" type="text/javascript">
 (function($){
     $(function(){
-    	ContactNumberForm._setJsonValue = $.parseJSON('{{ countryJson | raw}}');
-    	ContactNumberForm._inputId = '{{ inputId }}';
+
+        $('input.numberSelector').ContactNumberForm('contactInputField');
+    	$.ContactNumberFormAction._setJsonValue($.parseJSON('{{ countryJson | raw}}'));
         });
     })(jQuery);
 </script>	

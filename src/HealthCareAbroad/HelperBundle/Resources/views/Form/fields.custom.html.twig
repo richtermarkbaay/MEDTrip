@@ -8,7 +8,7 @@
                </label>
             {% set phone = "phoneNumberSelector" %}
                   {{ render_contactNumber_widget(phone) | raw }}
-                <input type="text" class="span9" value="+63" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" id="phoneNumberSelector" onkeyup="ContactNumberForm.contactInputField($(this)); return false;" maxlength="15"/>
+                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
                 <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}"  id="phoneNumberAbbr">
             </div>
         </div>
@@ -22,7 +22,7 @@
                 </label>
                 {% set mobile = "mobileNumberSelector" %}
                   {{ render_contactNumber_widget(mobile) | raw }}
-                <input type="text" class="span9" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" id="mobileNumberSelector" onkeyup="ContactNumberForm.contactInputField($(this)); return false;" maxlength="15"/>
+                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" data-type="mobile" id="mobileNumberSelector"  maxlength="15"/>
                 <input type="hidden" name="{{ form.vars.full_name ~ '[mobile_number][abbr]' }}"  id="mobileNumberAbbr">
             </div>
         </div>
