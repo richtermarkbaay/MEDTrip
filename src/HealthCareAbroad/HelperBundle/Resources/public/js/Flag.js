@@ -1,6 +1,6 @@
 /**
  * @author Chaztine Blance
- * Js for Country Dropdown in Contact Number field
+ *  Js for FLag Dropdown in Contact Number field
  */
 
 (function($){
@@ -77,7 +77,7 @@
                     || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
                     || (event.keyCode == 65 && prevKey == 17 && prevControl == event.currentTarget.id))          // ctrl + a, on same control
                 ) {
-    			_this.val("+")
+    			_this.val("+"); 
             }
     	
 				_this.parent().find('.dropdown-menu').hide(); // hide dropdown field
