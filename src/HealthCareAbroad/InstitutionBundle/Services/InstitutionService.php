@@ -78,6 +78,7 @@ class InstitutionService
      *
      * @param Institution $institution
      * @return array
+     * @author acgvelarde
      */
     public function listActiveSpecializations(Institution $institution)
     {

@@ -86,6 +86,11 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * TODO: This should not be here!
+     * 
+     * @param unknown_type $institutionId
+     */
     public function getMedicalCentersList($institutionId)
     {
         $qb = $this->_em->createQueryBuilder()
@@ -98,22 +103,37 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
+    
+    /**
+     * @deprecated Use getActiveSpecializationsByInstitutionMedicalCenter
+     * @param unknown_type $institutionMedicalCenter
+     */
     public function getByInstitutionMedicalCenter($institutionMedicalCenter)
     {
+        return $this->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
+    }
+    
+    /**
+     * Get active institution specializations of an institution medical center/ clinic
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array InstitutionSpecialization
+     */
+    public function getActiveSpecializationsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
         $qb = $this->getEntityManager()->createQueryBuilder();
-
+        
         $qb->select('a','b', 'c')
-           ->from('InstitutionBundle:InstitutionSpecialization', 'a')
-           ->leftJoin('a.specialization', 'b')
-           ->leftJoin('a.treatments', 'c')
-           ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
-           ->andWhere('a.status = :status')
-           ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
-           ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
-
+        ->from('InstitutionBundle:InstitutionSpecialization', 'a')
+        ->leftJoin('a.specialization', 'b')
+        ->leftJoin('a.treatments', 'c')
+        ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
+        ->andWhere('a.status = :status')
+        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
+        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
+        
         $result = $qb->getQuery()->getResult();
-
+        
         return $result;
     }
 

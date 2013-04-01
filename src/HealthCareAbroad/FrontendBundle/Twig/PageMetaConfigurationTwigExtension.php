@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use ChromediaUtilities\Helpers\Inflector;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -55,6 +57,14 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
             // institution/hospital page
             elseif(($institution = $request->attributes->get('institution', null)) && $institution instanceof Institution && PageMetaConfiguration::PAGE_TYPE_INSTITUTION == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
                 $metaConfig = $this->pageMetaConfigurationService->buildForInstitutionPage($institution);
+                $metaConfig->setUrl($url);
+                
+                // save this new config
+                $this->pageMetaConfigurationService->save($metaConfig);
+            }
+            // clinic page
+            elseif (($institutionMedicalCenter = $request->attributes->get('institutionMedicalCenter', null)) && $institutionMedicalCenter instanceof InstitutionMedicalCenter && PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
+                $metaConfig = $this->pageMetaConfigurationService->buildForInstitutionMedicalCenterPage($institutionMedicalCenter);
                 $metaConfig->setUrl($url);
                 
                 // save this new config

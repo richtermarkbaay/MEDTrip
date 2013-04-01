@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
@@ -154,6 +156,12 @@ class PageMetaConfigurationService
         return $metaConfig;
     }
     
+    /**
+     * Create PageMetaConfiguration for hospital page
+     * 
+     * @param Institution $institution
+     * @return \HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration
+     */
     public function buildForInstitutionPage(Institution $institution)
     {
         $metaConfig = new PageMetaConfiguration();
@@ -166,6 +174,26 @@ class PageMetaConfigurationService
         // keywords: #HospitalName, #City, #Country,  (up to 10) #Speciality, medical tourism, Doctor, Dentist
         $metaConfig->setKeywords("{$institution->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
         $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION);
+        
+        return $metaConfig;
+    }
+    
+    /**
+     * Create a PageMetaConfiguration for clinic page
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return \HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration
+     */
+    public function buildForInstitutionMedicalCenterPage(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $institution = $institutionMedicalCenter->getInstitution();
+        $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
+        
+        $metaConfig = new PageMetaConfiguration();
+        $metaConfig->setTitle("{$institutionMedicalCenter->getName()} - {$institution->getName()} {$location} - HealthcareAbroad.com");
+        $metaConfig->setDescription("{$institutionMedicalCenter->getName()} at {$institution->getName()} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."} in {$location}. Get details at HealthcareAbroad.com");
+        $metaConfig->setKeywords("{$institution->getName()}, {$institutionMedicalCenter->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
+        $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER);
         
         return $metaConfig;
     }
