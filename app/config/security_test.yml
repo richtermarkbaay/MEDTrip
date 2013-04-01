@@ -67,6 +67,10 @@ security:
             http_basic:
                 realm: "Secured Admin Area"
 
+        institution.signup:
+            pattern: ^/institution/register.html$
+            security: false
+
         institution_login:
             pattern:  ^/institution/login$
             security: false
