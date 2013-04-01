@@ -15,9 +15,9 @@
                 <div class="item hover-effect">
                     <a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
                         {% if (each.media is defined) and each.media %}
-                            {{ media(each.media, each, 'default', {class: 'media-object img-circle'}) | raw }}
+                            {{ media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw }}
                         {% else %}
-                            <span class="treatment-icon featured-icon img-circle"></span>
+                            <span class="hca-sprite treatment-icon featured-icon img-circle"></span>
                         {% endif %}
                         <span class="hca-sprite more-icon"></span>
                     </a>

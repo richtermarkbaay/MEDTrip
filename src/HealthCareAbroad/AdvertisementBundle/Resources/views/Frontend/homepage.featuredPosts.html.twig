@@ -13,14 +13,11 @@
 		    {% endif %}
 
 			<div class="item">
-				<a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
-				    {% if each.media %}
+			    {% if each.media %}
+				    <a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
 				        {{ media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw }}
-				    {% else %}
-				        <span class="featured-icon img-circle"></span>
-				    {% endif %}
-				    <span class="more-icon"></span>
-				</a>
+			        </a>
+				{% endif %}
 				<h4 class="title"><a href="{{ link }}" target="{{ target }}">{{ each.title }}</a></h4>
 				<p>{{ each.description }}</p>
 			</div>

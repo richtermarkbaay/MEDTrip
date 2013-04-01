@@ -2010,6 +2010,7 @@ div#main_content .search-title {
     width: 140px;
     height: 140px;
     padding: 2px;
+    line-height: 136px;
     text-align: center;
     border: 1px solid #333333;
 }
@@ -2668,9 +2669,14 @@ ul.three-column-list > li {
 
 .widget-content-wrapper.articles-type > .item p,
 .widget-content-wrapper.articles-type > .item h4.title {
+    margin: 0;
 	color: #657174;
     line-height: 20px;
-	margin: 0 0 0 70px;
+}
+
+.widget-content-wrapper.articles-type > .item .thumbnail-wrapper + h4.title,
+.widget-content-wrapper.articles-type > .item .thumbnail-wrapper + h4.title + p{
+    margin-left: 70px;
 }
 
 .widget-content-wrapper.articles-type > .item .title > a {
