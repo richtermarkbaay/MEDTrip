@@ -77,7 +77,7 @@
             form: $('form#{{ formId }}') 
         });
         
-        $('a.call[rel="tooltip"]').tooltip({
+        $('#clinicCallUs').tooltip({
             title: function(){
                 return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
             },
