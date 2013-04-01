@@ -59,6 +59,10 @@ class WidgetTwigExtension extends \Twig_Extension
         return SearchParameterService::getBroadSearchParameterKeys();
     }
     
+    /**
+     * TODO - need to update HTML.
+     * @param array $options
+     */
     public function render_admin_custom_search_widget(array $options=array())
     {
         return $this->render_search_homepage_widget($options, 'SearchBundle:SearchForms:admin.customsearch.html.twig');

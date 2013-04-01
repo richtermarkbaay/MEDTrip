@@ -1,125 +1,5 @@
-<style>
-    form.search_box {
-        margin: 20px 0 30px 6px;
-    }
-    form.search_box > label {
-        color: #468199;
-        font-size: 1.5em;
-        margin: 0;
-        opacity: 0.5;
-        padding: 0 10px;
-        text-align: center;
-    }
-    form.search_box > input {
-        border: 1px solid #aaa;
-        box-shadow: 0 3px 3px rgba(0, 0, 0, 0.1) inset, 0 0 0 4px rgba(0, 37, 85, 0.09) !important;
-        color: #7D97A6;
-        font-size: 16px;
-        font-weight: normal;
-        margin-left: 0;
-        margin-right: 25px;
-        opacity: 0.9;
-        outline: medium none;
-        padding: 13px 15px;
-        width: 271px;
-    }
-    form.search_box .helper-link {
-        position: relative;
-    }
-    .form-search input, .form-inline input, .form-horizontal input, .form-search textarea, .form-inline textarea, .form-horizontal textarea, .form-search select, .form-inline select, .form-horizontal select, .form-search .help-inline, .form-inline .help-inline, .form-horizontal .help-inline, .form-search .uneditable-input, .form-inline .uneditable-input, .form-horizontal .uneditable-input, .form-search .input-prepend, .form-inline .input-prepend, .form-horizontal .input-prepend, .form-search .input-append, .form-inline .input-append, .form-horizontal .input-append {
-        display: inline-block;
-        margin-bottom: 0;
-        vertical-align: middle;
-    }
-    form.search_box .helper-link .popup > .btn {
-        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-        border-color: rgba(0, 0, 0, 0.3);
-        margin-right: 15px;
-        margin-top: 13px;
-    }
-    .btn.text-left {
-        text-align: left !important;
-    }
-    .btn.small {
-        padding: 5px 10px;
-    }
-    .btn.default {
-        background-color: #F7F7F7;
-        border: 1px solid rgba(0, 0, 0, 0.3);
-        color: #000000;
-    }
-    form > button.btn {
-        padding: 13px;
-        font-size: 2em;
-        border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-    }
-    form.search_box .helper-link .popup .popup-box {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        margin-left: 4px;
-        margin-top: 49px;
-        width: 281px;
-    }
-    
-    form.search_box .helper-link .popup {
-        border: 0 none;
-        height: 0;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        top: -52px;
-        width: 310px;
-    }
-    
-    form.search_box .helper-link .popup.treatments {
-        left: -4px;
-    }
-    
-    form.search_box .helper-link .popup.destinations {
-        left: 327px;
-    }
-    
-    .input-append.dropdown-menu, .popup-box.dropdown-menu {
-        background-color: #F7F7F7;
-        border: 1px solid #9E9E9E;
-        margin: 0;
-        padding: 10px;
-        top: -1px;
-    }
-    .input-append.dropdown-menu ul.popup-list, .popup-box.dropdown-menu ul.popup-list {
-        max-height: 300px;
-        overflow: auto;
-    }
-    .input-append.dropdown-menu ul, .popup-box.dropdown-menu ul {
-        background-color: #FFFFFF;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-        margin: 0;
-        padding: 0;
-    }
-    .input-append.dropdown-menu li, .popup-box.dropdown-menu li {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        font-size: 16px;
-    }
-    .input-append.dropdown-menu li a, .popup-box.dropdown-menu li a {
-        color: #000000;
-        display: block;
-        padding: 10px;
-        white-space: normal;
-        word-wrap: break-word;
-    }
-    
-    .ui-corner-all {
-        border-radius:0!important;
-        -moz-border-radius:0!important
-    }
-    .ui-state-focus{
-        background-color: #FE6500!important;
-        color: #FFFFFF!important;
-    }
-</style>
-
 {% set _parameterKeys  = get_broadsearch_parameter_keys() %}
-<form class="{{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
+<form class="asdf {{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
     <input class="type_in" type="text" name="{{ _parameterKeys.termLabel }}" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
     <input type="hidden" name="{{ _parameterKeys.termId }}" id="treatment_id" />
     <input class="type_in" type="text" name="{{ _parameterKeys.destinationLabel }}" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
@@ -129,7 +9,7 @@
     
     <div class="helper-link">
         
-        <div class="popup row-fluid {{ attr.error is defined ? 'treatments2' : 'treatments' }}">
+        <div class="popup row-fluid treatments">
             <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
                 <span class="icon-chevron-down"></span>
             </button>
@@ -138,7 +18,7 @@
             </div>
         </div>
         
-        <div class="popup row-fluid {{ attr.error is defined ? 'destinations2' : 'destinations' }}">
+        <div class="popup row-fluid destinations">
             <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
                 <span class="icon-chevron-down"></span>
             </button>

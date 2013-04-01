@@ -69,12 +69,20 @@ class InstitutionTwigExtension extends \Twig_Extension
         $options = \array_merge($defaultOptions, $options);
         $html = '';
         if ($institutionLogo = $institution->getLogo()) {
+            if(isset($options['attr']['class']))
+                $options['attr']['class'] .= ' hospital-logo';
+            else 
+                $options['attr']['class'] = 'hospital-logo';
+
             $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
         }
         else {
             // render default
-            $html = '<img src="'.$this->imagePlaceHolders['institutionLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). '" />';
+            $html = '<span class="hca-sprite hospital-default-logo '. (isset($options['attr']['class']) ? $options['attr']['class'] : '')  .'"></span>';
         }
+        
         return $html;
+        
+        
     }
 }

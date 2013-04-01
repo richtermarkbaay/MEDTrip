@@ -1,35 +1,18 @@
 {% set count = searchResults.getTotalResults %}
-
-<div id="callout" class="container {{ count <= 0 ? 'noresults': ''}}">
-    <div class="callout-inner">
-        <div class="content">
-            {% block calloutContent %}
-                <div class="span12">
-                    <div class="media">
-                        <div class="media-body">
-                            <h1 class="search-info">
-                                
-                                {% if count > 0 %}
-                                    {% if isArraySearchLabel is defined and isArraySearchLabel %}
-                                        We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} {{ searchLabel.treatment }} in {{ searchLabel.destination }}
-                                    {% else %}
-                                        Search Results for <small>{{ searchLabel }}</small>
-                                    {% endif %}
-                                {% else %}
-                                    We have found no clinics that offer <strong>{{ searchLabel }}</strong>
-                                {% endif %}
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-                {#
-                <div class="span3">
-                    <a href="{{ path('frontend_main_homepage') }}" class="all-clinic btn green">Back to Search</a>
-                </div>
-                #}
-            {% endblock %}
-        </div>
-        <div class="triangle-border"></div>
-    </div>
-</div>
-
+{% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
+    {% block calloutContent %}
+        <h2 class="heading search-info">
+            {% if count > 0 %}
+                {% if isArraySearchLabel is defined and isArraySearchLabel %}
+                    We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} 
+                    <strong>{{ searchLabel.treatment }} in {{ searchLabel.destination }}</strong>
+                {% else %}
+                    Search Results for <strong>{{ searchLabel }}</strong>
+                {% endif %}
+            {% else %}
+                We have found no clinics that offer <strong>{{ searchLabel }}</strong>
+            {% endif %}        
+        </h2>
+        <a href="{{ path('frontend_main_homepage') }}" class="btn green"><span class="hca-sprite list-icon"></span> Back to Search</a>
+    {% endblock %}
+{% endembed %}

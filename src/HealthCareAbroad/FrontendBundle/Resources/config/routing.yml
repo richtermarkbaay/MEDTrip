@@ -63,7 +63,7 @@ frontend_page_terms_of_use:
 
 frontend_page_inquiry:
     pattern: /advertising-inquiry.html
-    defaults: { _controller: FrontendBundle:CommonPage:saveInquiry }
+    defaults: { _controller: FrontendBundle:CommonPage:saveInquiry, breadcrumbLabel: 'Advertising Inquiry' }
     requirements:
         _method: GET|POST
         

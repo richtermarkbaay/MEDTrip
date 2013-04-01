@@ -2,41 +2,33 @@
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
-<div id="hospital-banner" class="row">
-    <div class="top_box span12">
-        <div class="description">
-            <p>{{ institution.name }}</p>
-        </div>
-        
-        {% if institution.featuredMedia %}
-            {{ media(institution.featuredMedia, institution, 'default', {class: 'institution_picture'}) | raw }}
-        {% else %}
-            <img class="institution_picture" src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution"/>
-        {% endif %}
-        
-        {#-- institution logo #}
-        <a>{{ render_institution_logo(institution, {attr: {class: 'institution_logo', alt: institution.name}}) | raw }}</a>
+<div class="hospital-header-wrapper">
+    <h3>{{ institution.name }}</h3>
+    {% if institution.featuredMedia %}
+        {{ media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw }}
+    {% else %}
+        <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>
+    {% endif %}
 
-    </div>
-    <div class="bottom_box content span12">
-        <div class="address media span4 offset2">
-            <span class="address-icon pull-left media-object img-circle"></span>
-            <p>
-                {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
-                <br/>
-                {{ institution_address_to_array(institution, ['zipCode', 'city', 'state', 'country']) | join(', ')}}
-            </p>
+    <div class="info-wrapper hca-v-sprite stripe-bg-dark">
+        <div class="logo-wrapper">
+            {{ render_institution_logo(institution, {attr: {alt: institution.name}}) | raw }}
         </div>
-        <ul class="contact_now span5">
+
+        <ul class="unstyled inline-list pull-right">
             {% if number %}
                 <li>
-                    <a class="call btn orange" href="#" rel="tooltip" data-contact-number="{{ number }}" >Call Us</a>
+                    <a id="hospital-contact" class="btn orange" href="#" rel="tooltip" data-contact-number="{{ number }}" >
+                        <span class="hca-sprite call-icon"></span> Call Us
+                    </a>
                 </li>
             {% endif %}
 
             {% if institution.contactEmail %}
                 <li>
-                    <a class="email btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">Email</a>
+                    <a class="btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">
+                        <span class="hca-sprite email-icon"></span> Email
+                    </a>
                     <!-- Modal Multiple Institution Inquiry -->
                 	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
                 	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
@@ -46,11 +38,17 @@
             {% endif %}
 
             {% if mainWebsites %}
-                <!--li><a class="website btn orange" href="{{ mainWebsites }}" target="_blank">Visit Website</a></li-->
+                <!--li><a class="btn orange" href="{{ mainWebsites }}" target="_blank"><span class="hca-sprite link-icon"></span> Visit Website</a></li-->
             {% endif %}
-            
-            
-        </ul>    
-    </div>
+        </ul>
+        <div class="address">
+            <span class="hca-sprite address-icon pull-left"></span>
+            <address>
+                {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
+                <br/>
+                {{ institution_address_to_array(institution, ['zipCode', 'city', 'state', 'country']) | join(', ')}}
+            </address>
+        </div>
+    </div>    
 </div>
 

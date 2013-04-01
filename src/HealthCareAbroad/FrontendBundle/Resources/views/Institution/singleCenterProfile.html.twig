@@ -5,11 +5,10 @@
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 
-<div id="details" class="row">
-	<div id="main_content" class="span8">
-		<div class="clinicdetails content">
+    <div class="profile-wrapper span8">
+		<div class="clinic-header-wrapper">
             {% include 'FrontendBundle:Institution/Widgets:headingSingleCenter.html.twig' %}
-            <div class="description"><p>{{ institution.description | raw }}</p></div>
+            <p>{{ institution.description | raw }}</p>
 		</div>
 
         {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
@@ -28,9 +27,9 @@
             {% endembed %}
         {% endif %}
 
-	</div> <!--End of main_content-->
+	</div>
 
-	<aside id="aside_content" class="span4">
+	<aside class="aside-wrapper span4">
 
 	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
@@ -42,4 +41,4 @@
 	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 
 	</aside> <!--End of aside_content-->
-</div>
+

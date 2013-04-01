@@ -1,10 +1,8 @@
 {% if featuredDestinationsAds|length %}
-    <div class="travel_section_wrapper">
-        <div class="heading">
-        	<div class="heading_text"><h3>Destinations</h3></div>
-        </div>
-        
-    	<div id="destination_carousel" class="image_carousel">
+
+    <div class="widget-wrapper wide">
+        <h3 class="widget-heading">Destinations</h3>
+    	<div class="widget-content-wrapper destination-carousel">
     		<div class="tooltip bottom in">
     			...
     		</div>
@@ -22,8 +20,9 @@
     			</div>
     			{% endfor %}
     		</div>
-    		<a class="prev carousel-control" id="carousel_prev" href="#">&nbsp;</a>
-    		<a class="next carousel-control" id="carousel_next" href="#">&nbsp;</a>
+    		<a class="carousel-control prev" id="carousel_prev" href="#">&nbsp;</a>
+    		<a class="carousel-control next" id="carousel_next" href="#">&nbsp;</a>
     	</div>
     </div><!--End of travel_section_wrapper-->
+
 {% endif %}
