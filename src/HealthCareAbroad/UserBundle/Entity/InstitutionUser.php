@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\UserBundle\Entity;
 
+use Symfony\Component\Translation\Tests\String;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,6 +18,10 @@ class InstitutionUser extends SiteUser
      */
     private $dateCreated;
 
+    /**
+     * @var string $jobTitle
+     */
+    private $jobTitle;
     
     /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
@@ -113,5 +119,27 @@ class InstitutionUser extends SiteUser
     public function getInstitutionUserType()
     {
         return $this->institutionUserType;
+    }
+    
+    /**
+     * Set jobTitle
+     *
+     * @param string $jobTitle
+     * @return InstitutionUser
+     */
+    public function setJobTitle($jobTitle)
+    {
+        $this->jobTitle = $jobTitle;
+        return $this;
+    }
+    
+    /**
+     * Get jobTitle
+     *
+     * @return string
+     */
+    public function getJobTitle()
+    {
+        return $this->jobTitle;
     }
 }

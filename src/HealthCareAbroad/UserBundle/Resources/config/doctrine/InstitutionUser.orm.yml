@@ -14,6 +14,10 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUser:
             type: datetime
             nullable: false
             column: date_created
+        jobTitle:
+            type: string
+            nullable: true
+            column: job_title
         status:
             type: smallint
             nullable: false

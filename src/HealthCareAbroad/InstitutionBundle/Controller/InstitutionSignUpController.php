@@ -90,10 +90,8 @@ class InstitutionSignUpController  extends Controller
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
 
-	    
 	    if ($request->isMethod('POST')) {
 
-	        
 	        $form->bind($request);
 
 	        if ($form->isValid()) {
@@ -122,6 +120,7 @@ class InstitutionSignUpController  extends Controller
 	            $institutionUser->setLastName($form->get('lastName')->getData());
 	            $institutionUser->setContactNumber($form->get('contactNumber')->getData());
 	            $institutionUser->setPassword($form->get('password')->getData());
+	            $institutionUser->setJobTitle($form->get('jobTitle')->getData());
 	            $institutionUser->setInstitution($institution);
 	            $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
 	             
