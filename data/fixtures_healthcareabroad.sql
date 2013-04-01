@@ -1074,6 +1074,7 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
   `account_id` bigint(20) unsigned NOT NULL,
   `institution_id` int(10) unsigned NOT NULL,
   `institution_user_type_id` int(10) unsigned DEFAULT NULL,
+  `job_title` varchar(100) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`account_id`),
@@ -1085,9 +1086,9 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 -- Dumping data for table `institution_users`
 --
 
-INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `date_created`, `status`) VALUES
-(1, 1, 1, '2013-02-13 02:12:02', 1),(2, 1, 1, '2013-02-15 02:02:39', 1),
-(3, 2, 2, '2013-02-15 05:59:58', 1);
+INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `job_title`, `date_created`, `status`) VALUES
+(1, 1, 1,'job title test','2013-02-13 02:12:02', 1),(2, 1, 1, 'admin','2013-02-15 02:02:39', 1),
+(3, 2, 2,'coder', '2013-02-15 05:59:58', 1);
 
 -- --------------------------------------------------------
 

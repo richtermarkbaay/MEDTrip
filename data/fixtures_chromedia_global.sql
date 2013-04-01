@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `accounts`
 --
 
-
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -34,28 +33,26 @@ CREATE TABLE IF NOT EXISTS `accounts` (
   `last_name` varchar(250) NOT NULL,
   `middle_name` varchar(250) DEFAULT NULL,
   `email` varchar(250) NOT NULL,
+  `contact_number` varchar(250) NOT NULL,
   `password` varchar(250) NOT NULL,
   `date_created` timestamp NULL DEFAULT NULL,
   `date_modified` timestamp NULL DEFAULT NULL,
   `status` tinyint(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='global account information';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='global account information' AUTO_INCREMENT=269 ;
+
 
 --
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `date_created`, `date_modified`, `status`) VALUES
-(1, 'test', 'user', 'm', 'test.user@chromedia.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1);
-INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `date_created`, `date_modified`, `status`) VALUES
-(2, 'test-2', 'admin user', 'm', 'test.adminuser@chromedia.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1);
-INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `date_created`, `date_modified`, `status`) VALUES
-(3, 'test-3', 'institution user no application', 'm', 'test-institution-user-with-no-application@chromedia.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1);
-INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `date_created`, `date_modified`, `status`) VALUES(
-4, 'kristen', 'stewart', 'leone', 'test.institutionuser@chromedia.com', '688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6', '2012-08-09 09:11:29', '2012-08-09 09:11:29', 1);
-INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `password`, `date_created`, `date_modified`, `status`) VALUES(
-5, 'another', 'admin user', 'leone', 'test.anotheradminuser@chromedia.com', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-08-09 09:11:29', '2012-08-09 09:11:29', 1);
+INSERT INTO `accounts` (`id`, `first_name`, `last_name`, `middle_name`, `email`, `contact_number`, `password`, `date_created`, `date_modified`, `status`) VALUES
+(1, 'test', 'user', 'm', 'test.user@chromedia.com','+639551444', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1),
+(2, 'test-2', 'admin user', 'm', 'test.adminuser@chromedia.com','+639551444', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1),
+(3, 'test-3', 'institution user no application', 'm', 'test-institution-user-with-no-application@chromedia.com','+639551444', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-07-23 14:17:03', '2012-07-23 14:17:03', 1),
+(4, 'kristen', 'stewart', 'leone', 'test.institutionuser@chromedia.com','+639551444', '688787d8ff144c502c7f5cffaafe2cc588d86079f9de88304c26b0cb99ce91c6', '2012-08-09 09:11:29', '2012-08-09 09:11:29', 1),
+(5, 'another', 'admin user', 'leone', 'test.anotheradminuser@chromedia.com','+639551444','8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92', '2012-08-09 09:11:29', '2012-08-09 09:11:29', 1);
 
 -- --------------------------------------------------------
 
