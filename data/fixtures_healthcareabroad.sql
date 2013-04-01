@@ -197,16 +197,18 @@ CREATE TABLE IF NOT EXISTS `advertisement_denormalized_properties` (
   `treatment_id` int(10) unsigned NOT NULL,
   `sub_specialization_id` int(10) unsigned NOT NULL,
   `specialization_id` int(10) unsigned NOT NULL,
-  `institution_medical_center_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_id` int(10) unsigned DEFAULT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `city_id` int(10) unsigned NOT NULL,
-  `media_id` bigint(20) unsigned NOT NULL,
+  `media_id` bigint(20) unsigned DEFAULT NULL,
   `video_url` varchar(200) NOT NULL,
+  `external_url` varchar(200) NOT NULL,
+  `highlights` text NOT NULL,
   `highlight_doctors` varchar(300) NOT NULL,
   `highlight_specializations` varchar(300) NOT NULL,
   `highlight_sub_specializations` varchar(300) NOT NULL,
   `highlight_treatments` varchar(300) NOT NULL,
-  `highlight_featured_images` text NOT NULL,
+  `highlight_featured_images` text,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_expiry` timestamp NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(5) unsigned NOT NULL,
@@ -831,19 +833,23 @@ CREATE TABLE IF NOT EXISTS `institution_groups` (
 -- Table structure for table `institution_inquiries`
 --
 
+DROP TABLE IF EXISTS `institution_inquiries`;
 CREATE TABLE IF NOT EXISTS `institution_inquiries` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `institution_medical_center_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Null if this was made in the hospital profile page',
   `inquirer_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `inquirer_email` int(11) NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
   `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `remote_address` varchar(100) NOT NULL,
+  `http_user_agent` varchar(100) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `institution_id` (`institution_id`),
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='inquiries for an institution or a medical center' AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
