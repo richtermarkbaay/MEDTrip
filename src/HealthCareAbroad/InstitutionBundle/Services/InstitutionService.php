@@ -60,6 +60,39 @@ class InstitutionService
     	$this->doctrine = $doctrine;
     }
     
+    /**
+     * Count active medical centers of an institution
+     * 
+     * @author acgvelarde
+     * @param Institution $institution
+     * @return int
+     */
+    public function countActiveMedicalCenters(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->countActiveInstitutionMedicalCenters($institution);
+    }
+    
+    /**
+     * List active Specializations of an institution. 
+     * Returns a flat array of specializationId => specializationName
+     *
+     * @param Institution $institution
+     * @return array
+     */
+    public function listActiveSpecializations(Institution $institution)
+    {
+        $institutionSpecializations = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')
+            ->getActiveSpecializationsByInstitution($institution);
+
+        $list = array();
+        foreach ($institutionSpecializations as $_each) {
+            $specialization = $_each->getSpecialization();
+            $list[$specialization->getId()] = $specialization->getName();
+        }
+        
+        return $list;
+    }
+    
     public function getFullInstitutionBySlug($slug = '')
     {
         if(!$slug) {

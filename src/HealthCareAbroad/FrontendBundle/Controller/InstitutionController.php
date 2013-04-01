@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
+
+use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Doctrine\ORM\Query\Expr\Join;
@@ -76,6 +80,19 @@ class InstitutionController extends ResponseHeadersController
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
         }
+        
+        $specializationsList = $institutionService->listActiveSpecializations($this->institution);
+        
+        // set request variables to be used by page meta components
+        $this->getRequest()->attributes->add(array(
+            'institution' => $this->institution,
+            'pageMetaContext' => PageMetaConfiguration::PAGE_TYPE_INSTITUTION,
+            'pageMetaVariables' => array(
+                PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE => $institutionService->countActiveMedicalCenters($this->institution),
+                PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE => \count($specializationsList),
+                // get the first 10 as list
+                PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($specializationsList,0, 10, true))
+        )));
 
         return $this->setResponseHeaders($this->render('FrontendBundle:Institution:profile.html.twig', $params));
     }

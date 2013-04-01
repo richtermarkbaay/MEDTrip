@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\ORM\Query\Expr\Join;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
@@ -155,19 +157,13 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $result;
     }
 
+    /**
+     * @deprecated use getActiveSpecializationsByInstitution
+     * @param unknown_type $institution
+     */
     public function getActiveSpecializations($institution)
     {
-
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('b')
-            ->from('InstitutionBundle:InstitutionSpecialization', 'b')
-            ->leftJoin('b.institutionMedicalCenter', 'c')
-            ->leftJoin('b.specialization', 'd')
-            ->where('c.institution = :institution')
-            ->setParameter('institution', $institution)
-            ->groupBy('b.specialization');
-
-        return $qb->getQuery()->getResult();
+        return $this->getActiveSpecializationsByInstitution($institution);
     }
     
     public function getAllActiveSpecializations()
@@ -182,6 +178,27 @@ class InstitutionSpecializationRepository extends EntityRepository
            ->setParameter('institutionSpecializationStatus', InstitutionSpecialization::STATUS_ACTIVE)
            ->groupBy('b')->orderBy('b.name', 'ASC');
 
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Get all active institution specializations of an Institution
+     * 
+     * @param Institution $institution
+     * @return multitype:
+     */
+    public function getActiveSpecializationsByInstitution(Institution $institution)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('b, d')
+        ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+        ->leftJoin('b.institutionMedicalCenter', 'c')
+        ->leftJoin('b.specialization', 'd')
+        ->where('c.institution = :institution')
+        ->setParameter('institution', $institution)
+        ->groupBy('b.specialization')
+        ->orderBy('d.name');
+        
         return $qb->getQuery()->getResult();
     }
 

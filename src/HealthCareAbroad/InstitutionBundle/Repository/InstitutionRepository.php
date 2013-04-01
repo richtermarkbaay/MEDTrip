@@ -60,6 +60,20 @@ class InstitutionRepository extends EntityRepository
 
         return $query->getResult();
     }
+    
+    public function countActiveInstitutionMedicalCenters(Institution $institution)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('count(a.id)')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->where('a.institution = :institutionId')
+            ->andWhere('a.status != :inActive')
+            ->setParameter('institutionId', $institution->getId())
+            ->setParameter('inActive', InstitutionMedicalCenterStatus::INACTIVE)
+            ->getQuery();
+        
+        return $query->getSingleScalarResult();
+    }
 
     /**
      * Get draft institution specializations
