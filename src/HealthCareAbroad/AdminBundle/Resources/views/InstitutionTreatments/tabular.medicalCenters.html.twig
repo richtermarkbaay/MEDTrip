@@ -47,6 +47,9 @@
                 {% else %}
                         <div class="alert alert-block"> {{ institution.name }} has no {{ centersLabel }} yet. </div>
                 {% endif %}
+         {% if pager.isPaginable %}
+         {{ paginate(pager, 'admin_institution_manageCenters', app.request.query.all | merge(app.request.get('_route_params')) ) }}
+        {% endif %}
         {% endblock %} 
 
         {% endembed %}

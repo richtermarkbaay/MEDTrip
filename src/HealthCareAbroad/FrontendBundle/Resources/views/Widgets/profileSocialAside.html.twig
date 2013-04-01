@@ -3,7 +3,7 @@
 {% set hasTwitterSite = (urls.twitter is defined) and urls.twitter %}
 
 {% if hasGoogleSite or hasFbSite or hasTwitterSite %}
-    {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Social', class: 'heading', headingClass: 'left-align'} %}
+    {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Social', class: 'heading', headingClass: 'align-left'} %}
 
         {% block asideContent %}
     		<ul class="socials-nav pull-right inline-list">

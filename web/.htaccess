@@ -17,9 +17,11 @@
     RewriteEngine On
 
     # Explicitly disable rewriting for front controllers
+    RewriteRule ^webgrind/ - [L]
     RewriteRule ^blog/ - [L]
     RewriteRule ^app_dev.php - [L]
     RewriteRule ^app.php - [L]
+    RewriteRule ^test/ - [L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     #RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]

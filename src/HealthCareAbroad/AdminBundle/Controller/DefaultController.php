@@ -35,8 +35,9 @@ class DefaultController extends Controller
         $advertisementTypes = $this->getDoctrine()->getEntityManager()->getRepository('AdvertisementBundle:AdvertisementType')->findByStatus(AdvertisementType::STATUS_ACTIVE);
         
         $accountId = $this->getRequest()->getSession()->get('accountId');
-        $alerts = $this->container->get('services.alert')->getAdminAlerts($accountId);
-
+        //$alerts = $this->container->get('services.alert')->getAdminAlerts($accountId);
+        $alerts = array();
+        
         $adsTypeObj = array();
         foreach($advertisementTypes as $adsType)
         {

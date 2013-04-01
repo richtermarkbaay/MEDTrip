@@ -95,11 +95,13 @@ var BroadSearchWidget = {
                        response(matches);
                    },
                    select: function(event, ui) {
-                       // reload the other sources
-                       BroadSearchWidget.loadSourcesByType(ui.item);
-                       // set the values
-                       $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
-                       BroadSearchWidget.submitButton.attr('disabled', false);
+                       
+                       if ($(BroadSearchWidget.formComponents[type].valueField).val()  != ui.item.id) {
+                           // load sources of the other type
+                           BroadSearchWidget.loadSourcesByType(ui.item);
+                           $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
+                           BroadSearchWidget.submitButton.attr('disabled', false);
+                       }
                    },
                    change: function(event, ui) {
                        if (!ui.item) {
@@ -119,6 +121,13 @@ var BroadSearchWidget = {
             
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                _itemLink.on('click', function(){
+                    BroadSearchWidget.loadSourcesByType(item);
+                    $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
+                    BroadSearchWidget.submitButton.attr('disabled', false);
+                    BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
+                    
+                });
                 return $("<li>").append(_itemLink).appendTo(ul);
             };
             

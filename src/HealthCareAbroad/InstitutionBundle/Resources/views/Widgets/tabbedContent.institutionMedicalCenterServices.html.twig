@@ -12,8 +12,8 @@
 			        <tbody>
                     {% for _service in ancillaryServicesData.globalList %}
         			
-            			{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' with {'ancillaryService': _service, '_isSelected': _service.id in ancillaryServicesData.selectedAncillaryServices } %}
-                        
+            			{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in ancillaryServicesData.selected ,'properties': ancillaryServicesData.currentAncillaryData} %}
+                       
                     {% endfor %}
         			</tbody>
     			</table>

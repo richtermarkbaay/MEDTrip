@@ -18,12 +18,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class TrackerController extends Controller
 {
-    public function showFormAction()
-    {
-        $form = $this->createForm(new TrackerFormType());
+//     public function showFormAction()
+//     {
+//         $form = $this->createForm(new TrackerFormType());
         
-        return  $this->render('StatisticsBundle:Tracker:form.html.twig', array('statsTrackerForm' => $form->createView()));
-    }
+//         return  $this->render('StatisticsBundle:Tracker:form.html.twig', array('statsTrackerForm' => $form->createView()));
+//     }
     
     public function saveClickthroughAction(Request $request)
     {

@@ -14,14 +14,14 @@ use HealthCareAbroad\HelperBundle\Entity\FeedbackMessage;
 
 class FeedbackController extends Controller
 {
-    public function viewAction()
-    {
-        $form = $this->createForm(New FeedbackMessageFormType(), new FeedbackMessage());
+//     public function viewAction()
+//     {
+//         $form = $this->createForm(New FeedbackMessageFormType(), new FeedbackMessage());
         
-        return $this->render('FrontendBundle:Embed:modal.feedbackMessage.html.twig', array(
-                        'feedbackForm' => $form->createView()
-        ));
-    }
+//         return $this->render('FrontendBundle:Embed:modal.feedbackMessage.html.twig', array(
+//                         'feedbackForm' => $form->createView()
+//         ));
+//     }
     
     public function sendAction(Request $request)
     {

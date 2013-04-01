@@ -1,10 +1,8 @@
 {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: '<small> Narrow </small> Search'} %}
     {% block asideContent %}
-    <ul class="search-widget-wrapper unstyled">
-        <li class="row">
-            <h3>Narrow down search results</h3>
-            {{ render_narrow_search_widget(includedNarrowSearchWidgets, narrowSearchParameters is defined ? narrowSearchParameters : []) | raw }}
-        </li>
-    </ul>
+    <div class="search-widget">
+        <h3>Narrow down search results</h3>
+        {{ render_narrow_search_widget(includedNarrowSearchWidgets, narrowSearchParameters is defined ? narrowSearchParameters : []) | raw }}
+    </div>
     {% endblock %}
 {% endembed %}

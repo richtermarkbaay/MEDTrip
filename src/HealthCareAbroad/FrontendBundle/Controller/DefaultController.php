@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
+
+use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
@@ -32,24 +36,24 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class DefaultController extends Controller
+class DefaultController extends ResponseHeadersController
 {
     private $resultsPerPage = 15;
 
     public function indexAction(Request $request)
     {
-        return $this->render('FrontendBundle:Default:index.html.twig');
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
     }
 
-    public function renderNewsletterFormAction()
-    {
-        $newsletterSubscriber = new NewsletterSubscriber();
-        $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
+//     public function renderNewsletterFormAction()
+//     {
+//         $newsletterSubscriber = new NewsletterSubscriber();
+//         $form = $this->createForm(new NewsletterSubscriberFormType(), $newsletterSubscriber);
 
-        return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
-                        'subscribeNewsletterForm' => $form->createView()
-        ));
-    }
+//         return $this->render('FrontendBundle:Widgets:footer.subscribeNewsletter.html.twig', array(
+//                         'subscribeNewsletterForm' => $form->createView()
+//         ));
+//     }
 
     public function treatmentListAction()
     {
@@ -57,7 +61,7 @@ class DefaultController extends Controller
         $params['specializations'] = $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization();
         //$params['specializations'] = $institutionSpecializationRepo->getAllActiveSpecializations();
 
-        return $this->render('FrontendBundle:Default:listTreatments.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listTreatments.html.twig', $params));
     }
 
     public function destinationListAction()
@@ -65,7 +69,7 @@ class DefaultController extends Controller
         //$params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
         $params['countries'] = $this->get('services.terms')->getActiveCountriesWithCities();
 
-        return $this->render('FrontendBundle:Default:listDestinations.html.twig', $params);
+        return $this->setResponseHeaders($this->render('FrontendBundle:Default:listDestinations.html.twig', $params));
     }
 
     public function subscribeNewsletterAction(Request $request)
@@ -185,25 +189,35 @@ class DefaultController extends Controller
         if (!$specialization = $em->getRepository('TreatmentBundle:Specialization')->find(isset($parameters['specializationId']) ? $parameters['specializationId'] : $parameters['specialization'])) {
             throw new NotFoundHttpException();
         }
-
+        
         //TODO: This is temporary; use OrmAdapter
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCountry($specialization, $country));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($specialization, $country)));
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country,
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $country->getName()),
-                        'country' => $country,
-                        'specialization' => $specialization,
-                        'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'city'),
-                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'searchResults' => $pager,
+            'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $country->getName()),
+            'country' => $country,
+            'specialization' => $specialization,
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
                         'countryId' => $country->getId(),
                         'specializationId' => $specialization->getId()
         )));
+        
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountrySubSpecializationAction(Request $request)
@@ -220,13 +234,23 @@ class DefaultController extends Controller
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCountry($subSpecialization, $country));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($subSpecialization, $country)));
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $subSpecialization->getSpecialization(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country,
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $country->getName()),
-                        'country' => $country,
-                        'subSpecialization' => $subSpecialization,
-                        'includedNarrowSearchWidgets' => array('treatment', 'city'),
-                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $subSpecialization->getSpecialization()->getId())
+            'searchResults' => $pager,
+            'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $country->getName()),
+            'country' => $country,
+            'subSpecialization' => $subSpecialization,
+            'includedNarrowSearchWidgets' => array('treatment', 'city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $subSpecialization->getSpecialization()->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -235,7 +259,7 @@ class DefaultController extends Controller
                         'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCountryTreatmentAction(Request $request)
@@ -252,15 +276,24 @@ class DefaultController extends Controller
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCountry($treatment, $country));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($treatment, $country)));
-
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $treatment->getSpecialization(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country,
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $country->getName()),
-                        'country' => $country,
-                        'specialization' => $treatment->getSpecialization(),
-                        'treatment' => $treatment,
-                        'includedNarrowSearchWidgets' => array('city'),
-                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId())
+            'searchResults' => $pager,
+            'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $country->getName()),
+            'country' => $country,
+            'specialization' => $treatment->getSpecialization(),
+            'treatment' => $treatment,
+            'includedNarrowSearchWidgets' => array('city'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -268,7 +301,7 @@ class DefaultController extends Controller
                         'specializationId' => $treatment->getSpecialization()->getId(),
                         'treatmentId' => $treatment->getId())));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySpecializationAction(Request $request)
@@ -285,8 +318,17 @@ class DefaultController extends Controller
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySpecializationAndCity($specialization, $city));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($specialization, $city)));
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city,
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+                        'searchResults' => $pager,
                         'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
                         'specialization' => $specialization,
                         'city' => $city,
@@ -300,7 +342,7 @@ class DefaultController extends Controller
                         'specializationId' => $specialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCitySubSpecializationAction(Request $request)
@@ -320,23 +362,34 @@ class DefaultController extends Controller
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersBySubSpecializationAndCity($subSpecialization, $city));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($subSpecialization, $city)));
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                        'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                        'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
-                        'subSpecialization' => $subSpecialization,
-                        'city' => $city,
-                        'includedNarrowSearchWidgets' => array('treatment'),
-                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'searchResults' => $pager,
+            'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
+            'subSpecialization' => $subSpecialization,
+            'city' => $city,
+            'includedNarrowSearchWidgets' => array('treatment'),
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
-                        'countryId' => $city->getCountry()->getId(),
-                        'cityId' => $city->getId(),
-                        'specializationId' => $specialization->getId(),
-                        'subSpecializationId' => $subSpecialization->getId()
+            'countryId' => $city->getCountry()->getId(),
+            'cityId' => $city->getId(),
+            'specializationId' => $specialization->getId(),
+            'subSpecializationId' => $subSpecialization->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     public function listCityTreatmentAction(Request $request)
@@ -353,12 +406,23 @@ class DefaultController extends Controller
 
         //$pagerAdapter = new ArrayAdapter($em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getMedicalCentersByTreatmentAndCity($treatment, $city));
         $pagerAdapter = new ArrayAdapter($em->getRepository('TermBundle:SearchTerm')->findByFilters(array($treatment, $city)));
+        $pager = new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $treatment->getSpecialization(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
+        ));
+        
         $response = $this->render('SearchBundle:Frontend:resultsCombination.html.twig', array(
-                    'searchResults' => new Pager($pagerAdapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
-                    'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
-                    'treatment' => $treatment,
-                    'city' => $city,
-                    'includedNarrowSearchWidgets' => array(),
+            'searchResults' => $pager,
+            'searchLabel' => array('treatment' => $treatment->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
+            'treatment' => $treatment,
+            'city' => $city,
+            'includedNarrowSearchWidgets' => array(),
                         // broaden search only
         ));
 
@@ -369,7 +433,7 @@ class DefaultController extends Controller
                         'treatmentId' => $treatment->getId()
         )));
 
-        return $response;
+        return $this->setResponseHeaders($response);
     }
 
     private function buildCookie(array $values)
@@ -439,19 +503,19 @@ class DefaultController extends Controller
     }
 
     /**
-     * 
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function ajaxSendErrorReportAction(Request $request){
-        
+
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
         $errorReport = new ErrorReport();
         $form = $this->createForm(New ErrorReportFormType(), $errorReport);
         $form->bind($request);
-        
+
         if ($form->isValid()) {
                 $em = $this->getDoctrine()->getEntityManager();
                 $errorReport->setLoggedUserId(0);
@@ -465,18 +529,18 @@ class DefaultController extends Controller
         else {
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
-            
-            foreach ($form_errors as $_err) {           
+
+            foreach ($form_errors as $_err) {
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
-            
+
             $captchaError = $form->get('captcha')->getErrors();
             if(count($captchaError)) {
                 $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
-        
+
         return $response;
     }
 }

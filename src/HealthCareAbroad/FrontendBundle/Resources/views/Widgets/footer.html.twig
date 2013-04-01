@@ -17,12 +17,13 @@
             <ul class="circle-bullet-list">
                 <li>
                     <a id="feedback-message" href="#">Feedback</a>
-                    {% render 'FrontendBundle:Feedback:view' %}
+                    {{ render_feedback_form() | raw }}
                 </li>
                 <li>
                     <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
                 </li>
             </ul>
+
 		</div>
 
 		<div class="facebook-section span4"> <!--This is for the Facebook API-->
@@ -31,7 +32,7 @@
 		</div>
 
 		<div class="subscribe-section span4"> <!--This is for the Subscriptions-->
-			{% render 'FrontendBundle:Default:renderNewsletterForm' %}
+			{{ render_newsletter_subscription_form() |raw }}
 			<div class="register row">
                 <h4 class="bordered">Want to list your Clinic?</h4>
                 <!--<a href="#" class="sign-up">Sign Up</a>

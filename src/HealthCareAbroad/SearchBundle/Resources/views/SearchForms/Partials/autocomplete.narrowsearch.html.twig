@@ -4,13 +4,14 @@
     dropdown_id: 'dropdown_'~searchWidget.type
 })%}
 
-<li class="row-fluid combo-box">
-    <button class="btn span12 text-left default btn-pop autocomplete_dropdown_trigger" data-widget-key="{{ searchWidget.type }}" data-toggle="dropdown" data-dropdown="#{{ searchWidget.dropdown_id }}" >
+<div class="combo-box ">
+    <button class="btn default btn-pop autocomplete_dropdown_trigger" data-widget-key="{{ searchWidget.type }}" data-toggle="dropdown" data-dropdown="#{{ searchWidget.dropdown_id }}" >
         <span id ="{{ searchWidget.value_container_id }}" class="btn-label">Select a {{ searchWidget.label }}</span>
         <span class="icon-chevron-down pull-right" style="vertical-align: middle"></span>
     </button>
-    <div  id="{{ searchWidget.dropdown_id }}" class="input-append dropdown-menu" role="menu" data-autocomplete="#{{ searchWidget.autocomplete_id }}">
-        <input id="{{ searchWidget.autocomplete_id }}" class="search-field" type="text" data-value-container="#{{ searchWidget.value_container_id }}" />
-        <p class="test search-help-text" style="">Please select a {{ searchWidget.label | lower }}</p>
+    <div id="{{ searchWidget.dropdown_id }}" class="input-append dropdown-menu row-fluid" role="menu" data-autocomplete="#{{ searchWidget.autocomplete_id }}">
+        <input id="{{ searchWidget.autocomplete_id }}" class="search-field span12" type="text" data-value-container="#{{ searchWidget.value_container_id }}" />
+        <i class="hca-sprite search-icon orange"></i>
+        <label>Please select a {{ searchWidget.label | lower }}</label>
     </div>
-</li>
+</div>

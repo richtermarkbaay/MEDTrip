@@ -1,0 +1,64 @@
+{% set _parameterKeys  = get_broadsearch_parameter_keys() %}
+<form class="asdf {{ attr.class is defined ? attr.class : 'row-fluid search_box broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
+    <input class="type_in" type="text" name="{{ _parameterKeys.termLabel }}" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
+    <input type="hidden" name="{{ _parameterKeys.termId }}" id="treatment_id" />
+    <input class="type_in" type="text" name="{{ _parameterKeys.destinationLabel }}" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
+    <input type="hidden" name="{{ _parameterKeys.destinationId }}" id="destination_id"/>
+    {{ render_broad_search_context_parameter() | raw }}
+    <button type="submit" class="btn">Let's Go</button>
+    
+    <div class="helper-link">
+        
+        <div class="popup row-fluid treatments">
+            <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
+                <span class="icon-chevron-down"></span>
+            </button>
+            <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu">
+                
+            </div>
+        </div>
+        
+        <div class="popup row-fluid destinations">
+            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop pull-right">
+                <span class="icon-chevron-down"></span>
+            </button>
+            <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu">
+                
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script type="text/javascript" src="{{ asset('bundles/search/js/widgets.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        {% if form_ajax_submit is defined and form_ajax_submit and form_ajax_submit_handler is defined %}
+            $('form.broad_search_form').on('submit', {{ form_ajax_submit_handler }});
+        {% endif %}
+        
+        BroadSearchWidget
+            .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
+            .initializeForm($('form.broad_search_form'), {
+                treatments: {
+                    //'mainInputField': $('input#treatment_input_field'),
+                    'dropdownButton': $('#treatments_dropdown_button'),
+                    'autocompleteField': $('input#treatment_input_field'),
+                    'dropdown': $('#treatments_dropdown_menu'), 
+                },
+                destinations: {
+                    //'mainInputField': $('input#destination_input_field'),
+                    'dropdownButton': $('#destinations_dropdown_button'),
+                    'autocompleteField': $('input#destination_input_field'),
+                    'dropdown': $('#destinations_dropdown_menu')
+                }
+            });
+            
+    });
+})(jQuery);
+//-->
+</script>

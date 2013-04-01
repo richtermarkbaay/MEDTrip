@@ -7,10 +7,10 @@
     {% if institution.featuredMedia %}
         {{ media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw }}
     {% else %}
-        <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution"/>
+        <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>
     {% endif %}
 
-    <div class="info-wrapper hca-h-sprite stripe-bg-dark">
+    <div class="info-wrapper hca-v-sprite stripe-bg-dark">
         <div class="logo-wrapper">
             {{ render_institution_logo(institution, {attr: {alt: institution.name}}) | raw }}
         </div>
@@ -45,6 +45,7 @@
             <span class="hca-sprite address-icon pull-left"></span>
             <address>
                 {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
+                <br/>
                 {{ institution_address_to_array(institution, ['zipCode', 'city', 'state', 'country']) | join(', ')}}
             </address>
         </div>

@@ -1,3 +1,8 @@
+# Routest for Admin PageMetaConfigurationController
+AdminBundle_pageMetaConfiguration:
+    resource: "@AdminBundle/Resources/config/routing_page_meta_configuration.yml"
+    prefix:   /
+
 # Routes for Admin TermsController #
 AdminBundle_terms:
     resource: "@AdminBundle/Resources/config/routing_terms.yml"
