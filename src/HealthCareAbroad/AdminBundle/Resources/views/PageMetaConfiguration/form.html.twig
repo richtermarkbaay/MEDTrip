@@ -1,5 +1,6 @@
 {% spaceless %}
-<form class="" action="{{ path('admin_page_metas_save') }}" method="post" {{ form_enctype(form) }}>
+
+<form class="" action="{{ path('admin_page_metas_save', {'id': form.vars.data.id}) }}" method="post" {{ form_enctype(form) }}>
     <div>
         <label>Page URL:</label>
         <input type="text" disabled="disabled" value="{{ form.url.vars.value }}" class="input-xxlarge"/>

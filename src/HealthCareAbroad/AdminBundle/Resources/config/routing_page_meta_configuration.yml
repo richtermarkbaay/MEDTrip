@@ -7,7 +7,7 @@ admin_page_metas_process_search_parameters:
     defaults: { _controller: AdminBundle:PageMetaConfiguration:ajaxProcessSearchParameters }
     
 admin_page_metas_save:
-    pattern:  /admin/page_metas/save
-    defaults: { _controller: AdminBundle:PageMetaConfiguration:save }
+    pattern:  /admin/page_metas/save/{id}
+    defaults: { _controller: AdminBundle:PageMetaConfiguration:save, id: 0 }
     requirements:
          _method: POST
