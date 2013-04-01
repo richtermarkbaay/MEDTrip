@@ -14,10 +14,12 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 {
     private $signupFormValues = array(
-        'institutionSignUp[name]' => 'this a test instiutiton adfasdfsaf',
+        'institutionSignUp[firstName]' => 'testFirstName',
+        'institutionSignUp[lastName]' => 'testLastName',
         'institutionSignUp[email]' => 'test-email-watata-signup@chromedia.com',
         'institutionSignUp[password]' => '123456',
         'institutionSignUp[confirm_password]' => '123456',
+        'institutionSignUp[type]' => '2',
         'institutionSignUp[agree_to_terms]' => '1',
     );
 	
@@ -97,11 +99,11 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email address")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Choose a password")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm your password")')->count());
-// 		$form = $crawler->selectButton('Submit')->form();
-// 		$crawler = $client->submit($form, $this->signupFormValues);
+		$form = $crawler->selectButton('Create Account')->form();
+		$crawler = $client->submit($form, $this->signupFormValues);
 		
 		// test that it will redirect to institution homepage
-// 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+ 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
 // 		$this->assertEquals('/institution', $this->getLocationResponseHeader($client));
 // 		$client->followRedirect();
 		
