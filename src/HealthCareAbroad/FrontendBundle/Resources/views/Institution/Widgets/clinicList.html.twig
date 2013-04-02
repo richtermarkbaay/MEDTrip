@@ -1,15 +1,16 @@
-<div id="clinics">
-    <h5 class="clinics-heading">CLINICS</h5>
-	<div id="clinics-listing">
-		<ul class="thumbnails">
-		    {% for each in institution.institutionMedicalCenters %}
+{% if institution.institutionMedicalCenters | length %}
+    {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Clinics', class: 'clinics'} %}
+        {% block sectionContent %}
+    	<ul class="thumbnail-list thumbnails">
+    	    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
     				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-    				    {{ render_institution_medical_center_logo(each, {context: 2, attr: {style: 'max-width:165px'}}) | raw }}
-                        <span class="clinic-name">{{ each.name }}</span>
+    				    {{ render_institution_medical_center_logo(each, {context: 2, attr: {class: 'logo'}}) | raw }}
+                        <span class="name">{{ each.name }}</span>
     				</a>
     			</li>
-			{% endfor %}
-		</ul>
-	</div>
-</div>
+    		{% endfor %}
+    	</ul>
+        {% endblock %}
+    {% endembed %}
+{% endif %}

@@ -1,30 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        {% set page_meta_configuration = build_frontend_meta_configuration(app.request) %}
         <meta charset="UTF-8">
-        <!-- meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" -->
 
-        <title>{% block title %}HealthCareAbroad{% endblock %}</title>
+        <title>{{ page_meta_configuration.title }}</title>
+        <meta name="description" content="{{ page_meta_configuration.description }}">
+        <meta name="keywords" content="{{ page_meta_configuration.keywords }}">
         <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
 
         {% block stylesheets %}
 
             <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css') }}" rel="stylesheet"/>
             <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/frontend/hca.min.css') }}" rel="stylesheet"/>
+            <link href="{{ asset('css/frontend/new.css') }}" rel="stylesheet"/>
             <!--<link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>-->
 
-        {% endblock %}
-
-        {#-- added temporary inline styles  --#}
-        {% block inlinestyle %}
-        <style type="text/css">
-		.modal .modal-body form select.error {
-            border: 1px solid #CC0000;
-            margin-bottom: 0;
-        }	
-    		</style>
         {% endblock %}
        
         {#--

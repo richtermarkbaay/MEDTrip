@@ -2,60 +2,49 @@
 {% set isHomePage = false %}
 {% block content %}
 
-<!--End of header-->
-            <div id="content" class="container content error-page">
-                <!--End of highlight-->
-                <div id="details" class="row">
-                    <div class="error">
-                        <div class="pull-left error-code">
-                            <h1>
-                                {{ status_code }}
-                            </h1>
-                        </div>
-                        <h2 class="error-description">
-                            {{ status_text }}
-                        </h2>
-                        <h2>
-                            {{ status_text_details }}
-                        </h2>
-                        <div class="helper row-fluid">
-                            <div class="message span12">
-                                <p class="message">
-                                    We're sorry you've not found what you're looking for.<br>
-                                Please try another search below, or contact us for assistance.
-                                    <br>
-                                </p>
-                            </div>
-                        </div><!-- .helper .row-fluid -->
-                        <div class="helper row-fluid span12">
-                            <div class="links">
-                                {% if referer is not empty %}
-                                    <div class="span6">
-                                        <a href="{{ referer }}" class="btn green btn-large span8 offset3">
-                                             <i class="icon-chevron-left icon-white"></i>  PREVIOUS PAGE
-                                         </a>
-                                    </div>
-                                     <div class="span6">
-                                         <a class="btn orange btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="icon-envelope icon-white"></i>  REPORT THIS TO US
-                                         </a>
-                                         {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}
-                                    </div>
-                                {% else %}
-                                    <div class="span6 offset4">
-                                         <a class="btn orange btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="icon-envelope icon-white"></i>  REPORT THIS TO US
-                                         </a>
-                                         {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}
-                                    </div>
-                                {% endif %}
-                            </div><!-- .links -->
-                        </div>
-                        <div class="helper row-fluid">
-                        {{ render_search_homepage_widget({attr: {class: 'search-box-error', error: '1'} }) | raw  }}
-                        </div>
-                    </div>
-                </div>
+    <div class="error-page">
+        <div class="pull-left error-code">
+            <h1>{{ status_code }}</h1>
+        </div>
+        <h2 class="error-description">{{ status_text }}</h2>
+        
+        <h2>{{ status_text_details }}</h2>
+
+        <div class="helper row-fluid">
+            <div class="message span12">
+                <p class="message">
+                    We're sorry you've not found what you're looking for.<br>
+                Please try another search below, or contact us for assistance.
+                    <br>
+                </p>
             </div>
-            <!--End of content-->
+        </div><!-- .helper .row-fluid -->
+        <div class="helper row-fluid span12">
+            <div class="links">
+                {% if referer is not empty %}
+                    <div class="span6">
+                        <a href="{{ referer }}" class="btn green btn-large span8 offset3">
+                             <i class="icon-chevron-left icon-white"></i>  PREVIOUS PAGE
+                         </a>
+                    </div>
+                     <div class="span6">
+                         <a class="btn orange btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="white-icon-envelope"></i>  REPORT THIS TO US
+                         </a>
+                         {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}
+                    </div>
+                {% else %}
+                    <div class="span6 offset4">
+                         <a class="btn orange btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="white-icon-envelope"></i>  REPORT THIS TO US
+                         </a>
+                         {% include 'FrontendBundle:Exception/Modal:modal.reportForm.html.twig' %}
+                    </div>
+                {% endif %}
+            </div><!-- .links -->
+        </div>
+        <div class="helper row-fluid">
+        {{ render_search_homepage_widget({attr: {class: 'search-box-error search-form', error: '1'} }) | raw  }}
+        </div>
+    </div>
                       
 {% endblock %}
 

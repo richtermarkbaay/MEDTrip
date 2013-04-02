@@ -1,20 +1,22 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'report', 'title': 'Submit Report', 'formId': 'errorReport'}} %}
     {% block modalBody %}
-    <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form" id="errorReportForm">
+    <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form row-fluid" id="errorReportForm">
     	<div class="alert-box"></div>   
-        <div class="details control-group row-fluid">
-            <label for="{{ form.children.details.vars.id }}" >
+        <div class="details control-group">
+            <label for="{{ form.children.details.vars.id }}" class="span3">
                 <strong>{{ form.children.details.vars.label }}</strong>
             </label>
-           {{ form_widget(form.details, { 'attr': {class: 'span12', cols: 30, rows: 10} })  }}
+           {{ form_widget(form.details, { 'attr': {class: 'span9', cols: 30, rows: 10} })  }}
         </div>
-		 <div class="captcha control-group row-fluid">
-		     <label for="{{ form.children.captcha.vars.id }}" >
+		 <div class="captcha control-group">
+		     <label for="{{ form.children.captcha.vars.id }}" class="span3">
                 <strong>{{ form.children.captcha.vars.label }}</strong>
             </label>
-             {{ form_widget(form.captcha) }}
+            <div class="span9">
+                 {{ form_widget(form.captcha) }}
+            </div>
         </div>
-			
+
 		{{ form_rest(form) }}
 	</form>
    {% endblock %}

@@ -2,7 +2,7 @@
 namespace HealthCareAbroad\SearchBundle\Services;
 
 use Symfony\Component\HttpFoundation\ParameterBag;
-
+//TODO: clean up
 /**
  * The behavior of this class differs from ParameterBag in that it
  * only allows a defined group of parameter names to be set.

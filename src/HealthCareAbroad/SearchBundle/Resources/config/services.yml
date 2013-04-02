@@ -41,6 +41,15 @@ services:
     services.search:
         class: %services.search.class%
         arguments: [@services.search.default_strategy]
+    
+    services.search.parameters:
+        class: HealthCareAbroad\SearchBundle\Services\SearchParameterService
+        calls:
+            - [setCompiler, [@services.search.parameter_compiler]]
+    services.search.parameter_compiler:
+        class: HealthCareAbroad\SearchBundle\Services\SearchParameterCompiler
+        calls:
+            - [setContainer, [@service_container]]
 
     services.search_builder_factory:
         class: HealthCareAbroad\SearchBundle\Services\Admin\SearchResultBuilderFactory

@@ -70,7 +70,7 @@ services:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]
 
-    
+    #MISPLACED
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
         public: false
@@ -78,6 +78,12 @@ services:
             - [setUserService, [@services.twig_user]]
         tags:
             - { name: twig.extension }
+            
+    services.helper.page_meta_configuration:
+        class: HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService
+        calls:
+            - [setDoctrine, [@doctrine]]
+        
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

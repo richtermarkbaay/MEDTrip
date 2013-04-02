@@ -38,15 +38,17 @@ class AdminUserType
      * @var boolean $status
      */
     private $status;
-
+    
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $adminUserRoles;
+    private $adminUsers;
 
     public function __construct()
     {
         $this->adminUserRoles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->adminUsers = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -102,7 +104,38 @@ class AdminUserType
     {
         return $this->status;
     }
-
+    
+    /**
+     * Add adminUsers
+     *
+     * @param HealthCareAbroad\UserBundle\Entity\AdminUser $adminUser
+     * @return AdminUser
+     */
+    public function addAdminUsers(\HealthCareAbroad\UserBundle\Entity\AdminUser $adminUsers)
+    {
+        $this->adminUsers[] = $adminUsers;
+        return $this;
+    }
+    
+    /**
+     * Remove adminUsers
+     *
+     * @param HealthCareAbroad\HelperBundle\Entity\AdminUser $adminUser
+     */
+    public function removeCities(\HealthCareAbroad\UserBundle\Entity\AdminUser $adminUsers)
+    {
+        $this->adminUsers->removeElement($adminUsers);
+    }
+    
+    /**
+     * Get adminUsers
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getAdminUsers()
+    {
+        return $this->adminUsers;
+    }
     /**
      * Add adminUserRoles
      *

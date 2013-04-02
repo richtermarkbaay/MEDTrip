@@ -1,6 +1,6 @@
-<section class="box-in">
+<section class="widget-wrapper">
     {% if title is defined and title|length %}
-	    <h5 class="heading {{ headingClass is defined ? headingClass : ''}}">{{ title }}</h5>
+	    <h4 class="widget-heading {{ headingClass is defined ? headingClass : ''}}">{{ title | raw }}</h4>
 	{% endif %}
 	{% block asideContent %}{% endblock %}
 </section>

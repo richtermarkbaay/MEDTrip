@@ -30,3 +30,14 @@ HealthCareAbroad\HelperBundle\Entity\FeedbackMessage:
             - NotBlank: {message: "You've not written your message."}
         country:
             - NotBlank: {message: 'Please provide your country.' }
+            
+HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [url]
+            message: Meta configuration for URL already exists!
+    properties:
+        title:
+            - NotBlank: ~
+        description: 
+            - NotBlank: ~
