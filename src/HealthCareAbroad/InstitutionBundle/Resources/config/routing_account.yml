@@ -16,18 +16,6 @@ institution_ajaxUpdateCoordinates:
     requirements:
         _method:  POST
 
-institution_singleCenter_profile:
-    pattern: /institution/complete-profile.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:completeSingleCenterProfileRegistration }
-    requirements:
-        _method: GET|POST
-        
-institution_multipleCenter_profile:
-    pattern: /institution/complete-profile.html
-    defaults: {_controller: InstitutionBundle:InstitutionAccount:completeMultipleCenterProfileAfterRegistration }
-    requirements:
-        _method: GET|POST
-
 institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }

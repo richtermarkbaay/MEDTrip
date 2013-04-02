@@ -36,7 +36,8 @@ class FlagTwigExtension extends \Twig_Extension
     
     public function render_contactCountryList_widget($string = null, $twigTemplate = null)
     {
-        
+        $code = array();
+        $datas = array();
         $countryGlobalData = $this->service->getGlobalCountryList();
    
         $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:flag_widget.html.twig' : $twigTemplate;
@@ -48,8 +49,7 @@ class FlagTwigExtension extends \Twig_Extension
                         'value' => $a['code'],
             );
         }
-        
-        $params = array( 'countryJson' => \json_encode($code) ,
+        $params = array( 'countryJson' => \json_encode($code),
                         'countryList' => $datas,
                         'inputId' => $string);
         return $this->twig->render($twigTemplate, $params);

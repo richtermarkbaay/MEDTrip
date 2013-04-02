@@ -84,14 +84,11 @@ class InstitutionSignUpController  extends Controller
 	        // redirect to dashboard if there is an active session
 	        return $this->redirect($this->generateUrl('institution_homepage'));
 	    }
-	    
-	    $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
 	    $factory = $this->get('services.institution.factory');
 	    $institution = $factory->createInstance();
 	    $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
 
 	    if ($request->isMethod('POST')) {
-
 	        $form->bind($request);
 
 	        if ($form->isValid()) {
@@ -137,33 +134,21 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                if($isSingleCenter = $this->get('services.institution')->isSingleCenter($institution)) {
-                    return $this->redirect($this->generateUrl('institution_singleCenter_profile'));
-                }else {
-                    return $this->redirect($this->generateUrl('institution_multipleCenter_profile'));
-                }
-	        }else {
-                $error = true;
-
-                $form_errors = $this->get('validator')->validate($form);
+                    return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+	        }
+            $error = true;
+            $form_errors = $this->get('validator')->validate($form);
+            if($form_errors){
                 foreach ($form_errors as $_err) {
                     $errorArr[] = $_err->getMessage();
                 }
-
             }
 	    }
-	    $medicalProviderGroupArr = array();
-	    
-	    foreach ($medicalProviderGroup as $e) {
-	        $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-	    }
-	    
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
             'error' => $error,
-            'error_list' => $errorArr
+            'error_list' => $errorArr,
         ));
 	}
 	

@@ -56,46 +56,17 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 	
 // 	}
 
-//     public function testSignUpWithInvalidFields()
-//     {
-//         $invalidValues = array(
-//             'institutionSignUp[name]' => '',
-//             'institutionSignUp[email]' => '',
-//             'institutionSignUp[password]' => '',
-//             'institutionSignUp[confirm_password]' => '',
-//         );
-        
-//         $client = static::createClient();
-//         $crawler = $client->request('GET', '/register.html');
-//         $form = $crawler->selectButton('Submit')->form();
-//         $crawler = $client->submit($form, $invalidValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("You must agree to the terms and conditions")')->count());
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Institution name is required")')->count());
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required")')->count());
-        
-//         // test not matching passwords
-//         $invalidValues['institutionSignUp[password]'] = '654321';
-//         $invalidValues['institutionSignUp[confirm_password]'] = '123456';
-//         $form = $crawler->selectButton('Submit')->form();
-//         $crawler = $client->submit($form, $invalidValues);
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
-        
-//         // test existing email
-//         $invalidValues['institutionSignUp[email]'] = 'test.institutionuser@chromedia.com';
-//         $form = $crawler->selectButton('Submit')->form();
-//         $crawler = $client->submit($form, $invalidValues);
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists")')->count());
-//     }
-	
 	public function testSignUp()
 	{
+	    
+	    $client = $this->getBrowserWithActualLoggedInUser();
+	    $crawler = $client->request('GET', 'institution/register.html');
+	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+	    
 		$client = static::createClient();
 		$crawler = $client->request('GET', 'institution/register.html');
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("First Name")')->count());
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Last Name")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("First Name *")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Last Name *")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email address")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Choose a password")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm your password")')->count());
@@ -104,10 +75,28 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		
 		// test that it will redirect to institution homepage
  		$this->assertEquals(302, $client->getResponse()->getStatusCode());
-// 		$this->assertEquals('/institution', $this->getLocationResponseHeader($client));
-// 		$client->followRedirect();
-		
-		// test that institution homepage has ok status
-		//$this->assertEquals(200, $client->getResponse()->getStatusCode());
+		$client->followRedirect();
 	}
+	
+	public function testSignUpWithInvalidFields() 
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/institution/register.html');
+        $invalidValues = array(
+                            'institutionSignUp[password]' => null,
+                            'institutionSignUp[firstName]' => null,
+                            'institutionSignUp[lastName]' => null,
+                            'institutionSignUp[email]' => null,
+                        );
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+         
+        $form = $crawler->selectButton('Create Account')->form();
+        $crawler = $client->submit($form, $invalidValues);
+ 
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your first name.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your last name.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your email address.")')->count());
+    }
 }

@@ -59,6 +59,12 @@
                                         </div>
                                     </div>
                                     <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
+                                        <label for="institutionSignUp_jobTitle">  Job Title
+                                            <small> ( Optional ) </small>
+                                        </label>
+                                        {{ form_widget(form.jobTitle, { 'attr': {'class': 'span6'} }) }}
+                                    </div>
+                                    <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
                                         <label for="institutionSignUp_email">  Email address
                                             <small> (Your own personal email.) </small>
                                         </label>
@@ -112,17 +118,16 @@
                                         {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's <a href="{{ path('frontend_page_terms_of_use') }}">Terms and Conditions</a> and 
                                         <br><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>.
                                     </label>
-                                {% if (form._token) %}
-         Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê{{ form_widget(form._token) }}
-         Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê Ê{% endif %}  
-                                </div>
+                               {% if (form._token) %} {# added condition for test #}
+                                {{ form_widget(form._token) }}
+                                {% endif %}
+                              </div>
                                 <div class="span4">
-                                   <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
+                                <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
                                 </div>
                             </div>
                         </section>
-                        Ê
-                    </form>
+                        </form>
                 </div>
                 {% include 'InstitutionBundle:Widgets/Sidebars:sidebar.signup.html.twig' %}
             </div>
