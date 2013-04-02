@@ -48,20 +48,20 @@
 				    </a>
 
     			</div>
-     			<div class="media-wrapper hca-v-sprite stripe-bg green row-fluid">
+     			<div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% for clinicHighlight in clinicHighlights %}
-                        <div class="span6 media">
+                        <div class="item-wrapper span6">
                             {% if clinicHighlight.icon %}
-                                <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
+                                <img class="img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
                             {% else %}
                                 <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
                             {% endif %}
 
                             {% if clinicHighlight.header %}
-                                <h5 class="media-heading">{{ clinicHighlight.header }}</h5>
+                                <h5>{{ clinicHighlight.header }}</h5>
                             {% endif %}
-                            <span>{{ clinicHighlight.label }}</span>
+                            <span class="title">{{ clinicHighlight.label }}</span>
                         </div>
                     {% endfor %}
     		    </div>

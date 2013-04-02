@@ -9,10 +9,10 @@
 {#-----------------------------------------------------#}
 
 {#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
-<div id="highlight" class="{{ get_impression_tracker_class() }} box-shadow row" {{ _impressionStatisticParametersAttribute }} > <!--Highighted Institution-->
+<div class="premier-type-wrapper box-shadow row {{ get_impression_tracker_class() }}" {{ _impressionStatisticParametersAttribute }} > <!--Highighted Institution-->
     <!-- institution logo link -->
 
-    <div class="upper_box">
+    <div class="header-wrapper">
         <h3>
 			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     		        statisticsDataObject: highlight,
@@ -55,10 +55,10 @@
 
 	</div> <!--End of carousel slide-->
 
-	<div class="media-wrapper hca-v-sprite stripe-bg orange row-fluid">		
+	<div class="ad-highlights-wrapper hca-v-sprite stripe-bg orange row-fluid">		
         {% set highlights = json_decode(highlight.highlights) %}
         {% for each in highlights %}
-            <div class="media span6">
+            <div class="item-wrapper span6">
                 {% if each.icon %}
                     <img class="img-circle pull-left" src="{{ each.icon.src }}" alt="doctor logo" width="50"/>
                 {% else %}
@@ -72,7 +72,7 @@
                 {% if each.header %}
                     <h5 class="media-heading">{{ each.header }}</h5>
                 {% endif %}
-                <span>{{ each.label }}</span>
+                <span class="title">{{ each.label }}</span>
             </div>
         {% endfor %}
 	</div>

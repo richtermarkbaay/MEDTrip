@@ -254,6 +254,7 @@ form .section > .section-content > div .row-field:last-child {
 .hca-sprite.more-icon {
     width: 26px;
     height: 26px;
+    display: block;
     background-position: -52px 0;
 }
 
@@ -855,28 +856,25 @@ form .section > .section-content > div .row-field:last-child {
 
 #breadcrumbs-wrapper ul.breadcrumb li a {
     color: #468199;
-    text-decoration: none;
     font-size: 14px;
-    font-weight: bold;
-    border-top: #bfc3be solid 1px;
-    border-bottom: #bfc3be solid 1px;
-    background-color: #fff;
-    opacity: 0.9;
     min-width: 25px;
     max-width: 275px;
     overflow: hidden;
+    font-weight: bold;
     vertical-align: top;
     white-space: nowrap;
     display: inline-block;
-    padding: 7px 4px 5px 17px;
+    text-decoration: none;
+    background-color: #fff;
     text-overflow: ellipsis;
+    padding: 7px 4px 5px 17px;
+    border-top: #bfc3be solid 1px;
+    border-bottom: #bfc3be solid 1px;
 }
 
 #breadcrumbs-wrapper ul.breadcrumb.active a {
     color: #baccd5;
 }
-/* End of Checked */
-
 
 /*
 .custom-select {
@@ -1217,9 +1215,8 @@ form.search-form > button.btn:active {
     margin-left: 198px;
 }
 
-
 /* Optimized */
-#highlight {
+.premier-type-wrapper {
     background-color: #fff;
     margin: 0px 0px 25px;
     -webkit-border-radius: 1px !important;
@@ -1228,11 +1225,11 @@ form.search-form > button.btn:active {
     position: relative;
 }
 
-#highlight a.clinic {
+.premier-type-wrapper a.clinic {
     position: absolute;
 }
 
-#highlight a.clinic img {
+.premier-type-wrapper a.clinic img {
     float: right;
     margin: 10px 30px;
     height: 55px;
@@ -1240,32 +1237,32 @@ form.search-form > button.btn:active {
     border: 1px solid rgba(0,0,0,0.1);
 }
 
-#highlight a.clinic:hover img {
+.premier-type-wrapper a.clinic:hover img {
     border: 1px solid rgba(0,0,0,0.5);
 }
 
-#highlight div.upper_box {
+.premier-type-wrapper > .header-wrapper {
 	height: 58px;
 	position: relative;
     margin-bottom: 10px;
 }
 
-#highlight div.upper_box h3 {
+.premier-type-wrapper > .header-wrapper h3 {
     opacity: 0.99;
     line-height: 0;
     margin-bottom: 0;
     padding: 15px 15px;
 }
 
-#highlight div.upper_box h3 a {
+.premier-type-wrapper > .header-wrapper h3 a {
     color: #fe6500;
 }
 
-#highlight div.upper_box h3 a:hover {
+.premier-type-wrapper > .header-wrapper h3 a:hover {
     color: #ff934c;
 }
 
-#highlight div.upper_box h5 {
+.premier-type-wrapper > .header-wrapper h5 {
     margin-bottom: 15px;
     color: #fe6500;
     font-weight: bold;
@@ -1275,7 +1272,7 @@ form.search-form > button.btn:active {
     opacity: 0.9;
 }
 
-#highlight div.upper_box .hospital-logo-link {
+.premier-type-wrapper > .header-wrapper .hospital-logo-link {
     top: 0;
     right: 10px;
     width: 55px;
@@ -1283,61 +1280,59 @@ form.search-form > button.btn:active {
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-#highlight div.upper_box .hospital-logo-link:hover {
+.premier-type-wrapper > .header-wrapper .hospital-logo-link:hover {
     border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-#highlight div.upper_box .hospital-logo-link > img {
+.premier-type-wrapper > .header-wrapper .hospital-logo-link > img {
 	max-width: 55px;
 	max-height: 55px;
 }
 
-
-
-#highlight div.upper_box h5 a {
+.premier-type-wrapper > .header-wrapper h5 a {
     color: #fe6500;
 }
 
-#highlight div.upper_box h5 a:hover {
+.premier-type-wrapper > .header-wrapper h5 a:hover {
     color: #ff934c;
 }
 
-#highlight div.carousel {
+.premier-type-wrapper div.carousel {
     margin-bottom: 0;
     position: relative;
     z-index: 1;
 }
 
-#highlight div.carousel div.carousel-inner div.item {
+.premier-type-wrapper div.carousel div.carousel-inner div.item {
     height: 258px;
     width: 620px;
 }
 
-#highlight div.carousel div.carousel-inner div.item img.span8 {
+.premier-type-wrapper div.carousel div.carousel-inner div.item img.span8 {
     height: 258px;
     width: 624px;
 }
 
-#highlight div.carousel a.feature-btn {
+.premier-type-wrapper div.carousel a.feature-btn {
     position: absolute;
     right: 15px;
     bottom: -12px;
 }
 
-#highlight div.carousel div.nav-pills {
+.premier-type-wrapper div.carousel div.nav-pills {
     position: absolute;
     margin-top: -10px;
     width: 100%;
     text-align: center;
 }
 
-#highlight div.carousel div.nav-pills a.carousel-pills {
+.premier-type-wrapper div.carousel div.nav-pills a.carousel-pills {
     margin: auto;
     position: relative;
     display: inline-block;
 }
 
-#highlight div.carousel div.nav-pills a.carousel-pills span {
+.premier-type-wrapper div.carousel div.nav-pills a.carousel-pills span {
     width: 10px;
     height: 10px;
     display: block;
@@ -1349,11 +1344,11 @@ form.search-form > button.btn:active {
     box-shadow: 0 0 0 1px #fff,0 0 0px 3px rgba(255,255,255,0.5);
 }
 
-#highlight div.carousel div.nav-pills a.carousel-pills.pager-active span {
+.premier-type-wrapper div.carousel div.nav-pills a.carousel-pills.pager-active span {
     background-color: #fe6500;
 }
 
-.media-wrapper {
+.ad-highlights-wrapper {
     width: auto;
     color: #FFFFFF;
     margin-left: 0;
@@ -1361,35 +1356,37 @@ form.search-form > button.btn:active {
     border: #fff solid 1px;
 }
 
-.media-wrapper .media {
+.ad-highlights-wrapper > .item-wrapper {
     margin: 0;
     padding: 20px 0 15px 15px;
 }
 
-.media-wrapper .media .default,
-.media-wrapper .media img {
+.ad-highlights-wrapper > .item-wrapper .default,
+.ad-highlights-wrapper > .item-wrapper img {
     width: 49px;
     height: 49px;
     background-color: #fff;
     box-shadow: 0 0 0px 4px rgba(255,255,255,0.5);
 }
 
-.media-wrapper .media > .hca-sprite.doctor-icon.default {
+.ad-highlights-wrapper > .item-wrapper > .hca-sprite.doctor-icon.default {
     background-position: -205px -225px;
 }
 
-.media-wrapper .media > .hca-sprite.doctor-icon.orange.default {
+.ad-highlights-wrapper > .item-wrapper > .hca-sprite.doctor-icon.orange.default {
     background-position: -251px -225px;
 }
 
-
-.media-wrapper .media > h5 {
-    margin: 0;
+.ad-highlights-wrapper > .item-wrapper > h5 {
     font-size: 16px;
+    margin: 0 0 0 60px;
     text-shadow: 0px 1px 0 rgba(0,0,0,0.5);
 }
 
-.media-wrapper .media > span {
+.ad-highlights-wrapper > .item-wrapper > .title {
+	display: block;
+	line-height: 16px;
+	margin-left: 60px;
     text-shadow: 0px 1px 0 rgba(0,0,0,0.5);
 }
 
@@ -1959,7 +1956,7 @@ div#main_content .search-title {
 
 #content-wrapper .clinic-header-wrapper {
     clear: both;
-    margin: 0 0 20px;
+    margin: 0 0 15px;
 }
 
 #content-wrapper .clinic-header-wrapper .right-column-wrapper {
@@ -1986,25 +1983,6 @@ div#main_content .search-title {
 	display: block;
 }
 
-#content-wrapper .profile-wrapper > .clinic-header-wrapper .address-box {
-    width: 440px;
-}
-
-#content-wrapper .profile-wrapper > .clinic-header-wrapper .address-box h1 {
-    font-size: 32px !important;
-}
-
-#content-wrapper .profile-wrapper > .clinic-header-wrapper .address-box .media {
-    margin: 40px 0 0 0;
-}
-
-#content-wrapper .profile-wrapper > .clinic-header-wrapper .address-box .media span.address-icon2 {
-    background: url("../../images/frontend/sprites2.png") no-repeat;
-    background-position: -131px -74px;
-    width: 18px;
-    height: 25px;
-}
-
 #content-wrapper .small-logo-wrapper,
 #content-wrapper .clinic-header-wrapper .clinic-logo-wrapper {
     width: 140px;
@@ -2015,9 +1993,9 @@ div#main_content .search-title {
     border: 1px solid #333333;
 }
 
-#content-wrapper .clinic-header-wrapper .clinic-logo-wrapper > .clinic-default-logo {
-    margin-top: 35px;
-    vertical-align: middle;
+.clinic-logo-wrapper > *,
+.small-logo-wrapper > * {
+	vertical-align: middle;
 }
 
 /* Checked */
@@ -2125,21 +2103,10 @@ div#main_content .search-title {
 #content-wrapper .small-logo-wrapper {
     width: 100px;
     height: 100px;
+    line-height: 98px;
     margin: 0 0 10px 0;
+    line-height: 100px;
     display: inline-block;
-}
-
-#content-wrapper .small-logo-wrapper > .hospital-default-logo {
-    margin-top: 10px;
-}
-
-#content-wrapper .small-logo-wrapper > .clinic-default-logo,
-#content-wrapper .small-logo-wrapper > .hospital-default-logo.small {
-    margin-top: 18px;
-}
-
-#content-wrapper .small-logo-wrapper > .clinic-default-logo.small {
-	margin-top: 25px;
 }
 
 #content-wrapper .item-wrapper > .right-column-wrapper > .heading {
@@ -2696,6 +2663,7 @@ ul.three-column-list > li {
     width: 52px;
     height: 52px;
     display: inline-block;
+    vertical-align: baseline;
     box-shadow: 0 0 0 5px rgba(183,188,182,0.5);    
 }
 
@@ -2811,9 +2779,9 @@ table.schedule-wrapper tr > td.open24hrs {
     position: absolute;
 }
 
-.modal .modal-header h1,.modal .modal-header h2,.modal .modal-header h3,.modal .modal-header h4 {
+.modal .modal-header {
     color: #468199;
-    padding: 10px 0;
+    padding: 12px 15px;
 }
 
 .modal .modal-body {
@@ -2886,7 +2854,7 @@ table.schedule-wrapper tr > td.open24hrs {
 
 /********** FOOTER STYLES ***********/
 #footer-wrapper {
-	padding: 20px 0 50px;
+	padding: 20px 0 40px;
     background-color: #bdc1bc;
 }
 

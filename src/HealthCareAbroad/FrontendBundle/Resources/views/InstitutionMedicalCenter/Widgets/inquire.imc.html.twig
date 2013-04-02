@@ -26,7 +26,7 @@
             <label for="{{ form.children.message.vars.id }}" class="span3">
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
-            {{ form_widget(form.message, {class: 'span9', 'attr': {'rows': 5} }) }}
+            {{ form_widget(form.message, {attr: {rows: 5, class: 'span9'} }) }}
         </div>
         
         <div class="captcha control-group">
