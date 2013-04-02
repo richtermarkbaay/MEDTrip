@@ -1,90 +1,13 @@
 {% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
 {% set disableMainNavigation = true %}
+
 {% block content %}
 
-{% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' 
-    with {'contentSpanClass' : 'span12' } %}
-    {% block wrappedContent %}
-		<div class="span12">
-			<h2>{{ institution.name }}</h2>
-				  
-            {% if institutionTypeLabel is defined %}
-            <p>You have indicated that you are a :
-				<strong>{{ institutionTypeLabel }}</strong>
-			</p>
-            {% endif %}
-				
-		</div><!--End of span12-->
-		<div class="maincontent2">
-			<form class="form" method="post" action="{{ path('institution_signup_complete_profile') }}" id="ContactForm">
-				<div class="span6">
-				 {{ form_errors(form) }}
-                    <fieldset>
-                        {{ form_row(form.description, {attr: {class: 'tinymce'}}) }}
-                        {{ form_row(form.contactEmail, {attr: {class:'span9'} } ) }}
-                        {{ form_row(form.contactNumber) }}
-                        {{ form_widget(form.websites) }}
-                       
-                    </fieldset>
-                    {# form_rest(form) #}
-				</div><!--End of span6-->
-				<div class="span6">
-                        <div class="mapbox" id="map_canvas">Map Here</div>
-                        <div class="address3">
-                            {{ form_row(form.country, {attr: {class: 'country_dropdown slectAdressFields'} } )}}
-                            {{ form_row(form.state, {attr: {class:'span12 addressFields'}} )}}
-                        </div>
-                        <div class="address3">
-                            {{ form_label(form.city)}}
-                            {{ form_widget(form.city, {attr: {class: 'city_dropdown slectAdressFields'} } )}}
-                            {{ form_errors(form.city) }}
-                        
-                            {{ form_label(form.zipCode)}}
-                            {{ form_widget(form.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span12 addressFields'} } )}}
-                            {{ form_errors(form.zipCode) }}
-                        </div>
-                        <div class="address">
-                            {{ form_widget(form.address1) }}
-                        </div>
-                        {{ form_widget(form.coordinates) }}
-                       <div class="pull-right">
-                            <button type="submit" class="btn btn-large btn-primary">Submit</button>
-                        </div>
-                        
-				</div><!--End of span6-->
-				{{ form_widget(form._token) }}
-			</form>
-		</div>
-		<!--End of maincontent-->
-
-    {% endblock %}
-    
-    {% endembed %}
+    {% include 'InstitutionBundle:Institution:afterRegistration.html.twig' with {'label' : 'Clinic' } %}
 
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript">
-<!--
-(function($){
 
-    $(function(){
-        initialize();
-                
-        Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-        $('select.country_dropdown').change();
-        $('a#submit_button_link').click(function(){
-
-            $('#form_save_institution').submit();
-            
-            return false;
-        });
-    });
-})(jQuery);
-//-->
-</script>
 {% endblock %}
 

@@ -7,12 +7,12 @@ services:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactNumberFieldType
         tags:
             - { name: form.type, alias: contact_number }
-    
+
     form.custom.contact_number_with_flag:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactNumberWithFlagFieldType
         tags:
             - { name: form.type, alias: contact_number_with_flag }
-    
+
     form.custom.websites:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\WebSitesFieldType
         tags:
@@ -36,6 +36,12 @@ services:
         arguments: [@services.location]
         tags:
             - { name: form.type, alias: city_list }
+
+    form.institutionServices_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\InstitutionServicesListType
+        arguments: [@services.helper.ancillary_service]
+        tags:
+            - { name: form.type, alias: institutionServices_list }
 
     form.tagtype_list:
         class: "%services.tagtype_list%"
@@ -61,7 +67,7 @@ services:
            - [setContainer, [@service_container]]
         tags:
            - { name: form.type, alias: advertisement_list }
-           
+
     form.awarding_body_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\AwardingBodyListType
         tags:

@@ -1,0 +1,309 @@
+<div id="content" class="container">
+    <div class="row">
+        <h1>Set-up {{ label }} Profile</h1>
+        <div class="span8">
+
+            <form action="{{ path('institution_signup_complete_profile') }}" method="post" novalidate>
+                {{ form_errors(form) }}
+
+                <section class="section institution-info">
+                    <h2>
+                        Basic Information<br><small>Basic information about the {{ label }} you are adding.</small>
+                    </h2>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="control-group">
+                                <label for="institution-name">Name of the {{ label }}</label>
+                                {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
+                            </div>
+                            <div class="control-group">
+                                <label for="website">Description<small>(Optional)</small></label>
+                                {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
+                                <div class="description">
+                                    <small>you can edit / add Description later</small>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="network-group">
+                                    Is this {{ label }} part of a larger {{ label }} group with branches in multiple locations?
+                                    <br/>If so, please name the group/network.
+                                    <small>( Optional )</small>
+                                </label>
+                                <input type="text" id="network-group" class="span12" placeholder="Leave blank if none">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section address-info">
+                    <h2>Hospital Address<br>
+                        <small>Complete Address of the Hospital that you are adding.</small>
+                    </h2>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            {{ form_widget(form.address1) }}
+                            <div class="control-group">
+                                <div class="span12">
+                                    <label for="Country">Country</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.country) }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <div class="span5">
+                                    <label>State / Province</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.state) }}
+                                    </div>
+                                </div>
+                                <div class="span5">
+                                    <label>City</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.city) }}
+                                    </div>
+                                </div>
+                                <div class="span2">
+                                    <label for="zip">Zip Code</label>
+                                    <input type="text" name="zip" id="zip" placeholder="" class="span12">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="Helpful hint">Helpful hint for getting there?</label>
+                                <input type="text" name="state" id="address-hint" placeholder="" class="span12">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section institution-info">
+                    <h2>
+                        {{ label }} Contact Details
+                        <br>
+                        <small>
+                            This is your {{ label }}'s contact details. Please be as detailed as possible.
+                        </small>
+                    </h2>
+                    <div class="row-fluid">
+                        <div class="span12 control-group">
+                            <div class="span6">
+                                <label for="Phone Number">{{ label }} Email Address</label>
+                                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                            </div>
+                            <div class="span6">
+                                {{ form_widget(form.contactNumber) }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section socialmedia-info">
+                    <h2>Website and Social Media <small>(Optional)</small></h2>
+                    <div class="row-fluid">
+                        {{ form_widget(form.websites) }}
+                    </div>
+                </section>
+
+                <section class="section institution-info">
+                    <h2>Services<br> <small>Please check the ones that apply to your {{ label }}.</small></h2>
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <div class="control-group">
+                                {{ form_widget(form.services) }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section institution-info">
+                    <h2>
+                        Certifications, Affilations, Awards & Accreditations
+                        <br>
+                        <small>
+                            Please check the ones that apply to your {{ label }}.
+                        </small>
+                    </h2>
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <div class="control-group">
+                                <div class="awards-listing">
+                                    <h3>
+                                        Awards
+                                    </h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Cord Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Home Nursing Service
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            International Patient Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Information Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Convenience Store
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Automated Teller Machine (ATM)
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Free Telephone Use
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Playing Area (for children)
+                                        </li>
+                                    </ul>
+                                    <h3>
+                                        Certifications
+                                    </h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Cord Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Home Nursing Service
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            International Patient Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Information Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Convenience Store
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Automated Teller Machine (ATM)
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Free Telephone Use
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Playing Area (for children)
+                                        </li>
+                                    </ul>
+                                    <h3>
+                                        Accreditiations
+                                    </h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Cord Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Home Nursing Service
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            International Patient Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Information Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Convenience Store
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Automated Teller Machine (ATM)
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Free Telephone Use
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Playing Area (for children)
+                                        </li>
+                                    </ul>
+                                    <h3>
+                                        Affiliations
+                                    </h3>
+                                    <ul>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Cord Blood Bank
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Home Nursing Service
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            International Patient Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Information Center
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Convenience Store
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Automated Teller Machine (ATM)
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" />
+                                            Free Telephone Use
+                                        </li>
+                                        <li>
+                                            <input type="checkbox" name="service" value="service" checked/>
+                                            Playing Area (for children)
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
+                            <!-- <input type="submit" /> -->
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+
+        {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' %}
+
+    </div>
+</div>

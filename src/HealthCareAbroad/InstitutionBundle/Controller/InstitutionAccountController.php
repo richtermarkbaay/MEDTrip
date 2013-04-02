@@ -1,7 +1,7 @@
-<?php 
+<?php
 /**
  * @author Chaztine Blance
- * 
+ *
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
@@ -48,41 +48,41 @@ class InstitutionAccountController extends InstitutionAwareController
      * @var InstitutionService
      */
     protected $institutionService;
-    
+
     /**
      * @var InstitutionMedicalCenter
      */
     private $institutionMedicalCenter = null;
-    
+
     /**
      * @var Request
      */
     protected $request;
-    
-	public function preExecute()
-	{
-	    $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 
-	    if ($imcId=$this->getRequest()->get('imcId',0)) {
-	        $this->institutionMedicalCenter = $this->repository->find($imcId);
-	    }
-	    
-	    
-	    $this->institutionService = $this->get('services.institution');
-	    if ($this->institutionService->isSingleCenter($this->institution)) {
-	        $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-	    }
-	    $this->request = $this->getRequest();
-	    
-	}
-	
-	/**
-	 * Landing page after signing up as an Institution. Logic will differ depending on the type of institution
-	 * 
-	 * @param Request $request
-	 */
+    public function preExecute()
+    {
+        $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->repository->find($imcId);
+        }
+
+
+        $this->institutionService = $this->get('services.institution');
+        if ($this->institutionService->isSingleCenter($this->institution)) {
+            $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+        }
+        $this->request = $this->getRequest();
+
+    }
+
+    /**
+     * Landing page after signing up as an Institution. Logic will differ depending on the type of institution
+     *
+     * @param Request $request
+     */
     public function completeProfileAfterRegistrationAction(Request $request)
-    {        
+    {
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -97,94 +97,99 @@ class InstitutionAccountController extends InstitutionAwareController
 
         return $response;
     }
-    
-    public function completeSingleCenterProfileAfterRegistration()
+
+    //TODO: use previous methods
+    public function completeSingleCenterProfileAfterRegistrationAction()
     {
         $institutionService = $this->get('services.institution');
-        
-        if (\is_null($institutionMedicalCenter)) {
+
+        if (\is_null($this->institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
-        
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        
+
+        //reset for institution sign up will set this to uniqid() as a workaround for slug error
+        $this->institution->setName('');
+
+        $form = $this->createForm(new InstitutionProfileFormType(array('prefix_label' => 'Hospital')), $this->institution);
+
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-        
+
             if ($form->isValid()) {
-        
+
                 // save institution and create an institution medical center
                 $this->get('services.institution_signup')
                 ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
-        
-        
+
+
                 //$routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-        
+
                 // this should redirect to 2nd step
                 //return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
             }
         }
-        
+
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
                         'form' => $form->createView(),
                         'institutionMedicalCenter' => $institutionMedicalCenter,
                         'isSingleCenter' => true
         ));
     }
-    
+
+    //TODO: use previous methods
     public function completeMultipleCenterProfileAfterRegistration()
     {
         $institutionService = $this->get('services.institution');
         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-        
+
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        
+
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-        
+
             if ($form->isValid()) {
-        
+
                 // save institution and create an institution medical center
-                
+
                 // this should redirect to 2nd step
-                
+
             }
         }
-        
+
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
                         'form' => $form->createView(),
                         'institutionMedicalCenter' => $institutionMedicalCenter,
                         'isSingleCenter' => true
         ));
     }
-    
+
     public function addServiceAction(Request $request)
     {
         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-   	    $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
-   	    if ($request->isMethod('POST')) {
-   	        $form->bind($request);
-   	        if ($form->isValid()) {
-   	            $this->get('services.institution_property')->save($form->getData());
-   	    
-   	            return $this->redirect($formActionUrl);
-   	        }
-   	    }
-   	    
-   	    $params = array(
-   	                    'formAction' => $formActionUrl,
-   	                    'form' => $form->createView()
-   	    );
+           $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
+           if ($request->isMethod('POST')) {
+               $form->bind($request);
+               if ($form->isValid()) {
+                   $this->get('services.institution_property')->save($form->getData());
+
+                   return $this->redirect($formActionUrl);
+               }
+           }
+
+           $params = array(
+                           'formAction' => $formActionUrl,
+                           'form' => $form->createView()
+           );
         return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
     }
     /**
      * This is the action handler after signing up as an Institution with Single Center.
      * User will be directed immediately to create clinic page.
-     * 
+     *
      * TODO:
      *     This has a crappy rule where institution name and description will internally be the name and description of the clinic.
-     *     
-     * @author acgvelarde    
+     *
+     * @author acgvelarde
      * @return
      */
     protected function completeRegistrationSingleCenter()
@@ -210,30 +215,29 @@ class InstitutionAccountController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-            
+
             if ($form->isValid()) {
-                    
+
                 // save institution and create an institution medical center
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
-                
-                
+
                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-                
+
                 // this should redirect to 2nd step
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
             }
         }
-        
+
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'isSingleCenter' => true
         ));
     }
-    
+
     /**
-     * 
+     *
      */
     protected function completeRegistrationMultipleCenter()
     {
@@ -244,10 +248,10 @@ class InstitutionAccountController extends InstitutionAwareController
         $hiddenFields = array('name');
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => $hiddenFields));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
-        
+
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-            
+
             if ($form->isValid()) {
 
                 $this->get('services.institution_signup')
@@ -259,7 +263,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
         }
-        
+
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
@@ -267,10 +271,10 @@ class InstitutionAccountController extends InstitutionAwareController
             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()]
         ));
     }
-    
+
     /**
      * Action page for Institution Profile Page
-     * 
+     *
      * @param Request $request
      */
     public function profileAction(Request $request)
@@ -281,7 +285,7 @@ class InstitutionAccountController extends InstitutionAwareController
             'limit' => 10
         );
         $pager = new Pager($pagerAdapter, $pagerParams);
-        
+
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         $templateVariables = array(
             'institutionForm' => $form->createView(),
@@ -290,11 +294,11 @@ class InstitutionAccountController extends InstitutionAwareController
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
 
             $templateVariables['isSingleCenter'] = true;
-            
-            // set the first active medical center, ideally we should not do this anymore since a single center only has one center, 
+
+            // set the first active medical center, ideally we should not do this anymore since a single center only has one center,
             // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-            
+
             $signupStepStatus = $this->institution->getSignupStepStatus();
             if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
@@ -305,9 +309,9 @@ class InstitutionAccountController extends InstitutionAwareController
                 if (!$templateVariables['institutionMedicalCenter']) {
                     // this must have been created from HCA Admin since this single institution does not have a medical center
                     return $this->redirect($this->generateUrl(InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP1)));
-                }    
-            } 
-                
+                }
+            }
+
 
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
@@ -315,44 +319,44 @@ class InstitutionAccountController extends InstitutionAwareController
             // load medical center specializations
             $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
             $templateVariables['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
-            
+
         }
         else {
             // multiple center institution profile view
             $templateVariables['medicalCenters'] = $pager->getResults();
             $templateVariables['pager'] = $pager;
-            
+
             if($request->get('page') > 0 ){
                 $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig', $templateVariables);
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-            
+
                 return $response;
             }
         }
-        
+
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
     }
-    
+
     /**
      * Ajax handler for updating institution profile fields.
-     * 
+     *
      * @param Request $request
      * @author acgvelarde
      */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
         $output = array();
-        
+
         if ($request->isMethod('POST')) {
-            
+
             try {
                 // set all other fields except those passed as hidden
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-                
+
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-                
+
                 $form->bind($request);
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
@@ -373,7 +377,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
                         $this->get('services.institution_medical_center')->save($center);
                     }
-                    
+
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
                         $value = $this->institution->{'get'.$key}();
@@ -397,21 +401,21 @@ class InstitutionAccountController extends InstitutionAwareController
                          $html .= '<li>'.$err->getMessage().'</li>';
                     }
                     $html .= '</ul>';
-                     
+
                     $output['form_error'] = 1;
                     $output['form_error_html'] = $html;
-                    
+
                     return new Response(\json_encode($output), 400, array('content-type' => 'application/json'));
-                }    
+                }
             }
-            catch (\Exception $e) {   
+            catch (\Exception $e) {
                 return new Response($e->getMessage(),500);
-            }            
+            }
         }
 
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
-    
+
     /**
      * Ajax handler for updating institution coordinates field.
      *
@@ -429,7 +433,7 @@ class InstitutionAccountController extends InstitutionAwareController
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
         }
     }
-    
+
     /**
      *
      * @param unknown_type $institutionId
@@ -437,17 +441,17 @@ class InstitutionAccountController extends InstitutionAwareController
     public function addGlobalAwardsAction()
     {
         $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institution);
-    
+
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-    
+
             if ($form->isValid()) {
-    
+
                 $this->institution = $this->get('services.institution')
                 ->saveAsDraft($form->getData());
-    
+
                 $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
-    
+
                 return $this->redirect($this->generateUrl('institution_medicalCenter_view',
                                 array('institutionId' => $this->institution->getId())));
             }
@@ -458,23 +462,23 @@ class InstitutionAccountController extends InstitutionAwareController
                         'institution' => $this->institution
         ));
     }
-    
-    
+
+
     public function ajaxRemovePropertyValueAction(Request $request)
     {
         $property = $this->get('services.institution_property')->findById($request->get('id', 0));
-    
+
         if (!$property) {
             throw $this->createNotFoundException('Invalid Institution property.');
         }
-    
+
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($property);
         $em->flush();
-    
+
         return new Response("Property removed", 200);
     }
-    
+
     /**
      * Upload logo or featuredImage for Institution
      * @param Request $request
@@ -483,9 +487,9 @@ class InstitutionAccountController extends InstitutionAwareController
     {
 
         $fileBag = $request->files;
-        
+
         if ($fileBag->get('file')) {
-    
+
             $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
 
             if(is_object($result)) {
@@ -506,7 +510,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
             }
         }
-        
+
         return $this->redirect($this->generateUrl('institution_account_profile'));
     }
 }

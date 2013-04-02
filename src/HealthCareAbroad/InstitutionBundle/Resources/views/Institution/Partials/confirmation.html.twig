@@ -1,0 +1,19 @@
+<div id="confirmation-message">
+    <div class="confirmation-box">
+        <div class="alert alert-success">
+            <p><b>Congratulations!</b>Your account has been successfully created.</p>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        setTimeout(function() {
+            $("#confirmation-message").fadeOut("slow")
+        }, 5000);
+    });
+    $("input:checkbox").click(function() {
+        var Treatment = "";
+        $(this).parent().toggleClass("hca-highlight");
+    });
+</script>

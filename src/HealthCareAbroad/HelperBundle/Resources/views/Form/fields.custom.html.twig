@@ -133,238 +133,25 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block institution_services_widget %}
+{% block institutionServices_list_widget %}
     {% spaceless %}
         <ul class="services-listing">
+        {% for choice in form.vars.choices %}
             <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
+                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
             </li>
+        {% endfor %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block institutionAwards_list_widget %}
+    {% spaceless %}
+        <ul class="awards-listing">
+        {% for choice in form.vars.choices %}
             <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
+                <input type="checkbox" name="{{ form.vars.full_name }}" value="{{ choice.value }}" />{{ choice.label }}
             </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Cord Blood Bank
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Home Nursing Service
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                International Patient Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Information Center
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Convenience Store
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Automated Teller Machine (ATM)
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Free Telephone Use
-            </li>
-            <li>
-                <input type="checkbox" name="service" value="service" />
-                Playing Area (for children)
-            </li>
-        </ul>
+        {% endfor %}
     {% endspaceless %}
 {% endblock %}
 
