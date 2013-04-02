@@ -72,7 +72,7 @@ class InstitutionUserService extends UserService
     }
 
     public function setSessionVariables(SiteUser $user) {
- 
+
         $this->session->set('accountId', $user->getAccountId());
         $this->session->set('institutionId', $user->getInstitution()->getId());
         $this->session->set('institutionName', $user->getInstitution()->getName());
@@ -80,6 +80,7 @@ class InstitutionUserService extends UserService
         $this->session->set('institutionSignupStepStatus', $user->getInstitution()->getSignupStepStatus());
         $this->session->set('userFirstName', $user->getFirstName());
         $this->session->set('userLastName', $user->getLastName());
+        $this->session->set('userEmail', $user->getEmail());
 
         //$this->eventDispatcher->dispatch(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $this->eventFactory->create(InstitutionBundleEvents::ON_LOGIN_INSTITUTION_USER, $user));
     }
