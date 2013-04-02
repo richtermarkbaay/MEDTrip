@@ -87,15 +87,17 @@
 					}
 				}
     	 }).bind( "keydown", function( event ) {
+    		 console.log(event.keyCode);
     		 if (!(event.keyCode == 8                                // backspace
                    || event.keyCode == 9                               // tab
-                   || event.ctrlKey == 17                              // ctrl
                    || event.keyCode == 46                              // delete
                    || event.keyCode == 61								// +
                    || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
                    || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
                    || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
-                   || (event.keyCode == 65 && event.ctrlKey == 17 && prevControl == event.currentTarget.id))          // ctrl + a, on same control
+                   || (event.keyCode == 65 && (event.ctrlKey || event.shiftKey)))          // ctrl + a, on same control
+                   || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.shiftKey)  //shift and ! to - on same control
+                   || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.altKey)  //altKey and ! to - on same control
                ) {
 				event.preventDefault();					
 			}			
