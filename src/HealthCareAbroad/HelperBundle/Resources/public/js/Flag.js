@@ -87,7 +87,6 @@
 					}
 				}
     	 }).bind( "keydown", function( event ) {
-    		 console.log(event.keyCode);
     		 if (!(event.keyCode == 8                                // backspace
                    || event.keyCode == 9                               // tab
                    || event.keyCode == 46                              // delete
