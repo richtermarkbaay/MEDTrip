@@ -3,9 +3,7 @@
     <div class="span6">
         <div class="hca-countrycodes">
             <div class="input-prepend row-field ">
-               <label for="Phone Number">
-                    Phone Number
-               </label>
+               <label for="Phone Number">{{ label_prefix }} Phone Number</label>
             {% set phone = "phoneNumberSelector" %}
                   {{ render_contactNumber_widget(phone) | raw }}
                 <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
@@ -13,13 +11,12 @@
             </div>
         </div>
     </div>
-        
+
+    {% if display_both %}
      <div class="span6">
         <div class="hca-countrycodes">
             <div class="input-prepend row-field">
-                 <label for="Mobile Number">
-                    Mobile Number
-                </label>
+                 <label for="Mobile Number">{{ label_prefix }} Mobile Number</label>
                 {% set mobile = "mobileNumberSelector" %}
                   {{ render_contactNumber_widget(mobile) | raw }}
                 <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" data-type="mobile" id="mobileNumberSelector"  maxlength="15"/>
@@ -27,12 +24,14 @@
             </div>
         </div>
     </div>
+    {% endif %}
+
     {% endspaceless %}
 {% endblock %}
 
 {% block contact_number_widget %}
     {% spaceless %}
-    
+
         <div>
             <div style="display:inline-block;">
                 <label style="font-size: 85%;">Country Code</label>
@@ -48,31 +47,70 @@
             </div>
         </div>
         <div class="clearfix"></div>
-    
+
     {% endspaceless %}
 {% endblock %}
 
 {% block websites_custom_field_widget %}
     {% spaceless %}
-    
+        <div class="control-group website">
+            <label for="website">Website</label>
+            <span class="pull-left">http://</span>
+            <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" class="span11 pull-right">
+        </div>
+        <div class="control-group social-media">
+            <div class="span4">
+                <label for="twitter">Twitter</label>
+                <i class="icon-twitter icon-2x pull-left span2"></i>
+                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span10 pull-right">
+            </div>
+            <div class="span4">
+                <label for="facebook">Facebook</label>
+                <i class="icon-facebook icon-2x pull-left span2"></i>
+                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span10 pull-right">
+            </div>
+            <div class="span4">
+                <label for="googleplus">Google +</label>
+                <i class="icon-google-plus icon-2x pull-left span2"></i>
+                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span10 pull-right">
+            </div>
+        </div>
+
+        {#
         <div>
                 <label >Institution Website</label>
                 <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" />
-       
+
                 <label >Facebook Account</label>
                 <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}"  />
-         
+
                 <label >Twitter Account</label>
                 <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}"  />
-            
+
         </div>
         <div class="clearfix"></div>
-    
+        #}
     {% endspaceless %}
 {% endblock %}
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
+    <div class="control-group">
+        <label for="state">Address</label>
+        <input class="span12" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
+    </div>
+    <div class="control-group">
+        <div class="span4">
+            <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
+            <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" class="span12">
+        </div>
+        <div class="span8">
+            <label for="Building Name">Building Name <small>(Optional)</small></label>
+            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12">
+        </div>
+    </div>
+
+    {#
     <div>
         <span >
             <label>Unit or Room #</label>
@@ -85,11 +123,248 @@
             <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" />
         </span>
     </div>
-   	<div class="address">
+       <div class="address">
             <label>Street</label>
             <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
     </div>
     <div class="clearfix"></div>
+    #}
+
+    {% endspaceless %}
+{% endblock %}
+
+{% block institution_services_widget %}
+    {% spaceless %}
+        <ul class="services-listing">
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Cord Blood Bank
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Home Nursing Service
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                International Patient Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Information Center
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Convenience Store
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Automated Teller Machine (ATM)
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Free Telephone Use
+            </li>
+            <li>
+                <input type="checkbox" name="service" value="service" />
+                Playing Area (for children)
+            </li>
+        </ul>
     {% endspaceless %}
 {% endblock %}
 
@@ -103,16 +378,16 @@
         {% if fieldName == 'media' %}
             {% set mediaObject = mediaParentObject.media %}
         {% elseif fieldName == 'logo' %}
-            {% set mediaObject = mediaParentObject.logo %} 
+            {% set mediaObject = mediaParentObject.logo %}
         {% endif %}
 
-        {% if mediaObject %} 
+        {% if mediaObject %}
             {{ media(mediaObject, mediaParentObject, 'default', {width: '220', style: "border:1px solid #ddd"}) | raw }}
             {% set mediaFileInput = '<input type="file" required="required" value="' ~ form.vars.value ~'" name="' ~ form.vars.full_name ~ '" id="' ~ form.parent.vars.name ~ '_' ~ form.vars.name ~ '">' %}
 
             {% set deleteImageUrl = path('admin_media_ajaxDelete') %}
 
-            {% set params = json_encode({ 
+            {% set params = json_encode({
                 media_id: mediaObject.id,
                 parent_id: mediaParentObject.id,
                 parent_class : getClass(mediaParentObject),
