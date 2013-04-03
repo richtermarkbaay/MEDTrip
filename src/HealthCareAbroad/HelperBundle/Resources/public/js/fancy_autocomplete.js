@@ -5,6 +5,21 @@
  * April 02, 2013
  */
 
+/**
+ * Available options:
+ * {
+ *      // Data source, can either be a function, string, or an object. If string this will be assumed as URL
+ *      source: {},
+ *      // jQuery autocomplete options
+ *      autocomplete: {** autocomplete.source option will be overridden by passed source option see options in jQuery autocomplete @see http://api.jqueryui.com/autocomplete/ **},
+ *      // maximum number of items to display
+ *      maxItems: 50,
+ *      // DOM element container of the selected item value
+ *      valueContainer: null,
+ *      // callback function for jQuery UI autocomplete select callback
+ *      onAutocompleteSelectCallback: function(){},
+ * }
+ */
 var FancyAutocompleteWidget = function(widget, options){
     this.initialize(widget, options);
 };
@@ -14,14 +29,11 @@ var FancyAutocompleteWidget = function(widget, options){
         
         widget: null,
         
-        maxItems: 0,
-        
         initialize: function(widget, options){
             
             options = this._initializeOptions(options);
             
             this.widget = widget;
-            this.maxItems = options.maxItems;
             
             // build autocomplete options
             var autocompleteOptions = this._buildAutocompleteOptions(options);
@@ -39,31 +51,35 @@ var FancyAutocompleteWidget = function(widget, options){
             // check if widget has a data-dropdown
             var _autocompleteDropdown = $(this.widget.attr('data-dropdown'));
             if (_autocompleteDropdown.length){
-                this._overrideAutocompleteRendering(widget, _autocompleteDropdown);
+                this._overrideAutocompleteRendering(_autocompleteDropdown, options);
             }
         },
         
-        _overrideAutocompleteRendering: function(widget, dropdown) {
-            
-            this.widget.data('ui-autocomplete')._renderItemData = function(ul, item){
+        _overrideAutocompleteRendering: function(dropdown, options) {
+            var widget = this.widget;
+            widget.data('ui-autocomplete')._renderItemData = function(ul, item){
                 var _renderedItem = widget.data('ui-autocomplete')._renderItem( ul, item ); 
                 return _renderedItem.data( "ui-autocomplete-item", item );
             };
             
-            this.widget.data('ui-autocomplete')._renderItem = function(ul, item) {
+            var _onSelect = this._autocompleteSelect;
+            widget.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                _itemLink.on('click', function(){
+                    _onSelect(widget, options, item);
+                });
                 return $("<li>").append(_itemLink).appendTo(ul);
                 //return $("<li>"+item.label+"</li>").appendTo(ul);
             };
             
-            var maxItems = this.maxItems;
-            this.widget.data('ui-autocomplete')._renderMenu = function(ul, data){
+            
+            widget.data('ui-autocomplete')._renderMenu = function(ul, data){
                 if (!dropdown.parent().hasClass('open')) {
                     dropdown.dropdown('toggle');
                 }
                 var _cnt = 0;
                 $.each( data, function( index, item ) {
-                    if (_cnt > maxItems) {
+                    if (_cnt > options.maxItems) {
                         return false;
                     }
                     widget.data('ui-autocomplete')._renderItemData( ul, item );
@@ -85,10 +101,34 @@ var FancyAutocompleteWidget = function(widget, options){
            response(matches);
         },
         
+        _autocompleteSelect: function(widget, _options, item) {
+            // check that the selected value is not the same as the new selected
+            if (_options.valueContainer && _options.valueContainer.val() != item.id) {
+                console.log('changed value from '+_options.valueContainer.val()+' to '+item.id);
+                _options.valueContainer.val(item.id);
+                widget.val(item.label);
+                // check if their is an onAutocompleteSelectCallback function
+            }
+        },
+        
         _buildAutocompleteOptions: function(_options){
             
+            var widget = this.widget;
             var _autocompleteOptions = _options.autocomplete;
+            
             _autocompleteOptions.source = _options.source();
+            
+            // there is a custom handler for autocomplete.select event
+            if (_options.autocomplete.select && 'function' == typeof _options.autocomplete.select) {
+                _autocompleteOptions.select = _options.autocomplete.select;
+            }
+            else {
+                var _onSelect = this._autocompleteSelect;
+                // use default handler for autocomplete.select event
+                _autocompleteOptions.select = function(event, ui){
+                    _onSelect(widget, _options, ui.item);
+                }
+            }
             
             return _autocompleteOptions;
         },
@@ -99,11 +139,21 @@ var FancyAutocompleteWidget = function(widget, options){
                     minLength: 0,
                     delay: 0
                 },
-                maxItems: 50
+                maxItems: 50,
+                valueContainer: null,
             };
             
             // merge default options and the passed options
             var _newOpts = $.extend(true, _defaults, _options);
+            
+            // non-existent valueContainer obect  
+            if ('object' == typeof _newOpts.valueContainer && 0 == _newOpts.valueContainer.length) {
+                _newOpts.valueContainer = null;
+            }
+            else {
+                // reset value, in cases of refresh browsers where value is retained
+                _newOpts.valueContainer.val('');
+            }
             
             // check if there is a source option given
             // we will build source option as a function

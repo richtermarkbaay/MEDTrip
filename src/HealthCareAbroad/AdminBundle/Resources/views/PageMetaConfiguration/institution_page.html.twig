@@ -62,10 +62,14 @@
             'source': '{{ path("institutions_api", {autocomplete_data: 1}) }}',
             'autocomplete': {
                 'minLength': 0
-            }
+            },
+            'valueContainer': $('#institution_id')
         });
 
-        $('#institution_medical_center_input_field').fancyAutocomplete({'source': [{id: 1, label:'Once'},{id: 2, label:'Two'}]});
+        $('#institution_medical_center_input_field').fancyAutocomplete({
+            'source': [{id: 1, label:'Once'},{id: 2, label:'Two'}],
+            'valueContainer': $('#institution_medical_center_id')
+        });
     });
 })(jQuery);
 //-->
