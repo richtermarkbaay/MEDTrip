@@ -54,13 +54,11 @@ class DefaultController extends InstitutionAwareController
             $isSingleCenter = true;
             $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
         }
-        $loggedUser = $this->get('security.context')->getToken()->getUser();
         return $this->render($template, array(
             'alerts' => $institutionAlerts,
     		'news' => $news,
             'institution' => $this->institution,
             'isDashBoard' => true,
-            'institutionUser' => $loggedUser,
             'isSingleCenter' => $isSingleCenter
         ));
     }
@@ -88,7 +86,7 @@ class DefaultController extends InstitutionAwareController
      * @author Chaztine Blance
      */
     public function errorReportAction()
-    {  	
+    {
     	$request = $this->getRequest();
     	$em = $this->getDoctrine()->getEntityManager();
     	$userId = $this->container->get('session')->get('accountId');
