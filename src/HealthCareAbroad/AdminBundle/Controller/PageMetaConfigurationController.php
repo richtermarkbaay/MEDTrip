@@ -30,6 +30,13 @@ class PageMetaConfigurationController extends Controller
         return $this->render('AdminBundle:PageMetaConfiguration:resultspage.index.html.twig');
     }
     
+    public function institutionPageMetaConfigurationAction(Request $request)
+    {
+        $request->getSession()->setFlash('redirect_url', $this->generateUrl($request->attributes->get('_route')));
+        
+        return $this->render('AdminBundle:PageMetaConfiguration:institution_page.html.twig');
+    }
+    
     public function ajaxProcessSearchParametersAction(Request $request)
     {
         $searchParameterService = $this->get('services.search.parameters');

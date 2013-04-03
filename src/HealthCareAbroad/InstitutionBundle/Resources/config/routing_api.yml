@@ -1,0 +1,5 @@
+institutions_api:
+    pattern: /api/institutions
+    defaults: { _controller: InstitutionBundle:Api:institutions }
+    requirements:
+        _method: GET

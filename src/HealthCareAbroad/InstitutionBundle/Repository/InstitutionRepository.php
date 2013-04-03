@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -93,6 +95,9 @@ class InstitutionRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return QueryBuilder
+     */
     public function getQueryBuilderForApprovedInstitutions()
     {
         $qb = $this->createQueryBuilder('a')

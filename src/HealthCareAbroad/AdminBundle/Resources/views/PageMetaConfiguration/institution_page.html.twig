@@ -1,0 +1,74 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+    
+    {% include 'AdminBundle:PageMetaConfiguration/Widgets:sidebar.html.twig' with {'activeSideBar' : 'institution_page_meta'}%}
+    
+    <div id="content" class="span9">
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: 'Hospital and Clinic Pages Meta Configuration'
+            }  
+        %}
+            {% block sectionContent %}
+            
+                <form class="form-inline search-form" action="{{ path('admin_page_metas_institution') }}" method="post">
+                    <div class="combo-wrapper">
+                        <input class="type_in" type="text" name="" id="institution_input_field" placeholder="Search Hospital/Institution" autocomplete="off" data-autocomplete-trigger="#institution_dropdown_button" data-dropdown="#institution_dropdown_menu">
+                        <input type="hidden" name="" id="institution_id" />
+                        
+                        <div class="popup">
+                            <button id="institution_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                                <span class="icon-chevron-down"></span>
+                            </button>
+                            <div id="institution_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="combo-wrapper">
+                        <input class="type_in" type="text" name="" id="institution_medical_center_input_field" placeholder="Search Clinic" autocomplete="off" data-autocomplete-trigger="#institution_medical_center_dropdown_button" data-dropdown="#institution_medical_center_dropdown_menu">
+                        <input type="hidden" name="" id="institution_medical_center_id" />
+                        
+                        <div class="popup">
+                            <button id="institution_medical_center_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                                <span class="icon-chevron-down"></span>
+                            </button>
+                            <div id="institution_medical_center_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">Search</button>
+                </form>
+                
+                <div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
+                    
+                <div id="meta_form_container">
+                    
+                </div>    
+                    
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        $('#institution_input_field').fancyAutocomplete({
+            'source': '{{ path("institutions_api", {autocomplete_data: 1}) }}',
+            'autocomplete': {
+                'minLength': 0
+            }
+        });
+
+        $('#institution_medical_center_input_field').fancyAutocomplete({'source': [{id: 1, label:'Once'},{id: 2, label:'Two'}]});
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}
+

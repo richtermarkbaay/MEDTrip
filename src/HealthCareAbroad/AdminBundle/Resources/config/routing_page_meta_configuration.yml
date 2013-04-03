@@ -6,6 +6,10 @@ admin_page_metas_process_search_parameters:
     pattern:  /admin/page_metas/ajax-process-search-paramters
     defaults: { _controller: AdminBundle:PageMetaConfiguration:ajaxProcessSearchParameters }
     
+admin_page_metas_institution:
+    pattern: /admin/page_metas/hospital-and-clinic-pages
+    defaults: { _controller: AdminBundle:PageMetaConfiguration:institutionPageMetaConfiguration }
+    
 admin_page_metas_save:
     pattern:  /admin/page_metas/save/{id}
     defaults: { _controller: AdminBundle:PageMetaConfiguration:save, id: 0 }
