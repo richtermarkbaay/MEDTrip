@@ -48,6 +48,58 @@ class PageMetaConfigurationController extends Controller
         ));
     }
     
+    public function ajaxProcessInstitutionParametersAction(Request $request)
+    {
+        $institution = $this->get('services.institution.factory')->findById($request->get('institutionId', 0));
+        if (!$institution) {
+            throw $this->createNotFoundException('Cannot build metas for invalid institution');
+        }
+        $institutionMedicalCenter = null;
+        if ($imcId = $request->get('imcId', 0)) {
+            $institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($imcId);
+            if (!$institutionMedicalCenter || $institutionMedicalCenter->getInstitution()->getId() != $institution->getId()) {
+                throw $this->createNotFoundException('Cannot build metas for invalid institution medical center');
+            }
+        } 
+        
+        $pageMetaService = $this->get('services.helper.page_meta_configuration');
+        $builderMethod = 'buildForInstitutionPage';
+        $builderParameter = null;
+        if ($institutionMedicalCenter) { // clinic page
+            $url = $this->generateUrl('frontend_institutionMedicaCenter_profile', array(
+                'institutionSlug' => $institution->getSlug(),
+                'imcSlug' => $institutionMedicalCenter->getSlug()
+            ));
+            $builderMethod = 'buildForInstitutionMedicalCenterPage';
+            $builderParameter = $institutionMedicalCenter;
+        }
+        else { // hospital page
+            $url = $this->generateUrl($this->get('services.institution')->getInstitutionRouteName($institution), array(
+                'institutionSlug' => $institution->getSlug()
+            ));
+            $builderMethod = 'buildForInstitutionPage';
+            $builderParameter = $institution;
+        }
+        
+        // replace app_dev.php
+        if ('appDevDebugProjectContainer' == get_class($this->get('service_container'))) {
+            $url = \preg_replace('/^(\/app_dev\.php)/', '', $url);
+        }
+        
+        // build meta config if no meta config available
+        if (!$metaConfig = $pageMetaService->findOneByUrl($url)) {
+            $metaConfig = $pageMetaService->{$builderMethod}($builderParameter);
+            $metaConfig->setUrl($url);
+            
+            $pageMetaService->save($metaConfig);
+        }
+        
+        $form = $this->createForm(new PageMetaConfigurationFormType(), $metaConfig);
+        $html = $this->renderView('AdminBundle:PageMetaConfiguration:form.html.twig', array('form' => $form->createView()));
+        
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+    }
+    
     public function ajaxProcessSearchParametersAction(Request $request)
     {
         $searchParameterService = $this->get('services.search.parameters');

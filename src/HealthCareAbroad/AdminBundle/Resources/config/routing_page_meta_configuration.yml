@@ -10,6 +10,12 @@ admin_page_metas_institution:
     pattern: /admin/page_metas/hospital-and-clinic-pages
     defaults: { _controller: AdminBundle:PageMetaConfiguration:institutionPageMetaConfiguration }
     
+admin_page_metas_process_institution_parameters:
+    pattern:  /admin/page_metas/ajax-process-institution-paramters
+    defaults: { _controller: AdminBundle:PageMetaConfiguration:ajaxProcessInstitutionParameters }
+    requirements:
+         _method: POST
+    
 admin_page_metas_save:
     pattern:  /admin/page_metas/save/{id}
     defaults: { _controller: AdminBundle:PageMetaConfiguration:save, id: 0 }

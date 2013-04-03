@@ -14,10 +14,10 @@
         %}
             {% block sectionContent %}
             
-                <form class="form-inline search-form" action="{{ path('admin_page_metas_institution') }}" method="post">
+                <form id="institutionPageMetaForm" class="form-inline search-form" action="{{ path('admin_page_metas_process_institution_parameters') }}" method="post">
                     <div class="combo-wrapper">
                         <input class="type_in" type="text" name="" id="institution_input_field" placeholder="Search Hospital/Institution" autocomplete="off" data-autocomplete-trigger="#institution_dropdown_button" data-dropdown="#institution_dropdown_menu">
-                        <input type="hidden" name="" id="institution_id" />
+                        <input type="hidden" name="institutionId" id="institutionId" />
                         
                         <div class="popup">
                             <button id="institution_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
@@ -29,7 +29,7 @@
                     
                     <div class="combo-wrapper">
                         <input class="type_in" type="text" name="" id="institution_medical_center_input_field" placeholder="Search Clinic" autocomplete="off" data-autocomplete-trigger="#institution_medical_center_dropdown_button" data-dropdown="#institution_medical_center_dropdown_menu">
-                        <input type="hidden" name="" id="institution_medical_center_id" />
+                        <input type="hidden" name="imcId" id="imcId" />
                         
                         <div class="popup">
                             <button id="institution_medical_center_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
@@ -58,39 +58,62 @@
 <!--
 (function($){
     $(function(){
+
+        $('#institutionPageMetaForm').submit(function(){
+            var _form = $(this);
+            $('#loader').fadeIn();
+            $.ajax({
+                url: _form.attr('action'),
+                data: _form.serialize(),
+                type: 'post',
+                success: function(response) {
+                    $('#loader').hide();
+                    $('#meta_form_container').html(response.html);
+                },
+                error: function(response){
+                    $('#loader').hide();
+                }
+            });
+
+            return false;
+        });
+        
         $('#institution_input_field').fancyAutocomplete({
             'source': window.JSON.parse('{{ institutionsJsonData | raw }}'),
             'autocomplete': {
                 'minLength': 0
             },
-            'valueContainer': $('#institution_id'),
+            'valueContainer': $('#institutionId'),
             'onAutocompleteSelectCallback': function(){
                 $('#institution_medical_center_input_field').data('fancyAutocomplete')
                     .resetValue()
-                    .reloadSource();
+                    .reloadSource()
+                    .disabled(true);
             }
         });
 
         $('#institution_medical_center_input_field').fancyAutocomplete({
             'source': [],
-            'valueContainer': $('#institution_medical_center_id'),
+            'valueContainer': $('#imcId'),
             'reloadSource': function(){
 
                 var data = [];
                 $.ajax({
                     url: '{{ path("institution_medical_centers_api") }}',
-                    data: {'institutionId': $('#institution_id').val()},
+                    data: {'institutionId': $('#institutionId').val()},
                     type: 'get',
                     dataType: 'json',
-                    async: false, // async false since we will wait for the response
                     success: function(response) {
-                        data = response;
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                            .disabled(false)
+                            .options.source = response;
                     },
                     error: function(response) {
-                        data = [];
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                        .disabled(false)
+                        .options.source = [];
                     }
                 });
-                console.log('reload source callback');
                 
                 return data; 
             }

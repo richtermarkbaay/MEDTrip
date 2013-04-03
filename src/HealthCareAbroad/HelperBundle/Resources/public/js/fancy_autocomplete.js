@@ -160,6 +160,13 @@ var FancyAutocompleteWidget = function(widget, options){
            response(matches);
         },
         
+        _autocompleteChange: function(event, ui){
+            if (!ui.item) {
+                // variable "this" here refers to the subject of this event, which is the autcomplete widget
+                $(this).data('fancyAutocomplete').resetValue();
+            }
+        },
+        
         _autocompleteSelect: function(widget, _options, item) {
             // check that the selected value is not the same as the new selected
             if (_options.valueContainer && _options.valueContainer.val() != item.id) {
@@ -182,6 +189,9 @@ var FancyAutocompleteWidget = function(widget, options){
             
             // set the source option
             _autocompleteOptions.source = this._autocompleteSource;
+            
+            // set the change handler
+            _autocompleteOptions.change = this._autocompleteChange;
             
             // there is a custom handler for autocomplete.select event
             if (_options.autocomplete.select && 'function' == typeof _options.autocomplete.select) {
