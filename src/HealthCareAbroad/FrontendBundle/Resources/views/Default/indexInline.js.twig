@@ -47,7 +47,6 @@
 				$(this).mouseover(function(e){
 					var bbox = $(this).parent()
 					, 	tx = bbox.position().left - bbox.outerWidth()/2;
-					console.log(tx);
 					//tx = tx - $('.tooltip').outerWidth()/2 - 50;
 					$('.tooltip')
 					.css('left', tx + "px")

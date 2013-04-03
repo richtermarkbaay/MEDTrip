@@ -188,6 +188,7 @@ class InstitutionSpecializationController extends Controller
      */
     public function addSpecializationAction(Request $request)
     {
+        //echo "test";exit;
         $service = $this->get('services.institution_medical_center');
     
         if (!$this->institutionMedicalCenter) {
@@ -288,7 +289,7 @@ class InstitutionSpecializationController extends Controller
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
-    
+        
         $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:specializationAccordion.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
