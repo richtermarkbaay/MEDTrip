@@ -21,7 +21,9 @@
  * }
  */
 var FancyAutocompleteWidget = function(widget, options){
-    this.initialize(widget, options);
+    this.widget = widget;
+    this.options = this._initializeOptions(options);
+    this.initialize();
 };
 
 (function($){
@@ -29,21 +31,51 @@ var FancyAutocompleteWidget = function(widget, options){
         
         widget: null,
         
-        initialize: function(widget, options){
+        dropdownTrigger: null,
+        
+        options: {},
+        
+        /**
+         * Reload the datasource
+         * TODO: improve this so we can avoid async false for ajax requests
+         * 
+         * @access public
+         */
+        reloadSource: function(){
+            this.options.source = this.options.reloadSource();
             
-            options = this._initializeOptions(options);
+            return this;
+        },
+        
+        disabled: function(disabled){
+            var _disabled = (disabled === true || disabled === 1) ;
             
-            this.widget = widget;
+            this.widget.attr('disabled', _disabled);
+            this.dropdownTrigger.attr('disabled', _disabled);
+            
+            return this;
+        },
+        
+        /**
+         * Initialize widget
+         * 
+         * @access public
+         */
+        initialize: function(){
+            
+            // reset the values, in case of browser refresh that does not clear form values
+            this.resetValue();
             
             // build autocomplete options
-            var autocompleteOptions = this._buildAutocompleteOptions(options);
-            
+            var autocompleteOptions = this._buildAutocompleteOptions(this.options);
+            var widget = this.widget;
             this.widget.autocomplete(autocompleteOptions);
             
             // check if widget has a data-autocomplete-trigger attribute
             var _autocompleteTrigger = $(this.widget.attr('data-autocomplete-trigger'));
             if (_autocompleteTrigger.length) {
-                _autocompleteTrigger.on('click', function(){
+                this.dropdownTrigger = _autocompleteTrigger;
+                this.dropdownTrigger.on('click', function(){
                     widget.autocomplete('search', '');
                 });
             }
@@ -51,28 +83,52 @@ var FancyAutocompleteWidget = function(widget, options){
             // check if widget has a data-dropdown
             var _autocompleteDropdown = $(this.widget.attr('data-dropdown'));
             if (_autocompleteDropdown.length){
-                this._overrideAutocompleteRendering(_autocompleteDropdown, options);
+                this._overrideAutocompleteRendering(_autocompleteDropdown);
             }
+            
+            return this;
         },
         
-        _overrideAutocompleteRendering: function(dropdown, options) {
+        /**
+         * Reset current values
+         * 
+         * @access public
+         */
+        resetValue: function(){
+            this.widget.val('');
+            if (this.options.valueContainer){
+                this.options.valueContainer.val('');
+            }
+            
+            return this;
+        },
+        
+        /**
+         * Override rendering function of jQuery UI autocomplete widget
+         * 
+         * @access private
+         */
+        _overrideAutocompleteRendering: function(dropdown) {
             var widget = this.widget;
+            var options = this.options;
+            var _onSelect = this._autocompleteSelect;
+            
+            // override _renderItemData
             widget.data('ui-autocomplete')._renderItemData = function(ul, item){
                 var _renderedItem = widget.data('ui-autocomplete')._renderItem( ul, item ); 
                 return _renderedItem.data( "ui-autocomplete-item", item );
             };
             
-            var _onSelect = this._autocompleteSelect;
+            // override _renderItem
             widget.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
                 _itemLink.on('click', function(){
                     _onSelect(widget, options, item);
                 });
                 return $("<li>").append(_itemLink).appendTo(ul);
-                //return $("<li>"+item.label+"</li>").appendTo(ul);
             };
             
-            
+            // override _renderMenu
             widget.data('ui-autocomplete')._renderMenu = function(ul, data){
                 if (!dropdown.parent().hasClass('open')) {
                     dropdown.dropdown('toggle');
@@ -90,12 +146,15 @@ var FancyAutocompleteWidget = function(widget, options){
             };
         },
         
+        // autocomplete.source method, context is ui.autocomplete
         _autocompleteSource: function(request, response){
             var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
             var matches = [];
-            FancyAutocompleteWidget.prototype.dataSource.map(function(_i){
-                if (_i.value && ( !request.term || matcher.test(_i.label))) {
-                    matches.push({'value': _i.label, 'id': _i.value, 'label': _i.label, 'type': type});
+            // variable "this" refers to the ui.autocomplete widget
+            var dataSource = this.element.data('fancyAutocomplete').options.source;
+            dataSource.map(function(_i){
+                if (_i.id && ( !request.term || matcher.test(_i.label))) {
+                    matches.push({'id': _i.id, 'label': _i.label});
                 }
             });
            response(matches);
@@ -107,16 +166,22 @@ var FancyAutocompleteWidget = function(widget, options){
                 console.log('changed value from '+_options.valueContainer.val()+' to '+item.id);
                 _options.valueContainer.val(item.id);
                 widget.val(item.label);
+                
                 // check if their is an onAutocompleteSelectCallback function
+                if (_options.onAutocompleteSelectCallback && 'function' == typeof(_options.onAutocompleteSelectCallback)) {
+                    _options.onAutocompleteSelectCallback();
+                }
             }
         },
         
+        // build the options for jQuery autocomplete
         _buildAutocompleteOptions: function(_options){
-            
+            // localize variable
             var widget = this.widget;
             var _autocompleteOptions = _options.autocomplete;
             
-            _autocompleteOptions.source = _options.source();
+            // set the source option
+            _autocompleteOptions.source = this._autocompleteSource;
             
             // there is a custom handler for autocomplete.select event
             if (_options.autocomplete.select && 'function' == typeof _options.autocomplete.select) {
@@ -141,6 +206,7 @@ var FancyAutocompleteWidget = function(widget, options){
                 },
                 maxItems: 50,
                 valueContainer: null,
+                reloadSource: function(){}
             };
             
             // merge default options and the passed options
@@ -150,60 +216,52 @@ var FancyAutocompleteWidget = function(widget, options){
             if ('object' == typeof _newOpts.valueContainer && 0 == _newOpts.valueContainer.length) {
                 _newOpts.valueContainer = null;
             }
-            else {
-                // reset value, in cases of refresh browsers where value is retained
-                _newOpts.valueContainer.val('');
-            }
             
             // check if there is a source option given
-            // we will build source option as a function
+            // we will build source option as an object
             if (_newOpts.source) {
                 switch (typeof _newOpts.source) {
                     case 'string':
                         // source is a string, we will assume that it is a url and we fetch thru ajax
-                        // this is limited to being async false since we are converting _newOpts.source into a function that returns the source data object
+                        // this is limited to being async false since we are waiting for the return value to be set as the value of _newOpts.source
                         var _url = _newOpts.source;
-                        _newOpts.source = function(){
-                            var _source = {};
-                            $.ajax({
-                               url: _url,
-                               type: 'get',
-                               dataType: 'json',
-                               async: false,
-                               success: function(_response) {
-                                   _source = _response;
-                               },
-                               error: function() {
-                                   _source = [];
-                               }
-                            });
-                            return _source;
-                        };
-                        break;
-                    case 'object':
-                        // source is already an object, convert it to a function that returns it
-                        var _obj = _newOpts.source;
-                        _newOpts.source = function() {
-                            return _obj;
-                        }
+                        var _source = {};
+                        $.ajax({
+                            url: _url,
+                            type: 'get',
+                            dataType: 'json',
+                            async: false,
+                            success: function(_response) {
+                                _source = _response;
+                            },
+                            error: function() {
+                                _source = [];
+                            }
+                        });
+                        _newOpts.source = _source;
                         break;
                     case 'function':
-                        // source is already a function, all we have to do is trust that it returns a data object
+                        // set source as the return value of the function
+                        _newOpts.source = _newOpts.source();
+                        break;
+                    case 'object':
+                        // source is already an object
                         break;
                     default:
                         // unrecognized, return a function with empty data as return value
-                        _newOpts.source = function() {
-                            return [];
-                        }
+                        return [];
                         break;
                 }
             }
             // no source submitted
             else {
-                // return a function with empty data as return value
-                _newOpts.source = function() {
-                    return [];
-                }
+                // return an empty array
+                _newOpts.source = [];
+            }
+            
+            // validate that custom reloadSource is a function
+            if ('function' != typeof _newOpts.reloadSource) {
+                _newOpts.reloadSource = function(){}; // set to empty default function
             }
             
             return _newOpts;
@@ -214,7 +272,7 @@ var FancyAutocompleteWidget = function(widget, options){
     $.fn.fancyAutocomplete = function(_options) {
         return this.each(function(){
             var _myWidget = new FancyAutocompleteWidget($(this), _options);
-            //FancyAutocomplete._initializeWidget($(this), _options);
+            $(this).data('fancyAutocomplete', _myWidget);
         });
     };
     

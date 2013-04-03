@@ -59,16 +59,41 @@
 (function($){
     $(function(){
         $('#institution_input_field').fancyAutocomplete({
-            'source': '{{ path("institutions_api", {autocomplete_data: 1}) }}',
+            'source': window.JSON.parse('{{ institutionsJsonData | raw }}'),
             'autocomplete': {
                 'minLength': 0
             },
-            'valueContainer': $('#institution_id')
+            'valueContainer': $('#institution_id'),
+            'onAutocompleteSelectCallback': function(){
+                $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                    .resetValue()
+                    .reloadSource();
+            }
         });
 
         $('#institution_medical_center_input_field').fancyAutocomplete({
-            'source': [{id: 1, label:'Once'},{id: 2, label:'Two'}],
-            'valueContainer': $('#institution_medical_center_id')
+            'source': [],
+            'valueContainer': $('#institution_medical_center_id'),
+            'reloadSource': function(){
+
+                var data = [];
+                $.ajax({
+                    url: '{{ path("institution_medical_centers_api") }}',
+                    data: {'institutionId': $('#institution_id').val()},
+                    type: 'get',
+                    dataType: 'json',
+                    async: false, // async false since we will wait for the response
+                    success: function(response) {
+                        data = response;
+                    },
+                    error: function(response) {
+                        data = [];
+                    }
+                });
+                console.log('reload source callback');
+                
+                return data; 
+            }
         });
     });
 })(jQuery);

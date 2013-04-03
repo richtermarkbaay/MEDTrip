@@ -33,8 +33,19 @@ class PageMetaConfigurationController extends Controller
     public function institutionPageMetaConfigurationAction(Request $request)
     {
         $request->getSession()->setFlash('redirect_url', $this->generateUrl($request->attributes->get('_route')));
+        // load approved institutions by default
+        $institutions = $this->get('services.institution.factory')->findAllApproved();
+        $data = array();
+        foreach ($institutions as $_each) {
+            $data[] = array(
+                'id' => $_each->getId(),
+                'label' => $_each->getName()
+            );
+        }
         
-        return $this->render('AdminBundle:PageMetaConfiguration:institution_page.html.twig');
+        return $this->render('AdminBundle:PageMetaConfiguration:institution_page.html.twig', array(
+            'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS)
+        ));
     }
     
     public function ajaxProcessSearchParametersAction(Request $request)
