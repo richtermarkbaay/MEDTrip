@@ -1,8 +1,8 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'formId': formId}} %}
     {% block modalBody %}
-    
+     <div class="alert-box"></div>
     <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
-        <div class="alert-box"></div>
+       
         <div class="inquirer_name control-group row-fluid">
             <label for="{{ form.children.inquirer_name.vars.id }}" class="span3 pull-left">
                 <strong>{{ form.children.inquirer_name.vars.label }}</strong>

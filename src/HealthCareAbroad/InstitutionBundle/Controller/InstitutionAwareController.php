@@ -33,8 +33,11 @@ abstract class InstitutionAwareController extends Controller
         $this->institution = $institution;
         $this->get('twig')->addGlobal('institution', $this->institution);
         $this->get('twig')->addGlobal('isSingleCenter', $this->get('services.institution')->isSingleCenter($this->institution));
-//         $loggedUser = $this->get('security.context')->getToken()->getUser();
-        //$this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
+//         if($this->get('security.context')->getToken()->getUser()){
+//             $loggedUser = $this->get('security.context')->getToken()->getUser();
+//             $this->get('twig')->addGlobal('userName',$loggedUser);
+//         }
+//         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
     }
     
     public function throwInvalidInstitutionException()

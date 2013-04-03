@@ -153,7 +153,8 @@ CREATE TABLE IF NOT EXISTS `countries` (
 --
 
 INSERT INTO `countries` (`id`, `name`, `abbr`, `code`, `slug`, `status`) VALUES
-(1, 'USA', 'test', 'test', 'test', 1);
+(1, 'USA', 'test', 'test', 'test', 1),
+(2, 'PHIL', 'ph', 'ph', 'ph', 1);
 
 --
 -- Constraints for dumped tables

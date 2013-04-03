@@ -9,6 +9,7 @@
         {% else %}
         <img width="" height="90" class="pic" alt="[Gallery Photo]" src="/images/institution/image_ph.png" style="max-height: 310px; width: 100%;"> 
         {% endif %} 
+        {% set institutionTypeLabel = get_institution_type(institution.type)%}
         MAnage {{ institutionTypeLabel }} Details
         <span class="image-icon" style="top: 10px; right: 10px; left: auto;">
             <img width="32" height="32" title="Change Featured Image" alt="Zoom" src="/images/institution/image-icon.png">

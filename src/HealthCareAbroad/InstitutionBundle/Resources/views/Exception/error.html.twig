@@ -1,49 +1,58 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-<body id="errorBody">
-	{% block content %}
-	<!-- start content -->
-	<div id="errorContent">
-	    
-	        {% block wrappedContent %}
-				<!--  start table-content  -->
-				<div id="table-content">
-				    
-			        {% if reportSubmitted is defined and reportSubmitted %}
-			        {% include '::notice.admin.html.twig' %}
-			         <h1>Oops! An error occurred</h1>
-				    {% else %}
-	    		    <h1>Oops! An error occurred</h1>
-	    		    
-	                <h2 style="margin-top: 20px;">The server returned a "{{ status_code }} {{ status_text }}".</h2>
-	                {% endif %}     
-	    		        
-	                <div style="margin-top: 20px;">
-	                    Something is broken and this has been logged. Please let us know what you were doing when this error occurred. We will fix it as soon as possible. Sorry for any inconvenience caused.
-	                                 
-				        <form style="margin-top:20px;" action="{{ path('institution_exception_report_create') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-								
-							{{ form_row(form.reporterName) }}					
-							{{ form_row(form.details) }}
-							{{ form_rest(form) }}
-			
-					   		<input type="submit" class="form-submit" name="submit"/>
-					   		
-						</form>
-	                    
-	                </div>
-	    			
-				</div>
-				<!--  end table-content  -->
-	        {% endblock %}
-	
-	    
-	</div>
-	<!--  end content -->
-	<div class="clear">&nbsp;</div>
-	{% endblock %}
-</body>
-</html>
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+{% block title %} Healthcareabroad Error Exception {% endblock %}
+
+{% block content %}
+     <div id="content" class="container error-page">
+        <div class="pull-left span5">
+            <h1>{{ status_code }} </h1>
+        </div>
+        <div class="span6">
+            <h2>
+                 {{ status_text }}
+            </h2>
+            <h3>
+                {{ status_text_details }}
+            </h3>
+        </div>
+        <div class="row-fluid span12">
+            <div class="row">
+                 {% if referer is not empty %}
+                    <div class="span6">
+                        <a href="{{ referer }}" class="btn green btn-large span8 offset3">
+                             <i class="icon-chevron-left icon-white"></i>  PREVIOUS PAGE
+                         </a>
+                    </div>
+                     <div class="span6">
+                         <a class="btn btn-primary btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="icon-envelope icon-white"></i>  REPORT THIS TO US
+                         </a>
+                         {% include 'InstitutionBundle:Exception/Modal:modal.reportForm.html.twig' %}
+                    </div>
+                {% else %}
+                    <div class="span6 offset4">
+                         <a class="btn btn-primary btn-large span8" data-toggle="modal" id="email_multiple" href="#report"><i class="icon-envelope icon-white"></i>  REPORT THIS TO US
+                         </a>
+                         {% include 'InstitutionBundle:Exception/Modal:modal.reportForm.html.twig' %}
+                    </div>
+                {% endif %}
+        
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/frontend/js/ErrorReport.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('#report').errorReportModalForm({
+           submitButton: $('#errorSubmit'),
+           form: $('form#errorReportForm') 
+        });
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

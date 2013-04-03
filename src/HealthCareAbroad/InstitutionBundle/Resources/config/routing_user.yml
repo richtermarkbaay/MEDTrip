@@ -22,3 +22,9 @@ institution_login_check:
 
 institution_logout:
     pattern:  /logout
+
+institution_reset:
+    pattern: /reset.html
+    defaults: { _controller: InstitutionBundle:InstitutionUser:resetPassword }
+    requirements:
+        _method:  GET|POST

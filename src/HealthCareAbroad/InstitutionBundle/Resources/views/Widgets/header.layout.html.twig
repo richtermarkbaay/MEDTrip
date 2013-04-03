@@ -52,7 +52,7 @@
                     </ul>
                     <ul class="nav">
                         <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{institutionUser.firstName }} {{institutionUser.lastName}}<i class="icon-caret-down"></i></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') }} {{ app.session.get('userLastName') }} <i class="icon-caret-down"></i></a>
                             <ul class="dropdown-menu">
                                 <li class="nav-header">
                                     Manage Account
@@ -68,7 +68,7 @@
                                         Logged in as:
                                     </li>
                                     <li class="text">
-                                        {{institutionUser.email}}
+                                        {{ app.session.get('userEmail') }}
                                     </li>
                                     <li class="divider">
                                     </li>

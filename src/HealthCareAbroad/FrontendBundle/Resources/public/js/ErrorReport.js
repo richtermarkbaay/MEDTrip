@@ -69,7 +69,7 @@ var ErrorReport = {
 	                            ErrorReport.errorReportComponents.form.find('div.'+item.field).addClass('error');
 	                            _errorString += item.error+"<br>";
 	                        });
-	                        ErrorReport.showAlertError();
+	                        ErrorReport.showAlertError(_errorString);
 	                    }
 	                }
 	            }

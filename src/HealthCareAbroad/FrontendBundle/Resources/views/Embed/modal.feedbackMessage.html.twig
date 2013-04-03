@@ -1,9 +1,8 @@
 <!-- Feedback Modal -->
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'formId': 'feedbackForm'}} %}
     {% block modalBody %}
-     
+     <div class="alert-box"></div>
     <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
-        <div class="alert-box"></div>
         <div class="name control-group row-fluid">
             <label for="{{ feedbackForm.children.name.vars.id }}" class="span3 pull-left">
                 <strong>{{ feedbackForm.children.name.vars.label }}</strong>

@@ -192,5 +192,10 @@ class InstitutionUserController extends Controller
 
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
+    
+    public function resetPasswordAction()
+    {
+        return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig');
+    }
 
 }
