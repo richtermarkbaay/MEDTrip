@@ -32,6 +32,19 @@ class GlobalAwardService
         return $query->getResult();
     }
     
+    public function getActiveGlobalAwards(){
+        
+        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
+        ->select('g, ga')
+        ->from('HelperBundle:GlobalAward', 'g')
+        ->innerJoin('g.awardingBody', 'ga')
+        ->where('g.status = :status')
+        ->setParameter('status', GlobalAward::STATUS_ACTIVE)
+        ->getQuery();
+//         var_dump($query->getResult());
+//         exit;
+        return $query->getResult();
+    }
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */
