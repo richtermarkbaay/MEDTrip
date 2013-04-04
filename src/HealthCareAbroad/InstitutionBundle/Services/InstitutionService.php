@@ -213,6 +213,18 @@ class InstitutionService
         return $activeStatus == $activeStatus & $institution->getStatus() ? true : false;
     }
     
+    /**
+     * Check if the $institution is Approved
+     * 
+     * @param Institution $institution
+     * @return boolean
+     * @author acgvelarde
+     */
+    public function isApproved(Institution $institution)
+    {
+        return $institution->getStatus() == InstitutionStatus::getBitValueForApprovedStatus();
+    }
+    
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;
