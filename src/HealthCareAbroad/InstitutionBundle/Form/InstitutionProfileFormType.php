@@ -105,7 +105,6 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'websites', 'websites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false));
-        //$this->_add($builder, 'awards', 'institutionAwards_list', array('mapped' =>false));
         $this->_add($builder, 'coordinates', 'hidden');
     }
 

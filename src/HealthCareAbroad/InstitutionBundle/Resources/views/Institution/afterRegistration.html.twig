@@ -40,12 +40,12 @@
                     </h2>
                     <div class="row-fluid">
                         <div class="span12">
-                            {{ form_widget(form.address1) }}
+                            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}} 
                             <div class="control-group">
                                 <div class="span12">
                                     <label for="Country">Country</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.country) }}
+                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}} 
                                     </div>
                                 </div>
                             </div>
@@ -53,18 +53,18 @@
                                 <div class="span5">
                                     <label>State / Province</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.state) }}
+                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}} 
                                     </div>
                                 </div>
                                 <div class="span5">
                                     <label>City</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.city) }}
+                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}} 
                                     </div>
                                 </div>
                                 <div class="span2">
                                     <label for="zip">Zip Code</label>
-                                    <input type="text" name="zip" id="zip" placeholder="" class="span12">
+                                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}} 
                                 </div>
                             </div>
                             <div class="control-group">
@@ -129,6 +129,7 @@
                         </div>
                     </div>
                 </section>
+                {{ form_widget(form.coordinates) }} 
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -137,6 +138,8 @@
                         </div>
                     </div>
                 </section>
+                {{ form_rest(form) }}
+                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
             </form>
         </div>
         {% set completedSteps = ['signup'] %}

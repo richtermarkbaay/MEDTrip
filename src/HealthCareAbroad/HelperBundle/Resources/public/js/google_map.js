@@ -10,7 +10,7 @@ var tableId = 4442675; // imported from 3835940
 		  var marker = null;
 		  var address = 'Manila, Philippines';
 
-		 $('.addressFields').live('keydown', function(e) {
+		 $('.addressFields').live('blur', function(e) {
             if (e.which == 17){
             	  e.preventDefault();
             }
@@ -20,7 +20,6 @@ var tableId = 4442675; // imported from 3835940
 		    
 			geocoder.geocode( { 'address': address}, geocoderCallback ); 
         });
-		 
 		 
 		 $('.slectAdressFields').live('change', function(e) {
 			 
@@ -33,7 +32,7 @@ var tableId = 4442675; // imported from 3835940
 		 
 		  function initialize() {
 		    var myOptions = {
-		      zoom: 17,
+		      zoom: 15,
 		      disableDefaultUI: true,
 		      mapTypeId: google.maps.MapTypeId.ROADMAP
 		    }
@@ -57,7 +56,7 @@ var tableId = 4442675; // imported from 3835940
 		            map: map, 
 		            position: results[0].geometry.location,
 		            draggable:true,
-	                zoom: 13,
+	                zoom: 15,
 	                animation: google.maps.Animation.DROP
 	                   
 		        });
