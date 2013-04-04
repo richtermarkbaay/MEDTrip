@@ -192,3 +192,20 @@
 
     {% endspaceless %}
 {% endblock %}
+
+{% block institutionGlobalAwards_list_widget %}
+    {% spaceless %}
+      
+     {% for key,typeChoice in form.vars.value %}
+     <h3>{{key | capitalize }}s</h3>
+       <ul>
+        {% for choice in typeChoice %}
+           <li>
+            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
+             </li>
+        {% endfor %}
+       </ul>
+    {% endfor %}
+    
+    {% endspaceless %}
+{% endblock %}

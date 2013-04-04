@@ -11,25 +11,20 @@ use Symfony\Component\Form\AbstractType;
 
 class InstitutionGlobalAwardsListType extends AbstractType
 {
+    
     public function __construct(GlobalAwardService $service)
     {
         $this->service = $service;
     }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $awards = $this->service->getActiveGlobalAwards();
-        $choices = array();
-        foreach ($awards as $award){
-            $choices[$award->getId()] = $award->getName();
-        }
-// print_r($choices);exit;
-        $resolver->setDefaults(array('choices' => $choices, 'multiple' => true, 'expanded' => true));
+        $choices = $this->service->getAutocompleteSource();
+        $resolver->setDefaults(array('data' => $choices));
     }
-
+    
     public function getParent()
     {
-        return 'choice';
+        return 'text';
     }
 
     public function getName()
