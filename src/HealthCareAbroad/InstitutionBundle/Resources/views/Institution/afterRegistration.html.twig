@@ -1,3 +1,5 @@
+{% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
+
 <div id="content" class="container">
     <div class="row">
         <h1>Set-up {{ label }} Profile</h1>
@@ -307,3 +309,14 @@
 
     </div>
 </div>
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+{% endblock %}
