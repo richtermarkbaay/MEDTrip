@@ -42,7 +42,13 @@ services:
         arguments: [@services.helper.ancillary_service]
         tags:
             - { name: form.type, alias: institutionServices_list }
-
+            
+    form.institutionGlobalAwards_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\InstitutionGlobalAwardsListType
+        arguments: [@services.global_award]
+        tags:
+            - { name: form.type, alias: institutionGlobalAwards_list }
+            
     form.tagtype_list:
         class: "%services.tagtype_list%"
         tags:

@@ -4,7 +4,7 @@
             Let's Get Started
         </h2>
         <div class="steps">
-            <div class="media completed">
+            <div class="media {{ signup is defined ? 'active':'' }} {% if 'signup' in completedSteps %} completed {% endif %}">
                 <span class="numbercircle pull-left">
                     <i class="icon-ok icon-white icon-1x">
                     </i>
@@ -15,27 +15,45 @@
                     </span>
                 </div>
             </div>
-            <div class="media active">
+           
+            <div class="media {{ setupProfile is defined ? 'active':'' }} {% if 'setupProfile' in completedSteps %} completed {% endif %}">
                 <span class="numbercircle pull-left">
                     2
                 </span>
                 <div class="media-body">
                     <span class="main-step">
-                        Set-up profile for your Clinic
+                        Set-up profile for your {{ label }}
                     </span>
                 </div>
             </div>
-            <div class="media">
+            <div class="media {{ addClinic is defined ? 'active':'' }} {% if 'addClinic' in completedSteps %} completed {% endif %}">
                 <span class="numbercircle pull-left">
                     3
                 </span>
                 <div class="media-body">
                     <span class="main-step">
-                        Add Clinic / Center Details
+                        Add Clinic / Center {{ isSingleCenter is defined ? '':'Details' }}
                     </span>
                 </div>
             </div>
-            <div class="media substeps">
+             
+             {% if isSingleCenter is not defined %}
+             
+             <div class="media substeps {{ addClinic is defined ? 'active':'' }}">
+                <span class="  pull-left">
+                    <i class="icon-circle">
+                    </i>
+                </span>
+                <div class="media-body">
+                    <span class="sub-main-step">
+                        Setup Clinic Profile
+                    </span>
+                </div>
+            </div>
+             
+             {% endif %}
+            
+            <div class="media substeps {{ addSpecialization is defined ? 'active':'' }}">
                 <span class=" pull-left">
                     <i class="icon-circle">
                     </i>
@@ -46,7 +64,7 @@
                     </span>
                 </div>
             </div>
-            <div class="media substeps">
+            <div class="media substeps {{ addDoctor is defined ? 'active':'' }}">
                 <span class=" pull-left">
                     <i class="icon-circle">
                     </i>

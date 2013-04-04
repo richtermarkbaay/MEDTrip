@@ -93,7 +93,7 @@ class InstitutionProfileFormType extends AbstractType
             $builder->addEventSubscriber($subscriber);
         }
 
-        $this->_add($builder, 'name', 'text');
+        $this->_add($builder, 'name', 'text', array('data' => ''));
         $this->_add($builder, 'description', 'textarea');
         $this->_add($builder, 'country', 'globalCountry_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
         $this->_add($builder, 'city', 'city_list');
@@ -104,6 +104,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
         $this->_add($builder, 'websites', 'websites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false));
+        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false));
         //$this->_add($builder, 'awards', 'institutionAwards_list', array('mapped' =>false));
         $this->_add($builder, 'coordinates', 'hidden');
     }

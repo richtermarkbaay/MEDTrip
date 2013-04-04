@@ -1,5 +1,6 @@
 {% extends 'InstitutionBundle::registration.layout.html.twig' %}
 {% set disableMainNavigation = true %}
+{% set setUpProfile = true %}
 
 {% block confirmation %}
     {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' %}
@@ -10,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    {% include 'InstitutionBundle:Institution:afterRegistration.html.twig' with {'label' : 'Hospital' } %}
+    {% include 'InstitutionBundle:Institution:afterRegistration.html.twig' with {'label' : 'Clinic' } %}
 {% endblock %}
 
 {% block inlineJavascriptCode %}
