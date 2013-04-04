@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use HealthCareAbroad\HelperBundle\Form\PageMetaConfigurationFormType;
@@ -106,14 +108,27 @@ class PageMetaConfigurationController extends Controller
         $compiledSearch = $searchParameterService->compileRequest($request);
         // no app_dev.php
         $url = $compiledSearch->getUrl();
+        $metaConfigurationService = $this->get('services.helper.page_meta_configuration');
+        $metaConfiguration = $metaConfigurationService->findOneByUrl($url);
         
-        $metaConfiguration = $this->get('services.helper.page_meta_configuration')
-            ->findOneByUrl($url);
-        
+        // no meta configuration saved, yet, create from builder
         if (!$metaConfiguration) {
-            $metaConfiguration = new PageMetaConfiguration();
+            
+            $searchVariables = array();
+            // convert variable keys to the one accepted by the meta configuration service
+            $searchUrlParameterKeyMapping = SearchUrlGenerator::getSearchParameterKeyToSearchUrlKeyMapping();
+            foreach ($compiledSearch->getVariables() as $key => $searchVariable) {
+                if (!\array_key_exists($key, $searchUrlParameterKeyMapping)) {
+                    // this is a predefined set, so something must have gone wrong in the search parameter compiler, or the mapping has changed
+                    throw new \Exception(\sprintf('Cannot map search parameter key "%s" to a search url key', $key));
+                }
+                $searchVariables[$searchUrlParameterKeyMapping[$key]] = $searchVariable;
+            }
+            $metaConfiguration = $metaConfigurationService->buildFromSearchObjects($searchVariables);
             $metaConfiguration->setUrl($url);
-            $metaConfiguration->setPageType(PageMetaConfiguration::PAGE_TYPE_SEARCH_RESULTS);
+            
+            // save this new configuration
+            $metaConfigurationService->save($metaConfiguration);
         }
         
         $form = $this->createForm(new PageMetaConfigurationFormType(), $metaConfiguration);
