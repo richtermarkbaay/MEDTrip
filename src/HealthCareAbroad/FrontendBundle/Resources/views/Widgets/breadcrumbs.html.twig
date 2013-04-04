@@ -1,16 +1,17 @@
 {% if breadcrumbs is defined %}
 <div id="breadcrumbs-wrapper" class="container">
+    {% spaceless %}
 	<ul class="breadcrumb row">
 		<li><a href="{{ path('frontend_main_homepage')}}"><span class="hca-sprite home-icon"></span></a></li>
 		{% for each in breadcrumbs %}
+		    {% set label = each.label|length > 42 ? each.label|slice(0, 40) ~ ' ...' : each.label %}
     		{% if not loop.last %}
-                <li class="active"><a href="{{ each.url }}">{{ each.label }}</a>
-                </li>
+                <li class="active"><a href="{{ each.url }}">{{ label }}</a></li>
     		{% else %}
-    		    <li><a>{{ each.label }}</a>
-    		    </li>
+    		    <li class="last"><a>{{ label }}</a></li>
 		    {% endif %}
 		{% endfor %}
 	</ul>
+	{% endspaceless %}
 </div>
 {% endif %}

@@ -10,9 +10,9 @@
 {% block callout %}
     {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
         {% block calloutContent %}
-            <div class="logo-wrapper">
-                {{ render_institution_logo(institution, {attr: {class: 'mini', alt: institution.name}}) | raw }}
-            </div>
+            <a href="{{ get_institution_frontend_url(institution) }}" class="mini-logo-wrapper">
+                {{ render_institution_logo(institution, {attr: {class: 'mini', alt: 'logo'}}) | raw }}
+            </a>
             <h2 class="heading"><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h2>
             <a class="btn green" href="{{ get_institution_frontend_url(institution) }}"><span class="hca-sprite list-icon"></span> Hospital Page</a>
         {% endblock %}
