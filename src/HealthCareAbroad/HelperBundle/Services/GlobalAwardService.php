@@ -32,19 +32,6 @@ class GlobalAwardService
         return $query->getResult();
     }
     
-    public function getActiveGlobalAwards(){
-        
-        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
-        ->select('g, ga')
-        ->from('HelperBundle:GlobalAward', 'g')
-        ->innerJoin('g.awardingBody', 'ga')
-        ->where('g.status = :status')
-        ->setParameter('status', GlobalAward::STATUS_ACTIVE)
-        ->getQuery();
-//         var_dump($query->getResult());
-//         exit;
-        return $query->getResult();
-    }
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */
@@ -60,7 +47,7 @@ class GlobalAwardService
         }
         
         foreach ($globalAwards as $_award) {
-            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName());
+            $_arr = array('id' => $_award->getId(), 'label' => $_award->getName(), 'value' => $_award->getId());
             $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
             $autocompleteSource[\strtolower($awardTypes[$_award->getType()])][] = $_arr;
         }
@@ -84,5 +71,16 @@ class GlobalAwardService
         }
         
         return $globalAwards;
+    }
+    
+    public function findAwardsByIds(array $ids)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $query = $qb->select('a')
+        ->from('HelperBundle:GlobalAward', 'a')
+        ->where($qb->expr()->in('a.id', ':ids'))
+        ->setParameter('ids', $ids)->getQuery();
+    
+        return $query->getResult();
     }
 }
