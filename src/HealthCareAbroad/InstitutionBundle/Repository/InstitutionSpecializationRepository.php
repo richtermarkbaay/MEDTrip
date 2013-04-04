@@ -2,6 +2,8 @@
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use Doctrine\ORM\Query\Expr\Join;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
@@ -84,6 +86,11 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * TODO: This should not be here!
+     * 
+     * @param unknown_type $institutionId
+     */
     public function getMedicalCentersList($institutionId)
     {
         $qb = $this->_em->createQueryBuilder()
@@ -96,22 +103,37 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
-
+    
+    /**
+     * @deprecated Use getActiveSpecializationsByInstitutionMedicalCenter
+     * @param unknown_type $institutionMedicalCenter
+     */
     public function getByInstitutionMedicalCenter($institutionMedicalCenter)
     {
+        return $this->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
+    }
+    
+    /**
+     * Get active institution specializations of an institution medical center/ clinic
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array InstitutionSpecialization
+     */
+    public function getActiveSpecializationsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
         $qb = $this->getEntityManager()->createQueryBuilder();
-
+        
         $qb->select('a','b', 'c')
-           ->from('InstitutionBundle:InstitutionSpecialization', 'a')
-           ->leftJoin('a.specialization', 'b')
-           ->leftJoin('a.treatments', 'c')
-           ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
-           ->andWhere('a.status = :status')
-           ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
-           ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
-
+        ->from('InstitutionBundle:InstitutionSpecialization', 'a')
+        ->leftJoin('a.specialization', 'b')
+        ->leftJoin('a.treatments', 'c')
+        ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
+        ->andWhere('a.status = :status')
+        ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
+        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
+        
         $result = $qb->getQuery()->getResult();
-
+        
         return $result;
     }
 
@@ -155,19 +177,13 @@ class InstitutionSpecializationRepository extends EntityRepository
         return $result;
     }
 
+    /**
+     * @deprecated use getActiveSpecializationsByInstitution
+     * @param unknown_type $institution
+     */
     public function getActiveSpecializations($institution)
     {
-
-        $qb = $this->_em->createQueryBuilder();
-        $qb->select('b')
-            ->from('InstitutionBundle:InstitutionSpecialization', 'b')
-            ->leftJoin('b.institutionMedicalCenter', 'c')
-            ->leftJoin('b.specialization', 'd')
-            ->where('c.institution = :institution')
-            ->setParameter('institution', $institution)
-            ->groupBy('b.specialization');
-
-        return $qb->getQuery()->getResult();
+        return $this->getActiveSpecializationsByInstitution($institution);
     }
     
     public function getAllActiveSpecializations()
@@ -182,6 +198,27 @@ class InstitutionSpecializationRepository extends EntityRepository
            ->setParameter('institutionSpecializationStatus', InstitutionSpecialization::STATUS_ACTIVE)
            ->groupBy('b')->orderBy('b.name', 'ASC');
 
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Get all active institution specializations of an Institution
+     * 
+     * @param Institution $institution
+     * @return multitype:
+     */
+    public function getActiveSpecializationsByInstitution(Institution $institution)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('b, d')
+        ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+        ->leftJoin('b.institutionMedicalCenter', 'c')
+        ->leftJoin('b.specialization', 'd')
+        ->where('c.institution = :institution')
+        ->setParameter('institution', $institution)
+        ->groupBy('b.specialization')
+        ->orderBy('d.name');
+        
         return $qb->getQuery()->getResult();
     }
 

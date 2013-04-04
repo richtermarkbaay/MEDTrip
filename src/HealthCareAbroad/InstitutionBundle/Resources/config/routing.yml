@@ -3,6 +3,9 @@ InstitutionBundle_unsecuredRoutes:
     resource: "@InstitutionBundle/Resources/config/routing_unsecured.yml"
     prefix:   /
 
+InstitutionBundle_API_Routes:
+    resource: "@InstitutionBundle/Resources/config/routing_api.yml"
+    prefix:   /
 
 # Routes for Institution MedicalCenterController #
 InstitutionBundle_medicalCenter:

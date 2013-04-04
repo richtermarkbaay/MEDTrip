@@ -10,6 +10,8 @@ class PageMetaConfiguration
     
     const PAGE_TYPE_SEARCH_RESULTS = 3;
     
+    const PAGE_TYPE_INSTITUTION_MEDICAL_CENTER = 4;
+    
     /**
      * @var integer
      */

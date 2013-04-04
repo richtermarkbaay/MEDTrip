@@ -23,7 +23,7 @@
         
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,
-    	        link: {url: institutionUrl, html: render_institution_logo(highlight.institution), class: 'hospital-logo-link'}
+    	        link: {url: institutionUrl, html: render_institution_logo(highlight.institution, {attr: {class: 'mini'}}), class: 'mini-logo-wrapper'}
     	    }
     	%}
     </div>
@@ -62,11 +62,7 @@
                 {% if each.icon %}
                     <img class="img-circle pull-left" src="{{ each.icon.src }}" alt="doctor logo" width="50"/>
                 {% else %}
-                    {% if each.type == 3 %}
-                        <span class="hca-sprite doctor-icon img-circle orange pull-left default"></span>
-                    {% else %}
-                        <span class="{{ ad_highlight_placeholder_class(each.type) }} media-object img-circle pull-left"></span>
-                    {% endif %}
+                    <span class="{{ ad_highlight_placeholder_class(each.type) }} orange img-circle pull-left default"></span>
                 {% endif %}
                 
                 {% if each.header %}

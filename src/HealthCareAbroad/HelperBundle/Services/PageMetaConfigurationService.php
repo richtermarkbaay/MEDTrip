@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
 
 use HealthCareAbroad\SearchBundle\Services\SearchStates;
@@ -18,7 +22,14 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
  */
 class PageMetaConfigurationService
 {
+    /** contansts for known variables in a meta configuration pattern **/
     const CLINIC_RESULTS_COUNT_VARIABLE = 'clinic_results_count';
+    
+    const ACTIVE_CLINICS_COUNT_VARIABLE = 'active_clinics_count';
+    
+    const SPECIALIZATIONS_COUNT_VARIABLE = 'specializations_count_variable';
+    
+    const SPECIALIZATIONS_LIST_VARIABLE = 'specializations_list_variable';
     
     /**
      * @var Registry
@@ -145,10 +156,55 @@ class PageMetaConfigurationService
         return $metaConfig;
     }
     
+    /**
+     * Create PageMetaConfiguration for hospital page
+     * 
+     * @param Institution $institution
+     * @return \HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration
+     */
+    public function buildForInstitutionPage(Institution $institution)
+    {
+        $metaConfig = new PageMetaConfiguration();
+        
+        $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
+        // title: #HospitalName #city, #country - HealthcareAbroad.com
+        $metaConfig->setTitle("{$institution->getName()} {$location} - HealthcareAbroad.com");
+        // description: #HospitalName in #city, #country offers treatments in #NumberOfSubSpecialities Specialities at #NumberOfClinics Clinics. Find your treatment at HealthcareAbroad.com
+        $metaConfig->setDescription("{$institution->getName()} in {$location} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE."} Specialties at {".PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE."} Clinics. Find your treatment at HealthcareAbroad.com");
+        // keywords: #HospitalName, #City, #Country,  (up to 10) #Speciality, medical tourism, Doctor, Dentist
+        $metaConfig->setKeywords("{$institution->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
+        $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION);
+        
+        return $metaConfig;
+    }
+    
+    /**
+     * Create a PageMetaConfiguration for clinic page
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return \HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration
+     */
+    public function buildForInstitutionMedicalCenterPage(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $institution = $institutionMedicalCenter->getInstitution();
+        $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
+        
+        $metaConfig = new PageMetaConfiguration();
+        $metaConfig->setTitle("{$institutionMedicalCenter->getName()} - {$institution->getName()} {$location} - HealthcareAbroad.com");
+        $metaConfig->setDescription("{$institutionMedicalCenter->getName()} at {$institution->getName()} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."} in {$location}. Get details at HealthcareAbroad.com");
+        $metaConfig->setKeywords("{$institution->getName()}, {$institutionMedicalCenter->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
+        $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER);
+        
+        return $metaConfig;
+    }
+    
     static public function getKnownVariables()
     {
         return array(
             PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE,
+            PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE,
+            PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE,
+            PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE,
         );
     }
     

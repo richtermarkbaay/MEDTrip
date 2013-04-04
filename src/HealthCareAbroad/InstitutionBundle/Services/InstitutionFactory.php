@@ -78,6 +78,19 @@ class InstitutionFactory
     }
     
     /**
+     * Get all approved institutions
+     * 
+     * @return array Institution
+     */
+    public function findAllApproved()
+    {
+        $query = $this->repository->getQueryBuilderForApprovedInstitutions()
+            ->getQuery();
+
+        return $query->getResult();
+    }
+    
+    /**
      * Create new instance of Institution
      * 
      * @return \HealthCareAbroad\InstitutionBundle\Entity\Institution

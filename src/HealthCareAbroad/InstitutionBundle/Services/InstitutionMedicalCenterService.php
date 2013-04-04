@@ -89,6 +89,36 @@ class InstitutionMedicalCenterService
         return self::$institutionMedicalCenter;
     }
     
+    /**
+     * Get active institution specializations of an institution medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array InstitutionSpecialization
+     */
+    public function getActiveSpecializations(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
+    }
+    
+    /**
+     * List active specializations of a medical center
+     * Returns a flat array of specializationId => specializationName
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @return array (specializationId => specializationName)
+     */
+    public function listActiveSpecializations(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $institutionSpecializations = $this->getActiveSpecializations($institutionMedicalCenter);
+        $list = array();
+        foreach ($institutionSpecializations as $_each) {
+            $specialization = $_each->getSpecialization();
+            $list[$specialization->getId()] = $specialization->getName();
+        }
+        
+        return $list;
+    }
+    
     public function setInstitutionMedicalCenterPropertyService(InstitutionMedicalCenterPropertyService $service)
     {
         $this->institutionMedicalCenterPropertyService = $service;

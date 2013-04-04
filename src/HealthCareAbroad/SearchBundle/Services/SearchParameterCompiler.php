@@ -38,13 +38,7 @@ class SearchParameterCompiler implements  ContainerAwareInterface
         $searchState = 0;
         
         // search form parameter to search url route key mapping
-        $searchUrlParameterKeyMapping = array(
-            SearchParameterService::PARAMETER_KEY_COUNTRY_ID => SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY,
-            SearchParameterService::PARAMETER_KEY_CITY_ID => SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY,
-            SearchParameterService::PARAMETER_KEY_SPECIALIZATION_ID => SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION,
-            SearchParameterService::PARAMETER_KEY_SUB_SPECIALIZATION_ID => SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION,
-            SearchParameterService::PARAMETER_KEY_TREATMENT_ID => SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT,
-        );
+        $searchUrlParameterKeyMapping = SearchUrlGenerator::getSearchParameterKeyToSearchUrlKeyMapping();
         
         // parameter key to search state value mapping
         $searchStateMapping = SearchStates::getSearchParameterKeyMappingToSearchStateValues();

@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use ChromediaUtilities\Helpers\Inflector;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
 
 use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
@@ -36,7 +42,6 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
     {
         $url = $request->getPathInfo();
         $metaConfig = $this->pageMetaConfigurationService->findOneByUrl($url);
-        
         // we have no saved configuration yet
         if (!$metaConfig) {
             // TODO: this is just a temporary approach
@@ -44,6 +49,22 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
             if ($request->attributes->has('searchObjects')) {
                 // this is a search results page
                 $metaConfig = $this->pageMetaConfigurationService->buildFromSearchObjects($request->attributes->get('searchObjects'));
+                $metaConfig->setUrl($url);
+                
+                // save this new config
+                $this->pageMetaConfigurationService->save($metaConfig);
+            }
+            // institution/hospital page
+            elseif(($institution = $request->attributes->get('institution', null)) && $institution instanceof Institution && PageMetaConfiguration::PAGE_TYPE_INSTITUTION == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
+                $metaConfig = $this->pageMetaConfigurationService->buildForInstitutionPage($institution);
+                $metaConfig->setUrl($url);
+                
+                // save this new config
+                $this->pageMetaConfigurationService->save($metaConfig);
+            }
+            // clinic page
+            elseif (($institutionMedicalCenter = $request->attributes->get('institutionMedicalCenter', null)) && $institutionMedicalCenter instanceof InstitutionMedicalCenter && PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
+                $metaConfig = $this->pageMetaConfigurationService->buildForInstitutionMedicalCenterPage($institutionMedicalCenter);
                 $metaConfig->setUrl($url);
                 
                 // save this new config
@@ -59,19 +80,18 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
             }
         }
         
-        // replace variables in description
-        $tempDescription = $metaConfig->getDescription();
         $pageMetaVariables = $request->attributes->get('pageMetaVariables', array());
-        \preg_match_all('/\{.*?\}/', $tempDescription, $matches);
-        foreach ($matches[0] as $_matched_pattern) {
-            $variable = \preg_replace('/[\{\}]/', '', $_matched_pattern);
-            if (\in_array($variable, PageMetaConfigurationService::getKnownVariables())) {
-                $value = \array_key_exists($variable, $pageMetaVariables) ? $pageMetaVariables[$variable] : ''; 
-                $tempDescription = \preg_replace('/'.$_matched_pattern.'/', $value, $tempDescription);
-            }
-        }
-        $metaConfig->setDescription($tempDescription);
+        
+        // replace variables in description
+        $metaConfig->setDescription($this->_supplyPatternVariables($metaConfig->getDescription(), $pageMetaVariables));
+        // replace variables in keywords
+        $metaConfig->setKeywords($this->_supplyPatternVariables($metaConfig->getKeywords(), $pageMetaVariables));
         
         return $metaConfig;
+    }
+    
+    private function _supplyPatternVariables($subject, array $values)
+    {
+        return Inflector::supplyPatternVariableValues($subject, $values);
     }
 }

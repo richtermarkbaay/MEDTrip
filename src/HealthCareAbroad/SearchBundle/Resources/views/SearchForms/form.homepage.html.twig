@@ -1,4 +1,4 @@
-<form class="{{ attr.class is defined ? attr.class : 'search-form broad_search_form' }} form-inline" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
+<form class="search-form broad_search_form form-inline {{ attr.class is defined ? attr.class : '' }}" name="search_box" method="post" action="{{ path('frontend_search_process') }}">
     <div class="combo-wrapper">
         <label>Search</label>
         <input class="type_in" type="text" name="sb_treatment" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >

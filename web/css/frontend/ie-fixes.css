@@ -1,0 +1,78 @@
+
+body #top-background > .glow {
+    width: 0;
+    height: 0;
+}
+
+form input[type=text],
+form input[type=email],
+form input[type=number] {
+	line-height: 30px;
+}
+
+#header-wrapper {
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#4cffffff', endColorstr='#4cffffff');
+    border-bottom: 1px solid #AAAAAA;
+}
+
+#header-wrapper .menu ul li {
+	border-right: 4x solid #AAAAAA; 
+}
+
+form.search-form > button.btn {
+	text-shadow: none;
+	border: 3px solid #AAAAAA;
+}
+
+.newsletter-box > form div.form-inline button.btn {
+	border: 2px solid #555;
+}
+
+#content-wrapper .hospital-header-wrapper > .info-wrapper > .logo-wrapper {
+	border: 4px solid #AAAAAA; 
+}
+
+#header-wrapper .beta-banner {
+	top: 0;
+	right: 0;
+	width:140px;
+}
+
+#content-wrapper ul.thumbnail-list > li {
+	width: 183px;
+	border: 1px solid #d8d8d8;
+}
+
+#content-wrapper ul.thumbnail-list > li a {
+	width: 163px;
+}
+
+#content-wrapper ul.thumbnail-list > li a .logo {
+	max-width: 163px;
+	max-height: 113px;
+}
+
+.box-shadow {
+    border: 1px solid #C0C6C0; 
+    /*filter:
+	    progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=0,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=45,strength=2),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=90,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=180,strength=10),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=225,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=270,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=315,strength=2); */
+}
+
+.hca-sprite.clinic-default-logo.small {
+    background-position: -553px -194px;	
+}
+
+#content-wrapper a.carousel-control.prev {
+    left: 8px;
+}
+
+#content-wrapper a.carousel-control.next {
+    left: 590px;
+}

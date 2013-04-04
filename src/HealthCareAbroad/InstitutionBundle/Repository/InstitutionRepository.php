@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
@@ -60,6 +62,20 @@ class InstitutionRepository extends EntityRepository
 
         return $query->getResult();
     }
+    
+    public function countActiveInstitutionMedicalCenters(Institution $institution)
+    {
+        $query = $this->_em->createQueryBuilder()
+            ->select('count(a.id)')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->where('a.institution = :institutionId')
+            ->andWhere('a.status != :inActive')
+            ->setParameter('institutionId', $institution->getId())
+            ->setParameter('inActive', InstitutionMedicalCenterStatus::INACTIVE)
+            ->getQuery();
+        
+        return $query->getSingleScalarResult();
+    }
 
     /**
      * Get draft institution specializations
@@ -79,6 +95,9 @@ class InstitutionRepository extends EntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @return QueryBuilder
+     */
     public function getQueryBuilderForApprovedInstitutions()
     {
         $qb = $this->createQueryBuilder('a')
