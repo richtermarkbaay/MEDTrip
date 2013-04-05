@@ -36,6 +36,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         address1:
             type: text
             nullable: false
+        addressHint:
+            type: text
+            nullable: true
+            column: address_hint
         zipCode:
             type: string
             length: 10

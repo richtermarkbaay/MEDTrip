@@ -2,100 +2,134 @@
  * Google Map js
  * @author Chaztine Blance
  */
-
-var tableId = 4442675; // imported from 3835940
-		  var geocoder = null;
-		  var map = null;
-		  var layer = null;
-		  var marker = null;
-		  var address = 'Manila, Philippines';
-
-		 $('.addressFields').live('blur', function(e) {
-            if (e.which == 17){
-            	  e.preventDefault();
-            }
-            var selectedCity = document.getElementById('institution_profile_form_city');
-			var selectedCountry = document.getElementById('institution_profile_form_country');
-			var address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
-		    
-			geocoder.geocode( { 'address': address}, geocoderCallback ); 
-        });
-		 
-		 $('.slectAdressFields').live('change', function(e) {
-			 
-		    var selectedCity = document.getElementById('institution_profile_form_city');
-			var selectedCountry = document.getElementById('institution_profile_form_country');
-			var address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + selectedCity.options[selectedCity.selectedIndex].innerHTML + "," + selectedCountry.options[selectedCountry.selectedIndex].innerHTML;
-		    
-			geocoder.geocode( { 'address': address}, geocoderCallback ); 
-		 });
-		 
-		  function initialize() {
-		    var myOptions = {
-		      zoom: 15,
-		      disableDefaultUI: true,
-		      mapTypeId: google.maps.MapTypeId.ROADMAP
-		    }
-		    map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-		    geocoder = new google.maps.Geocoder();
-		    geocoder.geocode( { 'address': address}, geocoderCallback);
-		  }
+ var GoogleMap = {
 		
-		function geocoderCallback (results, status) {
-		      if (status == google.maps.GeocoderStatus.OK) {
-		        map.setCenter(results[0].geometry.location);
-		        var lat = results[0].geometry.location.lat();
-		        var lng = results[0].geometry.location.lng();		        
-		        var point2 = lat + ", " + lng; 
-
-		        document.getElementById("institution_profile_form_coordinates").value = point2; 
-		        
-		        if (marker) marker.setMap(null);
+	tableId: 4442675,
+	lat: '',
+	lng: '',
+	map: null,
+	layer: null,
+	latLngString: '',
+	marker: null,
+	geocoder: null,
+	mapCanvasElem: document.getElementById('map_canvas'),
+	mapOnChangeCallback: null,
+	recursion: 0,
+	defaultAddress: 'Washington, United States', // City and Country Address
+	selectedCity : document.getElementById('institution_profile_form_city'),
+	selectedCountry : document.getElementById('institution_profile_form_country'),
+	inputCoordinates : document.getElementById("institution_profile_form_coordinates"),
 		
-		        marker = new google.maps.Marker({
-		            map: map, 
-		            position: results[0].geometry.location,
-		            draggable:true,
-	                zoom: 15,
-	                animation: google.maps.Animation.DROP
-	                   
-		        });
-		        
-		        if (!layer) 
-		        {
-		            layer = new google.maps.FusionTablesLayer({
-		              query: {
-		                select: 'geometry',
-		                from: tableId,
-		                where: 'ST_INTERSECTS(geometry, CIRCLE(LATLNG(' + lat + ', ' + lng + '),1))',
-		                limit: 1
-		              }
-		            });
-		            layer.setMap(map);
-		        } 
-		        else 
-		        { 
-		           layer.setOptions({
-		              query: {
-		                select: 'geometry',
-		                from: tableId,
-		                where: 'ST_INTERSECTS(geometry, CIRCLE(LATLNG(' + lat + ', ' + lng + '),1))',
-		                limit: 1
-		              }
-		            });
-		        }
-		        google.maps.event.addListener(marker, 'click', toggleBounce);
-		      } else { // if not found map, use defaul address
-		    	  var address = document.getElementById('institution_profile_form_city').value + "," + document.getElementById('institution_profile_form_country').value;
-				    geocoder.geocode( { 'address': address}, geocoderCallback ); 
-		      }
-		};
+	initialize: function() {
 		
-		  function toggleBounce() {
+		GoogleMap.setParams();
 
-	          if (marker.getAnimation() != null) {
-	            marker.setAnimation(null);
-	          } else {
-	            marker.setAnimation(google.maps.Animation.BOUNCE);
-	          }
+		var options = { zoom: 15, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+
+		GoogleMap.map = new google.maps.Map(GoogleMap.mapCanvasElem, options);
+		GoogleMap.geocoder = new google.maps.Geocoder();
+		GoogleMap.geocoder.geocode({'address': GoogleMap.address}, GoogleMap.geocoderCallback);
+		
+	},
+	geocodePosition: function(pos) {
+		GoogleMap.geocoder.geocode({ latLng: pos }, 
+		function(responses) {
+			if (responses && responses.length > 0) {
+				latLngString = responses[0].geometry.location.lat() + ", " + responses[0].geometry.location.lng();
+				GoogleMap.inputCoordinates.value = latLngString;
+			} 
+		});
+	},
+	setParams: function() {
+		GoogleMap.address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + GoogleMap.selectedCity.options[GoogleMap.selectedCity.selectedIndex].innerHTML + "," + GoogleMap.selectedCountry.options[GoogleMap.selectedCountry.selectedIndex].innerHTML;
+	},
+	geocoderCallback: function(results, status) {
+		if (status == google.maps.GeocoderStatus.OK) {
+			GoogleMap.map.setCenter(results[0].geometry.location);
+			GoogleMap.lat = results[0].geometry.location.lat();
+			GoogleMap.lng = results[0].geometry.location.lng();		        
+			GoogleMap.latLngString = GoogleMap.lat + ", " + GoogleMap.lng;
+			
+			GoogleMap.inputCoordinates.value = GoogleMap.latLngString;
+			
+			GoogleMap.setMarker(results[0].geometry.location);
+			GoogleMap.setLayer();
+
+	        google.maps.event.addListener(GoogleMap.marker, 'click', GoogleMap.toggleBounce);
+	        google.maps.event.addListener(GoogleMap.marker, 'dragend', function() {
+		          GoogleMap.geocodePosition(GoogleMap.marker.getPosition());
+		    });
+	        
+	        if(GoogleMap.mapOnChangeCallback) {
+	        	GoogleMap.mapOnChangeCallback();
 	        }
+	        
+//	        GoogleMap.recursion++;
+
+		} else {
+			GoogleMap.geocoder.geocode({ 'address': GoogleMap.defaultAddress}, GoogleMap.geocoderCallback);
+		}
+	},
+	
+	setMarker: function(markerPosition) {
+        if (GoogleMap.marker) {
+        	GoogleMap.marker.setMap(null);
+        }
+
+        GoogleMap.marker = new google.maps.Marker({
+            map: GoogleMap.map,
+            position: markerPosition,
+            draggable:true,
+            zoom: 15,
+            animation: google.maps.Animation.DROP
+        });
+	},
+	
+	setLayer: function() {
+		var options = {
+			query: {
+	            select: 'geometry',
+	            from: GoogleMap.tableId,
+	            where: 'ST_INTERSECTS(geometry, CIRCLE(LATLNG(' + GoogleMap.latLongString + '),1))',
+	            limit: 1
+			}
+		};
+
+		if (!GoogleMap.layer) {
+			GoogleMap.layer = new google.maps.FusionTablesLayer(options);
+			GoogleMap.layer.setMap(GoogleMap.map);
+        } else { 
+        	GoogleMap.layer.setOptions(options);
+        }
+	},
+	
+	updateMap: function(address) {
+		GoogleMap.address = address;
+		GoogleMap.geocoder.geocode({ 'address': address}, GoogleMap.geocoderCallback);
+	},
+	
+	toggleBounce: function() {
+		if (GoogleMap.marker.getAnimation() != null) {
+			GoogleMap.marker.setAnimation(null);
+		} else {
+			GoogleMap.marker.setAnimation(google.maps.Animation.BOUNCE);
+		}		
+	},
+};
+ 
+ (function($){
+	 
+	 $('.addressFields').live('blur', function(e) {
+         if (e.which == 17){
+         	  e.preventDefault();
+         }
+     	GoogleMap.setParams();
+        GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
+     });
+		 
+	 $('.selectAdressFields').live('change', function(e) {
+		GoogleMap.setParams();
+		GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
+	 });
+	 
+ })(jQuery);

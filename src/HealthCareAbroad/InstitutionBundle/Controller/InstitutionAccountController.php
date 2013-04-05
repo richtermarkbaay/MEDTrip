@@ -103,6 +103,71 @@ class InstitutionAccountController extends InstitutionAwareController
         return $response;
     }
 
+//     //TODO: use previous methods
+//     public function completeSingleCenterProfileAfterRegistrationAction()
+//     {
+//         $institutionService = $this->get('services.institution');
+
+//         if (\is_null($this->institutionMedicalCenter)) {
+//             $institutionMedicalCenter = new InstitutionMedicalCenter();
+//         }
+
+//         //reset for institution sign up will set this to uniqid() as a workaround for slug error
+//         $this->institution->setName('');
+
+//         $form = $this->createForm(new InstitutionProfileFormType(array('prefix_label' => 'Hospital')), $this->institution);
+
+//         if ($this->request->isMethod('POST')) {
+//             $form->bind($this->request);
+
+//             if ($form->isValid()) {
+
+//                 // save institution and create an institution medical center
+//                 $this->get('services.institution_signup')
+//                 ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
+
+
+//                 //$routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+
+//                 // this should redirect to 2nd step
+//                 //return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
+//             }
+//         }
+
+//         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
+//                         'form' => $form->createView(),
+//                         'institutionMedicalCenter' => $institutionMedicalCenter,
+//                         'isSingleCenter' => true
+//         ));
+//     }
+
+//     //TODO: use previous methods
+//     public function completeMultipleCenterProfileAfterRegistration()
+//     {
+//         $institutionService = $this->get('services.institution');
+//         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+
+//         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+
+//         if ($this->request->isMethod('POST')) {
+//             $form->bind($this->request);
+
+//             if ($form->isValid()) {
+
+//                 // save institution and create an institution medical center
+
+//                 // this should redirect to 2nd step
+
+//             }
+//         }
+
+//         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
+//                         'form' => $form->createView(),
+//                         'institutionMedicalCenter' => $institutionMedicalCenter,
+//                         'isSingleCenter' => true
+//         ));
+//     }
+
     public function addServiceAction(Request $request)
     {
         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
@@ -152,7 +217,7 @@ class InstitutionAccountController extends InstitutionAwareController
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
 
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
@@ -196,8 +261,8 @@ class InstitutionAccountController extends InstitutionAwareController
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
 
+            $form->bind($this->request);
             if ($form->isValid()) {
 
                 $this->get('services.institution_signup')
