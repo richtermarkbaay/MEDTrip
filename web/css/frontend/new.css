@@ -331,20 +331,24 @@ form .section > .section-content > div .row-field:last-child {
 .hca-sprite.hospital-default-logo.small {
     width: 63px;
     height: 63px;
-    background-size: 620px auto;
-    background-position: -504px -144px;
+    background-position: -483px -277px;
+}
+
+.hca-sprite.clinic-default-logo.small {
+    height: 50px;
+    background-position: -594px -288px;
 }
 
 .hca-sprite.hospital-default-logo.mini {
     width: 40px;
     height: 40px;
-    background-size: 400px auto;
-    background-position: -325px -93px;
+    background-position: -551px -298px;
 }
 
-.hca-sprite.clinic-default-logo.small {
-    height: 53px;
-    background-position: -434px -151px;
+.hca-sprite.clinic-default-logo.mini {
+    width: 40px;
+    height: 300px;
+    background-position: -664px -307px;
 }
 
 .hca-sprite.doctor-icon {
@@ -467,7 +471,7 @@ form .section > .section-content > div .row-field:last-child {
 .mini-logo-wrapper {
     width: 55px;
     height: 55px;
-    line-height: 55px;
+    line-height: 52px;
     text-align: center;
     border: 1px solid #EFEFEF;
 }
@@ -547,6 +551,7 @@ form .section > .section-content > div .row-field:last-child {
 .popup-box.dropdown-menu > * {
     margin-bottom: 10px;
 }
+/*
 .input-append.dropdown-menu input,
 .popup-box.dropdown-menu input {
     z-index: 1;
@@ -557,7 +562,7 @@ form .section > .section-content > div .row-field:last-child {
     box-shadow: inset 0 2px 3px rgba(0,0,0,0.1);
     background: #fff url(/images/frontend/search_icon.png) 97% center no-repeat;
 }
-
+*/
 .input-append.dropdown-menu > .search-icon,
 .popup-box.dropdown-menu > .search-icon {
     top: 19px;
@@ -861,9 +866,9 @@ form .section > .section-content > div .row-field:last-child {
     height: 32px;
     position: absolute;
     display: inline-block;
-    background: url("/images/frontend/sprite.png") -216px 0 #FFFFFF;
     border-top: #bfc3be solid 1px;
     border-bottom: #bfc3be solid 1px;
+    background: url("/images/frontend/sprite.png") -216px 0 #FFFFFF;
 }
 
 #breadcrumbs-wrapper ul.breadcrumb li.last:after {
@@ -902,7 +907,7 @@ form .section > .section-content > div .row-field:last-child {
     color: #468199;
     font-size: 14px;
     min-width: 25px;
-    max-width: 300px;
+    max-width: 320px;
     overflow: hidden;
     font-weight: bold;
     vertical-align: top;
@@ -950,17 +955,16 @@ form .section > .section-content > div .row-field:last-child {
 }
 
 .callout-wrapper  {
+    z-index: 1;
+    position: relative;
+    margin-bottom: 25px;
+    border-radius: 3px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
     border-top: rgba(0,0,0,0.1) solid 1px;
     border-left: rgba(0,0,0,0.1) solid 1px;
     border-right: rgba(0,0,0,0.1) solid 1px;
     background: none repeat scroll 0 0 rgba(85,85,85,0.25);
-    -webkit-border-radius: 3px !important;
-    -moz-border-radius: 3px !important;
-    border-radius: 3px !important;
-    margin-bottom: 25px;
-    position: relative;
-    z-index: 1;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#4c000000', endColorstr='#4c000000');
 }
 
 .callout-wrapper:after {
@@ -1177,12 +1181,11 @@ form.search-form > button.btn {
     text-shadow: 0px -1px 2px #111111;
     border-bottom: 2px solid rgba(0,0,0,0.3);
     background: -moz-linear-gradient(top, #fe6700 0%, #fe4200 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fe6700), color-stop(100%, #fe4200));
     background: -webkit-linear-gradient(top, #fe6700 0%, #fe4200 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fe6700), color-stop(100%, #fe4200));
     background: -o-linear-gradient(top, #fe6700 0%, #fe4200 100%);
     background: -ms-linear-gradient(top, #fe6700 0%, #fe4200 100%);
     background: linear-gradient(to bottom, #fe6700 0%, #fe4200 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fe6700, endColorstr=#fe4200,GradientType=0 );
     box-shadow: inset 0 -1px 0 0px rgba(255,255,255,0.5),0 0 0px 1px #34393b,0 0 0 5px rgba(157,191,214,0.5);
 }
 
@@ -1194,7 +1197,6 @@ form.search-form>button.btn:hover {
     background: -o-linear-gradient(top, #ff7619 0%, #e53b00 100%);
     background: -ms-linear-gradient(top, #ff7619 0%, #e53b00 100%);
     background: linear-gradient(to bottom, #ff7619 0%, #e53b00 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff7619, endColorstr=#e53b00,GradientType=0 );
 }
 
 form.search-form > button.btn:active {
@@ -1205,9 +1207,8 @@ form.search-form > button.btn:active {
     background: -o-linear-gradient(top, #cb5200 0%, #ff6732 100%);
     background: -ms-linear-gradient(top, #cb5200 0%, #ff6732 100%);
     background: linear-gradient(to bottom, #cb5200 0%, #ff6732 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#cb5200, endColorstr=#ff6732,GradientType=0 );
     box-shadow: 0 0 0px 1px #34393b,0 0 0 5px rgba(157,191,214,0.5);
-    border-bottom: #fe8c3c solid 1px;
+    border-bottom: 1px solid #fe8c3c;
 }
 
 #persistent-search {
@@ -1822,7 +1823,7 @@ form.search-form > button.btn:active {
 
 #content-wrapper .hospital-header-wrapper > h3 {
     top: 10px;
-    left: 20px;
+    left: 0;
     opacity: 0.9;
     color: #FFFFFF;
     font-size: 40px;
@@ -2648,6 +2649,8 @@ ul.three-column-list > li {
 }
 
 .widget-content-wrapper.articles-type > .item .thumbnail-wrapper {
+    width: 52px;
+    height: 52px;
     margin-left: 5px;
 }
 
@@ -2992,7 +2995,6 @@ table.schedule-wrapper tr > td.open24hrs {
     background: -o-linear-gradient(top, #919e95 0%, #525f56 100%);
     background: -ms-linear-gradient(top, #919e95 0%, #525f56 100%);
     background: linear-gradient(to bottom, #919e95 0%, #525f56 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919e95, endColorstr=#525f56,GradientType=0 );
 }
 
 #footer-wrapper .top-content-wrapper .subscribe-section .newsletter-box > form div.form-inline button.btn:hover {
@@ -3003,7 +3005,6 @@ table.schedule-wrapper tr > td.open24hrs {
     background: -o-linear-gradient(top, #bbc7c2 0%, #617065 100%);
     background: -ms-linear-gradient(top, #bbc7c2 0%, #617065 100%);
     background: linear-gradient(to bottom, #bbc7c2 0%, #617065 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bbc7c2, endColorstr=#525f56,GradientType=0 );
     box-shadow: 0 0 0px 1px #515351,0 0 0 5px #949893;
 }
 
@@ -3015,7 +3016,6 @@ table.schedule-wrapper tr > td.open24hrs {
     background: -o-linear-gradient(top, #bbc7c2 0%, #617065 100%);
     background: -ms-linear-gradient(top, #bbc7c2 0%, #617065 100%);
     background: linear-gradient(to bottom, #bbc7c2 0%, #617065 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bbc7c2, endColorstr=#525f56,GradientType=0 );
     box-shadow: 0 0 0px 1px #34393b,0 0 0 5px rgba(157,191,214,0.75);
     text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     border-bottom: #333 solid 2px;
