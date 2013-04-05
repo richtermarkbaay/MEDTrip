@@ -30,15 +30,15 @@
                 </section>
 
                 <section class="section address-info">
-                    <h2>Hospital Address<br> <small>Complete Address of the Hospital that you are adding.</small></h2>
+                    <h2>{{ label }} Address<br> <small>Complete Address of the {{ label }} that you are adding.</small></h2>
                     <div class="row-fluid">
                         <div class="span12">
-                            {{ form_widget(form.address1) }}
+                            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
                             <div class="control-group">
                                 <div class="span12">
                                     <label for="Country">Country</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.country) }}
+                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
                                     </div>
                                 </div>
                             </div>
@@ -46,19 +46,18 @@
                                 <div class="span5">
                                     <label>State / Province</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.state) }}
+                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
                                     </div>
                                 </div>
                                 <div class="span5">
                                     <label>City</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.city) }}
+                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}}
                                     </div>
                                 </div>
                                 <div class="span2">
                                     <label for="zip">Zip Code</label>
-                                    <input type="text" name="zip" id="zip" placeholder="" class="span12">
-
+                                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
                                 </div>
                             </div>
                             <div class="control-group">
@@ -121,6 +120,8 @@
                     </div>
                 </section>
 
+                {{ form_widget(form.coordinates) }}
+
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -130,8 +131,9 @@
                     </div>
                 </section>
 
-                {{ form_widget(form.coordinates) }}
-                {{ form_widget(form._token) }}
+                {{ form_rest(form) }}
+
+                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
 
             </form>
         </div>
@@ -142,21 +144,24 @@
     </div>
 </div>
 
-{% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
-
 {% block inlineJavascriptCode %}
 <script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 <script type="text/javascript">
-if (Location) {
-    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-    Location.citiesDropdownElement = $('#institution_profile_form_city');
-}
+Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+Location.citiesDropdownElement = $('#institution_profile_form_city');
+Location.loadCities($('#institution_profile_form_country'), 0);
+
+(function($){
+    $(function(){
+        initialize();
+    });
+})(jQuery);
 </script>
 {% endblock %}

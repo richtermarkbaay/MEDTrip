@@ -18,7 +18,6 @@ var Location = {
 		var emptyValue = citiesElem.children(':first');
 
 		citiesElem.attr("disabled", true).html('<option value="0">Loading...</option>');
-
 		$.ajax({
 		   url:  Location.loadCitiesUrl,
 		   data: {'countryId': countryId, 'selectedCityId': selectedCityId, 'loadNonGlobalCities': Location.loadNonGlobalCities },

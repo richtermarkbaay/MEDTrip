@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Repository\InstitutionPropertyTypeRepository;
+
 use HealthCareAbroad\HelperBundle\Services\GlobalAwardService;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
@@ -24,7 +26,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Service class for InstitutionProperty. Service id services.institution_property
- * 
+ *
  * @author Allejo Chris G. Velarde
  *
  */
@@ -34,25 +36,25 @@ class InstitutionPropertyService
      * @var Registry
      */
     private $doctrine;
-    
+
     /**
      * @var MemcacheService
      */
     private $memcache;
-    
+
     private $activePropertyTypes;
-    
+
     public function __construct(Registry $doctrine, MemcacheService $memcache)
     {
         $this->doctrine = $doctrine;
         $this->memcache = $memcache;
-        
+
         //$this->_setupAvailablePropertyTypes();
     }
-    
+
     /**
      * Create an instance of InstitutionProperty by property type name
-     * 
+     *
      * @param string $propertyTypeName
      * @param Institution $institution
      * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty
@@ -63,10 +65,10 @@ class InstitutionPropertyService
         $property = new InstitutionProperty();
         $property->setInstitution($institution);
         $property->setInstitutionPropertyType($propertyType);
-        
+
         return $property;
     }
-    
+
     public function createInstitutionMedicalCenterPropertyByName($propertyTypeName, Institution $institution=null, InstitutionMedicalCenter $center)
     {
         $propertyType = $this->getAvailablePropertyType($propertyTypeName);
@@ -74,23 +76,23 @@ class InstitutionPropertyService
         $property->setInstitution($institution);
         $property->setInstitutionMedicalCenter($center);
         $property->setInstitutionPropertyType($propertyType);
-    
+
         return $property;
     }
-    
+
     public function save(InstitutionProperty $institutionProperty)
     {
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionProperty);
         $em->flush();
     }
-    
+
     public function createInstitutionPropertyByServices(InstitutionProperty $institutionProperty)
     {
         $institution = $institutionProperty->getInstitution();
         $ipType = $institutionProperty->getInstitutionPropertyType();
         $ipArray = $institutionProperty->getValue();
-        
+
         if(\is_array($ipArray)) {
             foreach($ipArray as $key => $value)
             {
@@ -116,14 +118,14 @@ class InstitutionPropertyService
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
         }
-        
+
         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
         }
-        
+
         return $this->activePropertyTypes[$propertyTypeName];
     }
-    
+
     private function _setupAvailablePropertyTypes()
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->findBy(array('status' => InstitutionPropertyType::STATUS_ACTIVE));
@@ -131,7 +133,7 @@ class InstitutionPropertyService
             $this->activePropertyTypes[$each->getName()] = $each;
         }
     }
-    
+
     /**
      * Layer to Doctrine find by id. Apply caching here.
      *
@@ -142,7 +144,7 @@ class InstitutionPropertyService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->find($id);
     }
-    
+
     public function getGlobalAwardPropertiesByInstitution(Institution $institution, array $options=array())
     {
         $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
@@ -155,7 +157,7 @@ class InstitutionPropertyService
         // get the properties
         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->findBy($criteria);
         $returnVal = $properties;
-    
+
         if ($options['loadValuesEagerly']) {
             $globalAwardIds = array();
             $propertiesByValue = array();
@@ -164,7 +166,7 @@ class InstitutionPropertyService
                 // store the property with the value as the key
                 $propertiesByValue[$imp->getValue()][] = $imp;
             }
-    
+
             // find global awards with ids equal to the retrieve property values
             $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findByIds($globalAwardIds);
             $returnVal = array();
@@ -179,11 +181,11 @@ class InstitutionPropertyService
                 }
             }
         }
-        
+
         if ($options['groupByType']) {
             $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
         }
-    
+
         return $returnVal;
     }
     /**
@@ -196,13 +198,65 @@ class InstitutionPropertyService
     public function getInstitutionByPropertyType(Institution $institution, $propertyName)
     {
         $propertyType = $this->getAvailablePropertyType($propertyName);
-       
+
         $criteria = array(
             'institution' => $institution,
             'institutionPropertyType' => $propertyType
         );
-        
+
         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->findBy($criteria);
         return $properties;
+    }
+
+    public function addPropertiesForInstitution(Institution $institution, array $services = array(), array $awards = array())
+    {
+        $this->addAwardsForInstitution($institution, $awards);
+        $this->addServicesForInstitution($institution, $services);
+    }
+
+    public function addAwardsForInstitution(Institution $institution, $awards = array())
+    {
+        if (empty($awards)) {
+            return;
+        }
+
+        $institutionPropertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
+            ->find(InstitutionPropertyTypeRepository::GLOBAL_AWARD);
+
+        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
+        $em = $this->doctrine->getManager();
+        foreach ($awards as $award) {
+            $variableName = 'property'.$award;
+            $$variableName = new InstitutionProperty();
+            $$variableName->setInstitution($institution);
+            $$variableName->setInstitutionPropertyType($institutionPropertyType);
+            $$variableName->setValue($award);
+
+            $em->persist($$variableName);
+        }
+        $em->flush();
+    }
+
+    public function addServicesForInstitution(Institution $institution, $services = array())
+    {
+        if (empty($services)) {
+            return;
+        }
+
+        $institutionPropertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
+            ->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
+
+        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
+        $em = $this->doctrine->getManager();
+        foreach ($services as $service) {
+            $variableName = 'property'.$service;
+            $$variableName = new InstitutionProperty();
+            $$variableName->setInstitution($institution);
+            $$variableName->setInstitutionPropertyType($institutionPropertyType);
+            $$variableName->setValue($service);
+
+            $em->persist($$variableName);
+        }
+        $em->flush();
     }
 }
