@@ -11,7 +11,6 @@ var HCAGoogleMap = {
 	defaultAddress: 'Washington, United States', // City and Country Address
 	mapCanvasElem: document.getElementById('map_canvas'),
 	mapOnChangeCallback: null,
-	
 	recursion: 0,
 
 	initialize: function(params) {

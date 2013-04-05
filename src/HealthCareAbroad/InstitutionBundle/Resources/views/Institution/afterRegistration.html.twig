@@ -38,7 +38,7 @@
                                 <div class="span12">
                                     <label for="Country">Country</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
+                                        {{ form_widget(form.country, { attr: {class: 'selectAdressFields '} } )}}
                                     </div>
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                 <div class="span5">
                                     <label>City</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}}
+                                        {{ form_widget(form.city, { attr: {class: 'selectAdressFields city_dropdown'} } )}}
                                     </div>
                                 </div>
                                 <div class="span2">
@@ -145,23 +145,19 @@
 </div>
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 <script type="text/javascript">
 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-Location.citiesDropdownElement = $('#institution_profile_form_city');
-Location.loadCities($('#institution_profile_form_country'), 0);
 
-(function($){
-    $(function(){
-        initialize();
-    });
-})(jQuery);
+$(function(){
+	GoogleMap.initialize();
+});
 </script>
 {% endblock %}
