@@ -61,8 +61,7 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <label for="Helpful hint">Helpful hint for getting there?</label>
-                                <input type="text" name="state" id="address-hint" placeholder="" class="span12">
+                                {{ form_row(form.addressHint, { attr: {class: 'span12'} } )}}
                             </div>
                         </div>
                     </div>

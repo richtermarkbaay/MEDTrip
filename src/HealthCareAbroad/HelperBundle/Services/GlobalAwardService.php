@@ -32,6 +32,25 @@ class GlobalAwardService
         return $query->getResult();
     }
     
+    public function getActiveAwards()
+    {
+        $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $awards = \array_flip(GlobalAwardTypes::getTypeKeys());
+    
+        // initialize holder for awards
+        foreach ($awards as $k => $v) {
+            $awards[$k] = array();
+        }
+    
+        foreach ($globalAwards as $_award) {
+            $_arr = $_award->getName();
+            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
+            $awards[\strtolower($awardTypes[$_award->getType()])][$_award->getId()] = $_arr;
+        }
+    
+        return $awards;
+    }
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */

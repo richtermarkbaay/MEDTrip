@@ -195,8 +195,7 @@
 
 {% block institutionGlobalAwards_list_widget %}
     {% spaceless %}
-      
-     {% for key,typeChoice in form.vars.value %}
+     {% for key,typeChoice in form.vars.choices %}
      <h3>{{key | capitalize }}s</h3>
        <ul>
         {% for choice in typeChoice %}

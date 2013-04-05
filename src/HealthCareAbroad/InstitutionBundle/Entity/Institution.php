@@ -43,6 +43,11 @@ class Institution
      * @var text $address1
      */
     private $address1;
+    
+    /**
+     * @var text $addressHint
+     */
+    private $addressHint;
 
     /**
      * @var string $zipCode
@@ -276,6 +281,28 @@ class Institution
     public function getAddress1()
     {
         return $this->address1;
+    }
+    
+    /**
+     * Set addressHint
+     *
+     * @param text $addressHint
+     * @return Institution
+     */
+    public function setAddressHint($addressHint)
+    {
+        $this->addressHint = $addressHint;
+        return $this;
+    }
+    
+    /**
+     * Get addressHint
+     *
+     * @return text
+     */
+    public function getAddressHInt()
+    {
+        return $this->addressHint;
     }
 
     /**

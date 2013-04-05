@@ -18,13 +18,13 @@ class InstitutionGlobalAwardsListType extends AbstractType
     }
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $choices = $this->service->getAutocompleteSource();
-        $resolver->setDefaults(array('data' => $choices));
+        $choices = $this->service->getActiveAwards();
+        $resolver->setDefaults(array('choices' => $choices, 'multiple' => true, 'expanded' => true));
     }
     
     public function getParent()
     {
-        return 'text';
+        return 'choice';
     }
 
     public function getName()
