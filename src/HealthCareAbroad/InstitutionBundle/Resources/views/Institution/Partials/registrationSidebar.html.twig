@@ -18,11 +18,17 @@
            
             <div class="media {{ setupProfile is defined ? 'active':'' }} {% if 'setupProfile' in completedSteps %} completed {% endif %}">
                 <span class="numbercircle pull-left">
-                    2
+                    {% if 'setupProfile' in completedSteps %} 
+                        <i class="icon-ok icon-white icon-1x">
+                        </i>
+                    {% else %}
+                        2
+                    {% endif %}
+                    
                 </span>
                 <div class="media-body">
                     <span class="main-step">
-                        Set-up profile for your {{ label }}
+                        Set-up profile for your {{ isSingleCenter ? 'Clinic' : 'Hospital' }}
                     </span>
                 </div>
             </div>
@@ -53,7 +59,7 @@
              
              {% endif %}
             
-            <div class="media substeps {{ addSpecialization is defined ? 'active':'' }}">
+            <div class="media substeps {{ addSpecialization is defined ? 'active':'' }} {% if 'addSpecialization' in completedSteps %} completed {% endif %}">
                 <span class=" pull-left">
                     <i class="icon-circle">
                     </i>
@@ -64,7 +70,7 @@
                     </span>
                 </div>
             </div>
-            <div class="media substeps {{ addDoctor is defined ? 'active':'' }}">
+            <div class="media substeps {{ addDoctor is defined ? 'active':'' }} {% if 'addDoctor' in completedSteps %} completed {% endif %}" >
                 <span class=" pull-left">
                     <i class="icon-circle">
                     </i>

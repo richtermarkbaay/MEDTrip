@@ -1,0 +1,886 @@
+<div id="add-doctor" class="modal hide fade hca-doctors-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <h3 id="myModalLabel modal-label">
+            Add Doctor
+        </h3>
+    </div>
+    <div class="modal-body">
+        <form action="/" method="post">
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group span6">
+                        <label for="institution-name">
+                            Family Name
+                        </label>
+                        <input type="text" name="institution-name" id="institution-name" placeholder=""
+                        class="span12" required="">
+                    </div>
+                    <div class="control-group span6">
+                        <label for="website">
+                            First Name
+                        </label>
+                        <input type="text" name="institution-name" id="institution-name" placeholder=""
+                        class="span12" required="">
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group span6">
+                        <label for="institution-name">
+                            Middle Name
+                        </label>
+                        <input type="text" name="institution-name" id="institution-name" placeholder=""
+                        class="span12" required="">
+                    </div>
+                    <div class="control-group span6">
+
+                        <label for="Suffix Name">
+                            Suffix Name
+                        </label>
+                        <div class="input-append hca-location">
+                            <input class="hca-suffix pull-left" id="appendedDropdownButton" type="text">
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu suffix-select pull-left">
+                                            <li>
+                                                Sr
+                                            </li>
+                                            <li>
+                                                Jr
+                                            </li>
+                                            <li>
+                                                I
+                                            </li>
+                                             <li>
+                                                II
+                                            </li>
+                                           <li>
+                                                III
+                                            </li>
+                                            <li>
+                                                Sr
+                                            </li>
+                                            <li>
+                                                Jr
+                                            </li>
+                                            <li>
+                                                I
+                                            </li>
+                                             <li>
+                                                II
+                                            </li>
+                                           <li>
+                                                III
+                                            </li>
+                                </ul>
+                            </div>
+                        </div>   
+
+                </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label for="specializations">
+                        Doctor's Specializations
+                    </label>
+                    <ul class="specializations-listing">
+                        <li>
+                            <input type="checkbox" name="service" value="service" />
+                            <b>
+                                Specialization Name
+                            </b>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Specialization Name
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Cord Blood Bank
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Home Nursing Service
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="service" value="service" />
+                            <b>
+                                Specialization Name
+                            </b>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Specialization Name
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Cord Blood Bank
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Home Nursing Service
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="service" value="service" />
+                            <b>
+                                Specialization Name
+                            </b>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Specialization Name
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Cord Blood Bank
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Home Nursing Service
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <input type="checkbox" name="service" value="service" />
+                            <b>
+                                Specialization Name
+                            </b>
+                            <ul>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Specialization Name
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Cord Blood Bank
+                                </li>
+                                <li>
+                                    <input type="checkbox" name="service" value="service" />
+                                    Home Nursing Service
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="control-group span6">
+                        <label for="institution-name">
+                            Medical Degree and Abbreviations
+                            <br>
+                            <small>
+                                Separate each entry with comma
+                            </small>
+                        </label>
+                        <input type="text" name="institution-name" id="institution-name" placeholder=""
+                        class="span12" required="">
+                    </div>
+                    <div class="span6">
+                        <label for="Languages">
+                            Languages
+                            <br>
+                            <small>
+                                Select as many languages...
+                            </small>
+                        </label>
+                        <div class="input-append hca-location">
+                            <input class="span11 pull-left" id="appendedDropdownButton" type="text">
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu languages-select pull-left">
+                                    <li>Akan</li>
+                                   <li>Amharic</li>
+                                   <li>Arabic</li>
+                                   <li>Assamese</li>
+                                   <li>Awadhi</li>
+                                   <li>Azerbaijani</li>
+                                   <li>Balochi</li>
+                                   <li>Belarusian</li>
+                                   <li>Bengali</li>
+                                   <li>Bhojpuri</li>
+                                   <li>Burmese</li>
+                                   <li>Cantonese</li>
+                                   <li>Cebuano</li>
+                                   <li>Chewa</li>
+                                   <li>Chhattisgarhi</li>
+                                   <li>Chittagonian</li>
+                                   <li>Czech</li>
+                                   <li>Deccan</li>
+                                   <li>Dhundhari</li>
+                                   <li>Dutch</li>
+                                   <li>English</li>
+                                   <li>French</li>
+                                   <li>Fula</li>
+                                   <li>Gan Chinese</li>
+                                   <li>German</li>
+                                   <li>Greek</li>
+                                   <li>Gujarati</li>
+                                   <li>Haitian Creole</li>
+                                   <li>Hakka</li>
+                                   <li>Haryanvi</li>
+                                   <li>Hausa</li>
+                                   <li>Hiligaynon</li>
+                                   <li>Hindi</li>
+                                   <li>Hmong</li>
+                                   <li>Hungarian</li>
+                                   <li>Igbo</li>
+                                   <li>Ilokano</li>
+                                   <li>Italian</li>
+                                   <li>Japanese</li>
+                                   <li>Javanese</li>
+                                   <li>Jin</li>
+                                   <li>Kannada</li>
+                                   <li>Kazakh</li>
+                                   <li>Khmer</li>
+                                   <li>Kinyarwanda</li>
+                                   <li>Kirundi</li>
+                                   <li>Konkani</li>
+                                   <li>Korean</li>
+                                   <li>Kurdish</li>
+                                   <li>Madurese</li>                                                           
+                                   <li>Magahi</li>
+                                   <li>Maithili</li>
+                                   <li>Malagasy</li>
+                                   <li>Malay/Indonesian</li>
+                                   <li>Malayalam</li>
+                                   <li>Mandarin</li>
+                                   <li>Marathi</li>
+                                   <li>Marwari</li>
+                                   <li>Min Bei</li>
+                                   <li>Min Dong</li>
+                                   <li>Min Nan</li>
+                                   <li>Mossi</li>
+                                   <li>Nepali</li>
+                                   <li>Oriya</li>
+                                   <li>Oromo</li>
+                                   <li>Pashto</li>
+                                   <li>Persian</li>
+                                   <li>Polish</li>
+                                   <li>Portuguese</li>
+                                   <li>Punjabi</li>
+                                   <li>Quechua</li>
+                                   <li>Romanian</li>
+                                   <li>Russian</li>
+                                   <li>Saraiki</li>
+                                   <li>Serbo-Croatian</li>
+                                   <li>Shona</li>
+                                   <li>Sindhi</li>
+                                   <li>Sinhalese</li>
+                                   <li>Somali</li>
+                                   <li>Spanish</li>
+                                   <li>Sundanese</li>
+                                   <li>Swedish</li>
+                                   <li>Sylheti</li>
+                                   <li>Tagalog</li>
+                                   <li>Tamil</li>
+                                   <li>Telugu</li>
+                                   <li>Thai</li>
+                                   <li>Turkish</li>
+                                   <li>Ukrainian</li>
+                                   <li>Urdu</li>
+                                   <li>Uyghur</li>
+                                   <li>Uzbek</li>
+                                   <li>Vietnamese</li>
+                                   <li>Wu</li>
+                                   <li>Xhosa</li>
+                                   <li>Xiang</li>
+                                   <li>Yoruba</li>
+                                   <li>Zhuang</li>
+                                   <li>Zulu</li>
+                                </ul>
+                            </div>
+                        </div>   
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="control-group">
+                    <label for="state">
+                        Doctor's Address
+                        <small>
+                            If different then the clinic. (optional)
+                        </small>
+                    </label>
+                    <input type="text" name="address1" id="address1" placeholder="" class="span12">
+                </div>
+                <div class="control-group">
+                    <div class="span4">
+                        <label for="Unit/Room">
+                            Unit/Room #
+                            <small>
+                                (Optional)
+                            </small>
+                        </label>
+                        <input type="text" name="state" id="unit-room" placeholder="" class="span12">
+                    </div>
+                    <div class="span8">
+                        <label for="Building Name">
+                            Building Name
+                            <small>
+                                (Optional)
+                            </small>
+                        </label>
+                        <input type="text" name="state" id="Building-name" placeholder="" class="span12">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="span12">
+                        <label for="Country">
+                            Country
+                        </label>
+                        <div class="input-append hca-location">
+                            <input class="hca-country pull-left" id="appendedDropdownButton" type="text">
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu location-select pull-left">
+                                            <li>
+                                                <span class="flag16 ad">
+                                                </span>
+                                                <span>
+                                                    Andorra
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ae">
+                                                </span>
+                                                <span>
+                                                    United Arab Emirates
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 af">
+                                                </span>
+                                                <span>
+                                                    Afghanistan
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ag">
+                                                </span>
+                                                <span>
+                                                    Antigua and Barbuda
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ai">
+                                                </span>
+                                                <span>
+                                                    Anguilla
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 al">
+                                                </span>
+                                                <span>
+                                                    Albania
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 am">
+                                                </span>
+                                                <span>
+                                                    Armenia
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 an">
+                                                </span>
+                                                <span>
+                                                    Netherlands Antilles
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ao">
+                                                </span>
+                                                <span>
+                                                    Angola
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ar">
+                                                </span>
+                                                <span>
+                                                    Argentina
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 as">
+                                                </span>
+                                                <span>
+                                                    American Samoan
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 at">
+                                                </span>
+                                                <span>
+                                                    Austria
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 au">
+                                                </span>
+                                                <span>
+                                                    Australia
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 aw">
+                                                </span>
+                                                <span>
+                                                    Aruba
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 az">
+                                                </span>
+                                                <span>
+                                                    Azerbaiijan
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 ba">
+                                                </span>
+                                                <span>
+                                                    Bosnia and Herzegovina
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bb">
+                                                </span>
+                                                <span>
+                                                    Barbados
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bd">
+                                                </span>
+                                                <span>
+                                                    Bangladesh
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 be">
+                                                </span>
+                                                <span>
+                                                    Belgium
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bf">
+                                                </span>
+                                                <span>
+                                                    Burkina Faso
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bg">
+                                                </span>
+                                                <span>
+                                                    Bulgaria
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bh">
+                                                </span>
+                                                <span>
+                                                    Bahrain
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <span class="flag16 bi">
+                                                </span>
+                                                <span>
+                                                    Burundi
+                                                </span>
+                                            </li>
+                                </ul>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="span5">
+                        <label>
+                            State / Province
+                        </label>
+                        <div class="input-append hca-location">
+                            <input class="span11" id="appendedDropdownButton" type="text">
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu location-select pull-left">
+                                            <li>
+                                                
+                                                <span>
+                                                    Andorra
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    United Arab Emirates
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Afghanistan
+                                                </span>
+                                            </li>
+                                            <li>
+                                               
+                                                <span>
+                                                    Antigua and Barbuda
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Anguilla
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Albania
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Armenia
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Netherlands Antilles
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Angola
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Argentina
+                                                </span>
+                                            </li>
+                                            
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span5">
+                        <label>
+                           City
+                        </label>
+                        <div class="input-append hca-location">
+                            <input class="span11" id="appendedDropdownButton" type="text">
+                            <div class="btn-group">
+                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu location-select pull-left">
+                                    <li>
+                                                
+                                                <span>
+                                                    Andorra
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    United Arab Emirates
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Afghanistan
+                                                </span>
+                                            </li>
+                                            <li>
+                                               
+                                                <span>
+                                                    Antigua and Barbuda
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Anguilla
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Albania
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Armenia
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Netherlands Antilles
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Angola
+                                                </span>
+                                            </li>
+                                            <li>
+                                                
+                                                <span>
+                                                    Argentina
+                                                </span>
+                                            </li>
+                                            
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <label for="zip">
+                            Zip Code
+                        </label>
+                        <input type="text" name="zip" id="zip" placeholder="" class="span12">
+                    </div>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span12 control-group">
+                    <div class="span6">
+                        <label for="Email Address">
+                            Doctor's Email Address
+                        </label>
+                        <input type="text" name="Email-address" id="Email-address" placeholder=""
+                        class="span12">
+                    </div>
+                    <div class="span6">
+                        <label for="Phone Number">
+                            Doctor's Contact Number
+                        </label>
+                        <div class="hca-countrycodes">
+                            <div class="input-prepend">
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    <span class="flag16 ph">
+                                    </span>
+                                    <span class="caret">
+                                    </span>
+                                </button>
+                                <ul class="dropdown-menu zipcode">
+                                    <li>
+                                        <span class="flag16 ad">
+                                        </span>
+                                        <span>
+                                            Andorra (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ae">
+                                        </span>
+                                        <span>
+                                            United Arab Emirates (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 af">
+                                        </span>
+                                        <span>
+                                            Afghanistan (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ag">
+                                        </span>
+                                        <span>
+                                            Antigua and Barbuda (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ai">
+                                        </span>
+                                        <span>
+                                            Anguilla (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 al">
+                                        </span>
+                                        <span>
+                                            Albania (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 am">
+                                        </span>
+                                        <span>
+                                            Armenia (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 an">
+                                        </span>
+                                        <span>
+                                            Netherlands Antilles (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ao">
+                                        </span>
+                                        <span>
+                                            Angola (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ar">
+                                        </span>
+                                        <span>
+                                            Argentina (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 as">
+                                        </span>
+                                        <span>
+                                            American Samoan (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 at">
+                                        </span>
+                                        <span>
+                                            Austria (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 au">
+                                        </span>
+                                        <span>
+                                            Australia (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 aw">
+                                        </span>
+                                        <span>
+                                            Aruba (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 az">
+                                        </span>
+                                        <span>
+                                            Azerbaiijan (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 ba">
+                                        </span>
+                                        <span>
+                                            Bosnia and Herzegovina (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bb">
+                                        </span>
+                                        <span>
+                                            Barbados (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bd">
+                                        </span>
+                                        <span>
+                                            Bangladesh (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 be">
+                                        </span>
+                                        <span>
+                                            Belgium (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bf">
+                                        </span>
+                                        <span>
+                                            Burkina Faso (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bg">
+                                        </span>
+                                        <span>
+                                            Bulgaria (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bh">
+                                        </span>
+                                        <span>
+                                            Bahrain (+93)
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span class="flag16 bi">
+                                        </span>
+                                        <span>
+                                            Burundi (+93)
+                                        </span>
+                                    </li>
+                                </ul>
+                                <input class="span9" id="prependedDropdownButton" type="text" value="+63">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="Upload Photo">
+                    Upload Doctor's Photo
+                </label>
+                <div class="dropbox">
+                    <label>
+                        Drag and Drop Doctor's Photo to Upload
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="add-doctors-listing-individual-clinic.html" class="btn pull-right btn-primary btn-large">
+                    Save
+                </a>
+    </div>
+</div>
+<br>
+<br>
