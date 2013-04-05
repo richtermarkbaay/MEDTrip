@@ -338,6 +338,7 @@ class MedicalCenterController extends InstitutionAwareController
 
         return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
             'form' => $form->createView(),
+            'isNoBreadCrumbs' => true,
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => $isSingleCenter,
