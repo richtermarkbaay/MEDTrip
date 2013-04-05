@@ -86,6 +86,8 @@ class InstitutionAccountController extends InstitutionAwareController
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
 
+        $this->confirmationMessage = '<b>Congratulations!</b> Your account has been successfully created.';
+
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -104,20 +106,21 @@ class InstitutionAccountController extends InstitutionAwareController
     public function addServiceAction(Request $request)
     {
         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-           $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
-           if ($request->isMethod('POST')) {
-               $form->bind($request);
-               if ($form->isValid()) {
-                   $this->get('services.institution_property')->save($form->getData());
+        $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $this->get('services.institution_property')->save($form->getData());
 
-                   return $this->redirect($formActionUrl);
-               }
-           }
+                return $this->redirect($formActionUrl);
+            }
+        }
 
-           $params = array(
-                           'formAction' => $formActionUrl,
-                           'form' => $form->createView()
-           );
+        $params = array(
+                        'formAction' => $formActionUrl,
+                        'form' => $form->createView()
+        );
+
         return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
     }
     /**
@@ -163,7 +166,9 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_property')
                     ->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                //TODO: update getRouteNameByStatus to reflect changes in the flow
+                //$routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                $routeName = 'institution_signup_medical_center';
 
                 // this should redirect to 2nd step
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
@@ -173,7 +178,8 @@ class InstitutionAccountController extends InstitutionAwareController
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
-            'isSingleCenter' => true
+            'isSingleCenter' => true,
+            'confirmationMessage' => $this->confirmationMessage
         ));
     }
 
@@ -186,7 +192,7 @@ class InstitutionAccountController extends InstitutionAwareController
             return $this->redirect($this->generateUrl('institution_account_profile'));
         }
 
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
@@ -197,9 +203,13 @@ class InstitutionAccountController extends InstitutionAwareController
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
 
+                $this->get('services.institution_property')
+                    ->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
+
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
 
+                //TODO: redirect to add specializations
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
         }
@@ -207,8 +217,45 @@ class InstitutionAccountController extends InstitutionAwareController
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-            'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()]
+            'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
+            'confirmationMessage' => $this->confirmationMessage
         ));
+    }
+
+    public function completeMedicalCenterSignupAction()
+    {
+        $institutionMedicalCenter = $this->getProxyMedicalCenter();
+
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+
+            if ($form->isValid()) {
+
+            }
+        }
+
+        return $this->render('InstitutionBundle:Institution:profile.medicalCenter.html.twig', array(
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'isSingleCenter' => true,
+            'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
+        ));
+    }
+
+    private function getProxyMedicalCenter()
+    {
+        //This will have identical values with related institution
+        $center = $this->institutionMedicalCenter;
+
+        if ($this->request->isMethod('GET')) {
+            $center->setName('');
+            $center->setDescription('');
+            //and other fields which we may have to reset...
+        }
+
+        return $center;
     }
 
     /**

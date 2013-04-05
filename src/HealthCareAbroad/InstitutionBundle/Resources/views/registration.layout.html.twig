@@ -3,26 +3,17 @@
 {% block body %}
 
     {# TODO: move this somewhere else #}
-    {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' %}
+    {% if confirmationMessage %}
+        {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' with { message: confirmationMessage } %}
+    {% endif %}
 
     <div id="main-wrap">
-        {% embed 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}
-            {% block navbar %}
-                <li>
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') }} {{ app.session.get('userLastName') }}<i class="icon-caret-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a></li>
-                        <li><a href="#"><i class="icon-share-alt"></i> Logout</a></li>
-                        <li class="divider"></li>
-                        <li class="nav-header">Logged in as:</li>
-                        <li class="text">{{ app.session.get('userEmail') }}</li>
-                    </ul>
-                </li>
-            {% endblock %}
-        {% endembed %}
+        {% include 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}
 
         <!-- Page content here -->
-        {% block content %}{% endblock %}
+        <div id="content" class="container">
+            {% block content %}{% endblock %}
+        </div>
     </div><!-- end main wrap -->
 
     {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}

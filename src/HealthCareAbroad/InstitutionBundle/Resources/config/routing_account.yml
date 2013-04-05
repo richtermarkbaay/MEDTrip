@@ -21,7 +21,13 @@ institution_signup_complete_profile:
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
     requirements:
         _method: GET|POST
-        
+
+institution_signup_medical_center:
+    pattern: /institution/clinic-profile/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:completeMedicalCenterSignup }
+    requirements:
+        _method: GET|POST
+
 institution_addGlobalAwards:
     pattern:  /institution/{institutionId}/global_awards
     defaults: { _controller: InstitutionBundle:InstitutionAccount:addGlobalAwards }
@@ -35,7 +41,7 @@ institution_ajaxRemovePropertyValue:
     requirements:
         _method: GET|POST
         institutionId: \d+
-        
+
 institution_logo_upload:
     pattern: /institution/{institutionId}/logo/upload/
     defaults: { _controller: InstitutionBundle:InstitutionAccount:upload, media_type: logo }

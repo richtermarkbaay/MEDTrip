@@ -1,0 +1,324 @@
+{% extends 'InstitutionBundle::registration.layout.html.twig' %}
+{% set disableMainNavigation = true %}
+{% set setUpProfile = true %}
+
+{% block content %}
+<div class="row">
+    <h1>Add New Clinic</h1>
+
+    <div class="span8">
+        <form action="/" method="post">
+            <section class="section institution-info">
+                <h2>Basic Information<br><small>Basic information about the Clinic you are adding.</small></h2>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="control-group">
+                            <label for="institution-name">Name of the Clinic</label>
+                            {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
+                        </div>
+                        <div class="control-group">
+                            <label for="website">Description <small>(Optional)</small></label>
+                            {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
+                            <div class="description"><small>you can edit / add Description later</small></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section address-info">
+                <h2>Clinic Address<br><small>Complete Address of the Clinic that you are adding.</small></h2>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="control-group">
+                            <input type="radio" name="request" id="inquiry" class="pull-left" checked>
+                            <label for="different-address-clinic">Same Address</label>
+                            <p>{{ institution_address_to_array(institution, ['address1', 'zipCode', 'city', 'state', 'country']) | join(', ') }}</p>
+                        </div>
+                        <hr>
+
+                        <div class="control-group">
+                            <input type="radio" name="request" id="inquiry" class="pull-left">
+                            <label for="different-address-clinic">Different Address</label>
+                        </div>
+
+                        {{ form_widget(form.address, { attr: {class: 'addressFields '} } )}}
+
+                        <div class="control-group">
+                            <div class="span12">
+                                <label for="Country">Country</label>
+                                <div class="input-append hca-location">
+                                    {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="span5">
+                                <label>State / Province</label>
+                                <div class="input-append hca-location">
+                                    {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
+                                </div>
+                            </div>
+                            <div class="span5">
+                                <label>City</label>
+                                <div class="input-append hca-location">
+                                    {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}}
+                                </div>
+                            </div>
+                            <div class="span2">
+                                <label for="zip">Zip Code</label>
+                                {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="Helpful hint">Helpful hint for getting there?</label>
+                            <input type="text" name="state" id="address-hint" placeholder="" class="span12">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section contact-info">
+                <h2>Clinic Contact Details<br><small>This is your Clinic's contact details. Please be as detailed as possible.</small></h2>
+                <div class="row-fluid">
+                    <div class="span12 control-group">
+                        <div class="span6">
+                            <label for="Phone Number">Clinic Email Address</label>
+                            {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                        </div>
+                        <div class="span6">
+                            {{ form_widget(form.contactNumber) }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section socialmedia-info">
+                <h2>Website and Social Media<small>(Optional)</small></h2>
+                <div class="row-fluid">
+                    {{ form_widget(form.websites) }}
+                </div>
+            </section>
+
+            <section class="section clinic-schedule">
+                <h2>Clinic Schedule</h2>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="row-field">
+                            <label for="timezone">Timezone</label>
+                            <div class="custom-select">
+                                <select name="DropDownTimezone" id="DropDownTimezone">
+                                    <option value="Select Timezone">
+                                        Select Timezone
+                                    </option>
+                                    <option value="-12.0">
+                                        (GMT -12:00) Eniwetok, Kwajalein
+                                    </option>
+                                    <option value="-11.0">
+                                        (GMT -11:00) Midway Island, Samoa
+                                    </option>
+                                    <option value="-10.0">
+                                        (GMT -10:00) Hawaii
+                                    </option>
+                                    <option value="-9.0">
+                                        (GMT -9:00) Alaska
+                                    </option>
+                                    <option value="-8.0">
+                                        (GMT -8:00) Pacific Time (US &amp; Canada)
+                                    </option>
+                                    <option value="-7.0">
+                                        (GMT -7:00) Mountain Time (US &amp; Canada)
+                                    </option>
+                                    <option value="-6.0">
+                                        (GMT -6:00) Central Time (US &amp; Canada), Mexico City
+                                    </option>
+                                    <option value="-5.0">
+                                        (GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima
+                                    </option>
+                                    <option value="-4.0">
+                                        (GMT -4:00) Atlantic Time (Canada), Caracas, La Paz
+                                    </option>
+                                    <option value="-3.5">
+                                        (GMT -3:30) Newfoundland
+                                    </option>
+                                    <option value="-3.0">
+                                        (GMT -3:00) Brazil, Buenos Aires, Georgetown
+                                    </option>
+                                    <option value="-2.0">
+                                        (GMT -2:00) Mid-Atlantic
+                                    </option>
+                                    <option value="-1.0">
+                                        (GMT -1:00 hour) Azores, Cape Verde Islands
+                                    </option>
+                                    <option value="0.0">
+                                        (GMT) Western Europe Time, London, Lisbon, Casablanca
+                                    </option>
+                                    <option value="1.0">
+                                        (GMT +1:00 hour) Brussels, Copenhagen, Madrid, Paris
+                                    </option>
+                                    <option value="2.0">
+                                        (GMT +2:00) Kaliningrad, South Africa
+                                    </option>
+                                    <option value="3.0">
+                                        (GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg
+                                    </option>
+                                    <option value="3.5">
+                                        (GMT +3:30) Tehran
+                                    </option>
+                                    <option value="4.0">
+                                        (GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi
+                                    </option>
+                                    <option value="4.5">
+                                        (GMT +4:30) Kabul
+                                    </option>
+                                    <option value="5.0">
+                                        (GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent
+                                    </option>
+                                    <option value="5.5">
+                                        (GMT +5:30) Bombay, Calcutta, Madras, New Delhi
+                                    </option>
+                                    <option value="5.75">
+                                        (GMT +5:45) Kathmandu
+                                    </option>
+                                    <option value="6.0">
+                                        (GMT +6:00) Almaty, Dhaka, Colombo
+                                    </option>
+                                    <option value="7.0">
+                                        (GMT +7:00) Bangkok, Hanoi, Jakarta
+                                    </option>
+                                    <option value="8.0">
+                                        (GMT +8:00) Beijing, Perth, Singapore, Hong Kong
+                                    </option>
+                                    <option value="9.0">
+                                        (GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk
+                                    </option>
+                                    <option value="9.5">
+                                        (GMT +9:30) Adelaide, Darwin
+                                    </option>
+                                    <option value="10.0">
+                                        (GMT +10:00) Eastern Australia, Guam, Vladivostok
+                                    </option>
+                                    <option value="11.0">
+                                        (GMT +11:00) Magadan, Solomon Islands, New Caledonia
+                                    </option>
+                                    <option value="12.0">
+                                        (GMT +12:00) Auckland, Wellington, Fiji, Kamchatka
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clinictime">
+                            <label for="timezone">Clinic Hours</label>
+                            <div class="hourselectedbox">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <td>mon-tue</td>
+                                        <td>07:00 am - 05:00 pm</td>
+                                        <td><i class="icon-remove-sign"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>wed-thurs</td>
+                                        <td>07:00 am - 05:00 pm</td>
+                                        <td><i class="icon-remove-sign"></i></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="hourbox">
+                                <table class="table">
+                                    <tr>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                Mon
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                Tues
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                wed
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                thurs
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                fri
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                sat
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label class="checkbox">
+                                                <input type="checkbox" name="request" id="inquiry">
+                                                sun
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="span12">
+                                    <div class="span5">
+                                        <div class="pull-left span3">
+                                            FROM
+                                        </div>
+                                        <div class="input-append bootstrap-timepicker span9">
+                                            <input id="timepicker1" type="text" class="input-small span10  pull-left">
+                                            <span class="add-on">
+                                                <i class="icon-time">
+                                                </i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="span5">
+                                        <div class="pull-left span3">
+                                            TO
+                                        </div>
+                                        <div class="input-append bootstrap-timepicker span9">
+                                            <input id="timepicker2" type="text" class="input-small span10 pull-left">
+                                            <span class="add-on">
+                                                <i class="icon-time">
+                                                </i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <button class="btn btn-default pull-right span2">
+                                        ADD
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section footer">
+                <div class="row-fluid terms">
+                    <div class="span12">
+                        <a href="add-clinic-for-hospital-specializations.html" class="btn pull-right btn-primary btn-large">
+                           Continue to Adding Specializations
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+
+    {% set completedSteps = ['signup'] %}
+    {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {setupProfile: 'active' , completedSteps: completedSteps} %}
+
+</div>
+
+{% endblock %}
