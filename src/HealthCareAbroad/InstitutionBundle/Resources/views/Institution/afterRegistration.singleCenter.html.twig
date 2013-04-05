@@ -2,25 +2,6 @@
 {% set disableMainNavigation = true %}
 {% set setUpProfile = true %}
 
-{% block confirmation %}
-    {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' %}
-{% endblock %}
-
-{% block map %}
-    {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
-{% endblock %}
-
 {% block content %}
-    {% include 'InstitutionBundle:Institution:afterRegistration.html.twig' with {'label' : 'Clinic' } %}
-{% endblock %}
-
-{% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-<script src="{{ asset('js/jquery/globalize.js') }}"></script>
-<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
-<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+    {% include 'InstitutionBundle:Institution:afterRegistration.html.twig' with {'label' : 'Hospital' } %}
 {% endblock %}

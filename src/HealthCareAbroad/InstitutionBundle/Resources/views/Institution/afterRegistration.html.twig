@@ -2,14 +2,11 @@
     <div class="row">
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
-
-            <form action="{{ path('institution_signup_complete_profile') }}" method="post" novalidate>
+            <form name="institutionProfileForm" action="{{ path('institution_signup_complete_profile') }}" method="post" novalidate>
                 {{ form_errors(form) }}
 
                 <section class="section institution-info">
-                    <h2>
-                        Basic Information<br><small>Basic information about the {{ label }} you are adding.</small>
-                    </h2>
+                    <h2>Basic Information<br><small>Basic information about the {{ label }} you are adding.</small></h2>
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="control-group">
@@ -17,35 +14,31 @@
                                 {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
                             </div>
                             <div class="control-group">
-                                <label for="website">Description<small>(Optional)</small></label>
+                                <label for="website">Description <small>(Optional)</small></label>
                                 {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
-                                <div class="description">
-                                    <small>you can edit / add Description later</small>
-                                </div>
+                                <div class="description"><small>you can edit / add Description later</small></div>
                             </div>
                             <div class="control-group">
                                 <label for="network-group">
-                                    Is this {{ label }} part of a larger {{ label }} group with branches in multiple locations?
-                                    <br/>If so, please name the group/network.
-                                    <small>( Optional )</small>
+                                    Is this {{ label }} part of a larger {{ label }} group with branches in multiple locations?<br/>
+                                    If so, please name the group/network. <small>( Optional )</small>
                                 </label>
                                 <input type="text" id="network-group" class="span12" placeholder="Leave blank if none">
                             </div>
                         </div>
                     </div>
                 </section>
+
                 <section class="section address-info">
-                    <h2>Hospital Address<br>
-                        <small>Complete Address of the Hospital that you are adding.</small>
-                    </h2>
+                    <h2>{{ label }} Address<br> <small>Complete Address of the {{ label }} that you are adding.</small></h2>
                     <div class="row-fluid">
                         <div class="span12">
-                            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}} 
+                            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
                             <div class="control-group">
                                 <div class="span12">
                                     <label for="Country">Country</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}} 
+                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
                                     </div>
                                 </div>
                             </div>
@@ -53,18 +46,18 @@
                                 <div class="span5">
                                     <label>State / Province</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}} 
+                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
                                     </div>
                                 </div>
                                 <div class="span5">
                                     <label>City</label>
                                     <div class="input-append hca-location">
-                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}} 
+                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}}
                                     </div>
                                 </div>
                                 <div class="span2">
                                     <label for="zip">Zip Code</label>
-                                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}} 
+                                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
                                 </div>
                             </div>
                             <div class="control-group">
@@ -74,13 +67,11 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="section institution-info">
                     <h2>
-                        {{ label }} Contact Details
-                        <br>
-                        <small>
-                            This is your {{ label }}'s contact details. Please be as detailed as possible.
-                        </small>
+                        {{ label }} Contact Details<br>
+                        <small>This is your {{ label }}'s contact details. Please be as detailed as possible.</small>
                     </h2>
                     <div class="row-fluid">
                         <div class="span12 control-group">
@@ -94,6 +85,7 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="section socialmedia-info">
                     <h2>Website and Social Media <small>(Optional)</small></h2>
                     <div class="row-fluid">
@@ -111,13 +103,11 @@
                         </div>
                     </div>
                 </section>
+
                 <section class="section institution-info">
                     <h2>
-                        Certifications, Affilations, Awards & Accreditations
-                        <br>
-                        <small>
-                            Please check the ones that apply to your {{ label }}.
-                        </small>
+                        Certifications, Affilations, Awards & Accreditations<br>
+                        <small>Please check the ones that apply to your {{ label }}.</small>
                     </h2>
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -129,7 +119,9 @@
                         </div>
                     </div>
                 </section>
-                {{ form_widget(form.coordinates) }} 
+
+                {{ form_widget(form.coordinates) }}
+
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -138,12 +130,38 @@
                         </div>
                     </div>
                 </section>
+
                 {{ form_rest(form) }}
+
                 {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
+
             </form>
         </div>
+
         {% set completedSteps = ['signup'] %}
         {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {setupProfile: 'active' , completedSteps: completedSteps} %}
 
     </div>
 </div>
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+<script type="text/javascript">
+Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+Location.citiesDropdownElement = $('#institution_profile_form_city');
+Location.loadCities($('#institution_profile_form_country'), 0);
+
+(function($){
+    $(function(){
+        initialize();
+    });
+})(jQuery);
+</script>
+{% endblock %}
