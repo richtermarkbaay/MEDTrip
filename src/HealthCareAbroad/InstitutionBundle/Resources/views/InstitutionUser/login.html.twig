@@ -15,6 +15,11 @@
                         <br>
                         <small>Log-in to manage your Institution</small>
                     </h2>
+                    {% if error %}
+                        <div class="alert alert-error">
+                            {{ error.message }}
+                        </div>
+                    {% endif %}
                     <div class="row-fluid">
                         <div class="span8">
                             <div class="row-field">
