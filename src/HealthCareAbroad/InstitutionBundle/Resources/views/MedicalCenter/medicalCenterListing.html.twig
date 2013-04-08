@@ -1,0 +1,31 @@
+ {% for medicalCenter in medicalCenters %}
+    <li class="thumbnail">
+         <div class="ribbon-wrapper-{{ statusList[medicalCenter.status] | lower }} ">
+            <div class="ribbon-{{ statusList[medicalCenter.status] | lower }}">{{ statusList[medicalCenter.status] }} </div>
+        </div>
+        <img class="pull-left img-polaroid" src="{{ asset('images/institution/default_clinic.png') }}" alt="">
+        <span class="medicalcenter-name"> {{ medicalCenter.name }} </span>
+        <p>
+            <i class="location-gray2">
+            </i>
+            {{ getAddress(medicalCenter.address) }}
+        </p>
+        <p>
+            <i class="phone-gray2">
+            </i>
+            {{ getContactText(medicalCenter.contactNumber) }}
+        </p>
+        <ul class="actions">
+            <li class="view">
+                <div class="btn-group">
+                    <button class="btn btn-misc">
+                        <a href="clinic-profile.html"><i class="icon-edit"></i></a>
+                    </button>
+                    <button class="btn btn-misc">
+                        <a href="#"><i class="icon-trash"></i></a>
+                    </button>
+                </div>
+            </li>
+        </ul>
+    </li>
+ {% endfor %}

@@ -343,6 +343,22 @@ class InstitutionMedicalCenterService
         return $query->getResult();
     }
 
+    public function getMedicalCenterCountByStatus($medicalCenters){
+        $results = array('status'=> array (
+                        '1' => array(),
+                        '2' => array(),
+                        '4' => array(),
+                        '8' => array(),
+                        '16' => array(),
+                        '32' => array(),
+        ));
+        
+        foreach ($medicalCenters as $var){
+            $results['status'][$var->getStatus()][] = $var->getStatus();
+        }
+        
+        return $results;
+    }
     public function checkIfOpenTwentyFourHours($businessHours)
     {
         $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');

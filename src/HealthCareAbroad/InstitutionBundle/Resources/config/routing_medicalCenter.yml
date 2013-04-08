@@ -138,11 +138,11 @@ institution_medicalCenter_removeDoctor:
         imcId: \d+
 
 institution_medicalCenter_index:
-    pattern: /listings.html
+    pattern: /clinic-listing-all.html
     defaults: { _controller: InstitutionBundle:MedicalCenter:index }
     requirements:
         _method: GET
-
+        
 institution_medicalCenter_ajaxAddAncillaryService:
     pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddAncillaryService }

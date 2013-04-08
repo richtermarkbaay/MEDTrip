@@ -20,6 +20,12 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.convert_json_text.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\AddressTextTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
     
     services.flagList.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\FlagTwigExtension

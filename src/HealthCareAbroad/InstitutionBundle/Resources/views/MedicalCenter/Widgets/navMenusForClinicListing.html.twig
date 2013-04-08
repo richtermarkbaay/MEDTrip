@@ -1,0 +1,39 @@
+
+<ul class="breadcrumb messages-box">
+    <li>
+        <a href="clinic-listing-all.html" class="{{ navClinicListing == 'all' ? 'active' :''  }}"><b>ALL</b></a>
+        <span class="divider"> | </span>
+    </li>
+ {% for keys, centers in medicalCentersByStatus %}
+    {% for key, center in centers %}
+        {% if statusList[key] == 'Approved' %}
+        <li>
+            <a href="#approved" class="{{ navClinicListing == 'approved' ? 'active' :''  }} clinic_tab_links">Approved<span>({{ center | length }}) </span></a>
+            <span class="divider"> | </span>
+        </li>
+        {% elseif statusList[key] == 'Pending' %}
+        <li>
+            <a href="#pending" class="{{ navClinicListing == 'pending' ? 'active' :''  }} clinic_tab_links">Pending<span>({{ center | length }})</span></a>
+            <span class="divider"> | </span>
+        </li>
+        {% elseif statusList[key] == 'Draft' %}
+        <li>
+            <a href="#draft" class="{{ navClinicListing == 'draft' ? 'active' :''  }} clinic_tab_links">Draft<span>({{center | length}})</span></a>
+            <span class="divider"> | </span>
+        </li>
+        {% elseif statusList[key] == 'Expired'%}
+        <li>
+            <a href="#expired" class="{{ navClinicListing == 'draft' ? 'expired' :''  }} clinic_tab_links">Expired<span>({{center | length}})</span></a>
+            <span class="divider"> | </span>
+        </li>
+        {% elseif statusList[key] == 'Archived'%}
+        <li>
+            <a href="#archived" class="{{ navClinicListing == 'archived' ? 'active' :''  }} clinic_tab_links">Archived<span>({{center | length}})</span></a>
+            <span class="divider"> | </span>
+        </li>
+        {% else %}
+        
+        {% endif %}
+      {% endfor %}
+  {% endfor %}
+</ul>

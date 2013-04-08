@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\PagerBundle\Pager;
@@ -104,8 +106,9 @@ class MedicalCenterController extends InstitutionAwareController
 
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-        
-        $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
+        $results = $this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution);
+        $medicalCentersByStatus = $this->service->getMedicalCenterCountByStatus($results->getQuery()->getResult());
+        $pagerAdapter = new DoctrineOrmAdapter($results);
         $pagerParams = array(
             'page' => $request->get('page', 1),
             'limit' => 10
@@ -115,7 +118,10 @@ class MedicalCenterController extends InstitutionAwareController
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
             'institution' => $this->institution,
             'medicalCenters' => $pager->getResults(),
-            'pager' => $pager
+            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
+            'medicalCentersByStatus' => $medicalCentersByStatus,
+            'pager' => $pager,
+            'navStatus' => 'all'
         ));
     }
     
