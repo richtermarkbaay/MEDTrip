@@ -144,6 +144,7 @@ class InstitutionSignUpController  extends Controller
                 }
             }
 	    }
+	    
 	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),

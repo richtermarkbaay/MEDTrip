@@ -7,15 +7,13 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     properties:
         name:
             - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
-            - NotBlank: {message: 'Institution name is required.', groups: [editInstitutionInformation]}
-        description:
-            - NotBlank: {message: 'Institution description is required.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your Institution name.', groups: [editInstitutionInformation]}
         country:
-            - NotBlank: {message: 'Country is required.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation]}
         city:
-            - NotBlank: {message: 'City is required.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your city.', groups: [editInstitutionInformation]}
         address1:
-            - NotBlank: {message: 'Address is required.', groups: [editInstitutionInformation] }
+            - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation] }
         contactEmail:
             - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation] }
 #        zipCode:

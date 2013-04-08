@@ -95,7 +95,7 @@
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
-    <div class="control-group">
+    <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
         <label for="state">Address</label>
         <input class="span12 addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
     </div>
@@ -135,22 +135,20 @@
 
 {% block institutionServices_list_widget %}
     {% spaceless %}
-        <ul class="services-listing">
         {% for choice in form.vars.choices %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
-            </li>
+             <label class="checkbox">{{ choice.label }}
+                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+            </label>
         {% endfor %}
     {% endspaceless %}
 {% endblock %}
 
 {% block institutionAwards_list_widget %}
     {% spaceless %}
-        <ul class="awards-listing">
         {% for choice in form.vars.choices %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name }}" value="{{ choice.value }}" />{{ choice.label }}
-            </li>
+        <label class="checkbox">{{ choice.label }}
+                <input type="checkbox" name="{{ form.vars.full_name }}" value="{{ choice.value }}" />
+        </label>
         {% endfor %}
     {% endspaceless %}
 {% endblock %}
@@ -197,13 +195,11 @@
     {% spaceless %}
      {% for key,typeChoice in form.vars.choices %}
      <h3>{{key | capitalize }}s</h3>
-       <ul>
         {% for choice in typeChoice %}
-           <li>
-            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
-             </li>
+           <label class="checkbox">{{ choice.label }}
+            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+            </label>
         {% endfor %}
-       </ul>
     {% endfor %}
     
     {% endspaceless %}

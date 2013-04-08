@@ -200,6 +200,10 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationSingleCenter()
     {
+        $error = false;
+        $success = false;
+        $errorArr = array();
+        
         $institutionService = $this->get('services.institution');
         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
 
@@ -217,7 +221,7 @@ class InstitutionAccountController extends InstitutionAwareController
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
 
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution , array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
@@ -238,13 +242,25 @@ class InstitutionAccountController extends InstitutionAwareController
                 // this should redirect to 2nd step
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
             }
+            $error = true;
+            $form_errors = $this->get('validator')->validate($form);
+            
+            if($form_errors){
+            
+                foreach ($form_errors as $_err) {
+            
+                    $errorArr[] = $_err->getMessage();
+                }
+            }
         }
 
         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'isSingleCenter' => true,
-            'confirmationMessage' => $this->confirmationMessage
+            'confirmationMessage' => $this->confirmationMessage,
+            'error' => $error,
+            'error_list' => $errorArr
         ));
     }
 
@@ -253,15 +269,18 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     protected function completeRegistrationMultipleCenter()
     {
+        $error = false;
+        $success = false;
+        $errorArr = array();
+        
         if((int)$this->institution->getSignupStepStatus() === 0) {
             return $this->redirect($this->generateUrl('institution_account_profile'));
         }
 
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
-
             $form->bind($this->request);
             if ($form->isValid()) {
 
@@ -277,13 +296,24 @@ class InstitutionAccountController extends InstitutionAwareController
                 //TODO: redirect to add specializations
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
+            $error = true;
+            $form_errors = $this->get('validator')->validate($form);
+            
+            
+            if($form_errors){
+                foreach ($form_errors as $_err) {
+                    $errorArr[] = $_err->getMessage();
+                }
+            }
         }
 
         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
-            'confirmationMessage' => $this->confirmationMessage
+            'confirmationMessage' => $this->confirmationMessage,
+            'error' => $error,
+            'error_list' => $errorArr,
         ));
     }
 

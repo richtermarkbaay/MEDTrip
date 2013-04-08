@@ -35,7 +35,11 @@ class DetailedStreetAddressDataTransformer implements DataTransformerInterface
     
     public function reverseTransform($value)
     {
+        if($value['street'] == ''){
+            return null;
+        }
         
         return \json_encode($value);   
+        
     }
 }

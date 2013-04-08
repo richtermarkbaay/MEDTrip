@@ -2,13 +2,36 @@
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
             <form name="institutionProfileForm" action="{{ path('institution_signup_complete_profile') }}" method="post" novalidate>
-                {{ form_errors(form) }}
+                 {% if error %}
+                    <div class="alert alert-error">
+                        {% for each in error_list %}
+                        	{{ each }} <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% for alert, message in app.session.flashes %}
+                    	{% if alert == 'warning' %}
+                    	    {% set class = '' %}
+                    	{% elseif alert == 'error' %}
+                    	    {% set class = 'alert-error' %}
+                    	{% elseif alert == 'success' %}
+                    	    {% set class = 'alert-success' %}
+                    	{% elseif (alert == 'notice') or alert == 'info' %}
+                    	    {% set class = 'alert-info' %}
+                    	{% else %}
+                    	    {% set class = '' %}
+                    	{% endif %}
+                        <div class="alert {{ class }}">
+                            {{ message | raw}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
 
                 <section class="section institution-info">
                     <h2>Basic Information<br><small>Basic information about the {{ label }} you are adding.</small></h2>
                     <div class="row-fluid">
                         <div class="span12">
-                            <div class="control-group">
+                             <div class="control-group row-field {{ (form.name.vars.valid ? '' : 'error') }}">
                                 <label for="institution-name">Name of the {{ label }}</label>
                                 {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
                             </div>
@@ -33,7 +56,7 @@
                     <div class="row-fluid">
                         <div class="span12">
                             {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
-                            <div class="control-group">
+                             <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                                 <div class="span12">
                                     <label for="Country">Country</label>
                                     <div class="input-append hca-location">
@@ -95,7 +118,7 @@
                     <h2>Services<br> <small>Please check the ones that apply to your {{ label }}.</small></h2>
                     <div class="row-fluid terms">
                         <div class="span12">
-                            <div class="control-group">
+                        <div class="control-group row-field {{ (form.services.vars.valid ? '' : 'error') }}">
                                 {{ form_widget(form.services) }}
                             </div>
                         </div>
@@ -109,7 +132,7 @@
                     </h2>
                     <div class="row-fluid terms">
                         <div class="span12">
-                            <div class="control-group">
+                            <div class="control-group row-field {{ (form.awards.vars.valid ? '' : 'error') }}">
                                 <div class="awards-listing">
                                     {{ form_widget(form.awards) }}
                                 </div>
