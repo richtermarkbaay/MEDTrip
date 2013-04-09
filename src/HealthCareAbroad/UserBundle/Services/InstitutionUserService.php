@@ -160,6 +160,54 @@ class InstitutionUserService extends UserService
     /**
      *
      * @param string $email
+     * @return InstitutionUser
+     */
+    public function findByEmail($email)
+    {
+        $accountData = $this->find(
+                        array(
+                            'email' => $email
+                        ),
+                        array('limit' => 1)
+        );
+        if ($accountData) {
+            return $accountData['id'];
+        }
+    
+        return null;
+    }
+    
+    public function createInstitutionUserPasswordToken($daysofExpiration, $accountId)
+    {
+        $daysofExpiration = intVal($daysofExpiration);
+    
+        //check if expiration days given is 0|less than 0
+        if ($daysofExpiration <= 0) {
+            $daysofExpiration = 7;
+        }
+    
+        //generate token
+        $generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
+    
+        //generate expiration date
+        $dateNow = new \DateTime('now');
+        $expirationDate = $dateNow->modify('+'. $daysofExpiration .' days');
+    
+        $passwordToken = new InstitutionUserPasswordToken();
+        $passwordToken->setAccountId($accountId);
+        $passwordToken->setToken($generatedToken);
+        $passwordToken->setExpirationDate($expirationDate);
+        $passwordToken->setStatus(SiteUser::STATUS_ACTIVE);
+    
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($passwordToken);
+        $em->flush();
+        return $passwordToken;
+    }
+    
+    /**
+     *
+     * @param string $email
      * @param string $password
      * @return InstitutionUser
      */
