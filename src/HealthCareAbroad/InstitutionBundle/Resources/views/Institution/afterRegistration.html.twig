@@ -76,7 +76,20 @@
 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 
 $(function(){
-	GoogleMap.initialize();
+    GoogleMap.initialize();
+    $('#confirmMap').on('shown', function(){
+        var center = GoogleMap.map.getCenter();
+        google.maps.event.trigger(GoogleMap.map, 'resize');
+        GoogleMap.map.setCenter(center);
+    });
+
+    $('#confirmMapSubmit').click(function(){
+        $('#confirmMap').modal('hide');
+        $('#institutionProfileForm').submit();
+        
+        return false;
+    });
+    
 });
 </script>
 {% endblock %}
