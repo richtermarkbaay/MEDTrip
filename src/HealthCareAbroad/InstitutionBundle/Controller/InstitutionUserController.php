@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserPasswordToken;
+
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
@@ -195,6 +197,17 @@ class InstitutionUserController extends Controller
     
     public function resetPasswordAction()
     {
+        if ($this->getRequest()->isMethod('POST')) {
+            //send email
+            $email = $this->getRequest()->get('email');            
+            $accountId = $this->get('services.institution_user')->findByEmail($email);
+            
+            //generate token
+            $daysOfExpiration = 7;
+            $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
+            //$this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+            
+        }
         return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig');
     }
 

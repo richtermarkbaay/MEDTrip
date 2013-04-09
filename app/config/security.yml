@@ -71,6 +71,10 @@ security:
                 path:   /admin/logout
                 target: /admin/login
 
+        institution.reset:
+            pattern:  ^/institution/reset.html$
+            security: false
+                
         institution.signup:
             pattern: ^/institution/register.html$
             security: false
