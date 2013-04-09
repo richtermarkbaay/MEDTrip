@@ -53,7 +53,7 @@ class SignUpService
         
         // set medical center name and description to institution.name and institution.description
         $institutionMedicalCenter->setName($institution->getName());
-        $institutionMedicalCenter->setDescription($institution->getDescription());
+        $institutionMedicalCenter->setDescription($institution->getDescription() ? $institution->getDescription() : '2');
         $institutionMedicalCenter->setInstitution($institution);
         $institutionMedicalCenter->setAddress($institution->getAddress1());
         $institutionMedicalCenter->setCoordinates($institution->getCoordinates());

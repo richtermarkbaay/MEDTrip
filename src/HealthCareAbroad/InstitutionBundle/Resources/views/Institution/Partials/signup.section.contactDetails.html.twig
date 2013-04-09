@@ -1,0 +1,20 @@
+<section class="section institution-info">
+    <h2>
+        {{ label }} Contact Details<br>
+        <small>This is your {{ label }}'s contact details. Please be as detailed as possible.</small>
+    </h2>
+    <div class="row-fluid tooltip-wrap">
+        <div class="span12">
+            <div class="tooltip-content">
+                <i class="icon-info-sign icon-2x pull-left"></i>This is how we will contact you to let you know about potential leads.  Please provide the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.
+            </div>
+            <div class="control-group">
+                <div class="span6">
+                    <label for="Phone Number">{{ label }} Email Address</label>
+                    {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                </div>
+                {{ form_widget(form.contactNumber, { 'attr': {'class': 'span9'} }) }}    
+            </div>
+        </div>
+    </div>
+</section>

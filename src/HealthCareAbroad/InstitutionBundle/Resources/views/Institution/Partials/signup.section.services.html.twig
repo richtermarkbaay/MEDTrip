@@ -1,0 +1,20 @@
+<section class="section institution-info">
+    <h2>Services<br> <small>Please check the ones that apply to your {{ label }}.</small></h2>
+    <div class="row-fluid terms tooltip-wrap">
+        <div class="span12">
+            <div class="tooltip-content">
+                <i class="icon-info-sign icon-2x pull-left"></i>Patients, especially medical tourists, always want to know what facilities
+                and services are offered by clinics. This gives them an idea about the
+                level of care and support that can be expected from an institution.
+                <br>
+                <br>
+                Please indicate only what you actually provide. Being honest helps patients
+                plan their trip better, and lets them know what to prepare for.
+            </div>
+            
+            <div class="control-group {{ (form.services.vars.valid ? '' : 'error') }}">
+                {{ form_widget(form.services) }}
+            </div>
+        </div>
+    </div>
+</section>
