@@ -1,0 +1,35 @@
+<section class="section address-info">
+    <h2>{{ label }} Address<br> <small>Complete Address of the {{ label }} that you are adding.</small></h2>
+    <div class="row-fluid">
+        <div class="span12">
+            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
+             <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
+                <div class="span12">
+                    <label for="Country">Country</label>
+                    <div class="input-append hca-location">
+                        {{ form_widget(form.country, { attr: {class: 'selectAdressFields '} } )}}
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="span5">
+                    <label>State / Province</label>
+                    {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
+                </div>
+                <div class="span5">
+                    <label>City</label>
+                    <div class="input-append hca-location">
+                        {{ form_widget(form.city, { attr: {class: 'selectAdressFields city_dropdown'} } )}}
+                    </div>
+                </div>
+                <div class="span2">
+                    <label for="zip">Zip Code</label>
+                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
+                </div>
+            </div>
+            <div class="control-group">
+                {{ form_row(form.addressHint, { attr: {class: 'span12'} } )}}
+            </div>
+        </div>
+    </div>
+</section>

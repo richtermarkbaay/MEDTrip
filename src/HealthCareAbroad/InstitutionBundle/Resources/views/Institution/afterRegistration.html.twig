@@ -27,121 +27,19 @@
                     {% endfor %}
                 {% endif %}
 
-                <section class="section institution-info">
-                    <h2>Basic Information<br><small>Basic information about the {{ label }} you are adding.</small></h2>
-                    <div class="row-fluid">
-                        <div class="span12">
-                             <div class="control-group row-field {{ (form.name.vars.valid ? '' : 'error') }}">
-                                <label for="institution-name">Name of the {{ label }}</label>
-                                {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
-                            </div>
-                            <div class="control-group">
-                                <label for="website">Description <small>(Optional)</small></label>
-                                {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
-                                <div class="description"><small>you can edit / add Description later</small></div>
-                            </div>
-                            <div class="control-group">
-                                <label for="network-group">
-                                    Is this {{ label }} part of a larger {{ label }} group with branches in multiple locations?<br/>
-                                    If so, please name the group/network. <small>( Optional )</small>
-                                </label>
-                                <input type="text" id="network-group" class="span12" placeholder="Leave blank if none">
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.basicInfo.html.twig' %}
 
-                <section class="section address-info">
-                    <h2>{{ label }} Address<br> <small>Complete Address of the {{ label }} that you are adding.</small></h2>
-                    <div class="row-fluid">
-                        <div class="span12">
-                            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
-                             <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
-                                <div class="span12">
-                                    <label for="Country">Country</label>
-                                    <div class="input-append hca-location">
-                                        {{ form_widget(form.country, { attr: {class: 'selectAdressFields '} } )}}
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <div class="span5">
-                                    <label>State / Province</label>
-                                    <div class="input-append hca-location">
-                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
-                                    </div>
-                                </div>
-                                <div class="span5">
-                                    <label>City</label>
-                                    <div class="input-append hca-location">
-                                        {{ form_widget(form.city, { attr: {class: 'selectAdressFields city_dropdown'} } )}}
-                                    </div>
-                                </div>
-                                <div class="span2">
-                                    <label for="zip">Zip Code</label>
-                                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                {{ form_row(form.addressHint, { attr: {class: 'span12'} } )}}
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.address.html.twig' %}
 
-                <section class="section institution-info">
-                    <h2>
-                        {{ label }} Contact Details<br>
-                        <small>This is your {{ label }}'s contact details. Please be as detailed as possible.</small>
-                    </h2>
-                    <div class="row-fluid">
-                        <div class="span12 control-group">
-                            <div class="span6">
-                                <label for="Phone Number">{{ label }} Email Address</label>
-                                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
-                            </div>
-                            <div class="span6">
-                                {{ form_widget(form.contactNumber) }}
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.contactDetails.html.twig' %}
 
-                <section class="section socialmedia-info">
-                    <h2>Website and Social Media <small>(Optional)</small></h2>
-                    <div class="row-fluid">
-                        {{ form_widget(form.websites) }}
-                    </div>
-                </section>
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.socialMedia.html.twig' %}
+                
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.mediaUpload.html.twig' %}
 
-                <section class="section institution-info">
-                    <h2>Services<br> <small>Please check the ones that apply to your {{ label }}.</small></h2>
-                    <div class="row-fluid terms">
-                        <div class="span12">
-                        <div class="control-group row-field {{ (form.services.vars.valid ? '' : 'error') }}">
-                                {{ form_widget(form.services) }}
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.services.html.twig' %}
 
-                <section class="section institution-info">
-                    <h2>
-                        Certifications, Affilations, Awards & Accreditations<br>
-                        <small>Please check the ones that apply to your {{ label }}.</small>
-                    </h2>
-                    <div class="row-fluid terms">
-                        <div class="span12">
-                            <div class="control-group row-field {{ (form.awards.vars.valid ? '' : 'error') }}">
-                                <div class="awards-listing">
-                                    {{ form_widget(form.awards) }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-
-                {{ form_widget(form.coordinates) }}
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.awards.html.twig' %}
 
                 <section class="section footer">
                     <div class="row-fluid terms">
@@ -152,6 +50,7 @@
                     </div>
                 </section>
 
+                {{ form_widget(form.coordinates) }}
                 {{ form_rest(form) }}
 
                 {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
