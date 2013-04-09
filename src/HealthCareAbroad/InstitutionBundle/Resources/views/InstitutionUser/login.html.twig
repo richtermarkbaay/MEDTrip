@@ -11,9 +11,9 @@
             <form novalidate="novalidate" id="signinForm" action="{{ path('institution_login_check') }}" method="POST" >
                 <section class="section account-info">
                     <h2>
-                        Client Admin Log-in
+                        Client Admin Login
                         <br>
-                        <small>Log-in to manage your Institution</small>
+                        <small>Login to manage your Institution</small>
                     </h2>
                     {% if error %}
                         <div class="alert alert-error">
@@ -22,13 +22,13 @@
                     {% endif %}
                     <div class="row-fluid">
                         <div class="span8">
-                            <div class="row-field">
-                                <label for="email">
+                            <div class="control-group">
+                                <label for="_username">
                                     Enter your email address
                                 </label>
                                 <input type="text" name="_username" id="username" value="{{ last_username }}" placeholder="i.e you@some-domain.com" class="span12">
                             </div>
-                            <div class="row-field">
+                            <div class="control-group">
                                 <label for="password">
                                     Enter your password
                                 </label>
@@ -53,12 +53,12 @@
                 <p class="info-txt">
                     Every day, thousands of patients use the Internet to look for medical treatments.
                 </p>
-                <p class="info-text"><a href="http://www.healthcareabroad.com/">www.healthcareAbroad.com</a> helps these patients find the clinic that's right for them.</p>
+                <p class="info-text"><a href="http://www.healthcareabroad.com/">www.HealthcareAbroad.com</a> helps these patients find the clinic that's right for them.</p>
             </section>
             <section class="aside-box default">
             	<a href="{{ path('institution_signUp') }}" class="btn btn-inverse btn-large">
-                    Create an Account</a>
-                </button>
+                    Create an Account
+                </a>
                 <br><br>
                 <p>
                     Need some help? <a href="#">Click Here</a>
