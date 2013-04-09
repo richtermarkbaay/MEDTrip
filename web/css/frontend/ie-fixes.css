@@ -115,3 +115,7 @@ form.search-form > button.btn:active {
 .widget-content-wrapper.articles-type > .item .thumbnail-wrapper .featured-icon {
 	border: 1px solid #AAAAAA;
 }
+
+.input-append.dropdown-menu {
+	width: 196px;
+}

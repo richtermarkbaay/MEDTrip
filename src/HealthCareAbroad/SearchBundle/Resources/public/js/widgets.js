@@ -38,9 +38,11 @@ var BroadSearchWidget = {
     },
     
     loadSourcesByType: function(params) {
-        var _type = params.type || null;
+        var _type = typeof params.type === 'undefined' ? null : params.type;
+        
         if (_type != 'treatments' || _type != 'destinations') {
             var _theOtherType = _type == 'treatments' ? 'destinations' : 'treatments';
+
             // reset first the hidden value field of the other field
             if ('' == $.trim(BroadSearchWidget.formComponents[_theOtherType].autocompleteField.val())) {
                 $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
@@ -68,11 +70,11 @@ var BroadSearchWidget = {
     initializeComponents: function(){
         
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
-            var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
-        	
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
             });
+            
+            var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
             
             componentOptions.autocompleteField
                 // setup autocomplete
@@ -231,8 +233,8 @@ var NarrowSearchWidget = {
                 appendTo: dropdown,
                 delay: 0,
                 minLength: 0,
-                source:  function(request, response) {
-                   var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+                source: function(request, response) {
+                   var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i");
                    var matches = [];
                    $.each(NarrowSearchWidget.sources[widget_key], function(_i, _val) {
                        if (_val.value && ( !request.term || matcher.test(_val.label))) {
@@ -240,8 +242,8 @@ var NarrowSearchWidget = {
                        }
                    });
 
-                  response(matches);
-              }
+                   response(matches);
+                }
             });
         // override _renderItem function of UI.autocomplete
         field.data('ui-autocomplete')._renderItem = function(ul, item) {
@@ -285,7 +287,6 @@ var NarrowSearchWidget = {
                 field.data('ui-autocomplete')._renderItemData( ul, item );
                 _cnt++;
             });
-            ul.attr('class', 'popup-list').attr('style', ''); 
         };
         
         // override suggest function not to resize and reposition menu
