@@ -18,7 +18,7 @@ class InstitutionGlobalAwardsListType extends AbstractType
     }
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $choices = $this->service->getActiveAwards();
+        $choices = $this->service->getFieldTypeChoicesSource();
         $resolver->setDefaults(array('choices' => $choices, 'multiple' => true, 'expanded' => true));
     }
     

@@ -197,7 +197,7 @@
         {% for choice in typeChoice %}
             <li>
                 <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label }}
+                {{ choice.label | raw }}
             </li>
         {% endfor %}
         </ul>
