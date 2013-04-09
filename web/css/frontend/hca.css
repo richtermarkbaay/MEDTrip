@@ -117,7 +117,7 @@ form textarea {
 }
 
 form select {
-	min-height: 20px !important;
+    min-height: 20px !important;
     height: 20px;
     padding: 9px 6px;
 }
@@ -557,8 +557,8 @@ form .section > .section-content > div .row-field:last-child {
 }
 
 .input-append.dropdown-menu > .ui-autocomplete.ui-menu {
-	position: relative;
-	width: auto !important;
+    position: relative;
+    width: auto !important;
 }
 
 
@@ -598,7 +598,6 @@ form .section > .section-content > div .row-field:last-child {
     padding: 6px 10px;
 }
 
->>>>>>> ffc0259689d6cd27e10ce366fd270b7fef04d4d3:web/css/frontend/hca.css
 .btn {
     -webkit-border-radius: 3px !important;
     -moz-border-radius: 3px !important;
@@ -790,14 +789,14 @@ form .section > .section-content > div .row-field:last-child {
 }
 
 #breadcrumbs-wrapper ul.breadcrumb li {
-	float: left;
-	margin-left: 10px;
+    float: left;
+    margin-left: 10px;
     border-top: #bfc3be solid 1px;
     border-bottom: #bfc3be solid 1px;
 }
 
 #breadcrumbs-wrapper ul.breadcrumb li:after {
-	top: 0;
+    top: 0;
     content: "";
     width: 10px;
     height: 32px;
@@ -1191,7 +1190,7 @@ form.search-form > button.btn:active {
 }
 
 #content-wrapper > .error-page form.search-form {
-	margin: 20px 10px 0;
+    margin: 20px 10px 0;
 }
 
 #content-wrapper form.search-form .combo-wrapper > label {
@@ -1276,7 +1275,7 @@ form.search-form > button.btn:active {
 .premier-type-wrapper > .header-wrapper .mini-logo-wrapper {
     top: 0;
     right: 10px;
-	position: absolute;
+    position: absolute;
 }
 
 .premier-type-wrapper > .header-wrapper h5 a {
@@ -1339,7 +1338,7 @@ form.search-form > button.btn:active {
 }
 
 .premier-type-wrapper > .ad-highlights-wrapper {
-	padding-top: 5px;
+    padding-top: 5px;
 }
 
 .ad-highlights-wrapper {
@@ -1386,9 +1385,9 @@ form.search-form > button.btn:active {
 
 .featured-type-wrapper > .heading {
     height: 2px;
-	width: 600px;  
+    width: 600px;  
     margin: 0 auto 23px;
-	background: url("/images/frontend/sprite.png") no-repeat scroll 0px -41px transparent;
+    background: url("/images/frontend/sprite.png") no-repeat scroll 0px -41px transparent;
 }
 
 .featured-type-wrapper .featured-item {
@@ -1822,8 +1821,8 @@ form.search-form > button.btn:active {
 }
 
 #content-wrapper .hospital-header-wrapper > .info-wrapper > .logo-wrapper > * {
-	max-width: 125px;
-	max-height: 135px;
+    max-width: 125px;
+    max-height: 135px;
 }
 
 #content-wrapper .hospital-header-wrapper > .info-wrapper > .address {
@@ -2019,7 +2018,7 @@ form.search-form > button.btn:active {
 }
 
 #content-wrapper .search-results-wrapper .search-form {
-	margin-bottom: 40px;
+    margin-bottom: 40px;
 }
 
 #content-wrapper .search-results-wrapper > h2.heading {
@@ -2645,18 +2644,18 @@ ul.three-column-list > li {
 }
 
 .search-widget .related-search-form .combo-box button.btn {
-	padding: 10px 30px 10px 10px;
+    padding: 10px 30px 10px 10px;
 }
 
 .search-widget .related-search-form .combo-box button.btn > btn-label {
-	display: inline-block;
-	max-width: 175px;
+    display: inline-block;
+    max-width: 175px;
 }
 
 .search-widget .related-search-form .combo-box button.btn > .icon-chevron-down{
     top: 12px;
     right: 10px;
-	position: absolute;
+    position: absolute;
 }
 
 .combo-box {
@@ -2850,9 +2849,9 @@ ul.ui-autocomplete.ui-menu li a {
 }
 
 ul.ui-autocomplete.ui-menu .ui-menu-item a.ui-state-focus {
-	margin: 0;
-	background: #FE6500;
-	color: #FFFFFF;
+    margin: 0;
+    background: #FE6500;
+    color: #FFFFFF;
 }
 
 ul.ui-autocomplete.ui-menu li ul li {
