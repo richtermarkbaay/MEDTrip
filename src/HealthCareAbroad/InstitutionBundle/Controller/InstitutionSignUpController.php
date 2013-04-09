@@ -134,7 +134,7 @@ class InstitutionSignUpController  extends Controller
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
 	           
-                    return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
+                return $this->redirect($this->generateUrl('institution_signup_complete_profile'));
 	        }
             $error = true;
             $form_errors = $this->get('validator')->validate($form);
