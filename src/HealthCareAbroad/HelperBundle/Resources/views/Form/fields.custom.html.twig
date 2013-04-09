@@ -138,23 +138,18 @@
 
 {% block institutionServices_list_widget %}
     {% spaceless %}
+    <ul class="services-listing">
         {% for choice in form.vars.choices %}
-             <label class="checkbox">{{ choice.label }}
+            <li>
                 <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-            </label>
+                {{ choice.label }}
+            </li>
         {% endfor %}
+    </ul>
     {% endspaceless %}
 {% endblock %}
 
-{% block institutionAwards_list_widget %}
-    {% spaceless %}
-        {% for choice in form.vars.choices %}
-        <label class="checkbox">{{ choice.label }}
-                <input type="checkbox" name="{{ form.vars.full_name }}" value="{{ choice.value }}" />
-        </label>
-        {% endfor %}
-    {% endspaceless %}
-{% endblock %}
+
 
 <!-- Media File for Admin -->
 {% block admin_media_file_widget %}
@@ -196,14 +191,16 @@
 
 {% block institutionGlobalAwards_list_widget %}
     {% spaceless %}
-     {% for key,typeChoice in form.vars.choices %}
-     <h3>{{key | capitalize }}s</h3>
+    {% for key,typeChoice in form.vars.choices %}
+        <h3>{{key | capitalize }}s</h3>
+        <ul>
         {% for choice in typeChoice %}
-           <label class="checkbox">{{ choice.label }}
-            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-            </label>
+            <li>
+                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                {{ choice.label }}
+            </li>
         {% endfor %}
+        </ul>
     {% endfor %}
-    
     {% endspaceless %}
 {% endblock %}
