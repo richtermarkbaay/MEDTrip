@@ -22,6 +22,9 @@ class WebsitesDataTransformer implements  DataTransformerInterface
                     $value = 'http://'.$value;
                 }
             });
+            
+            // merge to default value incase of missing keys
+            $jsonValue = \array_merge($this->defaultValue, $jsonValue);
         }
 
         return $jsonValue;
