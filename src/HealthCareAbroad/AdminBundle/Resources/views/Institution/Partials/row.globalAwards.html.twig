@@ -9,7 +9,7 @@
     <td>
         <div class="post-toolbar treatment_action">
             <i class="icon-edit" title="Edit date acquired"></i>
-            <a class="edit_global_award" href="{{ path('admin_institution_ajaxEditGlobalAward') }}" data-propertyId="{{ property.id }}" data-label="{{ award.name }}" data-globalAwardId="{{ award.id }}" >
+            <a class="edit_global_award" href="{{ path('admin_institution_ajaxEditGlobalAward', {institutionId: institution.id} ) }}" data-propertyId="{{ property.id }}" data-label="{{ award.name }}" data-globalAwardId="{{ award.id }}" >
                 <small>Edit</small>
             </a>
     		<i class="icon-trash" title="Delete"></i>

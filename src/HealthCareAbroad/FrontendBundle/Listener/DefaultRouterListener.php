@@ -43,7 +43,7 @@ class DefaultRouterListener
             if ($this->isConfiguredRoute($pathInfo)) {
                 return;
             }
-
+            
 
             $routeObj = null;
             if (is_null($routeObj = $this->routerService->match($pathInfo))) {
@@ -74,7 +74,7 @@ class DefaultRouterListener
             strpos($pathInfo, '/related-search') !== false ||
             strpos($pathInfo, '/statistics') !== false ||
             strpos($pathInfo, '/destination') !== false ||
-            strpos($pathInfo, '/treatment') !== false ||
+            //strpos($pathInfo, '/treatment') !== false ||
             strpos($pathInfo, '/admin') !== false ||
             strpos($pathInfo, '/institution') !== false
         ) {

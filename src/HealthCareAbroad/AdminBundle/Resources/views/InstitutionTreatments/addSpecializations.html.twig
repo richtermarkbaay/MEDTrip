@@ -28,7 +28,11 @@
                             <div id="specializationLoading" class="ajax-loading" style="display:none">loading . . .</div>
                     		<div id="specializationAccordion"></div>
                     		<br>
-                    	    <input type="submit" class="btn btn-large btn-primary" value="Submit" name="Submit">
+                    		{% if hasSelectedTreatment is not defined %}
+                    	        <input id="addSpecializationBtn" type="submit" disabled="true" class="btn btn-large btn-primary" value="Submit" name="Submit">
+                    	    {% else %}
+                    	        <input id="addSpecializationBtn" type="submit" class="btn btn-large btn-primary" value="Submit" name="Submit">
+                    	    {% endif %}
                         </form>
                     </div>
                 </div>
@@ -45,6 +49,7 @@
 <!--
 (function($){
     $(function(){
+
     	var _nsUrl = '{{ path("admin_medicalCenter_ajaxSpecializationSource", {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}';
         
         InstitutionSpecializationAutocomplete
@@ -56,6 +61,7 @@
         .setLoaderElement($('#specializationLoading'))
         .setLoadSpecializationFormUri('{{ path("admin_institution_medicalCenter_ajaxAddSpecialization", { "institutionId" : institution.id, "imcId": institutionMedicalCenter.id }) }}')
         .autocomplete();
+        
     });
 })(jQuery);
 //-->

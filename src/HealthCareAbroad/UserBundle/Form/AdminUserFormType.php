@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\UserBundle\Form;
 
+use HealthCareAbroad\UserBundle\Entity\AdminUserType;
+
 use HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmail;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
@@ -27,6 +29,7 @@ class AdminUserFormType extends AbstractType
         $builder->add('firstName','text', array('constraints' => new NotBlank()));
         $builder->add('middleName','text', array('constraints' => new NotBlank()));
         $builder->add('lastName','text', array('constraints' => new NotBlank()));
+        $builder->add('adminUserType', 'userType_list', array('label' =>'User Type',));
         $builder->add('email','email', array('constraints' => array(
                 new NotBlank(), new Email(), new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')))
             ));

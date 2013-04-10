@@ -1,37 +1,29 @@
 {% set hasAwards = awards | length > 0 %}
 {% set hasServices = services | length > 0 %}
-{% set class = hasAwards and hasAwards ? 'span4' : 'span4' %}
+{% set class = hasAwards and hasServices ? ' span6' : '' %}
 
-{% if hasAwards and hasServices %}
-    <div class="two-col-description row">
-    	{% if hasServices %}
-    	<div class="services span4">
-    		<h5 class="services-heading">Services</h5>
-    		<ul class="default-list">{% for each in services %}<li>{{ each.name }}</li>{% endfor %}</ul>
-    	</div>
-        {% endif %}
+{% set listClass = not class and (hasServices or hasAwards)  ? 'three-column-list row' : '' %}
 
-    	{% if hasAwards %}
-            <div class="awards span4">
-            	<h5 class="awards-heading">Awards &amp; Accreditations</h5>
-            	<ul class="default-list">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
-            </div>
-        {% endif %}
-    </div>
-{% elseif hasAwards or hasServices %}
-    <div class="one-col-description row">
-    	{% if hasServices %}
-    	<div class="services">
-    		<h5 class="services-heading">Services</h5>
-    		<ul class="default-list">{% for each in services %}<li>{{ each.name }}</li>{% endfor %}</ul>
-    	</div>
-        {% endif %}
+{% if class %}
+<div class="two-column-wrapper row-fluid">    
+{% endif %}
 
-    	{% if hasAwards %}
-            <div class="awards">
-            	<h5 class="awards-heading">Awards &amp; Accreditations</h5>
-            	<ul class="default-list">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
-            </div>
-        {% endif %}
-    </div>
+    {% if hasServices %}
+        {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Services', class: 'services' ~ class} %}
+            {% block sectionContent %}
+    		<ul class="check-bullet-list {{ listClass }}">{% for each in services %}<li>{{ each.name }}</li>{% endfor %}</ul>
+            {% endblock %}
+        {% endembed %}    		
+    {% endif %}
+
+    {% if hasAwards %}
+        {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Awards & Accreditations', class: 'awards' ~ class} %}
+            {% block sectionContent %}
+    		<ul class="check-bullet-list {{ listClass }}">{% for each in awards %}<li>{{ each.name }}</li>{% endfor %}</ul>
+            {% endblock %}
+        {% endembed %}
+    {% endif %}
+
+{% if class %}
+</div>
 {% endif %}

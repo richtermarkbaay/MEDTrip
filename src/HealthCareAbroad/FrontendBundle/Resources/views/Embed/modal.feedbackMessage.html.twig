@@ -1,42 +1,43 @@
 <!-- Feedback Modal -->
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'feedbackHca', 'title': 'We are glad to hear from you.', 'formId': 'feedbackForm'}} %}
     {% block modalBody %}
-     <div class="alert-box"></div>
-    <form novalidate="novalidate" class="form-horizontal" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
-        <div class="name control-group row-fluid">
-            <label for="{{ feedbackForm.children.name.vars.id }}" class="span3 pull-left">
+     
+    <form novalidate="novalidate" class="form-horizontal row-fluid" action="{{ path('frontend_send_feedback')}}" method="POST" {{ form_enctype(feedbackForm) }} id="feedbackForm">
+        <div class="alert-box"></div>
+        <div class="name control-group">
+            <label for="{{ feedbackForm.children.name.vars.id }}" class="span3">
                 <strong>{{ feedbackForm.children.name.vars.label }}</strong>
             </label>
-            
-            {{ form_widget(feedbackForm.name)}}
+            {{ form_widget(feedbackForm.name, {attr: {class: 'span9'}}) }}
         </div>
-         <div class="country control-group row-fluid">
-            <label for="{{ feedbackForm.children.country.vars.id }}" class="span3 pull-left">
+         <div class="country control-group">
+            <label for="{{ feedbackForm.children.country.vars.id }}" class="span3">
                 <strong>{{ feedbackForm.children.country.vars.label }}</strong>
             </label>
             <div class="country-select">
-            {{ form_widget(feedbackForm.country) }}
+            {{ form_widget(feedbackForm.country, {attr: {class: 'span9'}}) }}
             </div>
         </div>
-
-        <div class="emailAddress control-group row-fluid">
-            <label for="{{ feedbackForm.children.emailAddress.vars.id }}" class="span3 pull-left">
+        <div class="emailAddress control-group">
+            <label for="{{ feedbackForm.children.emailAddress.vars.id }}" class="span3">
                 <strong>{{ feedbackForm.children.emailAddress.vars.label }}</strong>
             </label>
-            {{ form_widget(feedbackForm.emailAddress, { 'attr': {'placeholder': 'i.e you@domain.com'} }) }}
+            {{ form_widget(feedbackForm.emailAddress, {attr: {class: 'span9'}}) }}
         </div>
-        <div class="message control-group row-fluid">
-            <label for="{{ feedbackForm.children.message.vars.id }}" >
+        <div class="message control-group">
+            <label for="{{ feedbackForm.children.message.vars.id }}" class="span3">
                 <strong>{{ feedbackForm.children.message.vars.label }}</strong>
             </label>
-              {{ form_widget(feedbackForm.message, { 'attr': {'rows': 5} }) }}
+            {{ form_widget(feedbackForm.message, { 'attr': {class: 'span9', 'rows': 5} }) }}
         </div>
         
-        <div class="captcha control-group row-fluid" >
-            <label for="{{ feedbackForm.children.captcha.vars.id }}" class="pull-left">
+        <div class="captcha control-group">
+            <label for="{{ feedbackForm.children.captcha.vars.id }}" class="span3">
                 <strong>{{ feedbackForm.children.captcha.vars.label }}</strong>
             </label>
-              {{ form_widget(feedbackForm.captcha) }}
+            <div class="span9">
+                {{ form_widget(feedbackForm.captcha) }}
+            </div>
         </div>
         {{ form_rest(feedbackForm) }}    
     </form>

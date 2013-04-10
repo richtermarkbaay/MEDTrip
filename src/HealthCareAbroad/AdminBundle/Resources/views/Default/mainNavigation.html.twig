@@ -44,6 +44,11 @@
                 <a href="{{ path('admin_medical_provider_group_index') }}"> Medical Provider Group</a>
             </li>
             <li class="divider"></li>
+            
+            <li class="{{ selectedSubTab == 'meta_configurations' ? 'active' : '' }}" >
+                <a href="{{ path('admin_page_metas_index') }}">Page Meta Configuration</a>
+            </li>
+            
             <li class="{{ selectedSubTab == 'manage_countries' ? 'active' : '' }}">
                 <a href="{{ path('admin_country_index') }}">Manage Countries</a>
             </li>

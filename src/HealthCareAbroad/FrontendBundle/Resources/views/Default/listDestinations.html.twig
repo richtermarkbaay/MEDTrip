@@ -1,38 +1,27 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block content %}
-    <div id="details" class="row">
-        <div id="main_content" class="span10">
-            <header class="filters">
-                <h2 class="total">Destinations</h2>
-            </header>
-            {# -- media search-matches treatments -- #}
-            <div class="media search-matches treatments">
-                <div class="matches">
+    <h2 class="page-header">Destinations</h2>
+    <div class="page-content-wrapper">
 
-                        {% for country in countries %}
+        <div class="search-matches span9">
+            <div class="matches">    
+                {% for country in countries %}
+                    <ul class="match">
+                        <li class="level1"><h5><a href="{{ path('frontend_search_results_countries', {country: country.slug}) }}">{{ country.name }}</a></h5></li>
 
-                            <ul class="match">
-                                <li class="level1"><h5><a href="{{ path('frontend_search_results_countries', {country: country.slug}) }}">{{ country.name }}</a></h5></li>
-
-                                {% set cities = country.cities %}
-                                {% set _numCities = cities | length %}
-                                {% for city in cities %}
-                                    <li>
-                                        <a href="{{ path('frontend_search_results_cities', {country: country.slug, city: city.slug}) }}">{{ city.name }}</a>{{ loop.index  != _numCities  ? ',':'' }}
-                                        
-                                    </li>
-                                {% endfor %}
-
-                            </ul>
+                        {% set cities = country.cities %}
+                        {% set _numCities = cities | length %}
+                        {% for city in cities %}
+                            <li>
+                                <a href="{{ path('frontend_search_results_cities', {country: country.slug, city: city.slug}) }}">{{ city.name }}</a>{{ loop.index  != _numCities  ? ',':'' }}
+                            </li>
                         {% endfor %}
-
-
-                </div>
+                    </ul>
+                {% endfor %}    
             </div>
+        </div>
+    </div><!--End of main_content-->
 
-        </div><!--End of main_content-->
-
-    </div>
 <!--End of content-->
 {% endblock %}
