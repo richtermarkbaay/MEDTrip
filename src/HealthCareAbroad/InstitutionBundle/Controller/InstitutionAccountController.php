@@ -270,7 +270,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
                 $this->redirect($this->generateUrl('institution_add_specializations', array('imcId' => $institutionMedicalCenter->getId())));
             } else {
-var_dump($form->getErrorsAsString());
+                var_dump($form->getErrorsAsString());
             }
         }
 
@@ -281,6 +281,45 @@ var_dump($form->getErrorsAsString());
             'isSingleCenter' => true,
             'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
         ));
+    }
+
+    public function setupSpecializationsAction(Request $request)
+    {
+        $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
+
+        if ($request->isMethod('POST')) {
+            //TODO: validation
+
+            //array of specialization ids containing an array of treatment ids
+            $treatments = $request->get('treatments');
+
+            if ($treatments) {
+                $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
+            }
+
+            $this->redirect($this->generateUrl('institution_setup_doctors', array('imcId' => $this->institutionMedicalCenter->getId())));
+        }
+
+        return $this->render('InstitutionBundle:Institution:profile.specialization.html.twig', array(
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $specializations,
+            'confirmationMessage' => "<b>Congratulations!</b> Your account has been successfully created."
+        ));
+    }
+
+    public function ajaxLoadSpecializationComponentsAction(Request $request)
+    {
+        //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
+        $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
+
+        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
+            'specializationComponents' => $specializationComponents,
+            'specializationId' => $request->get('specializationId')
+        ));
+
+        return new Response($html, 200);
+        //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
     private function getProxyMedicalCenter()
