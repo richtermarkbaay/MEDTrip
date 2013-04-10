@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserPasswordToken;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -205,6 +207,19 @@ class InstitutionUserService extends UserService
         return $passwordToken;
     }
     
+    public function deleteInstitutionUserPasswordToken(InstitutionUserPasswordToken $token, $institutionUser)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->remove($token);
+        $em->flush();
+        
+        if($institutionUser){
+            $this->update($institutionUser);
+        }
+        
+        return $institutionUser;
+    }
+    
     /**
      *
      * @param string $email
@@ -245,11 +260,9 @@ class InstitutionUserService extends UserService
      */
     public function findById($id, $activeOnly=true)
     {
-
         // find a institutionUser
         $repository = $this->doctrine->getRepository('UserBundle:InstitutionUser');
         $institutionUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
-
         return $institutionUser
             ? $this->getAccountData($institutionUser) // find a matching global account for this InstitutionUser
             : null; // no InstitutionUser found
