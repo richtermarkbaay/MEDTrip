@@ -44,6 +44,28 @@ class DoctorRepository extends EntityRepository
         
     }
     
+    public function getSpecializationListByMedicalSpecialist($doctorId)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        // $query = "SELECT * FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId";
+    
+        $query = "SELECT a.name FROM specializations a JOIN doctor_specializations b ON b.specialization_id = a.id WHERE b.doctor_id = :id";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('id', $doctorId);
+        $stmt->execute();
+        //return $stmt->fetchAll();
+        
+        $specializations = array();
+        foreach ($stmt->fetchAll() as $each) {
+            $specializations[] = $each['name'];
+        }
+        
+        $specializationsList = \implode("', '",$specializations);
+        
+        return $specializationsList;
+        
+    }
+    
     public function getSpecializationByMedicalSpecialist($doctorId)
     {
         $connection = $this->getEntityManager()->getConnection();

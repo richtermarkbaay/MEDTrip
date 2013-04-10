@@ -1,0 +1,33 @@
+HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration:
+    type: entity
+    table: page_meta_configurations
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\PageMetaConfigurationRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        title:
+            type: string
+            length: 100
+            nullable: false
+        keywords:
+            type: string
+            length: 255
+            nullable: true
+        description:
+            type: string
+            length: 255
+            nullable: false
+        pageType:
+            type: smallint
+            nullable: false
+            column: page_type
+        url:
+            type: string
+            length: 255
+            nullable: false
+    lifecycleCallbacks: {  }

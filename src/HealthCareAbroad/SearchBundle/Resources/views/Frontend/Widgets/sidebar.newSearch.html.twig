@@ -1,22 +1,8 @@
-<aside id="aside_content" class="span4">
-    <section class="box-in">
-        <ul class="related">
-            <li class="row">
-                <h3> Not what your're looking for? </h3>
-                <ul>
-                    <li>
-                        {% render "SearchBundle:Frontend:showWidget" with {context: 'sidebar' } %}
-
-                        {#
-                        <h4>Or Simply</h4>
-                        <div>
-                            <a href="{{ path('frontend_search') }}" class="btn green">Go back to search page</a>
-                        </div>
-                        #}
-                    </li>
-                </ul>
-            </li>
-        </ul>
-    </section>
-</aside>
-<!--End of aside_content-->
+{% embed 'FrontendBundle:Embed:asideBox.html.twig' %}
+    {% block asideContent %}
+    <div class="search-widget">
+        <h3> Not what your're looking for? </h3>
+        {% render "SearchBundle:Frontend:showWidget" with {context: 'sidebar' } %}
+    </div>
+    {% endblock %}
+{% endembed %}

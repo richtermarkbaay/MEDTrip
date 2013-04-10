@@ -28,6 +28,12 @@ institution_signup_medical_center:
     requirements:
         _method: GET|POST
 
+institution_add_specializations:
+    pattern: /institution/clinic-profile/{imcId}/add-specializations
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:addSpecializations }
+    requirements:
+        _method: GET|POST
+
 institution_addGlobalAwards:
     pattern:  /institution/{institutionId}/global_awards
     defaults: { _controller: InstitutionBundle:InstitutionAccount:addGlobalAwards }

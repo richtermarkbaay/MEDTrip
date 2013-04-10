@@ -35,4 +35,8 @@ HealthCareAbroad\UserBundle\Entity\AdminUserType:
                         name: admin_user_role_id
                         referencedColumnName: id
             orderBy: null
+    oneToMany:
+        adminUsers:
+            targetEntity: HealthCareAbroad\UserBundle\Entity\AdminUser
+            mappedBy: adminUser
     lifecycleCallbacks: {  }

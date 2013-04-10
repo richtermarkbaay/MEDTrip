@@ -30,7 +30,12 @@ services:
             - [setLocationService, [@services.location]]
         tags:
             - { name: form.type, alias: country_list }
-
+            
+    form.userType_list:
+        class: HealthCareAbroad\UserBundle\Form\ListType\AdminUserTypeListType
+        tags:
+            - { name: form.type, alias: userType_list }
+            
     form.city_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
         arguments: [@services.location]

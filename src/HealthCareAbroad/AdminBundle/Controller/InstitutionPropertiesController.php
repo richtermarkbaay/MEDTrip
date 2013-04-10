@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -294,23 +296,23 @@ class InstitutionPropertiesController extends Controller
         return $response;
     }
     
-    public function ajaxEditGlobalAwardAction()
+    public function ajaxEditGlobalAwardAction(Request $request)
     {
-        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($this->request->get('propertyId', 0));
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('propertyId', 0));
         $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
     
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
     
-        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('globalAwardId'));
         if (!$globalAward) {
             throw $this->createNotFoundException('Invalid global award.');
         }
     
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $property);
-        if ($this->request->isMethod('POST')) {
-            $editGlobalAwardForm->bind($this->request);
+        if ($request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($request);
             if ($editGlobalAwardForm->isValid()) {
                 try {
                     $property = $editGlobalAwardForm->getData();
@@ -319,6 +321,7 @@ class InstitutionPropertiesController extends Controller
                     $em->flush();
                     $extraValue = \json_decode($property->getExtraValue(), true);
                     $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    
                     $output = array(
                                     'targetRow' => '#globalAwardRow_'.$property->getId(),
                                     'html' => $yearAcquired

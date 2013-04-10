@@ -1,15 +1,10 @@
 {% if featuredVideoAd.youtubeId is defined %}
-    <div id="vid"> <!--This is for the advertisements-->
-    	<ul class="thumbnails">
-    		<li class="span4">
-    			<div id="featuredVideoPlayer"></div>
-    			<span class="videotitle">{{ featuredVideoAd.advertisement.title }}</span>
-                <p>
-                    {{ featuredVideoAd.advertisement.description }}
-                </p>
-    		</li>
-    	</ul>
-    </div>
+<div class="widget-wrapper">    
+	<div id="featuredVideoPlayer"></div>
+	<h4>{{ featuredVideoAd.advertisement.title }}</h4>
+    <p>{{ featuredVideoAd.advertisement.description }}</p>
+</div>
+
     <script type="text/javascript">
     <!--
     //2. This code loads the IFrame Player API code asynchronously.

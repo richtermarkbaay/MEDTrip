@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
+
+use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
+
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
@@ -432,8 +436,9 @@ class FrontendController extends ResponseHeadersController
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByCountry($country));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
         $parameters = array(
-            'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+            'searchResults' => $pager,
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $country->getName(),
             'routeName' => 'frontend_search_results_countries',
             'paginationParameters' => array('country' => $country->getSlug()),
@@ -444,6 +449,10 @@ class FrontendController extends ResponseHeadersController
             'featuredClinicParams' => array('countryId' => $country->getId())
         );
 
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country));
+        
         return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
@@ -457,8 +466,9 @@ class FrontendController extends ResponseHeadersController
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByCity($city));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
         $parameters = array(
-            'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+            'searchResults' => $pager,
             'searchLabel' => isset($searchTerms['destinationLabel']) ? $searchTerms['destinationLabel'] : $city->getName().', '.$city->getCountry()->getName(),
             'routeName' => 'frontend_search_results_cities',
             'paginationParameters' => array('city' => $city->getSlug(), 'country' => $city->getCountry()->getSlug()),
@@ -469,6 +479,13 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
             'featuredClinicParams' => array('cityId' => $city->getId())
         );
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
+        ));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -491,8 +508,9 @@ class FrontendController extends ResponseHeadersController
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchBySpecialization($specialization));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
         $parameters = array(
-            'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+            'searchResults' => $pager,
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName(),
             'routeName' => 'frontend_search_results_specializations',
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
@@ -502,6 +520,12 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
             'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+        ));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -528,9 +552,9 @@ class FrontendController extends ResponseHeadersController
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchBySubSpecialization($subSpecialization));
         $paginationParameters = array('specialization' => $specialization->getSlug(), 'subSpecialization' => $subSpecialization->getSlug());
-
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
         $parameters = array(
-            'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+            'searchResults' => $pager,
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $request->get('specialization') . ' - ' . $request->get('subSpecialization'),
             'routeName' => 'frontend_search_results_subSpecializations',
             'paginationParameters' => $paginationParameters,
@@ -541,6 +565,13 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
             'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
+        ));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -548,10 +579,10 @@ class FrontendController extends ResponseHeadersController
     public function searchResultsTreatmentsAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
-
         if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
             throw new NotFoundHttpException();
         }
+        
         if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'))) {
             throw new NotFoundHttpException();
         }
@@ -566,8 +597,9 @@ class FrontendController extends ResponseHeadersController
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTreatment($treatment));
+        $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
         $parameters = array(
-            'searchResults' => new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage)),
+            'searchResults' => $pager,
             'searchLabel' => isset($searchTerms['treatmentLabel']) ? $searchTerms['treatmentLabel'] : $specialization->getName() . ' - ' . $treatment->getName(),
             'routeName' => 'frontend_search_results_treatments',
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
@@ -577,6 +609,13 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
             'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
+        
+        // set total results for page metas
+        $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
+        $request->attributes->set('searchObjects', array(
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
+            SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
+        ));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }

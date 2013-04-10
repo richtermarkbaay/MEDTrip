@@ -1,0 +1,121 @@
+body #top-background > .glow {
+    width: 0;
+    height: 0;
+}
+
+form input[type=text],
+form input[type=email],
+form input[type=number] {
+	line-height: 30px;
+}
+
+form.search-form > button.btn {
+    text-shadow: none;
+    border: 3px solid #AAAAAA;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#fe6700, endColorstr=#fe4200,GradientType=0);
+}
+
+form.search-form>button.btn:hover {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#ff7619, endColorstr=#e53b00,GradientType=0);
+}
+
+form.search-form > button.btn:active {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#cb5200, endColorstr=#ff6732,GradientType=0);
+}
+
+#header-wrapper {
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#44FFFFFF, endColorstr=#44FFFFFF);
+    border-bottom: 1px solid #AAAAAA;
+}
+
+#header-wrapper .menu ul li {
+    border-right: 4x solid #AAAAAA; 
+}
+
+#breadcrumbs-wrapper ul.breadcrumb li.last a {
+	color: #BACCD5;
+}
+
+#content-wrapper .hospital-header-wrapper > .info-wrapper {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#77000000, endColorstr=#77000000);
+}
+
+#content-wrapper .hospital-header-wrapper > .info-wrapper > .logo-wrapper {
+    border: 4px solid #AAAAAA;
+    
+}
+#content-wrapper .hospital-header-wrapper > h3 {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#77000000, endColorstr=#77000000);
+}
+
+#content-wrapper ul.thumbnail-list > li {
+    width: 183px;
+    border: 1px solid #d8d8d8;
+}
+
+#content-wrapper ul.thumbnail-list > li a {
+    width: 163px;
+}
+
+#content-wrapper ul.thumbnail-list > li a .logo {
+    max-width: 163px;
+    max-height: 113px;
+}
+
+#content-wrapper a.carousel-control.prev {
+    left: 8px;
+}
+
+#content-wrapper a.carousel-control.next {
+    left: 590px;
+}
+
+#footer-wrapper .top-content-wrapper .subscribe-section .newsletter-box > form div.form-inline button.btn {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#919e95, endColorstr=#525f56,GradientType=0);
+}
+
+#footer-wrapper .top-content-wrapper .subscribe-section .newsletter-box > form div.form-inline button.btn:hover {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bbc7c2, endColorstr=#525f56,GradientType=0 );
+}
+
+#footer-wrapper .top-content-wrapper .subscribe-section .newsletter-box > form div.form-inline button.btn:active {
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#bbc7c2, endColorstr=#525f56,GradientType=0 );
+}
+
+.callout-wrapper {
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#55555555, endColorstr=#55555555);  
+}
+
+.beta-banner {
+	right: 0 !important;
+    top: 30px !important;
+    padding: 10px !important;
+    width: auto !important;
+    border-right: none !important;
+    behavior: url(css/frontend/pie/PIE.htc);
+}
+
+.newsletter-box > form div.form-inline button.btn {
+	border: 2px solid #555555;
+}
+
+.box-shadow {
+    border: 1px solid #C0C6C0; 
+    /*filter:
+	    progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=0,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=45,strength=2),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=90,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=135,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=180,strength=10),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=225,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=270,strength=5),
+		progid:DXImageTransform.Microsoft.Shadow(color=#aaaaaa,direction=315,strength=2); */
+}
+
+.widget-content-wrapper.articles-type > .item .thumbnail-wrapper .featured-icon {
+	border: 1px solid #AAAAAA;
+}
+
+.input-append.dropdown-menu {
+	width: 196px;
+}

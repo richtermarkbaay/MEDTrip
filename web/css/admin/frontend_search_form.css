@@ -1,0 +1,123 @@
+.dropdown-menu li > a {
+    white-space: normal;
+}
+
+
+form.search-form {
+    position: relative;
+}
+
+form.search-form .dropdown-menu li {
+    border-bottom: 1px solid #EFEFEF;
+}
+
+
+form.search-form .helper-link {
+    margin: 10px 0 -10px;
+}
+
+form.search-form .helper-link > a {
+    color: #468199;
+    text-decoration: underline;
+}
+
+form.search-form .helper-link > a:hover {
+    color: #366376;
+}
+
+form.search-form .helper-link > a.treatment-link {
+    margin-left: 75px;
+}
+
+form.search-form .helper-link > a.destination-link {
+    margin-left: 245px;
+}
+
+form.search-form .popup p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    padding: 10px 3px;
+    opacity: 0.8;
+}
+
+form.search-form .popup .popup-box {
+    top: 34px;
+    left: -233px;
+    width: 281px;
+    position: absolute;
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+form.search-form .popup .popup-box > ul {
+    margin: 0;
+    list-style: none;
+    max-height:300px;
+    overflow: auto;
+}
+
+form.search-form .combo-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+form.search-form .combo-wrapper > label {
+    margin: 0;
+    opacity: 0.5;
+    color: #468199;
+    padding-right: 10px;
+    text-align: center;
+}
+
+
+form.search-form .combo-wrapper > .popup {
+    top: 9px;
+    right: 30px;
+    position: absolute; 
+}
+
+form.search-form .combo-wrapper > input[type=text] {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -o-transition: color 0 ease-in;
+    transition: none;
+    width: 251px;
+    margin-left: 0;
+    margin-right: 20px;
+    font-size: 16px;
+    font-weight: normal;
+    opacity: 0.9;
+    padding: 8px 15px;
+    outline: none;
+    border: 1px solid #7d97a6;
+    border-radius: 4px;
+    box-shadow: inset 0 3px 3px rgba(0,0,0,0.1),0 0 0 4px rgba(0,37,85,0.09) !important;
+    color: #7d97a6;
+    height: 30px;
+}
+
+form.search-form .combo-wrapper > input:focus {
+    outline: none;
+    border-color: #468199;
+}
+
+form.search-form .combo-wrapper > input::-webkit-input-placeholder {
+    font-family: "PT Sans",sans-serif;
+    color: #c9dbe2;
+}
+
+form.search-form .combo-wrapper > input:-moz-placeholder {
+    font-family: "PT Sans",sans-serif;
+    color: #c9dbe2;
+}
+
+form.search-form .combo-wrapper > input:-ms-input-placeholder {
+    font-family: "PT Sans",sans-serif;
+    color: #c9dbe2;
+}
+
+form.search-form > .btn {
+    font-size: 15px;
+    padding: 15px 20px;
+}

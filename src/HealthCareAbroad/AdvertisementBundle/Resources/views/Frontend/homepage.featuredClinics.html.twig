@@ -1,9 +1,7 @@
 {% if featuredClinicsAds %}
 
-<div class="featured_wrapper">
+<div class="featured-type-wrapper">
 	<div class="heading"></div>
-	<div id="featured_content">
-
 	{% for each in featuredClinicsAds %}
 	    {% if each.institution and each.institutionMedicalCenter %}
 	    
@@ -13,20 +11,18 @@
 	        {#-----------------------------------------------------#}
 	        
 	        {#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
-	        <div class="featured_item {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
+	        <div class="featured-item box-shadow {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
     		    {% set clinicUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
-    			<div class="general row">
+    			<div class="content row">
     				<div class="clinic-box">
-    					<a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
-    					    {{ render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}}) | raw }}       				    
+    					<a href="{{ clinicUrl }}" class="small-logo-wrapper {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
+    					    {{ render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'small', alt: 'clinic logo'}}) | raw }}       				    
     					</a>
     
     					<!-- User Ratings Temporarily Commented -->
                         {# include 'FrontendBundle:Widgets:ratings.html.twig' #}
     
-                        <div class="location">
-                            <strong>{{ each.institution.city.name }}, {{ each.institution.country.name }}</strong>
-                        </div>
+                        <strong>{{ each.institution.city.name }}, {{ each.institution.country.name }}</strong>
     				</div>
     				<div class="description-box">
     				    
@@ -34,43 +30,38 @@
 				            <h3>{{ each.title }}</h3>
 			            </a>
 			            
-			            <a href="{{ get_institution_frontend_url(each.institution) }}"><small>{{ each.institution.name }}</small></a>
+			            <a href="{{ get_institution_frontend_url(each.institution) }}">
+			                <h4>{{ each.institution.name }}</h4>
+			            </a>
     					
     					<p>{{ each.description | raw }}</p>
     				</div>
-    				<div class="thumb-box">
-                        {% if each.media %}
-    					    <div class="img-background">
-        				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
-    					    </div>
-                        {% endif %}
-    					<a href="{{ clinicUrl }}" class="btn green {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }}> 
-    					    <span class="icon-search icon-white"></span> Learn More 
-					    </a>
-    				</div>
+
+                    {% if each.media %}
+					    <div class="hca-sprite thumbnail-frame pull-right">
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
+					    </div>
+                    {% endif %}
+
+					<a href="{{ clinicUrl }}" class="btn green {{ get_clickthrough_tracker_class() }} pull-right" {{ _clickThroughStatisticParametersAttribute }}> 
+					    <span class="white-icon-search"></span> Learn More 
+				    </a>
+
     			</div>
-     			<div class="details row-fluid">
+     			<div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% for clinicHighlight in clinicHighlights %}
-                        <div class="span6">
-                            <div class="media">
-                                {% if clinicHighlight.icon %}
-                                    <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
-                                {% else %}
-                                    {% if clinicHighlight.type == 3 %}
-                                        <img alt="clinic logo" src="{{ imageplaceholder.doctorIcon }}" class="media-object img-circle pull-left">
-                                    {% else %}
-                                        <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type, 'green') }} media-object img-circle pull-left"></span>
-                                    {% endif %}
-                                {% endif %}
-    
-                                <div class="media-body">
-                                    {% if clinicHighlight.header %}
-                                        <h5 class="media-heading">{{ clinicHighlight.header }}</h5>
-                                    {% endif %}
-                                    <p>{{ clinicHighlight.label }}</p>
-                                </div>
-                            </div>
+                        <div class="item-wrapper span6">
+                            {% if clinicHighlight.icon %}
+                                <img class="img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
+                            {% else %}
+                                <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
+                            {% endif %}
+
+                            {% if clinicHighlight.header %}
+                                <h5>{{ clinicHighlight.header }}</h5>
+                            {% endif %}
+                            <span class="title">{{ clinicHighlight.label }}</span>
                         </div>
                     {% endfor %}
     		    </div>
@@ -78,7 +69,6 @@
 	    {% endif %}
 		
     {% endfor %}
-	</div><!--End of featured_content-->
 </div><!--End of featured_wrapper-->
 
 {% endif %}
