@@ -215,7 +215,6 @@ class InstitutionUserController extends Controller
                     $institutionUser = $institutionUserService->deleteInstitutionUserPasswordToken($institutionUserToken, $institutionUser);
                     
                     //auto login
-                    
                     $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
                     $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
                     $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
@@ -242,7 +241,6 @@ class InstitutionUserController extends Controller
                 //generate token
                 $daysOfExpiration = 7;
                 $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
-                //$this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
             }
             $params = array(
                             'isEmailPassword' => $isEmailResetPassword

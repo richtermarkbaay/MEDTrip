@@ -1,6 +1,11 @@
 <section class="section address-info">
     <h2>{{ label }} Address<br> <small>Complete Address of the {{ label }} that you are adding.</small></h2>
-    <div class="row-fluid">
+    <div class="row-fluid tooltip-wrap">
+        <div class="tooltip-content">
+            <i class="icon-info-sign icon-2x pull-left"></i>
+            Providing your complete address helps us push you to the right searches,
+            and helps patients plan their travel better.
+        </div>
         <div class="span12">
             {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
              <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
