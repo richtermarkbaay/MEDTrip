@@ -116,10 +116,10 @@
                 </section>
                 <section class="section">
                     <div class="row-fluid terms">
-                        <div class="span8 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
+                        <div class="span12 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
                             <label class="checkbox">
                                 {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's 
-                                <a href="{{ path('frontend_page_terms_of_use') }}">Terms and Conditions</a> and 
+                                <a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a> and 
                                 <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>.
                             </label>
                         </div>
