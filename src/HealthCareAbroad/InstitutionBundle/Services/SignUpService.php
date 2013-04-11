@@ -121,6 +121,20 @@ class SignUpService
         : null;
     }
     
+    /**
+     * Get the next SignUpStep from the passed $step
+     * 
+     * @param SignUpStep $step
+     * @return SignUpStep
+     */
+    public function getMultipleCenterSignUpNextStep(SignUpStep $step)
+    {
+        // next step's array key will be $step's stepNumber since our arrays starts with index 0
+        return isset($this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$step->getStepNumber()])
+            ? $this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$step->getStepNumber()]
+            : null;
+    }
+    
     public function getSingleCenterSignUpSteps()
     {
         return $this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP];
@@ -137,10 +151,17 @@ class SignUpService
         : null;
     }
     
+    public function getSingleCenterSignUpNextStep(SignUpStep $step)
+    {
+        // next step's array key will be $step's stepNumber since our arrays starts with index 0
+        return isset($this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$step->getStepNumber()])
+            ? $this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$step->getStepNumber()]
+            : null;
+    }
+    
     public function completeProfileOfInstitutionWithSingleCenter(Institution $institution, InstitutionMedicalCenter $institutionMedicalCenter)
     {
         // save the institution
-        $institution->setSignupStepStatus(InstitutionSignupStepStatus::STEP2);
         $this->institutionFactory->save($institution);
         
         // set medical center name and description to institution.name and institution.description
@@ -156,7 +177,6 @@ class SignUpService
     
     public function completeProfileOfInstitutionWithMultipleCenter(Institution $institution)
     {
-        $institution->setSignupStepStatus(InstitutionSignupStepStatus::FINISH);
         $this->institutionFactory->save($institution);
     }
 }
