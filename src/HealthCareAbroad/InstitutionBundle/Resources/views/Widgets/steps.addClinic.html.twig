@@ -1,7 +1,7 @@
 {% set activeStep = activeStep is defined ? activeStep : 'details'%}
 <ul class="navstep nav-steps">
     <li class="{{ activeStep == 'details' ? 'active' : '' }}">
-        <a href="{{ isSingleCenter ? path('institution_signup_complete_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}">
+        <a href="{{ isSingleCenter ? path('institution_signup_setup_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}">
             <h2>1</h2><span>Clinic Details</span>
         </a>
     </li>

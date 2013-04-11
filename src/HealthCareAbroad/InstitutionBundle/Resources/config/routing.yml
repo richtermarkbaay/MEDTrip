@@ -6,6 +6,10 @@ InstitutionBundle_unsecuredRoutes:
 InstitutionBundle_API_Routes:
     resource: "@InstitutionBundle/Resources/config/routing_api.yml"
     prefix:   /
+    
+InstitutionBundle_signUp:
+    resource: "@InstitutionBundle/Resources/config/routing_signup.yml"
+    prefix:   /
 
 # Routes for Institution MedicalCenterController #
 InstitutionBundle_medicalCenter:
@@ -60,12 +64,6 @@ institution_gallery:
     defaults: { _controller: MediaBundle:Default:gallery }
     requirements:
         _method: GET
-
-institution_signUp:
-    pattern:  /institution/register.html
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
-    requirements:
-        _method: GET|POST
        
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}

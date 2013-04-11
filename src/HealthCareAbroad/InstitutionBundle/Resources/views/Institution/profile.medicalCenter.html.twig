@@ -7,7 +7,7 @@
     <h1>Add New Clinic</h1>
 
     <div class="span8">
-        <form id="clinicForm" action="{{ path('institution_add_specializations', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
+        <form id="clinicForm" action="{{ path('institution_setup_specializations', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
 
             <section class="section institution-info">
                 <h2>Basic Information<br><small>Basic information about the Clinic you are adding.</small></h2>
