@@ -1,0 +1,17 @@
+parameters:
+    institution_registration_steps: 
+        multiple_center:
+            - {label: Create Your Personal Account,route: institution_signUp}
+            - {label: Set-Up Profile For Your Hospital,route: institution_signup_setup_profile}
+            - {label: Add Clinic / Center, route: institution_signup_setup_institutionMedicalCenter}
+            - {label: Setup Clinic Profile, route: institution_signup_setup_institutionMedicalCenter, sub: true}
+            - {label: Add Specializations, route: institution_signup_setup_institutionSpecializations, sub: true}
+            - {label: Add Doctors, route: institution_signup_setup_institutionDoctors, sub: true}
+        single_center:
+            - {label: Create Your Personal Account, route: institution_signUp}
+            - {label: Set-Up Profile For Your Clinic, route: institution_signup_setup_profile}
+              # same route for Add Specializations
+            - {label: Add Clinic / Center Details, route: institution_signup_setup_institutionSpecializations}
+            - {label: Add Specializations, route: institution_signup_setup_institutionSpecializations,sub: true}
+            - {label: Add Doctors, route: institution_signup_setup_institutionDoctors, sub: true}
+    

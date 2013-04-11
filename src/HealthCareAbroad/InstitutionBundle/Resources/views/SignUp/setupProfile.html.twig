@@ -1,7 +1,7 @@
     <div class="row">
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
-            <form name="institutionProfileForm" action="{{ path('institution_signup_complete_profile') }}" method="post" novalidate>
+            <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" novalidate>
                  {% if error %}
                     <div class="alert alert-error">
                         {% for each in error_list %}
@@ -58,9 +58,9 @@
             </form>
         </div>
 
-        {% set completedSteps = ['signup'] %}
-        {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {setupProfile: 'active' , completedSteps: completedSteps} %}
-
+        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
+        
+        
     </div>
 
 {% block inlineJavascriptCode %}

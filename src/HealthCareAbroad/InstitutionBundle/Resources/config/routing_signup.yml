@@ -1,0 +1,35 @@
+institution_signUp:
+    pattern:  /institution/register.html
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
+    requirements:
+        _method: GET|POST
+        
+institution_signup_setup_profile:
+    pattern: /institution/complete-profile.html
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupProfile }
+    requirements:
+        _method: GET|POST
+        
+institution_signup_setup_institutionMedicalCenter:
+    pattern: /institution/setup-clinic-details
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionMedicalCenter }
+    requirements:
+        _method: GET|POST
+        
+institution_signup_setup_institutionSpecializations:
+    pattern: /institution/setup-specializations
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionSpecializations }
+    requirements:
+        _method: GET|POST
+        
+institution_signup_setup_institutionDoctors:
+    pattern: /institution/setup-specializations
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionDoctors }
+    requirements:
+        _method: GET|POST
+
+#institution_signup_medical_center:
+#    pattern: /institution/clinic-profile/{imcId}
+#    defaults: {_controller: InstitutionBundle:InstitutionAccount:completeMedicalCenterSignup }
+#    requirements:
+#        _method: GET|POST
