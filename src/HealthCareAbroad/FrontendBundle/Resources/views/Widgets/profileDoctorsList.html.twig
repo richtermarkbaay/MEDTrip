@@ -1,19 +1,21 @@
 {% if doctors | length %}
-	<ul class="thumbnails">
+	<ul class="person-info-list">
 	    {% for doctor in doctors %}
-		<li class="thumbnail">
-			{% if doctor.media %}
-			    {{ media(doctor.media, doctor, 'default', {class: 'pull-left img-polaroid', thumbnail: true}) | raw }}
-			{% else %}
-			    <img src="{{ imageplaceholder.doctorIcon }}" class="pull-left img-polaroid"/>
-			{% endif %}
-			<a class="doctor-name" >Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }} </a>
-			<p class="media-body">
+		<li>
+		    <div class="thumbnail-wrapper pull-left img-polaroid">
+    			{% if doctor.media %}
+    			    {{ media(doctor.media, doctor, 'default', {thumbnail: true}) | raw }}
+    			{% else %}
+    			    <span class="hca-sprite doctor-icon default"></span>
+    			{% endif %}
+		    </div>
+
+			<a class="name"><strong>Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</strong></a>
+			<p class="info">
 			    {% for i, each in doctor.specializations %}
 			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
 			    {% endfor %}
 			</p>
-
 			{# <ul class="contact">
 			    {% if doctor.contactEmail %}
 				    <li class="email"><a href="mailto:{{ doctor.contactEmail }}">email</a></li>

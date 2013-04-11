@@ -103,71 +103,6 @@ class InstitutionAccountController extends InstitutionAwareController
         return $response;
     }
 
-//     //TODO: use previous methods
-//     public function completeSingleCenterProfileAfterRegistrationAction()
-//     {
-//         $institutionService = $this->get('services.institution');
-
-//         if (\is_null($this->institutionMedicalCenter)) {
-//             $institutionMedicalCenter = new InstitutionMedicalCenter();
-//         }
-
-//         //reset for institution sign up will set this to uniqid() as a workaround for slug error
-//         $this->institution->setName('');
-
-//         $form = $this->createForm(new InstitutionProfileFormType(array('prefix_label' => 'Hospital')), $this->institution);
-
-//         if ($this->request->isMethod('POST')) {
-//             $form->bind($this->request);
-
-//             if ($form->isValid()) {
-
-//                 // save institution and create an institution medical center
-//                 $this->get('services.institution_signup')
-//                 ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
-
-
-//                 //$routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-
-//                 // this should redirect to 2nd step
-//                 //return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
-//             }
-//         }
-
-//         return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
-//                         'form' => $form->createView(),
-//                         'institutionMedicalCenter' => $institutionMedicalCenter,
-//                         'isSingleCenter' => true
-//         ));
-//     }
-
-//     //TODO: use previous methods
-//     public function completeMultipleCenterProfileAfterRegistration()
-//     {
-//         $institutionService = $this->get('services.institution');
-//         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-
-//         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-
-//         if ($this->request->isMethod('POST')) {
-//             $form->bind($this->request);
-
-//             if ($form->isValid()) {
-
-//                 // save institution and create an institution medical center
-
-//                 // this should redirect to 2nd step
-
-//             }
-//         }
-
-//         return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
-//                         'form' => $form->createView(),
-//                         'institutionMedicalCenter' => $institutionMedicalCenter,
-//                         'isSingleCenter' => true
-//         ));
-//     }
-
     public function addServiceAction(Request $request)
     {
         $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
@@ -203,7 +138,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
-        
+
         $institutionService = $this->get('services.institution');
         $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
 
@@ -244,11 +179,11 @@ class InstitutionAccountController extends InstitutionAwareController
             }
             $error = true;
             $form_errors = $this->get('validator')->validate($form);
-            
+
             if($form_errors){
-            
+
                 foreach ($form_errors as $_err) {
-            
+
                     $errorArr[] = $_err->getMessage();
                 }
             }
@@ -272,7 +207,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
-        
+
         if((int)$this->institution->getSignupStepStatus() === 0) {
             return $this->redirect($this->generateUrl('institution_account_profile'));
         }
@@ -298,8 +233,8 @@ class InstitutionAccountController extends InstitutionAwareController
             }
             $error = true;
             $form_errors = $this->get('validator')->validate($form);
-            
-            
+
+
             if($form_errors){
                 foreach ($form_errors as $_err) {
                     $errorArr[] = $_err->getMessage();
@@ -319,24 +254,72 @@ class InstitutionAccountController extends InstitutionAwareController
 
     public function completeMedicalCenterSignupAction()
     {
-        $institutionMedicalCenter = $this->getProxyMedicalCenter();
+        $proxyMedicalCenter = $this->getProxyMedicalCenter();
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $proxyMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
 
             if ($form->isValid()) {
+                $institutionMedicalCenter = $form->getData();
 
+                $this->get('services.institution_medical_center')->saveAsDraft($institutionMedicalCenter);
+
+                //save other data here
+
+                $this->redirect($this->generateUrl('institution_add_specializations', array('imcId' => $institutionMedicalCenter->getId())));
+            } else {
+                var_dump($form->getErrorsAsString());
             }
         }
 
         return $this->render('InstitutionBundle:Institution:profile.medicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'isSingleCenter' => true,
             'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
         ));
+    }
+
+    public function setupSpecializationsAction(Request $request)
+    {
+        $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
+
+        if ($request->isMethod('POST')) {
+            //TODO: validation
+
+            //array of specialization ids containing an array of treatment ids
+            $treatments = $request->get('treatments');
+
+            if ($treatments) {
+                $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
+            }
+
+            $this->redirect($this->generateUrl('institution_setup_doctors', array('imcId' => $this->institutionMedicalCenter->getId())));
+        }
+
+        return $this->render('InstitutionBundle:Institution:profile.specialization.html.twig', array(
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $specializations,
+            'confirmationMessage' => "<b>Congratulations!</b> Your account has been successfully created."
+        ));
+    }
+
+    public function ajaxLoadSpecializationComponentsAction(Request $request)
+    {
+        //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
+        $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
+
+        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
+            'specializationComponents' => $specializationComponents,
+            'specializationId' => $request->get('specializationId')
+        ));
+
+        return new Response($html, 200);
+        //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
     private function getProxyMedicalCenter()

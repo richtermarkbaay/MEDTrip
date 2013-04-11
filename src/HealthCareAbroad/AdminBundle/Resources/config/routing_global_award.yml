@@ -67,7 +67,7 @@ admin_institution_ajaxRemoveGlobalAward:
         institutionId: \d+
        
 admin_institution_ajaxEditGlobalAward:
-    pattern: /institution/awards-certificates-and-affiliations/ajaxEdit
+    pattern: /admin/institution/{institutionId}/awards-certificates-and-affiliations/ajaxEdit
     defaults: { _controller: AdminBundle:InstitutionProperties:ajaxEditGlobalAward}
     requirements:
         _method: POST 

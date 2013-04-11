@@ -23,8 +23,14 @@ institution_login_check:
 institution_logout:
     pattern:  /logout
 
-institution_reset:
+institution_reset_password:
     pattern: /reset.html
     defaults: { _controller: InstitutionBundle:InstitutionUser:resetPassword }
     requirements:
         _method:  GET|POST
+
+institution_set_new_password:
+    pattern: /set-new-password/{token}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:resetPassword }
+    requirements:
+        _method: GET|POST

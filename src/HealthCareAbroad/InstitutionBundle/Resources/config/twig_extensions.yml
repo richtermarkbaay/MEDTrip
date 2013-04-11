@@ -1,0 +1,9 @@
+services:
+    twig.institution.signup:
+        class: HealthCareAbroad\InstitutionBundle\Twig\SignUpTwigExtension
+        calls:
+            - [setInstitutionSignUpService, [@services.institution_signup]]
+            - [setTwig, [@twig]]
+        public: false
+        tags:
+            - { name: twig.extension }

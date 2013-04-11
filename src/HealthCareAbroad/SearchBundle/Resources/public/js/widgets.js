@@ -19,7 +19,7 @@ var BroadSearchWidget = {
             'autocompleteField': null,
             'dataSource': {},
             'valueField': '#treatment_id',
-            'selectedLabel': '',
+            'selectedLabel': ''
         },
         destinations: {
             'mainInputField': null,
@@ -28,7 +28,7 @@ var BroadSearchWidget = {
             'autocompleteField': null,
             'dataSource': {},
             'valueField': '#destination_id',
-            'selectedLabel': '',
+            'selectedLabel': ''
         }
     },
     
@@ -38,11 +38,13 @@ var BroadSearchWidget = {
     },
     
     loadSourcesByType: function(params) {
-        var _type = params.type || null;
+        var _type = typeof params.type === 'undefined' ? null : params.type;
+        
         if (_type != 'treatments' || _type != 'destinations') {
             var _theOtherType = _type == 'treatments' ? 'destinations' : 'treatments';
+
             // reset first the hidden value field of the other field
-            if ('' == BroadSearchWidget.formComponents[_theOtherType].autocompleteField.val().trim()) {
+            if ('' == $.trim(BroadSearchWidget.formComponents[_theOtherType].autocompleteField.val())) {
                 $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
             }
             
@@ -68,38 +70,39 @@ var BroadSearchWidget = {
     initializeComponents: function(){
         
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
-            
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
             });
             
+            var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
+            
             componentOptions.autocompleteField
                 // setup autocomplete
                 .autocomplete({
-                    appendTo: componentOptions.dropdown,
                     delay: 0,
                     minLength: 0,
+                    appendTo : listWrapper,
                     response: function(event, ui) {
-                        if (ui.content.length == 0) {
-                            $($(this).attr('data-container')).html(''); // clear list
+                        if (ui.content.length > 0) {
+                            listWrapper.removeClass('hide');
                         }
-                    },
+                    }, 
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
                         var matches = [];
-                        componentOptions.dataSource.map(function(_i){
-                            if (_i.value && ( !request.term || matcher.test(_i.label))) {
-                                matches.push({'value': _i.label, 'id': _i.value, 'label': _i.label, 'type': type});
+                        $.each(componentOptions.dataSource, function(_i, _each){
+                            if (_each.value && ( !request.term || matcher.test(_each.label))) {
+                                matches.push({'value': _each.label, 'id': _each.value, 'label': _each.label, 'type': type});
                             }
                         });
                        response(matches);
                    },
                    select: function(event, ui) {
-                       // reload the other sources
-                       BroadSearchWidget.loadSourcesByType(ui.item);
-                       // set the values
-                       $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
-                       BroadSearchWidget.submitButton.attr('disabled', false);
+                       if ($(BroadSearchWidget.formComponents[type].valueField).val()  != ui.item.id) {
+                           // load sources of the other type
+                           BroadSearchWidget.loadSourcesByType(ui.item);
+                           $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
+                       }
                    },
                    change: function(event, ui) {
                        if (!ui.item) {
@@ -114,11 +117,21 @@ var BroadSearchWidget = {
                        // check if both type-in values are empty
                        var _allEmpty = BroadSearchWidget.form.find('input.type_in:text[value=""]').length >= BroadSearchWidget.form.find('input.type_in:text').length;
                        BroadSearchWidget.submitButton.attr('disabled', _allEmpty);
+                   },
+                   close: function(event, ui) {
+                	   listWrapper.addClass('hide');
                    }
                 });
             
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                _itemLink.on('click', function(){
+                    BroadSearchWidget.loadSourcesByType(item);
+                    $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
+                    BroadSearchWidget.submitButton.attr('disabled', false);
+                    BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
+                    
+                });
                 return $("<li>").append(_itemLink).appendTo(ul);
             };
             
@@ -128,9 +141,6 @@ var BroadSearchWidget = {
             };
             //ui-menu-item
             componentOptions.autocompleteField.data('ui-autocomplete')._renderMenu = function(ul, data) {
-                if (!componentOptions.dropdown.parent().hasClass('open')) {
-                    componentOptions.dropdown.dropdown('toggle');
-                }
                 var _cnt = 0;
                 $.each( data, function( index, item ) {
                     if (_cnt > 50) {
@@ -139,24 +149,7 @@ var BroadSearchWidget = {
                     componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData( ul, item );
                     _cnt++;
                 });
-                ul.attr('class', 'popup-list').attr('style', ''); 
             }
-            
-            // override suggest function not to resize and reposition menu
-            componentOptions.autocompleteField.data('ui-autocomplete')._suggest = function( items ) {
-                var ul = this.menu.element.empty();
-                this._renderMenu( ul, items );
-                this.menu.refresh();
-                ul.show();
-
-                if ( this.options.autoFocus ) {
-                    this.menu.next();
-                }
-            };
-            
-            componentOptions.autocompleteField.data('ui-autocomplete')._resizeMenu = function() {
-                console.log('do not resize menu');
-            };
         });
     },
     
@@ -240,16 +233,17 @@ var NarrowSearchWidget = {
                 appendTo: dropdown,
                 delay: 0,
                 minLength: 0,
-                source:  function(request, response) {
-                   var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+                source: function(request, response) {
+                   var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i");
                    var matches = [];
-                   NarrowSearchWidget.sources[widget_key].map(function(_i){
-                       if (_i.value && ( !request.term || matcher.test(_i.label))) {
-                           matches.push({'value': _i.label, 'id': _i.value, 'label': _i.label, 'type': widget_key});
+                   $.each(NarrowSearchWidget.sources[widget_key], function(_i, _val) {
+                       if (_val.value && ( !request.term || matcher.test(_val.label))) {
+                           matches.push({value: _val.label, id: _val.value, label: _val.label, type: widget_key});
                        }
                    });
-                  response(matches);
-              }
+
+                   response(matches);
+                }
             });
         // override _renderItem function of UI.autocomplete
         field.data('ui-autocomplete')._renderItem = function(ul, item) {
@@ -293,7 +287,6 @@ var NarrowSearchWidget = {
                 field.data('ui-autocomplete')._renderItemData( ul, item );
                 _cnt++;
             });
-            ul.attr('class', 'popup-list').attr('style', ''); 
         };
         
         // override suggest function not to resize and reposition menu

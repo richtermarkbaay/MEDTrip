@@ -84,7 +84,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
     public function getAvailableDoctorsByInstitutionMedicalCenter(InstitutionMedicalCenter $center, $searchKey)
     {
-
         $ids = array();
         foreach ($center->getDoctors() as $each) {
             $ids[] = $each->getId();

@@ -1,47 +1,46 @@
-<div class="span2">
-	<a>{{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {alt: 'hospital logo'}, 'context' : 1}) | raw }}</a>
-</div>
-<div class="span5 address-box">
-	<h1>{{ institution.name }}</h1>
-
-	<div class="media">
-		<div class="pull-left">
-			<img src="/images/frontend/address_icon2.png" class="media-object">
+<div class="clinic-header-wrapper">
+    <div class="clinic-logo-wrapper pull-left">
+        {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo default', alt: 'clinic logo'}, 'context' : 1}) | raw }}
+    </div>
+    
+    <div class="right-column-wrapper">
+    	<h2>{{ institution.name }}</h2>
+		<div class="address-wrapper">
+		    <span class="hca-sprite address-icon-dark"></span>
+			<address>
+			    {{ institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ') }}
+			    <strong>{{ institution_address_to_array(institution, ['city', 'state', 'country']) | join(', ') }}</strong>
+			</address>
 		</div>
-		<div class="media-body">
-			<h6>{{ institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ') }}</h6>
-			<h4>{{ institution_address_to_array(institution, ['city', 'state', 'country']) | join(', ') }}</h4>
-		</div>
-	</div>
 
-	<div class="contact_clinic span6">
-    	{% if number %}
-    	    <a id="institution-call" href="javascript:void(0)" class="call btn green">Call Us</a>
-            <script type="text/javascript">
-				$('#institution-call').tooltip({
-					title: '<h5><small>Landline: </small>{{ number }}</h5>',
-					html: true, delay: 0, animation: true, trigger: 'click'
-				});
-			</script>    
-    	{% endif %}
-    	{% if email %}<a id="email_single" class="email btn green" title="send email to {{email}}">Email</a>{% endif %}
-    	{% if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif %}
-    	
-    	<!-- Modal Single Institution Inquiry -->
-        	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-        	     with { modalId: 'modal_single_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
-        	%}
-       <!-- end Modal Single Institution Inquiry -->
-	</div>
+    	<div>
+        	{% if number %}
+        	    <a id="institution-call" href="javascript:void(0)" class="btn green"><span class="white-icon-search"></span> Call Us</a>
+        	{% endif %}
+        	{% if email %}<a id="email-single" class="btn green" title="send email to {{email}}"><span class="hca-sprite email-icon"></span> Email</a>{% endif %}
+        	{# if mainWebsites %}<a href="{{ mainWebsites }}" class="website btn green" target="_blank">Visit Website</a>{% endif #}
+        	
+        	<!-- Modal Single Institution Inquiry -->
+            	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+            	     with { modalId: 'modal_single_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+            	%}
+           <!-- end Modal Single Institution Inquiry -->
+    	</div>
+    </div>
 </div>
 
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
     <script type="text/javascript">
-        $('#email_single').click(function(){
+    	$('#institution-call').tooltip({
+    		title: '<h5><small>Landline: </small>{{ number }}</h5>',
+    		html: true, delay: 0, animation: true, trigger: 'click'
+    	});
+    	
+        $('#email-single').click(function(){
         	$('div#modal_single_institution_inquiry_form').modal('show');
             return false;
         });
-
     </script>
 {% endblock %}
+

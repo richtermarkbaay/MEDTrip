@@ -1,43 +1,41 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'formId': formId}} %}
     {% block modalBody %}
-     <div class="alert-box"></div>
-    <form class="form-horizontal" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
-       
-        <div class="inquirer_name control-group row-fluid">
-            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3 pull-left">
+    
+    <form class="form-horizontal row-fluid" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
+        <div class="alert-box"></div>
+        <div class="inquirer_name control-group">
+            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3">
                 <strong>{{ form.children.inquirer_name.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_name) }}
-            <span class="help-inline"></span>    
+            {{ form_widget(form.inquirer_name, {attr: {class: 'span9'}}) }}    
         </div>
-        <div class="country control-group row-fluid">
-            <label for="{{ form.children.country.vars.id }}" class="span3 pull-left">
+        <div class="country control-group">
+            <label for="{{ form.children.country.vars.id }}" class="span3">
                 <strong>{{ form.children.country.vars.label }}</strong>
             </label>
-            <div class="country-select">
-            {{ form_widget(form.country) }}
-            </div>
+            {{ form_widget(form.country, {attr: {class: 'span9'}}) }}
         </div>
-        <div class="inquirer_email control-group row-fluid">
-            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3 pull-left">
+        <div class="inquirer_email control-group">
+            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3">
                 <strong>{{ form.children.inquirer_email.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_email, { 'attr': {'placeholder': 'i.e you@domain.com'} }) }}
-            <span class="help-inline"></span>    
+            {{ form_widget(form.inquirer_email, {attr: {class: 'span9'}}) }}    
         </div>
         
         <div class="message control-group row-fluid">
-            <label for="{{ form.children.message.vars.id }}">
+            <label for="{{ form.children.message.vars.id }}" class="span3">
                 <strong>{{ form.children.message.vars.label }}</strong>
             </label>
-            {{ form_widget(form.message, { 'attr': {'rows': 5} }) }}
+            {{ form_widget(form.message, {attr: {rows: 5, class: 'span9'} }) }}
         </div>
         
-        <div class="captcha control-group row-fluid">
-            <label for="{{ form.children.captcha.vars.id }}" class="pull-left">
+        <div class="captcha control-group">
+            <label for="{{ form.children.captcha.vars.id }}" class="span3">
                 <strong>{{ form.children.captcha.vars.label }}</strong>
             </label>
-            {{ form_widget(form.captcha, { 'attr': {'rows': 4} }) }}
+            <div class="span9">
+                {{ form_widget(form.captcha) }}
+            </div>
         </div>
         {{ form_rest(form) }}
                             	                        	

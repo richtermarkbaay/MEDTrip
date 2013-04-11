@@ -32,31 +32,51 @@ class GlobalAwardService
         return $query->getResult();
     }
     
-    public function getActiveAwards()
+    public function getFieldTypeChoicesSource($appendAwardingBodyToLabel=true)
     {
-        $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
         $awardTypes = GlobalAwardTypes::getTypes();
         $awards = \array_flip(GlobalAwardTypes::getTypeKeys());
-    
+        
         // initialize holder for awards
         foreach ($awards as $k => $v) {
             $awards[$k] = array();
         }
-    
+        $globalAwards = $this->getActiveAwards();
         foreach ($globalAwards as $_award) {
-            $_arr = $_award->getName();
-            $_arr['awardingBody'] = $_award->getAwardingBody()->getName();
-            $awards[\strtolower($awardTypes[$_award->getType()])][$_award->getId()] = $_arr;
+            //TODO: this service method should not concern itself with appending the awarding body to the label
+            $awards[\strtolower($awardTypes[$_award->getType()])][$_award->getId()] = $_award->getName()." - <small>{$_award->getAwardingBody()->getName()}</small>";
         }
-    
+        
         return $awards;
+    }
+    
+    /**
+     * Get GlobalAwards that are currently active
+     * 
+     * @return array GlobalAward
+     */
+    public function getActiveAwards()
+    {
+        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
+        ->select('g, ga')
+        ->from('HelperBundle:GlobalAward', 'g')
+        ->innerJoin('g.awardingBody', 'ga')
+        ->where('g.status = :activeStatus')
+        ->setParameter('activeStatus', GlobalAward::STATUS_ACTIVE)
+        ->orderBy('g.type', 'ASC')
+        ->orderBy('g.name', 'ASC')
+        ->getQuery();
+        $globalAwards = $query->getResult();
+        //$globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findBy(array('status' => GlobalAward::STATUS_ACTIVE), array('type' => 'ASC', 'name' => 'ASC'));
+        
+        return $globalAwards;
     }
     /**
      * Get all available awards and group it by type, used in autocomplete fields for global awards
      */
     public function getAutocompleteSource()
     {
-        $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+        $globalAwards = $this->getActiveAwards();
         $awardTypes = GlobalAwardTypes::getTypes();
         $autocompleteSource = \array_flip(GlobalAwardTypes::getTypeKeys());
         

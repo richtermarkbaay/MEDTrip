@@ -105,11 +105,11 @@
     <div class="control-group">
         <div class="span4">
             <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" class="span12 addressFields">
+            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields"> 
         </div>
         <div class="span8">
             <label for="Building Name">Building Name <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields">
+            <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" class="span12 addressFields">
         </div>
     </div>
 
@@ -197,7 +197,7 @@
         {% for choice in typeChoice %}
             <li>
                 <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label }}
+                {{ choice.label | raw }}
             </li>
         {% endfor %}
         </ul>

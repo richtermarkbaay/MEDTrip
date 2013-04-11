@@ -1,0 +1,23 @@
+{% spaceless %}
+
+<form class="" action="{{ path('admin_page_metas_save', {'id': form.vars.data.id}) }}" method="post" {{ form_enctype(form) }}>
+
+    <fieldset>
+    
+    <legend>Texts inclused with curly braces "{}" are variables.</legend>
+    <div>
+        <label>Page URL:</label>
+        <input type="text" disabled="disabled" value="{{ form.url.vars.value }}" class="input-xxlarge"/>
+        <a href="{{ form.url.vars.value }}" target="_blank">View Page</a>
+    </div>
+    
+
+	{{ form_row(form.title, {attr: {class: 'input-xxlarge'} }) }}
+	{{ form_row(form.description, {attr: {class: 'input-xxlarge'}}) }}
+	{{ form_row(form.keywords, {attr: {class: 'input-xxlarge'}}) }}
+	{{ form_rest(form) }}
+	<div class="clear"><br></div>
+    <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
+	</fieldset>
+</form>
+{% endspaceless %}

@@ -71,6 +71,13 @@ security:
                 path:   /admin/logout
                 target: /admin/login
 
+        institution.reset.password:
+            pattern:  ^/institution/reset.html$
+            security: false
+            
+        institution.set.new.password:
+            pattern: ^/institution/set-new-password
+            security: false
         institution.signup:
             pattern: ^/institution/register.html$
             security: false

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserResetPasswordType;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserPasswordToken;
+
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionUserEvent;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
@@ -193,9 +197,58 @@ class InstitutionUserController extends Controller
         return $this->redirect($this->generateUrl('institution_homepage'));
     }
     
-    public function resetPasswordAction()
+    public function resetPasswordAction(Request $request)
     {
-        return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig');
+        $institutionUserService = $this->get('services.institution_user');
+        $isEmailResetPassword = true;
+        if($token = $request->get('token')) {
+            $institutionUserToken = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionUserPasswordToken')->findOneByToken($token);
+            $accountId = $institutionUserToken->getAccountId();
+            $institutionUser = $institutionUserService->findById($accountId, true);
+            $isEmailResetPassword = false;
+            $form = $this->createForm(new InstitutionUserResetPasswordType(), $institutionUser);
+            
+            if ($request->isMethod('POST')) {
+                $form->bind($request);
+                if ($form->isValid()) {
+                    $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+                    $institutionUser = $institutionUserService->deleteInstitutionUserPasswordToken($institutionUserToken, $institutionUser);
+                    
+                    //auto login
+                    
+                    $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
+                    $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
+                    $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
+                    $this->get('security.context')->setToken($securityToken);
+                    $institutionUserService->setSessionVariables($institutionUser);
+                    
+                    return $this->redirect($this->generateUrl('institution_homepage'));
+                }
+                
+            }
+            
+            $params = array(
+                            'isEmailPassword' => $isEmailResetPassword,
+                            'token' => $token,
+                            'form' => $form->createView()
+                       );
+        }
+        else {
+            if ($request->isMethod('POST')) {
+                //send email
+                $email = $request->get('email');            
+                $accountId = $this->get('services.institution_user')->findByEmail($email);
+                
+                //generate token
+                $daysOfExpiration = 7;
+                $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
+                //$this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+            }
+            $params = array(
+                            'isEmailPassword' => $isEmailResetPassword
+                       );
+        }
+        return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig',$params);
     }
 
 }

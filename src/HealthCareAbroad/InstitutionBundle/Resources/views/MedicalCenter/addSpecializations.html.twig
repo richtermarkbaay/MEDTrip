@@ -59,7 +59,7 @@
 (function($){
     $(function(){
         $('button.previous_button').click(function(){
-            window.location = "{{ isSingleCenter ? path('institution_signup_complete_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}";
+            window.location = "{{ isSingleCenter ? path('institution_signup_setup_profile') : path('institution_medicalCenter_addDetails', {imcId: institutionMedicalCenter.id} ) }}";
 
             return false;
         });

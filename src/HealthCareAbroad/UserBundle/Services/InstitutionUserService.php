@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserPasswordToken;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -160,6 +162,67 @@ class InstitutionUserService extends UserService
     /**
      *
      * @param string $email
+     * @return InstitutionUser
+     */
+    public function findByEmail($email)
+    {
+        $accountData = $this->find(
+                        array(
+                            'email' => $email
+                        ),
+                        array('limit' => 1)
+        );
+        if ($accountData) {
+            return $accountData['id'];
+        }
+    
+        return null;
+    }
+    
+    public function createInstitutionUserPasswordToken($daysofExpiration, $accountId)
+    {
+        $daysofExpiration = intVal($daysofExpiration);
+    
+        //check if expiration days given is 0|less than 0
+        if ($daysofExpiration <= 0) {
+            $daysofExpiration = 7;
+        }
+    
+        //generate token
+        $generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
+    
+        //generate expiration date
+        $dateNow = new \DateTime('now');
+        $expirationDate = $dateNow->modify('+'. $daysofExpiration .' days');
+    
+        $passwordToken = new InstitutionUserPasswordToken();
+        $passwordToken->setAccountId($accountId);
+        $passwordToken->setToken($generatedToken);
+        $passwordToken->setExpirationDate($expirationDate);
+        $passwordToken->setStatus(SiteUser::STATUS_ACTIVE);
+    
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($passwordToken);
+        $em->flush();
+        return $passwordToken;
+    }
+    
+    public function deleteInstitutionUserPasswordToken(InstitutionUserPasswordToken $token, $institutionUser)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->remove($token);
+        $em->flush();
+        
+        if($institutionUser){
+            $this->update($institutionUser);
+        }
+        
+        return $institutionUser;
+    }
+    
+    /**
+     *
+     * @param string $email
      * @param string $password
      * @return InstitutionUser
      */
@@ -197,11 +260,9 @@ class InstitutionUserService extends UserService
      */
     public function findById($id, $activeOnly=true)
     {
-
         // find a institutionUser
         $repository = $this->doctrine->getRepository('UserBundle:InstitutionUser');
         $institutionUser = $activeOnly ? $repository->findActiveUserById($id) : $repository->find($id);
-
         return $institutionUser
             ? $this->getAccountData($institutionUser) // find a matching global account for this InstitutionUser
             : null; // no InstitutionUser found

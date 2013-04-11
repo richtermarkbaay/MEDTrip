@@ -16,6 +16,12 @@ institution_ajaxUpdateCoordinates:
     requirements:
         _method:  POST
 
+institution_ajaxLoadSpecializationComponents:
+    pattern: /institution/ajax/loadSpecializationComponents
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:ajaxLoadSpecializationComponents}
+    requirements:
+        _method:  GET
+
 institution_signup_complete_profile:
     pattern: /institution/complete-profile.html
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeProfileAfterRegistration }
@@ -25,6 +31,12 @@ institution_signup_complete_profile:
 institution_signup_medical_center:
     pattern: /institution/clinic-profile/{imcId}
     defaults: {_controller: InstitutionBundle:InstitutionAccount:completeMedicalCenterSignup }
+    requirements:
+        _method: GET|POST
+
+institution_setup_specializations:
+    pattern: /institution/clinic-profile/{imcId}/add-specializations
+    defaults: {_controller: InstitutionBundle:InstitutionAccount:setupSpecializations }
     requirements:
         _method: GET|POST
 

@@ -2,7 +2,7 @@
 /**
  *  
  * @author Adelbert Silla
- * 
+ * @deprecated Now catered in SignUpService and SignUpTwigExtension 
  */
 namespace HealthCareAbroad\InstitutionBundle\Entity;
 
@@ -17,7 +17,7 @@ final class InstitutionSignupStepStatus {
 
     protected static $routeNames = array(
         self::FINISH => 'institution_homepage',
-        self::STEP1 => 'institution_signup_complete_profile',
+        self::STEP1 => 'institution_signup_setup_profile',
         self::STEP2 => 'institution_medicalCenter_addSpecializations', // requires imcId params
         self::STEP3 => 'institution_medicalCenter_addAncilliaryServices', // requires imcId params
         self::STEP4 => 'institution_medicalCenter_addGlobalAwards', // requires imcId params
@@ -59,7 +59,7 @@ final class InstitutionSignupStepStatus {
     {
         return array(
             self::FINISH => 'institution_medicalCenter_edit', // requires imcId params
-            self::STEP1 => 'institution_signup_complete_profile'
+            self::STEP1 => 'institution_signup_setup_profile'
         );
     }
 }

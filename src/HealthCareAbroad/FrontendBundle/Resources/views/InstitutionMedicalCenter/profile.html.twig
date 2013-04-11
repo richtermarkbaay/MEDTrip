@@ -10,19 +10,11 @@
 {% block callout %}
     {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
         {% block calloutContent %}
-        <div class="span9">
-            <div class="media">
-                <div class="pull-left">
-                    {{ render_institution_logo(institution, {attr: {class: 'media-object', alt: institution.name}}) | raw }}
-                </div>
-                <div class="media-body">
-                    <h1><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h1>
-                </div>
-            </div>
-        </div>
-        <div class="span3">
-            <a class="all-clinic btn green" href="{{ get_institution_frontend_url(institution) }}">Hospital Page</a>
-        </div>			
+            <a href="{{ get_institution_frontend_url(institution) }}" class="mini-logo-wrapper">
+                {{ render_institution_logo(institution, {attr: {class: 'mini', alt: 'logo'}}) | raw }}
+            </a>
+            <h2 class="heading"><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h2>
+            <a class="btn green" href="{{ get_institution_frontend_url(institution) }}"><span class="hca-sprite list-icon"></span> Hospital Page</a>
         {% endblock %}
     {% endembed %}
 {% endblock %}
@@ -36,13 +28,11 @@
         {% set coordinates = medical_center_complete_address_to_array(institutionMedicalCenter, ['address'])|join(',') ~ ',' ~ institution_address_to_array(institutionMedicalCenter.institution, ['city', 'country'])|join(',') %}
     {% endif %}
 
-    <div id="details" class="row">
-        <div id="main_content" class="span8">
+        <div class="span8 profile-wrapper">
 
-            <div class="clinicdetails content">
-                {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
-                <div class="description"><p>{{ institutionMedicalCenter.description | raw }}</p></div>
-            </div>
+            {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:heading.html.twig' %}
+            
+            <p>{{ institutionMedicalCenter.description | raw }}</p>
 
             {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
                 with { specializations: institutionMedicalCenter.institutionSpecializations } %}
@@ -50,7 +40,7 @@
             {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' %}
 
             {% if institutionMedicalCenter.doctors|length %}
-                {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'DOCTORS', headingClass : 'doctors-heading', class: 'one-col-description content' } %}
+                {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors' } %}
                     {% block sectionContent %}
                         {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionMedicalCenter.doctors } %}
                     {% endblock %}                
@@ -59,7 +49,7 @@
 
         </div> <!--End of main_content-->
 
-        <aside id="aside_content" class="span4">
+        <aside class="span4 aside-wrapper">
 
             {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
@@ -72,7 +62,7 @@
             {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 
         </aside> <!--End of aside_content-->
-    </div>     
+     
 {% endblock %}
 
 {% block inlineJavascriptCode %}
@@ -87,7 +77,7 @@
             form: $('form#{{ formId }}') 
         });
         
-        $('a.call[rel="tooltip"]').tooltip({
+        $('#clinicCallUs').tooltip({
             title: function(){
                 return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
             },
