@@ -23,10 +23,12 @@ abstract class InstitutionAwareController extends Controller
     /**
      * Convenience function to help controllers set up common variables
      */
-    public function preExecute()
-    {
+    // TODO: Removed since there is an existing PreExecuteController listener, 
+    // which causes the preExecute method of InstitutionAwareController instance be called twice 
+//     public function preExecute()
+//     {
         
-    }
+//     }
     
     public function setInstitution(Institution $institution)
     {

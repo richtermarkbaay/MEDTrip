@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\SignUpStep;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
@@ -48,6 +50,18 @@ class InstitutionSignUpController  extends InstitutionAwareController
      * @var Request
      */
     private $request;
+    
+    /**
+     * @var SignUpStep
+     */
+    private $currentSignUpStep;
+    
+    private $signUpService;
+    
+    public function preExecute()
+    {
+        echo "called ako<br />";
+    }
     
 	/**
 	 * TODO: THIS IS MISPLACED
@@ -171,6 +185,9 @@ class InstitutionSignUpController  extends InstitutionAwareController
 	{
 	    //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
 	    $this->institution->setName('');
+	    
+	    // set the current sign up step based on this route
+	    
 	
 	    $this->confirmationMessage = '<b>Congratulations!</b> Your account has been successfully created.';
 	    $this->request = $this->getRequest();
@@ -240,6 +257,7 @@ class InstitutionSignUpController  extends InstitutionAwareController
 	            $routeName = 'institution_signup_medical_center';
 	    
 	            // this should redirect to 2nd step
+	            return $this->redirect($this->generateUrl($this->signUpService->getNextStepOfMultiCenterSignUp($signUpStep)->getRoute()));
 	            return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
 	        }
 	        $error = true;
