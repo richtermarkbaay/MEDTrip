@@ -134,7 +134,7 @@ class InstitutionSignUpController  extends InstitutionAwareController
     			$institution->setWebsites('');
     			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
     			$institution->setZipCode('');
-    			$institution->setSignupStepStatus(InstitutionSignupStepStatus::STEP1);
+    			$institution->setSignupStepStatus(1); // this is always the first step
 
     			$factory->save($institution);
 
@@ -173,7 +173,7 @@ class InstitutionSignUpController  extends InstitutionAwareController
             }
 	    }
 	    
-	    return $this->render('InstitutionBundle:Institution:signUp.html.twig', array(
+	    return $this->render('InstitutionBundle:SignUp:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
             'error' => $error,
