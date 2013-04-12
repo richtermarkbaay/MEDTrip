@@ -258,9 +258,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
             if ($form->isValid()) {
 
-                // get the next step redirect url
-                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionMedicalCenter->getId()));
-
                 // set the sign up status of this single center institution
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
 
@@ -268,7 +265,10 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->signUpService->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
 
                 // save services and awards
-                $this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
+                //$this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
+
+                // get the next step redirect url
+                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $institutionService->getFirstMedicalCenter($this->institution)->getId()));
 
                 return $this->redirect($redirectUrl);
             }
@@ -312,8 +312,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($this->request);
             if ($form->isValid()) {
 
-                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), $this->institutionMedicalCenter->getId());
-
                 // set sign up status to current step number
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
 
@@ -325,7 +323,9 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
 
-                //TODO: redirect to add specializations
+
+                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $institutionService->getFirstMedicalCenter($this->institution)->getId()));
+
                 return $this->redirect($redirectUrl);
             }
             $error = true;
@@ -445,6 +445,14 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         return new Response($html, 200);
         //return new Response($html, 200, array('Content-Type'=>'application/json'));
+    }
+
+    public function ajaxAddDoctorAction(Request $request)
+    {
+        $doctor = array('firstName' => 'FirstName', 'lastName' => 'LastName');
+        $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig');
+
+        return new Response(json_encode(array('doctor' => $doctor, 'rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
     }
 
     private function getProxyMedicalCenter()
