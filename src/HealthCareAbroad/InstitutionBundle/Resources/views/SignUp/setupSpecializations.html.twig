@@ -7,7 +7,7 @@
 <div class="row">
     <h1>{{ institutionMedicalCenter.name }}</h1>
     <div class="span8">
-        <form name="specializationsForm" action="{{ path('institution_setup_specializations', { imcId: institutionMedicalCenter.id }) }}" method="post">
+        <form name="specializationsForm" action="{{ path('institution_signup_setup_specializations', { imcId: institutionMedicalCenter.id }) }}" method="post">
             <section class="section specializations">
                 <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>
 
@@ -43,59 +43,9 @@
         </form>
     </div>
 
-    {# TODO: include steps history #}
     <aside class="span4">
-        <section class="aside-box get-started">
-            <h2>Let's Get Started</h2>
-            <div class="steps">
-                <div class="media completed">
-                    <span class="numbercircle pull-left">
-                        <i class="icon-ok"></i>
-                    </span>
-                    <div class="media-body">
-                        <span class="main-step">Create your personal account</span>
-                    </div>
-                </div>
-                <div class="media completed">
-                    <span class="numbercircle pull-left">
-                        <i class="icon-ok"></i>
-                    </span>
-                    <div class="media-body">
-                        <span class="main-step">Set-up profile for your Hospital</span>
-                    </div>
-                </div>
-                <div class="media active">
-                    <span class="numbercircle pull-left">3</span>
-                    <div class="media-body">
-                        <span class="main-step">Add Clinic / Center</span>
-                    </div>
-                </div>
-                <div class="media substeps completed">
-                    <span class="  pull-left">
-                        <i class="icon-circle"></i>
-                    </span>
-                    <div class="media-body">
-                        <span class="sub-main-step">Setup Clinic Profile</span>
-                    </div>
-                </div>
-                <div class="media substeps active">
-                    <span class=" pull-left">
-                        <i class="icon-circle"></i>
-                    </span>
-                    <div class="media-body">
-                        <span class="sub-main-step">Add Specializations</span>
-                    </div>
-                </div>
-                <div class="media substeps">
-                    <span class=" pull-left">
-                        <i class="icon-circle"></i>
-                    </span>
-                    <div class="media-body">
-                        <span class="sub-main-step">Add Doctors</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+        {# TODO: include steps widget #}
+
         <section class="aside-box info dashboard-side">
             <p><span><i class="icon-stethoscope icon-4x pull-left"></i></span>
                 Indicating all the <b>SPECIALIZATIONS</b> of this clinic will allow you to be searchable by patients looking for specialists or treatments in your areas of expertise.
@@ -118,7 +68,7 @@ $(document).on('show hide', '#accordion', function(e) {
 
         /* TODO: ideally we should return the data not html */
         $.ajax({
-            url: "{{ path('institution_ajaxLoadSpecializationComponents') }}",
+            url: "{{ path('institution_ajax_loadSpecializationComponents') }}",
             type: 'GET',
             data: { 'specializationId': target.data('specialization') },
             dataType: 'html',
@@ -154,7 +104,7 @@ $('#accordion').on('click', 'input:checkbox[name^="treatments"]', function(e) {
     var subSpecializationCheckbox = target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
 
     if (target.attr('checked')) {
-        $(subSpecializationCheckbox).attr('checked', 'checked');
+        subSpecializationCheckbox.attr('checked', 'checked');
     } else {
         var uncheckSubSpecializationCheckbox = true;
         target.parent().parent().find('input:checkbox[name^="treatments"]').each(function() {
