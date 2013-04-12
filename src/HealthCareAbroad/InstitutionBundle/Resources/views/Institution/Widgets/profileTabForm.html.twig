@@ -1,0 +1,136 @@
+<section class="section row-fluid">
+    <div class="row span12 alert alert-block">
+        <div class="span3">
+            <img src="{{ asset('images/institution/beaker.png') }}" alt="beaker-progress" class="beaker"
+            />
+            <div class="progress vertical bottom progress-info progress-xxlarge filled3">
+                <div class="bar" style="height:85%">
+                </div>
+            </div>
+        </div>
+        <div class="span9">
+            <button type="button" class="close" data-dismiss="alert">
+                &times;
+            </button>
+            <h4>
+                Your Hospital Profile is 25% complete.&nbsp;
+                <a href="#"><i class="icon-info-sign"></i></a>
+            </h4>
+            <p>
+                <a href="#">Upload a logo and make your hospital more recognizable to your prospective patients.</a>
+            </p>
+        </div>
+    </div>
+</section>
+
+<!--  Institution Description -->
+<section class="section action-info hca-main-profile">
+    <div class="textFields">
+        <h3> About your Hospital </h3>
+        <span> Here you can present your hospital general description. </span>
+        <p class="hca-helptext" id="institutionDescriptionText"> {{ institution.description }} </p>
+        <a href="#description" role="button" class="btn btn-primary" onclick="InstitutionProfile.openProfileForm($(this)); return false;"> Add Entry </a>
+    </div>
+    <div class="row-fluid hca-edit-box" style="display:none;" id="description">
+        <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
+            <i class="icon-remove"> </i>
+        </button>
+       <h3> Hospital Description </h3>
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+             with {formId: 'descriptionModalForm', fields: ['description']} 
+        %}
+    </div>
+</section>
+<!--  Institution Address -->
+<section class="section action-info hca-main-profile">
+    <div class="textFields">
+    <a href="#address" role="button" class="btn btn-misc pull-right" onclick="InstitutionProfile.openProfileForm($(this)); return false;">
+       <i class="icon-edit" title="Edit"></i><small class="addressLabel">Edit</small>
+    </a>
+        <h3>  Hospital Address </h3>
+        <div class="activity-feeds">
+            <span class="icon-map-marker"> </span>
+            {% set _address = institution_address_to_array(institution) %}
+            <span class="address_column">
+                <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+            </span>
+        </div>
+    </div>
+    <div class="row-fluid hca-edit-box" style="display:none;" id="address">
+        <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
+            <i class="icon-remove"> </i>
+        </button>
+        <h3>  Hospital Address </h3>
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+             with {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
+        %}
+    </div>
+</section>
+<!-- Modal Number -->
+ <section class="section action-info hca-main-profile">
+   <div class="textFields">
+        <a href="#number" role="button" class="btn btn-misc pull-right" onclick="InstitutionProfile.openProfileForm($(this)); return false;">
+           <i class="icon-edit" title="Edit"></i><small class="addressLabel">Edit</small>
+        </a>
+        <h3> Hospital Contact Details </h3>
+        <div class="activity-feeds">
+            <p> <i class="icon-globe"> </i>
+                http://www.
+                <b id="profileWebsitesText">  {{institution.websites}} </b>
+            </p>
+            <p> <i class="icon-envelope"> </i>
+                Email: <strong> <span id="profileEmailText"> {{institution.contactEmail}}</span>  </strong>
+            </p>
+            <p> <i class="icon-phone"> </i>
+                Contact Number:
+                <strong><span id="profileNumberText"> {{ render_institution_contact_number(institution) }} </span> </strong>
+            </p>
+        </div>
+    </div>
+    <div class="row-fluid hca-edit-box" style="display:none;" id="number">
+        <button class="btn btn-link pull-right" type="button"  onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
+            <i class="icon-remove"> </i>
+        </button>
+        <h3> Hospital Contact Details </h3>
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+             with {formId: 'numberModalForm', fields: ['contactNumber','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'} 
+        %}
+    </div>
+</section>
+
+<!-- Modal Social media sites -->
+<section class="section action-info hca-main-profile">
+    <div class="textFields">
+        <a href="#socialMedia" role="button" class="btn btn-misc pull-right" onclick="InstitutionProfile.openProfileForm($(this)); return false;">
+           <i class="icon-edit" title="Edit"></i><small class="addressLabel">{{ institution.websites | length ? 'Edit':'Add' }}</small>
+        </a>
+        <h3>  Hospital Social Media </h3>
+        <div class="activity-feeds" id="soclialMediaText">
+          
+            {% for type, site in institution_websites_to_array(institution) %}
+           <p>
+                <i class="icon-{{ type }}"> </i>
+                http://www:  <b>{{ site }}</b>
+             </p>
+            {% endfor %}
+        
+        </div>
+    </div>
+    <div class="row-fluid hca-edit-box" style="display:none;" id="socialMedia">
+        <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
+            <i class="icon-remove"> </i>
+        </button>
+        <h3>  Hospital Social Media </h3>
+            {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+                 with {formId: 'socialMediaForm', fields: ['socialMediaSites']} 
+            %}
+    </div>
+</section>
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionProfile.js') }}" ></script>
+<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+</script>
+{% endblock %}

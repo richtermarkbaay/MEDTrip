@@ -33,6 +33,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         websites:
             type: text
             nullable: false
+        socialMediaSites:
+            type: text
+            nullable: true  
+            column: social_media_sites 
         address1:
             type: text
             nullable: false

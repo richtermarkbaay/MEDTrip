@@ -64,11 +64,3 @@ institution_medicalCenter_ajaxSpecializationSource:
         imcId: \d+
         institutionId: \d+
         _method: GET       
-        
-institution_medicalCenter_index_listing:
-    pattern: /ajax-clinic-listing-all.html
-    defaults: { _controller: InstitutionBundle:Unsecured:loadMedicalCenterListing }
-    requirements:
-        institutionId: \d+
-        _method: GET
- 

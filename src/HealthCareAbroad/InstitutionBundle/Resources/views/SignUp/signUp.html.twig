@@ -114,7 +114,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="section">
+                <section>
                     <div class="row-fluid terms">
                         <div class="span12 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
                             <label class="checkbox">
@@ -138,9 +138,9 @@
                 {% endif %}
             </form>
         </div>
-        {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {signup: 'active', completedSteps: ['']} %}
-            
-		
+        <aside class="span4">
+            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
+		</aside>
         {% endblock %}
     {% endembed %}
  

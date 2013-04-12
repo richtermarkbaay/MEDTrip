@@ -13,10 +13,10 @@ services:
         tags:
             - { name: form.type, alias: contact_number_with_flag }
 
-    form.custom.websites:
+    form.custom.social_media_sites:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\WebSitesFieldType
         tags:
-            - { name: form.type, alias: websites_custom_field }
+            - { name: form.type, alias: social_media_sites_custom_field }
     form.globalCountry_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\GlobalCountryListType
         calls:
