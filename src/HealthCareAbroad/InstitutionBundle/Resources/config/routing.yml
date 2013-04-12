@@ -120,4 +120,10 @@ institution_exception_report_create:
     requirements:
         _method:  GET|POST
         
+institution_static_page:
+    pattern: /institution/{url}
+    defaults: { _controller: InstitutionBundle:StaticPage: index }
+    requirements:
+        _method: GET|POST
+        
 

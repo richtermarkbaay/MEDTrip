@@ -140,7 +140,12 @@ frontend_500:
 frontend_main_default:
     pattern:  /
     defaults: { _controller: FrontendBundle:Default:index}
-
+    
+frontend_static_page:
+    pattern: /{url}
+    defaults: { _controller: FrontendBundle:StaticPage: index }
+    requirements:
+        _method: GET|POST
 #splash_page: # this is used for splash page
 #    pattern:  /{url}
 #    defaults: { _controller: FrontendBundle:Default:new, url: /}

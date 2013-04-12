@@ -11,7 +11,7 @@ parameters:
     services.language_list: HealthCareAbroad\HelperBundle\Form\ListType\LanguageListType
     services.advertisement_list: HealthCareAbroad\HelperBundle\Form\ListType\AdvertisementListType
     #services.user_class: HealthCareAbroad\UserBundle\Services\UserService
-
+    services.static_page_class: HealthCareAbroad\HelperBundle\Services\StaticPageService
 services:
 
     services.helper.ancillary_service:
@@ -70,6 +70,24 @@ services:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
         arguments: [@doctrine]
 
+    services.static_page:
+        class: %services.static_page_class%
+        scope: request
+        arguments: [@doctrine]
+        calls:
+            - [setLogger, [@logger]]
+            - [setDoctrine, [@doctrine]]
+            - [setRequest, [@request]]
+            - [setSession, [@session]]
+            
+    #listener for static page router
+    listener.static_page.router:
+        class: HealthCareAbroad\HelperBundle\Listener\StaticPageRouterListener
+        scope: request
+        calls:
+            - [setRouterService, [@services.static_page]]
+        tags:
+            - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 34 }    
     #MISPLACED
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
