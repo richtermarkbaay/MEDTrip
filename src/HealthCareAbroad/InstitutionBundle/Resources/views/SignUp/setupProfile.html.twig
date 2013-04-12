@@ -58,8 +58,9 @@
             </form>
         </div>
 
-        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
-        
+        <aside class="span4">
+            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
+        </aside>
         
     </div>
 

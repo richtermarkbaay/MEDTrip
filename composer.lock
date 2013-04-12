@@ -1,5 +1,9 @@
 {
-    "hash": "af89911f80089c723ccfcd64b05cf2a2",
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+    ],
+    "hash": "8351cf8b0cfdbc2a02137e34c7b7715f",
     "packages": [
         {
             "name": "chromedia/utilities",
@@ -7,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:chromedia/utilities.git",
-                "reference": "89d721cd2936be270c3a9ed57f9d845258c91ce6"
+                "reference": "c41b738010de740670475e7f4c25b0f751089f0f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/chromedia/utilities/zipball/89d721cd2936be270c3a9ed57f9d845258c91ce6",
-                "reference": "89d721cd2936be270c3a9ed57f9d845258c91ce6",
+                "url": "https://github.com/chromedia/utilities/zipball/c41b738010de740670475e7f4c25b0f751089f0f",
+                "reference": "c41b738010de740670475e7f4c25b0f751089f0f",
                 "shasum": ""
             },
             "type": "library",
@@ -26,7 +30,7 @@
                 "source": "https://github.com/chromedia/utilities/tree/master",
                 "issues": "https://github.com/chromedia/utilities/issues"
             },
-            "time": "2012-07-17 09:22:55"
+            "time": "2013-04-01 03:42:58"
         },
         {
             "name": "doctrine/common",
@@ -380,17 +384,17 @@
         },
         {
             "name": "gregwar/captcha",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "target-dir": "Gregwar/Captcha",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Gregwar/Captcha",
-                "reference": "v1.0.1"
+                "url": "https://github.com/Gregwar/Captcha.git",
+                "reference": "v1.0.2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/Gregwar/Captcha/archive/v1.0.1.zip",
-                "reference": "v1.0.1",
+                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/v1.0.2",
+                "reference": "v1.0.2",
                 "shasum": ""
             },
             "require": {
@@ -425,7 +429,7 @@
                 "captcha",
                 "spam"
             ],
-            "time": "2013-01-21 12:59:54"
+            "time": "2013-03-17 15:52:31"
         },
         {
             "name": "gregwar/captcha-bundle",
@@ -434,16 +438,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gregwar/CaptchaBundle.git",
-                "reference": "4e13d2d4cb79c451ffdacb643701baa8547b3041"
+                "reference": "0b56f5cd87be7376ae804f973e30a00836329bb8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gregwar/CaptchaBundle/zipball/4e13d2d4cb79c451ffdacb643701baa8547b3041",
-                "reference": "4e13d2d4cb79c451ffdacb643701baa8547b3041",
+                "url": "https://api.github.com/repos/Gregwar/CaptchaBundle/zipball/0b56f5cd87be7376ae804f973e30a00836329bb8",
+                "reference": "0b56f5cd87be7376ae804f973e30a00836329bb8",
                 "shasum": ""
             },
             "require": {
-                "gregwar/captcha": "v1.0.1",
+                "gregwar/captcha": "v1.0.2",
                 "php": ">=5.3.0"
             },
             "type": "captcha-bundle",
@@ -478,7 +482,7 @@
                 "spam",
                 "visual"
             ],
-            "time": "2013-03-03 12:54:31"
+            "time": "2013-03-21 11:42:41"
         },
         {
             "name": "guzzle/guzzle",
@@ -934,12 +938,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "cf14c277588e6e11848061260d8b19d8c431a5a5"
+                "reference": "bafb3ad404d9e34c593bae30e2a1c61ee111f382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/cf14c277588e6e11848061260d8b19d8c431a5a5",
-                "reference": "cf14c277588e6e11848061260d8b19d8c431a5a5",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/bafb3ad404d9e34c593bae30e2a1c61ee111f382",
+                "reference": "bafb3ad404d9e34c593bae30e2a1c61ee111f382",
                 "shasum": ""
             },
             "require": {
@@ -952,7 +956,8 @@
                 "herzult/php-ssh": "*",
                 "phpspec/phpspec2": "dev-master",
                 "phpunit/phpunit": "3.7.*",
-                "rackspace/php-cloudfiles": "*"
+                "rackspace/php-cloudfiles": "*",
+                "rackspace/php-opencloud": "dev-master"
             },
             "suggest": {
                 "amazonwebservices/aws-sdk-for-php": "to use the Amazon S3 adapter",
@@ -960,10 +965,12 @@
                 "dropbox-php/dropbox-php": "to use the Dropbox adapter",
                 "ext-apc": "to use the APC adapter",
                 "ext-curl": "*",
+                "ext-fileinfo": "*",
                 "ext-mbstring": "*",
                 "ext-mongo": "*",
                 "ext-zip": "to use the Zip adapter",
-                "knplabs/knp-gaufrette-bundle": "*"
+                "knplabs/knp-gaufrette-bundle": "*",
+                "rackspace/php-opencloud": "to use Opencloud adapter"
             },
             "type": "library",
             "extra": {
@@ -998,7 +1005,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-03-01 18:12:01"
+            "time": "2013-03-25 12:59:27"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -1328,12 +1335,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "b6bfc8f7f8ae5dac7883885ee323dc3b53ab7d21"
+                "reference": "9dacda8baba697fe6d71251b3f424ffdb3b30425"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/b6bfc8f7f8ae5dac7883885ee323dc3b53ab7d21",
-                "reference": "b6bfc8f7f8ae5dac7883885ee323dc3b53ab7d21",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9dacda8baba697fe6d71251b3f424ffdb3b30425",
+                "reference": "9dacda8baba697fe6d71251b3f424ffdb3b30425",
                 "shasum": ""
             },
             "require": {
@@ -1369,7 +1376,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2013-02-04 10:09:01"
+            "time": "2013-04-05 04:38:57"
         },
         {
             "name": "symfony/assetic-bundle",
@@ -1500,24 +1507,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "v2.2.0-BETA2"
+                "reference": "v2.2.1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/v2.2.0-BETA2",
-                "reference": "v2.2.0-BETA2",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/v2.2.1",
+                "reference": "v2.2.1",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "swiftmailer/swiftmailer": ">=4.2.0,<4.4-dev",
-                "symfony/swiftmailer-bridge": ">=2.1.0,<2.3-dev"
+                "symfony/swiftmailer-bridge": ">=2.1,<3.0"
             },
             "require-dev": {
-                "symfony/config": ">=2.1.0,<2.3-dev",
-                "symfony/dependency-injection": ">=2.1.0,<2.3-dev",
-                "symfony/http-kernel": ">=2.1.0,<2.3-dev",
-                "symfony/yaml": ">=2.1.0,<2.3-dev"
+                "symfony/config": ">=2.1,<3.0",
+                "symfony/dependency-injection": ">=2.1,<3.0",
+                "symfony/http-kernel": ">=2.1,<3.0",
+                "symfony/yaml": ">=2.1,<3.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1546,7 +1553,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2013-01-08 20:24:29"
+            "time": "2013-03-25 20:02:12"
         },
         {
             "name": "symfony/symfony",
@@ -1733,7 +1740,9 @@
             "time": "2013-02-09 18:21:53"
         }
     ],
-    "packages-dev": null,
+    "packages-dev": [
+
+    ],
     "aliases": [
 
     ],
@@ -1747,5 +1756,11 @@
         "imagine/imagine": 20,
         "chromedia/utilities": 20,
         "gregwar/captcha-bundle": 20
-    }
+    },
+    "platform": {
+        "php": ">=5.3.3"
+    },
+    "platform-dev": [
+
+    ]
 }
