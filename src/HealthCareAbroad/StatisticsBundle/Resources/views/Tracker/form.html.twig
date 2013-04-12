@@ -1,9 +1,9 @@
 {% set _csrfStatsToken = form_widget(statsTrackerForm._token) %}
-<form action="{{ path('frontend_save_impressions') }}" method="post" id="{{ get_impression_tracker_form_id() }}">
+<form action="{{ path('frontend_save_impressions') }}" method="post" id="{{ get_impression_tracker_form_id() }}" class="hidden">
     {{ _csrfStatsToken | raw }}
 </form>
 
-<form action="{{ path('frontend_save_clickthrough') }}" method="post" id="{{ get_clickthrough_tracker_form_id() }}">
+<form action="{{ path('frontend_save_clickthrough') }}" method="post" id="{{ get_clickthrough_tracker_form_id() }}" class="hidden">
     
     {{ _csrfStatsToken | raw }}
 </form>

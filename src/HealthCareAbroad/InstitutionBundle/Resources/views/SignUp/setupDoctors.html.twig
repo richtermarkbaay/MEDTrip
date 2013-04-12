@@ -1,0 +1,87 @@
+{% extends 'InstitutionBundle::registration.layout.html.twig' %}
+{% set disableMainNavigation = true %}
+{% set setUpProfile = true %}
+
+{% block content %}
+
+        <div id="confirmation-message">
+            <div class="confirmation-box">
+                <div class="alert alert-success">
+                    <p>
+                        <b>Doctor's Name</b> has been added to your Clinic Profile
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+<div class="row">
+    <h1>{{ institutionMedicalCenter.name }}</h1>
+
+    <div class="span8">
+        {% include 'InstitutionBundle:SignUp/Widgets:modalForm.doctors.html.twig' %}
+
+        <section>
+            <div class="row-fluid">
+                <h2 class="pull-left">List of Doctors</h2>
+                <a href="#add-doctor" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add Doctor</a>
+            </div>
+        </section>
+
+        <!-- initial markup -->
+        <section>
+            <h2>
+                <small>No doctors on the list, please add your doctors now.</small>
+            </h2>
+        </section>
+        <!-- end initial markup -->
+
+        <!-- with doctors added -->
+        <section class="doctors-listing">
+            <div class="row-fluid">
+                <ul class="thumbnails doctors">
+                    <li class="thumbnail-doctors">
+                        <img class="pull-left img-polaroid" src="images/institution/default-doctor-icon.png"
+                        alt="">
+                        <span class="medicalcenter-name">
+                            Dr. Firstname Lastname
+                        </span>
+                        <p>
+                            <i class="icon-medkit">
+                            </i>
+                            Specialization1, Specialization2
+                        </p>
+                        <ul class="actions">
+                            <li class="view">
+                                <div class="btn-group">
+                                    <button class="btn btn-misc">
+                                        <a href="#edit-doctor" data-toggle="modal"><i class="icon-edit"></i></a>
+                                    </button>
+                                    <button class="btn btn-misc">
+                                        <a href="#"><i class="icon-trash"></i></a>
+                                    </button>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section>
+            <a href="dashboard-hospital-initial.html" class="btn pull-right btn-primary btn-large">
+                            Done Adding Doctors
+                        </a>
+        </section>
+        <!-- end with doctors added -->
+    </div>
+
+    <aside class="span4">
+        {# TODO: include steps widget #}
+    </aside>
+</div>
+{% endblock %}
+
+
+{% block inlineJavascriptCode %}
+
+{% endblock %}

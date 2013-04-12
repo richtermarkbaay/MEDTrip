@@ -101,6 +101,7 @@ class AdminUserService extends UserService
     {
         // create user in chromedia global accounts
         $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));// hash the password
+        $siteUser->setStatus(SiteUser::STATUS_ACTIVE);
         $siteUser = $this->createUser($siteUser);
 
         // persist to admin_users table

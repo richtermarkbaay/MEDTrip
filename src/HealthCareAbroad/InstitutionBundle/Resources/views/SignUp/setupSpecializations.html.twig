@@ -1,0 +1,146 @@
+{% extends 'InstitutionBundle::registration.layout.html.twig' %}
+{% set disableMainNavigation = true %}
+{% set setUpProfile = true %}
+
+{% block content %}
+
+<div class="row">
+    <h1>{{ institutionMedicalCenter.name }}</h1>
+    <div class="span8">
+        <form name="specializationsForm" action="{{ path('institution_signup_setup_specializations', { imcId: institutionMedicalCenter.id }) }}" method="post">
+            <section class="section specializations">
+                <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>
+
+                <div class="accordion tooltip-wrap" id="accordion">
+                    {% for specialization in specializations %}
+                    <div class="accordion-group">
+                        <div class="accordion-heading">
+                            <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
+                                <i class="icon-plus-sign pull-right"></i><h4>{{ specialization.name }}</h4>
+                            </a>
+                        </div>
+                        <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
+                            <div class="accordion-inner">
+                                <div id="{{ 'panel' ~ specialization.id }}" data-loaded="0" class="row-fluid services-listing">
+                                    <center><img src="/images/institution/spinner_large.gif" /></center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="section footer">
+                <div class="row-fluid terms">
+                    <div class="span12">
+                        <a id="submitFormLink" class="btn pull-right btn-primary btn-large">
+                            Save and Continue
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </form>
+    </div>
+
+    <aside class="span4">
+        {# TODO: include steps widget #}
+
+        <section class="aside-box info dashboard-side">
+            <p><span><i class="icon-stethoscope icon-4x pull-left"></i></span>
+                Indicating all the <b>SPECIALIZATIONS</b> of this clinic will allow you to be searchable by patients looking for specialists or treatments in your areas of expertise.
+            </p>
+        </section>
+    </aside>
+</div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+
+<script type="text/javascript">
+$(document).on('show hide', '#accordion', function(e) {
+    var target = $(e.target);
+    target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-plus-sign icon-minus-sign');
+
+    var modifiableDiv = target.find('#panel' + target.data('specialization'));
+
+    if (!modifiableDiv.data('loaded')) {
+
+        /* TODO: ideally we should return the data not html */
+        $.ajax({
+            url: "{{ path('institution_ajax_loadSpecializationComponents') }}",
+            type: 'GET',
+            data: { 'specializationId': target.data('specialization') },
+            dataType: 'html',
+            success: function(response){
+                modifiableDiv.html(response);
+                modifiableDiv.data('loaded', 1);
+            }
+        });
+    }
+});
+
+/*
+TODO: are these performant? we want to avoid binding multiple event handlers but
+at the same time we don't want every click event to fire and run these code.
+
+Note: These are heavily reliant on the html markup. Changes to the structure might
+break the script.
+*/
+$('#accordion').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
+    var target = $(e.target);
+
+    target.parent().parent().find('input:checkbox[name^="treatments"]').each(function() {
+        if (target.attr('checked')) {
+            $(this).attr('checked', target.attr('checked'));
+        } else {
+            $(this).removeAttr('checked');
+        }
+    });
+});
+
+$('#accordion').on('click', 'input:checkbox[name^="treatments"]', function(e) {
+    var target = $(e.target);
+    var subSpecializationCheckbox = target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
+
+    if (target.attr('checked')) {
+        subSpecializationCheckbox.attr('checked', 'checked');
+    } else {
+        var uncheckSubSpecializationCheckbox = true;
+        target.parent().parent().find('input:checkbox[name^="treatments"]').each(function() {
+            if ($(this).attr('checked')) {
+                uncheckSubSpecializationCheckbox = false;
+
+                return false;/*break*/
+            }
+        });
+
+        if (uncheckSubSpecializationCheckbox) {
+            subSpecializationCheckbox.removeAttr('checked');
+        }
+    }
+});
+
+$('#submitFormLink').click(function(e) {
+    //TODO: validation
+    document.forms['specializationsForm'].submit();
+
+    return false;
+});
+
+/*
+$('.expandcollapse').click(function() {
+    $('.collapse').each(function(index) {
+        $(this).collapse("toggle");
+    });
+    alert('changing icon');
+    if ($(this).html() == "<i class=\"icon-white icon-plus-sign\"></i> Expand All") {
+        $(this).html("<i class=\"icon-white icon-minus-sign\"></i> Collapse All");
+    } else {
+        $(this).html("<i class=\"icon-white icon-plus-sign\"></i> Expand All");
+    };
+});
+*/
+</script>
+
+{% endblock %}

@@ -92,7 +92,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $institution = $institutionMedicalCenter->getInstitution();
 
         // Default image
-        $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />';
+        $html = '<span class="hca-sprite clinic-default-logo '. (isset($options['attr']['class']) ? $options['attr']['class'] : '') .'"></span>';
 
         if($institutionMedicalCenter->getLogo()) {
             $html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);            

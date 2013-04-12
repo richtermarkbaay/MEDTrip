@@ -1,53 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        {% set page_meta_configuration = build_frontend_meta_configuration(app.request) %}
         <meta charset="UTF-8">
-        <!-- meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" -->
 
-        <title>{% block title %}HealthCareAbroad{% endblock %}</title>
+        <title>{{ page_meta_configuration.title }}</title>
+        <meta name="description" content="{{ page_meta_configuration.description }}">
+        <meta name="keywords" content="{{ page_meta_configuration.keywords }}">
         <link href="{{ asset('images/favicon.ico') }}" rel="shortcut icon" type="image/x-icon">
 
-        {% block stylesheets %}
-
-            <link href="{{ asset('css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"/>
-            <link href="{{ asset('css/frontend/hca.min.css') }}" rel="stylesheet"/>
-            <!--<link href="{{ asset('css/frontend/handheld.css?v=1') }}" media="handheld" rel="stylesheet"/>-->
-
-        {% endblock %}
-
-        {#-- added temporary inline styles  --#}
-        {% block inlinestyle %}
-        <style type="text/css">
-		.modal .modal-body form select.error {
-            border: 1px solid #CC0000;
-            margin-bottom: 0;
-        }	
-    		</style>
-        {% endblock %}
-       
-        {#--
         {% stylesheets 
 			'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
 			'css/bootstrap.min.css'
+			'http://fonts.googleapis.com/css?family=PT+Sans:400,700|Gafata'
 			'css/frontend/hca.min.css'
-			output='css/compiled-admin.css'
-		
-			
+			output='css/frontend/compiled-styles.css'
         %}
             <link href="{{ asset_url }}" rel="stylesheet"/>
         {% endstylesheets %}
-        -- #}
-        <link href="{{ asset('http://fonts.googleapis.com/css?family=Muli') }}" rel="stylesheet"/>
-        
+
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements and CSS fixes -->
+        <!--[if lt IE 9]>
+            <script src="/js/html5shiv.js"></script>
+            <link href="{{ asset('css/frontend/ie-fixes.css') }}" rel="stylesheet"/>
+        <![endif]-->
+
 <!-- JS IMPORTANT NOTE: Please do NOT rearange the include Ordering. It should be:  
             'js/jquery/jquery-1.8.2.js'
             'js/bootstrap.min.js'
             'js/jquery/jquery-ui-1.9.0.custom.min.js'
             'bundles/statistics/js/frontend.js'
-        -->
-        
+        -->        
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="/js/jquery/jquery-ui-1.10.1.custom.min.js"></script>

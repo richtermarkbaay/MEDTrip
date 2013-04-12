@@ -1,9 +1,7 @@
 {% if featuredAds %}
 
-<div class="featured_wrapper">
+<div class="featured-type-wrapper box-shadow">
 	<div class="heading"></div>
-	<div id="featured_content">
-
 	{% for each in featuredAds %}
 	    {% if each.institution %}
 
@@ -12,23 +10,24 @@
 	        {#-----------------------------------------------------#}
 	        
 	        {#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
-	        <div class="featured_item {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
+	        <div class="featured-item {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
     		    
     		    {% if each.institutionMedicalCenter and each.institutionMedicalCenter.id > 0 %}
                     {% set primaryUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
-                    {% set primaryLogo = render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'clinic-logo', alt: 'clinic logo'}}) %}
+                    {% set primaryLogo = render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'small', alt: 'clinic logo'}}) %}
                     {% set secondaryUrl = get_institution_frontend_url(each.institution) %}
                 {% else %}
-                    {% set primaryLogo = render_institution_logo(each.institution, {attr: {class: 'clinic-logo', alt: 'hospital logo'}}) %}
+                    {% set primaryLogo = render_institution_logo(each.institution, {attr: {class: 'small', alt: 'hospital logo'}}) %}
                     {% set primaryUrl = get_institution_frontend_url(each.institution) %}
     		    {% endif %}
     		    
-    			<div class="general row">
+    			<div class="content row">
     				<div class="clinic-box">
 
                         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
             			        statisticsDataObject: each,
             			        link: {
+            			            class: 'small-logo-wrapper',
             			            url: primaryUrl,
                     			    html: primaryLogo
             			        }
@@ -53,47 +52,40 @@
             			{% if secondaryUrl is defined %}
                             {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
                 			        statisticsDataObject: each,
-                			        link: {url: primaryUrl, html: '<small>' ~ each.institution.name ~ '</small>'}
+                			        link: {url: primaryUrl, html: '<h4>' ~ each.institution.name ~ '</h4>'}
                 			} %}
             			{% endif %}
     					
     					<p>{{ each.description | raw }}</p>
     				</div>
-    				<div class="thumb-box">
-                        {% if each.media %}
-    					    <div class="img-background">
-        				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
-    					    </div>
-                        {% endif %}
 
-                        {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
-            			        statisticsDataObject: each,
-            			        link: {url: primaryUrl, class: 'btn green', html: '<span class="icon-search icon-white"></span> Learn More'}
-            			} %}
-    				</div>
+                    {% if each.media %}
+					    <div class="hca-sprite thumbnail-frame pull-right">
+    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
+					    </div>
+                    {% endif %}
+
+				    
+                    {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+        			        statisticsDataObject: each,
+        			        link: {url: primaryUrl, class: 'btn green pull-right', html: '<span class="white-icon-search"></span> Learn More'}
+        			} %}
     			</div>
-     			<div class="details row-fluid">
+     			<div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% for clinicHighlight in clinicHighlights %}
-                        <div class="span6">
-                            <div class="media">
-                                {% if clinicHighlight.icon %}
-                                    <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
-                                {% else %}
-                                    {% if clinicHighlight.type == 3 %}
-                                        <img alt="clinic logo" src="{{ imageplaceholder.doctorIcon }}" class="media-object img-circle pull-left">
-                                    {% else %}
-                                        <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type, 'green') }} media-object img-circle pull-left"></span>
-                                    {% endif %}
-                                {% endif %}
-    
-                                <div class="media-body">
-                                    {% if clinicHighlight.header %}
-                                        <h5 class="media-heading">{{ clinicHighlight.header }}</h5>
-                                    {% endif %}
-                                    <p>{{ clinicHighlight.label }}</p>
-                                </div>
-                            </div>
+                        <div class="item-wrapper span6">
+
+                            {% if clinicHighlight.icon %}
+                                <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
+                            {% else %}
+                                <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
+                            {% endif %}
+
+                            {% if clinicHighlight.header %}
+                                <h5>{{ clinicHighlight.header }}</h5>
+                            {% endif %}
+                            <span class="title">{{ clinicHighlight.label }}</span>
                         </div>
                     {% endfor %}
     		    </div>
@@ -101,7 +93,6 @@
 	    {% endif %}
 		
     {% endfor %}
-	</div><!--End of featured_content-->
-</div><!--End of featured_wrapper-->
+	</div>
 
 {% endif %}

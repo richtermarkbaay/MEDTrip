@@ -21,8 +21,9 @@
         </header>
     <!-- Page content here -->
     {% block content %}{% endblock %}
+    {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
 </div>
-{% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
+
     
 {% block inlineJavascriptCode %}{% endblock %}
 {% endblock %}

@@ -5,11 +5,9 @@
 {% endblock %}
 
 {% block content %}
-<div id="details" class="row">
-    <div id="main_content" class="span8">
-        <header class="filters">
-            <h2 class="total"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
-        </header>
+    <div class="search-results-wrapper span8">
+        <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
+
         {% for searchResultVo in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
@@ -33,10 +31,9 @@
         {% if searchResults.isPaginable %}
            {{ paginate(searchResults, routeName, paginationParameters, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
         {% endif %}
-
     </div> <!--End of main_content-->
 
-    {% include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } %}
-
-</div>
+    <aside class="aside-wrapper span4">
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } %}
+    </aside>
 {% endblock %}

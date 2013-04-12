@@ -1,0 +1,151 @@
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+
+{% block title %} Client Sign-up {% endblock %}
+
+{% block content %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
+        with {'pageTitle': 'Create an Account', 'contentSpanClass': 'span8 marginleft0'} 
+    %}
+        {% block wrappedContent %}    
+        <h1>Create New Account</h1> 
+        <div class="span8">
+            <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
+                <section class="section account-info">
+                   <h2>Personal Information</h2>
+                   <div class="hca-sub-label">
+                        The details you provide will be used to create your login credentials.
+                    </div>
+                     {% if error %}
+                        <div class="alert alert-error">
+                            {% for each in error_list %}
+                            	{{ each }} <br>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {% for alert, message in app.session.flashes %}
+                        	{% if alert == 'warning' %}
+                        	    {% set class = '' %}
+                        	{% elseif alert == 'error' %}
+                        	    {% set class = 'alert-error' %}
+                        	{% elseif alert == 'success' %}
+                        	    {% set class = 'alert-success' %}
+                        	{% elseif (alert == 'notice') or alert == 'info' %}
+                        	    {% set class = 'alert-info' %}
+                        	{% else %}
+                        	    {% set class = '' %}
+                        	{% endif %}
+                            <div class="alert {{ class }}">
+                                {{ message | raw}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="span6">
+                                <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
+                                    <label for="institutionSignUp_firstName">Your First Name *</label>
+                                   {{ form_widget(form.firstName, { 'attr': {'class': 'span12'} }) }}
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
+                                 <label for="institutionSignUp_lastName">Your Last Name *</label>
+                                    {{ form_widget(form.lastName, { 'attr': {'class': 'span12'} }) }}
+                                </div>
+                            </div>
+                            <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_jobTitle">  Your Job Role or Title
+                                    <small> ( Optional ) </small>
+                                </label>
+                                {{ form_widget(form.jobTitle, { 'attr': {'class': 'span6'} }) }}
+                            </div>
+                            <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_email">  Your Email address
+                                    <small> (Your own personal email.) </small>
+                                </label>
+                                {{ form_widget(form.email, { 'attr': {'class': 'span6', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                            </div>
+                            <div class="control-group row-field {{ (form.password.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_password">
+                                    Set your password <small>( Must be atleast 6 characters long ) </small>
+                                </label>
+                               {{ form_widget(form.password, { 'attr': {'class': 'span6'} }) }}
+                            </div>
+                             <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_confirmPassword"> Confirm your password </label>
+                                   {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="section institution-info">
+                    <h2>
+                        Direct Phone Contacts
+                        <br>
+                        <small>
+                            These numbers will be used to contact you about account management.
+                        </small>
+                    </h2>
+                     <div class="row-fluid">
+                        <div class="span12">
+                            {{ form_widget(form.contactNumber) }}
+                        </div>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="section account-info">
+                    <h2>Type of Institution  <br>
+                        <small>  Please select which best describes the healthcare provider you are adding: </small>
+                    </h2>
+                    <div class="row-fluid">
+                        <div class="span12 control-group row-field {{ (form.type.vars.valid ? '' : 'error') }}">
+                               {% for _key, _typeChoice in form.type.vars.choices %}
+                                    {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
+                                    <label class="radio" for="{{ _inputId }}">
+                                    <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
+                                    {{ _typeChoice.label }}</label> 
+                                   {% if not loop.last %}
+                                   <hr>
+                                   {% endif %}
+                                {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                <section>
+                    <div class="row-fluid terms">
+                        <div class="span12 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
+                            <label class="checkbox">
+                                {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's 
+                                <a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a> and 
+                                <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>.
+                            </label>
+                        </div>
+                    </div>
+                </section>
+                <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
+                        </div>
+                    </div>
+                </section>
+                
+                {% if (form._token) %} {# added condition for test #}
+                    {{ form_widget(form._token) }}
+                {% endif %}
+            </form>
+        </div>
+        <aside class="span4">
+            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
+		</aside>
+        {% endblock %}
+    {% endembed %}
+ 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+{% endblock %}

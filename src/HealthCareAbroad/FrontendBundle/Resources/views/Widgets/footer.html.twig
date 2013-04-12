@@ -1,87 +1,65 @@
-<div id="footer_wrapper">
-	<div class="container">
-		<div class="upper_part row"> <!--This is for the upper part of footer-->
-			<div class="site_map span4"> <!--This is for Site Map-->
-				<h4>Site Map</h4>
-				<div class="row">
-					<div class="span4">
-						<h5><span>Company</span></h5>
-						<ul>
-                            <li>
-                                <a href="{{ path('frontend_page_about_us') }}">About Us</a>
-                            </li>
-                            <li>
-                                <a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a>
-                            </li>
-                             <li>
-                                <a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a>
-                            </li>
-                             <li>
-                                <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>
-                            </li>
-                         {#   <li>
-                                <a href="#">Site Map</a>
-                            </li>
-                            #}
-                        </ul>
-                        <h5>
-                            <span>Contact Us</span>
-                        </h5>
-                        
-                        <ul>
-                            <li>
-                                <a id="feedback-message" href="#">Feedback</a>
-                         	    {{ render_feedback_form() | raw }}
-                            </li>
-                            <li>
-                                <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
-                            </li>
-                        </ul>
-					</div>
-				</div>
-			</div>
+<div class="hca-v-sprite footer-border"></div>
+<div id="footer-wrapper">
+	<div class="top-content-wrapper container"> <!--This is for the upper part of footer-->
+		<div class="site-map-section span4"> <!--This is for Site Map-->
+            <h4>Site Map</h4>
 
-			<div class="facepile span4"> <!--This is for the Facebook API-->
-				<h4>Like Us on Facebook</h4>
-				<div>
-					<iframe scrolling="no" frameborder="0" allowtransparency="true" style="border:none; overflow:hidden; width:287px; height:410px;" src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
-				</div>
-			</div>
+			<h5><span>Company</span></h5>
+			<ul class="circle-bullet-list">
+                <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
+                <li><a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a></li>
+                 <li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
+                 <li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
+                <!--li><a href="#">Site Map</a></li -->
+            </ul>
 
-			<div class="subscription span4"> <!--This is for the Subscriptions-->
-				{{ render_newsletter_subscription_form() |raw }}
-				<div class="register">
-                    <h5 class="bordered">Want to list your Clinic?</h5>
-                    <!--<a href="#" class="sign-up">Sign Up</a>
-                    <span class="or-option"></span>
-                    <a href="#" class="sign-up">Sign In</a>-->
-                    <p>Patients from all over the world are searching <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a> - make sure they can find you!</p>
-                    <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a>
-				</div>
-			</div>
+            <h5><span>Contact Us</span></h5>
+            <ul class="circle-bullet-list">
+                <li>
+                    <a id="feedback-message" href="#">Feedback</a>
+                    {{ render_feedback_form() | raw }}
+                </li>
+                <li>
+                    <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
+                </li>
+            </ul>
+
 		</div>
 
-		<div class="lower_footer row"> <!--This is for the lower part of footer-->
-			<div class="span5 navbar">
-				<p>&copy; Copyright 2013, Healthcareabroad.com Inc. All rights reserved</p>
-				<ul class="nav">
-					<li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
-					<li class="divider">/</li>
-					<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
-					<li class="divider">/</li>
-					<li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
-				</ul>
-			</div>
-			<div class="social span6">
-				<ul class="socials-nav">
-					<li><a href="https://plus.google.com/u/0/111671188601151092646/posts" target="_blank"><span class="g-icon"></span></a></li>
-					<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank"><span class="facebook-icon"></span></a></li>
-					<li><a href="https://twitter.com/HCAbroad" target="_blank"><span class="twitter-icon"></span></a></li>
-				</ul>
-			</div>
+		<div class="facebook-section span4"> <!--This is for the Facebook API-->
+			<h4>Like Us on Facebook</h4>
+            <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
 		</div>
 
-	</div> <!--End of class container-->
+		<div class="subscribe-section span4"> <!--This is for the Subscriptions-->
+			{{ render_newsletter_subscription_form() |raw }}
+			<div class="register row">
+                <h4 class="bordered">Want to list your Clinic?</h4>
+                <!--<a href="#" class="sign-up">Sign Up</a>
+                <span class="or-option"></span>
+                <a href="#" class="sign-up">Sign In</a>-->
+                <p>Patients from all over the world are searching <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a> - make sure they can find you!</p>
+                <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="bottom-content-wrapper container"> <!--This is for the lower part of footer-->
+		<ul class="socials-nav pull-right inline-list">
+			<li><a href="https://plus.google.com/u/0/111671188601151092646/posts" class="hca-sprite social-icon google-plus" target="_blank"></a></li>
+			<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank" class="hca-sprite social-icon facebook"></a></li>
+			<li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
+		</ul>
+
+        <p>&copy; Copyright 2013, Healthcareabroad.com Inc. All rights reserved</p>
+		<ul class="site-nav unstyled inline-list">
+			<li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
+			<li class="divider">/</li>
+			<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
+			<li class="divider">/</li>
+			<li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
+		</ul>
+	</div>
 </div>
 
 {% block inlineJavascriptCode %}

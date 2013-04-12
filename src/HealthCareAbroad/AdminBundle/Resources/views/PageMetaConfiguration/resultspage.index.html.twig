@@ -1,0 +1,56 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+    
+    {% include 'AdminBundle:PageMetaConfiguration/Widgets:sidebar.html.twig'%}
+    
+    <div id="content" class="span9">
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: 'Results Page Meta Configuration'
+            }  
+        %}
+            {% block sectionContent %}
+                {{ render_admin_custom_search_widget({
+                        'form_action': path('admin_page_metas_process_search_parameters'),
+                        'form_ajax_submit': true,
+                        'form_ajax_submit_handler': 'resultsPageMetaOnSubmitHandler'
+                    }) | raw 
+                }}
+                <div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
+                    
+                <div id="meta_form_container">
+                    
+                </div>    
+                    
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+
+    
+    <script type="text/javascript">
+    <!--
+    function resultsPageMetaOnSubmitHandler()
+    {
+        var _form = $(this);
+        $('#loader').fadeIn();
+        $('#meta_form_container').html('');
+        $.ajax({
+            url: _form.attr('action'),
+            data: _form.serialize(),
+            type: 'post',
+            datType: 'json',
+            success: function(response) {
+                $('#loader').hide();
+                $('#meta_form_container').html(response.html);
+            }
+        })
+        return false;
+    }
+    //-->
+    </script>
+{% endblock %}
+
