@@ -205,20 +205,20 @@ class MiscellaneousTwigExtension extends \Twig_Extension
 
     public function institution_websites_to_array(Institution $institution)
     {
-        $websites = \json_decode($institution->getWebsites(), true);
+        $socialMedia = \json_decode($institution->getSocialMediaSites(), true);
 
-        if(!is_array($websites)) {
+        if(!is_array($socialMedia)) {
             return;
         }
 
-        \array_walk($websites, function(&$v, $key){
+        \array_walk($socialMedia, function(&$v, $key){
             // if it matches http or https
             if (! \preg_match('/^https?:\/\//i', $v)) {
                 $v = 'http://'.$v;
             }
         });
 
-        return $this->json_websites_to_array($institution->getWebsites());
+        return $this->json_websites_to_array($institution->getSocialMediaSites());
     }
     
     private function _removeEmptyValueInArray(&$array = array())

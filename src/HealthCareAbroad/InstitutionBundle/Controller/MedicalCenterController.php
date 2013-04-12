@@ -91,6 +91,8 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function indexAction(Request $request)
     {
+        $output = array();
+        $status = $request->get('status', null);
         // Check if Already Completed the signupSteps
         $signupStepStatus = $this->institution->getSignupStepStatus();
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
@@ -106,23 +108,26 @@ class MedicalCenterController extends InstitutionAwareController
 
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-        $results = $this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution);
-        $medicalCentersByStatus = $this->service->getMedicalCenterCountByStatus($results->getQuery()->getResult());
+        
+        $results = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, $status);
+        
         $pagerAdapter = new DoctrineOrmAdapter($results);
+        
         $pagerParams = array(
-            'page' => $request->get('page', 1),
-            'limit' => 10
-        );
+                'page' => $request->get('page', 1),
+                'limit' => 10
+            );
+        
         $pager = new Pager($pagerAdapter, $pagerParams);
         
-        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
-            'institution' => $this->institution,
-            'medicalCenters' => $pager->getResults(),
-            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            'medicalCentersByStatus' => $medicalCentersByStatus,
-            'pager' => $pager,
-            'navStatus' => 'all'
-        ));
+        $parameters = array(
+                        'pager' => $pager,
+                        'navStatus' => $status,
+                        'institution' => $this->institution,
+                        'statusList' => InstitutionMedicalCenterStatus::getStatusList()
+        );
+        $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:index.html.twig', $parameters));
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -1139,4 +1144,5 @@ class MedicalCenterController extends InstitutionAwareController
         
         return $calloutView; 
     }
+    
 }

@@ -38,6 +38,11 @@ class Institution
      * @var text $websites
      */
     private $websites;
+    
+    /**
+     * @var text $socialMediaSites
+     */
+    private $socialMediaSites;
 
     /**
      * @var text $address1
@@ -261,6 +266,28 @@ class Institution
         return $this->websites;
     }
 
+    /**
+     * Set socialMediaSites
+     *
+     * @param text $socialMediaSites
+     * @return Institution
+     */
+    public function setSocialMediaSites($socialMediaSites)
+    {
+        $this->socialMediaSites = $socialMediaSites;
+        return $this;
+    }
+    
+    /**
+     * Get socialMediaSites
+     *
+     * @return text
+     */
+    public function getSocialMediaSites()
+    {
+        return $this->socialMediaSites;
+    }    
+    
     /**
      * Set address1
      *

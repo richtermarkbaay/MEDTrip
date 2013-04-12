@@ -116,15 +116,11 @@ var InstitutionProfile = {
     	 var _linkElement = $(_linkElement);
 
         _href = _linkElement.attr('href');
-        $('.progress').show();
-        $('.medical_centers').hide();
         $.ajax({
             url: _href,
             type: 'GET',
             success: function(response) {
-            	$('.progress').hide();
-            	$('.medical_centers').show();
-            	$('#medical_centers').html(response.html);
+            	$('#medicalCenterListing').html(response.output.html);
             },
             error: function(response) {
                 console.log(response);
@@ -137,15 +133,14 @@ var InstitutionProfile = {
     
     loadTabbedContentsOfMultipleCenterInstitution: function() {
         // medical centers content
-        /**$.ajax({
+        $.ajax({
             url: InstitutionProfile.ajaxUrls.loadActiveMedicalCenters,
             type: 'get',
             dataType: 'json',
             success: function(response){
-                InstitutionProfile.medicalCenterTabbedContentElement.html(response.medicalCenters.html);
-                InstitutionProfile.switchTab('medical_centers');
+                InstitutionProfile.medicalCenterTabbedContentElement.html(response.output.html);
             }
-        });**/
+        });
         
         // institution services content
         $.ajax({
@@ -215,7 +210,17 @@ var InstitutionProfile = {
         });
         
     },
-    
+    openProfileForm: function(_element){
+    	_attr = _element.attr('href');
+    	_element.parent('div.textFields').hide();
+    	$(_attr).show();
+    },
+    closeProfileForm: function(_element){
+    	_div = _element.parent('div.hca-edit-box').prev('div');
+    	_div.show();
+    	_element.parent('div.hca-edit-box').hide();
+    },
+
     submitModalForm: function(_formElement, _successCallback) {
         $.ajax({
            url: _formElement.attr('action'),
@@ -234,7 +239,9 @@ var InstitutionProfile = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.modal').find('form');
+        _form = _button.parents('.hca-edit-control-group').find('form');
+        _divToShow = _button.parents('section.hca-main-profile').find('div.textFields');
+    	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
@@ -278,48 +285,29 @@ var InstitutionProfile = {
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').prepend(_html);
                         
-                        if(HCAGoogleMap.map) { 
-                            HCAGoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
-                        }
+//                        if(HCAGoogleMap.map) { 
+//                            HCAGoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
+//                        }
                         
                         break;
     
                     case 'numberModalForm':
-                        var number = response.institution.contactNumber;
+                        var number = response.institution.contactNumber.phone_number;
                         
-                       	if(number.country_code){
-                    		$('.numberLabel').html('Edit Contact Number');
-                    	}else{
-                    		$('.numberLabel').html('Add Contact Number');
-                    	}
-                        
-                        $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
+                        $('#profileWebsitesText').html(response.institution.websitesString);
+                       	$('#profileEmailText').html(response.institution.contactEmail);
+                        $('#profileNumberText').html(number.number);
                         break;
-    
-                    case 'emailModalForm':
-                    	if(response.institution.contactEmail){
-                    		$('.emailLabel').html('Edit Contact Email');
-                    	}else{
-                    		$('.emailLabel').html('Add Contact Email');
-                    	}
-                        $('#profileEmailText').html(response.institution.contactEmail);
-                        break;
-    
-                    case 'websitesModalForm':
-                        var websites = response.institution.websites, websitesString = ''; 
-                        for(name in websites) {
-                        	
-                            websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
-                        }
-                    	if(websites[name]){
-                    		$('.emailLabel').html('Edit Websites');
-                    	}else{
-                    		$('.emailLabel').html('Add Websites');
-                    	}
-                        $('#profileWebsitesText').html(websitesString);
-                        break;
+                    case 'socialMediaForm':
+                    	  var websites = response.institution.socialMediaSites, websitesString = ''; 
+                    	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+                    	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+                    	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                        $('#soclialMediaText').html(websitesString);
+                    	break;
                 } 
-                _form.parents('.modal').modal('hide');
+                _divToShow.show();
+                _divToHide.hide();
                 _form.find('ul.text-error').remove();
                 _button.html(_buttonHtml).attr('disabled', false);
             },

@@ -1,0 +1,31 @@
+{% extends 'FrontendBundle::layout.html.twig' %}
+
+{% block content %}
+<!-- start content -->
+<div id="content">
+    <!--  start page-heading -->
+    <div id="page-heading">
+       
+        <h1> {{ title }}</h1>
+    </div>
+    <!-- end page-heading -->
+    
+    {% embed '::contentWrapper.admin.html.twig' %}
+        
+        {% block wrappedContent %}
+            <!--  start table-content  -->
+            <div id="table-content">
+				{% include '::notice.admin.html.twig' %}
+			
+                {{ content }}
+            </div>
+            <!--  end table-content  -->
+        {% endblock %}
+        
+    {% endembed %}
+    
+</div>
+<!--  end content -->
+<div class="clear">&nbsp;</div>
+{% endblock %}
+

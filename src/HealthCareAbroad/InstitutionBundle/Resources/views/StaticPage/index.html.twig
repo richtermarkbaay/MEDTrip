@@ -1,0 +1,14 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubMenu = 'doctors' %}
+{% set doctorLabel = getClassLabel('doctor') %}
+
+{% block content %}
+
+    <div id="content" class="span9">
+        {{ title }}
+        
+        {{ content }}
+    </div>
+
+{% endblock %}

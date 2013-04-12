@@ -1,76 +1,82 @@
-{% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'medical_centers'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
-{% set navClinicListing = navStatus %}
-{% block content %}
-{% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
-        {% block wrappedContent %}
-			<div class="hca-banner">
-                <h1>
-                    Some Institution name
-                </h1>
-                <img src="/images/institution/institution3.png" alt="institution" />
-                <a href="#"><img src="/images/institution/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
-                <div class="institution-details">
-                    <!-- p>
-                        Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
-                        Malaysia
-                    </p -->
-                    <p>{{ institution_address_to_array(institution, ['address1']) | join(', ')}}</p>
-                    <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
+ 
+ <img style="display: none; float:center;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
+ <section class="section action-info hca-main-profile" id="medicalCenterListing">
+    <div>
+        <select id="styledSelect" class="blueText" onchange="ClinicListing.loadTabbedContentsOfClinics(this); return false;">
+            <option value="" >Sort Status</option>
+            {% for key, val in statusList %}
+              <option value="{{key}}" >{{val}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="row-fluid terms">
+        <ul class="thumbnails" id="medical_centers">
+        {% if pager.Results %}
+            {% for medicalCenter in pager.Results %}
+            <li class="thumbnail">
+                 <div class="ribbon-wrapper-{{ statusList[medicalCenter.status] | lower }} ">
+                    <div class="ribbon-{{ statusList[medicalCenter.status] | lower }}">{{ statusList[medicalCenter.status] }} </div>
                 </div>
-            </div>
-        {% endblock %}
-    {% endembed %}
-    <section id="content">
-         <div id="content" class="container">
-            <div class="row">
-                <div class="span12">
-                    <div class="pull-right">
-                        <a href="{{ path('institution_medicalCenter_add') }}" class="btn btn-primary btn-large">Add A New {{ clinicClassLabel.singular | title}}</a>
-                    </div>
-                    <section>
-                    <h1><span>Your {{ clinicClassLabel.plural | title}}</span></h1>
-                    {% include 'InstitutionBundle:MedicalCenter/Widgets:navMenusForClinicListing.html.twig' %}
-                    <br>
-                    <section class="row-fluid">
-                        <ul class="thumbnails" id="medical_centers">
-                        {% include 'InstitutionBundle:MedicalCenter:medicalCenterListing.html.twig' %}
-                        </ul>
-                    </section>
-                    
-                    {% if pager.isPaginable %}
-                       {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
-                    {% endif %}
-                   </section> 
-                </div>
-            </div><!--End of row-->
-        </div><!--End of container-->
-    </section>
-{% endblock %}
+                <img class="pull-left img-polaroid" src="{{ asset('images/institution/default_clinic.png') }}" alt="">
+                 <h4>{{ medicalCenter.name }} </h4>
+                <p>
+                    <i class="location-gray2">
+                    </i>
+                    {% set _institution_medical_center_address = medical_center_complete_address_to_array(medicalCenter, ['address', 'zipCode']) %}
+                    {% set _institution_address = medical_center_complete_address_to_array(medicalCenter, ['city', 'state', 'country']) %}
+        			{{ _institution_medical_center_address | join(', ') }}
+        			{{ _institution_address | join(', ') }}
+                </p>
+                <p>
+                    <i class="phone-gray2">
+                    </i>
+                    {{ render_institution_medical_center_contact_number(medicalCenter) }}
+                </p>
+                <ul class="actions">
+                    <li class="view">
+                        <div class="btn-group">
+                            <button class="btn btn-misc">
+                                <a href="clinic-profile.html"><i class="icon-edit"></i></a>
+                            </button>
+                            <button class="btn btn-misc">
+                                <a href="#"><i class="icon-trash"></i></a>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            {% endfor %}
+            {% else %}
+              <li class="thumbnail">
+             <p><h4>No {{ statusList[navStatus] | capitalize }} listing </h4></p>
+             </li>
+            {% endif %}
+             
+             
+            {% if pager.isPaginable %}
+                {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all, 'PagerBundle:Pager:paginateAjax.html.twig') }}
+        {% endif %}
+            
+       </ul>
+    </div>
+
+</section>
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionMedicalCenterTab.js') }}" ></script>
 <script type="text/javascript">
 <!--
     (function($){
         $(function(){
             $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
         });
-
         
-       //_url_base = '{{ path("institution_medicalCenter_index_listing", {institutionId: institution.id} ) }}';
-        
-       // ClinicListing.setAjaxUrls({
-         //   'loadPending': _url_base+'?content=pending',
-          //  'loadDraft': _url_base+'?content=draft',
-          // 'loadExpired': _url_base+'?content=expired',
-         //  'loadArchived': _url_base+'?content=archived',
-       // });
-       // 
-        //ClinicListing.tabbedContentElement = $('#medical_centers');
-        //ClinicListing.loadTabbedContentsOfMultipleCenterInstitution();  
+       ClinicListing.setAjaxUrls({'load': '{{ path("institution_medicalCenter_index" ) }}'});
+       ClinicListing.tabbedContentElement = $('#medicalCenterListing');
+       
         function grow(_el) {
             _el.css('height', '').css('overflow', '');
             _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');
@@ -85,3 +91,4 @@
 //-->
 </script>
 {% endblock %}
+
