@@ -114,7 +114,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         // TODO: find a better approach
         if ($this->get('session')->get('institutionId')) {
             // redirect to dashboard if there is an active session
-            return $this->redirect($this->generateUrl('institution_homepage'));
+            //return $this->redirect($this->generateUrl('institution_homepage'));
         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
@@ -259,7 +259,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
 
                 // get the next step redirect url
-                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
+                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionMedicalCenter->getId()));
 
                 // set the sign up status of this single center institution
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
@@ -312,7 +312,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($this->request);
             if ($form->isValid()) {
 
-                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
+                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), $this->institutionMedicalCenter->getId());
 
                 // set sign up status to current step number
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
