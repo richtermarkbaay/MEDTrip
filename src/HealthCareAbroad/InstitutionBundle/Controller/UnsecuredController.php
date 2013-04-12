@@ -273,50 +273,5 @@ class UnsecuredController extends Controller
 
        return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
-    
-    public function loadMedicalCenterListingAction()
-    {
-        $output = array();
-        $parameters = array('institution' => $this->institution, 'statusList' => InstitutionMedicalCenterStatus::getStatusList());
-        $content = $this->request->get('content', null);
-        switch ($content) {
-            case 'pending':
-                
-                $results = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, InstitutionMedicalCenterStatus::PENDING);
-                $pagerAdapter = new DoctrineOrmAdapter($results);
-                
-                $pagerParams = array(
-                                'page' => $request->get('page', 1),
-                                'limit' => 10
-                );
-                $pager = new Pager($pagerAdapter, $pagerParams);
-                
-                $parameters['navStatus'] = 'pending';
-                $parameters  = array(
-                                'medicalCenters' => $pager->getResults(),
-                                'pager' => $pager,
-                                'navStatus' =>'pending'
-                );
-                $output = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:medicalCenterListing.html.twig', $parameters));
-                break;
-            case 'draft':
-                $results = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, InstitutionMedicalCenterStatus::DRAFT);
-                $pagerAdapter = new DoctrineOrmAdapter($results);
-                
-                $pagerParams = array(
-                                'page' => $request->get('page', 1),
-                                'limit' => 10
-                );
-                $pager = new Pager($pagerAdapter, $pagerParams);
-                $parameters  = array(
-                                'medicalCenters' => $pager->getResults(),
-                                'pager' => $pager,
-                                'navStatus' =>'draft'
-                );
-                $output = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:medicalCenterListing.html.twig', $parameters));
-        }
-        
-        
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-    }
+
 }

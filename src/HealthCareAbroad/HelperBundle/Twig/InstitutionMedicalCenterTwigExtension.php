@@ -48,12 +48,10 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     public function render_institution_medical_center_contact_number(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $contactNumber = \json_decode($institutionMedicalCenter->getContactNumber(), true);
-        if (\is_null($contactNumber) || '' == $contactNumber) {
-            // try to get the institution contact number
-            $contactNumber = \json_decode($institutionMedicalCenter->getInstitution()->getContactNumber(), true);
+        if (\is_null($contactNumber) || $contactNumber == '') {
+            return null;
         }
-        
-        if (\is_array($contactNumber) && !empty($contactNumber)) {
+        else {
             if (isset($contactNumber['country_code'])) {
                 if (\preg_match('/^\+/', $contactNumber['country_code'])) {
                     $contactNumber['country_code'] = \preg_replace('/^\++/','+', $contactNumber['country_code']);
@@ -62,16 +60,23 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                     // append + to country code
                     $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
                 }
+                
+                $result = \implode('-', $contactNumber);
+                
+            }else{
+                if (isset($contactNumber['phone_number'])) {
+                    if (\preg_match('/^\+/', $contactNumber['phone_number']['number'])) {
+                            $result = \preg_replace('/^\++/','+', $contactNumber['phone_number']['number']);
+                        }
+                        else {
+                            // append + to country code
+                            $result = '+'.$contactNumber['phone_number']['number'];
+                        }
+                    }
             }
-            
-            $contactNumber = \implode('-', $contactNumber);
-        }
-        else {
-            $contactNumber = null;
         }
         
-        return $contactNumber;
-        
+        return $result;
     }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())

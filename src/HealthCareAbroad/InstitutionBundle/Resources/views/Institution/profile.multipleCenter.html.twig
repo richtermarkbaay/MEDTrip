@@ -86,7 +86,7 @@
         $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
         
         _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
-    	
+    
         // initialize the tabbed contents
         InstitutionProfile.setAjaxUrls({
                 'loadInstitutionServices': _url_base+'?content=services',
@@ -97,7 +97,7 @@
         InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
         InstitutionProfile.servicesTabbedContentElement = $('#services');
         InstitutionProfile.awardsTabbedContentElement = $('#awards');
-        InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();        
+        InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
     });
 })(jQuery);
 //-->

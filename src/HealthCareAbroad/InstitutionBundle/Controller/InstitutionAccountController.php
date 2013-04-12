@@ -467,10 +467,9 @@ class InstitutionAccountController extends InstitutionAwareController
                             $value = $value->__toString();
                         }
 
-                        if($key == 'address1' || $key == 'contactNumber' || $key == 'websites') {
+                        if($key == 'address1' || $key == 'contactNumber' || $key == 'socialMediaSites') {
                             $value = json_decode($value, true);
                         }
-
                         $output['institution'][$key] = $value;
                     }
                     $output['form_error'] = 0;
@@ -493,7 +492,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 return new Response($e->getMessage(),500);
             }
         }
-
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 

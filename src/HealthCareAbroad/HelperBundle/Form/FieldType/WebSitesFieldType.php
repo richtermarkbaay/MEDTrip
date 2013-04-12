@@ -15,7 +15,7 @@ class WebSitesFieldType extends AbstractType
     }
     public function getName()
     {
-        return 'websites_custom_field';
+        return 'social_media_sites_custom_field';
     }
     
     public function getParent()

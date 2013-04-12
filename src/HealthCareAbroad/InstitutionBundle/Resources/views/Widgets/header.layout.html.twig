@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="span4">
-                <a href="index.html"><a href="#"><img src="images/healthcareabroad-logo.png" alt="Health Care Abroad Logo"></a>
+                <a href="index.html"><a href="#"><img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"></a>
                 </a>
             </div>
             <div class="pull-right">
@@ -11,45 +11,16 @@
                     {% if not isSingleCenter and isDashBoard is defined %}
                     <ul class="nav">
                         <li>
-                            <a href="clinic-listing-all.html"><i class="icon-medkit"></i>Clinics</a>
+                            <a href="notifications.html"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> 10 </span></a>
                         </li>
+                        <li>
+                            <a href="clinic-listing-all.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>
+                        </li>
+                        <!-- <li>
+                            <a href="clinic-listing-all.html"><i class="icon-medkit"></i>Clinics</a>
+                        </li> -->
                     </ul>
                     {% endif %}
-                    <ul class="nav">
-                        <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-hospital"></i>{{ institutionTypeLabel }}<i class="icon-caret-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-header">
-                                    MANAGE PROFILE
-                                </li>
-                                <li>
-                                    <a href="hospital-profile.html"> <i class="icon-eye-open"></i> View {{institutionTypeLabel}} Profile </a>
-                                </li>
-                                <!-- <li>
-                                    <a href="manage-hospital-profile.html"><i class="icon-edit"></i>  Edit Hospital Profile </a>
-                                </li> -->
-                                <li class="divider">
-                                </li>
-                                <li class="nav-header">
-                                    MANAGE SERVICES & AWARDS
-                                </li>
-                                <li>
-                                    <a href="services.html"><i class="icon-ambulance"></i>Services </a>
-                                </li>
-                                <li>
-                                    <a href="awards.html"><i class="icon-certificate"></i>  Awards, Certifications, & Affiliations  </a>
-                                </li>
-                                <li class="divider">
-                                </li>
-                                <li class="nav-header">
-                                    MANAGE IMAGES / VIDEOS
-                                </li>
-                                <li>
-                                    <a href="#"> <i class="icon-picture"></i> Media Files </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
                     <ul class="nav">
                         <li>
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') }} {{ app.session.get('userLastName') }}<i class="icon-caret-down"></i></a>

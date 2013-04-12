@@ -1,7 +1,6 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
     
-    
     <div class="span6">
         <label for="Phone Number">{{ label_prefix }} Phone Number</label>
         <div class="hca-countrycodes">
@@ -9,8 +8,8 @@
                 {% set phone = "phoneNumberSelector" %}
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}"  id="phoneNumberAbbr">
+                <input type="text" class="span9 numberSelector" value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.value.phone_number.abbr }}"  id="phoneNumberAbbr">
             </div>
         </div>
     </div>
@@ -54,14 +53,9 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block websites_custom_field_widget %}
+{% block social_media_sites_custom_field_widget %}
     {% spaceless %}
-        <div class="control-group website">
-            <label for="website">Website</label>
-            <span class="pull-left">http://</span>
-            <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" class="span11 pull-right">
-        </div>
-        <div class="control-group social-media">
+        <div class="span12 social-media">
             <div class="span4">
                 <label for="twitter">Twitter</label>
                 <i class="icon-twitter icon-2x pull-left span2"></i>
