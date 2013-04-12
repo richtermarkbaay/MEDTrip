@@ -1,0 +1,19 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubMenu = 'doctors' %}
+{% set doctorLabel = getClassLabel('doctor') %}
+
+{% block content %}
+
+    <div id="content" class="span9">
+        <form method="POST" action="" {{ form_enctype(form) }} class="basic-form">
+            {{ form_row(form.title) }}
+			{{ form_row(form.websiteSection) }}
+			{{ form_row(form.content, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
+			{{ form_rest(form) }}
+            <br>
+		    <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
+        </form>
+    </div>
+
+{% endblock %}
