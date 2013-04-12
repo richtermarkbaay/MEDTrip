@@ -10,7 +10,7 @@
    {% for page in pager.getPages %}
       {% if page == pager.getPage %}
         <li class="active">
-            <a href="{{ paginate_path(route, page, parameters) }}">{{ page }}</a>
+            <a href="{{ paginate_path(route, page, parameters) }}" onclick ="InstitutionProfile.pagerMedicalCenter(this); return false;">{{ page }}</a>
         </li>
       {% else %}
         <li>
@@ -24,8 +24,3 @@
    {% endif %}
 </ul>
 </div>
-
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
-
-{% endblock %}

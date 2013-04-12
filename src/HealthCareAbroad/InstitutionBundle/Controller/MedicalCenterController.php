@@ -127,7 +127,6 @@ class MedicalCenterController extends InstitutionAwareController
                         'statusList' => InstitutionMedicalCenterStatus::getStatusList()
         );
         $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:index.html.twig', $parameters));
-        
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
