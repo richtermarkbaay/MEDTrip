@@ -81,13 +81,14 @@ services:
             - [setSession, [@session]]
             
     #listener for static page router
-    listener.static_page.router:
-        class: HealthCareAbroad\HelperBundle\Listener\StaticPageRouterListener
-        scope: request
-        calls:
-            - [setRouterService, [@services.static_page]]
-        tags:
-            - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 34 }    
+    #listener.static_page.router:
+    #    class: HealthCareAbroad\HelperBundle\Listener\StaticPageRouterListener
+    #    scope: request
+    #    calls:
+    #        - [setRouterService, [@services.static_page]]
+    #    tags:
+    #        - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 34 }
+        
     #MISPLACED
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension
