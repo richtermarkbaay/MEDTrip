@@ -1,0 +1,24 @@
+<div class="hca-banner">
+    <h1>
+       {{institution.name}}
+    </h1>
+  {% if institution.featuredMedia %}
+        {{ media(institution.featuredMedia, institution, 'default', {alt: 'Institution', style: 'max-height: 310px; width: 100%;'}) | raw }}
+    {% else %}
+     <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
+    {% endif %} 
+
+   {% if institution.logo %}
+        {{ media(institution.logo, institution, 'default', {alt: 'institution-logo'}) | raw }}
+    {% else %}
+         <a href="#"><img src="{{ asset('images/institution/default-hospital-logo.png') }}" alt="institution-logo" class="logo"/></a>
+    {% endif %} 
+   
+    <div class="institution-details">
+         <h4>
+            <i class="icon-map-marker icon-2x">
+            </i>
+            <p>{{ institution_address_to_array(institution, ['address1']) | join(', ')}}</p>
+        </h4>
+    </div>
+</div>

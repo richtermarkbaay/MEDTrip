@@ -34,3 +34,9 @@ institution_ajax_loadSpecializationComponents:
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxLoadSpecializationComponents}
     requirements:
         _method:  GET
+
+institution_ajax_addDoctor:
+    pattern: /institution/ajax/addDoctor/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxAddDoctor}
+    requirements:
+        _method:  GET

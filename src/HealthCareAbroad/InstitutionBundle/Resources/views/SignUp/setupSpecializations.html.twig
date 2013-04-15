@@ -7,7 +7,7 @@
 <div class="row">
     <h1>{{ institutionMedicalCenter.name }}</h1>
     <div class="span8">
-        <form name="specializationsForm" action="{{ path('institution_signup_setup_specializations', { imcId: institutionMedicalCenter.id }) }}" method="post">
+        <form name="specializationsForm" action="{{ path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id }) }}" method="post">
             <section class="section specializations">
                 <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>
 

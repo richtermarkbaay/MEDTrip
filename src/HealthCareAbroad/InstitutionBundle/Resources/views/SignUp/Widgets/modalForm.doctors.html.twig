@@ -10,7 +10,7 @@
             Knowing who will administer their procedures is a primary concern for patients. Quite often, access to good doctors is the main reason for their decision to travel abroad for treatment.
         </div>
 
-        <form action="{{ path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id }) }}" method="post">
+        <form name="doctorForm" action="/" method="post">
 
             <div class="row-fluid">
                 <div class="span12">
@@ -304,7 +304,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <a href="add-clinic-for-hospital-doctors-listing.html" class="btn pull-right btn-primary btn-large">Save</a>
+        <a id="submitDoctorForm" href="add-clinic-for-hospital-doctors-listing.html" class="btn pull-right btn-primary btn-large">Save</a>
     </div>
 </div>
 <!-- modal end add doctor -->

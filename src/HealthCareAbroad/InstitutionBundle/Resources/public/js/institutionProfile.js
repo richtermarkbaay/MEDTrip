@@ -116,15 +116,11 @@ var InstitutionProfile = {
     	 var _linkElement = $(_linkElement);
 
         _href = _linkElement.attr('href');
-        $('.progress').show();
-        $('.medical_centers').hide();
         $.ajax({
             url: _href,
             type: 'GET',
             success: function(response) {
-            	$('.progress').hide();
-            	$('.medical_centers').show();
-            	$('#medical_centers').html(response.html);
+            	$('#medicalCenterListing').html(response.output.html);
             },
             error: function(response) {
                 console.log(response);
