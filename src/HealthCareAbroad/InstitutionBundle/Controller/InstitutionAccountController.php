@@ -4,6 +4,8 @@
  *
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
@@ -261,13 +263,14 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
-        $pagerAdapter = new DoctrineOrmAdapter($this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution));
+        $approvedCenters = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, InstitutionMedicalCenterStatus::APPROVED);
+        $pagerAdapter = new DoctrineOrmAdapter($approvedCenters);
         $pagerParams = array(
-            'page' => $request->get('page', 1),
-            'limit' => 10
+                        'page' => $request->get('page', 1),
+                        'limit' => 10
         );
         $pager = new Pager($pagerAdapter, $pagerParams);
-
+        
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         $templateVariables = array(
             'institutionForm' => $form->createView(),
@@ -294,7 +297,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
             }
 
-
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();
 
@@ -304,16 +306,13 @@ class InstitutionAccountController extends InstitutionAwareController
 
         }
         else {
-            // multiple center institution profile view
-            $templateVariables['medicalCenters'] = $pager->getResults();
-            $templateVariables['pager'] = $pager;
-
-            if($request->get('page') > 0 ){
-                $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig', $templateVariables);
-                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-
-                return $response;
-            }
+           
+            $templateVariables =  array(
+                            'institution' => $this->institution,
+                            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
+                            'pager' => $pager,
+                            'institutionForm' => $form->createView(),
+            );
         }
 
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);

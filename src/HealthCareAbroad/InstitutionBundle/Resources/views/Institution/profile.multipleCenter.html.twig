@@ -1,21 +1,5 @@
-<div class="span9">
-    
-    <a href="javascript:void(0)" onclick="$('#featuredImageContainer').slideToggle();" style="display: block; width: 150px; font-size: 12px; float: right;">show / hide featured image</a>
-    
-    <a id="featuredImageContainer" data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionFeaturedImageModal" style="width:100%;margin-bottom: 20px"> 
- 
-        {% if institution.featuredMedia %}
-            {{ media(institution.featuredMedia, institution, 'default', {alt: 'Institution Featured Image', style: 'max-height: 310px; width: 100%;'}) | raw }}
-        {% else %}
-        <img width="" height="90" class="pic" alt="[Gallery Photo]" src="/images/institution/image_ph.png" style="max-height: 310px; width: 100%;"> 
-        {% endif %} 
-        {% set institutionTypeLabel = get_institution_type(institution.type)%}
-        MAnage {{ institutionTypeLabel }} Details
-        <span class="image-icon" style="top: 10px; right: 10px; left: auto;">
-            <img width="32" height="32" title="Change Featured Image" alt="Zoom" src="/images/institution/image-icon.png">
-        </span> 
-    </a>
-
+<div class="span8">
+   {#
     <div class="row"> 
         <div class="span2">
             <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
@@ -47,59 +31,65 @@
         </div>
     </div>
     <!-- end row -->
-    
-    <div class="tabbable">
+    #}
+   <div class="tabbable">
         <ul class="nav nav-tabs profile_tabs">
             <li class="active">
+                <a data-toggle="tab" class="profile_tab_links" href="#profile_tab">Hospital Details</a>
+            </li>
+             <li class="">
                 <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">{{ clinicClassLabel.plural | title}}</a>
             </li>
             <li class="">
                 <a data-toggle="tab" class="profile_tab_links" href="#services">{{ ancillaryServiceClassLabel.plural | title}}</a>
             </li>
             <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards, Certifications and Affiliations</a>
+                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
             </li>
-            
         </ul>
+        <br>
         <div class="tab-content" id="tabbed_content">
-                <div class="progress progress-striped active" style="display:none;">
+            <div class="progress progress-striped active" style="display:none;">
                     <div class="bar" style="width: 40%;"></div>
-                </div>
-            <div id="medical_centers" class="medical_centers tab-pane active">
-                {% include 'InstitutionBundle:Widgets:tabbedContent.institution.medicalCenters.html.twig' %}
             </div>
-            <div id="services" class="tab-pane"><span>Loading {{ ancillaryServiceClassLabel.plural }}...</span></div>
-            <div id="awards" class="tab-pane"><span>Loading {{ globalAwardClassLabel.plural }}...</span></div>
+            <div id="profile_tab" class="tab-pane active">
+              {% include 'InstitutionBundle:Institution/Widgets:profileTabForm.html.twig' %}
+           </div>   
+            <div id="medical_centers" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
+            <div id="services" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
+            <div id="awards" class="tab-pane"><img  id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
         </div><!-- /.tab-content -->
     </div>
 </div>
-<!-- end span9 -->
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 <script type="text/javascript">
-<!--
-(function($){
-    $(function(){
-
-        $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
-        
-        _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
-    
-        // initialize the tabbed contents
-        InstitutionProfile.setAjaxUrls({
-                'loadInstitutionServices': _url_base+'?content=services',
-                'loadInstitutionAwards': _url_base+'?content=awards'
-            });
-        
-        InstitutionProfile.tabbedContentElement = $('#tabbed_content');
-        InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
-        InstitutionProfile.servicesTabbedContentElement = $('#services');
-        InstitutionProfile.awardsTabbedContentElement = $('#awards');
-        InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
+    $(window).load(function() {
+        $('#confirm-message').modal('show');
     });
-})(jQuery);
-//-->
+    (function($){
+        $(function(){
+
+            $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
+            
+            _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
+            _medical_url = '{{ path("institution_medicalCenter_index") }}';
+            // initialize the tabbed contents
+            InstitutionProfile.setAjaxUrls({
+                    'loadInstitutionServices': _url_base+'?content=services',
+                    'loadInstitutionAwards': _url_base+'?content=awards',
+                    'loadActiveMedicalCenters': _medical_url+'?status=2'
+                });
+            
+            InstitutionProfile.tabbedContentElement = $('#tabbed_content');
+            InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
+            InstitutionProfile.servicesTabbedContentElement = $('#services');
+            InstitutionProfile.awardsTabbedContentElement = $('#awards');
+            InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
+            
+        });
+    })(jQuery);
 </script>
 {% endblock %}

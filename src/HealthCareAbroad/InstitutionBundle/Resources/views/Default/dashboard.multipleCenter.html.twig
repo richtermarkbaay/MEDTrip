@@ -1,105 +1,133 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'dashboard'} %}
-{% set _csrf_token_widget = form_widget(institutionForm._token) %}
-{% set globalAwardClassLabel = getClassLabel('global_award') %}
-{% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
-{% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-			<div class="hca-banner">
-                <h1>
-                   {{institution.name}}
-                </h1>
-              {% if institution.featuredMedia %}
-                    {{ media(institution.featuredMedia, institution, 'default', {alt: 'Institution', style: 'max-height: 310px; width: 100%;'}) | raw }}
-                {% else %}
-                 <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
-                {% endif %} 
-           
-               {% if institution.logo %}
-                    {{ media(institution.logo, institution, 'default', {alt: 'institution-logo'}) | raw }}
-                {% else %}
-                     <a href="#"><img src="{{ asset('images/institution/default-hospital-logo.png') }}" alt="institution-logo" class="logo"/></a>
-                {% endif %} 
-               
-                <div class="institution-details">
-                    <!-- p>
-                        Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
-                        Malaysia
-                    </p -->
-                    <p>{{ institution_address_to_array(institution, ['address1']) | join(', ')}}</p>
-                    <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
-                </div>
-            </div>
-          
-          <div class="span8">
-          
-              <div class="tabbable">
-        <ul class="nav nav-tabs profile_tabs">
-            <li class="active">
-                <a data-toggle="tab" class="profile_tab_links" href="#profile_tab">Hospital Details</a>
+{% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}
+<div class="span12">
+    <section class="alert alert-info">
+        <h2>Welcome to HealthcareAbroad.com!</h2>
+        <div class="hca-sub-label">
+            Now that patients can find your Medical Institution on HealthcareAbroad, make sure that they find complete and relevant information about everything that you have to offer. <br><br>However it seems there are couple of things need to be done. Just a few more things in order to make your Medical Institution Profile more comprehensive and recognizable to your prospective patients. To finish up, just complete the items listed below:
+        </div>
+    </section>
+    <section class="section row-fluid">
+        <h2> Suggestion for your Hospital </h2>
+       <ul class="thumbnails hca-alert-inquiry">
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
             </li>
-             <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">{{ clinicClassLabel.plural | title}}</a>
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
             </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#services">{{ ancillaryServiceClassLabel.plural | title}}</a>
-            </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
             </li>
         </ul>
-        <br>
-        <div class="tab-content" id="tabbed_content">
-            <div class="progress progress-striped active" style="display:none;">
-                    <div class="bar" style="width: 40%;"></div>
-            </div>
-            <div id="profile_tab" class="tab-pane active">
-              {% include 'InstitutionBundle:Institution/Widgets:profileTabForm.html.twig' %}
-           </div>   
-            <div id="medical_centers" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
-            <div id="services" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
-            <div id="awards" class="tab-pane"><img  id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
-        </div><!-- /.tab-content -->
-    </div>
-          
-                     
-    </div>
-                      {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
-        {% endblock %}
-    {% endembed %}
-{% endblock %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
-<script type="text/javascript">
-    $(window).load(function() {
-        $('#confirm-message').modal('show');
-    });
-    (function($){
-        $(function(){
+       
+    </section>
+    <section class="section row-fluid">
+        <h2>
+            List of Incomplete Clinic Profile
+        </h2>
+         <ul class="thumbnails hca-alert-inquiry">
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
 
-            $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
-            
-            _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
-            _medical_url = '{{ path("institution_medicalCenter_index") }}';
-            // initialize the tabbed contents
-            InstitutionProfile.setAjaxUrls({
-                    'loadInstitutionServices': _url_base+'?content=services',
-                    'loadInstitutionAwards': _url_base+'?content=awards',
-                    'loadActiveMedicalCenters': _medical_url+'?status=2'
-                });
-            
-            InstitutionProfile.tabbedContentElement = $('#tabbed_content');
-            InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
-            InstitutionProfile.servicesTabbedContentElement = $('#services');
-            InstitutionProfile.awardsTabbedContentElement = $('#awards');
-            InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
-            
-        });
-    })(jQuery);
-</script>
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
+
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
+            </ul>
+        
+    </section>
+    <section class="section row-fluid">
+        <h2>
+            Latest Inquiries
+        </h2>
+        <table class="table table-hover hca-inquiry">
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
+                    
+        {% endblock %}
+        
+    {% endembed %}
 {% endblock %}
 

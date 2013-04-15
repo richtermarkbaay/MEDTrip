@@ -44,18 +44,20 @@ class DefaultController extends InstitutionAwareController
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
     }
-    public function indexAction(Request $request)
+    
+    public function indexAction()
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $institutionAlerts = array();
-        
-        // TODO - Deprecated?? 
+    
+        // TODO - Deprecated??
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         //$news = $newsRepository->getLatestNews();
-        $isSingleCenter = false;
-
+        $news = array();
+    
+    
         $signupStepStatus = $this->institution->getSignupStepStatus();
-        
+    
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
             $params = array();
             $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
@@ -65,44 +67,25 @@ class DefaultController extends InstitutionAwareController
                 }
                 $params['imcId'] = $this->institutionMedicalCenter->getId();
             }
-            
+    
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+    
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
-            
-            $approvedCenters = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, InstitutionMedicalCenterStatus::APPROVED);
-            $pagerAdapter = new DoctrineOrmAdapter($approvedCenters);
-            $pagerParams = array(
-                            'page' => $request->get('page', 1),
-                            'limit' => 10
-            );
-            $pager = new Pager($pagerAdapter, $pagerParams);
-            
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
-            $params =  array(
-                    'institution' => $this->institution,
-                    'isDashBoard' => true,
-                    'isSingleCenter' => $isSingleCenter,
-                    'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-                    'pager' => $pager,
-                    'medicalCenters' => $pager->getResults(),
-                    'institutionForm' => $form->createView(),
-                );
         }
         else {
-            $isSingleCenter = true;
             $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
-            
-            $params =  array(
-                'institution' => $this->institution,
-                'isDashBoard' => true,
-                'isSingleCenter' => $isSingleCenter
-            );
         }
-        
-        return $this->render($template, $params);
+    
+        return $this->render($template, array(
+                        'alerts' => $institutionAlerts,
+                        'news' => $news,
+                        'institution' => $this->institution,
+                        'isDashBoard' => true
+        ));
     }
+    
     public function addClinicAction()
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
