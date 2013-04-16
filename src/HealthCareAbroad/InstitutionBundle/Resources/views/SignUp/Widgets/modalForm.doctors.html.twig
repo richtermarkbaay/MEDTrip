@@ -10,21 +10,17 @@
             Knowing who will administer their procedures is a primary concern for patients. Quite often, access to good doctors is the main reason for their decision to travel abroad for treatment.
         </div>
 
-        <form name="doctorForm" action="/" method="post">
+        <form id="doctorForm" action="/" method="post">
 
             <div class="row-fluid">
                 <div class="span12">
                     <div class="control-group span6">
-                        <label for="institution-name">
-                            Surname
-                        </label>
-                        <input type="text" name="institution-name" id="institution-name" placeholder="" class="span12" required="">
+                        <label for="institution-name">Surname</label>
+                        {{ form_widget(form.lastName, { 'attr': {'class': 'span12'} }) }}
                     </div>
                     <div class="control-group span6">
-                        <label for="website">
-                            First Name
-                        </label>
-                        <input type="text" name="institution-name" id="institution-name" placeholder="" class="span12" required="">
+                        <label for="website">First Name</label>
+                        {{ form_widget(form.firstName, { 'attr': {'class': 'span12'} }) }}
                     </div>
                 </div>
             </div>
@@ -32,97 +28,20 @@
             <div class="row-fluid">
                 <div class="span12">
                     <div class="control-group span6">
-                        <label for="institution-name">
-                            Middle Name
-                        </label>
-                        <input type="text" name="institution-name" id="institution-name" placeholder="" class="span12" required="">
+                        <label for="institution-name">Middle Name</label>
+                        {{ form_widget(form.middleName, { 'attr': {'class': 'span12'} }) }}
                     </div>
                     <div class="control-group span6">
-                        <label for="Suffix Name">
-                            Suffix
-                        </label>
-                        <div class="input-append hca-location">
-                            <input class="hca-suffix pull-left" id="appendedDropdownButton" type="text">
-                            <div class="btn-group">
-                                <button class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
-                                    <span class="caret"></span>
-                                </button>
-                                {# TODO: make this input text instead? #}
-                                <ul class="dropdown-menu suffix-select pull-left">
-                                    <li>Sr</li>
-                                    <li>Jr</li>
-                                    <li>I</li>
-                                    <li>II</li>
-                                    <li>III</li>
-                                </ul>
-                            </div>
-                        </div>
+                        <label for="Suffix Name">Suffix</label>
+                        {{ form_widget(form.suffix, { 'attr': {'class': 'span12'} }) }}
                     </div>
                 </div>
             </div>
 
             <div class="row-fluid">
                 <div class="control-group">
-                    <label for="specializations">
-                        Doctor's Specializations
-                    </label>
-                    <ul class="specializations-listing">
-                        <li>
-                            <input type="checkbox" name="service" value="service" /><b> Specialization Name</b>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Specialization Name
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Cord Blood Bank
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Home Nursing Service
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <input type="checkbox" name="service" value="service" /> <b>Specialization Name</b>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Specialization Name
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Cord Blood Bank
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Home Nursing Service
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <input type="checkbox" name="service" value="service" /> <b>Specialization Name</b>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Specialization Name
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Cord Blood Bank
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Home Nursing Service
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <input type="checkbox" name="service" value="service" /> <b>Specialization Name</b>
-                            <ul>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Specialization Name
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Cord Blood Bank
-                                </li>
-                                <li>
-                                    <input type="checkbox" name="service" value="service" /> Home Nursing Service </li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <label for="specializations">Doctor's Specializations</label>
+                    {{ form_widget(form.specializations) }}
                 </div>
             </div>
 
@@ -202,9 +121,7 @@
                 </div>
                 <div class="control-group">
                     <div class="span5">
-                        <label>
-                            State / Province
-                        </label>
+                        <label>State / Province</label>
                         <div class="input-append hca-location">
                             <input class="hca-country pull-left" id="appendedDropdownButton" type="text">
                             <div class="btn-group">
@@ -226,9 +143,7 @@
                         </div>
                     </div>
                     <div class="span5">
-                        <label>
-                           City
-                        </label>
+                        <label>City</label>
                         <div class="input-append hca-location">
                             <input class="hca-country pull-left" id="appendedDropdownButton" type="text">
                             <div class="btn-group">
@@ -247,9 +162,7 @@
                         </div>
                     </div>
                     <div class="span2">
-                        <label for="zip">
-                            Zip Code
-                        </label>
+                        <label for="zip">Zip Code</label>
                         <input type="text" name="zip" id="zip" placeholder="" class="span12">
                     </div>
                 </div>
@@ -258,48 +171,27 @@
             <div class="row-fluid">
                 <div class="span12 control-group">
                     <div class="span6">
-                        <label for="Email Address">
-                            Doctor's Email Address
-                        </label>
-                        <input type="text" name="Email-address" id="Email-address" placeholder=""
-                        class="span12">
+                        <label for="Email Address">Doctor's Email Address</label>
+                        {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
                     </div>
-                    <div class="span6">
-                        <label for="Phone Number">
-                            Doctor's Contact Number
-                        </label>
-                        <div class="hca-countrycodes">
-                            <div class="input-prepend">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    <span class="flag16 ph"></span>
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu zipcode">
-                                    <li>
-                                        <span class="flag16 ad"></span>
-                                        <span>Andorra (+93)</span>
-                                    </li>
-                                    <li>
-                                        <span class="flag16 ae"></span>
-                                        <span>United Arab Emirates (+93)</span>
-                                    </li>
-                                </ul>
-                                <input class="span12" id="prependedDropdownButton" type="text" value="+63">
-                            </div>
-                        </div>
-                    </div>
+                    {#{ form_widget(form.contactNumber) }#}
                 </div>
             </div>
+
             <div class="control-group">
-                <label for="Upload Photo">
-                    Upload Doctor's Photo
-                </label>
+                <label for="Upload Photo">Upload Doctor's Photo</label>
+                {{ form_widget(form.media) }}
+
+            </div>
+
+            <div class="control-group">
+                <label for="Upload Photo">Upload Doctor's Photo</label>
                 <div class="dropbox">
-                    <label>
-                        Drag and Drop Doctor's Photo to Upload
-                    </label>
+                    <label>Drag and Drop Doctor's Photo to Upload</label>
                 </div>
             </div>
+
+            {{ form_widget(form._token) }}
 
         </form>
     </div>

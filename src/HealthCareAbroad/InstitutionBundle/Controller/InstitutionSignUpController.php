@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpDoctorFormType;
+
 use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\SignUpStep;
@@ -57,6 +61,12 @@ class InstitutionSignUpController extends InstitutionAwareController
      * @var SignUpStep
      */
     private $currentSignUpStep;
+
+    /**
+     *
+     * @var InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter;
 
     /**
      * @var SignUpService
@@ -418,8 +428,37 @@ class InstitutionSignUpController extends InstitutionAwareController
     public function setupDoctorsAction(Request $request)
     {
         //TODO: check institution signupStepStatus
+        $doctor = new Doctor();
+        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
+
+        $form = $this->createForm(new InstitutionSignUpDoctorFormType(), $doctor);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $doctor = $form->getData();
+                $doctor->setStatus(1);
+
+                //TODO: it looks like the specializations are not being persisted.
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($doctor);
+                $em->flush($doctor);
+
+                $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
+
+                return new Response(json_encode(array(
+                                'doctor' => array('firstName' => $doctor->getFirstName(), 'lastName' => $doctor->getLastName()),
+                                'rowDoctor' => $rowDoctor)),
+                200, array('Content-Type'=>'application/json'));
+
+            } else {
+                var_dump($form->getErrorsAsString()); exit;
+            }
+        }
 
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', array(
+                        'form' => $form->createView(),
                         'institution' => $this->institution,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'confirmationMessage' => "<b>Congratulations!</b> Your account has been successfully created."
@@ -447,12 +486,35 @@ class InstitutionSignUpController extends InstitutionAwareController
         //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
-    public function ajaxAddDoctorAction(Request $request)
-    {
-        $doctor = array('firstName' => 'FirstName', 'lastName' => 'LastName');
-        $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig');
+//     public function ajaxAddDoctorAction(Request $request)
+//     {
+//         $doctor = array('firstName' => 'FirstName', 'lastName' => 'LastName');
+//         $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig');
 
-        return new Response(json_encode(array('doctor' => $doctor, 'rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
+//         return new Response(json_encode(array('doctor' => $doctor, 'rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
+//     }
+
+    public function ajaxDeleteDoctorAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
+
+        $em = $this->getDoctrine()->getManager();
+
+        try {
+            $em->remove($doctor);
+            $em->flush();
+
+            $success = 1;
+        } catch (Exception $e) {
+            $success = 0;
+        }
+
+        return new Response(json_encode(array('success' => $success)), 200, array('Content-Type'=>'application/json'));
+    }
+
+    public function ajaxEditDoctorAction(Request $request)
+    {
+
     }
 
     private function getProxyMedicalCenter()
