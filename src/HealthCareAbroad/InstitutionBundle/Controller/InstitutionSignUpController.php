@@ -443,7 +443,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 //TODO: it looks like the specializations are not being persisted.
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($doctor);
-                $em->flush($doctor);
+                $em->flush();
 
                 $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
 
@@ -514,7 +514,36 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function ajaxEditDoctorAction(Request $request)
     {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id', 0));
 
+        if (!$doctor) {
+            throw new \Exception('Invalid doctor');
+        }
+
+        $form = $this->createForm(new InstitutionSignUpDoctorFormType(), $doctor);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $doctor = $form->getData();
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($doctor);
+                $em->flush();
+
+                $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
+
+                return new Response(json_encode(array('rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
+
+            } else {
+                var_dump($form->getErrorsAsString()); exit;
+            }
+        }
+
+        $html = $this->renderView('InstitutionBundle:SignUp/Widgets:modalForm.doctors.html.twig', array('form' => $form->createView(), 'editMode' => true));
+
+        return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
     private function getProxyMedicalCenter()
