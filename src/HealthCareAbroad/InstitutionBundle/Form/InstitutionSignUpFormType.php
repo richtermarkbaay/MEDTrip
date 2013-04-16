@@ -49,7 +49,7 @@ class InstitutionSignUpFormType extends AbstractType
         $builder
         ->add('firstName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your first name. ')))))
         ->add('lastName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your last name.')))))
-        ->add('jobTitle', 'text', array( 'virtual' => true))
+        ->add('jobTitle', 'text', array( 'virtual' => true, 'required' => false))
         ->add('contactNumber', 'contact_number_with_flag',array('error_bubbling' => false))
         ->add('email', 'email', array( 'error_bubbling' => false,'virtual' => true,'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))))
         ->add('password', 'password', array('label' => 'Password','virtual' => true,'error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')))))
