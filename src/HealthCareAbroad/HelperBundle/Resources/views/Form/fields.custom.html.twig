@@ -8,7 +8,7 @@
                 {% set phone = "phoneNumberSelector" %}
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
+                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
                 <input type="hidden" name="{{ form.vars.value.phone_number.abbr }}"  id="phoneNumberAbbr">
             </div>
         </div>
@@ -21,7 +21,7 @@
             <div class="input-prepend row-field">
                 {% set mobile = "mobileNumberSelector" %}
                   {{ render_contactNumber_widget(mobile) | raw }}
-                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" data-type="mobile" id="mobileNumberSelector"  maxlength="15"/>
+                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" data-type="mobile" id="mobileNumberSelector"  maxlength="15" required/>
                 <input type="hidden" name="{{ form.vars.full_name ~ '[mobile_number][abbr]' }}"  id="mobileNumberAbbr">
             </div>
         </div>
@@ -94,7 +94,7 @@
     {% spaceless %}
     <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
         <label for="state">Address</label>
-        <input class="span12 addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
+        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
     </div>
     <div class="control-group">
         <div class="span4">
@@ -133,11 +133,26 @@
 {% block institutionServices_list_widget %}
     {% spaceless %}
     <ul class="services-listing">
+        {% set selected = get_selected_AnciliaryServices(institution) %}
         {% for choice in form.vars.choices %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label }}
-            </li>
+        {% set _isSelected = choice.value in selected.data %}
+       
+           {% if (_isSelected is defined and _isSelected ) %}
+        		 {% for property in selected.currentAncillaryData %}
+            	        {% if property.value == choice.value  %}
+                             <li class="hca-highlight">
+                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                {{ choice.label }}
+                            </li>
+            	    	 {% endif %}
+            		 {% endfor %}  
+            	 {% else %}
+        	         <li class="">
+                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                        {{ choice.label }}
+                    </li>
+            {% endif %}
+       
         {% endfor %}
     </ul>
     {% endspaceless %}
@@ -206,16 +221,31 @@
 
 {% block institutionGlobalAwards_list_widget %}
     {% spaceless %}
-    {% for key,typeChoice in form.vars.choices %}
-        <h3>{{key | capitalize }}s</h3>
-        <ul>
-        {% for choice in typeChoice %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label | raw }}
-            </li>
+        {% set selected = get_selected_GlobalAwards(institution) %}
+        
+        {% for key,typeChoice in form.vars.choices %}
+            <h3>{{key | capitalize }}s</h3>
+            <ul>
+                 {% for choice in typeChoice %}
+                      {% set _isSelected = choice.value in selected.data %}
+                      {% if (_isSelected is defined and _isSelected ) %}
+                           {% for property in selected.currentAwardsData %}
+                                {% if property.value == choice.value  %}
+                                    <li class="hca-highlight">
+                                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked/>
+                                        {{ choice.label | raw }}
+                                    </li>
+                                {% endif %}    
+                            {% endfor %} 
+                       {% else %}
+                             <li class="">
+                                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                {{ choice.label | raw }}
+                            </li>
+                      {% endif %}
+                {% endfor %}
+            </ul>
         {% endfor %}
-        </ul>
-    {% endfor %}
+        
     {% endspaceless %}
 {% endblock %}

@@ -59,9 +59,9 @@ class InstitutionProfileFormType extends AbstractType
         'contactNumber',
         'websites',
         'socialMediaSites',
-        'coordinates',
+        'services',
         'awards',
-        'services'
+        'coordinates',
     );
 
     public function __construct(array $options = array())
@@ -103,16 +103,16 @@ class InstitutionProfileFormType extends AbstractType
         }
 
         $this->_add($builder, 'name', 'text', array('data' => ''));
-        $this->_add($builder, 'description', 'textarea');
+        $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'country', 'globalCountry_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
         $this->_add($builder, 'city', 'city_list');
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
-        $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?'));
+        $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
-        $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website '));
+        $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one services.')))));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one awards.')))));

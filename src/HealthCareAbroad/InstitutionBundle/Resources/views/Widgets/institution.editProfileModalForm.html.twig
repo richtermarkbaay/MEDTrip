@@ -62,9 +62,15 @@
                 </div>
                  {% elseif each == 'socialMediaSites' %}
                      {{ form_widget(institutionForm.socialMediaSites )}}
-                {% else %}
-                    {{ form_row(institutionForm[each]) }}
-                {% endif %}
+                 {% elseif each == 'services' %}
+                     {{ form_widget(institutionForm.services )}}
+                 {% elseif each == 'awards' %}
+                     <div class="awards-listing">
+                         {{ form_widget(institutionForm.awards )}}
+                     </div>
+                 {% else %}
+                        {{ form_row(institutionForm[each]) }}
+                 {% endif %}
 
             {% endfor %}
             
