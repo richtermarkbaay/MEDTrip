@@ -16,7 +16,7 @@
                 {{ form_widget(form.contactNumber, { 'attr': {'class': 'span9'} }) }}    
             </div>
             <div class="control-group website">
-                {{ form_label(form.websites) }}
+                <label for="institution_profile_form[websites]">{{ label }} Website</label>
                 <span class="pull-left"> http:// </span>
                 {{ form_widget(form.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
