@@ -30,12 +30,12 @@ services:
             - [setLocationService, [@services.location]]
         tags:
             - { name: form.type, alias: country_list }
-            
+
     form.userType_list:
         class: HealthCareAbroad\UserBundle\Form\ListType\AdminUserTypeListType
         tags:
             - { name: form.type, alias: userType_list }
-            
+
     form.city_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
         arguments: [@services.location]
@@ -47,13 +47,18 @@ services:
         arguments: [@services.helper.ancillary_service]
         tags:
             - { name: form.type, alias: institutionServices_list }
-            
+
+    form.doctorSpecializations_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\DoctorSpecializationsListType
+        tags:
+            - { name: form.type, alias: doctorSpecializations_list }
+
     form.institutionGlobalAwards_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\InstitutionGlobalAwardsListType
         arguments: [@services.global_award]
         tags:
             - { name: form.type, alias: institutionGlobalAwards_list }
-            
+
     form.tagtype_list:
         class: "%services.tagtype_list%"
         tags:
@@ -88,3 +93,8 @@ services:
         class: HealthCareAbroad\MediaBundle\Form\AdminMediaFile
         tags:
             - { name: form.type, alias: admin_media_file }
+
+    form.admin_media_file_type_extension:
+        class: HealthCareAbroad\HelperBundle\Form\Extension\AdminMediaFileTypeExtension
+        tags:
+            - { name: form.type_extension, alias: admin_media_file_extension }

@@ -1,6 +1,6 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
-    
+
     <div class="span6">
         <label for="Phone Number">{{ label_prefix }} Phone Number</label>
         <div class="hca-countrycodes">
@@ -99,7 +99,7 @@
     <div class="control-group">
         <div class="span4">
             <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields"> 
+            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields">
         </div>
         <div class="span8">
             <label for="Building Name">Building Name <small>(Optional)</small></label>
@@ -158,6 +158,29 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block doctorSpecializations_list_widget %}
+    {% spaceless %}
+
+    {# this is temporary #}
+    {% set treatments = { 1: 'Treatment 1', 2: 'Treatment 2', 3: 'Treatment 3' } %}
+    <ul class="specializations-listing">
+        {% for choice in form.vars.choices %}
+        <li>
+            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" /> <b>{{ choice.label }}</b>
+            <ul>
+            {% for key, treatment in treatments %}
+                <li>
+                    <input type="checkbox" name="service" value="{{ key }}" /> {{ treatment }}
+                </li>
+            {% endfor %}
+            </ul>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% endspaceless %}
+{% endblock %}
+
 <!-- Media File for Admin -->
 {% block admin_media_file_widget %}
 
@@ -186,7 +209,7 @@
 
             <a href="{{ deleteImageUrl }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
 
-            <!-- Load Js -->
+            {# Load Js #}
             {{ render_media_file_script() | raw }}
 
         {% else %}

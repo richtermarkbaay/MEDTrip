@@ -3,17 +3,6 @@
 {% set setUpProfile = true %}
 
 {% block content %}
-<!--
-        <div id="confirmation-message">
-            <div class="confirmation-box">
-                <div class="alert alert-success">
-                    <p>
-                        <b>Doctor's Name</b> has been added to your Clinic Profile
-                    </p>
-                </div>
-            </div>
-        </div>
- -->
 
 <div class="row">
     <h1>{{ institutionMedicalCenter.name }}</h1>
@@ -45,6 +34,7 @@
         {# TODO: include steps widget #}
     </aside>
 </div>
+
 {% endblock %}
 
 
@@ -55,27 +45,69 @@ $(window).load(function() {
 });
 
 $('#submitDoctorForm').click(function(){
+    var form = $('#doctorForm');
+
     $.ajax({
-        url: "{{ path('institution_ajax_addDoctor', { imcId: institutionMedicalCenter.id }) }}",
-        type: 'GET',
+        url: "{{ path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id }) }}",
+        type: 'POST',
         dataType: 'json',
+        data: form.serialize(),
         success: function(response){
             var list = $('#doctorsList')
             if (!list.data('loaded')) {
                 list.data('loaded', 1);
                 list.html('');
             }
-
             list.append(response.rowDoctor);
-
             $('#add-doctor').modal('hide');
-            $('#confirmation-message').find('p').html(response.rowDoctor.firstName + response.rowDoctor.lastName + ' has been added ');
-            $('#confirmation-message').show();
             $('#doneSection').show();
+
+            var message = $('#confirmation-message');
+            message.find('p').html('<b>' + response.doctor.firstName + ' ' + response.doctor.lastName + ' </b> has been added to your Clinic profile');
+            message.show();
+            setTimeout(function() { message.fadeOut("slow") }, 5000);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            alert(xhr.status);
+            alert(thrownError);
         }
     });
 
+    /*
+    var resetForm = function(form) {
+        form.find('input:text, input:password, input:file, select, textarea').val('');
+        form.find('input:radio, input:checkbox').removeAttr('checked').removeAttr('selected');
+    }
+    resetForm(form);
+    */
+    form[0].reset();
+
     return false;
 });
+
+$('#doctorsList').on('click', 'ul.actions button[id^="delete-doctor"]', function(e) {
+    if (confirm("Delete doctor?")) {
+        var doctorId = $(this).data('doctor-id');
+
+        $.ajax({
+            url: "{{ path('institution_signup_ajax_deleteDoctor') }}" + "/" + doctorId,
+            type: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    $('#rowDoctorContainer' + doctorId).remove();
+                    /* TODO: remove done button if there are no doctors left*/
+                }
+
+                if (response.message) {
+                }
+            }
+        });
+    }
+});
+
+$('#doctorsList').on('click', 'ul.actions button[id^="edit-doctor"]', function(e) {
+    alert('Unimplemented');
+});
+
 </script>
 {% endblock %}

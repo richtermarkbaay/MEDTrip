@@ -1,0 +1,34 @@
+HealthCareAbroad\AdminBundle\Entity\StaticPage:
+    type: entity
+    table: static_pages
+    repositoryClass: HealthCareAbroad\AdminBundle\Repository\StaticPageRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        title:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: title
+        url:
+            type: string
+            length: 100
+            fixed: false
+            nullable: false
+            column: url
+        websiteSection:
+            type: string
+            length: 100
+            fixed: true
+            nullable: false
+            column: website_section
+        content:
+            type: text
+            nullable: false
+            column: content
