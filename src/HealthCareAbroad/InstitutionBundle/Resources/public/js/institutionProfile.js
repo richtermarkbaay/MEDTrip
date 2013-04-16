@@ -142,25 +142,25 @@ var InstitutionProfile = {
             }
         });
         
-        // institution services content
-        $.ajax({
-            url: InstitutionProfile.ajaxUrls.loadInstitutionServices,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-                InstitutionProfile.servicesTabbedContentElement.html(response.services.html);
-            }
-        });
-        
-        // awards content
-        $.ajax({
-            url: InstitutionProfile.ajaxUrls.loadInstitutionAwards,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-                InstitutionProfile.awardsTabbedContentElement.html(response.awards.html);
-            }
-        });
+//        // institution services content
+//        $.ajax({
+//            url: InstitutionProfile.ajaxUrls.loadInstitutionServices,
+//            type: 'get',
+//            dataType: 'json',
+//            success: function(response){
+//                InstitutionProfile.servicesTabbedContentElement.html(response.services.html);
+//            }
+//        });
+//        
+//        // awards content
+//        $.ajax({
+//            url: InstitutionProfile.ajaxUrls.loadInstitutionAwards,
+//            type: 'get',
+//            dataType: 'json',
+//            success: function(response){
+//                InstitutionProfile.awardsTabbedContentElement.html(response.awards.html);
+//            }
+//        });
         
         return this;
     },
@@ -212,13 +212,13 @@ var InstitutionProfile = {
     },
     openProfileForm: function(_element){
     	_attr = _element.attr('href');
-    	_element.parent('div.textFields').hide();
+    	_element.parents('div.textFields').hide();
     	$(_attr).show();
     },
     closeProfileForm: function(_element){
-    	_div = _element.parent('div.hca-edit-box').prev('div');
+    	_div = _element.parents('div.hca-edit-box').prev('div');
     	_div.show();
-    	_element.parent('div.hca-edit-box').hide();
+    	_element.parents('div.hca-edit-box').hide();
     },
 
     submitModalForm: function(_formElement, _successCallback) {
@@ -304,6 +304,12 @@ var InstitutionProfile = {
                     	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
                     	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
 	                        $('#soclialMediaText').html(websitesString);
+                    	break;
+                    case 'serviceForm':
+                    	$('#serviesText').html(response.html);
+                    	break;
+                    case 'awardsForm':
+                    	$('#awardsText').html(response.html);
                     	break;
                 } 
                 _divToShow.show();

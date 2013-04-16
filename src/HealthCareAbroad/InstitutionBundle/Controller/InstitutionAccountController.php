@@ -306,12 +306,14 @@ class InstitutionAccountController extends InstitutionAwareController
 
         }
         else {
-           
+            $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
             $templateVariables =  array(
                             'institution' => $this->institution,
                             'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                             'pager' => $pager,
                             'institutionForm' => $form->createView(),
+                            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                            'currentGlobalAwards' => $currentGlobalAwards
             );
         }
 
@@ -326,24 +328,30 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
+        $propertyService = $this->get('services.institution_property');
         $output = array();
 
         if ($request->isMethod('POST')) {
-
             try {
                 // set all other fields except those passed as hidden
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-
                 $form->bind($request);
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     $this->get('services.institution.factory')->save($this->institution);
-
-
+                    if(!empty($form['services'])){
+                          $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+                          $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
+                          $propertyService->addServicesForInstitution($this->institution, $form['services']->getData());
+                    }if(!empty($form['awards'])){
+                        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+                        $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
+                        $propertyService->addAwardsForInstitution($this->institution, $form['awards']->getData());
+                    }
+                    
                     // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
                     if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
                         $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
@@ -361,16 +369,36 @@ class InstitutionAccountController extends InstitutionAwareController
 
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
-                        $value = $this->institution->{'get'.$key}();
-
-                        if(is_object($value)) {
-                            $value = $value->__toString();
+                        if($key == 'services'){
+                            
+                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', array(
+                                            'institution' => $this->institution,
+                                            'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                            ));
+                            
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                            
+                        }if($key == 'awards'){
+                            
+                            $html = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
+                                            'institution' => $this->institution,
+                                            'currentGlobalAwards' => $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution),
+                            ));
+                            
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                         }
-
-                        if($key == 'address1' || $key == 'contactNumber' || $key == 'socialMediaSites') {
-                            $value = json_decode($value, true);
+                        else{
+                            $value = $this->institution->{'get'.$key}();
+        
+                            if(is_object($value)) {
+                                $value = $value->__toString();
+                            }
+        
+                            if($key == 'address1' || $key == 'contactNumber' || $key == 'socialMediaSites') {
+                                $value = json_decode($value, true);
+                            }
+                            $output['institution'][$key] = $value;
                         }
-                        $output['institution'][$key] = $value;
                     }
                     $output['form_error'] = 0;
                 }

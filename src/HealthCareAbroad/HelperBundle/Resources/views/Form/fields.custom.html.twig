@@ -133,17 +133,30 @@
 {% block institutionServices_list_widget %}
     {% spaceless %}
     <ul class="services-listing">
+        {% set selected = get_selected_AnciliaryServices(institution) %}
         {% for choice in form.vars.choices %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label }}
-            </li>
+        {% set _isSelected = choice.value in selected.data %}
+       
+           {% if (_isSelected is defined and _isSelected ) %}
+        		 {% for property in selected.currentAncillaryData %}
+            	        {% if property.value == choice.value  %}
+                             <li class="hca-highlight">
+                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                {{ choice.label }}
+                            </li>
+            	    	 {% endif %}
+            		 {% endfor %}  
+            	 {% else %}
+        	         <li class="">
+                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                        {{ choice.label }}
+                    </li>
+            {% endif %}
+       
         {% endfor %}
     </ul>
     {% endspaceless %}
 {% endblock %}
-
-
 
 <!-- Media File for Admin -->
 {% block admin_media_file_widget %}
@@ -185,16 +198,31 @@
 
 {% block institutionGlobalAwards_list_widget %}
     {% spaceless %}
-    {% for key,typeChoice in form.vars.choices %}
-        <h3>{{key | capitalize }}s</h3>
-        <ul>
-        {% for choice in typeChoice %}
-            <li>
-                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
-                {{ choice.label | raw }}
-            </li>
+        {% set selected = get_selected_GlobalAwards(institution) %}
+        
+        {% for key,typeChoice in form.vars.choices %}
+            <h3>{{key | capitalize }}s</h3>
+            <ul>
+                 {% for choice in typeChoice %}
+                      {% set _isSelected = choice.value in selected.data %}
+                      {% if (_isSelected is defined and _isSelected ) %}
+                           {% for property in selected.currentAwardsData %}
+                                {% if property.value == choice.value  %}
+                                    <li class="hca-highlight">
+                                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked/>
+                                        {{ choice.label | raw }}
+                                    </li>
+                                {% endif %}    
+                            {% endfor %} 
+                       {% else %}
+                             <li class="">
+                                <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                {{ choice.label | raw }}
+                            </li>
+                      {% endif %}
+                {% endfor %}
+            </ul>
         {% endfor %}
-        </ul>
-    {% endfor %}
+        
     {% endspaceless %}
 {% endblock %}

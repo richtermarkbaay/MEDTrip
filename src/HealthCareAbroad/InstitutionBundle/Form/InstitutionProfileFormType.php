@@ -59,9 +59,9 @@ class InstitutionProfileFormType extends AbstractType
         'contactNumber',
         'websites',
         'socialMediaSites',
-        'coordinates',
+        'services',
         'awards',
-        'services'
+        'coordinates',
     );
 
     public function __construct(array $options = array())

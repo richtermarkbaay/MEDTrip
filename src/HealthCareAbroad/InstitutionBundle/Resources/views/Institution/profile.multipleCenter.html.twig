@@ -40,12 +40,6 @@
              <li class="">
                 <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">{{ clinicClassLabel.plural | title}}</a>
             </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#services">{{ ancillaryServiceClassLabel.plural | title}}</a>
-            </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#awards">Awards</a>
-            </li>
         </ul>
         <br>
         <div class="tab-content" id="tabbed_content">
@@ -56,8 +50,6 @@
               {% include 'InstitutionBundle:Institution/Widgets:profileTabForm.html.twig' %}
            </div>   
             <div id="medical_centers" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
-            <div id="services" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
-            <div id="awards" class="tab-pane"><img  id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
         </div><!-- /.tab-content -->
     </div>
 </div>
@@ -78,15 +70,11 @@
             _medical_url = '{{ path("institution_medicalCenter_index") }}';
             // initialize the tabbed contents
             InstitutionProfile.setAjaxUrls({
-                    'loadInstitutionServices': _url_base+'?content=services',
-                    'loadInstitutionAwards': _url_base+'?content=awards',
                     'loadActiveMedicalCenters': _medical_url+'?status=2'
                 });
             
             InstitutionProfile.tabbedContentElement = $('#tabbed_content');
             InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
-            InstitutionProfile.servicesTabbedContentElement = $('#services');
-            InstitutionProfile.awardsTabbedContentElement = $('#awards');
             InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
             
         });
