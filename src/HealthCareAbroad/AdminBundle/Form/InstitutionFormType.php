@@ -52,7 +52,7 @@ class InstitutionFormType extends AbstractType
     {
         $this->options = $options;
         $institution = $this->options['data'];
-        $status = InstitutionStatus::getStatusList();
+        $status = InstitutionStatus::getBitValueLabels();
         if (!$institution instanceof Institution) {
             throw new \Exception(__CLASS__.' expects data to be instance of Institution');
         }
