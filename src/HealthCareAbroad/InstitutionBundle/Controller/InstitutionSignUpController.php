@@ -439,11 +439,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
                 $doctor = $form->getData();
                 $doctor->setStatus(1);
-
-                //TODO: it looks like the specializations are not being persisted.
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($doctor);
-                $em->flush();
+                $doctor = $this->signUpService->addDoctor($doctor, $this->getDoctrine());
 
                 $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
 
@@ -528,9 +524,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
                 $doctor = $form->getData();
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($doctor);
-                $em->flush();
+                $doctor = $this->signUpService->editDoctor($doctor, $this->getDoctrine());
 
                 $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
 
