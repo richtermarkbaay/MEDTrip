@@ -1,7 +1,9 @@
 <!-- modal add doctor start -->
-<div id="add-doctor" class="modal hide fade hca-doctors-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{% set action = editMode is defined and editMode ? 'edit' : 'add' %}
+
+<div id="{{ action }}-doctor" class="modal hide fade hca-doctors-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
-        <h3 id="myModalLabel modal-label">Add Doctor</h3>
+        <h3 id="myModalLabel modal-label">{{ action | capitalize}} Doctor</h3>
     </div>
 
     <div class="modal-body">
@@ -200,3 +202,9 @@
     </div>
 </div>
 <!-- modal end add doctor -->
+
+<script type="text/javascript">
+$(document).ready(function () {
+    //SignUpDoctors.attachFormEventHandlers("{{ action }}");
+});
+</script>

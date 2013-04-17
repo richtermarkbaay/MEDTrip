@@ -17,7 +17,7 @@ class InstitutionSignUpDoctorFormType extends AbstractType
             ->add('middleName', 'text')
             ->add('lastName', 'text')
             ->add('suffix', 'text')
-            ->add('country','country_list')
+            //->add('country','country_list')
             //->add('details', 'textarea')
             ->add('media', new AdminMediaFileType($options['data']->getMedia()))
             ->add('specializations', 'doctorSpecializations_list', array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
