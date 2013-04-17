@@ -187,7 +187,7 @@ class SignUpService
     //TODO: Temporary measure: we should not pass in the registry object
     public function addDoctor(Doctor $doctor, Registry $doctrine)
     {
-        $em = $this->getDoctrine()->getManager();
+        $em = $doctrine->getManager();
         $em->persist($doctor);
         $em->flush();
 

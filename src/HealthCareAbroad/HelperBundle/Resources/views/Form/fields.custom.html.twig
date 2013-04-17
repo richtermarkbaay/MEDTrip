@@ -136,23 +136,23 @@
         {% set selected = get_selected_AnciliaryServices(institution) %}
         {% for choice in form.vars.choices %}
         {% set _isSelected = choice.value in selected.data %}
-       
+
            {% if (_isSelected is defined and _isSelected ) %}
-        		 {% for property in selected.currentAncillaryData %}
-            	        {% if property.value == choice.value  %}
+                 {% for property in selected.currentAncillaryData %}
+                        {% if property.value == choice.value  %}
                              <li class="hca-highlight">
                                 <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
                                 {{ choice.label }}
                             </li>
-            	    	 {% endif %}
-            		 {% endfor %}  
-            	 {% else %}
-        	         <li class="">
+                         {% endif %}
+                     {% endfor %}
+                 {% else %}
+                     <li class="">
                         <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
                         {{ choice.label }}
                     </li>
             {% endif %}
-       
+
         {% endfor %}
     </ul>
     {% endspaceless %}
@@ -163,10 +163,12 @@
 
     {# this is temporary #}
     {% set treatments = { 1: 'Treatment 1', 2: 'Treatment 2', 3: 'Treatment 3' } %}
+    {% set specializations = form.vars.data %}
+
     <ul class="specializations-listing">
         {% for choice in form.vars.choices %}
         <li>
-            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" /> <b>{{ choice.label }}</b>
+            <input type="checkbox" {% if choice.data in specializations %}checked{% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" /> <b>{{ choice.label }}</b>
             <ul>
             {% for key, treatment in treatments %}
                 <li>
@@ -235,8 +237,8 @@
                                             <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked/>
                                             {{ choice.label | raw }}
                                         </li>
-                                    {% endif %}    
-                                {% endfor %} 
+                                    {% endif %}
+                                {% endfor %}
                            {% else %}
                                  <li class="">
                                     <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />

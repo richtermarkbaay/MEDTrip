@@ -535,7 +535,10 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
-        $html = $this->renderView('InstitutionBundle:SignUp/Widgets:modalForm.doctors.html.twig', array('form' => $form->createView(), 'editMode' => true));
+        $html = $this->renderView('InstitutionBundle:SignUp/Widgets:modalForm.doctors.html.twig', array(
+                        'form' => $form->createView(),
+                        'editMode' => true
+        ));
 
         return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
