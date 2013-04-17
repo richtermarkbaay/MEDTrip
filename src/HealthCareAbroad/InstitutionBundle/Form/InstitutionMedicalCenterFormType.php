@@ -86,7 +86,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         if (!$medicalCenter->getId()) {
             $medicalCenter->setWebsites($this->institution->getWebsites());
         }
-        $this->_add($builder, 'websites', 'websites_custom_field');
+        $this->_add($builder, 'websites', 'text');
 
         $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Address', 'attr' => array('value' => $this->institution->getAddress1())));
         $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));

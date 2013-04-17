@@ -32,13 +32,40 @@
     </div>
     <!-- end row -->
     #}
+    <section class="section row-fluid section-alert-info">
+        <div class="row span12 alert alert-block">
+            <div class="span3">
+                <img src="{{ asset('images/institution/beaker.png') }}" alt="beaker-progress" class="beaker"
+                />
+                <div class="progress vertical bottom progress-info progress-xxlarge filled3">
+                    <div class="bar" style="height:85%">
+                    </div>
+                </div>
+            </div>
+            <div class="span9">
+                <button type="button" class="close" data-dismiss="alert">
+                    &times;
+                </button>
+                <h4>
+                    Your Hospital Profile is 25% complete.&nbsp;
+                    <a href="#"><i class="icon-info-sign"></i></a>
+                </h4>
+                <p>
+                    <a href="#">Upload a logo and make your hospital more recognizable to your prospective patients.</a>
+                </p>
+            </div>
+        </div>
+    </section>
    <div class="tabbable">
         <ul class="nav nav-tabs profile_tabs">
             <li class="active">
-                <a data-toggle="tab" class="profile_tab_links" href="#profile_tab">Hospital Details</a>
+                <a data-toggle="tab" href="#profile_tab"><i class="icon-hospital"></i>Hospital Details</a>
             </li>
              <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#medical_centers">{{ clinicClassLabel.plural | title}}</a>
+                <a data-toggle="tab" href="#medical_centers"><i class="icon-medkit"></i>{{ clinicClassLabel.plural | title}}</a>
+            </li>
+             <li>
+                <a href="#tab3" data-toggle="tab"><i class="icon-user-md"></i> Doctors</a>
             </li>
         </ul>
         <br>

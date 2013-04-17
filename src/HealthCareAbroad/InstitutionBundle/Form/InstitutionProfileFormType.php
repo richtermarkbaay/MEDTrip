@@ -106,7 +106,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'country', 'globalCountry_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
         $this->_add($builder, 'city', 'city_list');
-        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip Code'));
+        $this->_add($builder, 'zipCode', 'text', array('label' => 'Postal Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
