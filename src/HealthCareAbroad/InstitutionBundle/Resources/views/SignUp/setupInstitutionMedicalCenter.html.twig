@@ -119,9 +119,13 @@
         </form>
     </div>
 
-    {# TODO: replace with signup steps widget #}
+    <aside class="span4">
+        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
+    </aside>
+    {# replaced with signup steps widget
     {% set completedSteps = ['signup'] %}
     {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {setupProfile: 'active' , completedSteps: completedSteps} %}
+    #}
 
 </div>
 

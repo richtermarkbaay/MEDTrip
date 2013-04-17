@@ -176,15 +176,16 @@
                         <label for="Email Address">Doctor's Email Address</label>
                         {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
                     </div>
-                    {#{ form_widget(form.contactNumber) }#}
+                    {{ form_widget(form.contactNumber) }}
                 </div>
             </div>
 
+            {#
             <div class="control-group">
                 <label for="Upload Photo">Upload Doctor's Photo</label>
                 {{ form_widget(form.media) }}
-
             </div>
+            #}
 
             <div class="control-group">
                 <label for="Upload Photo">Upload Doctor's Photo</label>
@@ -202,9 +203,3 @@
     </div>
 </div>
 <!-- modal end add doctor -->
-
-<script type="text/javascript">
-$(document).ready(function () {
-    //SignUpDoctors.attachFormEventHandlers("{{ action }}");
-});
-</script>

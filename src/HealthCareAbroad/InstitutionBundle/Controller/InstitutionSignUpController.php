@@ -482,14 +482,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
-//     public function ajaxAddDoctorAction(Request $request)
-//     {
-//         $doctor = array('firstName' => 'FirstName', 'lastName' => 'LastName');
-//         $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig');
-
-//         return new Response(json_encode(array('doctor' => $doctor, 'rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
-//     }
-
     public function ajaxDeleteDoctorAction(Request $request)
     {
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
