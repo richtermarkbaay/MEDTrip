@@ -454,4 +454,19 @@ class Doctor
 
         return $specializations;
     }
+
+    /**
+     * The values returned here may not yet be persisted.
+     *
+     */
+    public function getSpecializationIds()
+    {
+        $ids = array();
+
+        foreach($this->specializations as $specialization) {
+            $ids[] = $specialization->getId();
+        }
+
+        return $ids;
+    }
 }
