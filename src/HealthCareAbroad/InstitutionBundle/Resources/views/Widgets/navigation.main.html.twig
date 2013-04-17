@@ -10,11 +10,6 @@
                  <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>Hospital</a> 
                 </li>
-                 {% if (institution.type != 3) %}
-                    <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
-                        <a href="{{ path('institution_medicalCenter_index') }}">Your Clinics</a>
-                    </li>
-                {% endif %}
             </ul>
         </div>
     </div>

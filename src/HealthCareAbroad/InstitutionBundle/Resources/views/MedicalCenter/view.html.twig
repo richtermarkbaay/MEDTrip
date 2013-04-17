@@ -5,25 +5,24 @@
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-            			<div class="span9">
-            			    <h1><span>Manage {{ clinicClassLabel.plural }}</span></h1>
+            			 <div class="tab-content span8">
                             {% include 'InstitutionBundle:MedicalCenter/Widgets:profileHeader.html.twig' %}
                             <div class="tabbable">
                                 {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
                                     tabNavigation: { links: [
-                                        { label: 'Specializations', 'active': true, 'href' : '#specializations_tab_content' },
-                                        { label: 'Services', 'href' : '#services_tab_content' },
-                                        { label: 'Awards', 'href' : '#awards_tab_content' },
-                                        { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content' },
+                                        { label: 'Clinic Profile', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
+                                        { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
+                                        { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
                                     ]}
                                 } %}
                                 
                                <div class="tab-content" id="tabbed_content">
-                                   <div id="specializations_tab_content" class="tab-pane active">
+                                   <div id="profile_tab" class="tab-pane active">
+                                        {% include 'InstitutionBundle:MedicalCenter/Widgets:medicalCenterProfileTabForm.html.twig' %}
+                                   </div>
+                                   <div id="specializations_tab_content" class="tab-pane">
                                        {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
                                    </div>
-                                   <div id="services_tab_content" class="tab-pane"><span>Loading ancillary services</span></div>
-                                   <div id="awards_tab_content" class="tab-pane"><span>Loading clinic awards, certificates and affiliations</span></div>
                                    <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
                                </div><!-- /.tab-content -->
                             </div>
@@ -31,8 +30,7 @@
                         
                         {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
                             {% block sidebarWrappedContent %}
-                                {% include 'InstitutionBundle:Widgets:sidebar.medicalCenter.basicProfile.html.twig' %}
-                                {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
+                             {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
                             {% endblock %}
                         {% endembed %}
                         
@@ -68,8 +66,6 @@
             
             Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
             InstitutionMedicalCenter.initializeTabs({
-                'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id,"content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
-                'awards' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id,"content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
                 'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
             })
             .initializeTabbedContentContainerElement($('div#tabbed_content'))
