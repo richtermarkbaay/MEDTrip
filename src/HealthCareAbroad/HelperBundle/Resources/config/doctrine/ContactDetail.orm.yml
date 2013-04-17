@@ -1,7 +1,7 @@
 HealthCareAbroad\HelperBundle\Entity\ContactDetail:
     type: entity
     table: contact_details
-    repositoryClass: HealthCareAbroad\HelperBundle\Repository\ContactDetailRepository:
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\ContactDetailRepository
     fields:
         id:
             id: true
@@ -12,20 +12,18 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
         type:
             type: smallint
             nullable: false
-        value:
+            column: type
+        number:
             type: string
-            length: 50
+            length: 25
             fixed: false
             nullable: false
-        status:
-            type: smallint
+            column: number
+        countryCode:
+            type: integer
             nullable: false
-    manyToMany:
-        institution:
-            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            cascade: {  }
-            mappedBy: contactDetail
-            inversedBy: null
-            joinTable: null
-            orderBy: null
-    lifecycleCallbacks: {  }
+            column: country_code
+        areaCode:
+            type: integer
+            nullable: false
+            column: area_code

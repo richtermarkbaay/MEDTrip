@@ -106,4 +106,13 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
     oneToOne:
         media:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
+
+        contactDetail:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                contact_detail_id:
+                    referencedColumnName: id
     lifecycleCallbacks: {}

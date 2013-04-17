@@ -7,6 +7,11 @@ services:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactNumberFieldType
         tags:
             - { name: form.type, alias: contact_number }
+    form.custom.contact_detail:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactDetailFieldType
+        arguments: [@services.contact_detail]
+        tags:
+            - { name: form.type, alias: contact_detail }
     form.custom.websites:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\WebSitesFieldType
         tags:

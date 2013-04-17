@@ -10,80 +10,88 @@ class Doctor
     const GENDER_FEMALE = 2;
 
     /**
-     * @var bigint $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $firstName
+     * @var string
      */
     private $firstName;
 
     /**
-     * @var string $middleName
+     * @var string
      */
     private $middleName;
 
     /**
-     * @var string $lastName
+     * @var string
      */
     private $lastName;
-    
+
     /**
-     * @var string $lastName
+     * @var string
      */
     private $suffix;
-    
+
     /**
-     * @var smallint $gender
+     * @var integer
      */
     private $gender;
 
     /**
-     * @var string $contactEmail
+     * @var string
      */
     private $contactEmail;
 
     /**
-     * @var string $contactNumber
+     * @var string
      */
     private $contactNumber;
-    
+
     /**
-     * @var string $details
+     * @var string
      */
     private $details;
 
     /**
-     * @var datetime $dateCreated
+     * @var \DateTime
      */
     private $dateCreated;
 
     /**
-     * @var boolean $status
+     * @var boolean
      */
     private $status;
-    
-    /**
-     * @var HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
 
     /**
-     * @var HealthCareAbroad\MediaBundle\Entity\Media
+     * @var \HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $media;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \HealthCareAbroad\HelperBundle\Entity\ContactDetail
+     */
+    private $contactDetail;
+
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $specializations;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $institutionMedicalCenters;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->specializations = new \Doctrine\Common\Collections\ArrayCollection();
@@ -93,7 +101,7 @@ class Doctor
     /**
      * Get id
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getId()
     {
@@ -109,6 +117,7 @@ class Doctor
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+    
         return $this;
     }
 
@@ -131,6 +140,7 @@ class Doctor
     public function setMiddleName($middleName)
     {
         $this->middleName = $middleName;
+    
         return $this;
     }
 
@@ -153,19 +163,20 @@ class Doctor
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+    
         return $this;
     }
 
     /**
      * Get lastName
      *
-     * @return string
+     * @return string 
      */
     public function getLastName()
     {
         return $this->lastName;
     }
-    
+
     /**
      * Set suffix
      *
@@ -175,35 +186,37 @@ class Doctor
     public function setSuffix($suffix)
     {
         $this->suffix = $suffix;
+    
         return $this;
     }
-    
+
     /**
      * Get suffix
      *
-     * @return string
+     * @return string 
      */
     public function getSuffix()
     {
         return $this->suffix;
     }
-    
+
     /**
      * Set gender
      *
-     * @param string $gender
+     * @param integer $gender
      * @return Doctor
      */
     public function setGender($gender)
     {
         $this->gender = $gender;
+    
         return $this;
     }
-    
+
     /**
      * Get gender
      *
-     * @return string
+     * @return integer 
      */
     public function getGender()
     {
@@ -219,6 +232,7 @@ class Doctor
     public function setContactEmail($contactEmail)
     {
         $this->contactEmail = $contactEmail;
+    
         return $this;
     }
 
@@ -241,6 +255,7 @@ class Doctor
     public function setContactNumber($contactNumber)
     {
         $this->contactNumber = $contactNumber;
+    
         return $this;
     }
 
@@ -253,7 +268,7 @@ class Doctor
     {
         return $this->contactNumber;
     }
-    
+
     /**
      * Set details
      *
@@ -263,13 +278,14 @@ class Doctor
     public function setDetails($details)
     {
         $this->details = $details;
+    
         return $this;
     }
-    
+
     /**
      * Get details
      *
-     * @return string
+     * @return string 
      */
     public function getDetails()
     {
@@ -279,19 +295,20 @@ class Doctor
     /**
      * Set dateCreated
      *
-     * @param datetime $dateCreated
+     * @param \DateTime $dateCreated
      * @return Doctor
      */
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
+    
         return $this;
     }
 
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return \DateTime 
      */
     public function getDateCreated()
     {
@@ -307,6 +324,7 @@ class Doctor
     public function setStatus($status)
     {
         $this->status = $status;
+    
         return $this;
     }
 
@@ -323,19 +341,20 @@ class Doctor
     /**
      * Set media
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param \HealthCareAbroad\MediaBundle\Entity\Media $media
      * @return Doctor
      */
     public function setMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media = null)
     {
         $this->media = $media;
+    
         return $this;
     }
 
     /**
      * Get media
      *
-     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     * @return \HealthCareAbroad\MediaBundle\Entity\Media 
      */
     public function getMedia()
     {
@@ -343,21 +362,68 @@ class Doctor
     }
 
     /**
+     * Set contactDetail
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
+     * @return Doctor
+     */
+    public function setContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail = null)
+    {
+        $this->contactDetail = $contactDetail;
+    
+        return $this;
+    }
+
+    /**
+     * Get contactDetail
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\ContactDetail 
+     */
+    public function getContactDetail()
+    {
+        return $this->contactDetail;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return Doctor
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+    
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
      * Add specializations
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations
+     * @param \HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations
      * @return Doctor
      */
     public function addSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations)
     {
         $this->specializations[] = $specializations;
+    
         return $this;
     }
 
     /**
      * Remove specializations
      *
-     * @param HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations
+     * @param \HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations
      */
     public function removeSpecialization(\HealthCareAbroad\TreatmentBundle\Entity\Specialization $specializations)
     {
@@ -367,7 +433,7 @@ class Doctor
     /**
      * Get specializations
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getSpecializations()
     {
@@ -377,19 +443,20 @@ class Doctor
     /**
      * Add institutionMedicalCenters
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
      * @return Doctor
      */
     public function addInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
     {
         $this->institutionMedicalCenters[] = $institutionMedicalCenters;
+    
         return $this;
     }
 
     /**
      * Remove institutionMedicalCenters
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters
      */
     public function removeInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenters)
     {
@@ -399,32 +466,10 @@ class Doctor
     /**
      * Get institutionMedicalCenters
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
-    }
-    
-    /**
-     * Set country
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
-     * @return Institution
-     */
-    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
-    {
-        $this->country = $country;
-        return $this;
-    }
-    
-    /**
-     * Get country
-     *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    public function getCountry()
-    {
-        return $this->country;
     }
 }

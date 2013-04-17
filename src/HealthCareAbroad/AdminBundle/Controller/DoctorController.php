@@ -55,21 +55,21 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
-
+        //var_dump($doctor);exit;
         $form = $this->createForm(new DoctorFormType(), $doctor);
-    
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
                         'doctor' => $doctor,
                         'form' => $form->createView(),
                         'title' => $title
         ));
-    } 
+    }
     
     /*
      * create new doctor | update doctor details
     */
     public function saveAction(Request $request)
     {
+        
         if ($doctorId = $request->get('idId', 0)) {
             $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($doctorId);
             $media = $doctor->getMedia();
@@ -87,30 +87,25 @@ class DoctorController extends Controller
             $msg = "Successfully added doctor";
             $title = 'Add Doctor Details';
         }
-        
         $form = $this->createForm(new DoctorFormType(), $doctor);
         
         if ($this->getRequest()->isMethod('POST')) {
-            $doctorData = $request->get('doctor');
-            
-            $form->bind($doctorData);
-
+            $form->bind($request);
+           
             if($form->isValid()) {
-                // Get contactNumbers and convert to json format
-                $contactNumber = json_encode($request->get('contactNumber'));
-
+                //ADD contact detail first
+                $contactDetail = $this->get('services.contact_detail')->save($doctor->getContactDetail());
+                
                 if($media = $this->saveMedia($request->files->get('doctor'), $doctor)) {
                     $doctor->setMedia($media);
                 }
-                
-                $doctor->setContactNumber($contactNumber);
                 $em = $this->getDoctrine()->getEntityManager();
-
                 $em->persist($doctor);
                 $em->flush();
-
+                
                 if ($doctor) {
                     $this->get('session')->setFlash('success', $msg);
+                    
                     return $this->redirect($this->generateUrl('admin_doctor_index'));
                 } else {
                     $this->get('session')->setFlash('error', "Unable to update account");
