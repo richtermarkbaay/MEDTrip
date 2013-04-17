@@ -43,7 +43,9 @@
                     <h3 style="padding: 0">{{ institution.name }}</h3>
                     <a href="#"><h5>Manage Your Accreditations, GlobalAwards and Awards</h5></a>
                     <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
+                    {% if institutionStatusForm is defined %}
                     <br><a id="edit_institution_status" href="{{ path('admin_institution_editStatus',{institutionId: institution.id }) }}" class="edit-status" >Edit Status</a>
+                    {% endif %}
                 </div>
             </div>
             <div class="span6">
@@ -54,11 +56,13 @@
                 {# -- sites here <p></p> #}
                 
             </div>
+            {% if institutionStatusForm is defined %}
             <!-- Modal Institution Status -->
                 	{% include 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig' 
                 	     with {modalId: 'status_institution_modal_form', modalTitle: 'Edit Status'}
                 	%}
             <!-- end Modal Institution Status -->
+            {% endif %}
         </div>
     </div>
     
