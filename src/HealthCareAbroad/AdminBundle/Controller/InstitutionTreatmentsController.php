@@ -104,7 +104,7 @@ class InstitutionTreatmentsController extends Controller
     public function viewAllMedicalCentersAction()
     {
         $institutionService = $this->get('services.institution');
-        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
             if ($firstMedicalCenter) {
