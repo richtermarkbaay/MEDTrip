@@ -71,7 +71,13 @@ admin_institution_updateStatus:
         institutionId: \d+
         status: \d+
         _method: POST
-
+        
+admin_institution_editStatus:
+    pattern: /admin/institution/{institutionId}/edit-status
+    defaults: { _controller: AdminBundle:Institution:editStatus }
+    requirements:
+        _method: POST|GET
+                
 admin_institution_logo_upload:
     pattern: /admin/institution/{institutionId}/logo/upload
     defaults: { _controller: AdminBundle:Institution:upload, media_type: logo }

@@ -43,6 +43,7 @@
                     <h3 style="padding: 0">{{ institution.name }}</h3>
                     <a href="#"><h5>Manage Your Accreditations, GlobalAwards and Awards</h5></a>
                     <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
+                    <br><a id="edit_institution_status" href="{{ path('admin_institution_editStatus',{institutionId: institution.id }) }}" class="edit-status" >Edit Status</a>
                 </div>
             </div>
             <div class="span6">
@@ -51,10 +52,16 @@
                 <p>{{ json_decode(institution.contactNumber) | join('-') }}</p>
                 <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
                 {# -- sites here <p></p> #}
+                
             </div>
+            <!-- Modal Institution Status -->
+                	{% include 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig' 
+                	     with {modalId: 'status_institution_modal_form', modalTitle: 'Edit Status'}
+                	%}
+            <!-- end Modal Institution Status -->
         </div>
     </div>
-
+    
 </div>
 
 <div id="view_admin_users_modal" class="modal hide fade modal_form_container" tabindex="-1" role="dialog" aria-hidden="true">
@@ -78,10 +85,13 @@
 <!-- Old upload logo. TODO: Change this to bootstrap dialog upload.
     {# render 'MediaBundle:Default:addMedia' with {institution: institution, context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO')} #}
 -->
-
+<script type="text/javascript" src="{{ asset('bundles/admin/js/Institution.js') }}" ></script>
 <script type="text/javascript">
 $(function() {
-    
+	$('#edit_institution_status').click(function(){
+    	$('div#status_institution_modal_form').modal('show');
+        return false;
+    });
     $('a#view_admin_users_link').click(function(){
         _link = $(this);
         _modal = $('#view_admin_users_modal')

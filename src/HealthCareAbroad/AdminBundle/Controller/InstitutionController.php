@@ -2,6 +2,9 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+
+use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
@@ -88,7 +91,7 @@ class InstitutionController extends Controller
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
             'statusList' => InstitutionStatus::getBitValueLabels(),
-            'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus()
+            'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus(),
         );
 
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
@@ -236,11 +239,13 @@ class InstitutionController extends Controller
     {   
         $institutionService = $this->get('services.institution');
         $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
+        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         
         return $this->render('AdminBundle:Institution:view.html.twig', array(
             'recentMedicalCenters' => $recentMedicalCenters,
             'institution' => $this->institution,
-            'isSingleCenter' => $institutionService->isSingleCenter($this->institution)
+            'isSingleCenter' => $institutionService->isSingleCenter($this->institution),
+            'form' => $form->createView()
         ));
     }
     
@@ -270,6 +275,29 @@ class InstitutionController extends Controller
         $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" has been updated!');
 
         return $this->redirect($this->generateUrl('admin_institution_index'));
+    }
+    
+    public function editStatusAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $template = 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig';
+        $output = array();
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $this->get('services.institution')->save($form->getData());
+                $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" status has been updated!');
+            }
+        }
+        else {
+            $output['html'] =  $this->renderView($template, array(
+                            'institution' => $this->institution,
+                            'form' => $form->createView()
+            ));
+        }
+        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        
+        return $response;
     }
     
    	/**

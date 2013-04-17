@@ -7,6 +7,26 @@ var Institution = {
         return this._doAncillaryServiceAction(_linkElement);
     },
     
+    updateInstitutionStatus: function(_button) {
+    	_button = $(_button);
+    	_formElement = $(_button.attr('data-formId'));
+    	_modal = $(_button.attr('data-modalId'));
+    	_button.attr('disabled', true)
+            .html('Processing...');
+        var href = _formElement.attr('action');
+        $.ajax({
+            type: 'POST',
+            url: href,
+            data: _formElement.serialize(),
+            success: function(response) {
+            	_button.removeAttr('disabled')
+                .html('Submit');
+            	_modal.modal('hide');
+            }
+        });
+        	
+    },
+    
     _doAncillaryServiceAction: function (_linkElement) {
 
     	if (_linkElement.hasClass('disabled')) {
