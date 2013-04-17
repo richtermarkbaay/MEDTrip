@@ -31,7 +31,7 @@
     </div>
 
     <aside class="span4">
-        {# TODO: include steps widget #}
+        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
     </aside>
 </div>
 
@@ -62,7 +62,6 @@ var SignUpDoctors = (function() {
                 list.data('loaded', loaded + 1);
                 list.append(response.rowDoctor);
 
-                //TODO:
                 $('#add-doctor').modal('hide');
                 $('#doneSection').show();
 

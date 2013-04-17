@@ -44,7 +44,7 @@
     </div>
 
     <aside class="span4">
-        {# TODO: include steps widget #}
+        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
 
         <section class="aside-box info dashboard-side">
             <p><span><i class="icon-stethoscope icon-4x pull-left"></i></span>
