@@ -44,17 +44,18 @@
                         <td>
                             <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> 
                             <br/>
-                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_updateStatus', {institutionId:institution.id}) }}" class="show-update-status">
+                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_editStatus', {institutionId: institution.id}) }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status
                             </a>
                             <br/>
                             <a href="{{ path('admin_institution_edit_details', {institutionId:institution.id} ) }}" ><i class="icon-pencil"></i> Edit institution</a>
                     </tr>
+                    
                 {% else  %}
                     <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                 {% endfor %}
                 </table>
-    
+                
      
             </div>
             
@@ -79,27 +80,24 @@
 
     </div>
     
+    <!-- Modal Institution Status -->
+    	{% include 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig' 
+    	     with {modalId: 'status_institution_modal_form', modalTitle: 'Edit Status'}
+    	%}
+    <!-- end Modal Institution Status -->
+    
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/admin/js/Institution.js') }}" ></script>
 <script type="text/javascript">
     $(function(){
 
         $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
 
         $("a.show-update-status").click(function() {
-
-            var url = $(this).attr('href');
-            var institutionId = $(this).attr('id').split('-').pop();
-            var currentStatus = $('#institution-'+institutionId+' > td.status').html();
-            var institutionName = $('#institution-'+institutionId+' td > a.name').html();
-
-            $('#current-status').html(currentStatus);
-            $('#current-institution').html(institutionName);
-
-            $('#update-status-form').attr('action', url);
-            
-            $("#update-status-container").dialog("open");
+        	$('div#status_institution_modal_form').modal('show');
+        	
             return false;
         });
     });

@@ -87,11 +87,13 @@ class InstitutionController extends Controller
      */
     public function indexAction()
     {
+        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
             'statusList' => InstitutionStatus::getBitValueLabels(),
             'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus(),
+            'institutionStatusForm' =>$institutionStatusForm->createView()
         );
 
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
@@ -211,7 +213,7 @@ class InstitutionController extends Controller
 
         // TODO - Need to verify? Temporarily removed OPTION_HIDDEN_FIELDS 'name'
     	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
-
+    	$institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
     	if ($request->isMethod('POST')) {
     		$form->bindRequest($request);
     		if ($form->isValid()) {
@@ -228,7 +230,8 @@ class InstitutionController extends Controller
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
 			'form' => $form->createView(),
 			'institution' => $this->institution,
-			'id' => $this->institution->getId()
+			'id' => $this->institution->getId(),
+    	    'institutionStatusForm' => $institutionStatusForm->createView()
     	));
     }
     
@@ -245,7 +248,7 @@ class InstitutionController extends Controller
             'recentMedicalCenters' => $recentMedicalCenters,
             'institution' => $this->institution,
             'isSingleCenter' => $institutionService->isSingleCenter($this->institution),
-            'form' => $form->createView()
+            'institutionStatusForm' => $form->createView()
         ));
     }
     
@@ -292,7 +295,7 @@ class InstitutionController extends Controller
         else {
             $output['html'] =  $this->renderView($template, array(
                             'institution' => $this->institution,
-                            'form' => $form->createView()
+                            'institutionStatusForm' => $form->createView()
             ));
         }
         $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));

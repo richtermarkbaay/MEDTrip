@@ -8,12 +8,21 @@ var Institution = {
     },
     
     updateInstitutionStatus: function(_button) {
+    	var href = '';
     	_button = $(_button);
     	_formElement = $(_button.attr('data-formId'));
     	_modal = $(_button.attr('data-modalId'));
+    	dataInstitutionId = $(_button).attr('data-valueId'); 
     	_button.attr('disabled', true)
             .html('Processing...');
-        var href = _formElement.attr('action');
+    	if (dataInstitutionId == 0) {
+    		href = $('a.show-update-status').attr('href');
+    	}
+    	else {
+    		href = _formElement.attr('action');
+    	} 
+        
+       
         $.ajax({
             type: 'POST',
             url: href,
