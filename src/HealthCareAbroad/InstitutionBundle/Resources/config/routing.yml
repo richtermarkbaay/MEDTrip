@@ -119,10 +119,16 @@ institution_exception_report_create:
     defaults: { _controller: InstitutionBundle:Default:errorReport }
     requirements:
         _method:  GET|POST
+
+institution_terms_of_use:
+    pattern: /institution/termsofuse.html
+    defaults: { _controller: InstitutionBundle:StaticPage:termsOfUse }
+    requirements:
+        _method: GET   
         
 institution_static_page:
     pattern: /institution/{url}
-    defaults: { _controller: InstitutionBundle:StaticPage: index }
+    defaults: { _controller: InstitutionBundle:StaticPage:index }
     requirements:
         _method: GET|POST
         

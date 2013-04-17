@@ -23,4 +23,9 @@ class StaticPageController extends Controller
                         'content' => 'asasd' ));
     }
     
+    public function termsOfUseAction(Request $request)
+    {
+        return $this->render('InstitutionBundle:Main:terms_of_use.html.twig');
+    }
+    
 }
