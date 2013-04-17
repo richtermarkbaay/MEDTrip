@@ -21,7 +21,6 @@ var Institution = {
     	else {
     		href = _formElement.attr('action');
     	} 
-        
        
         $.ajax({
             type: 'POST',

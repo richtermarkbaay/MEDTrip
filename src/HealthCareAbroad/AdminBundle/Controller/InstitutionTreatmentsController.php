@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
@@ -102,6 +104,7 @@ class InstitutionTreatmentsController extends Controller
     public function viewAllMedicalCentersAction()
     {
         $institutionService = $this->get('services.institution');
+        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
             if ($firstMedicalCenter) {
@@ -132,7 +135,8 @@ class InstitutionTreatmentsController extends Controller
                 'institutionSpecializationsData' => array(),
                 'ancillaryServicesData' => $ancillaryServicesData,
                 'pager' => $this->pager,
-                'isSingleCenter' => false
+                'isSingleCenter' => false,
+                'institutionStatusForm' =>$institutionStatusForm->createView()
             );
             
             $response = $this->render('AdminBundle:InstitutionTreatments:tabular.medicalCenters.html.twig', $params);
