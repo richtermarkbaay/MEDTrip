@@ -114,8 +114,8 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
         $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
-        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one services.')))));
-        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one awards.')))));
+        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
+        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false ));
         $this->_add($builder, 'coordinates', 'hidden');
     }
 

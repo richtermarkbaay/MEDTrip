@@ -575,6 +575,7 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
+            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
             'specializationsJSON' => \json_encode($specializationArr),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()

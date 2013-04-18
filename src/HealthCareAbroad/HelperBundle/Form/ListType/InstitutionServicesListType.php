@@ -11,6 +11,10 @@ use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryTransformer;
 
 use HealthCareAbroad\HelperBundle\Services\AncillaryServicesService;
 
+use Symfony\Component\Form\FormInterface;
+
+use Symfony\Component\Form\FormView;
+
 class InstitutionServicesListType extends AbstractType
 {
     public function __construct(AncillaryServicesService $service)
@@ -26,7 +30,12 @@ class InstitutionServicesListType extends AbstractType
             $choices[$service->getId()] = $service->getName();
         }
 
-        $resolver->setDefaults(array('choices' => $choices, 'multiple' => true, 'expanded' => true));
+        $resolver->setDefaults(array('choices' => $choices, 'multiple' => true, 'expanded' => true, 'centers' => true));
+    }
+    
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $view->vars['centers'] = $options['centers'];
     }
 
     public function getParent()

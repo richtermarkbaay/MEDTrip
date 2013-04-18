@@ -95,8 +95,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Address', 'attr' => array('value' => $this->institution->getAddress1())));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
-        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false));
-        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false));
+        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => true));
+        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => true ));
 
     }
 

@@ -37,6 +37,7 @@ class InstitutionMedicalCenterPropertyService
     private $memcache;
     
     private $activePropertyTypes;
+    private $propertyRepository;
     
     /**
      * @var GlobalAwardService
@@ -48,6 +49,8 @@ class InstitutionMedicalCenterPropertyService
         $this->doctrine = $doctrine;
         $this->memcache = $memcache;
         
+        $this->propertyRepository = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty');
+        
         //$this->_setupAvailablePropertyTypes();
     }
     
@@ -58,7 +61,7 @@ class InstitutionMedicalCenterPropertyService
     
     public  function findById($id)
     {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($id);
+        return $this->propertyRepository->find($id);
     }
   
     /**
@@ -160,7 +163,7 @@ class InstitutionMedicalCenterPropertyService
             'institutionPropertyType' => $propertyType
         );
         // get the properties
-        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        $properties = $this->propertyRepository->findBy($criteria);
         $returnVal = $properties;
         
         if ($loadValuesEagerly) {
@@ -200,7 +203,41 @@ class InstitutionMedicalCenterPropertyService
             'institutionPropertyType' => $propertyType
         );
     
-        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        $properties = $this->propertyRepository->findBy($criteria);
         return $properties;
+    }
+    
+    
+    public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), InstitutionPropertyType $propertyType, InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        if(empty($properties)){
+            return;
+        }
+        $em = $this->doctrine->getManager();
+    
+        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
+        foreach ($properties as $property) {
+            $variableName = 'property'.$property;
+            $$variableName = new InstitutionMedicalCenterProperty();
+            $$variableName->setInstitution($institution);
+            $$variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
+            $$variableName->setInstitutionPropertyType($propertyType);
+            $$variableName->setValue($property);
+    
+            $em->persist($$variableName);
+        }
+        $em->flush();
+    }
+    
+    public function removeInstitutionPropertiesByPropertyType(Institution $institution, InstitutionPropertyType $propertyType, InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $currentProperties = $this->propertyRepository->getPropertyValues($institution, $propertyType, $institutionMedicalCenter);
+
+        $em = $this->doctrine->getManager();
+        foreach ($currentProperties as $property) {
+            $em->remove($property);
+            $em->flush();
+        }
+        return;
     }
 }

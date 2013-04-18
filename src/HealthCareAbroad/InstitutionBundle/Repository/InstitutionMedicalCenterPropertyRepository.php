@@ -134,4 +134,17 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         //echo $qb->getQuery()->getSQL(); exit;
         return $qb->getQuery()->getResult();
     }
+    
+    public function getPropertyValues(Institution $institution, InstitutionPropertyType $propertyType, InstitutionMedicalCenter $medicalCenter)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institution_medical_center_id = :imcId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('imcId', $medicalCenter->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->getResult();
+    
+        return $result;
+    }
 }

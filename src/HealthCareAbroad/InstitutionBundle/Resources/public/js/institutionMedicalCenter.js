@@ -41,6 +41,19 @@ var InstitutionMedicalCenter = {
         return this;
     },
     
+    openProfileForm: function(_element){
+    	_element.hide();
+    	_attr = _element.attr('href');
+    	_element.next('div.show').hide();
+    	$(_attr).show();
+    },
+    closeProfileForm: function(_element){
+    	_div = _element.parents('div.hca-edit-box').prev('div');
+    	_div.show();
+    	_div.prev().show();
+    	_element.parent().hide();
+    },
+    
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
