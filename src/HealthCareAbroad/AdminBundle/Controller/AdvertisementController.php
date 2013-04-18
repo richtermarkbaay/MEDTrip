@@ -74,7 +74,7 @@ class AdvertisementController extends Controller
             $this->institution = $this->advertisement->getInstitution();
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', $institutionId) && !$this->advertisement) {
+        if (($institutionId = $this->getRequest()->get('institutionId', $institutionId)) && !$this->advertisement) {
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f')->from('InstitutionBundle:Institution', 'a')
