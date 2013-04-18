@@ -50,7 +50,7 @@ class AdvertisementController extends Controller
 
     public function preExecute()
     {
-        $ad = $this->getRequest()->get('advertisement');
+        $ad = $this->getRequest()->get('advertisement'); 
         $institutionId = $ad ? $ad['institution'] : null;
 
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
@@ -161,6 +161,7 @@ class AdvertisementController extends Controller
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
             'form' => $form->createView(),
+            'isEditMode' => true,
             'step' => (int)$request->get('step', 2)
         ));
     }
