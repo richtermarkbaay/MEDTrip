@@ -1,83 +1,32 @@
-{% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
-    {% block tabbedContent %}
-    <form id="modal_award_form" action="{{ path('institution_medicalCenter_ajaxUpdateBusinessHours', {'imcId': institutionMedicalCenter.id} ) }}">
-        
-         {% set _awardsByType = {
-                'awards': {
-                    'fieldId': 'awards_field',
-                    'containerId': 'awards',
-                    'header': 'Awards',
-                    'tableId': 'awards_table',
-                    'selectorFieldLabel': form_label(form.awards_selector),
-                    'selectorFieldWidget': form_widget(form.awards_selector, {attr: {class:'global_award_autocomplete', 'data-globalAwardType': 'award', 'data-globalAwardContainer': 'table.awards_table tbody', 'data-fieldId' : '.awards_field'} }),
-                    'list': currentGlobalAwards.award
-                },
-                'certifications': {
-                    'fieldId': 'certifications_field',
-                    'containerId': 'certifications',
-                    'header': 'Certifications',
-                    'tableId': 'certificates_table',
-                    'selectorFieldLabel': form_label(form.certifications_selector),
-                    'selectorFieldWidget': form_widget(form.certifications_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'certificate', 'data-globalAwardContainer': 'table.certificates_table tbody', 'data-fieldId' : '.certifications_field'} }),
-                    'list': currentGlobalAwards.certificate
-                },
-                'affiliations': {
-                    'fieldId': 'affiliations_field',
-                    'containerId': 'affiliations',
-                    'header': 'Affilliations',
-                    'tableId': 'affiliations_table',
-                    'selectorFieldLabel': form_label(form.affiliations_selector),
-                    'selectorFieldWidget': form_widget(form.affiliations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'affiliation', 'data-globalAwardContainer': 'table.affiliations_table tbody', 'data-fieldId' : '.affiliations_field'} }),
-                    'list': currentGlobalAwards.affiliation
-                },
-                'accreditations': {
-                    'fieldId': 'accreditations_field',
-                    'containerId': 'accreditations',
-                    'header': 'Accreditations',
-                    'tableId': 'accreditation_table',
-                    'selectorFieldLabel': form_label(form.accreditations_selector),
-                    'selectorFieldWidget': form_widget(form.accreditations_selector, {attr: {class:'global_award_autocomplete','data-globalAwardType': 'accreditation', 'data-globalAwardContainer': 'table.accreditation_table tbody', 'data-fieldId' : '.accreditations_field'} }),
-                    'list': currentGlobalAwards.accreditation
-                }
-            }
-        %}
-        
-        {% for _awardsListData in _awardsByType %}
-            {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
-        {% endfor %}
-        
-        {{ form_widget(form._token) }}
-        
-    </form>
-    
-    {% include 'InstitutionBundle:Widgets/Modals:modal.deleteInstitutionMedicalCenterGlobalAwards.html.twig' %}
-	{% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
-    
-    {% endblock %}
-{% endembed %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-<!--
-(function($){
-    $(function(){
-        
-        $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
-        
-        $('a.edit_global_award').globalAward('edit', {
-            'modal': $('div.edit_award_form_container'),
-            'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
-            'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
-        });
+{% set _awardsByType = {
+        'awards': {
+            'containerId': 'awards',
+            'header': 'Awards',
+            'tableId': 'awards_table',
+            'list': currentGlobalAwards.award
+        },
+        'certifications': {
+            'containerId': 'certifications',
+            'header': 'Certifications',
+            'tableId': 'certificates_table',
+            'list': currentGlobalAwards.certificate
+        },
+        'affiliations': {
+            'containerId': 'affiliations',
+            'header': 'Affilliations',
+            'tableId': 'affiliations_table',
+            'list': currentGlobalAwards.affiliation
+        },
+        'accreditations': {
+            'containerId': 'accreditations',
+            'header': 'Accreditations',
+            'tableId': 'accreditation_table',
+            'list': currentGlobalAwards.accreditation
+        }
+    }
+%}
 
-        $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("institution_medicalCenter_ajaxAddGlobalAward", {"imcId": institutionMedicalCenter.id}) }}');
-
-        $('input.global_award_autocomplete').globalAward('autocompleteAward', {
-            'remoteUrl': '{{ path("institution_medicalCenter_ajaxGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}' 
-        });
+{% for _awardsListData in _awardsByType %}
+    {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+{% endfor %}
         
-    });
-    
-})(jQuery);
-//-->
-</script>
-{% endblock %}

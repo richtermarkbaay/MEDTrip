@@ -155,42 +155,47 @@ class InstitutionMedicalCenterPropertyService
      * @param boolean $loadValuesEagerly
      * @return array InstitutionMedicalCenterProperty
      */
-    public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, $loadValuesEagerly=true)
+    public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, array $options=array())
     {
+        $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
+        $options = \array_merge($defaultOptions, $options);
         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $criteria = array(
-            'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
+            'institutionMedicalCenter' => $institutionMedicalCenter,
             'institutionPropertyType' => $propertyType
         );
         // get the properties
         $properties = $this->propertyRepository->findBy($criteria);
         $returnVal = $properties;
-        
-        if ($loadValuesEagerly) {
+
+        if ($options['loadValuesEagerly']) {
             $globalAwardIds = array();
             $propertiesByValue = array();
-            foreach ($properties as $imcp) {
-                $globalAwardIds[] = $imcp->getValue(); 
+            foreach ($properties as $imp) {
+                $globalAwardIds[] = $imp->getValue();
                 // store the property with the value as the key
-                $propertiesByValue[$imcp->getValue()][] = $imcp;
+                $propertiesByValue[$imp->getValue()][] = $imp;
             }
-            
+
             // find global awards with ids equal to the retrieve property values
             $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findByIds($globalAwardIds);
-
             $returnVal = array();
             // get the property from the stored list
             foreach ($globalAwards as $_award) {
                 if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
-                    foreach ($propertiesByValue[$_award->getId()] as $imcp) {
+                    foreach ($propertiesByValue[$_award->getId()] as $imp) {
                         // set the value object to GlobalAward
-                        $imcp->setValueObject($_award);
-                        $returnVal[] = $imcp;
+                        $imp->setValueObject($_award);
+                        $returnVal[] = $imp;
                     }
                 }
             }
         }
-        
+
+        if ($options['groupByType']) {
+            $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
+        }
+
         return $returnVal;
     }
     

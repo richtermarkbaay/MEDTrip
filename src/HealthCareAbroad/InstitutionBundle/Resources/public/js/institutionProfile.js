@@ -241,8 +241,8 @@ var InstitutionProfile = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.hca-edit-control-group').find('form');
-        _divToShow = _button.parents('section.hca-main-profile').find('div.textFields');
+        _form = _button.parents('.hca-edit-box').find('form');
+        _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
         $.ajax({

@@ -3,13 +3,7 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">  Edit </a>
         <div class="show">
             <h3> About your Clinic </h3>
-            <p>{{ institutionMedicalCenter.description | raw }}</p>
-            <div class="hca-profile-sublevel"> Here you can present your Clinic general description. </div>
-            <p class="hca-helptext">
-                You can use this space to showcase your medical institution by offering
-                an overview of your specializations and services, and maybe explain why
-                potential patients should choose your Clinic.
-            </p>
+            <p><span id="clinicDescriptionText">{{ institutionMedicalCenter.description | raw }} </span></p>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
@@ -17,7 +11,7 @@
                 <a href="#"> <i class="icon-info-sign icon-1x pull-right"> </i> </a>
             </h3>
             {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
-                 with {formId: 'descriptionModalForm', fields: ['description']} 
+                 with {formId: 'descriptionForm', fields: ['description']} 
             %}
         </div>
     </div>
@@ -30,11 +24,13 @@
             <h3> Clinic Address </h3>
             <p> <i class="icon-map-marker"> </i>
                 {% set _address = medical_center_complete_address_to_array(institutionMedicalCenter) %}
-                <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                <span class="address_column">
+                    <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                </span>
             </p>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="address">
-        <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
+            <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
             <h3> Clinic Address
                 <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"></i>
                     <span class="tooltip-content hca-edit pull-left"> <i class="icon-map-marker icon-2x pull-left"> </i>
@@ -110,7 +106,9 @@
          <div class="show">
             <h3> Services </h3>
             <h4> List of Services offered by Your Clinic.  </h4>
-             {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig' %}
+            <div class="activity-feeds" id="serviesText">
+                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig' %}
+            </div>
             <p class="hca-helptext">
                 You haven't yet added any services for your Clinic. Explain here the need
                 to add services for your Clinic.
@@ -133,21 +131,14 @@
 </section>
 <section class="section action-info hca-main-profile">
     <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#awards" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#awardsDiv" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
         <div class="show">
             <h3> Certifications, Affilations, Awards and Accreditations </h3>
-            <h4> List of Certifications </h4>
-            <div class="hca-profile-sublevel">
-                Here you can showcase Certifications, Affilations, Awards and Accreditations
-                given to your Clinic.
+            <div class="activity-feeds" id="awardsText">
+                {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' %}
             </div>
-            <p class="hca-helptext">
-                You haven't yet added any Certifications, Affilations, Awards and Accreditations
-                for your Clinic. Explain here the need to add Certifications, Affilations,
-                Awards and Accreditations for your Clinic.
-            </p>
         </div>
-        <div class="row-fluid hca-edit-box" style="display:none;" id="awards">
+        <div class="row-fluid hca-edit-box" style="display:none;" id="awardsDiv">
             <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
             <h3> Certifications, Affilations, Awards and Accreditations
                 <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"></i>

@@ -167,7 +167,7 @@ class MedicalCenterController extends InstitutionAwareController
                             $value = $value->__toString();
                         }
                         
-                        if($key == 'address' || $key == 'contactNumber' || $key == 'websites') {
+                        if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
                             $value = json_decode($value, true);
                         }
                         
@@ -566,11 +566,11 @@ class MedicalCenterController extends InstitutionAwareController
         
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
         $specializationArr = array();
-        
+        $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         foreach ($specializations as $e) {
             $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
+
         return $this->render($template, array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
@@ -578,7 +578,8 @@ class MedicalCenterController extends InstitutionAwareController
             'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
             'specializationsJSON' => \json_encode($specializationArr),
-            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+            'currentGlobalAwards' => $currentGlobalAwards
         ));
     }
     
