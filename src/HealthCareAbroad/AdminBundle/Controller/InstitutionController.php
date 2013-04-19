@@ -337,4 +337,12 @@ class InstitutionController extends Controller
    	
    	    return $this->redirect($this->generateUrl('admin_institution_view' , array('institutionId' => $this->institution->getId())));
    	}
+   	
+   	public function viewInstitutionDoctorsAction()
+   	{
+   	    return $this->render('AdminBundle:Institution:viewInstitutionDoctors.html.twig', array(
+                'institutionDoctors' => $this->get('services.institution')->getAllDoctors($this->institution),
+                'institution' => $this->institution,
+   	    ));
+   	}
 }

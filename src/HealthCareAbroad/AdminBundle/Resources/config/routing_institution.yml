@@ -91,3 +91,10 @@ admin_institution_featuredImage_upload:
     requirements:
         _method: POST|GET
         institutionId: \d+
+        
+admin_institution_doctors:
+    pattern: /admin/institution/{institutionId}/doctors
+    defaults: { _controller: AdminBundle:Institution:viewInstitutionDoctors }
+    requirements:
+        _method: GET
+        institutionId: \d+
