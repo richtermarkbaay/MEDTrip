@@ -213,7 +213,7 @@ class InstitutionController extends Controller
 
         // TODO - Need to verify? Temporarily removed OPTION_HIDDEN_FIELDS 'name'
     	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
-    	$institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+    	$institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites','type')));
     	if ($request->isMethod('POST')) {
     		$form->bindRequest($request);
     		if ($form->isValid()) {

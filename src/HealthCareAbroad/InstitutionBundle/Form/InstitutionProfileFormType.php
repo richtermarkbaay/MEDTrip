@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\HelperBundle\Form\FieldType\LocationFieldType;
 
 use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
@@ -52,7 +54,8 @@ class InstitutionProfileFormType extends AbstractType
         'address1',
         'contactNumber',
         'websites',
-        'coordinates'
+        'coordinates',
+        'type'
     );
     
     public function getName()
@@ -99,6 +102,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Institution Phone Number'));
         $this->_add($builder, 'websites', 'websites_custom_field');
         $this->_add($builder, 'coordinates', 'hidden');
+        $this->_add($builder, 'type', 'choice', array('label' => 'Institution Type' ,'multiple' => false, 'choices' => InstitutionTypes::getFormChoices()));
         
     }
     
