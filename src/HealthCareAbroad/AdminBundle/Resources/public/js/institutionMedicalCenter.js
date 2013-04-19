@@ -204,6 +204,22 @@ var InstitutionMedicalCenter = {
         return this._doAncillaryServiceAction(_linkElement);
     },
     
+    showInstitutionAncillaryServicesForm: function(_linkElement) {
+    	_linkElement = $(_linkElement);
+    	_href = _linkElement.attr('href');
+    	_modal = $(_linkElement.attr('data-modalId'));
+    	_ancillaryServicesTable = $(_linkElement.attr('data-tableId'));
+    	$.ajax({
+            type: 'POST',
+            url: _href,
+            success: function(response) {
+            	_ancillaryServicesTable.find('tbody').remove();
+            	_ancillaryServicesTable.find('thead').after($(response.html));
+            	_modal.modal('show');
+            }
+        });
+    },
+    
     portInstitutionAncillaryServices: function(_button) {
     	_button = $(_button);
     	_divId = $(_button.attr('data-divId'));
@@ -216,9 +232,9 @@ var InstitutionMedicalCenter = {
             data: {'isCopy' : 1},
             success: function(response) {
             	_modal.modal('hide');
-            	_divId.find('.boxContent').remove();
-            	_divId.find('h5').after($(response.html))
-            	
+            	_divId.find('.boxcontent').remove();
+            	_divId.find('h5').after($(response.html));
+            	_button.removeAttr('disabled').html('Submit');
             }
         });
     	
@@ -232,7 +248,6 @@ var InstitutionMedicalCenter = {
         _href = _linkElement.attr('href');
         _html = _linkElement.html();
         _linkElement.html('Processing...').addClass('disabled');
-        
         $.ajax({
             url: _href,
             type: 'POST',
@@ -241,7 +256,6 @@ var InstitutionMedicalCenter = {
             	_linkElement.removeClass('disabled')
             	_linkElement.attr('href', response.href);
             	_linkElement.text(response.label);
-            	
             	//check if newly added service
             	if(response._isSelected == true ){
 	            	_linkElement.prev('i').attr('class','icon-minus');

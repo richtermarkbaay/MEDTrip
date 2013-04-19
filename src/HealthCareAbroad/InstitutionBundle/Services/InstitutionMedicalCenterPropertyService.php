@@ -203,4 +203,17 @@ class InstitutionMedicalCenterPropertyService
         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
         return $properties;
     }
+    
+    public function getCurrentAndSelectedAncillaryServicesByPropertyType(InstitutionMedicalCenter $center, $propertyName, $ancillaryServicesData)
+    {
+        foreach ($this->getInstitutionMedicalCenterByPropertyType($center, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+            $ancillaryServicesData['currentAncillaryData'][] = array(
+                            'id' => $_selectedService->getId(),
+                            'value' => $_selectedService->getValue(),
+            );
+            $ancillaryServicesData['selected'][] = $_selectedService->getValue();
+        }
+        
+        return $ancillaryServicesData;
+    }
 }

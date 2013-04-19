@@ -1,21 +1,19 @@
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
+{% embed 'AdminBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
     {% block modalBody %}
-        <table class="table table-striped table-bordered specialist_table">
-    	    <thead>
+        <table id="ancillaryServiceTable" class="table table-striped table-bordered specialist_table">
+            <thead>
                 <tr>
-    			    <th>Ancillary Services</th>
-    			</tr>
+        		    <th>Ancillary Services</th>
+        		</tr>
             </thead>
-	        <tbody>
-	         {% for service in institutionServices %}
-	         <tr>
-	             <td> {{ service.name |title }} </td>
-	         </tr>
-        		
+            <tbody>
+             {% for service in institutionServices %}
+             <tr>
+                 <td> {{ service.name |title }} </td>
+             </tr>
         	 {% endfor %}
-			</tbody>
-		</table>
-        
+        	</tbody>
+        </table>
     {% endblock %}
     {% block footerBody %}
         <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>

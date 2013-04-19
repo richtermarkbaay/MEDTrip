@@ -1,7 +1,7 @@
 {% set ancilliaryServiceLabel = getClassLabel('ancilliary_service') %}
 <div id="ancilliaryServices" class="treatmentbox" >
     <h5 style="padding: 10px; border: 1px solid #EEEEEE" id="services">{{ ancilliaryServiceLabel.plural | title }}
-        <a href="{{ path('admin_institution_medicalCenter_port', { institutionId: institution.id, imcId: institutionMedicalCenter.id } ) }}" id="port_services_btn" class="port_services btn btn-mini pull-right">
+        <a href="{{ path('admin_institution_medicalCenter_showAncillaryServiceForm', { institutionId: institution.id, imcId: institutionMedicalCenter.id } ) }}" data-tableId="#ancillaryServiceTable" data-modalId="#institution_ancillaryServices_modal_form" onclick="InstitutionMedicalCenter.showInstitutionAncillaryServicesForm(this); return false;" id="port_services_btn" class="port_services btn btn-mini pull-right">
             <i class="icon-plus"></i>Port Institution Ancillary Services
         </a>
     </h5>
@@ -15,11 +15,8 @@
             </thead>
             <tbody>
                 {% for _service in ancillaryServicesData.globalList %}
-        			
         			{% include 'AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in ancillaryServicesData.selected ,'properties': ancillaryServicesData.currentAncillaryData} %}
-                	
                 {% endfor %}
-                
             </tbody>
         </table>
     </div>
