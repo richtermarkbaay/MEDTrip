@@ -138,6 +138,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateByFieldAction(Request $request)
     {
         $output = array();
+        $propertyService = $this->get('services.institution_medical_center_property');
         if (true) {
             try {
                 $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
@@ -152,6 +153,17 @@ class MedicalCenterController extends InstitutionAwareController
                     $this->institutionMedicalCenter = $form->getData();
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     
+                    if(!empty($form['services']))
+                    {
+                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+
+                    }if(!empty($form['awards']))
+                    {
+                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['awards']->getData(),InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                    }
+                    
                     if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
                         // also update the instituion name and description
                         $this->institution->setName($this->institutionMedicalCenter->getName());
@@ -161,6 +173,28 @@ class MedicalCenterController extends InstitutionAwareController
                     
                     $output['institutionMedicalCenter'] = array();
                     foreach ($formVariables as $key => $v){
+                        
+                        if($key == 'services')
+                        {
+                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', array(
+                                    'institution' => $this->institution,
+                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                            ));
+                        
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                        
+                        }if($key == 'awards')
+                        {
+                            $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
+                                    'institution' => $this->institution,
+                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'currentGlobalAwards' => $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter),
+                            ));
+                        
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                        }
+                        
                         $value = $this->institutionMedicalCenter->{'get'.$key}();
                         
                         if(is_object($value)) {

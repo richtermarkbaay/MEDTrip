@@ -213,11 +213,13 @@ class InstitutionMedicalCenterPropertyService
     }
     
     
-    public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), InstitutionPropertyType $propertyType, InstitutionMedicalCenter $institutionMedicalCenter)
+    public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), $propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
     {
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
         if(empty($properties)){
             return;
         }
+        
         $em = $this->doctrine->getManager();
     
         //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
@@ -228,15 +230,15 @@ class InstitutionMedicalCenterPropertyService
             $$variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
             $$variableName->setInstitutionPropertyType($propertyType);
             $$variableName->setValue($property);
-    
             $em->persist($$variableName);
         }
         $em->flush();
     }
     
-    public function removeInstitutionPropertiesByPropertyType(Institution $institution, InstitutionPropertyType $propertyType, InstitutionMedicalCenter $institutionMedicalCenter)
+    public function removeInstitutionMedicalCenterPropertiesByPropertyType($propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $currentProperties = $this->propertyRepository->getPropertyValues($institution, $propertyType, $institutionMedicalCenter);
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        $currentProperties = $this->propertyRepository->getPropertyValues($propertyType, $institutionMedicalCenter);
 
         $em = $this->doctrine->getManager();
         foreach ($currentProperties as $property) {

@@ -1,5 +1,4 @@
-<table class="table table-hover table-striped hca-listing-awards-services">
-	{% for _service in ancillaryServicesData %}
-		{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' %}
-	{% endfor %}
-</table>
+
+{% for _service in ancillaryServicesData %}
+	{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' %}
+{% endfor %}

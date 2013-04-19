@@ -272,8 +272,8 @@ var InstitutionMedicalCenter = {
 	                        $('#soclialMediaText').html(websitesString);
                   	break;
                        
-                    case 'serviceForm':
-                    	$('#serviesText').html(response.html);
+                    case 'servicesForm':
+                    	$('#servicesTable').html(response.html);
                     	break;
                     	
                     case 'awardsForm':
