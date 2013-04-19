@@ -22,4 +22,13 @@ admin_medicalCenter_ajaxSpecializationSource:
     requirements:
         imcId: \d+
         institutionId: \d+
-        _method: GET    
+        _method: GET   
+        
+admin_medicalCenter_ajaxRemoveSpecialization:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/specializations/{isId}/ajaxRemove
+    defaults: { _controller: AdminBundle:InstitutionSpecialization:ajaxRemoveSpecialization }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        isId: \d+
+        institutionId: \d+ 
