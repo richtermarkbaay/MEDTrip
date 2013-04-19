@@ -43,6 +43,8 @@
         {# include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' #}
     
         {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %#}
+        
+        {{ render_search_results_image_ad() }}
     </aside>
 
 {% endblock %}

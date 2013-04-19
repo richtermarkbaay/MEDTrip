@@ -35,6 +35,8 @@
 
     <aside class="aside-wrapper span4">
         {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+        
+        {{ render_search_results_image_ad() }}
     </aside>
     
     {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'destinations', id: destinationId} %#}
