@@ -203,7 +203,7 @@ class SearchTermRepository extends EntityRepository
         $qb->groupBy('inst.id');
         
         // temp ordering so that latest items show up first
-        $qb->orderBy('inst.id', 'DESC');
+        $qb->orderBy('inst.dateCreated', 'DESC');
 
         return $qb;
     }
