@@ -9,6 +9,12 @@ var ClinicListing = {
         return this;
     },
     
+    ajaxUrls: {
+		'loadPending': '', 
+		'loadDraft':'',
+		'loadExpired': '',
+    }, 
+    
 	tabbedContentElement: null,
 	
 	setTabbedContentElement: function(_val) {
@@ -21,14 +27,16 @@ var ClinicListing = {
     	_status = $(_element);
     	$('#loader_ajax').show();
     	
-        $.ajax({
-            url: ClinicListing.ajaxUrls.load+'?status='+_status.val(),
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-            	ClinicListing.tabbedContentElement.html(response.output.html);
-            	$('#loader_ajax').hide();
-            }
+        $.each(ClinicListing.ajaxUrls, function(_key, _url){
+		          $.ajax({
+		          url: _url,
+		          type: 'get',
+		          dataType: 'json',
+		          success: function(response){
+		          	$('#'+response.status).html(response.output.html);
+		          	$('#loader_ajax').hide();
+		          }
+		      });
         });
         return this;
     },

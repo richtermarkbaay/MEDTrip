@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Mapping\Fixture\Xml\Status;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -92,7 +96,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function indexAction(Request $request)
     {
         $output = array();
-        $status = $request->get('status', null);
+        $status = $request->get('status', 2);
         // Check if Already Completed the signupSteps
         $signupStepStatus = $this->institution->getSignupStepStatus();
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
@@ -109,27 +113,21 @@ class MedicalCenterController extends InstitutionAwareController
             return $this->redirect($this->generateUrl($routeName, $params));
         }
         
-        $results = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, $status);
+        $results = $this->repository->findBy(array('status' => $status));
         
-        $pagerAdapter = new DoctrineOrmAdapter($results);
-        
-        $pagerParams = array(
-                'page' => $request->get('page', 1),
-                'limit' => 10
-            );
-        
-        $pager = new Pager($pagerAdapter, $pagerParams);
+        $list = InstitutionMedicalCenterStatus::getStatusList();
         
         $parameters = array(
-                        'pager' => $pager,
-                        'navStatus' => $status,
+                        'medicalCenters' => $results,
+                        'navStatus' => strtolower($list[$status]),
                         'institution' => $this->institution,
                         'statusList' => InstitutionMedicalCenterStatus::getStatusList()
         );
         
-        if($request->get('page'))
+        if( $request->get('status'))
         {
-            $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:index.html.twig', $parameters));
+            $output['status'] = strtolower($list[$status]);
+            $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig', $parameters));
             
             return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
         }

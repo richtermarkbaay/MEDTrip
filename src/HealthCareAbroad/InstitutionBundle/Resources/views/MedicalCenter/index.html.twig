@@ -1,44 +1,45 @@
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'clinics'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
+ {% block content %}
  
- <img style="display: none; float:center;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
- <div class="row">
- 
-     <div class="tabbable">
-            <!-- Only required for left/right tabs -->
-            <ul class="nav nav-tabs hca-tab">
-                <li class="active">
-                    <a href="#all" data-toggle="tab">Current Listing</a>
-                </li>
-                <li>
-                    <a href="#draft" data-toggle="tab">Draft</a>
-                </li>
-                <li>
-                    <a href="#pending" data-toggle="tab">Pending</a>
-                </li>
-                <li>
-                    <a href="#expired" data-toggle="tab">Expired</a><span class="badge badge-warning"> Renew!</span>
-                </li>
-            </ul>
-       <div class="tab-content">
-            <div class="tab-pane active" id="medical_centers"> 
-                 <ul class="thumbnails" id="all">
-                    {% if pager.Results %}
-                         {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
-                           {% if pager.isPaginable %}
-                               {{ paginate(pager, 'admin_country_index', app.request.query.all) }}
-                            {% endif %}
-                    {% endif %}
-                </ul>
-           </div>
-           <div class="tab-pane" id="draft"> 
-           <div class="tab-pane" id="pending"> 
-           <div class="tab-pane" id="expired"> 
-        </div>
-    </div>
-       
-</div>
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    {% block wrappedContent %}    
+               <h1>
+                    Your {{ clinicClassLabel.plural | title }}
+                    <a href="#add-clinic" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
+                </h1>
+             <div class="tabbable">
+                    <!-- Only required for left/right tabs -->
+                    <ul class="nav nav-tabs hca-tab">
+                        <li class="active">
+                            <a href="#all" data-toggle="tab">Current Listing</a>
+                        </li>
+                        <li>
+                            <a href="#draft" data-toggle="tab">Draft</a>
+                        </li>
+                        <li>
+                            <a href="#pending" data-toggle="tab">Pending</a>
+                        </li>
+                        <li>
+                            <a href="#expired" data-toggle="tab">Expired</a><span class="badge badge-warning"> Renew!</span>
+                        </li>
+                    </ul>
+                   <div class="tab-content" id="medicalCenterListing">
+                        <div class="tab-pane active" id=all> 
+                                 {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
+                       </div>
+                       <div class="tab-pane" id="draft"> </div>
+                       <div class="tab-pane" id="pending"> </div>
+                       <div class="tab-pane" id="expired"> </div>
+                    </div>
+            </div>
+               
+        {% endblock %}
+        
+    {% endembed %}
 
+{% endblock %}
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionMedicalCenterTab.js') }}" ></script>
@@ -48,8 +49,13 @@
         $(function(){
             $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
         });
-        
-       ClinicListing.setAjaxUrls({'load': '{{ path("institution_medicalCenter_index" ) }}'});
+        _url_base = '{{ path("institution_medicalCenter_index") }}'; 
+        ClinicListing.setAjaxUrls({
+            'loadPending': _url_base+'?status=8',
+            'loadDraft': _url_base+'?status=4',
+            'loadExpired': _url_base+'?status=16',
+       }); 
+        ClinicListing.loadTabbedContentsOfClinics(); 
        ClinicListing.tabbedContentElement = $('#medicalCenterListing');
        
         function grow(_el) {
@@ -66,4 +72,3 @@
 //-->
 </script>
 {% endblock %}
-
