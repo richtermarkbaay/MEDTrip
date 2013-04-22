@@ -6,23 +6,23 @@
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
     {% block wrappedContent %}    
                <h1>
-                    Your {{ clinicClassLabel.plural | title }}
+                    <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
                     <a href="#add-clinic" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
                 </h1>
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
                     <ul class="nav nav-tabs hca-tab">
                         <li class="active">
-                            <a href="#all" data-toggle="tab">Current Listing</a>
+                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{  total.status.2 | length }}</span></a>
                         </li>
                         <li>
-                            <a href="#draft" data-toggle="tab">Draft</a>
+                            <a href="#draft" data-toggle="tab">Draft <span class="badge"> {{  total.status.4 | length }}</span></a>
                         </li>
                         <li>
-                            <a href="#pending" data-toggle="tab">Pending</a>
+                            <a href="#pending" data-toggle="tab">Pending<span class="badge"> {{  total.status.8 | length }}</span></a>
                         </li>
                         <li>
-                            <a href="#expired" data-toggle="tab">Expired</a><span class="badge badge-warning"> Renew!</span>
+                            <a href="#expired" data-toggle="tab">Expired<span class="badge"> {{  total.status.16 | length }}</span></a>
                         </li>
                     </ul>
                    <div class="tab-content" id="medicalCenterListing">

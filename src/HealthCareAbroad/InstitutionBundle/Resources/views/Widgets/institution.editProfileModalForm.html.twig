@@ -5,7 +5,9 @@
             
             {% for each in fields %}
                 {% if each == 'description' %}
+                 <div class="control-group">    
                     {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
+                </div>
                 {% elseif each == 'name' %}
                     {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
                 {% elseif each == 'address1' %}

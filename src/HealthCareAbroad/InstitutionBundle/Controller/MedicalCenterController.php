@@ -112,12 +112,11 @@ class MedicalCenterController extends InstitutionAwareController
 
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-        
-        $results = $this->repository->findBy(array('status' => $status));
-        
+        $results = $this->repository->getInstitutionMedicalCentersByStatus($this->institution, $status);
         $list = InstitutionMedicalCenterStatus::getStatusList();
-        
+        $total = $this->service->getMedicalCenterCountByStatus($this->institution->getInstitutionMedicalCenters());
         $parameters = array(
+                        'total' => $total,
                         'medicalCenters' => $results,
                         'navStatus' => strtolower($list[$status]),
                         'institution' => $this->institution,

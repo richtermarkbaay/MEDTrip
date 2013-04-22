@@ -2,7 +2,7 @@
     {% for each in fields %}
 
         {% if each == 'description' %}
-            {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'tinymce'} })  }}
+            {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
         {% elseif each == 'address' %}
                         {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
                     <div class="control-group">
