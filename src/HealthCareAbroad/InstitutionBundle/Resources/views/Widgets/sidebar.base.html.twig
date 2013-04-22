@@ -3,32 +3,17 @@
         <h3>
             Profile's Statistics
         </h3>
-        <div class="row activity-feeds">
-                <p>
-                    Member Since:
-                    <strong>  +1 123-4567  </strong>
-                </p>
-                <p>
-                    Profile Hits:
-                    <strong> 200 </strong>
-                </p>
-                <div class="progress">
-                    <div class="bar" style="width: 100%;">
-                <span class="pull-right"> 100% </span>
-                </div>
+        <div class="activity-feeds">
+                <span class="icon-map-marker"> </span>
+                {% set _address = institution_address_to_array(institution) %}
+                <span class="address_column">
+                    <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                </span>
             </div>
-            <p>
-                Activity Meter: <strong> 100% </strong>
-            </p>
-            <p>
-                Shown up in search results
-                <strong> 10 </strong> times in the past 90 days.
-            </p>
-        </div>
     </section>
     <section class="aside-box default dashboard-side">
         <h3>
-            Boost your Medical Institution Profile
+            Add PHOTOS and VIDEOS to boost your Medical Institution Profile
         </h3>
         <div class="features">
             <div class="row-fluid">
@@ -43,16 +28,16 @@
             </div>
         </div>
     </section>
-    <section class="aside-box default dashboard-side">
-        <h3>
-            Show your Profile to Friends and Followers
-        </h3>
-        <div class="hca-social-link">
-            <a href="#" class="btn facebook"><i class="icon-facebook hca-earth"></i>Facebook</a>
-            <a href="#" class="btn twitter"><i class="icon-twitter hca-earth"></i>Twitter</a>
-            <a href="#" class="btn googleplus"><i class="icon-google-plus hca-earth"></i>Google Plus</a>
-        </div>
-    </section>
+<!--     <section class="aside-box default dashboard-side"> -->
+<!--         <h3> -->
+<!--             Show your Profile to Friends and Followers -->
+<!--         </h3> -->
+<!--         <div class="hca-social-link"> -->
+<!--             <a href="#" class="btn facebook"><i class="icon-facebook hca-earth"></i>Facebook</a> -->
+<!--             <a href="#" class="btn twitter"><i class="icon-twitter hca-earth"></i>Twitter</a> -->
+<!--             <a href="#" class="btn googleplus"><i class="icon-google-plus hca-earth"></i>Google Plus</a> -->
+<!--         </div> -->
+<!--     </section> -->
     <section class="aside-box default dashboard-side">
         <h3>
             Promote this Medical Institution Profile

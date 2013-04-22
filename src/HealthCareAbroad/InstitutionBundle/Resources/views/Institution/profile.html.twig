@@ -20,14 +20,10 @@
 
 
             <!-- Sidebar Content -->
-			{% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
-			    {% block sidebarWrappedContent %}
-			        {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
-			        {% if (isSingleCenter is defined) and isSingleCenter %}
-			            {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
-			        {% endif %}
-			    {% endblock %}
-			{% endembed %}
+			{% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
+	        {% if (isSingleCenter is defined) and isSingleCenter %}
+	            {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
+	        {% endif %}
 
 			 <!-- Modal Institution name -->
 			{# {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
