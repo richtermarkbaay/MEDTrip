@@ -126,8 +126,15 @@ class MedicalCenterController extends InstitutionAwareController
                         'institution' => $this->institution,
                         'statusList' => InstitutionMedicalCenterStatus::getStatusList()
         );
-        $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:index.html.twig', $parameters));
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        
+        if($request->get('page'))
+        {
+            $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter:index.html.twig', $parameters));
+            
+            return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        }
+        
+        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);
     }
     
     /**
