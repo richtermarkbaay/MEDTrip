@@ -75,9 +75,15 @@
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 <script type="text/javascript">
 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-
 $(function(){
+
     GoogleMap.initialize();
+    
+    {#-- already has country id set, assume that we are in edit mode #}
+    {% if form.vars.value.country and form.vars.value.country.id %}
+        $('#{{ form.children.country.vars.id }}').change();
+    {% endif %}
+    
     $('#confirmMap').on('shown', function(){
         var center = GoogleMap.map.getCenter();
         google.maps.event.trigger(GoogleMap.map, 'resize');
