@@ -3,6 +3,7 @@
  * Functional test for InstitutionController
  * 
  * @author Alnie Jacobe
+ * @author Chaztine Blance
  *
  */
 
@@ -59,16 +60,16 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 	public function testSignUp()
 	{
 	    
-	    $client = $this->getBrowserWithActualLoggedInUser();
-	    $crawler = $client->request('GET', 'institution/register.html');
-	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+// 	    $client = $this->getBrowserWithActualLoggedInUser();
+// 	    $crawler = $client->request('GET', 'institution/register.html');
+// 	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
 	    
 		$client = static::createClient();
 		$crawler = $client->request('GET', 'institution/register.html');
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("First Name *")')->count());
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Last Name *")')->count());
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Email address")')->count());
-		$this->assertGreaterThan(0, $crawler->filter('html:contains("Choose a password")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Your First Name *")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Your Last Name *")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Your Email address")')->count());
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Set your password")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Confirm your password")')->count());
 		$form = $crawler->selectButton('Create Account')->form();
 		$crawler = $client->submit($form, $this->signupFormValues);
@@ -99,4 +100,22 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your last name.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your email address.")')->count());
     }
+    
+    public function testSetupProfile()
+    {
+	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+	    $crawler = $client->request('GET', 'institution/setup-profile');
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    
+	    $client = $this->getBrowserWithActualLoggedInUser();
+	    $crawler = $client->request('GET', 'institution/setup-profile');
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+    
+//     public function testSetupProfileSingleCenter()
+//     {
+// 	    $client = $this->getBrowserWithActualLoggedInUser();
+// 	    $crawler = $client->request('GET', 'institution/register.html');
+// 	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+//     }
 }
