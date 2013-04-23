@@ -5,9 +5,6 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use HealthCareAbroad\InstitutionBundle\Entity\SignUpStep;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
-
 /**
  * Service class to handle the flow of institution sign up which consists of several steps and different flows depending on the institution type
  *
@@ -20,13 +17,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class SignUpService
 {
-//     const COMPLETE_PROFILE_INFORMATION = 1;
-
-//     const ADD_SPECIALIZATIONS_AND_TREATMENTS = 2;
-
-//     const ADD_ANCILLIARY_SERVICES = 3;
-
-    CONST MULTIPLE_CENTER_SIGN_UP = 'multiple_center';
+    const MULTIPLE_CENTER_SIGN_UP = 'multiple_center';
 
     const SINGLE_CENTER_SIGN_UP = 'single_center';
 
@@ -128,15 +119,36 @@ class SignUpService
     /**
      * Get the next SignUpStep from the passed $step
      *
-     * @param SignUpStep $step
+     * @param Mixed int $step | SignUpStep $step
      * @return SignUpStep
      */
-    public function getMultipleCenterSignUpNextStep(SignUpStep $step)
+    public function getMultipleCenterSignUpNextStep($step)
     {
-        // next step's array key will be $step's stepNumber since our arrays starts with index 0
-        return isset($this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$step->getStepNumber()])
-            ? $this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$step->getStepNumber()]
+        $nextStepNumber = 0;
+        if ($step instanceof SignUpStep) {
+            // next step's array key will be $step's stepNumber since our arrays starts with index 0
+            $nextStepNumber = $step->getStepNumber();
+        }
+        else {
+            // next step number will be $step since our array starts with index 0
+            $nextStepNumber = (int) $step;
+        }
+        
+        return isset($this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$nextStepNumber])
+            ? $this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$nextStepNumber]
             : null;
+    }
+    
+    /**
+     * Get last step of multiple center institution sign up step
+     *
+     * @return SignUpStep
+     */
+    public function getMultipleCenterSignUpLastStep()
+    {
+        $totalItems = \count($this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP]);
+         
+        return $this->signUpSteps[SignUpService::MULTIPLE_CENTER_SIGN_UP][$totalItems-1];
     }
 
     public function getSingleCenterSignUpSteps()
@@ -155,12 +167,38 @@ class SignUpService
         : null;
     }
 
-    public function getSingleCenterSignUpNextStep(SignUpStep $step)
+    /**
+     * Get next step of single center institution signup flow
+     * 
+     * @param Mixed int $step | SignUpStep $step
+     * @return SignUpStep
+     */
+    public function getSingleCenterSignUpNextStep($step)
     {
+        $nextStepNumber = 0;
+        if ($step instanceof SignUpStep) {
+            // next step's array key will be $step's stepNumber since our arrays starts with index 0
+            $nextStepNumber = $step->getStepNumber();
+        }
+        else {
+            // next step number will be $step since our array starts with index 0
+            $nextStepNumber = (int) $step;
+        }
+        
         // next step's array key will be $step's stepNumber since our arrays starts with index 0
-        return isset($this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$step->getStepNumber()])
-            ? $this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$step->getStepNumber()]
+        return isset($this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$nextStepNumber])
+            ? $this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$nextStepNumber]
             : null;
+    }
+    
+    /**
+     * Get last step of single center sign up flow
+     */
+    public function getSingleCenterSignUpLastStep()
+    {
+        $totalItems = \count($this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP]);
+         
+        return $this->signUpSteps[SignUpService::SINGLE_CENTER_SIGN_UP][$totalItems-1];
     }
 
     public function completeProfileOfInstitutionWithSingleCenter(Institution $institution, InstitutionMedicalCenter $institutionMedicalCenter)

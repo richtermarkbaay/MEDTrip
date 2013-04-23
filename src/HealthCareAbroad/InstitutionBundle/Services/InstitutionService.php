@@ -13,8 +13,6 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
-
 use HealthCareAbroad\MediaBundle\Entity\Media;
 
 use HealthCareAbroad\MediaBundle\Entity\Gallery;
@@ -380,14 +378,19 @@ class InstitutionService
 //            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
 //     }
 
-    public function updateSignupStepStatus(Institution $institution, $stepStatus = InstitutionSignupStepStatus::FINISH)
+    /**
+     * @deprecated
+     * @param Institution $institution
+     * @param unknown_type $stepStatus
+     */
+    public function updateSignupStepStatus(Institution $institution, $stepStatus)
     {
-        if($stepStatus != $institution->getSignupStepStatus() && $institution->getSignupStepStatus() > 0) {
-            $institution->setSignupStepStatus($stepStatus);
-            $em = $this->doctrine->getEntityManager();
+//         if($stepStatus != $institution->getSignupStepStatus() && $institution->getSignupStepStatus() > 0) {
+//             $institution->setSignupStepStatus($stepStatus);
+//             $em = $this->doctrine->getEntityManager();
 
-            $em->persist($institution);
-            $em->flush($institution);
-        }
+//             $em->persist($institution);
+//             $em->flush($institution);
+//         }
     }
 }

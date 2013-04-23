@@ -7,8 +7,18 @@
     <h1>Add New Clinic</h1>
 
     <div class="span8">
-        <form id="clinicForm" action="{{ path('institution_signup_setup_specializations', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
+        <form id="clinicForm" action="{{ path('institution_signup_setup_institutionMedicalCenter', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
 
+            {% if form.vars.errors %}
+            <div class="alert alert-error">
+                {% for _err in form.vars.errors %}
+                    {{ _err.message }}
+                    <br />
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            
             <section class="section institution-info">
                 <h2>Basic Information<br><small>Basic information about the Clinic you are adding.</small></h2>
                 <div class="row-fluid">
@@ -109,10 +119,10 @@
             <section class="section footer">
                 <div class="row-fluid terms">
                     <div class="span12">
-                        <a onclick="submitForm()" href="add-clinic-for-hospital-specializations.html" class="btn pull-right btn-primary btn-large">
-                           Continue to Adding Specializations
-                        </a>
-                        <input type="submit"/>
+                        <button class="btn pull-right btn-primary btn-large" type="submit">
+                            Continue to Adding Specializations
+                        </button>
+                        
                     </div>
                 </div>
             </section>
@@ -133,27 +143,13 @@
 
 
 {% block inlineJavascriptCode %}
-<script type="text/javascript">
-
-/* TODO: request designer to use a button instead */
-function submitForm() {
-    document.getElementById('clinicForm').submit();
-
-    return false;
-}
-</script>
 
 
-<link rel="stylesheet" href="{{ asset('css/bootstrap-timepicker.min.css') }}" type="text/css">
 <script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
-
-<script type="text/javascript">
-$('#timepicker1').timepicker();
-$('#timepicker2').timepicker();
 
 {% endblock %}

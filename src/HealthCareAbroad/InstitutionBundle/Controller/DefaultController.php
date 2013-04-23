@@ -15,7 +15,6 @@ use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
 use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,23 +53,7 @@ class DefaultController extends InstitutionAwareController
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         //$news = $newsRepository->getLatestNews();
         $news = array();
-    
-    
-        $signupStepStatus = $this->institution->getSignupStepStatus();
-    
-        if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
-            $params = array();
-            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
-            if(!InstitutionSignupStepStatus::isStep1($signupStepStatus)) {
-                if(!$this->institutionMedicalCenter) {
-                    $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-                }
-                $params['imcId'] = $this->institutionMedicalCenter->getId();
-            }
-    
-            return $this->redirect($this->generateUrl($routeName, $params));
-        }
-    
+
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }

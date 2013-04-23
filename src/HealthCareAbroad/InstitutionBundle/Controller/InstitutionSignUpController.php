@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
@@ -20,8 +22,6 @@ use HealthCareAbroad\InstitutionBundle\Entity\SignUpStep;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
@@ -364,54 +364,55 @@ class InstitutionSignUpController extends InstitutionAwareController
     }
 
     /**
-     * This step is invoked only after a single center institution signup.
-     *
-     *
+     * 
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function setupInstitutionMedicalCenterAction()
+    public function setupInstitutionMedicalCenterAction(Request $request)
     {
-        //TODO: check institution signupStepStatus
+        if ($this->institutionService->isSingleCenter($this->institution)){
+            // this is not part of the sign up flow of  single center institution
+            throw $this->createNotFoundException();
+        }
+        $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($request->attributes->get('_route'));
         
-
+        // TODO: check current sign up status
+        
         // We don't assume that there is a medical center instance here already since this is also where we redirect from multiple center institution sign up
-        if ($this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
-            $institutionMedicalCenter = $this->getProxyMedicalCenter();
+        if (!$this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
+            $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         else {
-            // no medical center yet
-            // check if this is a single center institution
-            if ($this->institutionService->isSingleCenter($this->institution)) {
-                // TODO: what do we want to do here
-            }
-            $institutionMedicalCenter = new InstitutionMedicalCenter();
-            $institutionMedicalCenter->setInstitution($this->institution);
+            
         }
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
 
             if ($form->isValid()) {
-                $institutionMedicalCenter = $form->getData();
+                
+                $this->institutionMedicalCenter = $form->getData();
 
-                $this->get('services.institution_medical_center')->saveAsDraft($institutionMedicalCenter);
+                $this->get('services.institution_medical_center')->saveAsDraft($this->institutionMedicalCenter);
 
+                // update sign up step status of institution
+                $this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
+                $this->get('services.institution.factory')->save($this->institution);
+                
                 //save other data here
-
-                $this->redirect($this->generateUrl('institution_signup_setup_specializations', array('imcId' => $institutionMedicalCenter->getId())));
-            } else {
-                var_dump($form->getErrorsAsString());
+                
+                // redirect to next step
+                $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
+                return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
         }
 
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-            'institutionMedicalCenter' => $institutionMedicalCenter,
-            'isSingleCenter' => true,
-            'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
+            'institutionMedicalCenter' => $this->institutionMedicalCenter
         ));
     }
 
@@ -438,7 +439,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                         'institution' => $this->institution,
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'specializations' => $specializations,
-                        'confirmationMessage' => "<b>Congratulations!</b> Your account has been successfully created."
         ));
     }
 

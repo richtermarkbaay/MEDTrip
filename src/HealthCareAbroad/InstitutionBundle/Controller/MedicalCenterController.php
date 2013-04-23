@@ -24,7 +24,6 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
@@ -97,21 +96,7 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $output = array();
         $status = $request->get('status', 2);
-        // Check if Already Completed the signupSteps
-        $signupStepStatus = $this->institution->getSignupStepStatus();
-        if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
-            $params = array();
-            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
-
-            if(!InstitutionSignupStepStatus::isStep1($signupStepStatus)) { 
-                if(!$this->institutionMedicalCenter) {
-                    $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-                }
-                $params['imcId'] = $this->institutionMedicalCenter->getId();                
-            }
-
-            return $this->redirect($this->generateUrl($routeName, $params));
-        }
+        
         $results = $this->repository->getInstitutionMedicalCentersByStatus($this->institution, $status);
         $list = InstitutionMedicalCenterStatus::getStatusList();
         $total = $this->service->getMedicalCenterCountByStatus($this->institution->getInstitutionMedicalCenters());
@@ -348,9 +333,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addMedicalSpecialistAction(Request $request)
     {
-        $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP5);
-        $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-
+        
         $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
         $doctors = $this->institutionMedicalCenter->getDoctors();//$this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
         $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
@@ -362,8 +345,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $params = array();
                 if ($isSingleCenter) {
                     // Update SignupStepStatus
-                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::FINISH);
-                    $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
+                    // TODO: @deprecated
                 } else {
                     $calloutParams = array(
                         '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
@@ -373,7 +355,7 @@ class MedicalCenterController extends InstitutionAwareController
                     $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
                     
                     $params['imcId'] = $this->institutionMedicalCenter->getId();
-                    $routeName = InstitutionSignupStepStatus::getMultipleCenterRouteNameByStatus($this->institution->getSignupStepStatus());
+                    
                 }
 
                 return $this->redirect($this->generateUrl($routeName, $params));
@@ -509,10 +491,9 @@ class MedicalCenterController extends InstitutionAwareController
                 // if single center institution, update sign up step status
                 if ($this->get('services.institution')->isSingleCenter($this->institution)) {
                     // Set Next Step
-                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP3);
+                    
                     
                 }
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP3);
 
                 // redirect to next step
                 $response = $this->redirect($this->generateUrl($routeName,  array('imcId' => $this->institutionMedicalCenter->getId())));
@@ -547,10 +528,10 @@ class MedicalCenterController extends InstitutionAwareController
                 }
                 
                 if ($this->get('services.institution')->isSingleCenter($this->institution)) {
-                    $this->get('services.institution')->updateSignupStepStatus($this->institution, InstitutionSignupStepStatus::STEP4);
+                    
                 }
                 
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP4);
+                
 
                 return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
             }

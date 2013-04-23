@@ -12,6 +12,8 @@ services:
     institution_authentication_handler:
         class: HealthCareAbroad\UserBundle\Handler\InstitutionAuthenticationHandler
         arguments: [@router, @services.institution_medical_center, %callouts%]
+        calls:
+            - [setInstitutionSignUpService, [@services.institution_signup]]
 
     services.user:
         class: %services.user_class%
