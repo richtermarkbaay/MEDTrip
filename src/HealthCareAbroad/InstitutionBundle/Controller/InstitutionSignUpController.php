@@ -418,6 +418,9 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupSpecializationsAction(Request $request)
     {
+        $isSingleCenter = $this->institutionService->isSingleCenter($this->institution);
+        $this->currentSignUpStep = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpStepByRoute':'getMultipleCenterSignUpStepByRoute')}($request->attributes->get('_route'));
+        
         //TODO: check institution signupStepStatus
 
         $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
@@ -428,17 +431,21 @@ class InstitutionSignUpController extends InstitutionAwareController
             //array of specialization ids each containing an array of treatment ids
             $treatments = $request->get('treatments');
 
+            // next step url
+            $nextStep = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep);
+            $redirectUrl = $this->generateUrl($nextStep->getRoute(), array('imcId' => $this->institutionMedicalCenter->getId()));
+            
             if ($treatments) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
             }
 
-            $this->redirect($this->generateUrl('institution_signup_setup_doctors', array('imcId' => $this->institutionMedicalCenter->getId())));
+            return $this->redirect($redirectUrl);
         }
 
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'specializations' => $specializations,
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $specializations,
         ));
     }
 

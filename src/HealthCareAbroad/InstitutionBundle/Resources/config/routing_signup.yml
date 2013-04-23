@@ -30,7 +30,7 @@ institution_signup_setup_doctors:
 
 # AJAX
 institution_ajax_loadSpecializationComponents:
-    pattern: /institution/ajax/loadSpecializationComponents
+    pattern: /ns-institution/ajax/loadSpecializationComponents
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxLoadSpecializationComponents}
     requirements:
         _method:  GET
