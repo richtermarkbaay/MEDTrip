@@ -12,7 +12,7 @@ institution_signup_setup_profile:
 
 institution_signup_setup_institutionMedicalCenter:
     pattern: /institution/setup-clinic-details/{imcId}
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionMedicalCenter }
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionMedicalCenter, imcId: 0 }
     requirements:
         _method: GET|POST
 

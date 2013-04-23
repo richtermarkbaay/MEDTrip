@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpDoctorFormType;
@@ -69,6 +73,11 @@ class InstitutionSignUpController extends InstitutionAwareController
     private $institutionMedicalCenter;
 
     /**
+     * @var InstitutionService
+     */
+    private $institutionService;
+    
+    /**
      * @var SignUpService
      */
     private $signUpService;
@@ -76,7 +85,8 @@ class InstitutionSignUpController extends InstitutionAwareController
     public function preExecute()
     {
         $this->signUpService = $this->get('services.institution_signup');
-
+        $this->institutionService = $this->get('services.institution');
+        $this->request = $this->getRequest();
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
         }
@@ -204,9 +214,7 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
-
-        $this->confirmationMessage = '<b>Congratulations!</b> Your account has been successfully created.';
-        $this->request = $this->getRequest();
+        
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -248,10 +256,9 @@ class InstitutionSignUpController extends InstitutionAwareController
         $success = false;
         $errorArr = array();
 
-        $institutionService = $this->get('services.institution');
-        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
+        $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
 
-        if (!$institutionService->isSingleCenter($this->institution)) {
+        if (!$this->institutionService->isSingleCenter($this->institution)) {
             // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
             // we should not be here in the first place
             return $this->redirect($this->generateUrl('institution_homepage'));
@@ -278,7 +285,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 //$this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
                 // get the next step redirect url
-                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $institutionService->getFirstMedicalCenter($this->institution)->getId()));
+                $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionService->getFirstMedicalCenter($this->institution)->getId()));
 
                 return $this->redirect($redirectUrl);
             }
@@ -298,7 +305,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'isSingleCenter' => true,
-            'confirmationMessage' => $this->confirmationMessage,
             'error' => $error,
             'error_list' => $errorArr
         ));
@@ -317,11 +323,13 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
-
+        
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             if ($form->isValid()) {
 
+                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
+                
                 // set sign up status to current step number
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
 
@@ -332,9 +340,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-
-
-                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $institutionService->getFirstMedicalCenter($this->institution)->getId()));
 
                 return $this->redirect($redirectUrl);
             }
@@ -353,7 +358,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             'form' => $form->createView(),
             'institution' => $this->institution,
             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
-            'confirmationMessage' => $this->confirmationMessage,
             'error' => $error,
             'error_list' => $errorArr,
         ));
@@ -368,10 +372,23 @@ class InstitutionSignUpController extends InstitutionAwareController
     public function setupInstitutionMedicalCenterAction()
     {
         //TODO: check institution signupStepStatus
+        
 
-        $proxyMedicalCenter = $this->getProxyMedicalCenter();
+        // We don't assume that there is a medical center instance here already since this is also where we redirect from multiple center institution sign up
+        if ($this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenter = $this->getProxyMedicalCenter();
+        }
+        else {
+            // no medical center yet
+            // check if this is a single center institution
+            if ($this->institutionService->isSingleCenter($this->institution)) {
+                // TODO: what do we want to do here
+            }
+            $institutionMedicalCenter = new InstitutionMedicalCenter();
+            $institutionMedicalCenter->setInstitution($this->institution);
+        }
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $proxyMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
@@ -390,11 +407,11 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'isSingleCenter' => true,
-                        'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $institutionMedicalCenter,
+            'isSingleCenter' => true,
+            'confirmationMessage' => "<b>Congratulations!</b> You have setup your Hospital's profile."
         ));
     }
 

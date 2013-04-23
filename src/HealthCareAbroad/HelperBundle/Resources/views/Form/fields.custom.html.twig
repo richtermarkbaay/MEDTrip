@@ -9,7 +9,7 @@
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
                 <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.value.phone_number.abbr }}"  id="phoneNumberAbbr">
+                <input type="hidden" name="{{ form.vars.value.phone_number.abbr is defined ? form.vars.value.phone_number.abbr: '' }}"  id="phoneNumberAbbr">
             </div>
         </div>
     </div>
