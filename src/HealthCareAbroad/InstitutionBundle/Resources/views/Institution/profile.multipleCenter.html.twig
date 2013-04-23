@@ -1,4 +1,4 @@
-<div class="span8">
+<div class=" span8 tab-content">
    {#
     <div class="row"> 
         <div class="span2">
@@ -38,7 +38,7 @@
                 <img src="{{ asset('images/institution/beaker.png') }}" alt="beaker-progress" class="beaker"
                 />
                 <div class="progress vertical bottom progress-info progress-xxlarge filled3">
-                    <div class="bar" style="height:85%">
+                    <div class="bar" style="height:25%">
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                 </button>
                 <h4>
                     Your Hospital Profile is 25% complete.&nbsp;
-                    <a href="#"><i class="icon-info-sign"></i></a>
+                    <a href="#"><i class="icon-info-sign icon-1x"></i></a>
                 </h4>
                 <p>
                     <a href="#">Upload a logo and make your hospital more recognizable to your prospective patients.</a>
@@ -80,17 +80,6 @@
         $(function(){
 
             $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
-            
-            _url_base = '{{ path("institution_load_tabbed_contents_profile", {institutionId: institution.id} ) }}';
-            _medical_url = '{{ path("institution_medicalCenter_index") }}';
-            // initialize the tabbed contents
-            InstitutionProfile.setAjaxUrls({
-                    'loadActiveMedicalCenters': _medical_url+'?status=2'
-                });
-            
-            InstitutionProfile.tabbedContentElement = $('#tabbed_content');
-            InstitutionProfile.medicalCenterTabbedContentElement = $("#medical_centers");
-            InstitutionProfile.loadTabbedContentsOfMultipleCenterInstitution();
             
         });
     })(jQuery);
