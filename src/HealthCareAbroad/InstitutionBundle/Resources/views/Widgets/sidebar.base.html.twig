@@ -1,15 +1,18 @@
 <aside class="span4">
     <section class="aside-box default dashboard-side">
         <h3>
-            Profile's Statistics
+            Hospital Location
         </h3>
-        <div class="activity-feeds">
-                <span class="icon-map-marker"> </span>
-                {% set _address = institution_address_to_array(institution) %}
-                <span class="address_column">
-                    <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
-                </span>
-            </div>
+        {% block asideContent %}
+    	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}">
+    	{% endblock %}
+    	<small>
+            <a href="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}"
+            style="color:#000;text-align:left">
+                                    View Larger Map
+                                </a>
+        </small>
+        <p>This is your Hospital Location if for some reason your location is not in the vicinity, please <a href="#">Edit your address</a>.</p>
     </section>
     <section class="aside-box default dashboard-side">
         <h3>
