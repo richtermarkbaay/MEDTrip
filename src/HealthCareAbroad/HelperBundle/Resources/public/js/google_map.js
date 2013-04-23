@@ -115,8 +115,12 @@
         }
 	},
 	
-	updateMap: function() {
+	updateMap: function(address) {
+		if(address){
+			GoogleMap.address = address;
+		}else{
 		GoogleMap.setParams();
+		}
 		GoogleMap.geocoder.geocode({ 'address':GoogleMap.address}, GoogleMap.geocoderCallback);
 	},
 	
