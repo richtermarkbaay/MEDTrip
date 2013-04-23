@@ -65,7 +65,6 @@
     </div>
 
 {% block inlineJavascriptCode %}
-<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
 <script src="{{ asset('js/jquery/globalize.js') }}"></script>
 <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
@@ -73,11 +72,19 @@
 <script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
-Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 $(function(){
-
-    GoogleMap.initialize();
+	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+	GoogleMap.initialize();
+	
+    GoogleMap.setInputs({
+    	'selectedCity' : document.getElementById('institution_profile_form_city'),
+    	'selectedCountry' : document.getElementById('institution_profile_form_country'),
+    	'inputCoordinates' : document.getElementById("institution_profile_form_coordinates"),
+    	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
+    	'selectedStreet' : document.getElementById('institution_profile_form_street'),
+    }); 
     
     {#-- already has country id set, assume that we are in edit mode #}
     {% if form.vars.value.country and form.vars.value.country.id %}
@@ -85,6 +92,7 @@ $(function(){
     {% endif %}
     
     $('#confirmMap').on('shown', function(){
+    	GoogleMap.updateMap();
         var center = GoogleMap.map.getCenter();
         google.maps.event.trigger(GoogleMap.map, 'resize');
         GoogleMap.map.setCenter(center);
