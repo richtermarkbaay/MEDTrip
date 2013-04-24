@@ -144,15 +144,3 @@
         </div>
     </div>
 </section>
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionProfile.js') }}" ></script>
-<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
-<script type="text/javascript">
-Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-$(function() {
-    $("input:checkbox").click(function() {
-        $(this).parent().toggleClass("hca-highlight");
-    });
-});
-</script>
-{% endblock %}
