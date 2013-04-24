@@ -61,6 +61,7 @@ class MedicalCenterController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
 
