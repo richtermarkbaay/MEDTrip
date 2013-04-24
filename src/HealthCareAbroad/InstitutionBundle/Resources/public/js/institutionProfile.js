@@ -213,6 +213,10 @@ var InstitutionProfile = {
     openProfileForm: function(_element){
     	_element.hide();
     	_attr = _element.attr('href');
+    	if(_attr == "#address"){
+    		GoogleMap.initialize();
+	        google.maps.event.trigger(GoogleMap.map, 'resize');
+    	}
     	_element.next('div.show').hide();
     	$(_attr).show();
     },
@@ -243,6 +247,7 @@ var InstitutionProfile = {
         _button.html("Processing...").attr('disabled', true);
         _form = _button.parents('.hca-edit-box').find('form');
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
+        _editButton = _button.parents('section.hca-main-profile').find('div.show').prev();
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
         $.ajax({
@@ -287,9 +292,9 @@ var InstitutionProfile = {
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').prepend(_html);
                         
-//                        if(HCAGoogleMap.map) { 
-//                            HCAGoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
-//                        }
+                        if(GoogleMap.map) { 
+                        	GoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
+                        }
                         
                         break;
     
@@ -316,6 +321,7 @@ var InstitutionProfile = {
                 } 
                 _divToShow.show();
                 _divToHide.hide();
+                _editButton.show();
                 _form.find('ul.text-error').remove();
                 _button.html(_buttonHtml).attr('disabled', false);
             },

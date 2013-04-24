@@ -6,7 +6,6 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ContactNumberWithWidgetDataTransformer implements DataTransformerInterface
 {
     private $defaultValue = array('phone_number' => array ( 'number' => '', 'abbr' => ''), 'contact_number' => array ( 'number' => '', 'abbr' => ''));
-    
     public function transform($data)
     {
         $data = \json_decode($data, true);
@@ -18,7 +17,7 @@ class ContactNumberWithWidgetDataTransformer implements DataTransformerInterface
             if($data){
                 if (array_key_exists("country_code",$data)){
                 
-                    return $data;
+                    return $this->defaultValue;
                 }
             }
            return $data = $this->defaultValue;
