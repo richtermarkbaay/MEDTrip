@@ -101,21 +101,39 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your email address.")')->count());
     }
     
-    public function testSetupProfile()
-    {
-	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
-	    $crawler = $client->request('GET', 'institution/setup-profile');
-	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
-	    
-	    $client = $this->getBrowserWithActualLoggedInUser();
-	    $crawler = $client->request('GET', 'institution/setup-profile');
-	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    }
-    
-//     public function testSetupProfileSingleCenter()
+//     public function testSetupProfileforSingleType()
 //     {
-// 	    $client = $this->getBrowserWithActualLoggedInUser();
-// 	    $crawler = $client->request('GET', 'institution/register.html');
+// 	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+// 	    $crawler = $client->request('GET', 'institution/setup-profile');
 // 	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+	    
+// 	    $setupProfileFormValues = array(
+//             'institution_profile_form[name]' => 'test',
+//             'institution_profile_form[description]' => 'test',
+//             'institution_profile_form[address1]' => 'test',
+//             'institution_profile_form[country]' => '1',
+//             'institution_profile_form[city]' => '1',
+//             'institution_profile_form[zipCode]' => '2322',
+//             'institution_profile_form[addressHint]' => 'test.com',
+//             'institution_profile_form[contactEmail]' => '1',
+//             'institution_profile_form[contactNumber]' => '1',
+//             'institution_profile_form[websites]' => 'www.test.com',
+//             'institution_profile_form[socialMediaSites]' => 'test',
+//             'institution_profile_form[services]' => '1',
+//             'institution_profile_form[awards]' => '1',
+//             'institution_profile_form[coordinates]' => '12.879721, 121.77401699999996'
+// 	    );
+	    
+// 	    $form = $crawler->selectButton('Confirm')->form();
+// 	    $crawler = $client->submit($form, $this->signupFormValues);
 //     }
+    
+//         public function testSetupProfileForMultitpleType()
+//         {
+//             $client = $this->getBrowserWithActualLoggedInUser();
+//             $crawler = $client->request('GET', 'institution/setup-profile');
+//             $this->assertEquals(200, $client->getResponse()->getStatusCode());
+            
+//         }
+    
 }
