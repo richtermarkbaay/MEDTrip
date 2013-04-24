@@ -8,7 +8,7 @@
 
     <div class="span8">
         <form id="clinicForm" action="{{ path('institution_signup_setup_institutionMedicalCenter', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
-
+    
             {% if form.vars.errors %}
             <div class="alert alert-error">
                 {% for _err in form.vars.errors %}
@@ -25,11 +25,23 @@
                     <div class="span12">
                         <div class="control-group">
                             <label for="institution-name">Name of the Clinic</label>
-                            {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
+                            {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2', placeholder: 'e.g The Cardiology Center at Sacred Heart Hospital'} }) }}
+                            <div class="tooltip-content2">
+                                This is the name that will show up in search results. Make sure it's descriptive
+                                enough to set you apart! If your clinic's name is simply the department
+                                in a hospital add the hospital to the end of the name. For example, 'The
+                                Cardiology Center at Sacred Heart Hospital'.
+                            </div>
                         </div>
                         <div class="control-group">
                             <label for="website">Description <small>(Optional)</small></label>
-                            {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
+                            {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                            <div class="tooltip-content2 hca-textarea">
+                                All the information about your clinic that a visitor may want to know.
+                                The history, the capacity, the capabilities and technologies. This is your
+                                chance to set your clinic apart. DO NOT include any emails, URLs, or contact
+                                information.
+                            </div>
                             <div class="description"><small>you can edit / add Description later</small></div>
                         </div>
                     </div>
@@ -38,8 +50,15 @@
 
             <section class="section address-info">
                 <h2>Clinic Address<br><small>Complete Address of the Clinic that you are adding.</small></h2>
-                <div class="row-fluid">
+                <div class="row-fluid tooltip-wrap" >
                     <div class="span12">
+                        <div class="tooltip-content">
+                            <i class="icon-map-marker icon-2x pull-left">
+                            </i>
+                            Providing your complete address helps us push you to the right searches,
+                            and helps patients plan their travel better.
+                        </div>
+                    
                         <div class="control-group">
                             <input type="radio" name="request" id="inquiry" class="pull-left" checked>
                             <label for="different-address-clinic">Same Address</label>
@@ -82,7 +101,13 @@
                         </div>
                         <div class="control-group">
                             <label for="Helpful hint">Helpful hint for getting there?</label>
-                            <input type="text" name="state" id="address-hint" placeholder="" class="span12">
+                            <input type="text" name="state" id="address-hint" placeholder="" class="span12 tooltip-wrap2">
+                            <div class="tooltip-content2">
+                                If there are any instructions that will help someone find you that aren't
+                                included in the address put them here. This could be something like, 'On
+                                the 2nd loor', or 'Next door to the gas station', whatever will make it
+                                easy for patients to find you!
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -90,14 +115,23 @@
 
             <section class="section contact-info">
                 <h2>Clinic Contact Details<br><small>This is your Clinic's contact details. Please be as detailed as possible.</small></h2>
-                <div class="row-fluid">
-                    <div class="span12 control-group">
-                        <div class="span6">
-                            <label for="Phone Number">Clinic Email Address</label>
-                            {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                <div class="row-fluid tooltip-wrap" >
+                    <div class="span12">
+                        <div class="tooltip-content">
+                            <i class="icon-lightbulb icon-2x pull-left">
+                            </i>
+                            This is how we will contact you to let you know about potential leads.
+                            Please provide the correct phone numbers and email addresses to make sure
+                            you don't miss any inquiries that may come through HealthcareAbroad.
                         </div>
-                        <div class="span6">
-                            {{ form_widget(form.contactNumber) }}
+                        
+                        <div class="control-group">
+                            <div class="span6">
+                                <label for="Phone Number">Clinic Email Address</label>
+                                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                            </div>
+                            
+                            {{ form_widget(form.contactNumber, { 'attr': {'class': 'span12'} }) }}
                         </div>
                     </div>
                 </div>
@@ -106,7 +140,12 @@
             <section class="section socialmedia-info">
                 <h2>Website and Social Media<small>(Optional)</small></h2>
                 <div class="row-fluid">
-                    {{ form_widget(form.websites) }}
+                    <div class="control-group website">
+                        <label for="website">Clinic Website</label>
+                        <span class="pull-left">http://</span>
+                        {{ form_widget(form.websites, {attr: {class: 'span11 pull-right'} })}}
+                    </div>
+                    {{ form_widget(form.socialMediaSites) }}
                 </div>
             </section>
 
@@ -132,10 +171,6 @@
     <aside class="span4">
         {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
     </aside>
-    {# replaced with signup steps widget
-    {% set completedSteps = ['signup'] %}
-    {% include 'InstitutionBundle:Institution/Partials:registrationSidebar.html.twig' with {setupProfile: 'active' , completedSteps: completedSteps} %}
-    #}
 
 </div>
 

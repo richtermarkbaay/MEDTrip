@@ -1,0 +1,9 @@
+# TODO: we may want to put this in a database so admin can edit it
+parameters:
+    institution_tooltips:
+        form:
+            institutionMedicalCenter:
+                fields:
+                    name: This is the name that will show up in search results. Make sure it's descriptive enough to set you apart! If your clinic's name is simply the department in a hospital add the hospital to the end of the name. For example, 'The Cardiology Center at Sacred Heart Hospital'.
+                    
+        
