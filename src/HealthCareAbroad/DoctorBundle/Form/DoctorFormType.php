@@ -36,7 +36,7 @@ class DoctorFormType extends AbstractType
      		->add('media', new AdminMediaFileType($media), array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
-    	    ->add('contactDetail', 'contact_detail', array('label' => 'Contact Number'));
+    	    ->add('contactDetail', 'contact_detail', array('property_path' => false,'label' => 'Contact Number'));
     }
     
     public function getName()

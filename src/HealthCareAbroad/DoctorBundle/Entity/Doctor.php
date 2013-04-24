@@ -9,6 +9,7 @@ class Doctor
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
+    
     /**
      * @var integer
      */
@@ -70,11 +71,6 @@ class Doctor
     private $media;
 
     /**
-     * @var \HealthCareAbroad\HelperBundle\Entity\ContactDetail
-     */
-    private $contactDetail;
-
-    /**
      * @var \HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
@@ -90,12 +86,18 @@ class Doctor
     private $institutionMedicalCenters;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $contactDetails;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->specializations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->contactDetails = new \Doctrine\Common\Collections\ArrayCollection();
     }
     
     /**
@@ -362,29 +364,6 @@ class Doctor
     }
 
     /**
-     * Set contactDetail
-     *
-     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail
-     * @return Doctor
-     */
-    public function setContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetail = null)
-    {
-        $this->contactDetail = $contactDetail;
-    
-        return $this;
-    }
-
-    /**
-     * Get contactDetail
-     *
-     * @return \HealthCareAbroad\HelperBundle\Entity\ContactDetail 
-     */
-    public function getContactDetail()
-    {
-        return $this->contactDetail;
-    }
-
-    /**
      * Set country
      *
      * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
@@ -471,5 +450,38 @@ class Doctor
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
+    }
+
+    /**
+     * Add contactDetails
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails
+     * @return Doctor
+     */
+    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
+    {
+        $this->contactDetails[] = $contactDetails;
+    
+        return $this;
+    }
+
+    /**
+     * Remove contactDetails
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails
+     */
+    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
+    {
+        $this->contactDetails->removeElement($contactDetails);
+    }
+
+    /**
+     * Get contactDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContactDetails()
+    {
+        return $this->contactDetails;
     }
 }

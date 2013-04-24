@@ -94,8 +94,8 @@ class DoctorController extends Controller
            
             if($form->isValid()) {
                 //ADD contact detail first
-                $contactDetail = $this->get('services.contact_detail')->save($doctor->getContactDetail());
-                
+                $contactDetail = $this->get('services.contact_detail')->save($form->get('contactDetail')->getData());
+                $doctor->addContactDetail($contactDetail);
                 if($media = $this->saveMedia($request->files->get('doctor'), $doctor)) {
                     $doctor->setMedia($media);
                 }
