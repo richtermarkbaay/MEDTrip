@@ -90,6 +90,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
         }
+        parent::preExecute();
     }
 
     /**
@@ -132,10 +133,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         $errorArr = array();
         // checking for security context here does not work since this is not firewalled
         // TODO: find a better approach
-        if ($this->get('session')->get('institutionId')) {
+//         if ($this->get('session')->get('institutionId')) {
             // redirect to dashboard if there is an active session
             //return $this->redirect($this->generateUrl('institution_homepage'));
-        }
+//         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
         $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
@@ -335,8 +336,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->signUpService->completeProfileOfInstitutionWithMultipleCenter($form->getData());
 
-                $this->get('services.institution_property')
-                ->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
+                $this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);

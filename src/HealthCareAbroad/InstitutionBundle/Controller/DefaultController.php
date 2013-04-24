@@ -33,16 +33,7 @@ class DefaultController extends InstitutionAwareController
     private $service;
     
     public $institutionMedicalCenter;
-    /**
-     * @PreAuthorize("hasAnyRole('INSTITUTION_USER')")
-     *
-     */
     
-    public function preExecute()
-    {
-        $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-        $this->service = $this->get('services.institution_medical_center');
-    }
     
     public function indexAction()
     {
