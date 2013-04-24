@@ -1,10 +1,13 @@
 services:
-    listener.institution.authorizationBeforeController:
-        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionAwareBeforeControllerListener
+    listener.institution.kernel_event:
+        class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionKernelEventListener
         calls:
-           - [setDoctrine, [@doctrine]]
+            - [setRouter, [@router]]
+            - [setDoctrine, [@doctrine]]
+            - [setInstitutionService, [@services.institution]]
+            - [setInstitutionSignUpService, [@services.institution_signup]]
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
 
     listener.institution.add:
         class: HealthCareAbroad\InstitutionBundle\Listener\InstitutionListener

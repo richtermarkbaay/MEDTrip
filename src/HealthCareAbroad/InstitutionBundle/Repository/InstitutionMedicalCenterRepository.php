@@ -157,17 +157,18 @@ class InstitutionMedicalCenterRepository extends EntityRepository
      * @param int $institutionId
      * @return InstitutionMedicalCenter or NULL
      */
-    public function getFirstByInstitutionId($institutionId = null)
+    public function getFirstByInstitutionId( $institutionId)
     {
-        if(!$institutionId) return null;
+        if(!$institutionId) {
+            return null;
+        }
 
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a')
-            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
-            ->where('a.institution = :institutionId')
-            ->orderBy('a.id','asc')
-            ->setParameter('institutionId', $institutionId)
-            ->setMaxResults(1);
+        $qb->select('i')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
+            ->where('i.institution = :institutionId')
+            ->orderBy('i.id','asc')
+            ->setParameter('institutionId', $institutionId);
 
         return $qb->getQuery()->getOneOrNullResult(); 
     }

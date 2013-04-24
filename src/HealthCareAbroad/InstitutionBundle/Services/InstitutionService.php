@@ -293,15 +293,16 @@ class InstitutionService
      */
     public function getFirstMedicalCenter(Institution $institution)
     {
-        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('i')
-            ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
-            ->where('i.institution = :institutionId')
-            ->orderBy('i.id','asc')
-            ->setParameter('institutionId', $institution->getId())
-            ->setMaxResults(1);
-        
-        return $qb->getQuery()->getOneOrNullResult(); 
+        return $this->getFirstMedicalCenterByInstitutionId($institution->getId());
+    }
+    
+    /**
+     * Get the first added medical center of an institution
+     * @param int $insitutionId
+     */
+    public function getFirstMedicalCenterByInstitutionId($institutionId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getFirstByInstitutionId($institutionId);
     }
     
     /**

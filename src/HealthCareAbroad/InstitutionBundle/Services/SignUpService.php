@@ -17,6 +17,8 @@ use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class SignUpService
 {
+    const COMPLETED_SIGNUP_FLOW_STATUS = 0;
+    
     const MULTIPLE_CENTER_SIGN_UP = 'multiple_center';
 
     const SINGLE_CENTER_SIGN_UP = 'single_center';

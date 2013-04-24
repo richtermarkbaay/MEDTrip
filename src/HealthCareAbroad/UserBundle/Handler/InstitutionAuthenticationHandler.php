@@ -40,48 +40,10 @@ class InstitutionAuthenticationHandler implements AuthenticationSuccessHandlerIn
         $routeParams = array();
         $routeName = 'institution_homepage';
 
-        $session = $request->getSession();
-        $calloutMessage = $this->callouts['login_complete_profile'];
-        $signupStepStatus = $session->get('institutionSignupStepStatus');
-        
-        if($session->get('isSingleCenterInstitution')) {
-            $lastStep = $this->institutionSignUpService->getSingleCenterSignUpLastStep();
-            $nextStep = $this->institutionSignUpService->getSingleCenterSignUpNextStep($signupStepStatus);
-        }
-        else {
-            $lastStep = $this->institutionSignUpService->getMultipleCenterSignUpLastStep();
-            $nextStep = $this->institutionSignUpService->getMultipleCenterSignUpNextStep($signupStepStatus);
-        }
-        
-        // has not completed institution sign up flow yet
-        if ($lastStep && $signupStepStatus < $lastStep->getStepNumber()) {
-            $routeName = $nextStep->getRoute();
-            if ($signupStepStatus > 1) {
-                $medicalCenter = $this->medicalCenterService->getFirstByInstitutionId($session->get('institutionId'));
-                $routeParams = array('imcId' => $medicalCenter ?  $medicalCenter->getId() : 0);
-            }
-        }
-        
-
-//         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
-//             if($session->get('isSingleCenterInstitution')) {
-//                 $calloutMessage = $this->callouts['login_incomplete_profile_singleCenter'];
-//                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
-//                 if($signupStepStatus > InstitutionSignupStepStatus::STEP1) {
-//                     $medicalCenter =  $this->medicalCenterService->getFirstByInstitutionId($session->get('institutionId'));
-//                     if($medicalCenter) {
-//                         $routeParams = array('imcId' => $medicalCenter->getId());                        
-//                     }
-//                 }
- 
-//             } else {
-//                 $calloutMessage = $this->callouts['login_incomplete_profile_multipleCenter'];
-//                 $routeName = InstitutionSignupStepStatus::getMultipleCenterRouteNameByStatus($signupStepStatus);
-//             }            
-//         }
-
-        $calloutMessage['highlight'] = str_replace('{FIRST_NAME}', $session->get('userFirstName'), $calloutMessage['highlight']);        
-        $session->getFlashBag()->add('callout_message', $calloutMessage);
+//         $session = $request->getSession();
+//         $calloutMessage = $this->callouts['login_complete_profile'];
+//         $calloutMessage['highlight'] = str_replace('{FIRST_NAME}', $session->get('userFirstName'), $calloutMessage['highlight']);        
+//         $session->getFlashBag()->add('callout_message', $calloutMessage);
         $responseUrl = $this->router->generate($routeName, $routeParams);
 
         return new RedirectResponse($responseUrl);
