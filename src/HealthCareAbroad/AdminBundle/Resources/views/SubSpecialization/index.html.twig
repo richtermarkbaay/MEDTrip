@@ -38,7 +38,7 @@
                             <ul style="list-style: none;">
                                 <li><a href="{{ path('admin_subSpecialization_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
                                 <li>
-                                    <a href="{{ path('admin_treatment_index', { specialization: each.specialization.id, supSpecialization:each.id } ) }}"><i class="icon-list"></i> View treatments</a>
+                                    <a href="{{ path('admin_treatment_index', { specialization: each.specialization.id, subSpecialization:each.id } ) }}"><i class="icon-list"></i> View treatments</a>
                                 </li>
                                 <li>
                                     {% set status = each.isActive() ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
