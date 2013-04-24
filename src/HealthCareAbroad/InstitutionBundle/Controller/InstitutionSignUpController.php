@@ -133,10 +133,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         $errorArr = array();
         // checking for security context here does not work since this is not firewalled
         // TODO: find a better approach
-        if ($this->get('session')->get('institutionId')) {
+//         if ($this->get('session')->get('institutionId')) {
             // redirect to dashboard if there is an active session
             //return $this->redirect($this->generateUrl('institution_homepage'));
-        }
+//         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
         $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
