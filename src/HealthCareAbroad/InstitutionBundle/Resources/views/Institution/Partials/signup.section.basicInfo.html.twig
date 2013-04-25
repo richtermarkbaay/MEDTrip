@@ -4,12 +4,22 @@
         <div class="span12">
              <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
                 <label for="institution-name">Name of the {{ label }}</label>
-                {{ form_widget(form.name, { 'attr': {'class': 'span12'} }) }}
+                {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                 <div class="tooltip-content2">
+                    The full name of the hospital, which will be displayed with all of your clinics.
+                </div>
             </div>
             <div class="control-group">
                 <label for="website">Description <small>(Optional)</small></label>
-                {{ form_widget(form.description, { 'attr': {'class': 'span12'} }) }}
-                <div class="description"><small>you can edit / add Description later</small></div>
+                {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                <div class="tooltip-content2 hca-textarea">
+                    All the information about your clinic that a visitor may want to know.  The history, the capacity, the capabilities and technologies.  This is your chance to set your clinic apart.  DO NOT include any emails, URLs, or contact information.
+                </div>
+                <div class="description">
+                    <small> you can edit / add Description later
+                        <span class="pull-right"> No Web Addresses No Contact Information </span>
+                    </small>
+                </div>
             </div>
             <div class="control-group">
                 <label for="network-group">

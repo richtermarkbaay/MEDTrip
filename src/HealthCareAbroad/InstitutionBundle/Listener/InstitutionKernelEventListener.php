@@ -111,6 +111,7 @@ class InstitutionKernelEventListener
             
             // we don't need to redirect anymore
             if ($routeName != $currentRoute) {
+                $routeParams = array();
                 // only steps other than step 1 has imcId parameter
                 if ($signupStepStatus > 1) {
                     $medicalCenter = $this->institutionService->getFirstMedicalCenterByInstitutionId($session->get('institutionId'));

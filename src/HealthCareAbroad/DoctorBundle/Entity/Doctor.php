@@ -66,11 +66,6 @@ class Doctor
     private $status;
 
     /**
-     * @var HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
-
-    /**
      * @var \HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $media;
