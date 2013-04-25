@@ -145,7 +145,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($request);
 
             if ($form->isValid()) {
-                var_dump($form->get('contactNumber')->getData());exit;
                 $institution = $form->getData();
 
                 // initialize required database fields
