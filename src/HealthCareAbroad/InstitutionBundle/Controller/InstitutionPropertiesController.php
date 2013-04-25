@@ -43,6 +43,7 @@ class InstitutionPropertiesController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         $this->institutionService = $this->get('services.institution');
         
         // Check Institution

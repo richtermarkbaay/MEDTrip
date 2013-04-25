@@ -61,6 +61,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
     public function preExecute()
     {
+        parent::preExecute();
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 
         if ($imcId=$this->getRequest()->get('imcId',0)) {

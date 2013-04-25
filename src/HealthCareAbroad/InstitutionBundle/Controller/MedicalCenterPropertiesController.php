@@ -45,6 +45,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         $this->request = $this->getRequest();
         $this->imcService = $this->get('services.institution_medical_center');
         $this->institutionMedicalCenter = $this->imcService->findById($this->request->get('imcId', 0));
