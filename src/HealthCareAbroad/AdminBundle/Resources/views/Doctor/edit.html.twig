@@ -37,14 +37,11 @@
                                     {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
                                     <div class="clearfix"></div>
                                     {{ form_row(form.contactEmail) }}
-                                    <div class="row-fluid">
-                                        <div class="span12">
-		                                    {{ form_row(form.contactNumber) }}
-		                                </div>
-		                            </div>
+		                            {{ form_row(form.contactDetail) }}
+		
 		                        </div>
                                     {{ form_rest(form) }}
-                                     <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>
+                                     <input style="margin-right: 10px;" type="reset" value="Reset" class="btn btn-large" value="Submit"/>  
                                      <input type="submit" class="btn btn-large btn-primary" name="submit" value="Submit"/>
                                 </table>
                                 <!-- end id-form  -->
