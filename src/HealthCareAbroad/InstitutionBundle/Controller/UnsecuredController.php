@@ -207,7 +207,7 @@ class UnsecuredController extends Controller
                 $doctorArr = array();
         
                 foreach ($doctors as $each) {
-                    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+                    $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
                 }
         
                 $parameters['form'] = $form->createView();

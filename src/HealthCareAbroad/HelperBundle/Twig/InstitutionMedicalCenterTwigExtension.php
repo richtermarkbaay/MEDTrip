@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
@@ -76,23 +78,27 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
     {
-        $defaultOptions = array(
-            'attr' => array(),
-            'media_format' => 'default',
-            'placeholder' => '',
-            'context' => self::SEARCH_RESULTS_CONTEXT
-        );
+        $options['size'] = ImageSizes::MEDIUM;
 
-        $options = \array_merge($defaultOptions, $options);
+        if(!isset($options['context'])) {
+            $options['context'] = self::SEARCH_RESULTS_CONTEXT;
+        }
+        
+        if(!isset($options['attr']['class'])) {
+            $options['attr']['class'] = '';
+        }
+        
         $institution = $institutionMedicalCenter->getInstitution();
 
         // Default image
-        $html = '<img src="'.$this->imagePlaceHolders['clinicLogo'].'" class="'.(isset($options['attr']['class']) ? $options['attr']['class']:''). ' default" />';
+        $html = '<span class="hca-sprite clinic-default-logo logo"></span>';
 
         if($institutionMedicalCenter->getLogo()) {
-            $html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);            
-        } else {
+            //$html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);
+            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institutionMedicalCenter->getLogo(), $options['size']);
+            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
 
+        } else {
             switch($options['context']) {
 
                 case self::FULL_PAGE_CONTEXT:
@@ -101,16 +107,20 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                     if ($institutionSpecialization && $institutionSpecialization->getSpecialization()->getMedia()) {
                         $specialization = $institutionSpecialization->getSpecialization();
-                        $html = $this->mediaExtension->getMedia($specialization->getMedia(), $specialization, $options['media_format'], $options['attr']);
+                        //$html = $this->mediaExtension->getMedia($specialization->getMedia(), $specialization, $options['media_format'], $options['attr']);
+                        $mediaSrc = $this->mediaExtension->getSpecializationMediaSrc($specialization->getMedia(), ImageSizes::SMALL);
                     }
                     break;
 
                 case self::SEARCH_RESULTS_CONTEXT:
                 case self::ADS_CONTEXT:
-                    if ($institutionLogo = $institution->getLogo()) {
-                        $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+                    if ($institution->getLogo()) {
+                        //$html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+                        $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
                     }
                     break;
+                    
+                $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
             }
         }
 

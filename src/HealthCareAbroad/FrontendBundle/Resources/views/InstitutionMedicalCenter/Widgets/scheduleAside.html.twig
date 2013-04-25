@@ -16,30 +16,26 @@
 
 		    {% endfor %}
 
-    		<table width="100%">
-
-    		{% if isOpen24_7 %}
-                <td style="text-align:center">We are open</td>
-                <td style="text-align:left"><b>24</b> <span style="color:#CCCCCC;font-size: 17px">/</span> <b>7</b></td>
-    		{% else %}
-    		    {% for _day, _data in decodedBusinessHours %}
-    		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
-                    {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
-                    {% if not _isClosed %}
-            		    <tr>
-                            <td>{{ _day | upper }}</td>
-                            {% if _isWholeDayOpen %}
-                                <td colspan="3" style="text-align:left">Open 24 Hours</td>
-                            {% else %}
-                                <td>{{ _data.from }}</td>
-                                <td>-</td>
-                                <td>{{ _data.to }}</td>
-                            {% endif %}
-                        </tr>
-                    {% endif %}
-    			{% endfor %}
-    		{% endif %}
-
+    		<table class="schedule-wrapper">
+                
+        		{% if isOpen24_7 %}
+                    <tr><td class="open247">Open 24/7</td></tr>
+        		{% else %}
+        		    {% for _day, _data in decodedBusinessHours %}
+        		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
+                        {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
+                        {% if not _isClosed %}
+                		    <tr>
+                                <td>{{ _day | upper }}</td>
+                                {% if _isWholeDayOpen %}
+                                    <td colspan="3" class="open24hrs">Open 24 Hours</td>
+                                {% else %}
+                                    <td>{{ _data.from }}</td><td>-</td><td>{{ _data.to }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endif %}
+        			{% endfor %}
+        		{% endif %}
     		</table>
 
     	{% endblock %}

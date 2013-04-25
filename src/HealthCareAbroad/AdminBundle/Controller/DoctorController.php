@@ -98,10 +98,11 @@ class DoctorController extends Controller
                 // Get contactNumbers and convert to json format
                 $contactNumber = json_encode($request->get('contactNumber'));
 
-                if($media = $this->saveMedia($request->files->get('doctor'), $doctor)) {
-                    $doctor->setMedia($media);
+                $fileBag = $request->files->get('doctor');
+                if(isset($fileBag['media']) && $fileBag['media']) {
+                    $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor, false);
                 }
-                
+
                 $doctor->setContactNumber($contactNumber);
                 $em = $this->getDoctrine()->getEntityManager();
 
@@ -130,7 +131,7 @@ class DoctorController extends Controller
     {
     	$result = false;
     	$em = $this->getDoctrine()->getEntityManager();
-    	$doctor = $em->getRepository('DoctorBundle:Doctor')->find($request->get('idId', 0));
+    	$doctor = $em->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
   
     	if ($doctor) {
     		$doctor->setStatus($doctor->getStatus() ? $doctor::STATUS_INACTIVE : $doctor::STATUS_ACTIVE);
@@ -148,13 +149,4 @@ class DoctorController extends Controller
     	return $response;
     }
     
-    private function saveMedia($fileBag, $doctor)
-    {
-        if($fileBag['media']) {
-            $media = $this->get('services.media')->upload($fileBag['media'], $doctor);
-            return $media;
-        }
-
-        return null;
-    }
 }

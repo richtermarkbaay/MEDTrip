@@ -44,3 +44,10 @@ services:
         arguments: [@twig, @services.advertisement.retriever]
         tags:
             - name: twig.extension
+            
+    services.advertisement.media:
+        class: HealthCareAbroad\AdvertisementBundle\Services\AdvertisementMediaService
+        calls:
+            - [setFilesystem, [@advertisement_filesystem]] 
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setUploadDirectory, [%local_web_root%/%media_advertisement_subdir%]]

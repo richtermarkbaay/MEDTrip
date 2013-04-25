@@ -13,7 +13,8 @@
                     <span class="pull-left" style="margin-right: 20px;">
                         <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}">
                             {% if each.logo %}
-                                {{ media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw }}
+                                {# media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw #}
+                                <img src="{{ institution_media_src(each.logo) }}" alt="" style="width:120px;border: 1px solid #ddd;padding: 3px"/>
                             {% else %}
                                 <img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/>
                             {% endif %}
@@ -47,7 +48,8 @@
                     <span class="pull-left" style="margin-right: 20px;">
                         <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}">
                             {% if each.logo %}
-                                {{ media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw }}
+                                {# media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw #}
+                                <img src="{{ institution_media_src(each.logo) }}" alt="" style="width:120px;border: 1px solid #ddd;padding: 3px"/>
                             {% else %}
                                 <img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/>
                             {% endif %}

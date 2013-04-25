@@ -6,6 +6,12 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
+
+use HealthCareAbroad\PagerBundle\Pager;
+
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
@@ -186,6 +192,10 @@ class InstitutionTreatmentsController extends Controller
         }
         
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+        
+   	    $adapter = new ArrayAdapter($this->institutionMedicalCenter->getMedia()->toArray());
+   	    $institutionMedicalCenterMedia = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
+
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -208,15 +218,7 @@ class InstitutionTreatmentsController extends Controller
             'ancillaryServicesData' => $ancillaryServicesData,
             'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
             'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
-            //'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            //'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions()
-            //'routes' => DefaultController::getRoutes($this->request->getPathInfo())
-//             'routes' => array(
-//                             'gallery' => 'admin_institution_gallery',
-//                             'media_edit_caption' => 'institution_media_edit_caption',
-//                             'media_delete' => 'institution_media_delete'
-
-            'routes' => MediaService::getRoutes($this->request->getPathInfo())
+            'institutionMedicalCenterMedia' => $institutionMedicalCenterMedia
         );
 
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
@@ -289,7 +291,8 @@ class InstitutionTreatmentsController extends Controller
         $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
         $doctorArr = array();
         foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_load_doctor_specializations', array('doctorId' =>  $each['id'])));
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'] . " - " . $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']) , 'id' => $each['id'], 'specializations' => $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']), 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
+          
         }
         
         return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
@@ -927,27 +930,38 @@ class InstitutionTreatmentsController extends Controller
     }
     
     /**
-     * Upload logo for Institution Medical Center
+     * Upload InstitutionMedicalCenter Logo
      * @param Request $request
      */
-    public function uploadAction(Request $request)
-    {
-        $fileBag = $request->files;
-    
-        if ($fileBag->get('file')) {
-             
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
-            if(is_object($result)) {
-    
-                $media = $result;
-                
-                // Delete current logo
-                $this->get('services.media')->delete($this->institutionMedicalCenter->getLogo(), $this->institution);
-                
-                // Save new media as logo
-                $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $media);
+    public function uploadLogoAction(Request $request)
+    {    
+        if (($fileBag = $request->files) && $fileBag->has('file')) {
+
+            $media = $this->get('services.institution.media')->medicalCenterUploadLogo($fileBag->get('file'), $this->institutionMedicalCenter);
+            if(!$media) {
+                $this->get('session')->setFlash('error', 'Unable to Upload Logo');
             }
         }
-        return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId(),'institutionId' => $this->institution->getId())));
+    
+        return $this->redirect($request->headers->get('referer'));
+    }
+    
+    /**
+     * Upload InstitutionMedicalCenter Media for Gallery
+     * @param Request $request
+     */
+    public function uploadMediaAction(Request $request)
+    {
+        $response = new Response(json_encode(true));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        if (($fileBag = $request->files) && $fileBag->has('file')) {
+            $media = $this->get('services.institution.media')->medicalCenterUploadMedia($fileBag->get('file'), $this->institutionMedicalCenter);
+            if(!$media) {
+                $response = new Response('Error', 500);
+            }
+        }
+    
+        return $response;
     }
 }

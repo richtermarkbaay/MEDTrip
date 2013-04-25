@@ -1,0 +1,53 @@
+<form name="multiUploadForm">
+    <div id="uploader">
+        <p>You browser doesn't have Flash, Silverlight, Gears, BrowserPlus or HTML5 support.</p>
+    </div>
+</form>
+
+<div id="browser-uploader-switcher">
+    You are using the multi-file uploader. Problems? Try the <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')) }}?multiUpload=0">browser uploader</a> instead.
+</div>
+
+<style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/plupload.full.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/jquery.ui.plupload.js') }}"></script>
+<script type="text/javascript">
+$(function() {
+    $("#uploader").plupload({
+        runtimes : 'html5',
+        url : '{{ uploadFormAction }}?multiUpload=1',
+        max_file_size : '10mb',
+        unique_names : true,
+        filters : [
+            {title : "Image files", extensions : "jpg,jpeg,gif,png"},
+            {title : "Zip files", extensions : "zip"},
+            {title : "Pdf files", extensions : "pdf"},
+            {title : "Video files", extensions : "avi,mov,flv"}
+        ]
+    });
+
+    // Client side form validation
+    $('form[name=multiUploadForm]').submit(function(e) {
+        var uploader = $('#uploader').plupload('getUploader');
+
+        // Files in queue upload them first
+        if (uploader.files.length > 0) {
+            // When all files are uploaded submit form
+            uploader.bind('StateChanged', function() {
+                if (uploader.files.length === (uploader.total.uploaded + uploader.total.failed)) {
+                    $(this).submit();
+                }
+            });
+
+            uploader.start();
+        } else
+            alert('You must at least upload one file.');
+
+        return false;
+    });
+
+    $('#uploader_start').click(function(){
+    	$('form[name=multiUploadForm]').submit();
+    });
+});
+</script>

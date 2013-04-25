@@ -5,7 +5,8 @@
     <a id="featuredImageContainer" data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionFeaturedImageModal" style="width:100%;margin-bottom: 20px"> 
  
         {% if institution.featuredMedia %}
-            {{ media(institution.featuredMedia, institution, 'default', {alt: 'Institution Featured Image', style: 'max-height: 310px; width: 100%;'}) | raw }}
+            {# media(institution.featuredMedia, institution, 'default', {alt: 'Institution Featured Image', style: 'max-height: 310px; width: 100%;'}) | raw #}
+            <img src="{{ institution_media_src(institution.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\ImageSizes::LARGE_BANNER')) }}" />
         {% else %}
         <img width="" height="90" class="pic" alt="[Gallery Photo]" src="/images/institution/image_ph.png" style="max-height: 310px; width: 100%;"> 
         {% endif %} 
@@ -19,8 +20,9 @@
     <div class="row"> 
         <div class="span2">
             <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
-                {% if institution.logo is not sameas(NULL) %}
-                    {{ media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw }}
+                {% if institution.logo %}
+                    {# media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw #}
+                    <img src="{{ institution_media_src(institution.logo, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM')) }}" alt="" /> 
                 {% else %}
                      <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
                 {% endif %} 

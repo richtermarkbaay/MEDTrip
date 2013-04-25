@@ -3,21 +3,26 @@
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Photos'} %}
     
         {% block asideContent %}
-    		<ul class="large-thumbnail">
-    			<li>
-                    {{ media(media.first, institution, 'frontendGallery') | raw }}
-    			</li>
-    		</ul>
-    
-    		<ul class="thumbnails">
-    		    {% for i, each in media if i > 0 %}
-    		        {% if (logo and each.id != logo.id) %}
-            			<li class="thumbnail">
-            				{{ media(each, institution, 'frontendGallery') | raw }}
-            			</li>
-                    {% endif %}
-    			{% endfor %}
-    		</ul>
+            <div class="gallery-wrapper">
+                {# media(media.first, institution, 'frontendGallery', {class: 'large-thumbnail thumbnail'}) | raw #}
+                {% set bigThumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::GALLERY_LARGE_THUMBNAIL') %}
+                <a class="fancybox large-thumbnail thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(media.first) }}" title="{{ media.first.caption }}">
+                    <img src="{{ institution_media_src(media.first, bigThumbnailSize) }}" alt=""/>
+                </a>
+        		<ul class="small-thumbnail-list thumbnails">
+        		    {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
+        		    {% for i, each in media if i > 0 %}
+        		        {% if (logo and each.id != logo.id) %}
+                			<li class="thumbnail">
+                				{# media(each, institution, 'frontendGallery') | raw #}
+                                <a class="fancybox" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
+                                    <img src="{{ institution_media_src(each, thumbnailSize) }}" alt="" width="60">
+                                </a>
+                			</li>
+                        {% endif %}
+        			{% endfor %}
+        		</ul>
+        	</div>
     	{% endblock %}
     	
     {% endembed %}

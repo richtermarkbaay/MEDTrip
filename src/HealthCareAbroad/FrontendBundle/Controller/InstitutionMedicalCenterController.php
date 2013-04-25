@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
+
+use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
+
 use Guzzle\Http\Message\Request;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
@@ -74,6 +78,18 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
             'formId' => 'imc_inquiry_form'
         );
+        
+        $specializationsList = $centerService->listActiveSpecializations($this->institutionMedicalCenter);
+        
+        // set request variables to be used by page meta components
+        $this->getRequest()->attributes->add(array(
+        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+        'pageMetaContext' => PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER,
+        'pageMetaVariables' => array(
+            PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE => \count($specializationsList),
+            // get the first 10 as list
+            PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($specializationsList,0, 10, true))
+        )));
 
         return $this->setResponseHeaders($this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params));
     }

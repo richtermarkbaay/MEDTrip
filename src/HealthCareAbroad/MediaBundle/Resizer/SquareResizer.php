@@ -52,6 +52,8 @@ class SquareResizer implements Resizer
 
         $image = $this->adapter->load($in->getContent());
         $size  = $media->getBox();
+        
+        var_dump($size);
 
         if (null != $settings['height']) {
             if ($size->getHeight() > $size->getWidth()) {

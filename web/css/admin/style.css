@@ -130,7 +130,7 @@ a {
 .dropdown-menu > .active > a > [class^="icon-"], 
 .dropdown-menu > .active > a > [class*=" icon-"] 
 {
-    background-image: url("/images/glyphicons-halflings-white.png");	
+    background-image: none; /*url("/images/glyphicons-halflings-white.png"); */	
 }
 
 a:hover
@@ -662,7 +662,7 @@ margin: 0;
 {
 color: #002A5C;
 margin-left: 5px;
-background-image:url("../../images/institution/HCA-logo-small.png") ;
+background-image: none; /*url("../../images/institution/HCA-logo-small.png") ; */
 background-repeat: no-repeat;
 padding: 0px 0 10px 40px;
     
@@ -1084,3 +1084,4 @@ background-color: #cccccc;
   {
     margin: 0 0 0 0;
   }
+}

@@ -60,6 +60,40 @@ class InstitutionService
     	$this->doctrine = $doctrine;
     }
     
+    /**
+     * Count active medical centers of an institution
+     * 
+     * @author acgvelarde
+     * @param Institution $institution
+     * @return int
+     */
+    public function countActiveMedicalCenters(Institution $institution)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')->countActiveInstitutionMedicalCenters($institution);
+    }
+    
+    /**
+     * List active Specializations of an institution. 
+     * Returns a flat array of specializationId => specializationName
+     *
+     * @param Institution $institution
+     * @return array
+     * @author acgvelarde
+     */
+    public function listActiveSpecializations(Institution $institution)
+    {
+        $institutionSpecializations = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')
+            ->getActiveSpecializationsByInstitution($institution);
+
+        $list = array();
+        foreach ($institutionSpecializations as $_each) {
+            $specialization = $_each->getSpecialization();
+            $list[$specialization->getId()] = $specialization->getName();
+        }
+        
+        return $list;
+    }
+    
     public function getFullInstitutionBySlug($slug = '')
     {
         if(!$slug) {
@@ -97,38 +131,6 @@ class InstitutionService
     public function setInstitutionPropertyService(InstitutionPropertyService $v)
     {
         $this->institutionPropertyService = $v;
-    }
-        
-    function saveMediaAsLogo(Institution $institution, Media $media)
-    {
-        $institution->setLogo($media);
-
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($institution);
-        $em->flush($institution);
-    }
-
-    function saveMediaAsFeaturedImage(Institution $institution, Media $media)
-    {
-        $institution->setFeaturedMedia($media);
-        $this->saveMediaToGallery($institution, $media);
-    }
-    
-    function saveMediaToGallery(Institution $institution, Media $media)
-    {
-        $gallery = $institution->getGallery();
-
-        if(!$gallery) {
-            $gallery = new Gallery();
-            $gallery->addMedia($media);
-            $gallery->setInstitution($institution);
-        } else {
-            $gallery->addMedia($media);
-        }
-
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($gallery);
-        $em->flush();
     }
     
     /**
@@ -177,6 +179,18 @@ class InstitutionService
 
         
         return $activeStatus == $activeStatus & $institution->getStatus() ? true : false;
+    }
+    
+    /**
+     * Check if the $institution is Approved
+     * 
+     * @param Institution $institution
+     * @return boolean
+     * @author acgvelarde
+     */
+    public function isApproved(Institution $institution)
+    {
+        return $institution->getStatus() == InstitutionStatus::getBitValueForApprovedStatus();
     }
     
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)

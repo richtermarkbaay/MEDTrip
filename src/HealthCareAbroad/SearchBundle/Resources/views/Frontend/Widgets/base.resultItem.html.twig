@@ -2,62 +2,38 @@
 {#----- initialize impression tracker #}
 
 {% set _impressionStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_search_result_item_impression_parameters(statisticsDataObject)  %}
-<article class="media search-entry {{ get_impression_tracker_class() }}" {{_impressionStatisticParametersAttribute }}>
-
-    <div class="pull-left thumb">
+<article class="item-wrapper {{ get_impression_tracker_class() }}" {{_impressionStatisticParametersAttribute }}>
+    <div class="left-column-wrapper">
         {#-- logo link with listing click through --#}
         {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
-    	        'link': {
-    	            url: searchResultItem.url,
-    			    html: searchResultItem.logo
-    	        }
-    	    }
-    	%}
-        <div class="location">{{ searchResultItem.mainAddress }}</div>
+    	        'link': { url: searchResultItem.url, html: searchResultItem.logo, class: 'small-logo-wrapper' }
+        } %}
+        <strong>{{ searchResultItem.mainAddress }}</strong>
     </div>
 
-    <div class="media-body">
-        <h3 class="media-heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
+    <div class="right-column-wrapper">
+        <h3 class="heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
+
         {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
-            <small class="institution"><a href="{{ searchResultItem.institutionUrl }}">{{ searchResultItem.institutionName }}</a></small>
+            <h4 class="heading"><a href="{{ searchResultItem.institutionUrl }}">{{ searchResultItem.institutionName }}</a></h4>
         {% endif %}
 
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
-        <div class="description" >
             {% set _escapedDescription =  searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0,200) | trim)~'...' : searchResultItem.description %}
-            <p>{{ _escapedDescription | raw}}</p>
-        </div>
+            <p class="description">{{ _escapedDescription | raw}}</p>
         {% endif %}
-        <div class="link">
+
+        <div class="align-right">
             {#-- more info link --#}
             {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
         	        'link': {
         	            url: searchResultItem.url,
-        			    html: '<span class="icon-search icon-white"></span> More Info',
-        			    class: 'more-info btn pull-right green'
+        			    html: '<span class="white-icon-search"></span> More Info',
+        			    class: 'btn green'
         	        }
         	    }
         	%}
-        </div>
-
-        {#---
-        <div class="media">
-            <div class="pull-left">
-                <span class="address-icon2"></span>
-            </div>
-            <div class="media-body">
-                <small>
-                    {% if searchResultItem.streetAddress is defined %}
-                        {{ searchResultItem.streetAddress }}
-                        <br />
-                    {% endif %}
-
-                    <b>{{ searchResultItem.mainAddress }}</b>
-                </small>
-            </div>
-
-        </div>
-        --- #}
+    	</div>
     </div>
 </article>
 {% endif %}

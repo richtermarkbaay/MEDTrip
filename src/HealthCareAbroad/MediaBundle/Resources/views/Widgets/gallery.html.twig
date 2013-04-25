@@ -1,0 +1,188 @@
+<div id="table-content">
+    {% if media.isPaginable is defined %}
+        <div style="margin-right: 10px">
+            {{ paginate(media, app.request.get('_route'), app.request.get('_route_params')) }}
+        </div>
+    {% endif %}
+
+    {% set mediaCount = 0 %}
+    <ul style="display: table-cell">
+        {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+        {% for each in media %}
+            <li style="display: inline-block; vertical-align: top; margin-bottom:30px; margin-right: 5px;position:relative" id="media-{{ each.id }}">
+                {# media(medium, institution, 'gallery') | raw  #}
+                
+                <a class="icon-2 attached-delete-form delete-media-from-gallery" title="Delete" href="" style="margin-right: 0px;position: absolute;right: 5px;" data-media-id="{{ each.id }}">
+                    <i class="icon-remove"></i>
+                </a>
+                
+                <a class="fancybox" rel="gallery" data-fancybox-type="iframe" href="{{ media_src(each, mediaContext) }}" title="{{ each.caption }}">
+                    <img src="{{ media_src(each, mediaContext, thumbnailSize) }}" width="150px" height="180px" alt="Media" style="border: 1px solid #eee; padding: 2px;"/>
+                </a>
+
+                <br>
+                <a class="attached-edit-form" title="Edit Caption" href="#" name="link_caption{{ each.id }}" id="link_caption{{ each.id }}" style="width:150px;display:inline-block;word-wrap: break-word">
+                    {{ each.caption }}
+                </a>
+            </li>
+        {% else %}
+            <li> No media yet. </li>
+        {% endfor %}
+    </ul>
+    
+    <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+        <form id="editMediaForm" name="editMediaForm" action="{{ path('admin_media_edit_caption') }}" method="post">
+            <label for="caption">Caption</label>
+            <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
+        </form>
+    </div>
+
+    <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
+        <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
+    </div>
+</div>
+
+{% block inlineJavascriptCode %}
+
+<style type="text/css">
+    .fancybox-type-iframe .fancybox-nav {width: 80px;}
+    .fancybox-type-iframe .fancybox-nav span {visibility: visible;}
+    .fancybox-type-iframe .fancybox-next {right: -80px;}
+    .fancybox-type-iframe .fancybox-prev {left: -80px;}
+</style>
+
+<script type="text/javascript" src="{{ asset('js/jquery/jquery.mousewheel-3.0.6.pack.js') }}"></script>
+
+<!-- Add fancyBox -->
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
+
+<!-- Optionally add helpers - button, thumbnail and/or media -->
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-buttons.css?v=1.0.3') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-buttons.js?v=1.0.3') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-media.js?v=1.0.3') }}"></script>
+
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.css?v=1.0.6') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/helpers/jquery.fancybox-thumbs.js?v=1.0.6') }}"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+    $(".fancybox").fancybox({
+        helpers     : { media	: {} },
+        margin      : [20, 60, 20, 60]
+    });
+
+    var media_id, media_caption, link, institution_id={{ institution.id }};
+
+    var showMessage = function(parent, message) {
+        $message = $('<div style="display:none;">'+ message + '</div>');
+        parent.append($message);
+        $message.fadeIn('slow', function(){setTimeout(function(){$message.remove()}, 1000)});
+    };
+
+    $("#edit-media-form-dialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        /*height: 200,*/
+        width: 300,
+        modal: true,
+        open: function(event, ui) {
+            //hide close button.
+            //$(this).parent().children().children('.ui-dialog-titlebar-close').hide();
+            //$(".ui-dialog-titlebar-close", $(this).parent()).hide();
+
+            $('#caption').val(media_caption.trim());
+        },
+        buttons: {
+            "Save": function() {
+                $('#editMediaForm').submit();
+            },
+            Cancel: function() {
+                $(this).dialog( "close" );
+            }
+        }
+    });
+
+    $("#delete-media-dialog" ).dialog({
+        autoOpen: false,
+        resizable: false,
+        height: 240,
+        width: 300,
+        modal: true,
+        buttons: {
+            "Delete media": function() {
+
+                /*
+                TODO: it might be better if we don't do ajax here. e.g. normal form submission or link.
+                */
+                var deleteElem = '<div style="position:absolute;color: #c00;width:100%;text-align:center;background:#efefef;padding: 5px 0">deleting image...</div>';
+                $('#media-' + media_id).find('.delete-media-from-gallery').replaceWith(deleteElem);
+
+                
+                var url = "{{ path('admin_media_ajaxDelete') }}"; 
+                var params = {media_id: media_id, service_id: 'services.{{ mediaContext }}.media'};
+
+                $.post(url, params, function(response) {
+                    if (!response) {
+                        showMessage($('#deleteMediaForm'), 'An error occurred while processing your request.');
+                        setTimeout(function(){$("#delete-media-dialog").dialog("close")}, 2000);
+                    } else {
+                        $('#media-' + media_id).fadeOut();
+                    }
+                });
+
+            	$(this).dialog("close");
+            },
+            Cancel: function() {
+                $( this ).dialog( "close" );
+            }
+        }
+    });
+
+    $(".attached-edit-form").click(function() {
+        media_id = this.id.substring(12);/*'link_caption'+id*/
+        media_caption = this.innerHTML;
+        link = this;
+
+    $("#edit-media-form-dialog").dialog("open");
+        return false;
+    });
+
+    $(".attached-delete-form").click(function() {
+        media_id = $(this).attr('data-media-id');/*'link_delete'+id*/
+        $("#delete-media-dialog").dialog("open");
+        return false;
+    });
+
+
+    $('#editMediaForm').submit(function() {
+        var caption = $('#caption').val();
+
+        $.ajax({
+            url: $('#editMediaForm').attr('action'),
+            data: {id: media_id, institutionId: institution_id, caption: caption},
+            type: 'post',
+            dataType: 'json',
+            success: function(success) {
+
+                if (success) {
+                    link.innerHTML = caption;
+                    showMessage($('#editMediaForm'), 'Caption updated!');
+                    setTimeout(function(){$("#edit-media-form-dialog").dialog("close")}, 2000);
+                } else {
+                    alert('Application error');
+                }
+
+            },
+            error: function() {
+                alert('Server error');
+                $("#edit-media-form-dialog").dialog("close");
+            }
+        });
+
+        return false;
+    });
+});
+</script>
+{% endblock %}

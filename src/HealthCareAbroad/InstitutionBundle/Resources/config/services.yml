@@ -62,4 +62,10 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\CalloutMessagesService
         arguments: [%callouts%]
 
-    
+    services.institution.media:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService
+        calls:
+            - [setFilesystem, [@institution_filesystem]] 
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setUploadDirectory, [%local_web_root%/%media_institution_subdir%]]
+            

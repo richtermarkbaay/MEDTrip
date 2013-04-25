@@ -1,19 +1,19 @@
 # DEFAULT CONTROLLER ROUTES
-admin_gallery_selection:
-    pattern: /admin/gallery/{context}/{id}/{page}
-    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
-    requirements:
-        _method: GET
-        id: \d+
-        page: \d+
+#admin_gallery_selection:
+#    pattern: /admin/gallery/{context}/{id}/{page}
+#    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
+#    requirements:
+#        _method: GET
+#        id: \d+
+#        page: \d+
 
-institution_gallery_selection:
-    pattern: /institution/gallery/{context}/{id}/{page}
-    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
-    requirements:
-        _method: GET
-        id: \d+
-        page: \d+
+#institution_gallery_selection:
+#    pattern: /institution/gallery/{context}/{id}/{page}
+#    defaults: { _controller: MediaBundle:Default:gallerySelection, page: 1 }
+#    requirements:
+#        _method: GET
+#        id: \d+
+#        page: \d+
 
 admin_media_attach:
     pattern: /admin/media/attach/{context}/{id}/{mediaId}
@@ -42,29 +42,11 @@ institution_media_add:
     requirements:
         _method: GET
         id: \d+
-        
-admin_institutionMedicalCenter_media_upload:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/uploadMedia
-    defaults: { _controller: MediaBundle:Default:uploadImcMedia }
-    requirements:
-        _method: POST|GET
 
-admin_institutionMedicalCenter_gallery_add:
-    pattern: /admin/institution/{institutionId}/{context}/{id}/addGallery/{multiUpload}
-    defaults: { _controller: MediaBundle:Default:add, multiUpload: 1 }
-    requirements:
-        _method: GET
-        institutionId: \d+
-
-admin_media_upload:
-    pattern: /admin/media/upload/{institutionId}
-    defaults: { _controller: MediaBundle:Default:upload }
-    requirements:
-        _method: POST
 
 institution_media_upload:
-    pattern: /institution/media/upload/{institutionId}
-    defaults: { _controller: MediaBundle:Default:upload }
+    pattern: /institution/media/upload/{institutionId}/{imcId}
+    defaults: { _controller: MediaBundle:Default:upload, imcId: ~ }
     requirements:
         _method: POST
 
@@ -99,31 +81,6 @@ institution_media_ajaxDelete:
 
 # END DEFAULT CONTROLLER ROUTES
 
-# ADMIN CONTROLLER ROUTES
-
-admin_institution_gallery:
-    pattern: /admin/institution/{institutionId}/gallery/{page}
-    defaults: { _controller: MediaBundle:Admin:gallery, page: 1 }
-    requirements:
-        _method: GET
-        institutionId: \d+
-        page: \d+
-
-admin_institution_gallery_add:
-    pattern: /admin/institution/{institutionId}/gallery/add/{multiUpload}
-    defaults: { _controller: MediaBundle:Admin:add, multiUpload: 1 }
-    requirements:
-        _method: GET
-        institutionId: \d+
-
-admin_media_ajaxDelete:
-    pattern: /admin/media/ajax-delete
-    defaults: { _controller: MediaBundle:Admin:ajaxDelete }
-    requirements:
-        _method: POST
-        media_id: \d+
-        parent_id: \d+
-        parent_class: ".+"
 
 # END ADMIN CONTROLLER ROUTES
 
@@ -134,12 +91,12 @@ institution_gallery:
         _method: GET
         page: \d+
 
-institution_gallery_add:
-    pattern:  /institution/{institutionId}/gallery/add/{multiUpload}
-    defaults: { _controller: MediaBundle:Default:addMediaToGallery, multiUpload: 1 }
-    requirements:
-        _method: GET
-        institutionId: \d+
+#institution_gallery_add:
+#    pattern:  /institution/{institutionId}/gallery/add/{multiUpload}
+#    defaults: { _controller: MediaBundle:Default:addMediaToGallery, multiUpload: 1 }
+#    requirements:
+#        _method: GET
+#        institutionId: \d+
 
 # UNCONFIRMED ROUTES
 
@@ -152,28 +109,21 @@ admin_institution_medicalCenter_gallery:
         imcId: \d+
 
 
-media_upload_medicalCenter:
-    pattern: /media/upload/medical-center/{imcId}
-    defaults: { _controller: MediaBundle:Default:upload }
-    requirements:
-        _method: POST
-        imcId: \d+
-
 media_ajaxLoad_advertisement:
     pattern: /media/load-advertisement-media/{aId}
     defaults: { _controller: MediaBundle:Default:ajaxLoadAdvertisementMedia }
     requirements:
         aId: \d+
 
-media_ajaxLoad_medicalCenter:
-    pattern: /media/load-medical-center-media/{imcId}
-    defaults: { _controller: MediaBundle:Default:ajaxLoadMedicalCenterMedia }
-    requirements:
-        imcId: \d+
+#media_ajaxLoad_medicalCenter:
+#    pattern: /media/load-medical-center-media/{imcId}
+#    defaults: { _controller: MediaBundle:Default:ajaxLoadMedicalCenterMedia }
+#    requirements:
+#        imcId: \d+
 
-media_ajaxAttach_medicalCenter:
-    pattern: /media/attach-medical-center-media/{imcId}/{mediaId}
-    defaults: { _controller: MediaBundle:Default:ajaxAttachMedicalCenterMedia }
-    requirements:
-        imcId: \d+
-        mediaId: \d+
+#media_ajaxAttach_medicalCenter:
+#    pattern: /media/attach-medical-center-media/{imcId}/{mediaId}
+#    defaults: { _controller: MediaBundle:Default:ajaxAttachMedicalCenterMedia }
+#    requirements:
+#        imcId: \d+
+#        mediaId: \d+

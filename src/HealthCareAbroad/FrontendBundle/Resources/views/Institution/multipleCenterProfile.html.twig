@@ -1,42 +1,38 @@
 {% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
 
-<div id="details" class="row">
-	<div class="tab-content span8">
-		<ul class="nav nav-tabs" id="institutionTab">
-		  	<li class="active"><a href="#overview">OVERVIEW</a></li>
-		  	{% if institutionDoctors|length %}
-		  	    <li><a href="#doctors">DOCTORS</a></li>
-            {% endif %}
-		</ul> <!--Twitter bootstrap Tabs-->
-
-		<!-- Tabs Content -->
-		<div id="main_content" class="tab-pane active">
-            {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
-        </div>
-
-        {% if institutionDoctors|length %}
-            <div id="doctors" class="tab-pane one-col-description borderless">
-                {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with {doctors: institutionDoctors} %}
-            </div>
+<div class="profile-wrapper tab-content span8">
+	<ul class="nav nav-tabs" id="institutionTab">
+	  	<li class="active"><a href="#overview">OVERVIEW</a></li>
+	  	{% if institutionDoctors|length %}
+	  	    <li><a href="#doctors">DOCTORS</a></li>
         {% endif %}
-        <!-- End of Tabs Content -->
-        
-	</div>
+	</ul> <!--Twitter bootstrap Tabs-->
 
-	<aside id="aside_content" class="span4">
+	<!-- Tabs Content -->
+	<div id="overview" class="tab-pane active">
+        {% include 'FrontendBundle:Institution/Widgets:overview.html.twig' %}
+    </div>
 
-	    {# include 'FrontendBundle:Widgets:profileLocationAside.html.twig' #}
-
-	    {# include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' #}
-
-	    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
-
-	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
-
-	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
-
-	</aside> <!--End of aside_content-->
+    {% if institutionDoctors|length %}
+        <div id="doctors" class="tab-pane">
+            {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with {doctors: institutionDoctors} %}
+        </div>
+    {% endif %}
+    <!-- End of Tabs Content -->
 </div>
+
+<aside class="span4 aside-wrapper">
+    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+
+    {# include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' #}
+
+    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
+
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
+
+    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
+</aside> <!--End of aside_content-->
+
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{asset('bundles/frontend/js/institution.js')}}"></script>
@@ -50,7 +46,7 @@
             form: $('form#{{ formId }}') 
         });
         
-        $('a.call[rel="tooltip"]').tooltip({
+        $('#hospital-contact[rel="tooltip"]').tooltip({
             title: function(){
                 return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
             },

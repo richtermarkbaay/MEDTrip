@@ -1,3 +1,8 @@
+# Routest for Admin PageMetaConfigurationController
+AdminBundle_pageMetaConfiguration:
+    resource: "@AdminBundle/Resources/config/routing_page_meta_configuration.yml"
+    prefix:   /
+
 # Routes for Admin TermsController #
 AdminBundle_terms:
     resource: "@AdminBundle/Resources/config/routing_terms.yml"
@@ -183,3 +188,12 @@ admin_error403:
 admin_homepage:
     pattern:  /admin/dashboard
     defaults: { _controller: AdminBundle:Default:index }
+
+
+# Admin Global Media Ajax Delete
+admin_media_ajaxDelete:
+    pattern: /admin/media/ajax-delete
+    defaults: { _controller: AdminBundle:Default:ajaxDelete }
+    requirements:
+        _method: POST
+        mediaId: \d+

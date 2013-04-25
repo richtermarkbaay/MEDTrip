@@ -72,16 +72,39 @@ admin_institution_updateStatus:
         status: \d+
         _method: POST
 
+
+#Institution Media Related Routes
+admin_institution_gallery:
+    pattern: /admin/institution/{institutionId}/gallery/{page}
+    defaults: { _controller: AdminBundle:Institution:gallery, page: 1 }
+    requirements:
+        _method: GET
+        institutionId: \d+
+        page: \d+
+        
+admin_institution_gallery_add:
+    pattern: /admin/institution/{institutionId}/gallery/add/{multiUpload}
+    defaults: { _controller: AdminBundle:Institution:addMedia, multiUpload: 1 }
+    requirements:
+        _method: GET
+        institutionId: \d+
+
 admin_institution_logo_upload:
     pattern: /admin/institution/{institutionId}/logo/upload
-    defaults: { _controller: AdminBundle:Institution:upload, media_type: logo }
+    defaults: { _controller: AdminBundle:Institution:uploadLogo }
     requirements:
-        _method: POST|GET
+        _method: POST
         institutionId: \d+
-        
+
 admin_institution_featuredImage_upload:
     pattern: /admin/institution/{institutionId}/featured-image/upload
-    defaults: { _controller: AdminBundle:Institution:upload, media_type: featuredImage }
+    defaults: { _controller: AdminBundle:Institution:uploadFeaturedImage }
     requirements:
-        _method: POST|GET
+        _method: POST
         institutionId: \d+
+
+admin_institution_media_upload:
+    pattern: /admin/institution/{institutionId}/media/upload
+    defaults: { _controller: AdminBundle:Institution:uploadMedia }
+    requirements:
+        _method: POST

@@ -1,0 +1,26 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+{% set selectedTab = 'institutions' %}
+{% set selectedSubMenu = 'gallery' %}
+
+{% block content %}
+
+    <div class="span9 title">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with {
+            title: 'Media Gallery',
+            actions: [{link: path('admin_institution_gallery', {'institutionId': institution.id}), label: 'Back to gallery', 'icon' : 'icon-picture' }]
+        } %}
+            {% block sectionContent %}
+                <div id="table-content">
+                    <div id="dialog-form" title="Add media">
+                        {% if multiUpload %}
+                            {% include 'MediaBundle:Widgets:multiUploadForm.html.twig' %}
+                        {% else %}
+                            {% include 'MediaBundle:Widgets:singleUploadForm.html.twig' %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endblock %}
+
+        {% endembed %}
+    </div>
+{% endblock %}

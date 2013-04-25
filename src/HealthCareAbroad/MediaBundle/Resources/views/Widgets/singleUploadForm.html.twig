@@ -1,0 +1,25 @@
+{% for flashMessage in app.session.flashbag.get('notice') %}
+    {{ flashMessage }}
+{% endfor %}
+<br />
+
+<div>Select a file to upload:</div>
+
+<form action="{{ uploadFormAction }}" enctype="multipart/form-data" style="margin-bottom: 20px" method="POST" onsubmit="validate(this);">
+    <input type="file" name="file" />
+    <input type="submit" name="submit" value="Upload"/>
+</form>
+
+<div>
+    Switch to the <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')) }}">multi-file uploader</a>
+</div>
+
+<script type="text/javascript">
+function validate(form) {
+   if ((/.(gif|jpe?g|png)$/i.test(form['file'].value))==false) {
+
+       return (false);
+   }
+       return(true);
+}
+</script>

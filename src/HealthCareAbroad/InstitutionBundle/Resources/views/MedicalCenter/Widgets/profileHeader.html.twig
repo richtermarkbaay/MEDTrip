@@ -1,8 +1,9 @@
 <div class="row">
 	<div class="span2">
 		<a href="#medicalCenterLogoModal" class="gallerypic" title="" role="button" data-toggle="modal">
-            {% if institutionMedicalCenter.logo is not sameas(NULL) %}
-                {{ media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw }}
+            {% if institutionMedicalCenter.logo %}
+                {# media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw #}
+                <img src="{{ institution_media_src(institutionMedicalCenter.logo) }}" alt="" /> 
             {% else %}
                  <img class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
             {% endif %}

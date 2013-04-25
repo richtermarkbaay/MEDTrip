@@ -3,15 +3,20 @@ namespace HealthCareAbroad\MediaBundle\Gaufrette\Adapter;
 
 use Gaufrette\Adapter\Local;
 
-/**
- * TODO: This is just a temporary workaround for the missing implementation of
- * listDirectory. Most likely this will be present in the Local class in the future.
- * 
- * @author harold
- *
- */
+
 class LocalAdapter extends Local
 {
+    protected $url;
+    
+    function __construct($mediaDirectory, $directory, $create)
+    {
+        parent::__construct($directory, $create);
+
+        list($dummy, $subdir) = explode("/$mediaDirectory/", $directory, 2);
+        
+        $this->url = "/$mediaDirectory/$subdir";
+    }
+
 	/**
 	 * Lists files from the specified directory.
 	 *
@@ -40,5 +45,15 @@ class LocalAdapter extends Local
 				'keys' => $files,
 				'dirs' => $dirs
 		);
+	}
+
+	public function getDirectory()
+	{
+	    return $this->directory;
+	}
+
+	function getUrl()
+	{
+	    return $this->url;
 	}
 }

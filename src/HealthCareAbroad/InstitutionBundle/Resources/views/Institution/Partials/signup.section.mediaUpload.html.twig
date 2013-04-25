@@ -1,3 +1,44 @@
+<style>
+    .file-browse-wrapper {
+        width: 106px;    
+        height: 28px;
+        background: linear-gradient(to bottom, #C4C4C4 0%, #AAAAAA 49%, #C4C4C4 100%) repeat scroll 0 0 transparent;
+        border-radius: 3px;
+        border: 1px solid #888888;
+        overflow:hidden;
+    }
+    
+    .file-browse-wrapper:before {
+        content: "";
+        position: relative;
+        top: 3px;
+        color: #333333;
+        left: 30px;
+        text-shadow: 0 1px 1px #CCC;
+    }
+    
+    .file-browse-wrapper:hover {
+        cursor: pointer;
+        background: linear-gradient(to bottom, #D6D6D6 0%, #AAAAAA 49%, #D6D6D6 100%) repeat scroll 0 0 transparent;
+    }
+    
+    .file-browse-wrapper:active {
+        background: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .file-browse-wrapper > input[type=file]{
+    
+        margin-left:-145px;
+        
+        opacity:0;
+        
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        
+        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    
+    }
+</style>
+
 <section class="section media-upload">
     <h2>
         Logo and Banner
@@ -17,9 +58,9 @@
                     <p>
                         Logo should have at least 256 x 256 dimension.
                     </p>
-                    <button class="btn btn-default">
-                        Upload Logo
-                    </button>
+                    <div class="file-browse-wrapper">
+                        {{ form_widget(form.logo) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -30,9 +71,12 @@
                     <p>
                         Banner should have at least 950 x 420 dimension.
                     </p>
-                    <button class="btn btn-default">
+                    <div class="file-browse-wrapper">
+                        {{ form_widget(form.featuredMedia) }}
+                    </div>
+                    <!-- button class="btn btn-default">
                         Upload Banner
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>

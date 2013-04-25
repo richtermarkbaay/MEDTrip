@@ -4,6 +4,8 @@
  *
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
 
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
@@ -272,7 +274,14 @@ class InstitutionAccountController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
+        /*
+        var_dump($this->get('kernel')->getRootDir());
+        var_dump(system('ls -al /Applications/MAMP/htdocs/vhosts/hca.com.localhost/web/media/institutions/263'));
+        var_dump(glob('/Applications/MAMP/htdocs/vhosts/hca.com.localhost/web/media/institutions/263/*136557939980.png'));
         
+        exit;
+        */
+
         if((int)$this->institution->getSignupStepStatus() === 0) {
             return $this->redirect($this->generateUrl('institution_account_profile'));
         }
@@ -283,6 +292,22 @@ class InstitutionAccountController extends InstitutionAwareController
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             if ($form->isValid()) {
+
+                $files = $this->request->files->get('institution_profile_form');
+
+                if(isset($files['logo'])) {
+                    $logoMedia = $this->get('services.institution.media')->uploadLogo($files['logo'], $this->institution, false);
+                    if($logoMedia) {
+                        $form->getData()->setLogo($logoMedia);
+                    }
+                }
+
+                if(isset($files['feateredMedia'])) {
+                    $featuredMedia = $this->get('services.institution.media')->uploadFeaturedImage($files['logo'], $this->institution, false);
+                    if($featuredMedia) {
+                        $form->getData()->setFeaturedMedia($featuredMedia);
+                    }
+                }
 
                 $this->get('services.institution_signup')
                     ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
@@ -566,31 +591,9 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function uploadAction(Request $request)
     {
-
         $fileBag = $request->files;
 
-        if ($fileBag->get('file')) {
-
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
-
-            if(is_object($result)) {
-
-                $media = $result;
-                $mediaType = $request->get('media_type');
-
-                if($mediaType == 'logo') {
-
-                    // Delete current logo
-                    $this->get('services.media')->delete($this->institution->getLogo(), $this->institution);
-
-                    // save uploaded logo
-                    $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
-
-                } else if($mediaType == 'featuredImage') {
-                    $this->get('services.institution')->saveMediaAsFeaturedImage($this->institution, $media);
-                }
-            }
-        }
+        $this->get('services.institution.media')->upload($fileBag->get('file'), $this->institution, $request->get('image_type'));
 
         return $this->redirect($this->generateUrl('institution_account_profile'));
     }

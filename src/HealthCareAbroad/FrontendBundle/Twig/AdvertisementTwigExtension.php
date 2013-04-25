@@ -21,25 +21,25 @@ class AdvertisementTwigExtension extends \Twig_Extension
         switch($type)
         {
             case AdvertisementHighlightType::AWARD:
-                $class = 'awards-icon'; break;
+                $class = 'award-icon'; break;
 
             case AdvertisementHighlightType::SERVICE:
-                $class = 'about-icon'; break;
+                $class = 'service-icon'; break;
 
             case AdvertisementHighlightType::DOCTOR:
-                $class = 'doctors-icon'; break;
+                $class = 'doctor-icon'; break;
 
             case AdvertisementHighlightType::TREATMENT:
-                $class = 'about-icon'; break;
+                $class = 'treatment-icon'; break;
 
             case AdvertisementHighlightType::SPECIALIZATION:
-                $class = 'about-icon'; break;
+                $class = 'specialization-icon'; break;
 
             case AdvertisementHighlightType::CLINIC:
-                $class = 'about-icon'; break;
+                $class = 'clinic-icon'; break;
         }
 
-        return $class . $color;
+        return "hca-sprite $class" . $color;
     }
 
     public function getName()

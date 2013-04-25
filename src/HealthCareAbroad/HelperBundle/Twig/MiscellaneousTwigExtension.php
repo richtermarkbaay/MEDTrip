@@ -45,9 +45,16 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         return \base64_encode($s);
     }
 
-    public function getClass($object)
+    public function getClass($object, $nameOnly = false)
     {
-        return \get_class($object);
+        $class = \get_class($object);
+
+        if($nameOnly) {
+            $class = explode('\\', $class);
+            $class = array_pop($class);
+        }
+        
+        return $class;
     }
 
     public function getClassLabels($classKeys=array())

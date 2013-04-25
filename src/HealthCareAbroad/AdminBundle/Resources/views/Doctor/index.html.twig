@@ -68,7 +68,7 @@
                                 
                                 <li>
                                     {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
-                                    <a href="{{ path('admin_doctor_updateStatus', {idId: each.id} ) }}" title="" class="update-status">
+                                    <a href="{{ path('admin_doctor_updateStatus', {doctorId: each.id} ) }}" title="" class="update-status">
                                         <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
                                     </a>
                                 </li>

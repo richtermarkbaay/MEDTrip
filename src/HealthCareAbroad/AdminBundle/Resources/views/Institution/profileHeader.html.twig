@@ -12,7 +12,8 @@
             </span>
             <div class="institution-featuredImage" style="padding: 5px; border: 1px solid #ddd">
                 {% if institution.featuredMedia %}
-                    {{ media(institution.featuredMedia, institution, 'default', {alt: '', style: 'width: 950px;'}) | raw }}
+                    {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
+                    <img alt="" src="{{ institution_media_src(institution.featuredMedia, imageSize) }}" style="width: 950px"/>
                 {% else %}
                     <img alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                 {% endif %}
@@ -32,7 +33,8 @@
                     <div class="photo-group">
                         <div>
                             {% if institution.logo %}
-                                {{ media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw }}
+                                {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+                                <img alt="" src="{{ institution_media_src(institution.logo, imageSize) }}"/>                                
                             {% else %}
                                 <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
                             {% endif %}

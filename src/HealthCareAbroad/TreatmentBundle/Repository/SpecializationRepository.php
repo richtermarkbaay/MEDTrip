@@ -50,15 +50,12 @@ class SpecializationRepository extends EntityRepository
     
     public function getSpecializationSearchByName($term, $ids)
     {
-        $idsNotIn = "'".\implode("', '",$ids)."'";
-
-       $dql = "SELECT Specialization.id, Specialization.name as value
+        $dql = "SELECT Specialization.id, Specialization.name as value
         FROM TreatmentBundle:Specialization AS Specialization
         WHERE Specialization.name LIKE :term
         AND Specialization.status = :status
-        AND Specialization.id NOT IN ({$idsNotIn})
         ORDER BY Specialization.name ASC";
-
+        
         $query = $this->_em->createQuery($dql);
         $query->setParameter('status', Specialization::STATUS_ACTIVE);
         $query->setParameter('term', "%$term%");

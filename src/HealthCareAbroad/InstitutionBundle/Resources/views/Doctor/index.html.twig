@@ -10,7 +10,8 @@
 								<!-- <a href="#">manage profile pic</a> -->
 								<a href="#doctorLogo" class="gallerypic" title="" role="button" data-toggle="modal">
 					               {% if doctor.media is not sameas(NULL) %}
-                                        {{ media(doctor.media, doctor, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'doctor image'}) | raw }}
+                                        {# media(doctor.media, doctor, constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_LOGO'), {alt: 'doctor image'}) | raw #}
+                                        <img src="{{ doctor_media_src(doctor.media, constant('HealthCareAbroad\\MediaBundle\\Services\ImageSizes::DOCTOR_LOGO')) }}" alt=""/>
                                     {% else %}
                                           <img src="{{ asset('images/institution/image_ph.png') }}" alt="[Gallery Photo]" class="pic" />
                                     {% endif %} 

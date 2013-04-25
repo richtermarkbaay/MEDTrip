@@ -5,8 +5,9 @@
     <div class="row"> 
         <div class="span2">
             <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
-                        {% if institution.logo is not sameas(NULL) %}
-                            {{ media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw }}
+                        {% if institution.logo %}
+                            {# media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw #}
+                            <img src="{{ institution_media_src(institution.logo) }}" alt="" /> 
                         {% else %}
                              <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
                         {% endif %}

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -110,6 +112,8 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?'));
         $this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
         $this->_add($builder, 'websites', 'websites_custom_field');
+        $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
+        $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one services.')))));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'constraints' => array(new NotBlank(array('message' => 'Please select at least one awards.')))));
         $this->_add($builder, 'coordinates', 'hidden');

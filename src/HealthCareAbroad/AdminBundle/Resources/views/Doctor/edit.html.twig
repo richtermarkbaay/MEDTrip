@@ -4,49 +4,47 @@
 {% set doctorsLabel = getClassLabel('doctor') %}
 
 {% block content %}
-    <div class="span3">
-    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
-	</div>
-<div class="span9">
- 
- 	{% embed 'HelperBundle:Widgets:section.html.twig' with { 
-                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ doctorsLabel.singular | title ,
-                	actions: [{link: path('admin_doctor_index'), label: 'View all '~ doctorsLabel.plural | title, 'icon' : 'icon-list' }]
-            }
-    %}
-    	  {% block sectionContent %}
+    <div class="span3">{# include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'#}</div>
+    <div class="span9">
+     
+     	{% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                    title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ doctorsLabel.singular | title ,
+                    	actions: [{link: path('admin_doctor_index'), label: 'View all '~ doctorsLabel.plural | title, 'icon' : 'icon-list' }]
+                }
+        %}
+            {% block sectionContent %}
                 {% include '::notice.admin.html.twig' %}
-    
-                            <form novalidate="novalidate" action="{{ doctor.id ? path('admin_doctor_edit_save', {'idId': doctor.id }) : path('admin_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
-                                <!-- start id-form -->
-                                <table border="0" cellpadding="0" cellspacing="0"  id="id-form">
-                                    
-                                    {{ form_row(form.firstName) }}
-                                    {{ form_row(form.middleName) }}
-                                    {{ form_row(form.lastName) }}
-                                    {{ form_row(form.media) }}
-                                    {{ form_row(form.suffix) }}
-                                    {{ form_row(form.gender) }}
-                                    {{ form_row(form.details, {attr: {class: 'tinymce'} }) }}
-                                    {{ form_row(form.country) }}
-                                    
-                                    
-                                    <br>
-                                    
-                                    {{ form_label(form.specializations) }}
-                                    {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
-                                    <div class="clearfix"></div>
-                                    {{ form_row(form.contactEmail) }}
-		                            {{ form_row(form.contactNumber) }}
-		
-		                        </div>
-                                    {{ form_rest(form) }}
-                                     <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>
-                                     <input type="submit" class="btn btn-large btn-primary" name="submit" value="Submit"/>
-                                </table>
-                                <!-- end id-form  -->
-                            </form>
-                         {% endblock %}
+                <form novalidate="novalidate" action="{{ doctor.id ? path('admin_doctor_edit_save', {'idId': doctor.id }) : path('admin_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
+                    <!-- start id-form -->
+                        {% set imageType = constant('HealthCareAbroad\\DoctorBundle\\Services\\DoctorMediaService::LOGO_TYPE_IMAGE') %}
+                        {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::DOCTOR_LOGO') %}
+
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.middleName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.media, {label: 'Logo', imageType: imageType, imageSize: imageSize}) }}
+                        {{ form_row(form.suffix) }}
+                        {{ form_row(form.gender) }}
+                        {{ form_row(form.details, {attr: {class: 'tinymce'} }) }}
+                        {{ form_row(form.country) }}
+
+                        <br>
+
+                        {{ form_label(form.specializations) }}
+                        {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
+                        <div class="clearfix"></div>
+                        {{ form_row(form.contactEmail) }}
+                        {{ form_row(form.contactNumber) }}
+
+
+                        {{ form_rest(form) }}
+                         <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>
+                         <input type="submit" class="btn btn-large btn-primary" name="submit" value="Submit"/>
+                    
+                    <!-- end id-form  -->
+                </form>
+            {% endblock %}
+
         {% endembed %}
     </div>
 
