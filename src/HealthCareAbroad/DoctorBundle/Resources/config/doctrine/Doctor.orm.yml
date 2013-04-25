@@ -91,7 +91,23 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
                         name: institution_medical_center_id
                         referencedColumnName: id
             orderBy: null
-            
+        contactDetails:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+            cascade:
+                - "persist"
+            mappedBy: null
+            inversedBy: doctors
+            joinTable:
+                name: doctors_contact_details
+                joinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: contact_detail_id
+                        referencedColumnName: id
+            orderBy: null   
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country

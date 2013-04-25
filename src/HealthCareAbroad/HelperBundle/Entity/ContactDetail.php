@@ -9,40 +9,40 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ContactDetail
 {
+    
+    const TYPE_PHONE = 1;
+    const TYPE_MOBILE = 2;
+    const TYPE_FAX = 3;
+    
     /**
-     * @var bigint $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var smallint $type
+     * @var integer
      */
     private $type;
 
     /**
-     * @var string $value
+     * @var string
      */
-    private $value;
+    private $number;
 
     /**
-     * @var smallint $status
+     * @var integer
      */
-    private $status;
+    private $countryCode;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var integer
      */
-    private $institution;
+    private $areaCode;
 
-    public function __construct()
-    {
-        $this->institution = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
     /**
      * Get id
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getId()
     {
@@ -52,19 +52,20 @@ class ContactDetail
     /**
      * Set type
      *
-     * @param smallint $type
+     * @param integer $type
      * @return ContactDetail
      */
     public function setType($type)
     {
         $this->type = $type;
+    
         return $this;
     }
 
     /**
      * Get type
      *
-     * @return smallint 
+     * @return integer 
      */
     public function getType()
     {
@@ -72,78 +73,72 @@ class ContactDetail
     }
 
     /**
-     * Set value
+     * Set number
      *
-     * @param string $value
+     * @param string $number
      * @return ContactDetail
      */
-    public function setValue($value)
+    public function setNumber($number)
     {
-        $this->value = $value;
+        $this->number = $number;
+    
         return $this;
     }
 
     /**
-     * Get value
+     * Get number
      *
      * @return string 
      */
-    public function getValue()
+    public function getNumber()
     {
-        return $this->value;
+        return $this->number;
     }
 
     /**
-     * Set status
+     * Set countryCode
      *
-     * @param smallint $status
+     * @param integer $countryCode
      * @return ContactDetail
      */
-    public function setStatus($status)
+    public function setCountryCode($countryCode)
     {
-        $this->status = $status;
+        $this->countryCode = $countryCode;
+    
         return $this;
     }
 
     /**
-     * Get status
+     * Get countryCode
      *
-     * @return smallint 
+     * @return integer 
      */
-    public function getStatus()
+    public function getCountryCode()
     {
-        return $this->status;
+        return $this->countryCode;
     }
 
     /**
-     * Add institution
+     * Set areaCode
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param integer $areaCode
      * @return ContactDetail
      */
-    public function addInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    public function setAreaCode($areaCode)
     {
-        $this->institution[] = $institution;
+        $this->areaCode = $areaCode;
+    
         return $this;
     }
 
     /**
-     * Remove institution
+     * Get areaCode
      *
-     * @param <variableType$institution
+     * @return integer 
      */
-    public function removeInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution)
+    public function getAreaCode()
     {
-        $this->institution->removeElement($institution);
+        return $this->areaCode;
     }
 
-    /**
-     * Get institution
-     *
-     * @return Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitution()
-    {
-        return $this->institution;
-    }
 }

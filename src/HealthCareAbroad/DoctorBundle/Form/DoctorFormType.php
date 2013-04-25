@@ -5,7 +5,7 @@ namespace HealthCareAbroad\DoctorBundle\Form;
 use HealthCareAbroad\MediaBundle\Form\AdminMediaFileType;
 
 use HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType;
-
+use HealthCareAbroad\DoctorBundle\Form\FieldType\DoctorContactNumberFieldType;
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -15,15 +15,13 @@ use Symfony\Component\Form\FormViewInterface;
 
 class DoctorFormType extends AbstractType
 {
-	private $container;
-	
+	private $container;	
 	public function setContainer(ContainerInterface $container = null) {
 		$this->container = $container;
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        
         $gender = array(Doctor::GENDER_NONE => '--Select--', Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
         $media = $options['data']->getMedia();
 
@@ -38,7 +36,7 @@ class DoctorFormType extends AbstractType
      		->add('media', new AdminMediaFileType($media), array('label' => 'Image'))
     	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
-    	    ->add('contactNumber', 'contact_number', array('label' => 'Contact Number'));
+    	    ->add('contactDetail', 'contact_detail', array('property_path' => false,'label' => 'Contact Number'));
     }
     
     public function getName()
