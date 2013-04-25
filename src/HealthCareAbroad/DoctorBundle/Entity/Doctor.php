@@ -76,11 +76,6 @@ class Doctor
     private $media;
 
     /**
-     * @var \HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
-
-    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $specializations;
