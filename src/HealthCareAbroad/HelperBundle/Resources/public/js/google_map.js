@@ -50,7 +50,7 @@
 		GoogleMap.geocoder.geocode({ latLng: pos }, 
 		function(responses) {
 			if (responses && responses.length > 0) {
-				latLngString = responses[0].geometry.location.lat() + ", " + responses[0].geometry.location.lng();
+				latLngString = responses[0].geometry.location.lat() + "," + responses[0].geometry.location.lng();
 				GoogleMap.inputs.inputCoordinates.value = latLngString;
 			} 
 		});
@@ -66,12 +66,11 @@
 			
 			GoogleMap.setMarker(results[0].geometry.location);
 			GoogleMap.setLayer();
-
 	        google.maps.event.addListener(GoogleMap.marker, 'click', GoogleMap.toggleBounce);
 	        google.maps.event.addListener(GoogleMap.marker, 'dragend', function() {
 		          GoogleMap.geocodePosition(GoogleMap.marker.getPosition());
 		    });
-	        
+	        google.maps.event.trigger(GoogleMap.map, 'resize');
 	        if(GoogleMap.mapOnChangeCallback) {
 	        	GoogleMap.mapOnChangeCallback();
 	        }
@@ -87,7 +86,7 @@
         if (GoogleMap.marker) {
         	GoogleMap.marker.setMap(null);
         }
-
+        var latlng = new google.maps.LatLng(GoogleMap.inputs.inputCoordinates.value);
         GoogleMap.marker = new google.maps.Marker({
             map: GoogleMap.map,
             position: markerPosition,
@@ -121,7 +120,7 @@
 		}else{
 		GoogleMap.setParams();
 		}
-		GoogleMap.geocoder.geocode({ 'address':GoogleMap.address}, GoogleMap.geocoderCallback);
+		GoogleMap.geocoder.geocode({ 'address': GoogleMap.address}, GoogleMap.geocoderCallback);
 	},
 	
 	toggleBounce: function() {

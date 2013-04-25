@@ -76,6 +76,36 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
         return $client;
     }
     
+    protected function getBrowserWithActualLoggedInUserForSingleType()
+    {
+        $client = static::createClient(array(), array(
+                        'PHP_AUTH_USER' => 'institution_authorized_single',
+                        'PHP_AUTH_PW'   => '123456',
+        ));
+        $session = $client->getContainer()->get('session');
+        $session->set('accountId', 2);
+        $session->set('institutionId', 2);
+        $session->set('institutionName', 'test single institution');
+        $session->save();
+    
+        return $client;
+    }
+    
+    protected function getBrowserWithActualLoggedInUserForMultitpleType()
+    {
+        $client = static::createClient(array(), array(
+                        'PHP_AUTH_USER' => 'institution_authorized_multiple',
+                        'PHP_AUTH_PW'   => '123456',
+        ));
+        $session = $client->getContainer()->get('session');
+        $session->set('accountId', 3);
+        $session->set('institutionId', 3);
+        $session->set('institutionName', 'test multiple institution');
+        $session->save();
+    
+        return $client;
+    }
+    
     protected function getBrowserWithMockLoggedUser()
     {
         $client = static::createClient(array(), array(

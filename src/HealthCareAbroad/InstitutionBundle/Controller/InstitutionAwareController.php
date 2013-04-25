@@ -23,12 +23,18 @@ abstract class InstitutionAwareController extends Controller
     /**
      * Convenience function to help controllers set up common variables
      */
-    // TODO: Removed since there is an existing PreExecuteController listener, 
-    // which causes the preExecute method of InstitutionAwareController instance be called twice 
-//     public function preExecute()
-//     {
+    public function preExecute()
+    {
+        $institutionId = $this->getRequest()->getSession()->get('institutionId', 0);
+        if ($institutionId) {
+            $institution = $this->get('services.institution.factory')->findById($institutionId);
+            if (!$institution) {
+                $this->throwInvalidInstitutionException();
+            }
         
-//     }
+            $this->setInstitution($institution);
+        }
+    }
     
     public function setInstitution(Institution $institution)
     {

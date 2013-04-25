@@ -60,12 +60,21 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
 <script type="text/javascript">
 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 <!--
 (function($){
     $(function(){
-
+    
+        GoogleMap.setInputs({
+	    	'selectedCity' : document.getElementById('institution_profile_form_city'),
+	    	'selectedCountry' : document.getElementById('institution_profile_form_country'),
+	    	'inputCoordinates' : document.getElementById("institution_profile_form_coordinates"),
+	    	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
+	    	'selectedStreet' : document.getElementById('institution_profile_form_street'),
+	    });
     	$("input:checkbox").click(function() {
             $(this).parent().toggleClass("hca-highlight");
         });
@@ -76,10 +85,6 @@ Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
      	   if( e.which === 13 )
      	       return false;
      	});
-        
-        //Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-        //$('#institution_profile_form_country').change();
-
     });
 })(jQuery);
 //-->
