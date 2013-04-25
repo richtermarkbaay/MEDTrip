@@ -1,0 +1,94 @@
+    <div class="row">
+        <h1>Set-up {{ label }} Profile</h1>
+        <div class="span8">
+            <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" novalidate>
+                 {% if error %}
+                    <div class="alert alert-error">
+                        {% for each in error_list %}
+                        	{{ each }} <br>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {% for alert, message in app.session.flashes %}
+                    	{% if alert == 'warning' %}
+                    	    {% set class = '' %}
+                    	{% elseif alert == 'error' %}
+                    	    {% set class = 'alert-error' %}
+                    	{% elseif alert == 'success' %}
+                    	    {% set class = 'alert-success' %}
+                    	{% elseif (alert == 'notice') or alert == 'info' %}
+                    	    {% set class = 'alert-info' %}
+                    	{% else %}
+                    	    {% set class = '' %}
+                    	{% endif %}
+                        <div class="alert {{ class }}">
+                            {{ message | raw}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.basicInfo.html.twig' %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.address.html.twig' %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.contactDetails.html.twig' %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.socialMedia.html.twig' %}
+                
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.mediaUpload.html.twig' %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.services.html.twig' %}
+
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.awards.html.twig' %}
+
+                <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                            <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
+                            <!-- <input type="submit" /> -->
+                        </div>
+                    </div>
+                </section>
+
+                {{ form_widget(form.coordinates) }}
+                {{ form_rest(form) }}
+
+                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
+
+            </form>
+        </div>
+
+        <aside class="span4">
+            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
+        </aside>
+        
+    </div>
+
+{% block inlineJavascriptCode %}
+<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+<script src="{{ asset('js/jquery/globalize.js') }}"></script>
+<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+<script type="text/javascript">
+Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+
+$(function(){
+    GoogleMap.initialize();
+    $('#confirmMap').on('shown', function(){
+        var center = GoogleMap.map.getCenter();
+        google.maps.event.trigger(GoogleMap.map, 'resize');
+        GoogleMap.map.setCenter(center);
+    });
+
+    $('#confirmMapSubmit').click(function(){
+        $('#confirmMap').modal('hide');
+        $('#institutionProfileForm').submit();
+    });
+    
+});
+</script>
+{% endblock %}

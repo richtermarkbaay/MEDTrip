@@ -288,57 +288,17 @@ class InstitutionService
     }
     
     /**
-     * Get InstitutionProperty by institution, institution propertype and the value
-     *
-     * @param Institution $institution
-     * @param InstitutionPropertyType $propertyType
-     * @param mixed $value
-     * @return InstitutionProperty
-     */
-    public function getPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
-    {
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
-        $result = $this->doctrine->getEntityManager()
-        ->createQuery($dql)
-        ->setParameter('institutionId', $institution->getId())
-        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
-        ->setParameter('value', $value)
-        ->getOneOrNullResult();
-    
-        return $result;
-    }
-    
-    /**
-     * Get values of institution $institution for property type $propertyType
-     *
-     * @param Institution $institution
-     * @param InstitutionPropertyType $propertyType
-     * @return array InstitutionProperty
-     */
-    public function getPropertyValues(Institution $institution, InstitutionPropertyType $propertyType)
-    {
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId";
-        $result = $this->doctrine->getEntityManager()
-        ->createQuery($dql)
-        ->setParameter('institutionId', $institution->getId())
-        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
-        ->getResult();
-    
-        return $result;
-    }
-    /**
      * Check if $institution has a property type value of $value
      *
      * @param Institution $institution
      * @param InstitutionPropertyType $propertyType
      * @param mixed $value
      * @return boolean
+     * @deprecated added for BC
      */
     public function hasPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
     {
-        $result = $this->getPropertyValue($institution, $propertyType, $value);
-    
-        return !\is_null($result) ;
+        return $this->institutionPropertyService->hasPropertyValue($institution, $propertyType, $value);
     }
     
     /**

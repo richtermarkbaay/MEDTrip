@@ -1,63 +1,26 @@
 {% set _mainNavDefaults = {'selected' : 'dashboard'} %}
 {% set mainNavigation = mainNavigation is defined ? _mainNavDefaults | merge(mainNavigation) : _mainNavDefaults %}
-<nav class="main-nav">
-                    <div class="container">
-                        <div class="row-fluid">
-                            <div class="span10">
-                                <ul class="nav nav-tabs">
-                                    <li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
-                                        <a href="{{ path('institution_homepage')}}"><i class="icon-home"></i>Dashboard</a>
-                                    </li>
-                                    <li class="dropdown">
-                                        <a href="#institution-profile">
-                                            My Institution
-                                            <b class="caret"></b>
-                                        </a>
-                                        <ul class="dropdown-menu">
-                                            <li class="nav-header">
-                                                MANAGE PROFILE
-                                            </li>
-                                            <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
-                                                <a href="{{ path('institution_account_profile') }}">Your Profile</a> 
-                                            </li>
-                                            <li>
-                                                <a href="#"> Edit Profile </a>
-                                            </li>
-                                            <li class="divider">
-                                            </li>
-                                            <li class="nav-header">
-                                                MANAGE SERVICES & AWARDS
-                                            </li>
-                                            <li>
-                                                <a href="#"> Services </a>
-                                            </li>
-                                            <li>
-                                                <a href="#institution-profile"> Awards, Certifications, & Affiliations  </a>
-                                            </li>
-                                            <li class="divider">
-                                            </li>
-                                            <li class="nav-header">
-                                                MANAGE IMAGES / VIDEOS
-                                            </li>
-                                            <li>
-                                                <a href="#"> Media Files </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    {#--- TODO: use constant value here or a twig helper to check if institution is of type single center #}
-                                    {% if (institution.type != 3) %}
-                                    <li class="{{ 'medical_centers' == mainNavigation.selected  ? 'active' : '' }}">
-                                        <a href="{{ path('institution_medicalCenter_index') }}">Your Clinics</a>
-                                    </li>
-                                    {% endif %}
-                                    <li>
-                                        <a href="#">
-                                        <span class="badge badge-warning"> 10 </span>
-                                        Notifications
-                                    </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </nav>
+<nav id="nav">
+    <div class="row-fluid">
+        <div class="container">
+            <ul class="nav nav-tabs nav-menu">
+                <li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i>Dashboard</a>
+                </li>
+                <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>Hospital</a> 
+                </li>
+                <li class="{{ 'clinics' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="{{ path('institution_medicalCenter_index') }}"><i class="icon-medkit"></i> Clinics</a>
+                </li>                            
+                <li class="{{ 'doctors' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="doctors-listing.html"><i class="icon-user-md"></i> Doctors</a>
+                </li>                            
+                <li class="{{ 'users' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="users.html"><i class="icon-group"></i> Users</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+                

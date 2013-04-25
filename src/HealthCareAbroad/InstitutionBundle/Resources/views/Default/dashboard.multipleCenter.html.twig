@@ -3,109 +3,131 @@
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-			<div class="hca-banner">
-                <h1>
-                    Some Institution name
-                </h1>
-                <img src="/images/institution/institution3.png" alt="institution" />
-                <a href="#"><img src="/images/institution/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
-                <div class="institution-details">
-                    <!-- p>
-                        Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
-                        Malaysia
-                    </p -->
-                    <p>{{ institution_address_to_array(institution, ['address1']) | join(', ')}}</p>
-                    <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
-                </div>
-            </div>
-            <div class="span8">
-                <form action="/" method="post">
-                    <section class="section">
-                        <div class="row-heading">
-                            <h2 class="pull-left span6">
-                                Map View
-                            </h2>
-                            <span class="pull-right">
-                                <a class="btn btn-primary" href="#">Update Map</a>
-                            </span>
-                        </div>
-                        <div class="row-field">
-                            <iframe width="100%" height="300" frameborder="0" scrolling="no" marginheight="0"
-                            marginwidth="0" src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=+&amp;q=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang+50450+Kuala+Lumpur+Malaysia&amp;ie=UTF8&amp;hq=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang&amp;hnear=Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur,+Malaysia&amp;ll=3.157092,101.727192&amp;spn=0.010963,0.038621&amp;t=m&amp;output=embed">
-                            </iframe>
-                            <br>
-                            <small>
-                                <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=+&amp;q=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang+50450+Kuala+Lumpur+Malaysia&amp;ie=UTF8&amp;hq=Gleneagles+Clinic+(Kuala+Lumpur)+Sdn.Bhd.+282+JalanAmpang&amp;hnear=Kuala+Lumpur,+Federal+Territory+of+Kuala+Lumpur,+Malaysia&amp;ll=3.157092,101.727192&amp;spn=0.010963,0.038621&amp;t=m"
-                                style="color:#000;text-align:left">
-                                        View Larger Map
-                                    </a>
-                            </small>
-                            <h4>
-                                <small>
-                                    If the PIN on the map is not accurate, you can change it by clicking the
-                                    "Update Map" button above.
-                                </small>
-                            </h4>
-                        </div>
-                    </section>
-                    <section>
-                    </section>
-                </form>
-            </div>
-            <aside class="span4">
-                <section class="aside-box default dashboard-side">
-                    <h2>
-                        Couple of things need to be done.
-                        <br>
-                        <small>
-                            Your Hospital Profile is almost complete*. Please give some time to complete
-                            the things that are listed below:
-                        </small>
-                    </h2>
-                    <div class="features">
-                        <div class="media">
-                            <span class="numbercircle pull-left">
-                                1
-                            </span>
-                            <div class="media-body">
-                                <span class="main-step">
-                                    Upload Logo and Banner
-                                </span>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <span class="numbercircle pull-left">
-                                2
-                            </span>
-                            <div class="media-body">
-                                <span class="main-step">
-                                    Add Doctors
-                                </span>
-                            </div>
-                        </div>
-                        <div class="media">
-                            <span class="numbercircle pull-left">
-                                3
-                            </span>
-                            <div class="media-body">
-                                <span class="main-step">
-                                    Add Hospital Services
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </aside>
-			<!--End of addnewclinic-->
+{% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}
+<div class="span12">
+    <section class="alert alert-info">
+        <h2>Welcome to HealthcareAbroad.com!</h2>
+        <div class="hca-sub-label">
+            Now that patients can find your Medical Institution on HealthcareAbroad, make sure that they find complete and relevant information about everything that you have to offer. <br><br>However it seems there are couple of things need to be done. Just a few more things in order to make your Medical Institution Profile more comprehensive and recognizable to your prospective patients. To finish up, just complete the items listed below:
+        </div>
+    </section>
+    <section class="section row-fluid">
+        <h2> Suggestion for your Hospital </h2>
+       <ul class="thumbnails hca-alert-inquiry">
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
+            </li>
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
+            </li>
+            <li class="thumbnail hca-alert-inquiry">
+                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                </i></span>
+                <span>
+                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                </span>
+            </li>
+        </ul>
+       
+    </section>
+    <section class="section row-fluid">
+        <h2>
+            List of Incomplete Clinic Profile
+        </h2>
+         <ul class="thumbnails hca-alert-inquiry">
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
+
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
+
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span>
+                        <b>Clinic's Name</b>
+                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
+                    </span>
+                </li>
+            </ul>
+        
+    </section>
+    <section class="section row-fluid">
+        <h2>
+            Latest Inquiries
+        </h2>
+        <table class="table table-hover hca-inquiry">
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <i class="icon-envelope icon-2x hca-earth">
+                    </i>
+                </td>
+                <td>
+                    John Doe
+                </td>
+                <td>
+                    Your Hospital Profile is almost complete
+                </td>
+                <td>
+                    10/11/2013
+                </td>
+            </tr>
+        </table>
+    </section>
+</div>
+                    
         {% endblock %}
         
     {% endembed %}
-{% endblock %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-    $(window).load(function() {
-        $('#confirm-message').modal('show');
-    });
-</script>
 {% endblock %}
 

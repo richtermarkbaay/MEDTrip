@@ -1,0 +1,44 @@
+
+    <section class="aside-box get-started">
+        <h2>
+            Let's Get Started
+        </h2>
+        <div class="steps">
+            {% for _step in steps %}
+                {% set _isParentOfCurrentStep = currentStep.parent and currentStep.parent.stepNumber == _step.stepNumber %}
+                {% set _stepActive = _step.route == currentStep.route or _isParentOfCurrentStep %}
+                {% set _stepCompleted = _stepActive ? false: (_step.stepNumber < currentStep.stepNumber)  %}
+                {% set _stepSub = _step.sub is defined and _step.sub %}
+                    
+                {% if not _stepSub %}
+                    <div class="media {{ _stepCompleted ? 'completed' : '' }} {{ _stepActive ? 'active':'' }}">
+                        <span class="numbercircle pull-left">
+                            {% if _stepCompleted %}
+                            <i class="icon-ok icon-white icon-1x"></i>
+                            {% else %}
+                                {{ _step.stepNumber }}
+                            {% endif %}
+                        </span>
+                        
+                        <div class="media-body">
+                            <span class="main-step">
+                                {{ _step.label }}
+                            </span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="media substeps {{ _stepCompleted ? 'completed' : '' }} {{ _stepActive ? 'active':'' }}">
+                        <span class=" pull-left">
+                            <i class="icon-circle"></i>
+                        </span>
+                        <div class="media-body">
+                            <span class="sub-main-step">
+                                {{ _step.label }}
+                            </span>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </section>
+

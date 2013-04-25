@@ -32,7 +32,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 /**
  * Service class for InstitutionMedicalCenter. Accessible by services.institution_medical_center service id
- * 
+ *
  * @author Allejo Chris G. Velarde
  */
 class InstitutionMedicalCenterService
@@ -41,19 +41,19 @@ class InstitutionMedicalCenterService
      * @var Registry
      */
     private $doctrine;
-    
+
     static private $institutionMedicalCenter;
-    
+
     /**
      * @var InstitutionMedicalCenterPropertyService
      */
     private $institutionMedicalCenterPropertyService;
-    
+
     public function setDoctrine(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
     }
-    
+
     public function getFullInstitutionMedicalCenterBySlug($slug = '')
     {
         if(!$slug) {
@@ -88,10 +88,11 @@ class InstitutionMedicalCenterService
 
         return self::$institutionMedicalCenter;
     }
-    
+
+
     /**
      * Get active institution specializations of an institution medical center
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return array InstitutionSpecialization
      */
@@ -99,11 +100,12 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
     }
-    
+
+
     /**
      * List active specializations of a medical center
      * Returns a flat array of specializationId => specializationName
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return array (specializationId => specializationName)
      */
@@ -115,18 +117,20 @@ class InstitutionMedicalCenterService
             $specialization = $_each->getSpecialization();
             $list[$specialization->getId()] = $specialization->getName();
         }
+
         
         return $list;
     }
-    
+
+
     public function setInstitutionMedicalCenterPropertyService(InstitutionMedicalCenterPropertyService $service)
     {
         $this->institutionMedicalCenterPropertyService = $service;
     }
-    
+
     /**
-     * Get values of medical center $institutionMedicalCenter for property type $propertyType 
-     * 
+     * Get values of medical center $institutionMedicalCenter for property type $propertyType
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @param InstitutionPropertyType $propertyType
      * @return array InstitutionMedicalCenterProperty
@@ -139,28 +143,27 @@ class InstitutionMedicalCenterService
             ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
             ->setParameter('institutionPropertyTypeId', $propertyType->getId())
             ->getResult();
-        
+
         return $result;
     }
-    
+
     /**
      * Check if $institutionMedicalCenter has a property type value of $value
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @param InstitutionPropertyType $propertyType
      * @param mixed $value
-     * @return boolean
      */
     public function hasPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value)
     {
-        $result = $this->getPropertyValue($institutionMedicalCenter, $propertyType, $value);   
-        
+        $result = $this->getPropertyValue($institutionMedicalCenter, $propertyType, $value);
+
         return !\is_null($result) ;
     }
-    
+
     /**
      * Get InstitutionMedicalCenterProperty by institution medical center, institution propertype and the value
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @param InstitutionPropertyType $propertyType
      * @param mixed $value
@@ -175,13 +178,13 @@ class InstitutionMedicalCenterService
             ->setParameter('institutionPropertyTypeId', $propertyType->getId())
             ->setParameter('value', $value)
             ->getOneOrNullResult();
-        
+
         return $result;
     }
-    
+
     /**
      * Delete the values for $propertyType of $institutionMedicalCenter
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @param InstitutionPropertyType $propertyType
      */
@@ -194,10 +197,10 @@ class InstitutionMedicalCenterService
             ->setParameter('institutionPropertyTypeId', $propertyType->getId())
             ->execute();
     }
-    
+
     /**
      * Layer to Doctrine find by id. Apply caching here.
-     * 
+     *
      * @param int $id
      * @return InstitutionMedicalCenter
      */
@@ -205,10 +208,10 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
     }
-    
+
     /**
      * Save InstitutionMedicalCenter to database
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return InstitutionMedicalCenter
      */
@@ -217,10 +220,10 @@ class InstitutionMedicalCenterService
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionMedicalCenter);
         $em->flush();
-        
+
         return $institutionMedicalCenter;
     }
-    
+
     public function setInstitutionStatusActive(Institution $institution)
     {
         $institution->setStatus(Institution::ACTIVE);
@@ -230,19 +233,19 @@ class InstitutionMedicalCenterService
     }
     /**
      * Save an InstitutionMedicalCenter as DRAFT
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      */
     public function saveAsDraft(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $institutionMedicalCenter->setStatus(InstitutionMedicalCenterStatus::DRAFT);
-        
+
         return $this->save($institutionMedicalCenter);
     }
-    
+
     /**
      * Check if InstitutionMedicalCenter is of DRAFT status
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return boolean
      */
@@ -250,8 +253,8 @@ class InstitutionMedicalCenterService
     {
         return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
     }
-    
-    
+
+
     /**
      * Get ancillary services of a medical center
      *
@@ -261,13 +264,13 @@ class InstitutionMedicalCenterService
     public function getMedicalCenterServices(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter);
-   
+
         return $ancilliaryServices;
     }
-    
+
     /**
      * Get global awards of an institution medical center
-     * 
+     *
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @return array GlobalAward
      */
@@ -275,17 +278,17 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter);
     }
-    
+
     public function getGroupedMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $awardTypes = GlobalAwardTypes::getTypes();
         $globalAwards = \array_flip(GlobalAwardTypes::getTypeKeys());
-        
+
         // initialize holder for awards
         foreach ($globalAwards as $k => $v) {
             $globalAwards[$k] = array();
         }
-        
+
         $imcProperties = $this->institutionMedicalCenterPropertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($institutionMedicalCenter);
         foreach ($imcProperties as $imcp) {
             $_globalAward = $imcp->getValueObject();
@@ -296,23 +299,23 @@ class InstitutionMedicalCenterService
 //                 'global_award' => $_globalAward,
 //             );
 //         }
-        
+
         return $globalAwards;
     }
-    
+
     public function getActiveMedicalCenters(Institution $institution)
     {
-        
+
          $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
 
          return $result;
     }
-    
+
     public function getAvailableTreatmentsByInstitutionSpecialization(InstitutionSpecialization $institutionSpecialization)
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')
             ->getAvailableTreatments($institutionSpecialization);
-        
+
         return $result;
     }
 
@@ -324,7 +327,7 @@ class InstitutionMedicalCenterService
      */
     public function hasSpecialist(InstitutionMedicalCenter $institutionMedicalCenter, $doctor)
     {
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a 
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
         LEFT JOIN a.doctors b
         WHERE a.id = :institutionMedicalCenterId AND b.id = :doctorId";
         $result = $this->doctrine->getEntityManager()
@@ -332,10 +335,10 @@ class InstitutionMedicalCenterService
         ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
         ->setParameter('doctorId', $doctor)
         ->getResult();
-    
+
         return $result;
     }
-    
+
     public function searchMedicaCenterWithSearchTerm(Institution $institution, $searchTerm)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
@@ -346,21 +349,21 @@ class InstitutionMedicalCenterService
                     OR c.id = :searchTerm
                     OR d.id = :searchTerm
                     OR a.status != :inactive";
-        
+
         $dql = "SELECT imc, imcs, s, t FROM InstitutionBundle:InstitutionMedicalCenter imc
             INNER JOIN imc.institutionSpecializations imcs
             INNER JOIN imcs.specialization s
             LEFT JOIN imcs.treatments t
             LEFT JOIN t.subSpecializations ss
-            WHERE imc.status != :inactive 
-            AND imc.institution = :institutionId 
+            WHERE imc.status != :inactive
+            AND imc.institution = :institutionId
             AND (t.name LIKE :searchTerm OR ss.name LIKE :searchTerm OR s.name LIKE :searchTerm OR imc.name LIKE :searchTerm)";
-        
+
         /*
-         
-            OR 
-            OR 
-            AND 
+
+            OR
+            OR
+            AND
          */
         $query = $this->doctrine->getEntityManager()
         ->createQuery($dql)
@@ -369,7 +372,7 @@ class InstitutionMedicalCenterService
         ->setParameter('institutionId', $institution->getId());
         //echo $query->getSQL(); exit;
         //->getResult();
-        
+
         return $query->getResult();
     }
 
@@ -382,18 +385,18 @@ class InstitutionMedicalCenterService
                         '16' => array(),
                         '32' => array(),
         ));
-        
+
         foreach ($medicalCenters as $var){
             $results['status'][$var->getStatus()][] = $var->getStatus();
         }
-        
+
         return $results;
     }
     public function checkIfOpenTwentyFourHours($businessHours)
     {
         $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
         $isOpen = true;
-        
+
         foreach ($days as $day)
         {
             if(isset($businessHours[$day]['isOpen'], $businessHours))
@@ -416,16 +419,16 @@ class InstitutionMedicalCenterService
     }
     static public function getFirstInstitutionSpecialization($institutionMedicalCenter)
     {
-    	$specialization = null;
-    	$institutionSpecializations = $institutionMedicalCenter->getInstitutionSpecializations();
+        $specialization = null;
+        $institutionSpecializations = $institutionMedicalCenter->getInstitutionSpecializations();
 
-	    if(is_object($institutionSpecializations)) {
-	        $specialization = $institutionSpecializations->first();
-	    } else {
-	        $specialization = isset($institutionSpecialization[0]) ? $institutionSpecialization[0] : null;
-	    }
+        if(is_object($institutionSpecializations)) {
+            $specialization = $institutionSpecializations->first();
+        } else {
+            $specialization = isset($institutionSpecialization[0]) ? $institutionSpecialization[0] : null;
+        }
 
-    	return $specialization;
+        return $specialization;
     }
 
     public function getCountByInstitution(Institution $institution)
@@ -437,12 +440,12 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getFirstByInstitutionId($institutionId);
     }
-    
+
     private static $defaultDailyValues = array(
         'isOpen' => 1,
         'notes' => '',
     );
-    
+
     static public function jsonDecodeBusinessHours($businessHours)
     {
         $defaultWeekValue = array(
@@ -454,7 +457,7 @@ class InstitutionMedicalCenterService
             'Friday' => static::$defaultDailyValues,
             'Saturday' => static::$defaultDailyValues,
         );
-        
+
         $businessHours = \json_decode($businessHours, true);
         if (!$businessHours) {
             $businessHours = $defaultWeekValue;
@@ -462,10 +465,10 @@ class InstitutionMedicalCenterService
         foreach ($businessHours as $day => $data) {
             $businessHours[$day] = \array_merge(static::$defaultDailyValues, $data);
         }
-        
+
         return $businessHours;
     }
-    
+
     static public function jsonEncodeBusinessHours(array $businessHours=array())
     {
         $defaultWeekValue = array(
@@ -477,9 +480,9 @@ class InstitutionMedicalCenterService
             'Friday' => static::$defaultDailyValues,
             'Saturday' => static::$defaultDailyValues,
         );
-        
+
         $businessHours = \array_merge($defaultWeekValue, $businessHours);
-        
+
         return \json_encode($businessHours);
     }
 
@@ -496,5 +499,30 @@ class InstitutionMedicalCenterService
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionMedicalCenter);
         $em->flush($institutionMedicalCenter);
+    }
+
+    public function addMedicalCenterSpecializationsWithTreatments(InstitutionMedicalCenter $institutionMedicalCenter, array $specializationsWithTreatments)
+    {
+        $em = $this->doctrine->getManager();
+        $specializationRepo = $this->doctrine->getRepository('TreatmentBundle:Specialization');
+        $treatmentRepo = $this->doctrine->getRepository('TreatmentBundle:Treatment');
+
+        //TODO: optimize this is very db intensive
+        foreach ($specializationsWithTreatments as $specializationId => $treatmentIds) {
+            $specialization = $specializationRepo->find($specializationId);
+
+            $institutionSpecialization = new InstitutionSpecialization();
+            $institutionSpecialization->setInstitutionMedicalCenter($institutionMedicalCenter);
+            $institutionSpecialization->setSpecialization($specialization);
+            $institutionSpecialization->setDescription($specialization->getDescription());
+            $institutionSpecialization->setStatus(1);
+
+            foreach ($treatmentIds as $treatmentId) {
+                $institutionSpecialization->addTreatment($treatmentRepo->find($treatmentId));
+            }
+
+            $em->persist($institutionSpecialization);
+            $em->flush($institutionSpecialization);
+        }
     }
 }

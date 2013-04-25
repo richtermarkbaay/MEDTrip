@@ -1,0 +1,23 @@
+<div class="row-fluid" id="rowDoctorContainer{{ doctor.id }}">
+    <ul class="thumbnails doctors">
+        <li class="thumbnail-doctors">
+            <img class="pull-left img-polaroid" src="{{ asset('images/institution/default-doctor-icon.png') }}" alt="">
+            <span class="medicalcenter-name">{{ doctor.fullName }}</span>
+            <p>
+                <i class="icon-medkit"></i> {{ doctor.getSpecializationsAsString }}
+            </p>
+            <ul class="actions">
+                <li class="view">
+                    <div class="btn-group">
+                        <button class="btn btn-misc" id="edit-doctor{{ doctor.id }}" data-doctor-id="{{ doctor.id }}">
+                            <a data-toggle="modal"><i class="icon-edit"></i></a>
+                        </button>
+                        <button class="btn btn-misc" id="delete-doctor{{ doctor.id }}" data-doctor-id="{{ doctor.id }}">
+                            <a><i class="icon-trash"></i></a>
+                        </button>
+                    </div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</div>

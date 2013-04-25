@@ -14,9 +14,9 @@
         <div id="content" class="container">
             {% block content %}{% endblock %}
         </div>
+        
+           {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
     </div><!-- end main wrap -->
-
-    {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
 
     {% block inlineJavascriptCode %}{% endblock %}
 

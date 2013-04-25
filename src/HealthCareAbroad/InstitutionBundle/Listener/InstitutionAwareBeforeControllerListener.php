@@ -54,8 +54,6 @@ class InstitutionAwareBeforeControllerListener
                 
                 $controllerObj->setInstitution($institution);
             }
-            
-            $controllerObj->preExecute();
         }
     }
 }

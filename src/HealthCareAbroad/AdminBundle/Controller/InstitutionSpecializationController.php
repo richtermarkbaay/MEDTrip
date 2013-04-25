@@ -161,16 +161,7 @@ class InstitutionSpecializationController extends Controller
      */
     public function addSpecializationAction(Request $request)
     {
-        $errors = array();
-        $form = $this->createForm(new InstitutionSpecializationSelectorFormType());
-        $assignedSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->findByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($assignedSpecialization);
-        $specializationArr = array();
-        
-        foreach ($specializations as $e) {
-            $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-        }
-        
+
         $service = $this->get('services.institution_medical_center');
     
         if ($request->isMethod('POST')) {
@@ -249,7 +240,7 @@ class InstitutionSpecializationController extends Controller
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
-    
+        
         $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:specializationAccordion.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }

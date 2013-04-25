@@ -1,0 +1,27 @@
+<ul class="thumbnails">
+{% for medicalCenter in medicalCenters %}
+   <li class="thumbnail hca-clinic-listing hca-update">
+            <div class="ribbon-wrapper-{{ statusList[medicalCenter.status] | lower }}">
+                <div class="ribbon-{{ statusList[medicalCenter.status] | lower }}"> {{ statusList[medicalCenter.status] }} </div>
+            </div>
+            <img class="pull-left img-polaroid" src="{{ asset('images/institution/default_clinic.png') }}" alt="">
+            <div class="medicalcenter-name">
+                    <h3>{{ medicalCenter.name }}</h3>
+                <span class="pull-right">
+                     <div class="btn-group">
+                        <button class="btn btn-misc">
+                            <a href="{{ path('institution_medicalCenter_edit', {'imcId':medicalCenter.id} ) }}"><i class="icon-edit"></i></a>
+                        </button>
+                        <button class="btn btn-misc">
+                            <a href="#"><i class="icon-trash"></i></a>
+                        </button>
+                    </div>
+                 </span>
+            </div>
+    </li>
+    {% else %}
+        <li class="thumbnail">
+        <p><h4>No {{ navStatus | capitalize }} listing </h4></p>
+        </li>
+{% endfor %}
+</ul>

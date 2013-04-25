@@ -5,7 +5,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class WebsitesDataTransformer implements  DataTransformerInterface
 {
-    private $defaultValue = array('main' => '', 'facebook' => '','twitter' => '', 'googleplus' => '');
+    private $defaultValue = array('facebook' => '','twitter' => '', 'googleplus' => '');
     public function transform($value)
     {
 

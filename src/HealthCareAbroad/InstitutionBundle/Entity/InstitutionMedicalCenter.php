@@ -35,6 +35,11 @@ class InstitutionMedicalCenter
      * @var string $address
      */
     private $address;
+    
+    /**
+     * @var text $addressHint
+     */
+    private $addressHint;
 
     /**
      * @var string $coordinates
@@ -56,6 +61,11 @@ class InstitutionMedicalCenter
      */
     private $websites;
 
+    /**
+     * @var text $socialMediaSites
+     */
+    private $socialMediaSites;
+    
     /**
      * @var datetime $dateCreated
      */
@@ -218,6 +228,28 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set addressHint
+     *
+     * @param text $addressHint
+     * @return InstitutionMedicalCenter
+     */
+    public function setAddressHint($addressHint)
+    {
+        $this->addressHint = $addressHint;
+        return $this;
+    }
+    
+    /**
+     * Get addressHint
+     *
+     * @return text
+     */
+    public function getAddressHInt()
+    {
+        return $this->addressHint;
+    }
+    
+    /**
      * Set coordinates
      *
      * @param string $coordinates
@@ -305,6 +337,27 @@ class InstitutionMedicalCenter
         return $this->websites;
     }
 
+    /**
+     * Set socialMediaSites
+     *
+     * @param text $socialMediaSites
+     * @return InstitutionMedicalCenter
+     */
+    public function setSocialMediaSites($socialMediaSites)
+    {
+        $this->socialMediaSites = $socialMediaSites;
+        return $this;
+    }
+    
+    /**
+     * Get socialMediaSites
+     *
+     * @return text
+     */
+    public function getSocialMediaSites()
+    {
+        return $this->socialMediaSites;
+    }
     /**
      * Set dateCreated
      *

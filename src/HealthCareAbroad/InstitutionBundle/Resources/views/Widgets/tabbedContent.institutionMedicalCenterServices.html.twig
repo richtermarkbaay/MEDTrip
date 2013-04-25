@@ -1,23 +1,4 @@
-{% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
-    {% block tabbedContent %}
-	    
-			<div class="maincontentblock">
-			    <table class="table table-striped table-bordered bootstrap-datatable">
-			      <thead>
-                    <tr>
-        				<th>Services</th>
-        				<th>Actions</th>
-        			</tr>
-                </thead>
-			        <tbody>
-                    {% for _service in ancillaryServicesData.globalList %}
-        			
-            			{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in ancillaryServicesData.selected ,'properties': ancillaryServicesData.currentAncillaryData} %}
-                       
-                    {% endfor %}
-        			</tbody>
-    			</table>
-            </div>
-                
-    {% endblock %}
-{% endembed %}
+
+{% for _service in ancillaryServicesData %}
+	{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' %}
+{% endfor %}

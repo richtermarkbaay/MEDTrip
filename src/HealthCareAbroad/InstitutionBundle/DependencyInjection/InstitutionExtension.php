@@ -24,9 +24,11 @@ class InstitutionExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('twig_extensions.yml');
         $loader->load('callout_messages.yml');
         $loader->load('events.yml');
         $loader->load('listeners.yml');
         $loader->load('forms.yml');
+        $loader->load('registrationSteps.yml');
     }
 }

@@ -41,6 +41,19 @@ var InstitutionMedicalCenter = {
         return this;
     },
     
+    openProfileForm: function(_element){
+    	_element.hide();
+    	_attr = _element.attr('href');
+    	_element.next('div.show').hide();
+    	$(_attr).show();
+    },
+    closeProfileForm: function(_element){
+    	_div = _element.parents('div.hca-edit-box').prev('div');
+    	_div.show();
+    	_div.prev().show();
+    	_element.parent().hide();
+    },
+    
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -194,7 +207,9 @@ var InstitutionMedicalCenter = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
-        _form = _button.parents('.modal').find('form');
+        _form = _button.parents('.hca-edit-box').find('form');
+        _divToShow = _button.parents('section.hca-main-profile').find('div.show');
+    	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
@@ -206,64 +221,69 @@ var InstitutionMedicalCenter = {
             	    case 'nameModalForm':
             	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
                         break;
-                    case 'descriptionModalForm':
+                    case 'descriptionForm':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
                         break;
-                    case 'addressModalForm':
+                    case 'addressForm':
+                    	var address = [];
                         var _street_address = [];
                         $.each(response.institutionMedicalCenter.address, function(_k, _v){
                            if ($.trim(_v) != '') {
                                _street_address.push(_v);
                            } 
                         });
-                        $('span.street_address_part').html(_street_address.length
-                            ? _street_address.join(', ')+', '
-                            : ''
-                        );
-                        $('.addressLabel').html('Edit Address');
-                        
-                        //HCAGoogleMap.updateMap();
-                        if(HCAGoogleMap.map) { 
-                            HCAGoogleMap.updateMap(_street_address + ',' + HCAGoogleMap.defaultAddress);
+                        if (_street_address.length) {
+                            address.push(_street_address.join(', '));
+                        } else {
+                        	_street_address = '';
                         }
+                        _keys = ['city', 'state', 'country', 'zipCode'];
+                        $.each(_keys, function(_k, _v){
+                            if (response.institutionMedicalCenter[_v]) {
+                                address.push(response.institution[_v]);
+                            }
+                        });
+                        
+                		$('.addressLabel').html('Edit Address');
+                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
+                        
+                        $('.address_column').find('span.address_part').remove();
+                        $('.address_column').prepend(_html);
+                        
+//                        //HCAGoogleMap.updateMap();
+//                        if(HCAGoogleMap.map) { 
+//                            HCAGoogleMap.updateMap(_street_address + ',' + HCAGoogleMap.defaultAddress);
+//                        }
 
                         break;
     
-                    case 'numberModalForm':
-                    	var number = response.institutionMedicalCenter.contactNumber;
-                        $('#profileNumberText').html(number.country_code + '-' + number.area_code + '-' + number.number);
-                    	if(number.country_code){
-                    		$('.numberLabel').html('Edit Contact Number');
-                    	}else{
-                    		$('.numberLabel').html('Add Contact Number');
-                    	}
+                    case 'contactForm':
+                    	var number = response.institutionMedicalCenter.contactNumber.phone_number;
+						$('#profileWebsitesText').html(response.institutionMedicalCenter.websitesString);
+						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+						$('#profileNumberText').html(number.number);
+						
                         break;
-                        
-                    case 'emailModalForm':
-                    	$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
-                    	if(response.institutionMedicalCenter.contactEmail){
-                    		$('.emailLabel').html('Edit Contact Email');
-                    	}else{
-                    		$('.emailLabel').html('Add Contact Email');
-                    	}
-                        break;
+                    case 'socialMediaForm':
+                  	  var websites = response.institutionMedicalCenter.socialMediaSites, websitesString = ''; 
+                  	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+                  	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+                  	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                        $('#soclialMediaText').html(websitesString);
+                  	break;
                        
-                    case 'websitesModalForm':
-                        var websites = response.institutionMedicalCenter.websites, websitesString = ''; 
-                        for(name in websites) {
-                            websitesString += name + ': <a href="http://'+ websites[name] +'">' + websites[name] + "</a><br/>";
-                        }
-                     	if(websites[name]){
-                    		$('.websiteLabel').html('Edit Websites');
-                    	}else{
-                    		$('.websiteLabel').html('Add Websites');
-                    	}
-                        $('#profileWebsitesText').html(websitesString);
-                        break;
+                    case 'servicesForm':
+                    	$('#servicesTable').html(response.html);
+                    	break;
+                    	
+                    case 'awardsForm':
+                    	$('#awardsText').html(response.html);
+                    	break;
                 } 
-                _form.parents('.modal').modal('hide');
                 _button.html(_buttonHtml).attr('disabled', false);
-
+                _divToShow.prev().show();
+                _divToShow.show();
+                _divToHide.hide();
                 // Display Callout Message
                 InstitutionMedicalCenter.displayCallout(response);
             },
@@ -595,69 +615,4 @@ var ClinicBusinessHoursForm = {
         return false;
     }
 };
-
-var ClinicListing = {
-		
-   ajaxUrls: {
-        'loadPending': '', 
-        'loadDraft':'',
-        'loadExpired': '',
-        'loadArchived': ''
-    },
-    setAjaxUrls: function(_val){
-        this.ajaxUrls = _val;
-        
-        return this;
-    },
-	tabbedContentElement: null,
-	
-	  setTabbedContentElement: function(_val) {
-		  ClinicListing.tabbedContentElement = _val;
-	        
-	        return this;
-    },
-    
-    loadTabbedContentsOfMultipleCenterInstitution: function() {
-        
-        $.ajax({
-            url: ClinicListing.ajaxUrls.loadPending,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-            	ClinicListing.tabbedContentElement.html(response.html);
-            }
-        });
-        
-        $.ajax({
-            url: ClinicListing.ajaxUrls.loadDraft,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-            	ClinicListing.tabbedContentElement.html(response.html);
-            }
-        });
-        
-        $.ajax({
-            url: ClinicListing.ajaxUrls.loadExpired,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-            	ClinicListing.tabbedContentElement.html(response.html);
-            }
-        });
-        
-        $.ajax({
-            url: ClinicListing.ajaxUrls.loadArchived,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-            	ClinicListing.tabbedContentElement.html(response.html);
-            }
-        });
-        
-        return this;
-    },
-		
-}
-
 

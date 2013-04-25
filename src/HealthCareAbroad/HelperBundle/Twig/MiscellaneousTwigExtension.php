@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 class MiscellaneousTwigExtension extends \Twig_Extension
@@ -38,6 +40,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
             'json_websites_to_array' => new \Twig_Function_Method($this, 'json_websites_to_array'),
+            'institutionMedicalCenter_websites_to_array' => new \Twig_Function_Method($this, 'institutionMedicalCenter_websites_to_array'),
         );
     }
 
@@ -212,20 +215,38 @@ class MiscellaneousTwigExtension extends \Twig_Extension
 
     public function institution_websites_to_array(Institution $institution)
     {
-        $websites = \json_decode($institution->getWebsites(), true);
+        $socialMedia = \json_decode($institution->getSocialMediaSites(), true);
 
-        if(!is_array($websites)) {
+        if(!is_array($socialMedia)) {
             return;
         }
 
-        \array_walk($websites, function(&$v, $key){
+        \array_walk($socialMedia, function(&$v, $key){
             // if it matches http or https
             if (! \preg_match('/^https?:\/\//i', $v)) {
                 $v = 'http://'.$v;
             }
         });
 
-        return $this->json_websites_to_array($institution->getWebsites());
+        return $this->json_websites_to_array($institution->getSocialMediaSites());
+    }
+    
+    public function institutionMedicalCenter_websites_to_array(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $socialMedia = \json_decode($institutionMedicalCenter->getSocialMediaSites(), true);
+    
+        if(!is_array($socialMedia)) {
+            return;
+        }
+    
+        \array_walk($socialMedia, function(&$v, $key){
+            // if it matches http or https
+            if (! \preg_match('/^https?:\/\//i', $v)) {
+                $v = 'http://'.$v;
+            }
+        });
+    
+        return $this->json_websites_to_array($institutionMedicalCenter->getSocialMediaSites());
     }
     
     private function _removeEmptyValueInArray(&$array = array())

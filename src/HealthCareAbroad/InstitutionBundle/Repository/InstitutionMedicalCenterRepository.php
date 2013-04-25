@@ -137,6 +137,20 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $qb;
     }
     
+    public function getInstitutionMedicalCentersByStatus(Institution $institution, $status)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('a')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+        ->where('a.institution = :institutionId')
+        ->andWhere('a.status = :status')
+        ->orderBy('a.name')
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('status', $status);
+    
+        return $qb->getQuery()->getResult();
+    }
+    
     /**
      * Get single medicaCenter by institutionId
      *

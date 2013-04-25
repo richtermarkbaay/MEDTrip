@@ -1,38 +1,36 @@
-<div class="row">
-	<div class="span2">
-		<a href="#medicalCenterLogoModal" class="gallerypic" title="" role="button" data-toggle="modal">
-            {% if institutionMedicalCenter.logo %}
+<section class="section row-fluid hca-clinic-heading">
+    <div class="span3">
+        <a href="#medicalCenterLogoModal" class="gallerypic" title="" role="button" data-toggle="modal">
+            {% if institutionMedicalCenter.logo != '' %}
                 {# media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw #}
-                <img src="{{ institution_media_src(institutionMedicalCenter.logo) }}" alt="" /> 
-            {% else %}
-                 <img class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
-            {% endif %}
-			<span class="image-icon"><img src="{{ asset('images/institution/image-icon.png') }}" width="32" height="32" alt="Zoom" title="Change Profile Photo"></span>
-		</a>
-	</div>
-    <div class="span7 profile_header">
-    	<h2 id="clinicNameText" class="pull-left">{{ institutionMedicalCenter.name }}</h2>
-    	<div class="editname">
-    		<i class="icon-pencil" title="Edit"></i>
-    		<a href="#centerNameModal" class="modal_openers" role="button" data-toggle="modal">
-    		<small>Edit</small></a>
-    	</div>
-    	<div class="maincontentblock">
-    		<div id="clinicDescriptionText" style="display:inline-block;">{{ institutionMedicalCenter.description | raw}}</div>
-			<i class="icon-pencil" title="Edit"></i>
-			<a href="#centerDescriptionModal" class="modal_openers" role="button" data-toggle="modal"><small>Edit</small></a>
-    		
-    	</div>
+                <img src="{{ institution_media_src(institutionMedicalCenter.logo) }}" alt="" />
+             {% else %}
+                 <img class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
+             {% endif %}
+        </a>
+
     </div>
-</div>
-
-{# --- modal boxes --- #}
-<!-- Modal Institution name -->
-{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
-     with {formId: 'nameModalForm', fields: ['name'], modalId: 'centerNameModal', modalTitle: 'Edit Name'} 
-%} <!-- end Modal Institution name -->
-
-<!-- Modal Institution Description -->
-{% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
-     with {formId: 'descriptionModalForm', fields: ['description'], modalId: 'centerDescriptionModal', modalTitle: 'Edit Description'} 
-%} <!-- end Modal Institution name -->
+    <div class="span9">
+       <h1> {{ institutionMedicalCenter.name }}  </h1>
+       <p> <small> under </small>
+            <a href="hospital-profile.html">{{ institution.name }}</a>
+        </p>
+    </div>
+</section>
+<section class="section row-fluid section-alert-info">
+    <div class="row span12 alert alert-block">
+        <div class="span3">
+            <img src="{{ asset('images/institution/beaker.png') }}" alt="beaker-progress" class="beaker" />
+            <div class="progress vertical bottom progress-info progress-xxlarge filled3">
+                <div class="bar" style="height:85%"> </div>
+            </div>
+        </div>
+        <div class="span9">
+            <button type="button" class="close" data-dismiss="alert">  &times; </button>
+            <h4> Your Clinic Profile is 25% complete.&nbsp;
+                <a href="#"><i class="icon-info-sign icon-1x"></i></a>
+            </h4>
+            <p> <a href="#">Upload a logo and make your hospital more recognizable to your prospective patients.</a> </p>
+        </div>
+    </div>
+</section>

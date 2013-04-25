@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Mapping\Fixture\Xml\Status;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -91,6 +95,8 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function indexAction(Request $request)
     {
+        $output = array();
+        $status = $request->get('status', 2);
         // Check if Already Completed the signupSteps
         $signupStepStatus = $this->institution->getSignupStepStatus();
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
@@ -106,23 +112,26 @@ class MedicalCenterController extends InstitutionAwareController
 
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-        $results = $this->repository->getInstitutionMedicalCentersQueryBuilder($this->institution);
-        $medicalCentersByStatus = $this->service->getMedicalCenterCountByStatus($results->getQuery()->getResult());
-        $pagerAdapter = new DoctrineOrmAdapter($results);
-        $pagerParams = array(
-            'page' => $request->get('page', 1),
-            'limit' => 10
+        $results = $this->repository->getInstitutionMedicalCentersByStatus($this->institution, $status);
+        $list = InstitutionMedicalCenterStatus::getStatusList();
+        $total = $this->service->getMedicalCenterCountByStatus($this->institution->getInstitutionMedicalCenters());
+        $parameters = array(
+                        'total' => $total,
+                        'medicalCenters' => $results,
+                        'navStatus' => strtolower($list[$status]),
+                        'institution' => $this->institution,
+                        'statusList' => InstitutionMedicalCenterStatus::getStatusList()
         );
-        $pager = new Pager($pagerAdapter, $pagerParams);
         
-        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig',array(
-            'institution' => $this->institution,
-            'medicalCenters' => $pager->getResults(),
-            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-            'medicalCentersByStatus' => $medicalCentersByStatus,
-            'pager' => $pager,
-            'navStatus' => 'all'
-        ));
+        if( $request->get('status'))
+        {
+            $output['status'] = strtolower($list[$status]);
+            $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig', $parameters));
+            
+            return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        }
+        
+        return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);
     }
     
     /**
@@ -133,6 +142,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateByFieldAction(Request $request)
     {
         $output = array();
+        $propertyService = $this->get('services.institution_medical_center_property');
         if (true) {
             try {
                 $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
@@ -147,6 +157,17 @@ class MedicalCenterController extends InstitutionAwareController
                     $this->institutionMedicalCenter = $form->getData();
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     
+                    if(!empty($form['services']))
+                    {
+                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+
+                    }if(!empty($form['awards']))
+                    {
+                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['awards']->getData(),InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                    }
+                    
                     if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
                         // also update the instituion name and description
                         $this->institution->setName($this->institutionMedicalCenter->getName());
@@ -156,13 +177,35 @@ class MedicalCenterController extends InstitutionAwareController
                     
                     $output['institutionMedicalCenter'] = array();
                     foreach ($formVariables as $key => $v){
+                        
+                        if($key == 'services')
+                        {
+                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', array(
+                                    'institution' => $this->institution,
+                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                            ));
+                        
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                        
+                        }if($key == 'awards')
+                        {
+                            $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
+                                    'institution' => $this->institution,
+                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'currentGlobalAwards' => $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter),
+                            ));
+                        
+                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                        }
+                        
                         $value = $this->institutionMedicalCenter->{'get'.$key}();
                         
                         if(is_object($value)) {
                             $value = $value->__toString();
                         }
                         
-                        if($key == 'address' || $key == 'contactNumber' || $key == 'websites') {
+                        if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
                             $value = json_decode($value, true);
                         }
                         
@@ -561,18 +604,20 @@ class MedicalCenterController extends InstitutionAwareController
         
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
         $specializationArr = array();
-        
+        $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         foreach ($specializations as $e) {
             $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
+
         return $this->render($template, array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
+            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
             'specializationsJSON' => \json_encode($specializationArr),
-            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+            'currentGlobalAwards' => $currentGlobalAwards
         ));
     }
     
@@ -1139,4 +1184,5 @@ class MedicalCenterController extends InstitutionAwareController
         
         return $calloutView; 
     }
+    
 }

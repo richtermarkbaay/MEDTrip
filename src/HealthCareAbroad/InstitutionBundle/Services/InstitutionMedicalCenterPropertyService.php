@@ -37,6 +37,7 @@ class InstitutionMedicalCenterPropertyService
     private $memcache;
     
     private $activePropertyTypes;
+    private $propertyRepository;
     
     /**
      * @var GlobalAwardService
@@ -48,6 +49,8 @@ class InstitutionMedicalCenterPropertyService
         $this->doctrine = $doctrine;
         $this->memcache = $memcache;
         
+        $this->propertyRepository = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty');
+        
         //$this->_setupAvailablePropertyTypes();
     }
     
@@ -58,7 +61,7 @@ class InstitutionMedicalCenterPropertyService
     
     public  function findById($id)
     {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($id);
+        return $this->propertyRepository->find($id);
     }
   
     /**
@@ -152,42 +155,47 @@ class InstitutionMedicalCenterPropertyService
      * @param boolean $loadValuesEagerly
      * @return array InstitutionMedicalCenterProperty
      */
-    public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, $loadValuesEagerly=true)
+    public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, array $options=array())
     {
+        $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
+        $options = \array_merge($defaultOptions, $options);
         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         $criteria = array(
-            'institutionMedicalCenter' => $institutionMedicalCenter->getId(),
+            'institutionMedicalCenter' => $institutionMedicalCenter,
             'institutionPropertyType' => $propertyType
         );
         // get the properties
-        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        $properties = $this->propertyRepository->findBy($criteria);
         $returnVal = $properties;
-        
-        if ($loadValuesEagerly) {
+
+        if ($options['loadValuesEagerly']) {
             $globalAwardIds = array();
             $propertiesByValue = array();
-            foreach ($properties as $imcp) {
-                $globalAwardIds[] = $imcp->getValue(); 
+            foreach ($properties as $imp) {
+                $globalAwardIds[] = $imp->getValue();
                 // store the property with the value as the key
-                $propertiesByValue[$imcp->getValue()][] = $imcp;
+                $propertiesByValue[$imp->getValue()][] = $imp;
             }
-            
+
             // find global awards with ids equal to the retrieve property values
             $globalAwards = $this->doctrine->getRepository('HelperBundle:GlobalAward')->findByIds($globalAwardIds);
-
             $returnVal = array();
             // get the property from the stored list
             foreach ($globalAwards as $_award) {
                 if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
-                    foreach ($propertiesByValue[$_award->getId()] as $imcp) {
+                    foreach ($propertiesByValue[$_award->getId()] as $imp) {
                         // set the value object to GlobalAward
-                        $imcp->setValueObject($_award);
-                        $returnVal[] = $imcp;
+                        $imp->setValueObject($_award);
+                        $returnVal[] = $imp;
                     }
                 }
             }
         }
-        
+
+        if ($options['groupByType']) {
+            $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
+        }
+
         return $returnVal;
     }
     
@@ -200,7 +208,43 @@ class InstitutionMedicalCenterPropertyService
             'institutionPropertyType' => $propertyType
         );
     
-        $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->findBy($criteria);
+        $properties = $this->propertyRepository->findBy($criteria);
         return $properties;
+    }
+    
+    
+    public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), $propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        if(empty($properties)){
+            return;
+        }
+        
+        $em = $this->doctrine->getManager();
+    
+        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
+        foreach ($properties as $property) {
+            $variableName = 'property'.$property;
+            $$variableName = new InstitutionMedicalCenterProperty();
+            $$variableName->setInstitution($institution);
+            $$variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
+            $$variableName->setInstitutionPropertyType($propertyType);
+            $$variableName->setValue($property);
+            $em->persist($$variableName);
+        }
+        $em->flush();
+    }
+    
+    public function removeInstitutionMedicalCenterPropertiesByPropertyType($propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        $currentProperties = $this->propertyRepository->getPropertyValues($propertyType, $institutionMedicalCenter);
+
+        $em = $this->doctrine->getManager();
+        foreach ($currentProperties as $property) {
+            $em->remove($property);
+            $em->flush();
+        }
+        return;
     }
 }

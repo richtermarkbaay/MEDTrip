@@ -4,7 +4,7 @@ class Doctor
 {
     const STATUS_ACTIVE = 1;
     const STATUS_INACTIVE = 0;
-    
+
     const GENDER_NONE = 0;
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
@@ -28,12 +28,12 @@ class Doctor
      * @var string $lastName
      */
     private $lastName;
-    
+
     /**
      * @var string $lastName
      */
     private $suffix;
-    
+
     /**
      * @var smallint $gender
      */
@@ -48,7 +48,7 @@ class Doctor
      * @var string $contactNumber
      */
     private $contactNumber;
-    
+
     /**
      * @var string $details
      */
@@ -63,7 +63,7 @@ class Doctor
      * @var boolean $status
      */
     private $status;
-    
+
     /**
      * @var HealthCareAbroad\HelperBundle\Entity\Country
      */
@@ -89,11 +89,11 @@ class Doctor
         $this->specializations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
     }
-    
+
     /**
      * Get id
      *
-     * @return bigint 
+     * @return bigint
      */
     public function getId()
     {
@@ -115,7 +115,7 @@ class Doctor
     /**
      * Get firstName
      *
-     * @return string 
+     * @return string
      */
     public function getFirstName()
     {
@@ -137,7 +137,7 @@ class Doctor
     /**
      * Get middleName
      *
-     * @return string 
+     * @return string
      */
     public function getMiddleName()
     {
@@ -165,7 +165,7 @@ class Doctor
     {
         return $this->lastName;
     }
-    
+
     /**
      * Set suffix
      *
@@ -177,7 +177,7 @@ class Doctor
         $this->suffix = $suffix;
         return $this;
     }
-    
+
     /**
      * Get suffix
      *
@@ -187,7 +187,7 @@ class Doctor
     {
         return $this->suffix;
     }
-    
+
     /**
      * Set gender
      *
@@ -199,7 +199,7 @@ class Doctor
         $this->gender = $gender;
         return $this;
     }
-    
+
     /**
      * Get gender
      *
@@ -225,7 +225,7 @@ class Doctor
     /**
      * Get contactEmail
      *
-     * @return string 
+     * @return string
      */
     public function getContactEmail()
     {
@@ -247,13 +247,13 @@ class Doctor
     /**
      * Get contactNumber
      *
-     * @return string 
+     * @return string
      */
     public function getContactNumber()
     {
         return $this->contactNumber;
     }
-    
+
     /**
      * Set details
      *
@@ -265,7 +265,7 @@ class Doctor
         $this->details = $details;
         return $this;
     }
-    
+
     /**
      * Get details
      *
@@ -291,7 +291,7 @@ class Doctor
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
@@ -313,7 +313,7 @@ class Doctor
     /**
      * Get status
      *
-     * @return boolean 
+     * @return boolean
      */
     public function getStatus()
     {
@@ -335,7 +335,7 @@ class Doctor
     /**
      * Get media
      *
-     * @return HealthCareAbroad\MediaBundle\Entity\Media 
+     * @return HealthCareAbroad\MediaBundle\Entity\Media
      */
     public function getMedia()
     {
@@ -367,7 +367,7 @@ class Doctor
     /**
      * Get specializations
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getSpecializations()
     {
@@ -399,13 +399,13 @@ class Doctor
     /**
      * Get institutionMedicalCenters
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return Doctrine\Common\Collections\Collection
      */
     public function getInstitutionMedicalCenters()
     {
         return $this->institutionMedicalCenters;
     }
-    
+
     /**
      * Set country
      *
@@ -417,7 +417,7 @@ class Doctor
         $this->country = $country;
         return $this;
     }
-    
+
     /**
      * Get country
      *
@@ -426,5 +426,47 @@ class Doctor
     public function getCountry()
     {
         return $this->country;
+    }
+
+    public function getFullName()
+    {
+        $fullName = $this->firstName . ' ' . $this->lastName;
+        if ($this->suffix) {
+            $fullName .= ' ' . $this->suffix;
+        }
+
+        return $fullName;
+    }
+
+    public function getSpecializationsAsString()
+    {
+        $specializations = '';
+
+        $first = true;
+        foreach($this->specializations as $specialization) {
+            if ($first) {
+                $specializations = $specialization->getName();
+                $first = false;
+            } else {
+                $specializations .= ', '.$specialization->getName();
+            }
+        }
+
+        return $specializations;
+    }
+
+    /**
+     * The values returned here may not yet be persisted.
+     *
+     */
+    public function getSpecializationIds()
+    {
+        $ids = array();
+
+        foreach($this->specializations as $specialization) {
+            $ids[] = $specialization->getId();
+        }
+
+        return $ids;
     }
 }

@@ -55,14 +55,28 @@ class InstitutionTwigExtension extends \Twig_Extension
                     // append + to country code
                     $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
                 }
+                
+                $result = \implode('-', $contactNumber);
+                
+            }else{
+                if (isset($contactNumber['phone_number'])) {
+                    if (\preg_match('/^\+/', $contactNumber['phone_number']['number'])) {
+                            $result = \preg_replace('/^\++/','+', $contactNumber['phone_number']['number']);
+                        }
+                        else {
+                            // append + to country code
+                            $result = '+'.$contactNumber['phone_number']['number'];
+                        }
+                    }
             }
         }
         
-        return \implode('-', $contactNumber);
+        return $result;
     }
     
     public function render_institution_logo(Institution $institution, array $options = array())
     {
+
         if(!isset($options['attr']['class'])) {
             $options['attr']['class'] = '';
         }

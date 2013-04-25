@@ -213,49 +213,115 @@ class InstitutionPropertyService
         $this->addAwardsForInstitution($institution, $awards);
         $this->addServicesForInstitution($institution, $services);
     }
-
+    
     public function addAwardsForInstitution(Institution $institution, $awards = array())
     {
-        if (empty($awards)) {
-            return;
+        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
+        ->find(InstitutionPropertyTypeRepository::GLOBAL_AWARD);
+    
+        if(empty($awards)){
+           return;
         }
-
-        $institutionPropertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
-            ->find(InstitutionPropertyTypeRepository::GLOBAL_AWARD);
-
-        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
         $em = $this->doctrine->getManager();
-        foreach ($awards as $award) {
-            $variableName = 'property'.$award;
-            $$variableName = new InstitutionProperty();
-            $$variableName->setInstitution($institution);
-            $$variableName->setInstitutionPropertyType($institutionPropertyType);
-            $$variableName->setValue($award);
-
-            $em->persist($$variableName);
+    
+        //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
+         foreach ($awards as $award) {
+                $variableName = 'property'.$award;
+                $$variableName = new InstitutionProperty();
+                $$variableName->setInstitution($institution);
+                $$variableName->setInstitutionPropertyType($propertyType);
+                $$variableName->setValue($award);
+                
+                $em->persist($$variableName);
         }
         $em->flush();
+    }
+    
+    
+    /**
+     * Get InstitutionProperty by institution, institution propertype and the value
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return InstitutionProperty
+     */
+    public function getPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->setParameter('value', $value)
+        ->getOneOrNullResult();
+    
+        return $result;
+    }
+    
+    /**
+     * Get values of institution $institution for property type $propertyType
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @return array InstitutionProperty
+     */
+    public function getPropertyValues(Institution $institution, InstitutionPropertyType $propertyType)
+    {
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionProperty a WHERE a.institution = :institutionId AND a.institutionPropertyType = :institutionPropertyTypeId";
+        $result = $this->doctrine->getEntityManager()
+        ->createQuery($dql)
+        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institutionPropertyTypeId', $propertyType->getId())
+        ->getResult();
+    
+        return $result;
+    }
+    
+    /**
+     * Check if $institution has a property type value of $value
+     *
+     * @param Institution $institution
+     * @param InstitutionPropertyType $propertyType
+     * @param mixed $value
+     * @return boolean
+     */
+    public function hasPropertyValue(Institution $institution, InstitutionPropertyType $propertyType, $value)
+    {
+        $result = $this->getPropertyValue($institution, $propertyType, $value);
+        return !\is_null($result) ;
+    }
+    
+    public function removeInstitutionPropertiesByPropertyType(Institution $institution, InstitutionPropertyType $propertyType)
+    {   
+        $currentProperties = $this->getPropertyValues($institution, $propertyType);
+        
+        $em = $this->doctrine->getManager();
+         foreach ($currentProperties as $property) {
+            $em->remove($property);
+            $em->flush();
+        }
+        return;
     }
 
     public function addServicesForInstitution(Institution $institution, $services = array())
     {
-        if (empty($services)) {
-            return;
+        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
+        ->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
+        
+        if(empty($services)){
+           return;
         }
-
-        $institutionPropertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
-            ->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
+        $em = $this->doctrine->getManager();
 
         //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
-        $em = $this->doctrine->getManager();
         foreach ($services as $service) {
-            $variableName = 'property'.$service;
-            $$variableName = new InstitutionProperty();
-            $$variableName->setInstitution($institution);
-            $$variableName->setInstitutionPropertyType($institutionPropertyType);
-            $$variableName->setValue($service);
-
-            $em->persist($$variableName);
+                $variableName = 'property'.$service;
+                $$variableName = new InstitutionProperty();
+                $$variableName->setInstitution($institution);
+                $$variableName->setInstitutionPropertyType($propertyType);
+                $$variableName->setValue($service);
+                $em->persist($$variableName);
         }
         $em->flush();
     }

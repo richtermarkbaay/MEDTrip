@@ -1,0 +1,59 @@
+<aside class="span4">
+    <section class="aside-box default dashboard-side">
+        <h3>
+            Hospital Location
+        </h3>
+        {% block asideContent %}
+    	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}">
+    	{% endblock %}
+    	<small>
+            <a href="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}"
+            style="color:#000;text-align:left">
+                                    View Larger Map
+                                </a>
+        </small>
+        <p>This is your Hospital Location if for some reason your location is not in the vicinity, please <a href="#">Edit your address</a>.</p>
+    </section>
+    <section class="aside-box default dashboard-side">
+        <h3>
+            Add PHOTOS and VIDEOS to boost your Medical Institution Profile
+        </h3>
+        <div class="features">
+            <div class="row-fluid">
+                <div class="hca-gallery-upload">
+                    <div class="span6 hca-upload-media">
+                        <a href="#"><i class="icon-picture icon-4x hca-earth"></i>Upload Images</a>
+                    </div>
+                    <div class="span6 hca-upload-media">
+                        <a href="#"><i class="icon-facetime-video icon-4x hca-earth"></i>Upload/Link Video</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+<!--     <section class="aside-box default dashboard-side"> -->
+<!--         <h3> -->
+<!--             Show your Profile to Friends and Followers -->
+<!--         </h3> -->
+<!--         <div class="hca-social-link"> -->
+<!--             <a href="#" class="btn facebook"><i class="icon-facebook hca-earth"></i>Facebook</a> -->
+<!--             <a href="#" class="btn twitter"><i class="icon-twitter hca-earth"></i>Twitter</a> -->
+<!--             <a href="#" class="btn googleplus"><i class="icon-google-plus hca-earth"></i>Google Plus</a> -->
+<!--         </div> -->
+<!--     </section> -->
+    <section class="aside-box default dashboard-side">
+        <h3>
+            Promote this Medical Institution Profile
+        </h3>
+        <img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"
+        class="btn btn-small btn-code">
+        <p>
+            Copy the HTML source code and paste it into the code of your website or
+            blog. Clicking the button will automatically take users to your Medical
+            Institution Profile.
+        </p>
+        <a href="#"><i class="icon-caret-right"></i>&nbsp;Show Source Code</a>
+    </section>
+</aside>
+    
+    

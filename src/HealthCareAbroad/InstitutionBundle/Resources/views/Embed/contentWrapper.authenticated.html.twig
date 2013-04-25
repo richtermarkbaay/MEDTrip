@@ -1,23 +1,16 @@
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
-
 <div id="content" class="container">
     <div class="row">
     {% if isNoBreadCrumbs is not defined %}
         <ul class="breadcrumb">
             <li>
-                <a href="{{ path('institution_homepage')}}"><i class="icon-home"></i></a>
-                <span class="divider">
-                    /
-                </span>
-            </li>
-            <li>
-                <a href="#">Manage Clinic</a>
+             <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i></a>
                 <span class="divider">
                     /
                 </span>
             </li>
             <li class="active">
-                Add Clinic
+                Manage Hospital
             </li>
         </ul>
     {% endif %}

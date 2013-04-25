@@ -1,76 +1,63 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% set mainNavigation = {selected: 'clinics'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
-{% set navClinicListing = navStatus %}
-{% block content %}
-{% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
-        {% block wrappedContent %}
-			<div class="hca-banner">
-                <h1>
-                    Some Institution name
+ {% block content %}
+ 
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+    {% block wrappedContent %}    
+               <h1>
+                    <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
+                    <a href="#add-clinic" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
                 </h1>
-                <img src="/images/institution/institution3.png" alt="institution" />
-                <a href="#"><img src="/images/institution/default-hospital-logo.png" alt="institution-logo" class="logo"/></a>
-                <div class="institution-details">
-                    <!-- p>
-                        Gleneagles Hospital (Kuala Lumpur) Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur,
-                        Malaysia
-                    </p -->
-                    <p>{{ institution_address_to_array(institution, ['address1']) | join(', ')}}</p>
-                    <a class="btn btn-large btn-primary pull-right" href="#">Manage Hospital</a>
-                </div>
-            </div>
-        {% endblock %}
-    {% endembed %}
-    <section id="content">
-         <div id="content" class="container">
-            <div class="row">
-                <div class="span12">
-                    <div class="pull-right">
-                        <a href="{{ path('institution_medicalCenter_add') }}" class="btn btn-primary btn-large">Add A New {{ clinicClassLabel.singular | title}}</a>
+             <div class="tabbable">
+                    <!-- Only required for left/right tabs -->
+                    <ul class="nav nav-tabs hca-tab">
+                        <li class="active">
+                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{  total.status.2 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#draft" data-toggle="tab">Draft <span class="badge"> {{  total.status.4 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#pending" data-toggle="tab">Pending<span class="badge"> {{  total.status.8 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#expired" data-toggle="tab">Expired<span class="badge"> {{  total.status.16 | length }}</span></a>
+                        </li>
+                    </ul>
+                   <div class="tab-content" id="medicalCenterListing">
+                        <div class="tab-pane active" id=all> 
+                                 {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
+                       </div>
+                       <div class="tab-pane" id="draft"> </div>
+                       <div class="tab-pane" id="pending"> </div>
+                       <div class="tab-pane" id="expired"> </div>
                     </div>
-                    <section>
-                    <h1><span>Your {{ clinicClassLabel.plural | title}}</span></h1>
-                    {% include 'InstitutionBundle:MedicalCenter/Widgets:navMenusForClinicListing.html.twig' %}
-                    <br>
-                    <section class="row-fluid">
-                        <ul class="thumbnails" id="medical_centers">
-                        {% include 'InstitutionBundle:MedicalCenter:medicalCenterListing.html.twig' %}
-                        </ul>
-                    </section>
-                    
-                    {% if pager.isPaginable %}
-                       {{ paginate(pager, 'institution_medicalCenter_index', app.request.query.all) }}
-                    {% endif %}
-                   </section> 
-                </div>
-            </div><!--End of row-->
-        </div><!--End of container-->
-    </section>
-{% endblock %}
+            </div>
+               
+        {% endblock %}
+        
+    {% endembed %}
 
+{% endblock %}
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionMedicalCenterTab.js') }}" ></script>
 <script type="text/javascript">
 <!--
     (function($){
         $(function(){
             $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
         });
-
-        
-       //_url_base = '{{ path("institution_medicalCenter_index_listing", {institutionId: institution.id} ) }}';
-        
-       // ClinicListing.setAjaxUrls({
-         //   'loadPending': _url_base+'?content=pending',
-          //  'loadDraft': _url_base+'?content=draft',
-          // 'loadExpired': _url_base+'?content=expired',
-         //  'loadArchived': _url_base+'?content=archived',
-       // });
-       // 
-        //ClinicListing.tabbedContentElement = $('#medical_centers');
-        //ClinicListing.loadTabbedContentsOfMultipleCenterInstitution();  
+        _url_base = '{{ path("institution_medicalCenter_index") }}'; 
+        ClinicListing.setAjaxUrls({
+            'loadPending': _url_base+'?status=8',
+            'loadDraft': _url_base+'?status=4',
+            'loadExpired': _url_base+'?status=16',
+       }); 
+        ClinicListing.loadTabbedContentsOfClinics(); 
+       ClinicListing.tabbedContentElement = $('#medicalCenterListing');
+       
         function grow(_el) {
             _el.css('height', '').css('overflow', '');
             _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');

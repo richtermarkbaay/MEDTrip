@@ -55,7 +55,6 @@
                             {% if clinicHighlight.icon %}
                                 {% set imageSrc = clinicHighlight.icon.src is defined ? clinicHighlight.icon.src : advertisement_media_src(clinicHighlight.icon.name) %}
                                 <img class="img-circle pull-left" src="{{ imageSrc }}" alt="logo" width="50"/>
-                                
                             {% else %}
                                 <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
                             {% endif %}

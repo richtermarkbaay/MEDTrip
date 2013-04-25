@@ -2,6 +2,14 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
+use HealthCareAbroad\PagerBundle\Pager;
+
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
 use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
@@ -15,25 +23,41 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class DefaultController extends InstitutionAwareController
 {
+    /**
+     * @var InstitutionMedicalCenterRepository
+     */
+    private $repository;
+    
+    /**
+     * @var InstitutionMedicalCenterService
+     */
+    private $service;
+    
     public $institutionMedicalCenter;
     /**
      * @PreAuthorize("hasAnyRole('INSTITUTION_USER')")
      *
      */
     
+    public function preExecute()
+    {
+        $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
+        $this->service = $this->get('services.institution_medical_center');
+    }
+    
     public function indexAction()
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $institutionAlerts = array();
-        
-        // TODO - Deprecated?? 
+    
+        // TODO - Deprecated??
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         //$news = $newsRepository->getLatestNews();
         $news = array();
-        $isSingleCenter = false;
-
+    
+    
         $signupStepStatus = $this->institution->getSignupStepStatus();
-        
+    
         if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
             $params = array();
             $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
@@ -43,25 +67,25 @@ class DefaultController extends InstitutionAwareController
                 }
                 $params['imcId'] = $this->institutionMedicalCenter->getId();
             }
-            
+    
             return $this->redirect($this->generateUrl($routeName, $params));
         }
-
+    
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }
         else {
-            $isSingleCenter = true;
             $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
         }
+    
         return $this->render($template, array(
-            'alerts' => $institutionAlerts,
-    		'news' => $news,
-            'institution' => $this->institution,
-            'isDashBoard' => true,
-            'isSingleCenter' => $isSingleCenter
+                        'alerts' => $institutionAlerts,
+                        'news' => $news,
+                        'institution' => $this->institution,
+                        'isDashBoard' => true
         ));
     }
+    
     public function addClinicAction()
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);

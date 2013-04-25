@@ -1,0 +1,54 @@
+institution_signUp:
+    pattern:  /institution/register.html
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:signUp }
+    requirements:
+        _method: GET|POST
+
+institution_signup_setup_profile:
+    pattern: /institution/setup-profile
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupProfile }
+    requirements:
+        _method: GET|POST
+
+institution_signup_setup_institutionMedicalCenter:
+    pattern: /institution/setup-clinic-details/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupInstitutionMedicalCenter }
+    requirements:
+        _method: GET|POST
+
+institution_signup_setup_specializations:
+    pattern: /institution/setup-specializations/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupSpecializations }
+    requirements:
+        _method: GET|POST
+
+institution_signup_setup_doctors:
+    pattern: /institution/setup-doctors/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:setupDoctors }
+    requirements:
+        _method: GET|POST
+
+# AJAX
+institution_ajax_loadSpecializationComponents:
+    pattern: /institution/ajax/loadSpecializationComponents
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxLoadSpecializationComponents}
+    requirements:
+        _method:  GET
+
+institution_ajax_addDoctor:
+    pattern: /institution/ajax/addDoctor/{imcId}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxAddDoctor}
+    requirements:
+        _method:  GET
+
+institution_signup_ajax_deleteDoctor:
+    pattern: /institution/ajax/deleteDoctor/{id}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxDeleteDoctor, id: 0}
+    requirements:
+        _method:  POST
+
+institution_signup_ajax_editDoctor:
+    pattern: /institution/ajax/editDoctor/{id}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxEditDoctor, id: 0}
+    requirements:
+        _method:  GET|POST
