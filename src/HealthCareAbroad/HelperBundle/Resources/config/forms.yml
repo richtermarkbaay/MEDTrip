@@ -1,4 +1,10 @@
 services:
+    
+    form.fancy_business_hours_widget:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType
+        tags:
+            - { name: form.type, alias: fancy_business_hours }
+    
     form.detailed_street_address:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\DetailedStreetAddressFieldType
         tags:
