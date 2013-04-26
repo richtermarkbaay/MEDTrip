@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +12,8 @@ class MailerController extends Controller
 {
     public function sendEmailAction(Request $request)
     {
+        throw new NotFoundHttpException();
+
         $message = \Swift_Message::newInstance()
             ->setSubject('Hello Email')
             ->setFrom('test@chromedia.com')
