@@ -173,7 +173,7 @@ class InstitutionMediaService extends MediaService
         return null;
     }
 
-    function medicalCenterUploadMedia($file, InstitutionMedicalCenter $medicalCenter, $flushObject = true)
+    function medicalCenterUploadToGallery($file, InstitutionMedicalCenter $medicalCenter, $flushObject = true)
     {
         $result = parent::uploadFile($file);
     

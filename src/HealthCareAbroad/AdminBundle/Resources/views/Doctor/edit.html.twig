@@ -14,7 +14,6 @@
         %}
             {% block sectionContent %}
                 {% include '::notice.admin.html.twig' %}
-
                 <form novalidate="novalidate" action="{{ doctor.id ? path('admin_doctor_edit_save', {'idId': doctor.id }) : path('admin_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                     <!-- start id-form -->
                         {% set imageType = constant('HealthCareAbroad\\DoctorBundle\\Services\\DoctorMediaService::LOGO_TYPE_IMAGE') %}
@@ -35,7 +34,7 @@
                         {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
                         <div class="clearfix"></div>
                         {{ form_row(form.contactEmail) }}
-                        {{ form_row(form.contactNumber) }}
+                        {{ form_row(form.contactDetail) }}
 
 
                         {{ form_rest(form) }}

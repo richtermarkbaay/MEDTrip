@@ -34,10 +34,10 @@ class FancyCountryFieldType extends AbstractType
         ));
     }
    
-    public function getParent()
-    {
-        return 'text';
-    }
+//     public function getParent()
+//     {
+//         return 'text';
+//     }
 
     public function getName()
     {

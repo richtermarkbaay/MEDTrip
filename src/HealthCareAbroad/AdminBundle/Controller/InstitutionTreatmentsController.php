@@ -956,7 +956,7 @@ class InstitutionTreatmentsController extends Controller
         $response->headers->set('Content-Type', 'application/json');
     
         if (($fileBag = $request->files) && $fileBag->has('file')) {
-            $media = $this->get('services.institution.media')->medicalCenterUploadMedia($fileBag->get('file'), $this->institutionMedicalCenter);
+            $media = $this->get('services.institution.media')->medicalCenterUploadToGallery($fileBag->get('file'), $this->institutionMedicalCenter);
             if(!$media) {
                 $response = new Response('Error', 500);
             }

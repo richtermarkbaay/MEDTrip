@@ -1,22 +1,21 @@
 <div class="hca-banner">
-    {% if institution.featuredMedia %}
+    {% if not institution.featuredMedia %}
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
     {% else %}
-     <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
+     <img src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution" />
     {% endif %} 
     <a href="#hca-upload-banner" data-toggle="modal" class="btn-large btn-banner">Change Cover</a>
 
-    {% if institution.logo %}
-        {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-        <img src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
-    {% else %}
-        <a class="hca-logo"  href="#hca-upload-logo" data-toggle="modal" class="btn-large btn-banner">
-            <span class="rollover"></span>
-            <img class="imgborder" alt="" src="{{ asset('images/institution/default-hospital-logo.png') }}">            
-        </a> 
-    {% endif %} 
-    
+    <a class="hca-logo"  href="#hca-upload-logo" data-toggle="modal" class="btn-large btn-banner">
+        <span class="rollover"></span>
+        {% if institution.logo %}
+            {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+            <img src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
+        {% else %}
+            <img src="{{ imageplaceholder.institutionDefaultLogo }}" class="imgborder" alt="">             
+        {% endif %} 
+    </a>
    <div class="hca-institution-name"><h1><a href="#hca-edit-institution-name" data-toggle="modal"> {{ institution.name }} </a></h1></div>
     <div class="institution-details">
             <h3><i class="icon-map-marker"></i>{{ institution.city ~ ', ' ~ institution.country}}</h3>

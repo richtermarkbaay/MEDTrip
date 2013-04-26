@@ -82,6 +82,7 @@ parameters:
     
     imageplaceholder:
         institutionFeaturedImage: /images/frontend/default-hospital-featured-image.png 
+        institutionDefaultLogo: /images/institution/default-hospital-logo.png
         destinationIcon: ''
 
     amazonS3_key: AKIAIAZVLNMMNLBC6IEA
