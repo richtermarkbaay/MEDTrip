@@ -32,7 +32,7 @@
     },
 	setParams: function() {
 		if(GoogleMap.inputs.selectedCity.options){
-			GoogleMap.address = GoogleMap.inputs.selectedBuilding.value + " " + GoogleMap.inputs.selectedStreet.value + "," + GoogleMap.inputs.selectedCity.options[GoogleMap.inputs.selectedCity.selectedIndex].innerHTML + "," + GoogleMap.inputs.selectedCountry.options[GoogleMap.inputs.selectedCountry.selectedIndex].innerHTML;
+			GoogleMap.address = GoogleMap.inputs.selectedBuilding.value + " " + GoogleMap.inputs.selectedStreet.value + "," + GoogleMap.inputs.selectedCity.options[GoogleMap.inputs.selectedCity.selectedIndex].innerHTML + "," + GoogleMap.inputs.selectedCountry.value;
 		}
 	},
 	initialize: function() {
