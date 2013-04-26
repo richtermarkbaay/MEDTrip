@@ -6,11 +6,11 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementMediaService;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
 
 use HealthCareAbroad\MediaBundle\Entity\Media;
-
-use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -40,12 +40,6 @@ class AdvertisementController extends Controller
      * @var Institution
      */
     private $institution;
-    
-    /**
-     * 
-     * @var FilesystemManager
-     */
-    private $fileSystemManager;
     
 
     public function preExecute()
@@ -92,8 +86,6 @@ class AdvertisementController extends Controller
                 throw $this->createNotFoundException("Invalid institution.");
             }
         }
-        
-        $this->fileSystemManager = $this->get('services.media.filesystemmanager');
     }
     
     /**
@@ -161,6 +153,7 @@ class AdvertisementController extends Controller
         return $this->render('AdminBundle:Advertisement:form.html.twig', array(
             'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
             'form' => $form->createView(),
+            'ads_filesystem' => $this->get('advertisement_filesystem'),
             'step' => (int)$request->get('step', 2)
         ));
     }
@@ -259,7 +252,7 @@ class AdvertisementController extends Controller
                     $file = $highlight['icon'];
                     if(is_object($file)) {
                         if($fileClassName == get_class($file)) {
-                            $media = $this->get('services.media')->upload($file, $advertisement);
+                            $media = $this->get('services.advertisement.media')->upload($file, $advertisement, AdvertisementMediaService::HIGHLIGHT_IMAGE);
                             $value[$i]['icon'] = $media ? $this->mediaObjectToArray($media) : array(); 
                         } else {
                             $value[$i]['icon'] = $this->mediaObjectToArray($file);
@@ -276,7 +269,9 @@ class AdvertisementController extends Controller
                 }
 
                 if($value && is_object($value) && get_class($value) == $fileClassName) {
-                    $media = $this->get('services.media')->upload($value, $advertisement);
+                    $imageType = $property->getName() == 'media_id' ? AdvertisementMediaService::ICON_TYPE_IMAGE : AdvertisementMediaService::MEDIUM_BANNER_IMAGE; 
+                    
+                    $media = $this->get('services.advertisement.media')->upload($value, $advertisement, $imageType);
                     $each->setValue($media->getId());
 
                     if($media) { // TODO - Temporary fixed for ads Image
@@ -369,15 +364,12 @@ class AdvertisementController extends Controller
                 $this->advertisement = new Advertisement();
                 $this->advertisement->setInstitution($this->institution);
             }
-            // TODO - Temporary fixed to set pathDiscriminator
-            $this->fileSystemManager->get($this->advertisement);
 
             $mediaArray = array(
                 'id' => $media->getId(),
                 'uuid' => $media->getUuid(),
-                'caption' => $media->getCaption(),
-                'src' => $this->fileSystemManager->getWebPath() . '/' . $media->getName(),
-                'src_thumbnail' => $this->fileSystemManager->getWebPath() . '/thumbnail-' . $media->getName()
+                'name' => $media->getName(),
+                'caption' => $media->getCaption()
             );            
         }
 

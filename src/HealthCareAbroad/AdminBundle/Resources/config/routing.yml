@@ -188,6 +188,7 @@ admin_error403:
 admin_homepage:
     pattern:  /admin/dashboard
     defaults: { _controller: AdminBundle:Default:index }
+
    
 admin_create_staticPage:
     pattern: /admin/create-static-page
@@ -201,3 +202,10 @@ admin_static_page:
     requirements:
         _method: GET|POST        
         
+# Admin Global Media Ajax Delete
+admin_media_ajaxDelete:
+    pattern: /admin/media/ajax-delete
+    defaults: { _controller: AdminBundle:Default:ajaxDelete }
+    requirements:
+        _method: POST
+        mediaId: \d+

@@ -23,7 +23,6 @@ framework:
     trusted_proxies: ~
     session:
         cookie_lifetime: 7776000
-
 # Twig Configuration
 twig:
     form:
@@ -47,6 +46,8 @@ twig:
                 advanced: %tinymce_advanced_theme%
                 medium: %tinymce_medium_theme%
                 bbcode: %tinymce_bbcode_theme%
+
+        media_context: %media_context%
 
 # Assetic Configuration
 assetic:
@@ -133,7 +134,7 @@ swiftmailer:
 # TinyMCE Configuration
 stfalcon_tinymce:
     include_jquery: false
-    tinymce_jquery: true
+    tinymce_jquery: false
     textarea_class: %tinymce_textarea_class%
     theme:
         simple: %tinymce_simple_theme%
@@ -156,3 +157,45 @@ gregwar_captcha:
     invalid_message: Incorrect captcha code.
     text_color: { r: 85, g: 85, b: 85 }
     background_color: { r: 245, g: 244, b: 237 }
+
+
+knp_gaufrette:
+    adapters:
+        advertisement_local:
+            service:
+                id: services.media.advertisement_local_adapter
+        advertisement_s3:
+            service:
+                id: services.media.advertisement_s3_adapter
+        doctor_local:
+            service:
+                id: services.media.doctor_local_adapter
+        doctor_s3:
+            service:
+                id: services.media.doctor_s3_adapter
+        institution_local:
+            service:
+                id: services.media.institution_local_adapter
+        institution_s3:
+            service:
+                id: services.media.institution_s3_adapter
+        specialization_local:
+            service:
+                id: services.media.specialization_local_adapter
+        specialization_s3:
+            service:
+                id: services.media.specialization_s3_adapter
+
+    filesystems:
+        advertisement:
+            adapter: advertisement_%media_source%
+            alias: advertisement_filesystem
+        doctor:
+            adapter: doctor_%media_source%
+            alias: doctor_filesystem
+        institution:
+            adapter: institution_%media_source%
+            alias: institution_filesystem
+        specialization:
+            adapter: specialization_%media_source%
+            alias: specialization_filesystem

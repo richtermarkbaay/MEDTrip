@@ -183,6 +183,7 @@
 {% block doctorSpecializations_list_widget %}
     {% spaceless %}
 
+
     {# this is temporary #}
     {% set treatments = { 1: 'Treatment 1', 2: 'Treatment 2', 3: 'Treatment 3' } %}
     {% set specializations = form.vars.data %}
@@ -209,29 +210,20 @@
 {% block admin_media_file_widget %}
 
     {% spaceless %}
-
-        {% set fieldName = fieldName is defined ? fieldName : 'media' %}
-        {% set mediaParentObject = form.parent.vars.data %}
-        {% if fieldName == 'media' %}
-            {% set mediaObject = mediaParentObject.media %}
-        {% elseif fieldName == 'logo' %}
-            {% set mediaObject = mediaParentObject.logo %}
+        {% set property_name = property_name is defined ? property_name : 'media' %}        
+        {% set media = attribute(form.parent.vars.value, property_name) %}
+        {% set className = lcfirst(getClass(form.parent.vars.value, true)) %}
+        {% if imageSize is not defined %}
+            {% set imageSize = '' %} 
         {% endif %}
 
-        {% if mediaObject %}
-            {{ media(mediaObject, mediaParentObject, 'default', {width: '220', style: "border:1px solid #ddd"}) | raw }}
+        {% if media %}
+            <img src="{{ media_src(media, className, imageSize) }}" style="max-width: 220px;padding: 2px; border: 1px solid #ddd">
             {% set mediaFileInput = '<input type="file" required="required" value="' ~ form.vars.value ~'" name="' ~ form.vars.full_name ~ '" id="' ~ form.parent.vars.name ~ '_' ~ form.vars.name ~ '">' %}
 
-            {% set deleteImageUrl = path('admin_media_ajaxDelete') %}
+            {% set params = json_encode({mediaId: media.id, mediaContext: className, imageType: imageType}) %}
 
-            {% set params = json_encode({
-                media_id: mediaObject.id,
-                parent_id: mediaParentObject.id,
-                parent_class : getClass(mediaParentObject),
-                remove_file: true
-            }) %}
-
-            <a href="{{ deleteImageUrl }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
+            <a href="javascript:void(0)" data-uri="{{ path('admin_media_ajaxDelete') }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
 
             {# Load Js #}
             {{ render_media_file_script() | raw }}

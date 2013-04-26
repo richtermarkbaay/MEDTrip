@@ -33,7 +33,7 @@ class FancyCountryFieldType extends AbstractType
     {
         $builder->addModelTransformer(new CountryTransformer($this->locationService));
     }
-
+   
     public function getParent()
     {
         return 'hidden';

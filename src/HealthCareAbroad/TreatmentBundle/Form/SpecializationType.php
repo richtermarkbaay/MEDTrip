@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\TreatmentBundle\Form;
 
+use Gaufrette\Filesystem;
+
+use HealthCareAbroad\TreatmentBundle\Services\SpecializationMediaService;
+
 use HealthCareAbroad\MediaBundle\Form\AdminMediaFileType;
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
@@ -19,7 +23,7 @@ class SpecializationType extends AbstractType
             Specialization::STATUS_ACTIVE => 'active',
             Specialization::STATUS_INACTIVE => 'inactive'
         );
-        
+
         $builder->add('name');
         $builder->add('description');
         $builder->add('media', new AdminMediaFileType($specialization->getMedia()));
@@ -35,6 +39,6 @@ class SpecializationType extends AbstractType
 
     public function getName()
     {
-        return 'specialization';
+        return 'specialization_form';
     }
 }

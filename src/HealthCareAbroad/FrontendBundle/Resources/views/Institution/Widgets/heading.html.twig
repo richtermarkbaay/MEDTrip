@@ -5,7 +5,9 @@
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
     {% if institution.featuredMedia %}
-        {{ media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw }}
+        {# media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw #}
+        {% set size = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
+        <img src="{{ institution_media_src(institution.featuredMedia, size) }}" class="featured-image" alt=""/>
     {% else %}
         <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>
     {% endif %}

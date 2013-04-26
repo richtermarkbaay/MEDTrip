@@ -1,5 +1,7 @@
 parameters:    
 
+    local_web_root: %kernel.root_dir%/../web
+
     site_url: http://www.healthcareabroad.com
     site_name: www.HealthCareAbroad.com
     domain_name: healthcareabroad.com
@@ -76,15 +78,28 @@ parameters:
 
     cfe_site_url: http://www.chromedia.com
     cfe_site_name: www.Chromedia.com
-    cfe_company_name: Chromedia Far East Inc.
+    cfe_company_name: Chromedia Far East Inc.    
     
     imageplaceholder:
-        institutionLogo: /images/frontend/default-hospital-logo.png
         institutionFeaturedImage: /images/frontend/default-hospital-featured-image.png 
-        clinicLogo: /images/frontend/default-clinic-logo.png
-        doctorIcon: /images/frontend/default-doctor-logo.png
-        doctorIconOrange: /images/frontend/default-doctor-logo-orange.png
-        treatmentIcon: ''
-        serviceIcon: ''
-        awardIcon: ''
+        institutionDefaultLogo: /images/institution/default-hospital-logo.png
         destinationIcon: ''
+
+    amazonS3_key: AKIAIAZVLNMMNLBC6IEA
+    amazonS3_secret: 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
+    amazonS3_bucket_name: assets.healthcareabroad.com 
+
+    media_directory: media
+    media_advertisement_subdir: %media_directory%/ads
+    media_doctor_subdir: %media_directory%/doctors
+    media_institution_subdir: %media_directory%/institutions
+    media_specialization_subdir: %media_directory%/specializations
+
+
+    # Media Context are the filesystems 
+    # NOTE: When Adding new filesystem, it MUST be added here to.
+    media_context:
+        advertisement: advertisement
+        institution: institution
+        specialization: specialization
+        doctor: doctor

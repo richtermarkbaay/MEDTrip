@@ -7,6 +7,10 @@ services:
         calls:
             - [setMemcache, [@services.memcache]]
             - [setDoctrine, [@doctrine]]
+    form.specialization:
+        class: HealthCareAbroad\TreatmentBundle\Form\SpecializationType
+        tags:
+            - { name: form.type, alias: specialization_form }
     form.subSpecialization_list:
         class: "%services.subSpecialization_list%"
         tags:
@@ -19,3 +23,9 @@ services:
         class: HealthCareAbroad\TreatmentBundle\Form\SpecializationStatusSelectorType
         tags:
             - { name: form.type, alias: specializationStatusSelector }
+    services.specialization.media:
+        class: HealthCareAbroad\TreatmentBundle\Services\SpecializationMediaService
+        calls:
+            - [setFilesystem, [@specialization_filesystem]] 
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setUploadDirectory, [%local_web_root%/%media_specialization_subdir%]]

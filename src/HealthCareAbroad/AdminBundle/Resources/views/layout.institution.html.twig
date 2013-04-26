@@ -6,6 +6,7 @@
 {% block title %}{{ parent() }} &raquo; Admin Panel{% endblock %}
 
 {% block body %}
+
 {% set sideBarUsed = sideBarUsed is defined ? sideBarUsed : 'AdminBundle:Institution:sidebar.html.twig' %}
 {% set profileHeader = institutionMedicalCenter.id is not defined or institutionMedicalCenter.id is empty ? 'AdminBundle:Institution:profileHeader.html.twig' : 'AdminBundle:Widgets/MedicalCenter:profileHeader.html.twig' %}
 
