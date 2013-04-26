@@ -130,6 +130,9 @@ swiftmailer:
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
+    spool:
+        type: file
+        path: %kernel.root_dir%/../spool
 
 # TinyMCE Configuration
 stfalcon_tinymce:
@@ -144,11 +147,11 @@ stfalcon_tinymce:
 
 # MailChimp configuration
 rezzza_mail_chimp:
-    api_key:    c92eb834bde4ae8c737d7de468ee9f4e-us6
-    connection: http
+    api_key:    %mailchimp_api_key%
+    connection: %mailchimp_connection%
 
-# Captcha configuration    
-gregwar_captcha: 
+# Captcha configuration
+gregwar_captcha:
     as_url: true
     reload: true
     distortion: false
