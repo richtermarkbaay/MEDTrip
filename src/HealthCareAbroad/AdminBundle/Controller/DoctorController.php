@@ -93,16 +93,20 @@ class DoctorController extends Controller
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
+
                 //ADD contact detail first
                 $contactDetail = $this->get('services.contact_detail')->save($form->get('contactDetail')->getData());
                 $doctor->addContactDetail($contactDetail);
-                if($media = $this->saveMedia($request->files->get('doctor'), $doctor)) {
-                    $doctor->setMedia($media);
+
+                $fileBag = $request->files->get('doctor');
+                if(isset($fileBag['media']) && $fileBag['media']) {
+                    $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor, false);
                 }
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($doctor);
                 $em->flush();
-                
+
                 if ($doctor) {
                     $this->get('session')->setFlash('success', $msg);
                     
@@ -126,7 +130,7 @@ class DoctorController extends Controller
     {
     	$result = false;
     	$em = $this->getDoctrine()->getEntityManager();
-    	$doctor = $em->getRepository('DoctorBundle:Doctor')->find($request->get('idId', 0));
+    	$doctor = $em->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
   
     	if ($doctor) {
     		$doctor->setStatus($doctor->getStatus() ? $doctor::STATUS_INACTIVE : $doctor::STATUS_ACTIVE);
@@ -144,13 +148,4 @@ class DoctorController extends Controller
     	return $response;
     }
     
-    private function saveMedia($fileBag, $doctor)
-    {
-        if($fileBag['media']) {
-            $media = $this->get('services.media')->upload($fileBag['media'], $doctor);
-            return $media;
-        }
-
-        return null;
-    }
 }

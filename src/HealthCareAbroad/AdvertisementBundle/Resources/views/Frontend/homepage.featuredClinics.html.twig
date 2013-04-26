@@ -39,7 +39,7 @@
 
                     {% if each.media %}
 					    <div class="hca-sprite thumbnail-frame pull-right">
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
+    				        <img src="{{ advertisement_media_src(each.media) }}" class="img-polaroid" alt="">
 					    </div>
                     {% endif %}
 
@@ -53,7 +53,8 @@
                     {% for clinicHighlight in clinicHighlights %}
                         <div class="item-wrapper span6">
                             {% if clinicHighlight.icon %}
-                                <img class="img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
+                                {% set imageSrc = clinicHighlight.icon.src is defined ? clinicHighlight.icon.src : advertisement_media_src(clinicHighlight.icon.name) %}
+                                <img class="img-circle pull-left" src="{{ imageSrc }}" alt="logo" width="50"/>
                             {% else %}
                                 <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
                             {% endif %}

@@ -23,8 +23,9 @@ assetic:
     use_controller: true
 
 swiftmailer:
-    delivery_address: adelbert.silla@chromedia.com
-    
+    #delivery_address: adelbert.silla@chromedia.com
+    #disable_delivery:  true
+
 #jms_debugging:
     # You can set this to true if you want to automatically retrieve help
     # messages for public exceptions. If you leave this set to false, you have

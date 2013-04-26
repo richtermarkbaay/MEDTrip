@@ -4,3 +4,10 @@ services:
         public: true
         tags:
             - { name: twig.extension }
+
+    services.doctor.media:
+        class: HealthCareAbroad\DoctorBundle\Services\DoctorMediaService
+        calls:
+            - [setFilesystem, [@doctor_filesystem]] 
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
+            - [setUploadDirectory, [%local_web_root%/%media_doctor_subdir%]]

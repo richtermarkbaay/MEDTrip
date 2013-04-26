@@ -15,7 +15,8 @@
 			<div class="item">
 			    {% if each.media %}
 				    <a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
-				        {{ media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw }}
+				        {# media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw #}
+				        <img src="{{ advertisement_media_src(each.media) }}" class="featured-icon img-circle">
 			        </a>
 				{% endif %}
 				<h4 class="title"><a href="{{ link }}" target="{{ target }}">{{ each.title }}</a></h4>

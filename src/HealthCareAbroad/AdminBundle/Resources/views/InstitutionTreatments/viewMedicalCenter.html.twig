@@ -1,3 +1,4 @@
+{#admin_medicalCenter_logo_upload#}
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 
 {% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
@@ -31,12 +32,12 @@
                     <div id="media" class="treatmentbox">
                         <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                             Media
-                            <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {context: constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'),institutionId: institution.id, id: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                            <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {institutionId: institution.id, imcId: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
                                 <i class="icon-plus"></i>Add
                             </a>
                         </h5>
                         <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-                            {% include 'MediaBundle:Default:mediaTableView.html.twig' with {media: institutionMedicalCenter.media} %}
+                            {% include 'MediaBundle:Widgets:gallery.html.twig' with { media: institutionMedicalCenterMedia, mediaContext: media_context.institution } %}
                         </div>
                         
                     </div>

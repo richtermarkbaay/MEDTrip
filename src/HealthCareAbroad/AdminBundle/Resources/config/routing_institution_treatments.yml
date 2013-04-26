@@ -144,10 +144,27 @@ admin_medicalCenter_ajaxEditGlobalAward:
         _method: POST
         institutionId: \d+
         imcId: \d+
-        
-admin_medicalCenter_logo_upload:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/logo/upload/
-    defaults: { _controller: AdminBundle:InstitutionTreatments:upload }
+
+admin_institutionMedicalCenter_gallery_add:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/gallery/add/{multiUpload}
+    defaults: { _controller: AdminBundle:Institution:addMedia, multiUpload: 1 }
+    requirements:
+        _method: GET
+        imcId: \d+
+        institutionId: \d+
+
+admin_institution_medicalCenter_logo_upload:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/logo/upload
+    defaults: { _controller: AdminBundle:InstitutionTreatments:uploadLogo}
+    requirements:
+        _method: POST
+        imageType: \d+
+        imcId: \d+
+        institutionId: \d+
+
+admin_institution_medicalCenter_media_upload:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/media/upload
+    defaults: { _controller: AdminBundle:InstitutionTreatments:uploadMedia}
     requirements:
         _method: POST
         imcId: \d+

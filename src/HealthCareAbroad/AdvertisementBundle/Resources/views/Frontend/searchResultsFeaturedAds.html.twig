@@ -61,7 +61,8 @@
 
                     {% if each.media %}
 					    <div class="hca-sprite thumbnail-frame pull-right">
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw }}
+    				        {# media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw #}
+    				        <img src="{{ advertisement_media_src(each.media) }}" class="img-polaroid" alt=""/>
 					    </div>
                     {% endif %}
 

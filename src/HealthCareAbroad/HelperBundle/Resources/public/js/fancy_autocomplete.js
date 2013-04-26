@@ -121,7 +121,7 @@ var FancyAutocompleteWidget = function(widget, options){
             
             // override _renderItem
             widget.data('ui-autocomplete')._renderItem = function(ul, item) {
-                var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+(item.custom_label ? item.custom_label  : item.label)+'</a>');
                 _itemLink.on('click', function(){
                     _onSelect(widget, options, item);
                 });
@@ -154,7 +154,7 @@ var FancyAutocompleteWidget = function(widget, options){
             var dataSource = this.element.data('fancyAutocomplete').options.source;
             dataSource.map(function(_i){
                 if (_i.id && ( !request.term || matcher.test(_i.label))) {
-                    matches.push({'id': _i.id, 'label': _i.label});
+                    matches.push({'id': _i.id, 'label': _i.label, 'custom_label': _i.custom_label ? _i.custom_label : null });
                 }
             });
            response(matches);

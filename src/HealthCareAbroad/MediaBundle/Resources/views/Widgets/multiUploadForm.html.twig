@@ -5,7 +5,7 @@
 </form>
 
 <div id="browser-uploader-switcher">
-    You are using the multi-file uploader. Problems? Try the <a href="{{ path('admin_media_add', {'context': constant('HealthCareAbroad\\MediaBundle\\MediaContext::INSTITUTION_MEDICAL_CENTER'), 'institutionId': institution.id, 'id': institutionMedicalCenter.id}) }}">browser uploader</a> instead.
+    You are using the multi-file uploader. Problems? Try the <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')) }}?multiUpload=0">browser uploader</a> instead.
 </div>
 
 <style type="text/css">@import url({{ asset('bundles/media/js/plupload/js/jquery.ui.plupload/css/jquery.ui.plupload.css') }});</style>
@@ -15,7 +15,7 @@
 $(function() {
     $("#uploader").plupload({
         runtimes : 'html5',
-        url : '{{ path(routes.media_upload, {institutionId: institution.id}) }}',
+        url : '{{ uploadFormAction }}?multiUpload=1',
         max_file_size : '10mb',
         unique_names : true,
         filters : [

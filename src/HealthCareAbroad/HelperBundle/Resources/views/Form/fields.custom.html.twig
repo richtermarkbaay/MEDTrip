@@ -15,6 +15,7 @@
             </div>
         </div>
     </div>
+
     {% endspaceless %}
 {% endblock %}
 
@@ -24,15 +25,15 @@
         <div>
             <div style="display:inline-block;">
                 <label style="font-size: 85%;">Country Code</label>
-                <input style="width: 56px;" type="text" value="{{ form.vars.value.country_code }}" name="{{ form.vars.full_name ~ '[country_code]' }}" />
+                <input style="width: 56px;" type="text" value="{{ form.vars.value.country_code }}" name="{{ form.vars.full_name ~ '[country_code]' }}" >
             </div>
             <div style="display:inline-block; margin-left:30px;" >
                 <label style="font-size: 85%;">Area Code</label>
-                <input  style="width: 56px;" type="text" value="{{ form.vars.value.area_code }}" name="{{ form.vars.full_name ~ '[area_code]' }}"  />
+                <input  style="width: 56px;" type="text" value="{{ form.vars.value.area_code }}" name="{{ form.vars.full_name ~ '[area_code]' }}" >
             </div>
             <div style="display:inline-block; margin-left:30px;">
                 <label style="font-size: 85%;">Phone Number</label>
-                <input type="text" value="{{ form.vars.value.number }}" name="{{ form.vars.full_name ~ '[number]' }}"  />
+                <input type="text" value="{{ form.vars.value.number }}" name="{{ form.vars.full_name ~ '[number]' }}"  >
             </div>
         </div>
         <div class="clearfix"></div>
@@ -46,15 +47,15 @@
         <div>
             <div style="display:inline-block;">
                 <label style="font-size: 85%;">Country Code</label>
-                <input style="width: 56px;" type="text" value="{{ form.vars.value.country_code }}" name="{{ form.vars.full_name ~ '[country_code]' }}" />
+                <input style="width: 56px;" type="text" value="{{ form.vars.value.country_code }}" name="{{ form.vars.full_name ~ '[country_code]' }}" >
             </div>
             <div style="display:inline-block; margin-left:30px;" >
                 <label style="font-size: 85%;">Area Code</label>
-                <input  style="width: 56px;" type="text" value="{{ form.vars.value.area_code }}" name="{{ form.vars.full_name ~ '[area_code]' }}"  />
+                <input  style="width: 56px;" type="text" value="{{ form.vars.value.area_code }}" name="{{ form.vars.full_name ~ '[area_code]' }}"  >
             </div>
             <div style="display:inline-block; margin-left:30px;">
                 <label style="font-size: 85%;">Phone Number</label>
-                <input type="text" value="{{ form.vars.value.number }}" name="{{ form.vars.full_name ~ '[number]' }}"  />
+                <input type="text" value="{{ form.vars.value.number }}" name="{{ form.vars.full_name ~ '[number]' }}"  >
             </div>
         </div>
         <div class="clearfix"></div>
@@ -79,13 +80,13 @@
         {#
         <div>
                 <label >Institution Website</label>
-                <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" />
+                <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" >
 
                 <label >Facebook Account</label>
-                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}"  />
+                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}"  >
 
                 <label >Twitter Account</label>
-                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}"  />
+                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}"  >
 
         </div>
         <div class="clearfix"></div>
@@ -97,7 +98,7 @@
     {% spaceless %}
     <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
         <label for="state">Address</label>
-        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_street" />
+        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_street" >
     </div>
     <div class="control-group">
         <div class="span4">
@@ -114,18 +115,18 @@
     <div>
         <span >
             <label>Unit or Room #</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" />
+            <input class="addressFields" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" >
         </span>
        </div>
     <div class="address3">
         <span >
             <label>Building</label>
-            <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" />
+            <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" >
         </span>
     </div>
        <div class="address">
             <label>Street</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
+            <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" >
     </div>
     <div class="clearfix"></div>
     #}
@@ -150,14 +151,14 @@
                  {% for property in selected.currentAncillaryData %}
                         {% if property.value == choice.value  %}
                              <li class="hca-highlight">
-                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
                                 {{ choice.label }}
                             </li>
                          {% endif %}
                      {% endfor %}
                  {% else %}
                      <li class="">
-                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
                         {{ choice.label }}
                     </li>
             {% endif %}
@@ -170,6 +171,7 @@
 {% block doctorSpecializations_list_widget %}
     {% spaceless %}
 
+
     {# this is temporary #}
     {% set treatments = { 1: 'Treatment 1', 2: 'Treatment 2', 3: 'Treatment 3' } %}
     {% set specializations = form.vars.data %}
@@ -181,7 +183,7 @@
             <ul>
             {% for key, treatment in treatments %}
                 <li>
-                    <input type="checkbox" name="service" value="{{ key }}" /> {{ treatment }}
+                    <input type="checkbox" name="service" value="{{ key }}" > {{ treatment }}
                 </li>
             {% endfor %}
             </ul>
@@ -196,29 +198,20 @@
 {% block admin_media_file_widget %}
 
     {% spaceless %}
-
-        {% set fieldName = fieldName is defined ? fieldName : 'media' %}
-        {% set mediaParentObject = form.parent.vars.data %}
-        {% if fieldName == 'media' %}
-            {% set mediaObject = mediaParentObject.media %}
-        {% elseif fieldName == 'logo' %}
-            {% set mediaObject = mediaParentObject.logo %}
+        {% set property_name = property_name is defined ? property_name : 'media' %}        
+        {% set media = attribute(form.parent.vars.value, property_name) %}
+        {% set className = lcfirst(getClass(form.parent.vars.value, true)) %}
+        {% if imageSize is not defined %}
+            {% set imageSize = '' %} 
         {% endif %}
 
-        {% if mediaObject %}
-            {{ media(mediaObject, mediaParentObject, 'default', {width: '220', style: "border:1px solid #ddd"}) | raw }}
+        {% if media %}
+            <img src="{{ media_src(media, className, imageSize) }}" style="max-width: 220px;padding: 2px; border: 1px solid #ddd">
             {% set mediaFileInput = '<input type="file" required="required" value="' ~ form.vars.value ~'" name="' ~ form.vars.full_name ~ '" id="' ~ form.parent.vars.name ~ '_' ~ form.vars.name ~ '">' %}
 
-            {% set deleteImageUrl = path('admin_media_ajaxDelete') %}
+            {% set params = json_encode({mediaId: media.id, mediaContext: className, imageType: imageType}) %}
 
-            {% set params = json_encode({
-                media_id: mediaObject.id,
-                parent_id: mediaParentObject.id,
-                parent_class : getClass(mediaParentObject),
-                remove_file: true
-            }) %}
-
-            <a href="{{ deleteImageUrl }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
+            <a href="javascript:void(0)" data-uri="{{ path('admin_media_ajaxDelete') }}" class="admin-remove-media" data-params="{{ params }}" data-input-file="{{ mediaFileInput }}" style="margin-left: 10px">remove</a>
 
             {# Load Js #}
             {{ render_media_file_script() | raw }}
@@ -247,14 +240,14 @@
                                {% for property in selected.currentAwardsData %}
                                     {% if property.value == choice.value  %}
                                         <li class="hca-highlight">
-                                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked/>
+                                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked>
                                             {{ choice.label | raw }}
                                         </li>
                                     {% endif %}
                                 {% endfor %}
                            {% else %}
                                  <li class="">
-                                    <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />
+                                    <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
                                     {{ choice.label | raw }}
                                 </li>
                           {% endif %}
@@ -264,3 +257,15 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block fancy_country_widget %}
+    {% spaceless %}
+        <input class="type_in hca-country pull-left" type="text" name="" id="country_input_field" placeholder="Select Country" autocomplete="off" data-autocomplete-trigger="#country_dropdown_button" data-dropdown="#country_dropdown_menu" > 
+        <input type="hidden" id="institution_profile_form_country" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+        
+        {% set city = form.parent.vars.value.city.id is defined ? form.parent.vars.value.city.id : '0' %}
+        {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}
+        {{ render_countryJsonList_widget(city, country) | raw  }}
+        
+    {% endspaceless %}
+{% endblock %}    

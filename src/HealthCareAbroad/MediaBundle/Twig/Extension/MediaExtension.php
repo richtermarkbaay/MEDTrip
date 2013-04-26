@@ -1,24 +1,26 @@
 <?php
+/**
+ * Media Twig Extention Helper
+ * @author Adelbert D. Silla
+ *
+ */
 namespace HealthCareAbroad\MediaBundle\Twig\Extension;
 
-use HealthCareAbroad\MediaBundle\Templating\Helper\MediaHelper;
-use HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager;
-use HealthCareAbroad\MediaBundle\Entity\Media;
+use Knp\Bundle\GaufretteBundle\FilesystemMap;
 
 class MediaExtension extends \Twig_Extension
 {
-    /**
-     * @var MediaHelper
-     */
-    protected $helper;
+    protected $filesystemMapper;
+    protected $mediaContext;
 
-    public function __construct(MediaHelper $helper)
+    function setFilesystemMapper(FilesystemMap $filesystemMapper)
     {
-        $this->helper = $helper;
-        
-//         $escaper = new \Twig_Extension_Escaper();
-//         $twig = new \Twig_Environment();
-//         $twig->addExtension($escaper);        
+        $this->filesystemMapper = $filesystemMapper;
+    }
+
+    function setMediaContext($mediaContext)
+    {
+        $this->mediaContext = $mediaContext;
     }
 
     /**
@@ -29,13 +31,54 @@ class MediaExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'media' => new \Twig_Function_Method($this, 'getMedia'),
+            'media_src' => new \Twig_Function_Method($this, 'getMediaSrc'),
+            'doctor_media_src' => new \Twig_Function_Method($this, 'getDoctorMediaSrc'),
+            'institution_media_src' => new \Twig_Function_Method($this, 'getInstitutionMediaSrc'),
+            'advertisement_media_src' => new \Twig_Function_Method($this, 'getAdvertisementMediaSrc'),
+            'specialization_media_src' => new \Twig_Function_Method($this, 'getSpecializationMediaSrc'),
         );
     }
 
-    public function getMedia(Media $media, $mediaOwner, $format = null, array $options = array())
+    /**
+     * @param string|array|object $media
+     * @param string $filesystemName
+     * @param string $size
+     * @return string Media source url.
+     */
+    public function getMediaSrc($media, $filesystemName, $size = '')
     {
-        return $this->helper->getMedia($media, $mediaOwner, $format, $options);
+        if(is_array($media) && isset($media['name'])) {
+            $filename = $media['name'];
+        } else if(is_object($media)) {
+            $filename = $media->getName();
+        } else {
+            $filename = $media;
+        }
+    
+        if($size)
+            $filename = $size . '_' . $filename;
+    
+        return $this->filesystemMapper->get($filesystemName)->getAdapter()->getUrl() . '/' . $filename;
+    }
+
+    public function getDoctorMediaSrc($media, $size = '')
+    {
+        return $this->getMediaSrc($media, $this->mediaContext['doctor'], $size);
+    }
+
+    public function getInstitutionMediaSrc($media, $size = '')
+    {
+        return $this->getMediaSrc($media, $this->mediaContext['institution'], $size);
+    }
+    
+    public function getAdvertisementMediaSrc($media, $size = '')
+    {
+        return $this->getMediaSrc($media, $this->mediaContext['advertisement'], $size);
+    }
+    
+    public function getSpecializationMediaSrc($media, $size = '')
+    {
+        return $this->getMediaSrc($media, $this->mediaContext['specialization'], $size);
     }
 
     /**

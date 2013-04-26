@@ -74,9 +74,14 @@ class InstitutionKernelEventListener
         $request = $event->getRequest();
         $session = $request->getSession();
         $matchedRoute = $request->get('_route');
-        if (!\preg_match('/^institution/', $matchedRoute)) {
+        if ($request->isXmlHttpRequest() || !\preg_match('/^institution/', $matchedRoute)) {
             // not a client admin route
             return false;
+        }
+        
+        // TODO: Quick fix only. We may want to check security context here instead
+        if ($matchedRoute == 'institution_login') {
+            return;
         }
         
         // validate sign up flow status if it's not complete yet

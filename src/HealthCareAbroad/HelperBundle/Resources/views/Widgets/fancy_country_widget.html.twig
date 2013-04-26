@@ -1,0 +1,39 @@
+     <div class="popup">
+        <button id="country_dropdown_button" data-toggle="dropdown" class="btn dropdown-toggle hca-location-btn">
+            <span class="icon-chevron-down"></span>
+        </button>
+        <div id="country_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
+    </div>     
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+<script type="text/javascript">
+(function($){
+    $(function(){
+
+    	// TODO: find a better way
+    	var _currentValue = $('#institution_profile_form_country').val();
+    	var _currentCity = '{{ cityId }}';
+    	if(_currentCity != 0){
+    	    Location.loadCities($('#institution_profile_form_country'), _currentCity );
+    	}
+    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+        $('#country_input_field').fancyAutocomplete({
+            'source': window.JSON.parse('{{ countryJsonList | raw }}'),
+            'autocomplete': {
+                'minLength': 0
+            },
+            'valueContainer': $('#institution_profile_form_country'),
+            'onAutocompleteSelectCallback': function(){
+            	Location.loadCities($('#institution_profile_form_country'), '{{ cityId }}' );
+                $('#country_input_field').data('fancyAutocomplete')
+                    .resetValue()
+                    .reloadSource()
+                    .disabled(false);
+            }
+        });
+
+        $('#institution_profile_form_country').val(_currentValue);
+        $('#country_input_field').val('{{ country }}');
+    });
+})(jQuery);
+</script>

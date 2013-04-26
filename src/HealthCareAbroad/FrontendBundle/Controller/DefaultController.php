@@ -41,7 +41,7 @@ class DefaultController extends ResponseHeadersController
     private $resultsPerPage = 15;
 
     public function indexAction(Request $request)
-    {
+    {        
         return $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
     }
 

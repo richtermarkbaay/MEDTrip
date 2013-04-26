@@ -19,10 +19,11 @@
                 {% include '::notice.admin.html.twig' %}
                 
                 <form novalidate action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-
+                    {% set imageType = constant('HealthCareAbroad\\TreatmentBundle\\Services\\SpecializationMediaService::LOGO_TYPE_IMAGE') %}
+                    {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SPECIALIZATION_DEFAULT_LOGO') %}
                     {{ form_row(form.name) }}
                     {{ form_row(form.description) }}
-                    {{ form_row(form.media) }}
+                    {{ form_row(form.media, {label: 'Logo', imageType: imageType, imageSize: imageSize}) }}
                     {{ form_rest(form) }}
                     <div class="clear"><br></div>
                     <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>

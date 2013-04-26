@@ -5,15 +5,13 @@
 
 <div>Select a file to upload:</div>
 
-<form action="{{ path(routes.media_upload, {'institutionId': institution.id, isLogo: isLogo is defined ? isLogo : false}) }}" enctype="multipart/form-data" style="margin-bottom: 200px" method="POST" onsubmit="validate(this);">
+<form action="{{ uploadFormAction }}" enctype="multipart/form-data" style="margin-bottom: 20px" method="POST" onsubmit="validate(this);">
     <input type="file" name="file" />
-    <input type="hidden" name="multiUpload" value="0"/>
-
     <input type="submit" name="submit" value="Upload"/>
 </form>
 
 <div>
-    Switch to the <a href="{{ path('admin_institution_gallery_add', { 'institutionId': institution.id}) }}">multi-file uploader</a>.
+    Switch to the <a href="{{ path(app.request.get('_route'), app.request.get('_route_params')) }}">multi-file uploader</a>
 </div>
 
 <script type="text/javascript">

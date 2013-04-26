@@ -1,3 +1,44 @@
+<style>
+    .file-browse-wrapper {
+        width: 106px;    
+        height: 28px;
+        background: linear-gradient(to bottom, #C4C4C4 0%, #AAAAAA 49%, #C4C4C4 100%) repeat scroll 0 0 transparent;
+        border-radius: 3px;
+        border: 1px solid #888888;
+        overflow:hidden;
+    }
+    
+    .file-browse-wrapper:before {
+        content: "";
+        position: relative;
+        top: 3px;
+        color: #333333;
+        left: 30px;
+        text-shadow: 0 1px 1px #CCC;
+    }
+    
+    .file-browse-wrapper:hover {
+        cursor: pointer;
+        background: linear-gradient(to bottom, #D6D6D6 0%, #AAAAAA 49%, #D6D6D6 100%) repeat scroll 0 0 transparent;
+    }
+    
+    .file-browse-wrapper:active {
+        background: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .file-browse-wrapper > input[type=file]{
+    
+        margin-left:-145px;
+        
+        opacity:0;
+        
+        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+        
+        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+    
+    }
+</style>
+
 <section class="section media-upload">
     <h2>
         Logo and Banner
@@ -9,29 +50,39 @@
         Having a logo and banner is important, but don't worry if you don't have the images now, you can always add them later.
     </p>
     <div class="row-fluid">
+        {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
         <div class="span6">
             <div class="media">
-                <img src="http://placehold.it/96x96" class="pull-left">
+                {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://placehold.it/96x96' %}  
+                <img src="{{ logoImage }}" class="pull-left">
+                
                 <div class="media-body">
                     <p>
                         Your logo should be no smaller than 256 x 256 pixels.
                     </p>
-                    <button class="btn btn-default">
-                        Upload Logo
-                    </button>
+                        
+                    <div class="file-browse-wrapper">
+
+                        {{ form_widget(form.logo) }}
+                    </div>
                 </div>
             </div>
         </div>
         <div class="span6 divider">
             <div class="media">
-                <img src="http://placehold.it/96x96" class="pull-left">
+                {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://placehold.it/96x96' %}  
+                <img src="{{ featuredImage }}" class="pull-left">
+
                 <div class="media-body">
                     <p>
                         Your banner should be no smaller than 950 pixels wide x 420 pixels high.
                     </p>
-                    <button class="btn btn-default">
+                    <div class="file-browse-wrapper">
+                        {{ form_widget(form.featuredMedia) }}
+                    </div>
+                    <!-- button class="btn btn-default">
                         Upload Banner
-                    </button>
+                    </button> -->
                 </div>
             </div>
         </div>

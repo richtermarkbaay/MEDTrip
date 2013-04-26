@@ -11,7 +11,7 @@
     			<div class="thumb span2">
     				<a href="{{ get_country_url(each.country) }}" class="tip" data-original-title="{{ each.title }}">
     			        {% if each.media %}
-    				        {{ media(each.media, each, 'default', {class: 'img-polaroid'}) | raw }}
+    			            <img src="{{ advertisement_media_src(each.media) }}" class="img-polaroid">
     				    {% else %}
     				        <img class="img-polaroid" src="{{ imageplaceholder.destinationIcon }}" alt="featured_pic" />
     				    {% endif %}

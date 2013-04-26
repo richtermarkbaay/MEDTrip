@@ -31,6 +31,11 @@ class Doctor
     private $lastName;
 
     /**
+     * @var     
+     */
+    private $country;
+    
+    /**
      * @var string
      */
     private $suffix;

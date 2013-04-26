@@ -4,6 +4,9 @@
  *
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
+
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
@@ -124,7 +127,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
         return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
     }
-    
 
     /**
      * Action page for Institution Profile Page
@@ -362,31 +364,9 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function uploadAction(Request $request)
     {
-
         $fileBag = $request->files;
 
-        if ($fileBag->get('file')) {
-
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
-
-            if(is_object($result)) {
-
-                $media = $result;
-                $mediaType = $request->get('media_type');
-
-                if($mediaType == 'logo') {
-
-                    // Delete current logo
-                    $this->get('services.media')->delete($this->institution->getLogo(), $this->institution);
-
-                    // save uploaded logo
-                    $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
-
-                } else if($mediaType == 'featuredImage') {
-                    $this->get('services.institution')->saveMediaAsFeaturedImage($this->institution, $media);
-                }
-            }
-        }
+        $this->get('services.institution.media')->upload($fileBag->get('file'), $this->institution, $request->get('image_type'));
 
         return $this->redirect($this->generateUrl('institution_account_profile'));
     }
