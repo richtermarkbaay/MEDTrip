@@ -69,9 +69,6 @@ class FlagTwigExtension extends \Twig_Extension
                             'label' => $a['name']
             );
         }
-        if ($cityId == null) {
-            $cityId = 0;
-        }
         
         $params = array( 'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
                         'cityId' => $cityId);
