@@ -9,7 +9,7 @@
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
                 <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.value.phone_number.abbr is defined ? form.vars.value.phone_number.abbr: '' }}"  id="phoneNumberAbbr">
+                <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}" value="{{ form.vars.value.phone_number.abbr is defined ? form.vars.value.phone_number.abbr: '' }}"  id="phoneNumberAbbr">
             </div>
         </div>
     </div>
@@ -78,21 +78,15 @@
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
         <div class="control-group social-media">
-            <div class="span4">
-                <label for="twitter">Twitter</label>
-                <i class="icon-twitter icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span10 pull-right">
-            </div>
-            <div class="span4">
-                <label for="facebook">Facebook</label>
-                <i class="icon-facebook icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span10 pull-right">
-            </div>
-            <div class="span4">
-                <label for="googleplus">Google +</label>
-                <i class="icon-google-plus icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span10 pull-right">
-            </div>
+            <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
+            <i class="icon-twitter icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span11 pull-right">
+            <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
+            <i class="icon-facebook icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span11 pull-right">
+            <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
+            <i class="icon-google-plus icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span11 pull-right">
         </div>
 
         {#
@@ -283,3 +277,13 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block fancy_country_widget %}
+    {% spaceless %}
+        <input class="type_in hca-country pull-left" type="text" name="" id="country_input_field" placeholder="Select Country" autocomplete="off" data-autocomplete-trigger="#country_dropdown_button" data-dropdown="#country_dropdown_menu"> 
+        <input type="hidden" value="{{ form.vars.value.id }}" name="{{ form.vars.full_name }}" id="institution_profile_form_country" />
+        
+        {% set city = form.parent.vars.value.city.id is defined ? form.parent.vars.value.city.id : '0'%}
+        {{ render_countryJsonList_widget(city) | raw }}
+    {% endspaceless %}
+{% endblock %}    

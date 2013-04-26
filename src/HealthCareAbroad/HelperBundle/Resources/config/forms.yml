@@ -110,3 +110,10 @@ services:
         class: HealthCareAbroad\HelperBundle\Form\Extension\AdminMediaFileTypeExtension
         tags:
             - { name: form.type_extension, alias: admin_media_file_extension }
+            
+    form.custom.fancy_country:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType
+        calls:
+            - [setLocationService, [@services.location]]
+        tags:
+            - { name: form.type, alias: fancy_country }

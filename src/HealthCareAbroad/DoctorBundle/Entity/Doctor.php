@@ -31,6 +31,11 @@ class Doctor
     private $lastName;
 
     /**
+     * @var     
+     */
+    private $country;
+    
+    /**
      * @var string
      */
     private $suffix;
@@ -69,11 +74,6 @@ class Doctor
      * @var \HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $media;
-
-    /**
-     * @var \HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
 
     /**
      * @var \Doctrine\Common\Collections\Collection

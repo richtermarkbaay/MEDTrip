@@ -61,9 +61,12 @@
                             </div>
                             <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_email">  Your Email address
-                                    <small> (Your own personal email.) </small>
+                                    <small> (Your company email address.)  </small>
                                 </label>
-                                {{ form_widget(form.email, { 'attr': {'class': 'span6', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                                {{ form_widget(form.email, { 'attr': {'class': 'span6 tooltip-wrap2', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                                    <div class="tooltip-content2 hca-email">
+                                                Your email address will be your username when you log in.
+                                            </div>
                             </div>
                             <div class="control-group row-field {{ (form.password.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_password">
@@ -89,7 +92,7 @@
                     </h2>
                      <div class="row-fluid">
                         <div class="span12">
-                            {{ form_widget(form.contactNumber) }}
+                            {{ form_widget(form.contactDetail) }}
                         </div>
                     </div>
                 </section>
