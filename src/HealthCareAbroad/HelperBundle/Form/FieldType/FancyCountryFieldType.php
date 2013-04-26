@@ -26,12 +26,14 @@ class FancyCountryFieldType extends AbstractType
     {
         $this->locationService = $service;
     }
-
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-         
+        $resolver->setDefaults(array(
+                'data_class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
+        ));
     }
-
+   
     public function getParent()
     {
         return 'text';
