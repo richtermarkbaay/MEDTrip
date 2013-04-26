@@ -25,7 +25,7 @@
 	        _start_pos = _spanCode.indexOf('(') + 1;
 	        _end_pos = _spanCode.indexOf(')',_start_pos);
 	        _text_to_get = _spanCode.substring(_start_pos,_end_pos)
-	        
+	       
 	        _beforeParent = _element.parent().prev();
 	        _beforeParent.find('span.flag16').attr('class', _abbr); //change button flag with newly selected abbr
 	        _element.parent().hide();
@@ -34,19 +34,27 @@
 	        	_inputId = _element.parent().siblings('input[type=text]:first'); //append to input field
 	        	_inputId.val(_text_to_get);
 	        	_inputId.next('input').val(_abbr.replace('flag16', ''));
+	        	
+	        	_countryInput = _element.parent().siblings('input[type=text]:third'); //get phone number /mobile number country code input field
+	        	_countryInput.val(_text_to_get); //append country code
+	        	
 	        }else{
 	            $('#'+_inputId).val(_text_to_get); //append to input field
 	            $('#'+_inputId).next('input').val(_abbr.replace('flag16', ''));
+	            
+	            _countryInput = $('#'+_inputId).next().next('input');  //get phone number /mobile number country code input field
+	        	_countryInput.val(_text_to_get); //append country code
 	        }
 	    },
 	    
 	    'changeFlag': function(_key, _val, _code, _element){
 	    	if(_code){ //check if code passed is not empty
+	    		
 				_beforeParent = _element.parent('div.input-prepend').find('.dropdown-toggle');
 				_abbr = _code.toLowerCase();
 		    	_beforeParent.find('span.flag16').attr('class', 'flag16 '+ _abbr);
 		    	_element.next('input').val(_abbr);
-		    	
+		    	_element.next().next('input').val(_val);
 		    	return false;
 	    	}
 	    },

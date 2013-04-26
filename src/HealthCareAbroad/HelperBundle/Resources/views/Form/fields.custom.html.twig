@@ -2,32 +2,19 @@
     {% spaceless %}
 
     <div class="span6">
-        <label for="Phone Number">{{ label_prefix }} Phone Number</label>
+        {# contact_label_type(form.vars.value.type) #}
+        <label for="Phone Number">{{ form.vars.value.type == 1 ? 'Phone Number' : 'Mobile Number'  }}</label>
         <div class="hca-countrycodes">
             <div class="input-prepend">
-                {% set phone = "phoneNumberSelector" %}
+                {% set phone = 'institutionSignUp_contactDetails_' ~  form.vars.name ~ '_number' %}
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}" value="{{ form.vars.value.phone_number.abbr is defined ? form.vars.value.phone_number.abbr: '' }}"  id="phoneNumberAbbr">
+                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="institutionSignUp_contactDetails_{{ form.vars.name }}_number" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_abbr">
+                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_country_code}}">
             </div>
         </div>
     </div>
-
-    {% if display_both %}
-     <div class="span6">
-         <label for="Mobile Number">{{ label_prefix }} Mobile Number</label>
-        <div class="hca-countrycodes">
-            <div class="input-prepend row-field">
-                {% set mobile = "mobileNumberSelector" %}
-                  {{ render_contactNumber_widget(mobile) | raw }}
-                <input type="text" class="span9 numberSelector" value="+63" name="{{ form.vars.full_name ~ '[mobile_number][number]' }}" data-type="mobile" id="mobileNumberSelector"  maxlength="15" required/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[mobile_number][abbr]' }}"  id="mobileNumberAbbr">
-            </div>
-        </div>
-    </div>
-    {% endif %}
-
     {% endspaceless %}
 {% endblock %}
 

@@ -48,6 +48,11 @@ class Doctor
     /**
      * @var string
      */
+    private $country;
+    
+    /**
+     * @var string
+     */
     private $contactNumber;
 
     /**

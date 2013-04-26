@@ -133,3 +133,21 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                     -
                         name: doctor_id
                         referencedColumnName: id
+                        
+        contactDetails:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+            cascade:
+                - "persist"
+            mappedBy: null
+            inversedBy: institution_medical_center
+            joinTable:
+                name: institution_medical_center_contact_details
+                joinColumns:
+                    -
+                        name: institution_medical_center_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: contact_detail_id
+                        referencedColumnName: id
+            orderBy: null  

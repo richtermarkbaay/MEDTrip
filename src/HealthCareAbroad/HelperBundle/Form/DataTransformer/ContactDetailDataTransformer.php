@@ -10,12 +10,6 @@ use Symfony\Component\Form\DataTransformerInterface;
 class ContactDetailDataTransformer implements DataTransformerInterface
 {
     private $defaultValue = array('country_code' => '', 'area_code' => '', 'number' => '');
-    private $service;
-    
-    public function __construct(ContactDetailService $service)
-    {
-        $this->service = $service;
-    }
     
     public function transform($data)
     {

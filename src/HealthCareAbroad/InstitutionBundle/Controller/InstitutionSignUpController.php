@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
@@ -139,14 +143,19 @@ class InstitutionSignUpController extends InstitutionAwareController
 //         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
+        $phoneNumber = new ContactDetail();
+        $phoneNumber->setType(ContactDetailTypes::PHONE);
+        $institution->addContactDetail($phoneNumber);
+        
+        $mobileNumber = new ContactDetail();
+        $mobileNumber->setType(ContactDetailTypes::MOBILE);
+        $institution->addContactDetail($mobileNumber);
         $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
-
         if ($request->isMethod('POST')) {
             $form->bind($request);
-
             if ($form->isValid()) {
-                $institution = $form->getData();
-                var_dump($form->get('contactDetail')->getData());exit;
+                $institution = $form->getData()->getContactDetails();
+                var_dump($institution);exit;
                 // initialize required database fields
                 $institution->setName(uniqid());
                 $institution->setAddress1('');
@@ -159,7 +168,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
                 $institution->setZipCode('');
                 $institution->setSignupStepStatus(1); // this is always the first step
-
+                
                 $factory->save($institution);
 
                 // create Institution user
@@ -167,7 +176,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUser->setEmail($form->get('email')->getData());
                 $institutionUser->setFirstName($form->get('firstName')->getData());
                 $institutionUser->setLastName($form->get('lastName')->getData());
-                $institutionUser->setContactNumber($form->get('contactNumber')->getData());
+                $institutionUser->setContactNumber('');//$form->get('contactNumber')->getData());
                 $institutionUser->setPassword($form->get('password')->getData());
                 $institutionUser->setJobTitle($form->get('jobTitle')->getData());
                 $institutionUser->setInstitution($institution);
