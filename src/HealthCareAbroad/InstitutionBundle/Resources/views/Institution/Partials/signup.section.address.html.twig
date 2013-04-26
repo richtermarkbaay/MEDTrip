@@ -12,8 +12,8 @@
              <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                 <div class="span6">
                     <label for="Country">Country</label>
-                    <div class="input-append hca-location">
-                        {{ form_widget(form.country, { attr: {class: 'selectAdressFields country_dropdown'} } )}}
+                    <div class="input-append hca-location combo-wrapper">
+                      {{ form_widget(form.country )}} 
                     </div>
                 </div>
                 <div class="span6">

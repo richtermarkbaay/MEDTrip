@@ -31,6 +31,7 @@ class FlagTwigExtension extends \Twig_Extension
     {
         return array(
             'render_contactNumber_widget' => new \Twig_Function_Method($this, 'render_contactCountryList_widget'),
+            'render_countryJsonList_widget' => new \Twig_Function_Method($this, 'render_countryJsonList_widget'),
         );
     }
     
@@ -55,6 +56,28 @@ class FlagTwigExtension extends \Twig_Extension
         return $this->twig->render($twigTemplate, $params);
     }
     
+    public function render_countryJsonList_widget($cityId = null, $twigTemplate = null)
+    {
+        $countryGlobalData = $this->service->getGlobalCountryList();
+        $code = array();
+        $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:fancy_country_widget.html.twig' : $twigTemplate;
+        foreach ($countryGlobalData as $var => $a){
+            $abbr = strtolower($a['abbr']);
+            $code[] =  array(
+                            'id' => $a['id'],
+                            'custom_label' => $a['name']." <span class='flag16 ".$abbr."'> </span>",
+                            'label' => $a['name']
+            );
+        }
+        if ($cityId == null) {
+            $cityId = 0;
+        }
+        
+        $params = array( 'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
+                        'cityId' => $cityId);
+        
+        return $this->twig->render($twigTemplate, $params);
+    }
      public function getContactCountryList()
      {
          return $returnValue;
