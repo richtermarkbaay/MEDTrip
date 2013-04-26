@@ -3,9 +3,9 @@
 {% block body %}
 
     {# TODO: move this somewhere else #}
-    {% if confirmationMessage %}
+    {# if confirmationMessage %}
         {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' with { message: confirmationMessage } %}
-    {% endif %}
+    {% endif #}
 
     <div id="main-wrap">
         {% include 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}

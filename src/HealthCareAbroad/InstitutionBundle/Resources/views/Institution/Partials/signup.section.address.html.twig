@@ -10,31 +10,32 @@
 
             {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
              <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
-                <div class="span12">
+                <div class="span6">
                     <label for="Country">Country</label>
-                    <div class="input-append hca-location">
-                        {{ form_widget(form.country, { attr: {class: 'selectAdressFields '} } )}}
+                    <div class="input-append hca-location combo-wrapper">
+                      {{ form_widget(form.country )}} 
                     </div>
                 </div>
-            </div>
-            <div class="control-group">
-                <div class="span5">
+                <div class="span6">
                     <label>State / Province</label>
                     {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
                 </div>
-                <div class="span5">
+            </div>
+            <div class="control-group">
+                <div class="span6">
                     <label>City</label>
                     <div class="input-append hca-location">
                         {{ form_widget(form.city, { attr: {class: 'selectAdressFields city_dropdown'} } )}}
                     </div>
                 </div>
-                <div class="span2">
-                    <label for="zip">Postal Code</label>
-                    {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
+                <div class="span6">
+                    <label for="zip"> Zip / Postal Code</label>
+                    {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
                 </div>
             </div>
             <div class="control-group">
-                {{ form_row(form.addressHint, { attr: {class: 'span12'} } )}}
+                {{ form_row(form.addressHint, { attr: {class: 'span12 tooltip-wrap2'} } )}}
+                <div class="tooltip-content2">If there are any instructions that will help someone find you that aren't included in the address put them here.  This could be something like, 'On the 2nd loor', or 'Next door to the gas station', whatever will make it easy for patients to find you!</div>
             </div>
         </div>
     </div>

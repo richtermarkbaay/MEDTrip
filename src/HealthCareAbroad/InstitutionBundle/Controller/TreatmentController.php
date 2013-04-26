@@ -36,6 +36,7 @@ class TreatmentController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         $isId = $this->getRequest()->get('isId', 0);
         if ($isId) {
             $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($isId);

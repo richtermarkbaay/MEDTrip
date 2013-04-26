@@ -9,8 +9,6 @@ use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSignupStepStatus;
-
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 
 use HealthCareAbroad\PagerBundle\Pager;
@@ -66,6 +64,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
     public function preExecute()
     {
+        parent::preExecute();
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 
         if ($imcId=$this->getRequest()->get('imcId',0)) {
@@ -128,152 +127,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
         return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
     }
-    /**
-     * This is the action handler after signing up as an Institution with Single Center.
-     * User will be directed immediately to create clinic page.
-     *
-     * TODO:
-     *     This has a crappy rule where institution name and description will internally be the name and description of the clinic.
-     *
-     * @author acgvelarde
-     * @return
-     */
-    protected function completeRegistrationSingleCenter()
-    {
-        $error = false;
-        $success = false;
-        $errorArr = array();
-
-        $institutionService = $this->get('services.institution');
-        $institutionMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
-
-        if((int)$this->institution->getSignupStepStatus() === 0 && $institutionMedicalCenter) {
-            $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-            return $this->redirect($this->generateUrl($routeName));
-        }
-
-        if (!$institutionService->isSingleCenter($this->institution)) {
-            // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
-            return $this->redirect($this->generateUrl('institution_homepage'));
-        }
-
-        if (\is_null($institutionMedicalCenter)) {
-            $institutionMedicalCenter = new InstitutionMedicalCenter();
-        }
-
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution , array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-
-        if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
-
-            if ($form->isValid()) {
-
-                // save institution and create an institution medical center
-                $this->get('services.institution_signup')
-                    ->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
-
-                $this->get('services.institution_property')
-                    ->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
-
-                //TODO: update getRouteNameByStatus to reflect changes in the flow
-                //$routeName = InstitutionSignupStepStatus::getRouteNameByStatus($this->institution->getSignupStepStatus());
-                $routeName = 'institution_signup_medical_center';
-
-                // this should redirect to 2nd step
-                return $this->redirect($this->generateUrl($routeName, array('imcId' => $institutionMedicalCenter->getId())));
-            }
-            $error = true;
-            $form_errors = $this->get('validator')->validate($form);
-
-            if($form_errors){
-
-                foreach ($form_errors as $_err) {
-
-                    $errorArr[] = $_err->getMessage();
-                }
-            }
-        }
-
-        return $this->render('InstitutionBundle:Institution:afterRegistration.singleCenter.html.twig', array(
-            'form' => $form->createView(),
-            'institutionMedicalCenter' => $institutionMedicalCenter,
-            'isSingleCenter' => true,
-            'confirmationMessage' => $this->confirmationMessage,
-            'error' => $error,
-            'error_list' => $errorArr
-        ));
-    }
-
-    /**
-     *
-     */
-    protected function completeRegistrationMultipleCenter()
-    {
-        $error = false;
-        $success = false;
-        $errorArr = array();
-
-        if((int)$this->institution->getSignupStepStatus() === 0) {
-            return $this->redirect($this->generateUrl('institution_account_profile'));
-        }
-
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-        $institutionTypeLabels = InstitutionTypes::getLabelList();
-
-        if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
-            if ($form->isValid()) {
-
-                $files = $this->request->files->get('institution_profile_form');
-
-                if(isset($files['logo'])) {
-                    $logoMedia = $this->get('services.institution.media')->uploadLogo($files['logo'], $this->institution, false);
-                    if($logoMedia) {
-                        $form->getData()->setLogo($logoMedia);
-                    }
-                }
-
-                if(isset($files['feateredMedia'])) {
-                    $featuredMedia = $this->get('services.institution.media')->uploadFeaturedImage($files['logo'], $this->institution, false);
-                    if($featuredMedia) {
-                        $form->getData()->setFeaturedMedia($featuredMedia);
-                    }
-                }
-
-                $this->get('services.institution_signup')
-                    ->completeProfileOfInstitutionWithMultipleCenter($form->getData());
-
-                $this->get('services.institution_property')
-                    ->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
-
-                $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
-                $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-
-                //TODO: redirect to add specializations
-                return $this->redirect($this->generateUrl('institution_homepage'));
-            }
-            $error = true;
-            $form_errors = $this->get('validator')->validate($form);
-
-
-            if($form_errors){
-                foreach ($form_errors as $_err) {
-                    $errorArr[] = $_err->getMessage();
-                }
-            }
-        }
-
-        return $this->render('InstitutionBundle:Institution:afterRegistration.multipleCenter.html.twig', array(
-            'form' => $form->createView(),
-            'institution' => $this->institution,
-            'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
-            'confirmationMessage' => $this->confirmationMessage,
-            'error' => $error,
-            'error_list' => $errorArr,
-        ));
-    }
-
-
 
     /**
      * Action page for Institution Profile Page
@@ -304,17 +157,17 @@ class InstitutionAccountController extends InstitutionAwareController
             $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
 
             $signupStepStatus = $this->institution->getSignupStepStatus();
-            if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
-                $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
-                $params = InstitutionSignupStepStatus::isStep1($signupStepStatus) ? array() : array('imcId' => $this->institutionMedicalCenter->getId());
-                return $this->redirect($this->generateUrl($routeName, $params));
-            }
-            else {
-                if (!$templateVariables['institutionMedicalCenter']) {
-                    // this must have been created from HCA Admin since this single institution does not have a medical center
-                    return $this->redirect($this->generateUrl(InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP1)));
-                }
-            }
+//             if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
+//                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
+//                 $params = InstitutionSignupStepStatus::isStep1($signupStepStatus) ? array() : array('imcId' => $this->institutionMedicalCenter->getId());
+//                 return $this->redirect($this->generateUrl($routeName, $params));
+//             }
+//             else {
+//                 if (!$templateVariables['institutionMedicalCenter']) {
+//                     // this must have been created from HCA Admin since this single institution does not have a medical center
+//                     return $this->redirect($this->generateUrl(InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP1)));
+//                 }
+//             }
 
             $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
                 ->createView();

@@ -436,11 +436,6 @@ class InstitutionMedicalCenterService
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getCountByInstitution($institution);
     }
 
-    public function getFirstByInstitutionId($institutionId)
-    {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getFirstByInstitutionId($institutionId);
-    }
-
     private static $defaultDailyValues = array(
         'isOpen' => 1,
         'notes' => '',

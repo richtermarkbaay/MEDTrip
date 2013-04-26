@@ -8,38 +8,7 @@
 
             <div class="pull-right">
                 <div class="navbar">
-                    {% if constant('HealthCareAbroad\\InstitutionBundle\\Entity\\InstitutionSignupStepStatus::STEP2') <= institution.getSignupStepStatus %}
-                    <ul class="nav">
-                        <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-hospital"></i>{{ institution.name }}<i class="icon-caret-down"></i>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li class="nav-header">MANAGE PROFILE</li>
-                                <li>
-                                    <a href="hospital-profile.html"> <i class="icon-eye-open"></i> View Hospital Profile </a>
-                                </li>
-
-                                <li class="divider"></li>
-
-                                <li class="nav-header">MANAGE SERVICES & AWARDS</li>
-                                <li>
-                                    <a href="services.html"><i class="icon-ambulance"></i> Services </a>
-                                </li>
-                                <li>
-                                    <a href="awards.html"><i class="icon-certificate"></i>  Awards, Certifications, & Affiliations  </a>
-                                </li>
-
-                                <li class="divider"></li>
-
-                                <li class="nav-header">MANAGE IMAGES / VIDEOS</li>
-                                <li>
-                                    <a href="#"> <i class="icon-picture"></i> Media Files </a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    {% endif %}
+                    
 
                     <ul class="nav">
                         <li>

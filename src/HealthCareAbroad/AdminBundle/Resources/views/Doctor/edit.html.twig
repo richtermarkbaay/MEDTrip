@@ -14,6 +14,7 @@
         %}
             {% block sectionContent %}
                 {% include '::notice.admin.html.twig' %}
+
                 <form novalidate="novalidate" action="{{ doctor.id ? path('admin_doctor_edit_save', {'idId': doctor.id }) : path('admin_doctor_add_save') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                     <!-- start id-form -->
                         {% set imageType = constant('HealthCareAbroad\\DoctorBundle\\Services\\DoctorMediaService::LOGO_TYPE_IMAGE') %}
@@ -44,13 +45,12 @@
                     <!-- end id-form  -->
                 </form>
             {% endblock %}
-
         {% endembed %}
     </div>
 
 {% endblock %}
-
 {% block inlineJavascriptCode %}
+    <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 	<script type="text/javascript">
 
 	$(function() {

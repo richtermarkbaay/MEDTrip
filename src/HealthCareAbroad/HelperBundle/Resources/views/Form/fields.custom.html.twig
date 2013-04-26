@@ -9,7 +9,7 @@
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
                 <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.phone_number.number | length ? form.vars.value.phone_number.number : '+63' }}" name="{{ form.vars.full_name ~ '[phone_number][number]' }}" data-type="phone" id="phoneNumberSelector" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.value.phone_number.abbr }}"  id="phoneNumberAbbr">
+                <input type="hidden" name="{{ form.vars.full_name ~ '[phone_number][abbr]' }}" value="{{ form.vars.value.phone_number.abbr is defined ? form.vars.value.phone_number.abbr: '' }}"  id="phoneNumberAbbr">
             </div>
         </div>
     </div>
@@ -53,24 +53,40 @@
     {% endspaceless %}
 {% endblock %}
 
+{% block contact_detail_widget %}
+    {% spaceless %}
+    
+        <div>
+            <div style="display:inline-block;">
+                <label style="font-size: 85%;">Country Code</label>
+                <input style="width: 56px;" type="text" value="{{ form.vars.value.country_code }}" name="{{ form.vars.full_name ~ '[country_code]' }}" />
+            </div>
+            <div style="display:inline-block; margin-left:30px;" >
+                <label style="font-size: 85%;">Area Code</label>
+                <input  style="width: 56px;" type="text" value="{{ form.vars.value.area_code }}" name="{{ form.vars.full_name ~ '[area_code]' }}"  />
+            </div>
+            <div style="display:inline-block; margin-left:30px;">
+                <label style="font-size: 85%;">Phone Number</label>
+                <input type="text" value="{{ form.vars.value.number }}" name="{{ form.vars.full_name ~ '[number]' }}"  />
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    
+    {% endspaceless %}
+{% endblock %}
+
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
         <div class="control-group social-media">
-            <div class="span4">
-                <label for="twitter">Twitter</label>
-                <i class="icon-twitter icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span10 pull-right">
-            </div>
-            <div class="span4">
-                <label for="facebook">Facebook</label>
-                <i class="icon-facebook icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span10 pull-right">
-            </div>
-            <div class="span4">
-                <label for="googleplus">Google +</label>
-                <i class="icon-google-plus icon-2x pull-left span2"></i>
-                <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span10 pull-right">
-            </div>
+            <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
+            <i class="icon-twitter icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span11 pull-right">
+            <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
+            <i class="icon-facebook icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span11 pull-right">
+            <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
+            <i class="icon-google-plus icon-2x pull-left span1"></i>
+            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span11 pull-right">
         </div>
 
         {#
@@ -94,7 +110,7 @@
     {% spaceless %}
     <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
         <label for="state">Address</label>
-        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" />
+        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_street" />
     </div>
     <div class="control-group">
         <div class="span4">
@@ -253,3 +269,12 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block fancy_country_widget %}
+    {% spaceless %}
+        <input class="type_in hca-country pull-left" type="text" name="" id="country_input_field" placeholder="Select Country" autocomplete="off" data-autocomplete-trigger="#country_dropdown_button" data-dropdown="#country_dropdown_menu"> 
+        <input type="hidden" value="{{ form.vars.value}}" name="{{ form.vars.full_name }}" id="institution_profile_form_country" />
+        {% set city = form.parent.vars.value.city is defined %}
+        {{ render_countryJsonList_widget(city) | raw }}
+    {% endspaceless %}
+{% endblock %}    

@@ -11,7 +11,9 @@
                 {% elseif each == 'name' %}
                     {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
                 {% elseif each == 'address1' %}
+                    <div id="map_canvas" style="width: 530px; height: 300px"></div> 
                             {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
+                            {{ form_widget(institutionForm.coordinates) }}
                         <div class="control-group">
                             <div class="span12">
                                 {{ form_label(institutionForm.country) }}
@@ -40,8 +42,7 @@
                             {{ form_label(institutionForm.addressHint)}}
                             {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
                             {{ form_errors(institutionForm.addressHint) }}
-                        </div>
-                    
+                        </div> 
                 {% elseif each == 'contactNumber' or each == 'websites' %}
                 <div class="span12">
                     <div class="control-group">

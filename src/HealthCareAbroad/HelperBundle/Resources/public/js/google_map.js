@@ -16,10 +16,25 @@
 	mapOnChangeCallback: null,
 	recursion: 0,
 	defaultAddress: 'Washington, United States', // City and Country Address
-	selectedCity : document.getElementById('institution_profile_form_city'),
-	selectedCountry : document.getElementById('institution_profile_form_country'),
-	inputCoordinates : document.getElementById("institution_profile_form_coordinates"),
-		
+	
+    inputs: {
+        'selectedCity': '', 
+        'selectedCountry':'',
+        'inputCoordinates': '',
+        'selectedBuilding': '',
+        'selectedStreet' : '',
+    },
+    
+    setInputs: function(_val){
+        this.inputs = _val;
+        
+        return this;
+    },
+	setParams: function() {
+		if(GoogleMap.inputs.selectedCity.options){
+			GoogleMap.address = GoogleMap.inputs.selectedBuilding.value + " " + GoogleMap.inputs.selectedStreet.value + "," + GoogleMap.inputs.selectedCity.options[GoogleMap.inputs.selectedCity.selectedIndex].innerHTML + "," + GoogleMap.inputs.selectedCountry.options[GoogleMap.inputs.selectedCountry.selectedIndex].innerHTML;
+		}
+	},
 	initialize: function() {
 		
 		GoogleMap.setParams();
@@ -35,13 +50,10 @@
 		GoogleMap.geocoder.geocode({ latLng: pos }, 
 		function(responses) {
 			if (responses && responses.length > 0) {
-				latLngString = responses[0].geometry.location.lat() + ", " + responses[0].geometry.location.lng();
-				GoogleMap.inputCoordinates.value = latLngString;
+				latLngString = responses[0].geometry.location.lat() + "," + responses[0].geometry.location.lng();
+				GoogleMap.inputs.inputCoordinates.value = latLngString;
 			} 
 		});
-	},
-	setParams: function() {
-		GoogleMap.address = document.getElementById('institution_profile_form_building').value + " " + document.getElementById('institution_profile_form_steet').value + "," + GoogleMap.selectedCity.options[GoogleMap.selectedCity.selectedIndex].innerHTML + "," + GoogleMap.selectedCountry.options[GoogleMap.selectedCountry.selectedIndex].innerHTML;
 	},
 	geocoderCallback: function(results, status) {
 		if (status == google.maps.GeocoderStatus.OK) {
@@ -50,16 +62,15 @@
 			GoogleMap.lng = results[0].geometry.location.lng();		        
 			GoogleMap.latLngString = GoogleMap.lat + ", " + GoogleMap.lng;
 			
-			GoogleMap.inputCoordinates.value = GoogleMap.latLngString;
+			GoogleMap.inputs.inputCoordinates.value = GoogleMap.latLngString;
 			
 			GoogleMap.setMarker(results[0].geometry.location);
 			GoogleMap.setLayer();
-
 	        google.maps.event.addListener(GoogleMap.marker, 'click', GoogleMap.toggleBounce);
 	        google.maps.event.addListener(GoogleMap.marker, 'dragend', function() {
 		          GoogleMap.geocodePosition(GoogleMap.marker.getPosition());
 		    });
-	        
+	        google.maps.event.trigger(GoogleMap.map, 'resize');
 	        if(GoogleMap.mapOnChangeCallback) {
 	        	GoogleMap.mapOnChangeCallback();
 	        }
@@ -75,7 +86,7 @@
         if (GoogleMap.marker) {
         	GoogleMap.marker.setMap(null);
         }
-
+        var latlng = new google.maps.LatLng(GoogleMap.inputs.inputCoordinates.value);
         GoogleMap.marker = new google.maps.Marker({
             map: GoogleMap.map,
             position: markerPosition,
@@ -104,8 +115,12 @@
 	},
 	
 	updateMap: function(address) {
-		GoogleMap.address = address;
-		GoogleMap.geocoder.geocode({ 'address': address}, GoogleMap.geocoderCallback);
+		if(address){
+			GoogleMap.address = address;
+		}else{
+		GoogleMap.setParams();
+		}
+		GoogleMap.geocoder.geocode({ 'address': GoogleMap.address}, GoogleMap.geocoderCallback);
 	},
 	
 	toggleBounce: function() {
@@ -117,19 +132,19 @@
 	},
 };
  
- (function($){
+// (function($){
 	 
-	 $('.addressFields').live('blur', function(e) {
-         if (e.which == 17){
-         	  e.preventDefault();
-         }
-     	GoogleMap.setParams();
-        GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
-     });
-		 
-	 $('.selectAdressFields').live('change', function(e) {
-		GoogleMap.setParams();
-		GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
-	 });
+//	 $('.addressFields').live('blur', function(e) {
+//         if (e.which == 17){
+//         	  e.preventDefault();
+//         }
+//     	GoogleMap.setParams();
+//        GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
+//     });
+//		 
+//	 $('.selectAdressFields').live('change', function(e) {
+//		GoogleMap.setParams();
+//		GoogleMap.geocoder.geocode( { 'address': GoogleMap.address}, GoogleMap.geocoderCallback ); 
+//	 });
 	 
- })(jQuery);
+// })(jQuery);

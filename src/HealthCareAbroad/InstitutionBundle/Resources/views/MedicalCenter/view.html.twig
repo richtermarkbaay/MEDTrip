@@ -46,7 +46,6 @@
 
 
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
@@ -56,6 +55,10 @@
     (function($){
 
         $(function(){
+
+            $("input:checkbox").click(function() {
+                $(this).parent().toggleClass("hca-highlight");
+            });
 
             InstitutionMedicalCenter.isEditView = true;
 
@@ -94,4 +97,3 @@
 //-->
 </script>
 {% endblock %}
-
