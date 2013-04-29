@@ -429,10 +429,16 @@ class InstitutionSignUpController extends InstitutionAwareController
 
             if ($form->isValid()) {
                 
+                //var_dump($this->getRequest()->get($form->getName())); exit;
                 $this->institutionMedicalCenter = $form->getData();
+                
+                foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                    $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                }
 
                 $this->get('services.institution_medical_center')->saveAsDraft($this->institutionMedicalCenter);
 
+                exit;
                 // update sign up step status of institution
                 //$this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);

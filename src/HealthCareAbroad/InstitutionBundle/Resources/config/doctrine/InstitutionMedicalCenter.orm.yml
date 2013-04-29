@@ -99,6 +99,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         businessHours:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\BusinessHour
             mappedBy: institutionMedicalCenter
+            cascade:
+                - "persist"
     manyToOne:
         logo:
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media

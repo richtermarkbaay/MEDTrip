@@ -1,10 +1,12 @@
 {% block fancy_business_hours_widget %}
+{{ dump(form) }}
 <div class="clinictime">
     <label for="timezone">Clinic Hours</label>
     <div class="hourselectedbox">
-        <table id="business_hours_data_container" class="table table-hover">
+        <table id="business_hours_data_container" class="table table-hover" data-prototype="">
         </table>
     </div>
+    
     <div class="hourbox">
         {% set _weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}
         <table class="table">
@@ -37,12 +39,15 @@
             <button type="button" id="business_hours_add_button" class="btn btn-default pull-right span2">ADD</button>
         </div>
     </div>
+    <div id="business_hours_value_elements"></div>
 </div>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
-        var businessHours = new FancyBusinessHours();
+        var businessHours = new FancyBusinessHours({
+            'valuePrototype': '{{ form_widget(form.vars.prototype) | raw }}'
+        });
     });
 })(jQuery);
 //-->

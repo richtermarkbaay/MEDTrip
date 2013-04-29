@@ -17,6 +17,12 @@ var FancyBusinessHours = function(_options){
         dateTime.setHours(_parts.hours, _parts.minutes);
     };
     
+    var generateId = function(){
+        // this may return non-unique values. 
+        // but given the process in the widget UI, we can assume that this will suffice
+        return new Date().getTime();
+    };
+    
     
     var toTimepickerString = function (dateTime) {
         var meridian = dateTime.getHours() >= 12 ? "PM":"AM";
@@ -56,6 +62,8 @@ var FancyBusinessHours = function(_options){
         openingTimePickerData: null, // current Date on openingTimePicker widget, will be updated everytime timepicker value is changed
         closingTimePickerData: null, 
         dataContainer: null,
+        valueElements: $('#business_hours_value_elements'),
+        valuePrototype: null,
         addButton: null,
         weekdayCheckboxes: null,
         weekdays: [
@@ -72,6 +80,7 @@ var FancyBusinessHours = function(_options){
     };
     
     // set defaults
+    FancyBusinessHours.valuePrototype = _options.valuePrototype || null;
     FancyBusinessHours.openingTimePicker = _options.openingTimePicker || $('#business_hours_opening');
     FancyBusinessHours.closingTimePicker = _options.closingTimePicker || $('#business_hours_closing');
     FancyBusinessHours.weekdayCheckboxes = _options.weekdayCheckboxes || $('input.business_hours_weekday');
@@ -151,8 +160,21 @@ var FancyBusinessHours = function(_options){
         
         // has valid weekdays
         if (_groupedData.weekdaysBit > 0) {
+            _groupedData.elementId = generateId();
             _that.data.push(_groupedData);
+            
             this._renderItem(_groupedData); // render the item
+            
+            // add to form element
+            var _newEl = this.valuePrototype.replace(/__name__/g,_groupedData.elementId);
+            _newEl = $(_newEl);
+            var _valueData = {
+                    weekdayBitValue: _groupedData.weekdaysBit,
+                    opening: toTimepickerString(_groupedData.openingDateTime),
+                    closing: toTimepickerString(_groupedData.closingDateTime)
+            };
+            _newEl.val(window.JSON.stringify(_valueData));
+            _newEl.appendTo(this.valueElements);
         }
     };
     
@@ -187,23 +209,31 @@ var FancyBusinessHours = function(_options){
         this._renderItemData({
             label: _groupedWeekdayLabels.join(', '),
             openingDateTime: _groupedData.openingDateTime,
-            closingDateTime: _groupedData.closingDateTime
+            closingDateTime: _groupedData.closingDateTime,
+            elementId: _groupedData.elementId
         });
     };
     
     FancyBusinessHours._renderItemData = function(_item) {
-        var _cls = 'business_hours_data_day_';
-        var _html = "<tr class='data_row "+_cls+"'>" +
+        var _html = "<tr class='data_row'>" +
                 "<td>"+_item.label+"</td>" +
                 "<td>"+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+"</td>" +
-                "<td><a href='#' class='business_hours_remove_link'><i class='icon-remove-sign'></i></a></td>" +
+                "<td>" +
+                    "<a data-elementId='"+_item.elementId+"' href='#' class='business_hours_remove_link'><i class='icon-remove-sign'></i></a>" +
+                "</td>" +
             "</tr>";
         var _el = $(_html);
+        _that = this;
         _el.find('a.business_hours_remove_link').click(function(){
             $(this).parents('tr.data_row').remove();
+            _that.removeData($(this).attr('data-elementId'));
             return false;
         });
         this.dataContainer.append(_el);
+    };
+    
+    FancyBusinessHours.removeData = function(elementId){
+        
     };
     
     // add button click function

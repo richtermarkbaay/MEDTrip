@@ -23,7 +23,9 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
     manyToOne:
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            inversedBy: businessHours
+            inversedBy: null
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id
+            cascade: 
+                - "persist"
