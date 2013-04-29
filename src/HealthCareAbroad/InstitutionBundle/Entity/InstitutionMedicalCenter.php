@@ -41,7 +41,12 @@ class InstitutionMedicalCenter
      * @var string
      */
     private $address;
-
+    
+    /**
+     * @var text $addressHint
+     */
+    private $addressHint;
+    
     /**
      * @var string
      */
@@ -253,6 +258,28 @@ class InstitutionMedicalCenter
         return $this->address;
     }
 
+    /**
+    * Set addressHint
+    *
+    * @param text $addressHint
+    * @return InstitutionMedicalCenter
+    */
+    public function setAddressHint($addressHint)
+    {
+        $this->addressHint = $addressHint;
+        return $this;
+    }
+        
+    /**
+     * Get addressHint
+     *
+     * @return text
+     */
+    public function getAddressHInt()
+    {
+        return $this->addressHint;
+    }
+    
     /**
      * Set coordinates
      *

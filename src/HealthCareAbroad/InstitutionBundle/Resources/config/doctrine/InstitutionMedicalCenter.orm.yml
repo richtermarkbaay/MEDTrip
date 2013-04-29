@@ -41,6 +41,11 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             length: 100
             nullable: false
             column: address
+        addressHint:
+            type: string
+            length: 250
+            nullable: true
+            column: address_hint
         coordinates:
             type: string
             length: 100
