@@ -3,7 +3,7 @@
 
     <div class="span6">
         {# contact_label_type(form.vars.value.type) #}
-        <label for="Phone Number">{{ form.vars.value.type == 1 ? 'Phone Number' : 'Mobile Number'  }}</label>
+        <label for="Phone Number">{{ form.vars.value.type is defined and form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
         <div class="hca-countrycodes">
             <div class="input-prepend">
                 {% set phone = 'institutionSignUp_contactDetails_' ~  form.vars.name ~ '_number' %}
