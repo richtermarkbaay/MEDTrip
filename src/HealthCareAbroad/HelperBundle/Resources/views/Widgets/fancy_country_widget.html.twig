@@ -16,7 +16,6 @@
     	if(_currentCity != 0){
     	    Location.loadCities($('#{{ valueContainer }}'), _currentCity );
     	}
-    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
         $('#country_input_field').fancyAutocomplete({
             'source': window.JSON.parse('{{ countryJsonList | raw }}'),
             'autocomplete': {
@@ -26,8 +25,6 @@
             'onAutocompleteSelectCallback': function(){
             	Location.loadCities($('#{{ valueContainer }}'), '{{ cityId }}' );
                 $('#country_input_field').data('fancyAutocomplete')
-                    .resetValue()
-                    .disabled(false);
             }
         });
 
