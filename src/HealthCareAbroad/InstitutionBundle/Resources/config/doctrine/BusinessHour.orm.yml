@@ -1,0 +1,29 @@
+HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
+    type: entity
+    table: business_hours
+    repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\BusinessHourRepository
+    fields:
+        id:
+            id: true
+            type: bigint
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        weekdayBitValue:
+            type: integer
+            nullable: false
+            column: weekday_bit_value
+        opening:
+            type: time
+            nullable: true
+        closing:
+            type: time
+            nullable: true
+    manyToOne:
+        institutionMedicalCenter:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: businessHours
+            joinColumn:
+                name: institution_medical_center_id
+                referencedColumnName: id
