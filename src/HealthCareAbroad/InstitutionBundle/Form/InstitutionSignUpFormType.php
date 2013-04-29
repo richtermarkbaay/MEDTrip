@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmail;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use HealthCareAbroad\HelperBundle\Validator\Constraints\EqualFieldValue;
@@ -36,7 +38,7 @@ class InstitutionSignUpFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-			'include_terms_agreement' => true,
+			'include_terms_agreement' => true
         ));
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -50,7 +52,7 @@ class InstitutionSignUpFormType extends AbstractType
         ->add('firstName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your first name. ')))))
         ->add('lastName', 'text', array( 'virtual' => true,'error_bubbling' => false, 'constraints' => array(new NotBlank(array('message' => 'Please provide your last name.')))))
         ->add('jobTitle', 'text', array( 'virtual' => true, 'required' => false))
-        ->add('contactNumber', 'contact_number_with_flag',array('error_bubbling' => false))
+        ->add('contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_number_with_flag'))
         ->add('email', 'email', array( 'error_bubbling' => false,'virtual' => true,'constraints' => array(new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))))
         ->add('password', 'password', array('label' => 'Password','virtual' => true,'error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')))))
         ->add('confirm_password', 'password', array('label' => 'Re-type password','virtual' => true,'error_bubbling' => false,'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))))

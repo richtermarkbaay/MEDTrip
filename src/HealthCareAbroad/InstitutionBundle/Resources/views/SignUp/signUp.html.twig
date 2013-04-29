@@ -92,7 +92,10 @@
                     </h2>
                      <div class="row-fluid">
                         <div class="span12">
-                            {{ form_widget(form.contactDetail) }}
+                            {% for _widget in form.contactDetails %}
+                                {{ form_widget(_widget) }}
+                                {{ form_widget(_widget) }}
+                            {% endfor %}
                         </div>
                     </div>
                 </section>

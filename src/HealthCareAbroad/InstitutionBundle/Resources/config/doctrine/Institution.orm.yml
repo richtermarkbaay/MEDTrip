@@ -112,7 +112,23 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                         name: medical_provider_group_id
                         referencedColumnName: id
             orderBy: null
-
+        contactDetails:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+            cascade:
+                - "persist"
+            mappedBy: null
+            inversedBy: institution
+            joinTable:
+                name: institution_contact_details
+                joinColumns:
+                    -
+                        name: institution_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: contact_detail_id
+                        referencedColumnName: id
+            orderBy: null  
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
