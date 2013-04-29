@@ -1,37 +1,45 @@
+<div id="table-content">
+    {% if media.isPaginable is defined %}
+        <div style="margin-right: 10px">
+            {{ paginate(media, app.request.get('_route'), app.request.get('_route_params')) }}
+        </div>
+    {% endif %}
 
+    {% set mediaCount = 0 %}
+    <ul style="display: table-cell">
+        {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+        {% for each in media %}
+            <li style="display: inline-block; vertical-align: top; margin-bottom:30px; margin-right: 5px;position:relative" id="media-{{ each.id }}">
+                {# media(medium, institution, 'gallery') | raw  #}
+                
+                <a class="icon-2 attached-delete-form delete-media-from-gallery" title="Delete" href="" style="margin-right: 0px;position: absolute;right: 5px;" data-media-id="{{ each.id }}">
+                    <i class="icon-remove"></i>
+                </a>
+                
+                <a class="fancybox" rel="gallery" data-fancybox-type="iframe" href="{{ media_src(each, mediaContext) }}" title="{{ each.caption }}">
+                    <img src="{{ media_src(each, mediaContext, thumbnailSize) }}" width="150px" height="180px" alt="Media" style="border: 1px solid #eee; padding: 2px;"/>
+                </a>
 
-{% if media.isPaginable is defined %}
-    <div style="margin-right: 10px">
-        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+                <br>
+                <a class="attached-edit-form" title="Edit Caption" href="#" name="link_caption{{ each.id }}" id="link_caption{{ each.id }}" style="width:150px;display:inline-block;word-wrap: break-word">
+                    {{ each.caption }}
+                </a>
+            </li>
+        {% else %}
+            <li> No media yet. </li>
+        {% endfor %}
+    </ul>
+    
+    <div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
+        <form id="editMediaForm" name="editMediaForm" action="{{ path('admin_media_edit_caption') }}" method="post">
+            <label for="caption">Caption</label>
+            <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
+        </form>
     </div>
-{% endif %}
 
-{% set mediaCount = 0 %}
-<ul style="display: table-cell">
-    {% for medium in media %}
-        <li style="display: inline-block; vertical-align: top; margin-bottom:30px; margin-right: 5px;position:relative" id="media-{{ medium.id }}">
-            {{ media(medium, institution, 'gallery') | raw  }}
-        </li>
-    {% else %}
-        <li> No media yet. </li>
-    {% endfor %}
-</ul>
-
-{% if media.isPaginable is defined %}
-    <div style="margin-right: 10px">
-        {{ paginate(media, routes.gallery, {institutionId: institution.id}) }}
+    <div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
+        <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
     </div>
-{% endif %}
-
-<div id="edit-media-form-dialog" title="Edit media" style="display: hidden;">
-    <form id="editMediaForm" name="editMediaForm" action="{{ path(routes.media_edit_caption) }}" method="post">
-        <label for="caption">Caption</label>
-        <input type="text" name="caption" id="caption"  class="text ui-widget-content ui-corner-all" />
-    </form>
-</div>
-
-<div id="delete-media-dialog" title="Are you sure you want to delete the media?" style="display: hidden;">
-    <p><span class="ui-icon ui-icon-alert"></span>The item will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
 {% block inlineJavascriptCode %}
@@ -113,7 +121,8 @@ $(document).ready(function() {
 
                 
                 var url = "{{ path('admin_media_ajaxDelete') }}"; 
-                var params = {media_id: media_id, parent_id: {{ institution.id }}, parent_class: '{{ add_slashes(getClass(institution)) }}'};
+                var params = {media_id: media_id, service_id: 'services.{{ mediaContext }}.media'};
+
                 $.post(url, params, function(response) {
                     if (!response) {
                         showMessage($('#deleteMediaForm'), 'An error occurred while processing your request.');

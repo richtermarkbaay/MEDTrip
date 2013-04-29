@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MediaBundle\Form;
 
+use Gaufrette\Filesystem;
+
 use HealthCareAbroad\MediaBundle\Form\Transformer\MediaFileTypeTransformer;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -11,7 +13,6 @@ use Symfony\Component\Form\AbstractType;
 class AdminMediaFileType extends AbstractType
 {
 	private $media;
-
 	/**
 	 *
 	 * @param Media or null $media

@@ -22,7 +22,7 @@ class DefaultResizer implements Resizer
      * @param \Imagine\Image\ImagineInterface $adapter
      * @param string $mode
      */
-    public function __construct(ImagineInterface $adapter, $mode=ImageInterface::THUMBNAIL_INSET)
+    public function __construct(ImagineInterface $adapter, $mode=ImageInterface::THUMBNAIL_OUTBOUND)
     {
         $this->adapter = $adapter;
         $this->mode    = $mode;
@@ -33,6 +33,7 @@ class DefaultResizer implements Resizer
      */
     public function resize(Media $media, File $in, File $out, $format, array $settings)
     {
+
         if (!array_key_exists('quality', $settings)) {
             $settings['quality'] = 100;
         }
@@ -85,12 +86,12 @@ class DefaultResizer implements Resizer
         if ($this->mode !== ImageInterface::THUMBNAIL_INSET && $this->mode !== ImageInterface::THUMBNAIL_OUTBOUND) {
             throw new InvalidArgumentException('Invalid mode specified');
         }
-
-        $size = $media->getBox();
+        
+        $size = new Box($settings['width'], $settings['height']);
 
         $ratios = array(
-                        $settings['width'] / $size->getWidth(),
-                        $settings['height'] / $size->getHeight()
+            $settings['width'] / $size->getWidth(),
+            $settings['height'] / $size->getHeight()
         );
 
         if ($this->mode === ImageInterface::THUMBNAIL_INSET) {

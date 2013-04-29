@@ -22,7 +22,6 @@ class CountryTransformer implements DataTransformerInterface
         if ($data instanceof Country) {
             return $data->getId();
         }
-        
         return $data;
     }
     

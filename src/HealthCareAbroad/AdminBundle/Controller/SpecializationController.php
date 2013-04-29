@@ -47,7 +47,7 @@ class SpecializationController extends Controller
         $specialization = $this->getDoctrine()->getEntityManager()
                 ->getRepository('TreatmentBundle:Specialization')->find($id);
 
-        $form = $this->createForm(new SpecializationType(), $specialization);
+        $form = $this->createForm('specialization_form', $specialization);
 
         return $this->render('AdminBundle:Specialization:form.html.twig', array(
             'id' => $id,
@@ -79,8 +79,8 @@ class SpecializationController extends Controller
 
         if ($form->isValid()) {
 
-            if($media = $this->saveMedia($request->files->get('specialization'), $specialization)) {
-                $specialization->setMedia($media);
+            if(($fileBag = $request->files->get('specialization_form')) && isset($fileBag['media'])) {
+                $this->get('services.specialization.media')->uploadLogo($fileBag['media'], $specialization, false);                
             }
 
             $em->persist($specialization);
@@ -175,15 +175,15 @@ class SpecializationController extends Controller
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
-    private function saveMedia($fileBag, $specialization)
-    {
-        $media = null;
+//     private function saveMedia($fileBag, $specialization)
+//     {
+//         $media = null;
 
-        if($fileBag['media']) {
-            $media = $this->get('services.media')->upload($fileBag['media'], $specialization);
-        }
+//         if($fileBag['media']) {
+//             $media = $this->get('services.specialization.media')->upload($fileBag['media'], $specialization);
+//         }
 
-        return $media;
-    }
+//         return $media;
+//     }
 
 }

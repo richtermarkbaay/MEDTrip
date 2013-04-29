@@ -1,55 +1,72 @@
-parameters:
-    services.media.class: HealthCareAbroad\MediaBundle\Services\MediaService
-    services.media.pathgenerator.class: HealthCareAbroad\MediaBundle\Generator\Path\DefaultPathGenerator
-    services.media.resizer.class: HealthCareAbroad\MediaBundle\Resizer\SquareResizer
-    services.media.adapter.class: Imagine\Gd\Imagine 
-
-    mediapathdiscriminators:
-            institution: institutions/{objectId}
-            doctor: doctors
-            advertisement: ads/{objectId}
-            advertisementDenormalizedProperty: ads/{objectId}
-            specialization: specializations
-
 services:
-    services.media.pathgenerator:
-        class: %services.media.pathgenerator.class%
-
-    services.media.adapter:
-        class: %services.media.adapter.class%
-
-    services.media.resizer:
-        class: %services.media.resizer.class%
-        arguments:
-            - @services.media.adapter
-
-    services.media.filesystemmanager:
-        class: HealthCareAbroad\MediaBundle\Gaufrette\FilesystemManager
-        arguments:
-            - @services.media.pathgenerator
-            - %kernel.root_dir%/../web/media
-            - %mediapathdiscriminators%
-
-    services.media:
-        class: %services.media.class%
-        arguments:
-            - @services.media.filesystemmanager
-            - @doctrine.orm.entity_manager
-        calls:
-            - [setResizer, [@services.media.resizer]]
-
-    services.media.templating.helper:
-        class: HealthCareAbroad\MediaBundle\Templating\Helper\MediaHelper
-        tags:
-            - { name: templating.helper }
-        arguments:
-            - @service_container
-            - @services.media.filesystemmanager
-
     services.media.twig.extension:
         class: HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
         public: false
+        calls:
+            - [setFilesystemMapper, [@knp_gaufrette.filesystem_map]]
+            - [setMediaContext, [%media_context%]]
         tags:
             - { name: twig.extension }
+
+    services.media.amazonS3:
+        class: AmazonS3
+        arguments: [{key: %amazonS3_key%, secret: %amazonS3_secret%}]            
+
+
+    # Media Gaufrette Filesystem Adapters config.
+    services.media.advertisement_s3_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\AmazonS3Adapter
         arguments:
-            - @services.media.templating.helper
+            - @services.media.amazonS3
+            - %amazonS3_bucket_name% 
+            - {create: true, directory: %media_advertisement_subdir%}
+
+    services.media.advertisement_local_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter
+        arguments:
+            - %media_directory%
+            - %local_web_root%/%media_advertisement_subdir%
+            - true
+
+    services.media.doctor_s3_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\AmazonS3Adapter
+        arguments:
+            - @services.media.amazonS3
+            - %amazonS3_bucket_name% 
+            - {create: true, directory: %media_doctor_subdir%}
+
+    services.media.doctor_local_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter
+        arguments:
+            - %media_directory%
+            - %local_web_root%/%media_doctor_subdir%
+            - true
+
+    services.media.institution_s3_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\AmazonS3Adapter
+        arguments:
+            - @services.media.amazonS3
+            - %amazonS3_bucket_name% 
+            - {create: true, directory: %media_institution_subdir%}
+
+    services.media.institution_local_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter
+        arguments:
+            - %media_directory%
+            - %local_web_root%/%media_institution_subdir%
+            - true
+
+    services.media.specialization_s3_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\AmazonS3Adapter
+        arguments:
+            - @services.media.amazonS3
+            - %amazonS3_bucket_name% 
+            - {create: true, directory: %media_specialization_subdir%}
+
+    services.media.specialization_local_adapter:
+        class: HealthCareAbroad\MediaBundle\Gaufrette\Adapter\LocalAdapter
+        arguments:
+            - %media_directory%
+            - %local_web_root%/%media_specialization_subdir%
+            - true
+            

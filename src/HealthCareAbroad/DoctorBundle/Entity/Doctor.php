@@ -31,11 +31,6 @@ class Doctor
     private $lastName;
 
     /**
-     * @var     
-     */
-    private $country;
-    
-    /**
      * @var string
      */
     private $suffix;
@@ -50,6 +45,11 @@ class Doctor
      */
     private $contactEmail;
 
+    /**
+     * @var string
+     */
+    private $country;
+    
     /**
      * @var string
      */

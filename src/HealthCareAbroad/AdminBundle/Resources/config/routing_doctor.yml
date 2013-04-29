@@ -29,12 +29,12 @@ admin_doctor_add_save:
         method: GET
         
 admin_doctor_updateStatus:
-    pattern:  /admin/doctor/update-status/{idId}
-    defaults: { _controller: AdminBundle:Doctor:updateStatus, idId: ~ }
+    pattern:  /admin/doctor/update-status/{doctorId}
+    defaults: { _controller: AdminBundle:Doctor:updateStatus }
     requirements:
-        idId: \d+
+        doctorId: \d+
 
-admin_doctor_load_doctor_specializations:
+admin_doctor_specializations:
     pattern:  /admin/doctor/loadSpecializations/{doctorId}
     defaults: { _controller: AdminBundle:Doctor:searchMedicalSpecialistSpecialization, doctorId: ~ }
     requirements:

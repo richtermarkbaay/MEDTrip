@@ -92,7 +92,7 @@ services:
     #        - [setRouterService, [@services.static_page]]
     #    tags:
     #        - {name: kernel.event_listener, event: kernel.request, method: onKernelRequest, priority: 34 }
-        
+
     #MISPLACED
     services.user.twig.extension:
         class: HealthCareAbroad\UserBundle\Twig\UserTwigExtension

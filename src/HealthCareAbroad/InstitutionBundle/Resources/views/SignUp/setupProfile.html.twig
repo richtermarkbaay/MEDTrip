@@ -1,7 +1,7 @@
     <div class="row">
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
-            <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" novalidate>
+            <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
                  {% if error %}
                     <div class="alert alert-error">
                         {% for each in error_list %}
@@ -80,7 +80,7 @@ $(function(){
 	
     GoogleMap.setInputs({
     	'selectedCity' : document.getElementById('institution_profile_form_city'),
-    	'selectedCountry' : document.getElementById('institution_profile_form_country'),
+    	'selectedCountry' : document.getElementById('country_input_field'),
     	'inputCoordinates' : document.getElementById("institution_profile_form_coordinates"),
     	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
     	'selectedStreet' : document.getElementById('institution_profile_form_street'),

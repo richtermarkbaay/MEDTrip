@@ -30,15 +30,20 @@ class ContactDetail
     private $number;
 
     /**
-     * @var integer
+     * @var string
      */
     private $countryCode;
 
     /**
-     * @var integer
+     * @var string
      */
     private $areaCode;
 
+    /**
+     * @var string
+     */
+    private $abbr;
+    
     /**
      * Get id
      *
@@ -98,7 +103,7 @@ class ContactDetail
     /**
      * Set countryCode
      *
-     * @param integer $countryCode
+     * @param string $countryCode
      * @return ContactDetail
      */
     public function setCountryCode($countryCode)
@@ -111,7 +116,7 @@ class ContactDetail
     /**
      * Get countryCode
      *
-     * @return integer 
+     * @return string 
      */
     public function getCountryCode()
     {
@@ -121,7 +126,7 @@ class ContactDetail
     /**
      * Set areaCode
      *
-     * @param integer $areaCode
+     * @param string $areaCode
      * @return ContactDetail
      */
     public function setAreaCode($areaCode)
@@ -134,11 +139,34 @@ class ContactDetail
     /**
      * Get areaCode
      *
-     * @return integer 
+     * @return string 
      */
     public function getAreaCode()
     {
         return $this->areaCode;
+    }
+    
+    /**
+     * Set abbr
+     *
+     * @param string $abbr
+     * @return ContactDetail
+     */
+    public function setAbbr($abbr)
+    {
+        $this->abbr = $abbr;
+    
+        return $this;
+    }
+    
+    /**
+     * Get abbr
+     *
+     * @return string
+     */
+    public function getAbbr()
+    {
+        return $this->abbr;
     }
 
 }

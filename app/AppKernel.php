@@ -72,6 +72,7 @@ class AppKernel extends Kernel
             new HealthCareAbroad\TermBundle\TermBundle(),
             new HealthCareAbroad\StatisticsBundle\StatisticsBundle(),
             new Gregwar\CaptchaBundle\GregwarCaptchaBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle()
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

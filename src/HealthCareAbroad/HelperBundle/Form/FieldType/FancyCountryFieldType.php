@@ -3,8 +3,6 @@ namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
 use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryTransformer;
 
-use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryArrayTransformer;
-
 use Symfony\Component\Form\FormBuilderInterface;
 
 use HealthCareAbroad\HelperBundle\Services\LocationService;
@@ -12,11 +10,15 @@ use HealthCareAbroad\HelperBundle\Services\LocationService;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class FancyCountryFieldType extends AbstractType
 {
+    public function getName()
+    {
+        return 'fancy_country';
+    }
+    
     /**
      * @var LocationService
      */
@@ -27,20 +29,14 @@ class FancyCountryFieldType extends AbstractType
         $this->locationService = $service;
     }
     
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $resolver->setDefaults(array(
-                'data_class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
-        ));
+        $builder->addModelTransformer(new CountryTransformer($this->locationService));
     }
    
     public function getParent()
     {
-        return 'text';
+        return 'hidden';
     }
-
-    public function getName()
-    {
-        return 'fancy_country';
-    }
+    
 }

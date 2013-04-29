@@ -130,38 +130,6 @@ class InstitutionService
     {
         $this->institutionPropertyService = $v;
     }
-        
-    function saveMediaAsLogo(Institution $institution, Media $media)
-    {
-        $institution->setLogo($media);
-
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($institution);
-        $em->flush($institution);
-    }
-
-    function saveMediaAsFeaturedImage(Institution $institution, Media $media)
-    {
-        $institution->setFeaturedMedia($media);
-        $this->saveMediaToGallery($institution, $media);
-    }
-    
-    function saveMediaToGallery(Institution $institution, Media $media)
-    {
-        $gallery = $institution->getGallery();
-
-        if(!$gallery) {
-            $gallery = new Gallery();
-            $gallery->addMedia($media);
-            $gallery->setInstitution($institution);
-        } else {
-            $gallery->addMedia($media);
-        }
-
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($gallery);
-        $em->flush();
-    }
     
     /**
      * Check if $institution is of type SINGLE_CENTER

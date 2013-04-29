@@ -89,6 +89,7 @@ class InstitutionMedicalCenterService
         return self::$institutionMedicalCenter;
     }
 
+
     /**
      * Get active institution specializations of an institution medical center
      *
@@ -99,6 +100,7 @@ class InstitutionMedicalCenterService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
     }
+
 
     /**
      * List active specializations of a medical center
@@ -116,8 +118,10 @@ class InstitutionMedicalCenterService
             $list[$specialization->getId()] = $specialization->getName();
         }
 
+        
         return $list;
     }
+
 
     public function setInstitutionMedicalCenterPropertyService(InstitutionMedicalCenterPropertyService $service)
     {
@@ -149,7 +153,6 @@ class InstitutionMedicalCenterService
      * @param InstitutionMedicalCenter $institutionMedicalCenter
      * @param InstitutionPropertyType $propertyType
      * @param mixed $value
-     * @return boolean
      */
     public function hasPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value)
     {

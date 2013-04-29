@@ -168,7 +168,8 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
             ->where('i.institution = :institutionId')
             ->orderBy('i.id','asc')
-            ->setParameter('institutionId', $institutionId);
+            ->setParameter('institutionId', $institutionId)
+            ->setMaxResults(1);
 
         return $qb->getQuery()->getOneOrNullResult(); 
     }

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
+
+use HealthCareAbroad\PagerBundle\Pager;
+
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
@@ -55,6 +59,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use ChromediaUtilities\Helpers\SecurityHelper;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 
 class InstitutionController extends Controller
 {    
@@ -271,39 +276,86 @@ class InstitutionController extends Controller
 
         return $this->redirect($this->generateUrl('admin_institution_index'));
     }
-    
-   	/**
-   	 * Upload logo for Institution
-   	 * @param Request $request
-   	 * @author Chaztine Blance
-   	 */
-   	public function uploadAction(Request $request)
+
+   	public function addMediaAction(Request $request)
    	{
-   	    $response = new Response();
-   	    $fileBag = $request->files;
-   	   
-   	    if ($fileBag->get('file')) {
+   	    $formParams = array('institutionId' => $this->institution->getId());
+
+   	    if($request->get('imcId')) {
+   	        $formParams['imcId'] = $request->get('imcId');
+   	        $uploadFormAction = $this->generateUrl('admin_institution_medicalCenter_media_upload', $formParams);
+   	    } else {
+   	        $uploadFormAction = $this->generateUrl('admin_institution_media_upload', $formParams);
+   	    }
+
+   	    return $this->render('AdminBundle:Institution:addMedia.html.twig', array(
+            'institution' => $this->institution,
+            'uploadFormAction' => $uploadFormAction,
+            'multiUpload' => $request->get('multiUpload')
+   	    ));
+   	}
+
+   	public function galleryAction(Request $request)
+   	{
+   	    $adapter = new ArrayAdapter($this->get('services.institution.media')->getMediaGallery($this->institution));
+   	    $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
    	
-   	        $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
+   	    return $this->render('AdminBundle:Institution:gallery.html.twig', array(
+            'institution' => $this->institution,
+            'institutionMedia' => $pager
+   	    ));
+   	}
    	
-   	        if(is_object($result)) {
+   	/**
+   	 * Upload Institution Logo
+   	 * @param Request $request
+   	 */
+   	public function uploadLogoAction(Request $request)
+   	{
+   	    if (($fileBag = $request->files) && $fileBag->has('file')) {
+   	        $media = $this->get('services.institution.media')->uploadLogo($fileBag->get('file'), $this->institution);
+   	        if(!$media) {
+   	            $this->get('session')->setFlash('error', 'Unable to Upload Image');
+   	        }
+   	    }
 
-   	            $media = $result;
-   	            $mediaType = $request->get('media_type');
+   	    return $this->redirect($request->headers->get('referer'));
+   	}
+   	
+   	/**
+   	 * Upload Institution FeaturedImage
+   	 * @param Request $request
+   	 */
+   	public function uploadFeaturedImageAction(Request $request)
+   	{
 
-                if($mediaType == 'logo') {
-                    // Delete current logo
-                    $this->get('services.media')->delete($this->institution->getLogo(), $this->institution);
-
-                    // save uploaded logo
-                    $this->get('services.institution')->saveMediaAsLogo($this->institution, $media);
-
-                } else if($mediaType == 'featuredImage') {
-                    $this->get('services.institution')->saveMediaAsFeaturedImage($this->institution, $media);
-                }
+   	    if (($fileBag = $request->files) && $fileBag->has('file')) {
+   	        //var_dump($fileBag->get('file')); exit;
+   	        $media = $this->get('services.institution.media')->uploadFeaturedImage($fileBag->get('file'), $this->institution);
+   	        if(!$media) {
+   	            $this->get('session')->setFlash('error', 'Unable to Upload Featured Image');
    	        }
    	    }
    	
-   	    return $this->redirect($this->generateUrl('admin_institution_view' , array('institutionId' => $this->institution->getId())));
+   	    return $this->redirect($request->headers->get('referer'));
+   	}
+   	
+   	/**
+   	 * Upload Institution Media for Gallery
+   	 * @param Request $request
+   	 */
+   	public function uploadMediaAction(Request $request)
+   	{
+   	    $response = new Response(json_encode(true));
+   	    $response->headers->set('Content-Type', 'application/json');
+   	
+   	    if (($fileBag = $request->files) && $fileBag->has('file')) {
+   	        $media = $this->get('services.institution.media')->uploadToGallery($fileBag->get('file'), $this->institution);
+   	        if(!$media) {
+   	            $response = new Response('Error', 500);
+   	        }
+   	    }
+   	
+   	    return $response;
    	}
 }

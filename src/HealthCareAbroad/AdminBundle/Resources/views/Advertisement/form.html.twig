@@ -119,7 +119,9 @@
                                                 {% if media %}
                         				            <div>
                         				                {{ form_row(propertyValue.value.children['image' ~ loop.index0], {attr: {style: 'display:none;'}} ) }}
-                        				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+
+                        				                <img src=" {{ advertisement_media_src(media) }}">
+
                         				                <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: adValueId}) }}" class="remove-image">remove</a>
                         				            </div>
                                                 {% else  %}
@@ -128,7 +130,8 @@
     
             				                {% else %}
                     				            <div style="position:absolute; left:450px;">
-                    				                {{ media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                    				                {# media(media, form.get('data'), 'default', {thumbnail: true, width: 100}) | raw #}
+                    				                <img src="{{ advertisement_media_src(media) }}" width="100">
                     				                <!-- a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a-->
                     				            </div>
                                                 {{ form_widget(propertyValue.value) }}
@@ -144,7 +147,8 @@
     
                                         {% if propertyValue.value.get('data') and propertyValue.value.get('data').id %}
                                             {{ form_widget(propertyValue.value, {attr: {style: 'display:none;'}}) }}
-                                            {{ media(propertyValue.value.get('data'), form.get('data'), 'default', {thumbnail: true, width: 100}) | raw }}
+                                            {# media(propertyValue.value.get('data'), form.get('data'), 'default', {thumbnail: true, width: 100}) | raw #}
+                                            <img src="{{ advertisement_media_src(propertyValue.value.get('data')) }}" width="100">
                                             <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id}) }}" class="remove-image">remove</a>
                                         {% else %}
                                             {{ form_widget(propertyValue.value) }}
@@ -160,7 +164,9 @@
                                                     <div>
                                                         {{ form_label(property) }}
                                                         {{ form_widget(property, {attr:{style:'display:none'}}) }}
-                                                        {{ media(property.get('data'), form.get('data'), 'default', {thumbnail: true, width: 80}) | raw }}
+                                                        {# media(property.get('data'), form.get('data'), 'default', {thumbnail: true, width: 80}) | raw #}
+                                                        <img src="{{ advertisement_media_src(property.get('data')) }}" width="80">
+                                                        
                     				                    <a href="{{ path('admin_advertisement_ajaxDeleteImage', {advertisementPropertyValueId: valueObj.id, mediaId: property.get('data').id, index: highlightIndex}) }}" class="remove-image">remove</a>
                                                     </div>
                                                 {% else %}

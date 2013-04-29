@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
@@ -87,10 +91,18 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->signUpService = $this->get('services.institution_signup');
         $this->institutionService = $this->get('services.institution');
         $this->request = $this->getRequest();
+        
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
         }
+        
         parent::preExecute();
+    }
+    
+    private function _updateInstitutionSignUpStepStatus(SignUpStep $step) 
+    {
+        $this->getRequest()->getSession()->set('institutionSignupStepStatus', $step->getStepNumber());
+        $this->institution->setSignupStepStatus($step->getStepNumber());
     }
 
     /**
@@ -139,14 +151,18 @@ class InstitutionSignUpController extends InstitutionAwareController
 //         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
+        $phoneNumber = new ContactDetail();
+        $phoneNumber->setType(ContactDetailTypes::PHONE);
+        $institution->addContactDetail($phoneNumber);
+        
+        $mobileNumber = new ContactDetail();
+        $mobileNumber->setType(ContactDetailTypes::MOBILE);
+        $institution->addContactDetail($mobileNumber);
         $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
-
         if ($request->isMethod('POST')) {
             $form->bind($request);
-
             if ($form->isValid()) {
                 $institution = $form->getData();
-                var_dump($form->get('contactDetail')->getData());exit;
                 // initialize required database fields
                 $institution->setName(uniqid());
                 $institution->setAddress1('');
@@ -159,7 +175,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
                 $institution->setZipCode('');
                 $institution->setSignupStepStatus(1); // this is always the first step
-
+                
                 $factory->save($institution);
 
                 // create Institution user
@@ -167,7 +183,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUser->setEmail($form->get('email')->getData());
                 $institutionUser->setFirstName($form->get('firstName')->getData());
                 $institutionUser->setLastName($form->get('lastName')->getData());
-                $institutionUser->setContactNumber($form->get('contactNumber')->getData());
+                $institutionUser->setContactNumber('');//$form->get('contactNumber')->getData());
                 $institutionUser->setPassword($form->get('password')->getData());
                 $institutionUser->setJobTitle($form->get('jobTitle')->getData());
                 $institutionUser->setInstitution($institution);
@@ -276,7 +292,14 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
 
                 // set the sign up status of this single center institution
+                $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
+                
+
+                // Upload Logo
+                if(($fileBag = $this->request->files->get('institution_profile_form')) && $fileBag['logo']) {
+                    $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
+                }
 
                 // save institution and create an institution medical center
                 $this->signUpService->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
@@ -323,15 +346,28 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
-        
+
         if ($this->request->isMethod('POST')) {
+            //var_dump($form->getData()->getCountry()); exit;
             $form->bind($this->request);
+            
             if ($form->isValid()) {
 
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
                 
                 // set sign up status to current step number
+                $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
+
+                $fileBag = $this->request->files->get('institution_profile_form');
+
+                if($fileBag['logo']) {
+                    $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
+                }
+
+                if($fileBag['featuredMedia']) {
+                    $this->get('services.institution.media')->uploadFeaturedImage($fileBag['featuredMedia'], $form->getData(), false);
+                }
 
                 $this->signUpService->completeProfileOfInstitutionWithMultipleCenter($form->getData());
 
@@ -368,6 +404,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
+        
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
             throw $this->createNotFoundException();
@@ -397,13 +434,18 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->get('services.institution_medical_center')->saveAsDraft($this->institutionMedicalCenter);
 
                 // update sign up step status of institution
-                $this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
+                //$this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
+                $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $this->get('services.institution.factory')->save($this->institution);
                 
                 //save other data here
                 
+                
+                
+                
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
+                
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
         }

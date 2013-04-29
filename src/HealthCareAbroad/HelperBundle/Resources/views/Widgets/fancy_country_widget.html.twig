@@ -10,24 +10,26 @@
 (function($){
     $(function(){
     	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+    	// TODO: find a better way
+    	var _currentValue = $('#{{ valueContainer }}').val();
+    	var _currentCity = '{{ cityId }}';
+    	if(_currentCity != 0){
+    	    Location.loadCities($('#{{ valueContainer }}'), _currentCity );
+    	}
         $('#country_input_field').fancyAutocomplete({
             'source': window.JSON.parse('{{ countryJsonList | raw }}'),
             'autocomplete': {
                 'minLength': 0
             },
-            'valueContainer': $('#institution_profile_form_country'),
+            'valueContainer': $('#{{ valueContainer }}'),
             'onAutocompleteSelectCallback': function(){
+            	Location.loadCities($('#{{ valueContainer }}'), '{{ cityId }}' );
                 $('#country_input_field').data('fancyAutocomplete')
-                    .resetValue()
-                    .reloadSource()
-                    .disabled(false);
-            },
-            'onAutocompleteSelectCallback': function(){
-            	elem = document.getElementById('institution_profile_form_country');
-            	Location.loadCities($('#institution_profile_form_country'), '{{ cityId }}' );
-            },
+            }
         });
 
+        $('#{{ valueContainer }}').val(_currentValue);
+        $('#country_input_field').val('{{ country }}');
     });
 })(jQuery);
 </script>
