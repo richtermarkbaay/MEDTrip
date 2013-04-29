@@ -1,6 +1,10 @@
 parameters:    
 
     local_web_root: %kernel.root_dir%/../web
+    media_source: local
+    
+    mailchimp_api_key: c92eb834bde4ae8c737d7de468ee9f4e-us6
+    mailchimp_connection: http
 
     site_url: http://www.healthcareabroad.com
     site_name: www.HealthCareAbroad.com
