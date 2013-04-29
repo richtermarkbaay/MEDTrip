@@ -56,7 +56,7 @@ class FlagTwigExtension extends \Twig_Extension
         return $this->twig->render($twigTemplate, $params);
     }
     
-    public function render_countryJsonList_widget($cityId = null, $country = null, $twigTemplate = null)
+    public function render_countryJsonList_widget($cityId = null, $country = null, $valueContainer = null, $twigTemplate = null)
     {
         $countryGlobalData = $this->service->getGlobalCountryList();
         $code = array();
@@ -72,7 +72,8 @@ class FlagTwigExtension extends \Twig_Extension
         
         $params = array( 'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
                         'cityId' => $cityId,
-                        'country' => $country);
+                        'country' => $country,
+                        'valueContainer' => $valueContainer);
         
         return $this->twig->render($twigTemplate, $params);
     }

@@ -261,11 +261,12 @@
 {% block fancy_country_widget %}
     {% spaceless %}
         <input class="type_in hca-country pull-left" type="text" name="" id="country_input_field" placeholder="Select Country" autocomplete="off" data-autocomplete-trigger="#country_dropdown_button" data-dropdown="#country_dropdown_menu" > 
-        <input type="hidden" id="institution_profile_form_country" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+        <input type="hidden" id="{{ form.parent.vars.name ~ '_' ~ form.vars.name }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
         
         {% set city = form.parent.vars.value.city.id is defined ? form.parent.vars.value.city.id : '0' %}
         {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}
-        {{ render_countryJsonList_widget(city, country) | raw  }}
+        {% set valueContainer = form.parent.vars.name ~ '_' ~ form.vars.name %}
+        {{ render_countryJsonList_widget(city, country, valueContainer) | raw  }}
         
     {% endspaceless %}
 {% endblock %}    
