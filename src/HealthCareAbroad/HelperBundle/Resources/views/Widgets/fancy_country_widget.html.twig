@@ -9,7 +9,7 @@
 <script type="text/javascript">
 (function($){
     $(function(){
-
+    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     	// TODO: find a better way
     	var _currentValue = $('#{{ valueContainer }}').val();
     	var _currentCity = '{{ cityId }}';
