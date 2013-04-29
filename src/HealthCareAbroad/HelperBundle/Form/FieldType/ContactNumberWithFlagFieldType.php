@@ -22,6 +22,7 @@ class ContactNumberWithFlagFieldType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->addModelTransformer(new ContactNumberWithWidgetDataTransformer());
         $builder->add('country_code');
         $builder->add('abbr');
         $builder->add('number');
