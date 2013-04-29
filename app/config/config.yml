@@ -158,8 +158,8 @@ gregwar_captcha:
     width: 180
     height: 60
     invalid_message: Incorrect captcha code.
-    text_color: { r: 85, g: 85, b: 85 }
-    background_color: { r: 245, g: 244, b: 237 }
+    #text_color: { r: 85, g: 85, b: 85 }
+    background_color: [245, 244, 237]
 
 
 knp_gaufrette:
