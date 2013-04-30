@@ -536,10 +536,11 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
-
+        
         $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
                         'specializationComponents' => $specializationComponents,
-                        'specializationId' => $request->get('specializationId')
+                        'specializationId' => $request->get('specializationId'),
+                        'selectedTreatments' => ''
         ));
 
         return new Response($html, 200);
