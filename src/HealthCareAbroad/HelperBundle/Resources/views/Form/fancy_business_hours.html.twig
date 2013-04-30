@@ -1,0 +1,66 @@
+{% block fancy_business_hours_widget %}
+<div class="clinictime">
+    <label for="timezone">Clinic Hours</label>
+    <div class="hourselectedbox">
+        <table id="business_hours_data_container" class="table table-hover" data-prototype="">
+        </table>
+        
+    </div>
+    
+    <div class="hourbox">
+        {% set _weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}
+        <table class="table">
+            <tr>
+                {% for _num, _day in  _weekdays %}
+                <td>
+                    <label class="checkbox">
+                        <input type="checkbox" class="business_hours_weekday" name="weekdays[]" value="{{ _num }}" />
+                        {{ _day }}
+                    </label>
+                </td>
+                {% endfor %}
+            </tr>
+        </table>
+        <div class="span12">
+            <div class="span5">
+                <div class="pull-left span3">FROM</div>
+                <div class="input-append bootstrap-timepicker span9">
+                    <input id="business_hours_opening" type="text" class="input-small span10  pull-left">
+                    <span class="add-on"><i class="icon-time"></i></span>
+                </div>
+            </div>
+            <div class="span5">
+                <div class="pull-left span3">TO</div>
+                <div class="input-append bootstrap-timepicker span9">
+                    <input id="business_hours_closing" type="text" class="input-small span10 pull-left">
+                    <span class="add-on"><i class="icon-time"></i></span>
+                </div>
+            </div>
+            <button type="button" id="business_hours_add_button" class="btn btn-default pull-right span2">ADD</button>
+        </div>
+    </div>
+    <div id="business_hours_value_elements"></div>
+</div>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        var businessHours = new FancyBusinessHours({
+            'valuePrototype': '{{ form_widget(form.vars.prototype) | raw }}'
+        });
+
+        {% for _bh in form.parent.vars.value.businessHours %}
+            {# javascript code below #}
+            businessHours.addData({
+                weekdaysBit: {{ _bh.weekdayBitValue }},
+                weekdays: businessHours._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}),
+                openingDateTime: new Date('{{ _bh.opening | date("F d, Y H:i")}}'),
+                closingDateTime: new Date('{{ _bh.closing | date("F d, Y H:i")}}')
+            });
+            {# end javascript code #}
+        {% endfor %}
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

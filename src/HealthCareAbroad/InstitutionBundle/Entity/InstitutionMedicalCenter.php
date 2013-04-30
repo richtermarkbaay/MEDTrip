@@ -10,8 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
-
-    
     /**
      * @var integer
      */
@@ -21,11 +19,6 @@ class InstitutionMedicalCenter
      * @var string
      */
     private $name;
-
-    /**
-     * @var string
-     */
-    private $businessHours;
 
     /**
      * @var string
@@ -41,12 +34,12 @@ class InstitutionMedicalCenter
      * @var string
      */
     private $address;
-    
+
     /**
-     * @var text $addressHint
+     * @var string
      */
     private $addressHint;
-    
+
     /**
      * @var string
      */
@@ -98,6 +91,11 @@ class InstitutionMedicalCenter
     private $institutionSpecializations;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $businessHours;
+
+    /**
      * @var \HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $logo;
@@ -128,6 +126,7 @@ class InstitutionMedicalCenter
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->businessHours = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetails = new \Doctrine\Common\Collections\ArrayCollection();
@@ -164,29 +163,6 @@ class InstitutionMedicalCenter
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set businessHours
-     *
-     * @param string $businessHours
-     * @return InstitutionMedicalCenter
-     */
-    public function setBusinessHours($businessHours)
-    {
-        $this->businessHours = $businessHours;
-    
-        return $this;
-    }
-
-    /**
-     * Get businessHours
-     *
-     * @return string 
-     */
-    public function getBusinessHours()
-    {
-        return $this->businessHours;
     }
 
     /**
@@ -259,27 +235,28 @@ class InstitutionMedicalCenter
     }
 
     /**
-    * Set addressHint
-    *
-    * @param text $addressHint
-    * @return InstitutionMedicalCenter
-    */
+     * Set addressHint
+     *
+     * @param string $addressHint
+     * @return InstitutionMedicalCenter
+     */
     public function setAddressHint($addressHint)
     {
         $this->addressHint = $addressHint;
+    
         return $this;
     }
-        
+
     /**
      * Get addressHint
      *
-     * @return text
+     * @return string 
      */
-    public function getAddressHInt()
+    public function getAddressHint()
     {
         return $this->addressHint;
     }
-    
+
     /**
      * Set coordinates
      *
@@ -518,6 +495,39 @@ class InstitutionMedicalCenter
     public function getInstitutionSpecializations()
     {
         return $this->institutionSpecializations;
+    }
+
+    /**
+     * Add businessHours
+     *
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\BusinessHour $businessHours
+     * @return InstitutionMedicalCenter
+     */
+    public function addBusinessHour(\HealthCareAbroad\InstitutionBundle\Entity\BusinessHour $businessHours)
+    {
+        $this->businessHours[] = $businessHours;
+    
+        return $this;
+    }
+
+    /**
+     * Remove businessHours
+     *
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\BusinessHour $businessHours
+     */
+    public function removeBusinessHour(\HealthCareAbroad\InstitutionBundle\Entity\BusinessHour $businessHours)
+    {
+        $this->businessHours->removeElement($businessHours);
+    }
+
+    /**
+     * Get businessHours
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getBusinessHours()
+    {
+        return $this->businessHours;
     }
 
     /**
