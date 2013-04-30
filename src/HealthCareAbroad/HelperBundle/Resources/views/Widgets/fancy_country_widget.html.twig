@@ -1,35 +1,35 @@
-     <div class="popup">
-        <button id="country_dropdown_button" data-toggle="dropdown" class="btn dropdown-toggle hca-location-btn">
-            <span class="icon-chevron-down"></span>
-        </button>
-        <div id="country_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
-    </div>     
+<button class="btn hca-location-btn show_list_btn" type="button">
+    <span class="icon-chevron-down"></span>
+</button>
+<div class="combolist-wrapper"></div>
+
 <script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
 (function($){
     $(function(){
     	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-    	// TODO: find a better way
-    	var _currentValue = $('#{{ valueContainer }}').val();
+
     	var _currentCity = '{{ cityId }}';
-    	if(_currentCity != 0){
-    	    Location.loadCities($('#{{ valueContainer }}'), _currentCity );
-    	}
-        $('#country_input_field').fancyAutocomplete({
-            'source': window.JSON.parse('{{ countryJsonList | raw }}'),
-            'autocomplete': {
-                'minLength': 0
-            },
-            'valueContainer': $('#{{ valueContainer }}'),
-            'onAutocompleteSelectCallback': function(){
-            	Location.loadCities($('#{{ valueContainer }}'), '{{ cityId }}' );
-                $('#country_input_field').data('fancyAutocomplete')
+    	var _valueContainer = $('#{{ valueContainer }}');
+    	var _inputElem = _valueContainer.siblings('.hca-country:first');
+    	var _currentValue = _valueContainer.val();
+
+        Location.loadCities(_valueContainer, _currentCity);
+
+    	_inputElem.fancyAutocomplete({
+            source: window.JSON.parse('{{ countryJsonList | raw }}'),
+            maxItems: 0,
+            valueContainer:  _valueContainer,
+            autocomplete: {minLength: 0},
+            onAutocompleteSelectCallback: function(){
+            	Location.loadCities( _valueContainer, _currentCity);
+            	_inputElem.data('fancyAutocomplete');
             }
         });
 
-        $('#{{ valueContainer }}').val(_currentValue);
-        $('#country_input_field').val('{{ country }}');
+        _inputElem.val('{{ country }}');
+        _valueContainer.val(_currentValue);
     });
 })(jQuery);
 </script>

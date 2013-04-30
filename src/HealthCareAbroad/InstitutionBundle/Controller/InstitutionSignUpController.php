@@ -426,13 +426,20 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-
             if ($form->isValid()) {
                 
+                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+                
                 $this->institutionMedicalCenter = $form->getData();
+                
+                foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                    $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                }
 
-                $this->get('services.institution_medical_center')->saveAsDraft($this->institutionMedicalCenter);
+                $institutionMedicalCenterService->saveAsDraft($this->institutionMedicalCenter);
 
+                exit;
                 // update sign up step status of institution
                 //$this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
