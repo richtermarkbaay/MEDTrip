@@ -27,7 +27,7 @@ class FancyBusinessHourType extends AbstractType
         $resolver->setDefaults(array(
             'allow_add' => true,
             'allow_delete' => true,
-            'by_reference' => true,
+            'by_reference' => false,
             'type' => new BusinessHourEntityFieldType()
         ));
     }

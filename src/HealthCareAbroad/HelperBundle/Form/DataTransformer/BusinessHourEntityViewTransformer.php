@@ -10,6 +10,10 @@ class BusinessHourEntityViewTransformer implements DataTransformerInterface
 {
     public function transform($value)
     {
+        if ($value instanceof BusinessHour) {
+            return $value;
+        }
+        
         $decodedValue = \json_decode(\stripslashes($value), true);
         if ($decodedValue ) {
             $obj = new BusinessHour();
@@ -23,6 +27,14 @@ class BusinessHourEntityViewTransformer implements DataTransformerInterface
     
     public function reverseTransform($value)
     {
-        
+        $decodedValue = \json_decode(\stripslashes($value), true);
+        if ($decodedValue ) {
+            $obj = new BusinessHour();
+            $obj->setWeekdayBitValue($decodedValue['weekdayBitValue']);
+            $obj->setOpening(new \DateTime($decodedValue['opening']));
+            $obj->setClosing(new \DateTime($decodedValue['closing']));
+            
+            return $obj;
+        }
     }
 }

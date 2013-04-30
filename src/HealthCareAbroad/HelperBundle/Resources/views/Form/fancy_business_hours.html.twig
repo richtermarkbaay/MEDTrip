@@ -1,10 +1,10 @@
 {% block fancy_business_hours_widget %}
-{{ dump(form) }}
 <div class="clinictime">
     <label for="timezone">Clinic Hours</label>
     <div class="hourselectedbox">
         <table id="business_hours_data_container" class="table table-hover" data-prototype="">
         </table>
+        
     </div>
     
     <div class="hourbox">
@@ -48,6 +48,17 @@
         var businessHours = new FancyBusinessHours({
             'valuePrototype': '{{ form_widget(form.vars.prototype) | raw }}'
         });
+
+        {% for _bh in form.parent.vars.value.businessHours %}
+            {# javascript code below #}
+            businessHours.addData({
+                weekdaysBit: {{ _bh.weekdayBitValue }},
+                weekdays: businessHours._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}),
+                openingDateTime: new Date('{{ _bh.opening | date("F d, Y H:i")}}'),
+                closingDateTime: new Date('{{ _bh.closing | date("F d, Y H:i")}}')
+            });
+            {# end javascript code #}
+        {% endfor %}
     });
 })(jQuery);
 //-->

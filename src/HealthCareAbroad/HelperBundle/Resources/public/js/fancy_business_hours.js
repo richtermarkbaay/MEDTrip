@@ -54,8 +54,6 @@ var FancyBusinessHours = function(_options){
     };
     /** end helper functions **/
     
-    
-    
     var FancyBusinessHours = {
         openingTimePicker: null,
         closingTimePicker: null,
@@ -75,8 +73,8 @@ var FancyBusinessHours = function(_options){
            {short: "Fri", long: "Friday", day: 5},
            {short: "Sat", long: "Saturday", day: 6}
         ],
-        data: [],
-        dataPerDay: [] // data collection where in the keys are day
+        data: [], // main data container
+        dataPerDay: [] // data collection where in the keys are day, this will be mainly used in validating business hours per day
     };
     
     // set defaults
@@ -129,56 +127,20 @@ var FancyBusinessHours = function(_options){
         return _valid;
     };
     
-    // group submitted data by days having same business hours
-    FancyBusinessHours.groupDaysBySimilarTime = function(days) {
-        
-        _that = this;
-        _groupedData = {
-            weekdaysBit: 0,
-            weekdays: [],
-            openingDateTime: _that.openingTimePickerData,
-            closingDateTime: _that.closingTimePickerData
-        };
-        
-        $.each(days, function(){
-           var _day = $(this).val(); 
-           var _data = {
-               day: _day,
-               openingTime: _that.openingTimePickerData.getTime(),
-               closingTime: _that.closingTimePickerData.getTime(),
-               bitValue: getBitValueOfDay(_day),
-               opening: toTimepickerString(_that.openingTimePickerData),
-               closing: toTimepickerString(_that.closingTimePickerData)
-           };
-           
-           if (_that._isValidBusinessHourForDay(_day)) {
-               _that.dataPerDay[_day].push(_data); // store in per day data
-               _groupedData.weekdaysBit += _data.bitValue; // update weekdays bit value of grouped data
-               _groupedData.weekdays.push(_data.day); // add this day to the weekdsays grouped data
-           }
-        });
-        
-        // has valid weekdays
-        if (_groupedData.weekdaysBit > 0) {
-            _groupedData.elementId = generateId();
-            _that.data.push(_groupedData);
-            
-            this._renderItem(_groupedData); // render the item
-            
-            // add to form element
-            var _newEl = this.valuePrototype.replace(/__name__/g,_groupedData.elementId);
-            _newEl = $(_newEl);
-            var _valueData = {
-                    weekdayBitValue: _groupedData.weekdaysBit,
-                    opening: toTimepickerString(_groupedData.openingDateTime),
-                    closing: toTimepickerString(_groupedData.closingDateTime)
-            };
-            _newEl.val(window.JSON.stringify(_valueData));
-            _newEl.appendTo(this.valueElements);
+    FancyBusinessHours._extractDaysFromWeekdayBitValue = function(bitValue) {
+        var days = {};
+        for (var x =0;x<this.weekdays.length;x++) {
+            var _dayBitValue = getBitValueOfDay(this.weekdays[x].day);
+//            var _a = _dayBitValue & bitValue;
+//            console.log(_dayBitValue + "  = " + _a);
+            if (_dayBitValue & bitValue) {
+                days[this.weekdays[x].day] = this.weekdays[x].day;
+            }
         }
+        return days;
     };
     
-    FancyBusinessHours._renderItem = function(_groupedData){
+    FancyBusinessHours._renderItemData = function(_groupedData){
         _groupedWeekdayLabels = [];
         // arrange the days so we can achieve concatenating weekdays 
         _leastDay = null;
@@ -206,7 +168,7 @@ var FancyBusinessHours = function(_options){
             _groupedWeekdayLabels.push(concatenateDays(_leastDay, _previousDay));
         }
         
-        this._renderItemData({
+        this._renderItem({
             label: _groupedWeekdayLabels.join(', '),
             openingDateTime: _groupedData.openingDateTime,
             closingDateTime: _groupedData.closingDateTime,
@@ -214,7 +176,7 @@ var FancyBusinessHours = function(_options){
         });
     };
     
-    FancyBusinessHours._renderItemData = function(_item) {
+    FancyBusinessHours._renderItem = function(_item) {
         var _html = "<tr class='data_row'>" +
                 "<td>"+_item.label+"</td>" +
                 "<td>"+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+"</td>" +
@@ -230,6 +192,68 @@ var FancyBusinessHours = function(_options){
             return false;
         });
         this.dataContainer.append(_el);
+    };
+    
+    /**
+     * Update the per day data
+     */
+    FancyBusinessHours._updatePerDayData = function(_groupedData) {
+        _that = this;
+        $.each(_groupedData.weekdays, function(_key, _data) {
+            _that.dataPerDay[_key].push({
+                openingTime: _groupedData.openingDateTime.getTime(),
+                closingTime: _groupedData.closingDateTime.getTime()
+            });
+        });
+    };
+    
+    /**
+     * Group submitted data by days having same business hours
+     */ 
+    FancyBusinessHours.groupDaysBySimilarTime = function(days) {
+        
+        _that = this;
+        _groupedData = {
+            weekdaysBit: 0,
+            weekdays: {},
+            openingDateTime: _that.openingTimePickerData,
+            closingDateTime: _that.closingTimePickerData
+        };
+        
+        // iterate and validate passed days
+        $.each(days, function(){
+           var _day = $(this).val();
+           
+           if (_that._isValidBusinessHourForDay(_day)) {
+               _groupedData.weekdaysBit += getBitValueOfDay(_day); // update weekdays bit value of grouped data
+               _groupedData.weekdays[_day] = _day; // add this day to the weekdsays grouped data
+           }
+        });
+        
+        // has valid weekdays
+        if (_groupedData.weekdaysBit > 0) {
+            this.addData(_groupedData);
+        }
+    };
+    
+    FancyBusinessHours.addData = function(_groupedData){
+        _groupedData.elementId = generateId();
+        
+        this.data.push(_groupedData); // push to main data holder
+        this._updatePerDayData(_groupedData); // push to per day data holder
+        this._renderItemData(_groupedData); // render the item
+        
+        // add to form element
+        var _newEl = this.valuePrototype.replace(/__name__/g,_groupedData.elementId);
+        _newEl = $(_newEl);
+        var _valueData = {
+            weekdayBitValue: _groupedData.weekdaysBit,
+            opening: toTimepickerString(_groupedData.openingDateTime),
+            closing: toTimepickerString(_groupedData.closingDateTime)
+        };
+        
+        _newEl.val(window.JSON.stringify(_valueData));
+        _newEl.appendTo(this.valueElements);
     };
     
     FancyBusinessHours.removeData = function(elementId){

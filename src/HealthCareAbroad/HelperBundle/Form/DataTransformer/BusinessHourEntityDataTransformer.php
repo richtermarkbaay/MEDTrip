@@ -23,6 +23,10 @@ class BusinessHourEntityDataTransformer implements DataTransformerInterface
     
     public function reverseTransform($value)
     {
+        if ($value instanceof BusinessHour) {
+            return $value;
+        }
+        
         $value = \stripslashes($value);
         $decodedValue = \json_decode($value, true);
         $obj = null;

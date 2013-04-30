@@ -26,6 +26,7 @@ class BusinessHourEntityFieldType extends AbstractType
     {
         $builder->addViewTransformer(new BusinessHourEntityViewTransformer());
         $builder->addModelTransformer(new BusinessHourEntityDataTransformer());
+        
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
@@ -35,7 +36,10 @@ class BusinessHourEntityFieldType extends AbstractType
         ));
     }
     
-    
+    public function getParent()
+    {
+        return 'hidden';
+    }
     
     public function getName()
     {
