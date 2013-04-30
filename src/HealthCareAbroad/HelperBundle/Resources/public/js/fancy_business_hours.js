@@ -177,13 +177,17 @@ var FancyBusinessHours = function(_options){
     };
     
     FancyBusinessHours._renderItem = function(_item) {
-        var _html = "<tr class='data_row'>" +
-                "<td>"+_item.label+"</td>" +
-                "<td>"+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+"</td>" +
-                "<td>" +
-                    "<a data-elementId='"+_item.elementId+"' href='#' class='business_hours_remove_link'><i class='icon-remove-sign'></i></a>" +
-                "</td>" +
-            "</tr>";
+        var _html = '<div class="hca-workingday-details">'+
+            '<a href="#" data-elementId="'+_item.elementId+'">'+
+                '<i class="icon-remove-sign pull-right"></i>'+
+            '</a>'+
+            '<a href="#" data-elementId="'+_item.elementId+'">'+
+                '<i class="icon-edit pull-right"></i>'+
+            '</a>'+
+            '<span>'+_item.label.toUpperCase()+'</span>'+
+            '<b>'+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+'</b>'
+        '</div>';
+        
         var _el = $(_html);
         _that = this;
         _el.find('a.business_hours_remove_link').click(function(){
