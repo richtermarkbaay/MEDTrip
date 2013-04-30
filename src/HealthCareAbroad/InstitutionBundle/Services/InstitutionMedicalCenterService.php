@@ -204,9 +204,20 @@ class InstitutionMedicalCenterService
      * @param int $id
      * @return InstitutionMedicalCenter
      */
-    public function findById($id)
+    public function findById($id, $eagerly=true)
     {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
+        $result = null;
+        if ($eagerly) {
+            $qb = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getQueryBuilderForEagerlyLoadedMedicalCenter();
+            $qb->andWhere('imc.id = :id')
+                ->setParameter('id', $id);
+            
+            $result = $qb->getQuery()->getOneOrNullResult();
+        }
+        else {
+            $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
+        }
+        return $result;
     }
 
     /**
