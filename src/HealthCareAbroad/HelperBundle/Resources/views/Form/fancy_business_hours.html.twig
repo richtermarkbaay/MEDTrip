@@ -1,7 +1,6 @@
 {% block fancy_business_hours_widget %}
-<div class="clinictime">
-
-    <div class="hourbox">
+<div class="clinictime" id="fancy_business_hour_root_container">
+    <div class="hourbox" id="fancy_business_hour_selector_widget">
         <label for="specific-schedule">Clinic Working Days</label>
         {% set _weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}
         <table class="table">
@@ -58,7 +57,7 @@
                 </small>
             </div>
             <div class="span12">
-                <textarea rows="4" cols="50" class="span12" id="institution-description" name="institution-description">notes here</textarea>
+                <textarea rows="4" cols="50" class="span12" id="institution-description" name="institution-description"></textarea>
                 <small>
                     e.g Saturday and Sunday for appointment only or Closed for 1 hour lunch
                     break
@@ -83,7 +82,7 @@
 (function($){
     $(function(){
         var businessHours = new FancyBusinessHours({
-            'valuePrototype': '{{ form_widget(form.vars.prototype) | raw }}'
+            valuePrototype: '{{ form_widget(form.vars.prototype) | raw }}'
         });
 
         {% for _bh in form.parent.vars.value.businessHours %}
