@@ -55,6 +55,7 @@ var FancyBusinessHours = function(_options){
     /** end helper functions **/
     
     var FancyBusinessHours = {
+        rootContainer: null,
         openingTimePicker: null,
         closingTimePicker: null,
         openingTimePickerData: null, // current Date on openingTimePicker widget, will be updated everytime timepicker value is changed
@@ -62,6 +63,7 @@ var FancyBusinessHours = function(_options){
         dataContainer: null,
         valueElements: $('#business_hours_value_elements'),
         valuePrototype: null,
+        selectorWidget: null,
         addButton: null,
         weekdayCheckboxes: null,
         weekdays: [
@@ -78,7 +80,9 @@ var FancyBusinessHours = function(_options){
     };
     
     // set defaults
+    FancyBusinessHours.rootContainer = _options.rootContainer || $('#fancy_business_hour_root_container'); 
     FancyBusinessHours.valuePrototype = _options.valuePrototype || null;
+    FancyBusinessHours.selectorWidget = _options.selectorWidget || $('#fancy_business_hour_selector_widget');
     FancyBusinessHours.openingTimePicker = _options.openingTimePicker || $('#business_hours_opening');
     FancyBusinessHours.closingTimePicker = _options.closingTimePicker || $('#business_hours_closing');
     FancyBusinessHours.weekdayCheckboxes = _options.weekdayCheckboxes || $('input.business_hours_weekday');
@@ -131,8 +135,6 @@ var FancyBusinessHours = function(_options){
         var days = {};
         for (var x =0;x<this.weekdays.length;x++) {
             var _dayBitValue = getBitValueOfDay(this.weekdays[x].day);
-//            var _a = _dayBitValue & bitValue;
-//            console.log(_dayBitValue + "  = " + _a);
             if (_dayBitValue & bitValue) {
                 days[this.weekdays[x].day] = this.weekdays[x].day;
             }
@@ -177,18 +179,34 @@ var FancyBusinessHours = function(_options){
     };
     
     FancyBusinessHours._renderItem = function(_item) {
-        var _html = "<tr class='data_row'>" +
-                "<td>"+_item.label+"</td>" +
-                "<td>"+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+"</td>" +
-                "<td>" +
-                    "<a data-elementId='"+_item.elementId+"' href='#' class='business_hours_remove_link'><i class='icon-remove-sign'></i></a>" +
-                "</td>" +
-            "</tr>";
+        var _html = '<div class="hca-workingday-details">'+
+            '<a class="business_hours_remove_link" href="#" data-elementId="'+_item.elementId+'">'+
+                '<i class="icon-remove-sign pull-right"></i>'+
+            '</a>'+
+            '<a class="business_hours_edit_link" href="#" data-elementId="'+_item.elementId+'">'+
+                '<i class="icon-edit pull-right"></i>'+
+            '</a>'+
+            '<span>'+_item.label.toUpperCase()+'</span>'+
+            '<b>'+toTimepickerString(_item.openingDateTime)+" - "+toTimepickerString(_item.closingDateTime)+'</b>'
+        '</div>';
+        
         var _el = $(_html);
         _that = this;
         _el.find('a.business_hours_remove_link').click(function(){
-            $(this).parents('tr.data_row').remove();
+            $(this).parents('div.hca-workingday-details').remove();
             _that.removeData($(this).attr('data-elementId'));
+            return false;
+        });
+        _el.find('a.business_hours_edit_link').click(function(){
+            var _icon = $(this).find('i');
+            if (_icon.hasClass('icon-edit')) {
+                _icon.removeClass('icon-edit').addClass('icon-ok');
+                _that.selectorWidget.insertAfter($(this).parents('div.hca-workingday-details'));
+            }
+            else {
+                _icon.removeClass('icon-ok').addClass('icon-edit');
+                _that.rootContainer.prepend(_that.selectorWidget); // move to top of root container
+            }
             return false;
         });
         this.dataContainer.append(_el);
