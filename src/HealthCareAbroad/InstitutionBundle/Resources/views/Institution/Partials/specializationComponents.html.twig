@@ -6,7 +6,7 @@
     <ul>
         {% for treatment in treatments %}
             <li>
-                <input type="checkbox" name="treatments[{{ specializationId }}][]" value="{{ treatment.id }}" /> {{ treatment.name }}
+                <input type="checkbox" name="treatments[{{ specializationId }}][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> {{ treatment.name }}
             </li>
         {% endfor %}
     </ul>
