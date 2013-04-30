@@ -41,6 +41,18 @@ var InstitutionMedicalCenter = {
         return this;
     },
     
+    toggle: function(_element){
+        _attr = $(_element.attr('data-toggle'));
+        _attr.toggle();
+        GoogleMap.initialize();
+        google.maps.event.trigger(GoogleMap.map, 'resize');
+    },
+    
+    hideAddressContainer: function(_element){
+        _attr = $(_element.attr('data-toggle'));
+        _attr.hide();
+    },
+    
     openProfileForm: function(_element){
     	_element.hide();
     	_attr = _element.attr('href');

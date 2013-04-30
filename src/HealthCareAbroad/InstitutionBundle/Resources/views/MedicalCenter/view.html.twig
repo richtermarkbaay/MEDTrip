@@ -50,6 +50,8 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
 <script type="text/javascript">
 <!--
         function toggle(button) {
@@ -63,6 +65,14 @@
 
         $(function(){
 
+            GoogleMap.setInputs({
+    	    	'selectedCity' : document.getElementById('institutionMedicalCenter_city'),
+    	    	'selectedCountry' : document.getElementById('institutionMedicalCenter_country'),
+    	    	'inputCoordinates' : document.getElementById("institutionMedicalCenter_coordinates"),
+    	    	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
+    	    	'selectedStreet' : document.getElementById('institution_profile_form_street'),
+    	    });
+        	
             $("input:checkbox").click(function() {
                 $(this).parent().toggleClass("hca-highlight");
             });

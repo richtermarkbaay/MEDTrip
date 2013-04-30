@@ -4,36 +4,37 @@
         {% if each == 'description' %}
             {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
         {% elseif each == 'address' %}
-                        {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
-                    <div class="control-group">
-                        <div class="span12">
-                            {{ form_label(institutionMedicalCenterForm.country) }}
-                            {{ form_widget(institutionMedicalCenterForm.country, {attr: {class: 'country_dropdown'} } )}}
-                            {{ form_errors(institutionMedicalCenterForm.country) }}
+                    <div id="map_canvas" style="width: 530px; height: 300px"></div> 
+                            {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
+                            {{ form_widget(institutionMedicalCenterForm.coordinates) }}
+                        <div class="control-group">
+                            <div class="span6 input-append hca-location">
+                                {{ form_label(institutionMedicalCenterForm.country) }}
+                                {{ form_widget(institutionMedicalCenterForm.country , {attr: {class: 'hca-country pull-left'} } )}} 
+                            </div>
+                            <div class="span6">
+                                {{ form_label(institutionMedicalCenterForm.state) }}
+                                {{ form_widget(institutionMedicalCenterForm.state, { attr: {class: 'span12'} } )}}
+                                {{ form_errors(institutionMedicalCenterForm.state) }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="span5">
-                            {{ form_label(institutionMedicalCenterForm.state) }}
-                            {{ form_widget(institutionMedicalCenterForm.state, { attr: {class: 'span12'} } )}}
-                            {{ form_errors(institutionMedicalCenterForm.state) }}
+                        <div class="control-group">
+                            <div class="span6">
+                                {{ form_label(institutionMedicalCenterForm.city)}}
+                                {{ form_widget(institutionMedicalCenterForm.city, {label: 'City', attr: {class: 'city_dropdown hca-country pull-left'} } )}}
+                                {{ form_errors(institutionMedicalCenterForm.city) }}
+                            </div>
+                            <div class="span6">
+                                {{ form_label(institutionMedicalCenterForm.zipCode)}}
+                                {{ form_widget(institutionMedicalCenterForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
+                                {{ form_errors(institutionMedicalCenterForm.zipCode) }}
+                            </div>
                         </div>
-                        <div class="span5">
-                            {{ form_label(institutionMedicalCenterForm.city)}}
-                            {{ form_widget(institutionMedicalCenterForm.city, {label: 'City', attr: {class: 'city_dropdown hca-country pull-left'} } )}}
-                            {{ form_errors(institutionMedicalCenterForm.city) }}
-                        </div>
-                        <div class="span2">
-                            {{ form_label(institutionMedicalCenterForm.zipCode)}}
-                            {{ form_widget(institutionMedicalCenterForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span12'} } )}}
-                            {{ form_errors(institutionMedicalCenterForm.zipCode) }}
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        {{ form_label(institutionMedicalCenterForm.addressHint)}}
-                        {{ form_widget(institutionMedicalCenterForm.addressHint, {attr: {class: 'span12'} } )}}
-                        {{ form_errors(institutionMedicalCenterForm.addressHint) }}
-                    </div>
+                        <div class="control-group">
+                            {{ form_label(institutionMedicalCenterForm.addressHint)}}
+                            {{ form_widget(institutionMedicalCenterForm.addressHint, {attr: {class: 'span12'} } )}}
+                            {{ form_errors(institutionMedicalCenterForm.addressHint) }}
+                        </div> 
          
          {% elseif each == 'contactNumber' or each == 'websites' %}
                 <div class="span12">
