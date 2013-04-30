@@ -64,17 +64,19 @@ class FlagTwigExtension extends \Twig_Extension
         foreach ($countryGlobalData as $var => $a){
             $abbr = strtolower($a['abbr']);
             $code[] =  array(
-                            'id' => $a['id'],
-                            'custom_label' => $a['name']." <span class='flag16 ".$abbr."'> </span>",
-                            'label' => $a['name']
+                'id' => $a['id'],
+                'custom_label' => " <span class='flag16 ".$abbr."'> </span> " . "<span>" .$a['name']. "</span>",
+                'label' => $a['name']
             );
         }
         
-        $params = array( 'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
-                        'cityId' => $cityId,
-                        'country' => $country,
-                        'valueContainer' => $valueContainer);
-        
+        $params = array(
+            'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
+            'cityId' => $cityId,
+            'country' => $country,
+            'valueContainer' => $valueContainer
+        );
+
         return $this->twig->render($twigTemplate, $params);
     }
      public function getContactCountryList()
