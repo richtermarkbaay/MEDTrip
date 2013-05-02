@@ -13,32 +13,32 @@ class InstitutionMedicalCenter
 
     
     /**
-     * @var integer
+     * @var bigint $id
      */
     private $id;
 
     /**
-     * @var string
+     * @var string $name
      */
     private $name;
 
     /**
-     * @var string
+     * @var string $businessHours
      */
     private $businessHours;
 
     /**
-     * @var string
-     */
-    private $descriptionHighlight;
-
-    /**
-     * @var string
+     * @var text $description
      */
     private $description;
 
     /**
-     * @var string
+     * @var text $descriptionHighlight
+     */    
+    private $descriptionHighlight;
+    
+    /**
+     * @var string $address
      */
     private $address;
     
@@ -46,97 +46,90 @@ class InstitutionMedicalCenter
      * @var text $addressHint
      */
     private $addressHint;
-    
     /**
-     * @var string
+     * @var string $coordinates
      */
     private $coordinates;
 
     /**
-     * @var string
+     * @var string $contactNumber
      */
     private $contactNumber;
 
     /**
-     * @var string
+     * @var string $contactEmail
      */
     private $contactEmail;
 
     /**
-     * @var string
+     * @var string $websites
      */
     private $websites;
 
     /**
-     * @var string
+     * @var text $socialMediaSites
      */
     private $socialMediaSites;
-
+    
     /**
-     * @var \DateTime
+     * @var datetime $dateCreated
      */
     private $dateCreated;
 
     /**
-     * @var \DateTime
+     * @var datetime $dateUpdated
      */
     private $dateUpdated;
 
     /**
-     * @var integer
+     * @var smallint $status
      */
     private $status;
 
     /**
-     * @var string
+     * @var string $slug
      */
     private $slug;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $institutionSpecializations;
 
     /**
-     * @var \HealthCareAbroad\MediaBundle\Entity\Media
+     * @var HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $logo;
 
     /**
-     * @var \HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $media;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \Doctrine\Common\Collections\ArrayCollection
      */
     private $doctors;
+
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection
+     */
+    private $institutionGlobalAwards;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $contactDetails;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->media = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->contactDetails = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-    
+        
     /**
      * Get id
      *
-     * @return integer 
+     * @return bigint 
      */
     public function getId()
     {
@@ -192,7 +185,7 @@ class InstitutionMedicalCenter
     /**
      * Set descriptionHighlight
      *
-     * @param string $descriptionHighlight
+     * @param text $descriptionHighlight
      * @return InstitutionMedicalCenter
      */
     public function setDescriptionHighlight($descriptionHighlight)
