@@ -95,7 +95,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->request = $this->getRequest();
         
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($imcId);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($imcId);
         }
         
         parent::preExecute();
@@ -418,7 +418,6 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
-        
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
             throw $this->createNotFoundException();
@@ -440,22 +439,22 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-
             if ($form->isValid()) {
                 
+                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+                
                 $this->institutionMedicalCenter = $form->getData();
+                
+                foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                    $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                }
 
-                $this->get('services.institution_medical_center')->saveAsDraft($this->institutionMedicalCenter);
+                $institutionMedicalCenterService->saveAsDraft($this->institutionMedicalCenter);
 
                 // update sign up step status of institution
-                //$this->institution->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $this->get('services.institution.factory')->save($this->institution);
-                
-                //save other data here
-                
-                
-                
                 
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
@@ -551,10 +550,11 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
-
+        
         $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
                         'specializationComponents' => $specializationComponents,
-                        'specializationId' => $request->get('specializationId')
+                        'specializationId' => $request->get('specializationId'),
+                        'selectedTreatments' => ''
         ));
 
         return new Response($html, 200);

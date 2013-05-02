@@ -204,9 +204,20 @@ class InstitutionMedicalCenterService
      * @param int $id
      * @return InstitutionMedicalCenter
      */
-    public function findById($id)
+    public function findById($id, $eagerly=true)
     {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
+        $result = null;
+        if ($eagerly) {
+            $qb = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getQueryBuilderForEagerlyLoadedMedicalCenter();
+            $qb->andWhere('imc.id = :id')
+                ->setParameter('id', $id);
+            
+            $result = $qb->getQuery()->getOneOrNullResult();
+        }
+        else {
+            $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
+        }
+        return $result;
     }
 
     /**
@@ -252,6 +263,17 @@ class InstitutionMedicalCenterService
     public function isDraft(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         return $institutionMedicalCenter->getStatus() == InstitutionMedicalCenterStatus::DRAFT;
+    }
+    
+    /**
+     * Clear the related BusinessHour of medical center
+     * 
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     */
+    public function clearBusinessHours(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $this->doctrine->getRepository('InstitutionBundle:BusinessHour')
+            ->deleteByInstitutionMedicalCenter($institutionMedicalCenter);
     }
 
 
@@ -342,6 +364,7 @@ class InstitutionMedicalCenterService
         return $result;
     }
 
+    /**
     public function searchMedicaCenterWithSearchTerm(Institution $institution, $searchTerm)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a
@@ -362,12 +385,7 @@ class InstitutionMedicalCenterService
             AND imc.institution = :institutionId
             AND (t.name LIKE :searchTerm OR ss.name LIKE :searchTerm OR s.name LIKE :searchTerm OR imc.name LIKE :searchTerm)";
 
-        /*
-
-            OR
-            OR
-            AND
-         */
+        
         $query = $this->doctrine->getEntityManager()
         ->createQuery($dql)
         ->setParameter('searchTerm', '%'.$searchTerm.'%')
@@ -378,7 +396,9 @@ class InstitutionMedicalCenterService
 
         return $query->getResult();
     }
-
+    **/
+    
+    
     public function getMedicalCenterCountByStatus($medicalCenters){
         $results = array('status'=> array (
                         '1' => array(),
@@ -395,6 +415,10 @@ class InstitutionMedicalCenterService
 
         return $results;
     }
+    
+    /**
+     * @deprecated
+     */
     public function checkIfOpenTwentyFourHours($businessHours)
     {
         $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
@@ -444,6 +468,9 @@ class InstitutionMedicalCenterService
         'notes' => '',
     );
 
+    /**
+     * @deprecated
+     */
     static public function jsonDecodeBusinessHours($businessHours)
     {
         $defaultWeekValue = array(
@@ -467,6 +494,9 @@ class InstitutionMedicalCenterService
         return $businessHours;
     }
 
+    /**
+     * @deprecated
+     */
     static public function jsonEncodeBusinessHours(array $businessHours=array())
     {
         $defaultWeekValue = array(

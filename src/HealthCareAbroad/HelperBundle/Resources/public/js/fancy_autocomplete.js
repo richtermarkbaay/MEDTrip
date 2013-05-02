@@ -65,26 +65,23 @@ var FancyAutocompleteWidget = function(widget, options){
             
             // reset the values, in case of browser refresh that does not clear form values
             this.resetValue();
-            
+
             // build autocomplete options
             var autocompleteOptions = this._buildAutocompleteOptions(this.options);
             var widget = this.widget;
             this.widget.autocomplete(autocompleteOptions);
-            
+
             // check if widget has a data-autocomplete-trigger attribute
-            var _autocompleteTrigger = $(this.widget.attr('data-autocomplete-trigger'));
+            var _autocompleteTrigger = $(this.widget.parent().find(this.widget.attr('data-autocomplete-trigger')));
             if (_autocompleteTrigger.length) {
                 this.dropdownTrigger = _autocompleteTrigger;
                 this.dropdownTrigger.on('click', function(){
                     widget.autocomplete('search', '');
+                    widget.focus();
                 });
             }
-            
-            // check if widget has a data-dropdown
-            var _autocompleteDropdown = $(this.widget.attr('data-dropdown'));
-            if (_autocompleteDropdown.length){
-                this._overrideAutocompleteRendering(_autocompleteDropdown);
-            }
+
+            this._overrideAutocompleteRendering();
             
             return this;
         },
@@ -108,7 +105,7 @@ var FancyAutocompleteWidget = function(widget, options){
          * 
          * @access private
          */
-        _overrideAutocompleteRendering: function(dropdown) {
+        _overrideAutocompleteRendering: function() {
             var widget = this.widget;
             var options = this.options;
             var _onSelect = this._autocompleteSelect;
@@ -130,19 +127,14 @@ var FancyAutocompleteWidget = function(widget, options){
             
             // override _renderMenu
             widget.data('ui-autocomplete')._renderMenu = function(ul, data){
-                if (!dropdown.parent().hasClass('open')) {
-                    dropdown.dropdown('toggle');
-                }
                 var _cnt = 0;
                 $.each( data, function( index, item ) {
-                    if (_cnt > options.maxItems) {
+                    if (options.maxItems && _cnt > options.maxItems) {
                         return false;
                     }
                     widget.data('ui-autocomplete')._renderItemData( ul, item );
                     _cnt++;
                 });
-                ul.attr('class', 'popup-list').attr('style', '');
-                ul.appendTo(dropdown);
             };
         },
         
@@ -157,7 +149,8 @@ var FancyAutocompleteWidget = function(widget, options){
                     matches.push({'id': _i.id, 'label': _i.label, 'custom_label': _i.custom_label ? _i.custom_label : null });
                 }
             });
-           response(matches);
+
+            response(matches);
         },
         
         _autocompleteChange: function(event, ui){
@@ -189,7 +182,7 @@ var FancyAutocompleteWidget = function(widget, options){
             
             // set the source option
             _autocompleteOptions.source = this._autocompleteSource;
-            
+
             // set the change handler
             _autocompleteOptions.change = this._autocompleteChange;
             
@@ -209,11 +202,21 @@ var FancyAutocompleteWidget = function(widget, options){
         },
         
         _initializeOptions: function(_options) {
+
+        	var listWrapper = _options.valueContainer.siblings('.combolist-wrapper:first');
+        	
             var _defaults = {
                 autocomplete: {
                     minLength: 0,
-                    delay: 0
+                    delay: 0,
+                    appendTo: listWrapper
+                    /*response: function(event, ui) {
+                        if (ui.content.length > 0) {
+                        	listWrapper.removeClass('hide');
+                        }
+                    }*/
                 },
+
                 maxItems: 50,
                 valueContainer: null,
                 reloadSource: function(){}
@@ -273,7 +276,7 @@ var FancyAutocompleteWidget = function(widget, options){
             if ('function' != typeof _newOpts.reloadSource) {
                 _newOpts.reloadSource = function(){}; // set to empty default function
             }
-            
+
             return _newOpts;
         }// end _initializeOptions
     });

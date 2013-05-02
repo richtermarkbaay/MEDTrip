@@ -35,6 +35,7 @@ class SpecializationController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
                 ->find($imcId);
@@ -104,5 +105,35 @@ class SpecializationController extends InstitutionAwareController
         $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
     
         return $calloutView;
+    }
+    
+    /**
+     * Note: This might be needed by other parts of the system. If so move this to
+     * an appropriate and more generic controller.
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxLoadMedicalCenterSpecializationComponentsAction(Request $request)
+    {
+        $specializationTreatments = array();
+        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
+        
+        foreach ($institutionSpecializations as $e) {
+            foreach ($e->getTreatments() as $t) {
+                $specializationTreatments[] = $t->getId();
+            }
+        }
+        
+        //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
+        $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
+    
+        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
+                        'specializationComponents' => $specializationComponents,
+                        'specializationId' => $request->get('specializationId'),
+                        'selectedTreatments' => $specializationTreatments,
+        ));
+    
+        return new Response($html, 200);
     }
 }

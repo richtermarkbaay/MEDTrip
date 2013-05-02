@@ -583,21 +583,15 @@ class MedicalCenterController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
-        
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
-        $specializationArr = array();
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        foreach ($specializations as $e) {
-            $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-        }
-
+       
         return $this->render($template, array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
             'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
-            'specializationsJSON' => \json_encode($specializationArr),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards
         ));

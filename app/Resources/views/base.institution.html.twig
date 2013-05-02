@@ -14,17 +14,110 @@
         
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-            {% stylesheets
-                'css/bootstrap.min.css'
-				'css/institution/hca-admin.min.css'
-				'css/hca-flags.css'
-				'css/font-awesome.min.css'
-				'css/bootstrap-timepicker.min.css'
-				output='css/compiled-institution.css'
-            %}
-                <link href="{{ asset_url }}" rel="stylesheet"/>
-            {% endstylesheets %}
-         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+        
+        {% stylesheets
+		    'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
+            'css/bootstrap.min.css'
+			'css/bootstrap-timepicker.min.css'
+			'css/font-awesome.min.css'
+			'css/hca-flags.css'
+			'css/institution/hca-admin.min.css'
+
+			output='css/compiled-institution.css'
+        %}
+            <link href="{{ asset_url }}" rel="stylesheet"/>
+        {% endstylesheets %}
+
+        <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
+        
+        <style type="text/css">
+        
+            select.city_dropdown {
+                padding: 10px 5px;
+                width: 277px;
+            }
+        
+            /********** jQuery Autocomplete Custom CSS *****/
+            
+            .combolist-wrapper {
+                position: relative;
+                top: -10px;
+            }
+            
+            .combolist-wrapper > .ui-menu > li > a > .flag16 {
+                top: 3px;
+                margin: 0 7px 0 0;
+                position: relative;
+            }
+            
+            ul.ui-autocomplete.ui-menu {
+                overflow: auto;
+                padding: 0;
+                border: 1px solid rgba(0, 0, 0, 0.2);
+                max-height: 300px;
+                background-color: #f7f7f7;
+                width: 275px !important;
+            }
+            
+            ul.ui-autocomplete.ui-menu li {
+                font-size: 14px;
+                /*border-bottom: 1px solid #EEEEEE;*/
+            }
+            
+            ul.ui-autocomplete.ui-menu li:last-child {
+                border-bottom: 0;
+            }
+            
+            ul.ui-autocomplete.ui-menu li a {
+                display: block;
+                color: #000;
+                padding: 3px 10px;
+                word-wrap: break-word;
+                white-space: normal;
+            }
+            
+            ul.ui-autocomplete.ui-menu .ui-menu-item a.ui-state-focus {
+                margin: 0;
+                background: rgba(0, 0, 0, 0.1);;
+            }
+            
+            ul.ui-autocomplete.ui-menu li ul li {
+                border: none;
+            }
+            
+            ul.ui-autocomplete.ui-menu li ul li a {
+                font-size: 14px !important;
+                font-weight: bold;
+                opacity: 0.8;
+                padding: 5px 20px;
+            }
+            
+            ul.ui-autocomplete.ui-menu li ul li a:before {
+                content: "- ";
+            }
+            /*
+            .input-append input,.popup-box input {
+                width: 176px;
+                padding: 5px 5px;
+                box-shadow: none;
+                color: #555 !important;
+                -moz-transition: none;
+                -webkit-transition: none;
+                -o-transition: color 0 ease-in;
+                transition: none;
+            }
+            
+            .input-append input:focus,
+            .popup-box input:focus {
+                border-color: #919191;
+            }*/
+            
+            .input-append .btn,.popup-box .btn {
+                padding: 6px 10px;
+            }
+            /********** End of jQuery Autocomplete Custom CSS ***********/
+
+        </style>
     </head>
     
     <body>

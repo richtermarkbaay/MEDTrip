@@ -1,54 +1,11 @@
-<div class="specializations_block" id="specialization_block_{{ institutionSpecialization.id }}">
-    {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
-    {% set _editSpecializationUri = path('institution_medicalCenter_ajaxGetEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id} ) %}
-     <div class="maincontentblock">
-        <h4 class="pull-left specialization_name_{{ institutionSpecialization.id }}">{{ institutionSpecialization.specialization.name }}</h4>
-        <div class="editname2 pull-left">
-            <i class="icon-pencil" title="Edit"></i>
-            <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
-        </div>
-        <div class="editname2 pull-left">
-            <i title="Delete" class="icon-trash"></i>
-			<a data-target="#deleteSpecialization{{ institutionSpecialization.id }}" data-id="{{ institutionSpecialization.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
-			    <small>Delete</small>
-		    </a>
-		</div>
-		
-		<div id="deleteSpecialization{{ institutionSpecialization.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
-		    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
-		            'institutionSpecialization' : institutionSpecialization
-		        }
-		    %}
-		</div>
-		
-		<div id="{{ _editSpecializationModalId }}" class="modal add_treatments_modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		    <div class="modal-header">
-		        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-		        <h3>Add {{ institutionSpecialization.specialization.name }} treatments</h3>
-		    </div>
-		    <div style="max-height: 350px;" class="modal-body" >
-		        <span class="ajax_loader"><img src="{{ asset('images/institution/loading.gif') }}" /></span>
-		        <div class=" ajax_content_container"></div>
-		    </div>
-		    <div class="modal-footer">
-		        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-		        <button onclick="InstitutionSpecialization.submitAddTreatmentsForm(this); return false;" class="btn btn-primary submit_button" disabled="disabled">Submit</button>
-		    </div>
-		</div>
-		
-	</div>
-    <div class="maincontentblock">
-	    <table class="table table-striped table-bordered bootstrap-datatable">
-	        <tbody class="institution_specialization_treatments_container">
-	            {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
-			</tbody>
-		</table>
-    </div>
-    	
-     {% include 'InstitutionBundle:Widgets/Modals:modal.deleteTreatment.html.twig' with {
-		            'institutionSpecialization' : institutionSpecialization
-		        } %}
-    
-    
- </div>
+<div class="show-specializations" >
+    <table class="table table-hover hca-clinic-list" id="specialization_block_{{ institutionSpecialization.id }}">
+        <tr class="hca-specializations">
+            <th>
+                <h4>{{ institutionSpecialization.specialization.name }} </h4>
+            </th>
+        </tr>
+        {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
+        	
+    </table>
+</div>
