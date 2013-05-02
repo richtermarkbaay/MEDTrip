@@ -58,7 +58,7 @@ class InstitutionProfileFormType extends AbstractType
         'contactEmail',
         'address1',
         'addressHint',
-        'contactNumber',
+        'contactDetails',
         'websites',
         'socialMediaSites',
         'services',
@@ -116,8 +116,8 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
-        $this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
-
+        //$this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
+        $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_number_with_flag'));
         $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));

@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
@@ -151,18 +153,20 @@ class InstitutionSignUpController extends InstitutionAwareController
 //         }
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
+        $institutionUser = new InstitutionUser();
         $phoneNumber = new ContactDetail();
         $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $institution->addContactDetail($phoneNumber);
+        $institutionUser->addContactDetail($phoneNumber);
         
         $mobileNumber = new ContactDetail();
         $mobileNumber->setType(ContactDetailTypes::MOBILE);
-        $institution->addContactDetail($mobileNumber);
-        $form = $this->createForm(new InstitutionSignUpFormType(), $institution);
+        $institutionUser->addContactDetail($mobileNumber);
+        $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $institution = $form->getData();
+                
+                $institutionUser = $form->getData();
                 // initialize required database fields
                 $institution->setName(uniqid());
                 $institution->setAddress1('');
@@ -170,20 +174,19 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setContactNumber('');
                 $institution->setDescription('');
                 $institution->setCoordinates('');
+                $institution->setType($form->get('type')->getData());
                 $institution->setState('');
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
                 $institution->setZipCode('');
                 $institution->setSignupStepStatus(1); // this is always the first step
-                
                 $factory->save($institution);
 
                 // create Institution user
-                $institutionUser = new InstitutionUser();
                 $institutionUser->setEmail($form->get('email')->getData());
                 $institutionUser->setFirstName($form->get('firstName')->getData());
                 $institutionUser->setLastName($form->get('lastName')->getData());
-                $institutionUser->setContactNumber('');//$form->get('contactNumber')->getData());
+                $institutionUser->setContactNumber('');
                 $institutionUser->setPassword($form->get('password')->getData());
                 $institutionUser->setJobTitle($form->get('jobTitle')->getData());
                 $institutionUser->setInstitution($institution);
@@ -283,7 +286,12 @@ class InstitutionSignUpController extends InstitutionAwareController
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
-
+        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institution->addContactDetail($phoneNumber);
+        }
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution , array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
@@ -343,12 +351,18 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
-
+        
+        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institution->addContactDetail($phoneNumber);
+        }
+        
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
-            //var_dump($form->getData()->getCountry()); exit;
             $form->bind($this->request);
             
             if ($form->isValid()) {

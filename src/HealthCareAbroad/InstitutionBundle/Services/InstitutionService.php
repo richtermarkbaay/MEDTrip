@@ -92,6 +92,20 @@ class InstitutionService
         return $list;
     }
     
+    public function getContactDetailsByInstitution(Institution $institution)
+    {
+        $connection = $this->doctrine->getEntityManager()->getConnection();
+        $query = "SELECT * FROM contact_details a 
+                        LEFT JOIN institution_contact_details b ON a.id = b.contact_detail_id
+                        WHERE b.institution_id = :institutionId";
+        
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('institutionId', $institution->getId());
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+    
     public function getFullInstitutionBySlug($slug = '')
     {
         if(!$slug) {

@@ -3,6 +3,10 @@
  * author: Alnie Jacobe
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\DoctorBundle\Form\DoctorFormType;
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -55,7 +59,14 @@ class DoctorController extends Controller
             $doctor = new Doctor();
             $title = 'Add Doctor Details';
         }
-        //var_dump($doctor);exit;
+        
+        $contactDetails = $this->get('services.doctor')->getContactDetailsByDoctor($doctor);
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $doctor->addContactDetail($phoneNumber);
+        }
+        
         $form = $this->createForm(new DoctorFormType(), $doctor);
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
                         'doctor' => $doctor,
@@ -88,15 +99,15 @@ class DoctorController extends Controller
             $msg = "Successfully added doctor";
             $title = 'Add Doctor Details';
         }
+        
+        $phoneNumber = new ContactDetail();
+        $phoneNumber->setType(ContactDetailTypes::PHONE);
+        $doctor->addContactDetail($phoneNumber);
         $form = $this->createForm(new DoctorFormType(), $doctor);
         
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
-
-                //ADD contact detail first
-                $contactDetail = $this->get('services.contact_detail')->save($form->get('contactDetail')->getData());
-                $doctor->addContactDetail($contactDetail);
 
                 $fileBag = $request->files->get('doctor');
                 if(isset($fileBag['media']) && $fileBag['media']) {

@@ -1,7 +1,7 @@
 <section class="section institution-info">
     <h2>
         {{ label }} Contact Details<br>
-        <small> This is your hospital's contact details. Please be as detailed as possible. </small>
+        <small> This is your hospital's contact details. asdPlease be as detailed as possible. </small>
     </h2>
     <div class="row-fluid tooltip-wrap">
         <div class="span12">
@@ -13,7 +13,10 @@
                     <label for="Phone Number">{{ label }} Email Address</label>
                     {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
                 </div>
-                {{ form_widget(form.contactNumber, { 'attr': {'class': 'span9'} }) }}    
+                {% for _widget in form.contactDetails %}
+                    {{ form_widget(_widget, { 'attr': {'class': 'span9'} }) }}  
+                    {{ form_widget(_widget, { 'attr': {'class': 'span9'} }) }}  
+                {% endfor %}
             </div>
             <div class="control-group website">
                 <label for="institution_profile_form[websites]">{{ label }} Website</label>

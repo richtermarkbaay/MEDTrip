@@ -21,6 +21,24 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUser:
         status:
             type: smallint
             nullable: false
+    manyToMany:
+        contactDetails:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+            cascade:
+                - "persist"
+            mappedBy: null
+            inversedBy: institutionUsers
+            joinTable:
+                name: user_contact_details
+                joinColumns:
+                    -
+                        name: account_id
+                        referencedColumnName: account_id
+                inverseJoinColumns:
+                    -
+                        name: contact_detail_id
+                        referenceColumnName: id
+            orderBy: null  
     manyToOne:
         institution:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution

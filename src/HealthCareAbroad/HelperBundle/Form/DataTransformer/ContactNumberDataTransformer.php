@@ -20,7 +20,7 @@ class ContactNumberDataTransformer implements DataTransformerInterface
                     return $data;
                 }
             }
-            return $data = $this->defaultValue;
+            return $data = $this->defaultValue;    
         }
     }
     

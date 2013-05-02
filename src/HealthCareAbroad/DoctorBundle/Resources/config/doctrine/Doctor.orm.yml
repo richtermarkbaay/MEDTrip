@@ -98,7 +98,7 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             mappedBy: null
             inversedBy: doctors
             joinTable:
-                name: doctors_contact_details
+                name: doctor_contact_details
                 joinColumns:
                     -
                         name: doctor_id

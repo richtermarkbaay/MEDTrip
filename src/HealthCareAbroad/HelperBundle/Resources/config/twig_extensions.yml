@@ -64,6 +64,7 @@ services:
         class: HealthCareAbroad\HelperBundle\Twig\InstitutionTwigExtension
         public: false
         calls:
+            - [setInstitutionService, [@services.institution]]
             - [setMediaExtension, [@services.media.twig.extension]]
             - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:

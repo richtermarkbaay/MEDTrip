@@ -34,7 +34,14 @@
                         {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
                         <div class="clearfix"></div>
                         {{ form_row(form.contactEmail) }}
-                        {{ form_row(form.contactDetail) }}
+                        <div class="row-fluid">
+                            <div class="span12">
+                                {% for _widget in form.contactDetails %}
+                                    {{ form_widget(_widget) }}
+                                    {{ form_widget(_widget) }}
+                                {% endfor %}
+                            </div>
+                        </div>
 
 
                         {{ form_rest(form) }}

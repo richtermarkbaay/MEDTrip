@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
 use HealthCareAbroad\PagerBundle\Pager;
@@ -44,7 +46,7 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterBusinessHour
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+use HealthCareAbroad\AdminBundle\Form\InstitutionMedicalCenterFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
@@ -195,7 +197,7 @@ class InstitutionTreatmentsController extends Controller
         
    	    $adapter = new ArrayAdapter($this->institutionMedicalCenter->getMedia()->toArray());
    	    $institutionMedicalCenterMedia = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
-
+   	    $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -329,14 +331,13 @@ class InstitutionTreatmentsController extends Controller
                     return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
                 }
             }
-            
+            $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false));
      
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
                 
                 if ($form->isValid()) {
-                    
                     $form->getData()->setAddress('');
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
     
@@ -370,6 +371,7 @@ class InstitutionTreatmentsController extends Controller
 
     public function editMedicalCenterAction(Request $request)
     {
+        $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {

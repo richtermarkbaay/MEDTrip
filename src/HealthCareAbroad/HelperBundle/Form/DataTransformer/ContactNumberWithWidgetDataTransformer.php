@@ -19,6 +19,6 @@ class ContactNumberWithWidgetDataTransformer implements DataTransformerInterface
     
     public function reverseTransform($value)
     {
-        return \json_encode($value);
+        return $value;
     }
 }

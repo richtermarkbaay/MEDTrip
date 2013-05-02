@@ -17,22 +17,35 @@ class InstitutionUser extends SiteUser
      * @var datetime $dateCreated
      */
     private $dateCreated;
-
+    
     /**
      * @var string $jobTitle
      */
     private $jobTitle;
     
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
-
+    
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserType
+     * @var \HealthCareAbroad\UserBundle\Entity\InstitutionUserType
      */
     private $institutionUserType;
-
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $contactDetails;
+    
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->contactDetails = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
     /**
      * Set dateCreated
      *
@@ -44,17 +57,17 @@ class InstitutionUser extends SiteUser
         $this->dateCreated = $dateCreated;
         return $this;
     }
-
+    
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return datetime
      */
     public function getDateCreated()
     {
         return $this->dateCreated;
     }
-
+    
     /**
      * Set status
      *
@@ -66,17 +79,17 @@ class InstitutionUser extends SiteUser
         $this->status = $status;
         return $this;
     }
-
+    
     /**
      * Get status
      *
-     * @return smallint 
+     * @return smallint
      */
     public function getStatus()
     {
         return $this->status;
     }
-
+    
     /**
      * Set institution
      *
@@ -88,17 +101,17 @@ class InstitutionUser extends SiteUser
         $this->institution = $institution;
         return $this;
     }
-
+    
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     public function getInstitution()
     {
         return $this->institution;
     }
-
+    
     /**
      * Set institutionUserType
      *
@@ -110,11 +123,11 @@ class InstitutionUser extends SiteUser
         $this->institutionUserType = $institutionUserType;
         return $this;
     }
-
+    
     /**
      * Get institutionUserType
      *
-     * @return HealthCareAbroad\UserBundle\Entity\InstitutionUserType 
+     * @return HealthCareAbroad\UserBundle\Entity\InstitutionUserType
      */
     public function getInstitutionUserType()
     {
@@ -141,5 +154,37 @@ class InstitutionUser extends SiteUser
     public function getJobTitle()
     {
         return $this->jobTitle;
+    }
+    /**
+     * Add contactDetails
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails
+     * @return InstitutionUser
+     */
+    public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
+    {
+        $this->contactDetails[] = $contactDetails;
+    
+        return $this;
+    }
+
+    /**
+     * Remove contactDetails
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails
+     */
+    public function removeContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
+    {
+        $this->contactDetails->removeElement($contactDetails);
+    }
+
+    /**
+     * Get contactDetails
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getContactDetails()
+    {
+        return $this->contactDetails;
     }
 }

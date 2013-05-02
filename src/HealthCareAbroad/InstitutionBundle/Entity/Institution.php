@@ -793,7 +793,7 @@ class Institution
     {
         $this->contactDetails->removeElement($contactDetails);
     }
-
+    
     /**
      * Get contactDetails
      *

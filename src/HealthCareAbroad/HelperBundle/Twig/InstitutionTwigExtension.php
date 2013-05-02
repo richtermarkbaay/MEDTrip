@@ -7,7 +7,7 @@ use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
-
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 class InstitutionTwigExtension extends \Twig_Extension
 {
     /**
@@ -16,6 +16,16 @@ class InstitutionTwigExtension extends \Twig_Extension
     private $mediaExtension;
     
     private $imagePlaceHolders = array();
+    
+    /**
+     * @var InstitutionService
+     */
+    private $institutionService;
+    
+    public function setInstitutionService(InstitutionService $s)
+    {
+        $this->institutionService = $s;
+    }
     
     public function setMediaExtension(MediaExtension $media)
     {
@@ -31,7 +41,8 @@ class InstitutionTwigExtension extends \Twig_Extension
     {
         return array(
             'render_institution_logo' => new \Twig_Function_Method($this, 'render_institution_logo'),
-            'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number')
+            'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number'),
+            'render_institution_contact_details' => new \Twig_Function_Method($this, 'render_institution_contact_details')
         );
     }
     
@@ -43,6 +54,7 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function render_institution_contact_number(Institution $institution)
     {
         $contactNumber = \json_decode($institution->getContactNumber(), true);
+        
         if (\is_null($contactNumber) || $contactNumber == '') {
             return null;
         }
@@ -72,6 +84,30 @@ class InstitutionTwigExtension extends \Twig_Extension
         }
         
         return $result;
+    }
+    public function render_institution_contact_details(Institution $institution)
+    {
+        $contactDetails = $this->institutionService->getContactDetailsByInstitution($institution);
+        if (\is_null($contactDetails) || $contactDetails == '') {
+            
+            return null;
+        }
+        else {
+            foreach($contactDetails as $each) {
+                if($each['type'] == 1) {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Phone', 'number' => $each['number']);
+                }
+                else if($each['type'] == 2) {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Mobile', 'number' => $each['number']);
+                }
+                else {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Fax', 'number' => $each['number']);
+                }
+            }
+    
+            return $result = $contactDetailsArray;
+    
+        }
     }
     
     public function render_institution_logo(Institution $institution, array $options = array())

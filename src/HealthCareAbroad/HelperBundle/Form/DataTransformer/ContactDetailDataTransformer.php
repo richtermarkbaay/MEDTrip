@@ -11,31 +11,45 @@ class ContactDetailDataTransformer implements DataTransformerInterface
 {
     private $defaultValue = array('country_code' => '', 'area_code' => '', 'number' => '');
     
+//     public function transform($data)
+//     {
+//         if ($data instanceof ContactDetail) {
+//             $contactDetail['country_code'] = $data->getCountryCode();
+//             $contactDetail['area_code'] = $data->getAreaCode();
+//             $contactDetail['number'] = $data->getNumber(); 
+//             $data = $contactDetail;
+//         }
+//         else {
+//             $data = $this->defaultValue;
+//         }
+        
+//         return $data;
+//     }
+    
+//     public function reverseTransform($data)
+//     {
+//         $contactDetail = new ContactDetail();
+//         if($data) {
+//             $contactDetail->setAreaCode($data['area_code']);
+//             $contactDetail->setCountryCode($data['country_code']);
+//             $contactDetail->setNumber($data['number']);
+//             $contactDetail->setType(ContactDetail::TYPE_PHONE);
+//         }
+    
+//         return $contactDetail;
+//     }
     public function transform($data)
     {
         if ($data instanceof ContactDetail) {
-            $contactDetail['country_code'] = $data->getCountryCode();
-            $contactDetail['area_code'] = $data->getAreaCode();
-            $contactDetail['number'] = $data->getNumber(); 
-            $data = $contactDetail;
+            return $data;
         }
         else {
-            $data = $this->defaultValue;
+            return new ContactDetail();
         }
-        
-        return $data;
     }
     
-    public function reverseTransform($data)
+    public function reverseTransform($value)
     {
-        $contactDetail = new ContactDetail();
-        if($data) {
-            $contactDetail->setAreaCode($data['area_code']);
-            $contactDetail->setCountryCode($data['country_code']);
-            $contactDetail->setNumber($data['number']);
-            $contactDetail->setType(ContactDetail::TYPE_PHONE);
-        }
-    
-        return $contactDetail;
+        return $value;
     }
 }
