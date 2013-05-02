@@ -31,7 +31,8 @@ class InlineJavascriptTwigExtension extends \Twig_Extension
 	
 	public function getTemplateContents($templateName)
 	{
-		return $this->twig->render($templateName);
+		$s = $this->twig->render($templateName);
+		return \preg_replace('/\s+/', ' ', $s);
 	}
 	
 	public function add_javascript_file($src)
