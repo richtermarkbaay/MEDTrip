@@ -93,6 +93,7 @@ class InstitutionTwigExtension extends \Twig_Extension
             return null;
         }
         else {
+            $contactDetailsArray = array();
             foreach($contactDetails as $each) {
                 if($each['type'] == 1) {
                     $contactDetailsArray[$each['type']] = array('type' => 'Phone', 'number' => $each['number']);
