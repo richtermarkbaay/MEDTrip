@@ -50,7 +50,15 @@
             <div class="span6">
                 <a href="{{ path('admin_institution_edit_details', {'institutionId': institution.id } ) }}"><h5>Manage Your Institution Profile</h5></a>
 
-                <p>{{ json_decode(institution.contactNumber) | join('-') }}</p>
+                <p>{#{ json_decode(institution.contactDetails.number) | join('-') }#}</p>
+                {% set _contactDetails = render_institution_contact_details(institution) %}
+                {% if _contactDetails is not null %}
+                    {% for contactDetail in _contactDetails %}
+                        <p> <i class="icon-phone"> </i>
+                            <strong><span id="profileNumberText"> {{ contactDetail.number}}  </span> </strong>
+                        </p>
+                    {% endfor %}
+                {% endif %}  
                 <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
                 {# -- sites here <p></p> #}
             </div>

@@ -88,8 +88,7 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function render_institution_contact_details(Institution $institution)
     {
         $contactDetails = $this->institutionService->getContactDetailsByInstitution($institution);
-        if (\is_null($contactDetails) || $contactDetails == '') {
-            
+        if (\is_null($contactDetails) || !$contactDetails) {
             return null;
         }
         else {

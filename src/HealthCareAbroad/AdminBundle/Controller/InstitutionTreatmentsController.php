@@ -131,7 +131,6 @@ class InstitutionTreatmentsController extends Controller
                 'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'selectedAncillaryServices' => array()
             );
-            
             $params = array(
                 'institution' => $this->institution,
                 'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
@@ -219,7 +218,7 @@ class InstitutionTreatmentsController extends Controller
             'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),         
             'ancillaryServicesData' => $ancillaryServicesData,
             'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
-            'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
+            //'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
             'institutionMedicalCenterMedia' => $institutionMedicalCenterMedia
         );
 

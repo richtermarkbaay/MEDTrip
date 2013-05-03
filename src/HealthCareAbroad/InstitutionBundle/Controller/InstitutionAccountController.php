@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -209,6 +211,16 @@ class InstitutionAccountController extends InstitutionAwareController
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
+                $contactDetails = $this->get('services.institution')->getContactDetailsByInstitution($this->institution);
+                if(!$contactDetails) {
+                    $phoneNumber = new ContactDetail();
+                    $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $this->institution->addContactDetail($phoneNumber);
+                    
+                    $mobileNumber = new ContactDetail();
+                    $mobileNumber->setType(ContactDetailTypes::MOBILE);
+                    $this->institution->addContactDetail($mobileNumber);
+                }
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 $form->bind($request);
                 if ($form->isValid()) {
@@ -231,7 +243,7 @@ class InstitutionAccountController extends InstitutionAwareController
                         $center->setName($this->institution->getName());
                         $center->setDescription($this->institution->getDescription());
                         $center->setAddress($this->institution->getAddress1());
-                        $center->setContactNumber($this->institution->getContactNumber());
+                        //$center->setContactNumber($this->institution->getContactNumber());
                         $center->setContactEmail($this->institution->getContactEmail());
                         $center->setWebsites($this->institution->getWebsites());
                         $center->setDateUpdated($this->institution->getDateModified());
