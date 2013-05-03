@@ -451,6 +451,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
 
                 $institutionMedicalCenterService->saveAsDraft($this->institutionMedicalCenter);
+                exit;
 
                 // update sign up step status of institution
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);

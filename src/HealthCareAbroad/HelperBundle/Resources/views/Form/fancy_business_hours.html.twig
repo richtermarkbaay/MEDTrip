@@ -1,86 +1,39 @@
 {% block fancy_business_hours_widget %}
 <div class="clinictime" id="fancy_business_hour_root_container">
-    <div class="hourbox" id="fancy_business_hour_selector_widget">
-        <label for="specific-schedule">Clinic Working Days</label>
-        {% set _weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}
-        <table class="table">
-            <tr>
-                {% for _num, _day in  _weekdays %}
-                <td>
-                    <label class="checkbox">
-                        <input type="checkbox" class="business_hours_weekday" name="weekdays[]" value="{{ _num }}" />
-                        {{ _day }}
-                    </label>
-                </td>
-                {% endfor %}
-            </tr>
-        </table>
-        <br>
-        <label for="specific-schedule">Clinic Working Hours</label>
-        <div class="row-fluid">
-            <div class="span6">
-                <div class="pull-left span3">FROM</div>
-                <div class="input-append bootstrap-timepicker span9">
-                    <input id="business_hours_opening" type="text" class="input-small span12  pull-left">
-                    <span class="add-on">
-                        <i class="icon-time">
-                        </i>
-                    </span>
-                </div>
-            </div>
-            <div class="span6">
-                <div class="pull-left span2">
-                    TO
-                </div>
-                <div class="input-append bootstrap-timepicker span9">
-                    <input id="business_hours_closing" type="text" class="input-small span12 pull-left">
-                    <span class="add-on">
-                        <i class="icon-time">
-                        </i>
-                    </span>
-                </div>
-            </div>
-        </div><!-- .row-fluid -->
-        
-        <div class="row clinic-notes">
-            <div class="pull-left">
-                <i class="icon-pencil">
-                </i>
-                Additional Notes
-                <small>
-                    (Optional)
-                </small>
-            </div>
-            <div class="pull-right">
-                <small>
-                    Add a note per schedule
-                </small>
-            </div>
-            <div class="span12">
-                <textarea rows="4" cols="50" class="span12" id="institution-description" name="institution-description"></textarea>
-                <small>
-                    e.g Saturday and Sunday for appointment only or Closed for 1 hour lunch
-                    break
-                </small>
-            </div>
-            <button id="business_hours_add_button" class="btn btn-default pull-right" type="button">
-                ADD
-            </button>
-        </div><!-- .clinic-notes -->
-        
-    </div><!-- .hourbox -->
+    
+    {#-- get selector widget prototype #}
+    {% set _prototype = getTemplateContents("HelperBundle:Form/Partials:fbh.selectorWidget.html.twig") %}
+    
+    {#-- get selected business hour prototype #}
+    {% set _selectedHourPrototype = getTemplateContents("HelperBundle:Form/Partials:fbh.selectedHour.html.twig") %}
     
     <h4>Selected Working Hours</h4>
-    <div id="business_hours_data_container"></div>
+    <div id="fbh_data_container"></div>
     
     {# -- holder for form data, do not remove --#}
-    <div id="business_hours_value_elements"></div>
+    <div id="fbh_value_elements_container"></div>
     
 </div>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
+
+        var fbh = new FancyBusinessHours({
+            rootContainer: $('#fancy_business_hour_root_container'),
+            selectorWidgetPrototype: '{{ _prototype | raw }}',
+            selectedHourPrototype: '{{ _selectedHourPrototype | raw }}',
+            formValuePrototype: '{{ form_widget(form.vars.prototype) | raw }}'
+        });
+        fbh.initialize();
+
+        {% for _bh in form.parent.vars.value.businessHours %}
+            {# javascript code below #}
+            fbh.addData(fbh._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}), new Date('{{ _bh.opening | date("F d, Y H:i")}}'), new Date('{{ _bh.closing | date("F d, Y H:i")}}'));
+            {# end javascript code #}
+        {% endfor %}
+
+        /**
         var businessHours = new FancyBusinessHours({
             valuePrototype: '{{ form_widget(form.vars.prototype) | raw }}'
         });
@@ -95,7 +48,7 @@
             });
             {# end javascript code #}
         {% endfor %}
-       
+        **/
     });
 })(jQuery);
 //-->

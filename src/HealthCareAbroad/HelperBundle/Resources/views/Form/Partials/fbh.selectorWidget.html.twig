@@ -1,0 +1,73 @@
+{% spaceless %}
+{#-- 
+    NOTE: 
+    DO NOT TOUCH element ids or classes that starts with fbh! 
+--#}
+<div class="fbh_selector_widget hourbox">
+    <label for="specific-schedule">Clinic Working Days</label>
+    {% set _weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] %}
+    <table class="table">
+        <tr>
+            {% for _num, _day in  _weekdays %}
+            <td>
+                <label class="checkbox">
+                    <input type="checkbox" class="fbh_weekdays" name="weekdays[]" value="{{ _num }}" />
+                    {{ _day }}
+                </label>
+            </td>
+            {% endfor %}
+        </tr>
+    </table>
+    <br>
+    <label for="specific-schedule">Clinic Working Hours</label>
+    <div class="row-fluid">
+        <div class="span6">
+            <div class="pull-left span3">FROM</div>
+            <div class="input-append bootstrap-timepicker span9">
+                <input type="text" class="fbh_timepicker_opening input-small span12  pull-left">
+                <span class="add-on">
+                    <i class="icon-time">
+                    </i>
+                </span>
+            </div>
+        </div>
+        <div class="span6">
+            <div class="pull-left span2">
+                TO
+            </div>
+            <div class="input-append bootstrap-timepicker span9">
+                <input type="text" class="fbh_timepicker_closing input-small span12 pull-left">
+                <span class="add-on">
+                    <i class="icon-time">
+                    </i>
+                </span>
+            </div>
+        </div>
+    </div><!-- .row-fluid -->
+    
+    <div class="row clinic-notes">
+        <div class="pull-left">
+            <i class="icon-pencil">
+            </i>
+            Additional Notes
+            <small>
+                (Optional)
+            </small>
+        </div>
+        <div class="pull-right">
+            <small>
+                Add a note per schedule
+            </small>
+        </div>
+        <div class="span12">
+            <textarea rows="4" cols="50" class="span12" name="institution-description"></textarea>
+            <small>
+                e.g Saturday and Sunday for appointment only or Closed for 1 hour lunch
+                break
+            </small>
+        </div>
+        <button class="fbh_add_button btn btn-default pull-right" type="button">ADD</button>
+    </div><!-- .clinic-notes -->
+    
+</div><!-- .hourbox -->
+{% endspaceless %}
