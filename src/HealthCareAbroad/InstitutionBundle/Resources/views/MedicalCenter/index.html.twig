@@ -11,23 +11,10 @@
                 </h1>
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
-                    <ul class="nav nav-tabs hca-tab">
-                        <li class="active">
-                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{  total.status.2 | length }}</span></a>
-                        </li>
-                        <li>
-                            <a href="#draft" data-toggle="tab">Draft <span class="badge"> {{  total.status.4 | length }}</span></a>
-                        </li>
-                        <li>
-                            <a href="#pending" data-toggle="tab">Pending<span class="badge"> {{  total.status.8 | length }}</span></a>
-                        </li>
-                        <li>
-                            <a href="#expired" data-toggle="tab">Expired<span class="badge"> {{  total.status.16 | length }}</span></a>
-                        </li>
-                    </ul>
+                    {% include 'InstitutionBundle:MedicalCenter/Widgets:tab.listings.html.twig' %}
                    <div class="tab-content" id="medicalCenterListing">
-                        <div class="tab-pane active" id=all> 
-                                 {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
+                       <div class="tab-pane active" id=all>
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
                        </div>
                        <div class="tab-pane" id="draft"> </div>
                        <div class="tab-pane" id="pending"> </div>
