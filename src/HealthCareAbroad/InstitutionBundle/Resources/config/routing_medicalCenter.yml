@@ -1,3 +1,27 @@
+#--------------------------------------------------------------------------------
+# full page routes
+#
+
+institution_medicalCenter_index:
+    pattern: /listings
+    defaults: { _controller: InstitutionBundle:MedicalCenter:index }
+    requirements:
+        _method: GET
+
+institution_medicalCenter_view:
+    pattern: /listing/{imcId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:view }
+    requirements:
+        _method: GET
+        imcId: \d+
+#--------------------------------------------------------------------------------
+
+
+#--------------------------------------------------------------------------------        
+# ajax routes
+#
+
+
 institution_medicalCenter_ajaxUpdateProfileByField:
     pattern: /medical-center/{imcId}/ajax/update-by-field
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateByField }
@@ -96,19 +120,8 @@ institution_medicalCenter_addGlobalAwards:
         _method: GET|POST
         imcId: \d+
         
-institution_medicalCenter_edit:
-    pattern: /medical-center/{imcId}/edit
-    defaults: { _controller: InstitutionBundle:MedicalCenter:edit }
-    requirements:
-        _method: GET|POST
-        imcId: \d+
 
-institution_medicalCenter_view:
-    pattern:  /medical-center/view/{imcId}
-    defaults: { _controller: AdminBundle:InstitutionTreatments:viewMedicalCenter, imcId: ~ }
-    requirements:
-        imcId: \d+
-        _method: GET
+
 
 institution_load_doctor_specializations:
     pattern: /medical-center/{imcId}/search-doctor-specializations/{doctorId}
@@ -137,11 +150,7 @@ institution_medicalCenter_removeDoctor:
         _method: GET|POST
         imcId: \d+
 
-institution_medicalCenter_index:
-    pattern: /clinic-listing.html
-    defaults: { _controller: InstitutionBundle:MedicalCenter:index }
-    requirements:
-        _method: GET
+
         
 institution_medicalCenter_ajaxAddAncillaryService:
     pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService

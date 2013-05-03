@@ -37,7 +37,7 @@ use Gaufrette\File;
  * @author Allejo Chris G. Velarde
  *
  */
-class MedicalCenterController extends InstitutionAwareController
+class BAKMedicalCenterController extends InstitutionAwareController
 {
     /**
      * @var InstitutionMedicalCenter
@@ -118,37 +118,6 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);
-    }
-    
-    
-    /**
-     * Profile page of a medical center
-     * 
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function viewAction(Request $request)
-    {
-        //check if center doesnt have address yet, if so temp set address from institution
-        if(is_null($this->institutionMedicalCenter->getAddress())) {
-            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
-        }
-    
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
-        $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
-        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
-        $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-         
-        return $this->render($template, array(
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'specializations' => $institutionSpecializations,
-                        'institution' => $this->institution,
-                        'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                        'institutionMedicalCenterForm' => $form->createView(),
-                        'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
-                        'currentGlobalAwards' => $currentGlobalAwards
-        ));
     }
     
     /**
@@ -604,7 +573,29 @@ class MedicalCenterController extends InstitutionAwareController
         ));
     }
     
-    
+    public function editAction(Request $request)
+    {
+        //check if center doesnt have address yet, if so temp set address from institution
+        if(is_null($this->institutionMedicalCenter->getAddress())) {
+            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
+        }
+
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
+        $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
+        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+        $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+       
+        return $this->render($template, array(
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $institutionSpecializations,
+            'institution' => $this->institution,
+            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+            'institutionMedicalCenterForm' => $form->createView(),
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+            'currentGlobalAwards' => $currentGlobalAwards
+        ));
+    }
     
     public function saveAction(Request $request)
     {
