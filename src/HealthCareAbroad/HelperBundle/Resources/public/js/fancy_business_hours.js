@@ -117,8 +117,28 @@ var FancyBusinessHours = function(_options){
     
     FancyBusinessHours.updateData = function(dataId, newData) {
         if (this.data[dataId]) {
-            this._processData(newData);
+            newData.id = dataId;
+            var oldData = this.data[dataId];
+            
+            // we remove current data so we can validate thru other data
+            this.removeData(dataId); // remove existing data to avoid conflict
+            
+            // process new data
+            var _processedData = this._processData(newData);
+            
+            if (!(_processedData && _processedData.weekdaysBit > 0)) {
+                // new data is not valid, we revert to oldData which is a reference to the old data
+                _processedData = oldData
+            }
+            
+            this.data[dataId] = _processedData;
+            this._updatePerDayData(_processedData);
+            _processedData.formElement = this._addFormValue(_processedData);
+            
+            // update the view part for this selected item
+            this._renderItemData(this.data[dataId]);
         }
+        return null;
     };
     
     /**
@@ -237,14 +257,14 @@ var FancyBusinessHours = function(_options){
             var _checkboxes = _widget.element.find('input.fbh_weekdays:checked');
             if (_checkboxes.length) {
                 var _data = {
-                    days: {},
+                    weekdays: {},
                     openingDateTime: null,
                     closingDateTime: null
                 };
                 // get the selected days
                 for (var _x=0;_x<_checkboxes.length;_x++) {
                     var _val = parseInt(_checkboxes[_x].value);
-                    _data.days[_val] = _val; 
+                    _data.weekdays[_val] = _val; 
                 }
                 // set the opening and closing time
                 _data.openingDateTime = _widget.openingTimePickerData;
@@ -354,14 +374,35 @@ var FancyBusinessHours = function(_options){
     
     // render item
     FancyBusinessHours._renderItem = function(item) {
-        _fbhInstance = this;
-        var _el = $(this.selectedHourPrototype);
+        
+        var _el = this.dataContainer.find('.fbh_selected_item[data-elementId='+item.elementId+']');
+        if (_el.length) {
+            // there is an existing item, update it
+            _el.find('.fbh_selected_days_label').html(item.label.toUpperCase());
+            _el.find('.fbh_selected_time_label').html(toTimepickerString(item.openingDateTime)+" - "+toTimepickerString(item.closingDateTime));
+        }
+        else {
+            this._renderNewItem(item);
+        }
+        
+    }; // end _renderItem
+    
+    // render a new selected item
+    FancyBusinessHours._renderNewItem = function (item) {
+        
+        var _el = $(this.selectedHourPrototype).filter('*'); // remove text nodes
+        _el.attr('data-elementId', item.elementId); // tag this element
         var _removeLink = _el.find('a.fbh_remove_selected_item_link');
         var _editLink = _el.find('a.fbh_edit_selected_item_link');
         
         _el.find('.fbh_selected_days_label').html(item.label.toUpperCase());
         _el.find('.fbh_selected_time_label').html(toTimepickerString(item.openingDateTime)+" - "+toTimepickerString(item.closingDateTime));
         
+        // needed reference for click handlers
+        // FIXME: this may not refer to expected instance if there are multiple instances of FancyBusinessHours
+        _fbhInstance = this;
+        
+        // remove item handler
         _removeLink.attr('data-elementId', item.elementId)
             .click(function(){
                 $(this).parents('.fbh_selected_item').remove();
@@ -370,6 +411,7 @@ var FancyBusinessHours = function(_options){
                 return false;
             });
         
+        // edit selected item handler
         _editLink.attr('data-elementId', item.elementId)
             .click(function(){
                 var _this = $(this);
@@ -378,7 +420,7 @@ var FancyBusinessHours = function(_options){
                     _this.removeClass('fbh_save_updated_data');
                     var _widgetId = _this.attr('data-elementId');
                     var _widget = _fbhInstance.getWidget(_widgetId);
-                    var _newData = _fbhInstance._captureDataFromWidget(_widget);
+                    _fbhInstance.updateData(_widgetId, _fbhInstance._captureDataFromWidget(_widget)); // update the selected data
                     _fbhInstance.hideWidget(_widgetId); //
                 }
                 else {
@@ -395,8 +437,7 @@ var FancyBusinessHours = function(_options){
         var _currentWidget = _fbhInstance.createNewWidget(item.elementId, item);
         _currentWidget.element.insertAfter(_el).hide();
         _currentWidget.addButton.remove(); // remove the button for this widget
-        
-    }; // end _renderItem
+    };
     
     FancyBusinessHours._extractDaysFromWeekdayBitValue = function(bitValue) {
         var days = {};
@@ -487,7 +528,7 @@ var FancyBusinessHourWidget = function(owner){
             var _widget = _thatWidgetInstance._owner.getWidget(_widgetId);
             var _data = _widget._owner._captureDataFromWidget(_widget);
             if (_data) {
-                _widget._owner.addData(_data.days, _data.openingDateTime, _data.closingDateTime);
+                _widget._owner.addData(_data.weekdays, _data.openingDateTime, _data.closingDateTime);
             }
             
             return false;
