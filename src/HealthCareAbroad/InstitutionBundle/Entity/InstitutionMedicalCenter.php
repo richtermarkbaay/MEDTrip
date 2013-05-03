@@ -36,11 +36,6 @@ class InstitutionMedicalCenter
     private $address;
 
     /**
-     * @var text $descriptionHighlight
-     */    
-    private $descriptionHighlight;
-    
-    /**
      * @var string $address
      */
     private $addressHint;
