@@ -126,10 +126,12 @@ institution_terms_of_use:
     requirements:
         _method: GET   
         
-institution_static_page:
-    pattern: /institution/{url}
-    defaults: { _controller: InstitutionBundle:StaticPage:index }
-    requirements:
-        _method: GET|POST
+# removed this route, this will cause invalid urls to fall here. 
+# TODO: find a better approach for static pages
+#institution_static_page:
+#    pattern: /institution/{url}
+#    defaults: { _controller: InstitutionBundle:StaticPage:index }
+#    requirements:
+#        _method: GET|POST
         
 
