@@ -1,28 +1,34 @@
 <header id="header">
     <div class="container">
         <div class="row">
-
             <div class="span4">
                 <a href="{{ path('frontend_main_homepage') }}"><img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"></a>
             </div>
-
             <div class="pull-right">
                 <div class="navbar">
-                    
-
+                    <ul class="nav hca-nav">
+                        <li>
+                            <a href="inquiries.html"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> 10 </span></a>
+                        </li>
+                        <li>
+                            <a href="notifications.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>
+                        </li>
+                    </ul>
                     <ul class="nav">
                         <li>
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') }} {{ app.session.get('userLastName') }}<i class="icon-caret-down"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a></li>
-                                <li><a href="#"><i class="icon-share-alt"></i> Logout</a></li>
-                                <li class="divider"></li>
-                                <li class="nav-header">Logged in as:</li>
-                                <li class="text">{{ app.session.get('userEmail') }}</li>
+                                <li> <a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a> </li>
+                                 {#<li class="divider"> </li>
+                               <li> <a href="{{ path('institution_invite_user') }}"><i class="icon-user"></i> Invite User</a> </li>#}
+                                <li class="divider"> </li>
+                                <li class="nav-header"> Logged in as:  </li>
+                                <li class="text"> {{ app.session.get('userEmail') }}  </li>
+                                <li class="divider"> </li>
+                                <li> <a href="{{ path('institution_logout') }}"><i class="icon-share-alt"></i> Logout</a> </li>
                             </ul>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </div>

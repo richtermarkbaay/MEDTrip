@@ -29,10 +29,7 @@
                                     Manage Account
                                 </li>
                                 <li>
-                                    <a href="user-account-profile.html"><i class="icon-eye-open"></i> View Account</a>
-                                </li>
-                                <li>
-                                    <a href="manage-account-profile.html"><i class="icon-edit"></i> Edit Account</a>
+                                    <a href="{{ path('institution_editAccount' , {accountId: app.session.get('accountId')} ) }}"><i class="icon-edit"></i> Manage Account</a>
                                 </li>
                                 <li class="divider">
                                     <li class="nav-header">
