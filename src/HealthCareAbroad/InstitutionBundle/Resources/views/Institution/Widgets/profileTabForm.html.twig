@@ -1,16 +1,14 @@
 <!--  Institution Description -->
 <section class="section action-info hca-main-profile">
     <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" data-toggle="show-about" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-about">
             <h3> About your Hospital </h3>
             <span> Here you can present your hospital general description. </span>
             <p class="hca-helptext" id="institutionDescriptionText"> {{ institution.description }} </p>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
-            <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
-                <i class="icon-remove"> </i>
-            </button>
+            <a class="btn btn-link pull-right" href="#description" data-toggle="show-about" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
            <h3> Hospital Description </h3>
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                  with {formId: 'descriptionModalForm', fields: ['description']} 
@@ -21,8 +19,8 @@
 <!--  Institution Address -->
 <section class="section action-info hca-main-profile">
     <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#address" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#address" data-toggle="show-address" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-address">
             <h3>  Hospital Address </h3>
             <div class="activity-feeds">
                 <span class="icon-map-marker"> </span>
@@ -33,9 +31,7 @@
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="address">
-            <button class="btn btn-misc pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
-                <i class="icon-remove"> </i>
-            </button>
+           <a class="btn btn-link pull-right" href="#address" data-toggle="show-address" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
            <h3> Hospital Address
                 <a href="#"> <i class="icon-info-sign icon-1x"> </i> </a>
             </h3>
@@ -48,8 +44,8 @@
 <!-- Modal Number -->
  <section class="section action-info hca-main-profile">
      <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#number" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-contact">
             <h3> Hospital Contact Details </h3>
             <div class="activity-feeds">
                 <p> <i class="icon-globe"> </i> http://www.
@@ -69,7 +65,7 @@
                         {% else %}
                             Fax:
                         {% endif %}
-                            <strong><span id="profileNumberText"> {{ contactDetail.number}}  </span> </strong>
+                            <strong><span id="{{contactDetail.type}}NumberText"> {{ contactDetail.number}}  </span> </strong>
                     {% endfor %}
                 {% else %}
                     <p> <i class="icon-phone"> </i>Phone
@@ -80,8 +76,8 @@
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="number">
-            <button class="btn btn-link pull-right" type="button"  onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i> </button>
-            <h3> Hospital Contact Detailssda </h3>
+            <a class="btn btn-link pull-right" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
+            <h3> Hospital Contact Details </h3>
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                  with {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'} 
             %}
@@ -92,8 +88,8 @@
 <!-- Modal Social media sites -->
 <section class="section action-info hca-main-profile">
      <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMedia" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMedia" data-toggle="show-social" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-social">
             <h3>  Hospital Social Media </h3>
             <div class="activity-feeds" id="soclialMediaText">
                 {% for type, site in institution_websites_to_array(institution) %}
@@ -104,9 +100,7 @@
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="socialMedia">
-            <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
-                <i class="icon-remove"> </i>
-            </button>
+            <a class="btn btn-link pull-right" href="#socialMedia" data-toggle="show-social" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
             <h3>  Hospital Social Media </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'socialMediaForm', fields: ['socialMediaSites']} 
@@ -118,18 +112,16 @@
 <!-- Modal Services -->
 <section class="section action-info hca-main-profile">
     <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#services" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show-services">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#servicesContainerDiv" data-toggle="show-services" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-services">
                 <h3> Hospital Services </h3>
                 <h4> List of Services offered by Your Hospital. </h4>
             <div class="activity-feeds" id="serviesText">
                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig' %}
             </div>
         </div>
-        <div class="row-fluid hca-edit-box" style="display:none;" id="services">
-            <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
-                <i class="icon-remove"> </i>
-            </button>
+        <div class="row-fluid hca-edit-box" style="display:none;" id="servicesContainerDiv">
+            <a class="btn btn-link pull-right" href="#servicesContainerDiv" data-toggle="show-services" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
             <h3> Hospital Services  </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'serviceForm', fields: ['services']} 
@@ -141,17 +133,15 @@
 <!-- Modal Awards -->
 <section class="section action-info hca-main-profile">
     <div class="hca-display">
-        <a class="btn btn-misc btn-default pull-right btn-edit" href="#awardsDiv" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
-        <div class="show">
+        <a class="btn btn-misc btn-default pull-right btn-edit" href="#awardsDiv" data-toggle="show-awards" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
+        <div class="show" id="show-awards">
             <h3>  Certifications, Affilations, Awards and Accreditations  </h3>
             <div class="activity-feeds" id="awardsText">
                {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' %}
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="awardsDiv">
-            <button class="btn btn-link pull-right" type="button" onclick="InstitutionProfile.closeProfileForm($(this)); return false;">
-                <i class="icon-remove"> </i>
-            </button>
+            <a class="btn btn-link pull-right" href="#awardsDiv" data-toggle="show-awards" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
             <h3> Certifications, Affilations, Awards and Accreditations </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'awardsForm', fields: ['awards']} 

@@ -211,14 +211,15 @@ var InstitutionProfile = {
         
     },
     openProfileForm: function(_element){
-    	_element.hide();
+    	_element.toggle();
+    	_show = $(_element.attr('data-toggle'));
     	_attr = _element.attr('href');
     	if(_attr == "#address"){
     		GoogleMap.initialize();
 	        google.maps.event.trigger(GoogleMap.map, 'resize');
     	}
-    	_element.next('div.show').hide();
-    	$(_attr).show();
+    	$('#'+_show.selector).toggle();
+    	$(_attr).toggle();
     },
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');
@@ -299,11 +300,10 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                        var number = response.institution.contactNumber.phone_number;
-                        
                         $('#profileWebsitesText').html(response.institution.websitesString);
                        	$('#profileEmailText').html(response.institution.contactEmail);
-                        $('#profileNumberText').html(number.number);
+                        $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
+                        $('#MobileNumberText').html(response.institution.contactDetails.mobileNumber);
                         break;
                     case 'socialMediaForm':
                     	  var websites = response.institution.socialMediaSites, websitesString = ''; 

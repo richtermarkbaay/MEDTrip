@@ -271,6 +271,19 @@ class InstitutionAccountController extends InstitutionAwareController
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                         }
+                        if($key == 'contactDetails' ){
+                            $value = $this->institution->{'get'.$key}();
+                            $returnVal = array();
+                                foreach ($value as $keys => $a){
+                                   if($a->getType() == ContactDetailTypes::MOBILE){
+                                       $returnVal['mobileNumber'] = $a->getNumber();
+                                   }else{
+                                       $returnVal['phoneNumber'] =  $a->getNumber();
+                                   }
+                                }    
+                               
+                            $output['institution'][$key] = $returnVal;
+                        }
                         else{
                             $value = $this->institution->{'get'.$key}();
         
@@ -278,7 +291,7 @@ class InstitutionAccountController extends InstitutionAwareController
                                 $value = $value->__toString();
                             }
         
-                            if($key == 'address1' || $key == 'contactNumber' || $key == 'socialMediaSites') {
+                            if($key == 'address1' || $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);
                             }
                             $output['institution'][$key] = $value;

@@ -54,10 +54,10 @@ var InstitutionMedicalCenter = {
     },
     
     openProfileForm: function(_element){
-    	_element.hide();
+    	_element.toggle();
     	_attr = _element.attr('href');
     	_element.next('div.show').hide();
-    	$(_attr).show();
+    	$(_attr).toggle();
     },
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');
