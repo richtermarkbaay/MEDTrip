@@ -1,3 +1,7 @@
+[class^="icon-"], [class*=" icon-"] {
+	background-image: url("/images/glyphicons-halflings.png");
+}
+
 [class^="white-icon-"],[class*=" white-icon-"],[class^="orange-icon-"],[class*=" orange-icon-"] {
     width: 14px;
     height: 14px;
@@ -553,14 +557,9 @@ form .section > .section-content > div .row-field:last-child {
 }
 
 .input-append.dropdown-menu > * {
-    margin-bottom: 10px;     
+	position: relative;
+    margin-bottom: 10px;
 }
-
-.input-append.dropdown-menu > .ui-autocomplete.ui-menu {
-    position: relative;
-    width: auto !important;
-}
-
 
 .input-append.dropdown-menu li {
     font-size: 16px;
@@ -859,32 +858,6 @@ form .section > .section-content > div .row-field:last-child {
     color: #baccd5;
 }
 
-/*
-.custom-select {
-    width: auto;
-    max-width: 485px;
-    height: 38px !important;
-    padding: 0 !important;
-    background: url("/images/frontend/down-icon.png") no-repeat right #fff;
-    overflow: hidden;
-    border: 1px solid #ccc;
-    margin-bottom: 15px;
-}
-
-.custom-select select {
-    width: 523px;
-    height: 100%;
-    color: #666;
-    border: none;
-    font-size: 14px;
-    padding: 0 0 0 10px;
-    border-radius: 0;
-    background: transparent;
-    -webkit-appearance: none;
-    -moz-appearance: none !important;
-
-}
-*/
 #header-wrapper + #content-wrapper,
 #header-wrapper + .callout-wrapper {
     margin-top: 30px;
@@ -1060,7 +1033,7 @@ form.search-form .combo-wrapper .combolist-wrapper.hide {
 form.search-form .combo-wrapper .combolist-wrapper > .ui-menu {
     top: auto !important;
     left: auto !important;
-    position: relative !important;
+    position: relative;
 }
 
 form.search-form .combo-wrapper > label {
@@ -2822,13 +2795,16 @@ table.schedule-wrapper tr > td.open24hrs {
 
 /********** jQuery Autocomplete Custom CSS *****/
 
+.ui-autocomplete-input.span12 {
+	margin-bottom: 0;
+}
+
 ul.ui-autocomplete.ui-menu {
-    overflow: auto;
     padding: 0;
-    border: 1px solid #EEEEEE;
+    overflow: auto;
     max-height: 300px;
+    border: 1px solid #EEEEEE;
     background-color: #f7f7f7;
-    width: 281px !important;
 }
 
 ul.ui-autocomplete.ui-menu li {
@@ -2889,6 +2865,133 @@ ul.ui-autocomplete.ui-menu li ul li a:before {
     padding: 6px 10px;
 }
 /********** End of jQuery Autocomplete Custom CSS ***********/
+
+
+/** CUSTOM SELECT **/
+
+.hca-country.ui-autocomplete-input {
+    padding: 0 6px;
+    margin-bottom: 0;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete {
+    border: 1px solid #CCC;
+    border-top: none;
+}
+
+.hca-location-btn {
+    background-color: #FFFFFF; 
+    border: 1px solid #CCCCCC; 
+    border-radius: 0px !important; 
+    box-shadow: 0px 2px 2px 0px #E5E5E5 inset; 
+    position: absolute; 
+    height: 40px;  
+    right: inherit;
+    padding: 0 7px;
+    margin-left: -30px;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete .ui-menu-item {
+    border: none;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete .ui-menu-item a {
+    font-size: 15px;
+    padding: 2px 5px;
+    position: relative;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete .ui-menu-item a .item-label {
+    margin-left: 24px;
+    display: inline-block;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete .ui-menu-item a.ui-state-focus {
+    color: #000000;
+    background-color: #DDDDDD;
+}
+
+.hca-location-btn + .combolist-wrapper > ul.ui-autocomplete .ui-menu-item a .flag16 {
+    top: -1px;
+    position: absolute;
+}
+
+.custom-select .btn > .icon-chevron-down, 
+.hca-location-btn > .icon-chevron-down {
+    margin-top: 2px;
+}
+
+.custom-select .btn:hover,
+.hca-location-btn:hover {
+    background-color: #F3F3F3;
+}
+
+.custom-select {
+    height: 40px;
+    position: relative;
+}
+
+.custom-select > button.btn {
+    border-radius: 0 !important;
+    height: inherit;
+    padding: 0 7px;
+    border: 1px solid #CCCCCC;
+    background-color: #FFFFFF;
+    box-shadow: 0px 2px 2px 0px #E5E5E5 inset;
+    position: absolute;
+    right: inherit;
+    margin-left: -30px;
+}
+
+.custom-select > button.btn[disabled]:hover,
+.custom-select > button.btn[disabled] {
+    cursor: default;
+    background: #E6E6E6;
+}
+
+.custom-select > input[type=text] {
+    display:inline-block;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: inherit;
+}
+
+.custom-select > input[type=text]:hover {
+    cursor: default;
+}
+
+.custom-select > input[readonly] {
+    cursor: default;
+    background-color: #FFFFFF;
+}
+
+.custom-select > input[disabled] + .btn,
+.custom-select > input[disabled] {
+	cursor: default;
+    background-color: #EEEEEE !important;
+}
+
+.custom-select > ul {
+    list-style:none;
+    border: 1px solid #AAAAAA;
+    margin:0;
+    display:none;
+    background-color: #FFFFFF;
+    position: relative;
+    top: -1px;
+    z-index: 1;
+    max-height: 312px;
+    overflow: auto;
+}
+
+.custom-select > ul > li {
+    padding: 3px 10px;
+}
+
+.custom-select > ul > li.selected {
+    background-color: #DDDDDD;
+}
 
 
 /********** FOOTER STYLES ***********/

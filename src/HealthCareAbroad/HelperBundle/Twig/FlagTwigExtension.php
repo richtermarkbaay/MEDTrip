@@ -26,12 +26,11 @@ class FlagTwigExtension extends \Twig_Extension
     {
         $this->service = $service;
     }
-    
+
     public function getFunctions()
     {
         return array(
-            'render_contactNumber_widget' => new \Twig_Function_Method($this, 'render_contactCountryList_widget'),
-            'render_countryJsonList_widget' => new \Twig_Function_Method($this, 'render_countryJsonList_widget'),
+            'render_contactNumber_widget' => new \Twig_Function_Method($this, 'render_contactCountryList_widget')
         );
     }
     
@@ -55,30 +54,7 @@ class FlagTwigExtension extends \Twig_Extension
                         'inputId' => $string);
         return $this->twig->render($twigTemplate, $params);
     }
-    
-    public function render_countryJsonList_widget($cityId = null, $country = null, $valueContainer = null, $twigTemplate = null)
-    {
-        $countryGlobalData = $this->service->getGlobalCountryList();
-        $code = array();
-        $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:fancy_country_widget.html.twig' : $twigTemplate;
-        foreach ($countryGlobalData as $var => $a){
-            $abbr = strtolower($a['abbr']);
-            $code[] =  array(
-                'id' => $a['id'],
-                'custom_label' => " <span class='flag16 ".$abbr."'> </span> " . "<span>" .$a['name']. "</span>",
-                'label' => $a['name']
-            );
-        }
-        
-        $params = array(
-            'countryJsonList' => \json_encode($code, JSON_HEX_APOS),
-            'cityId' => $cityId,
-            'country' => $country,
-            'valueContainer' => $valueContainer
-        );
 
-        return $this->twig->render($twigTemplate, $params);
-    }
      public function getContactCountryList()
      {
          return $returnValue;

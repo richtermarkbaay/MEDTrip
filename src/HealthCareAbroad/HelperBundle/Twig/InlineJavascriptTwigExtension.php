@@ -26,6 +26,7 @@ class InlineJavascriptTwigExtension extends \Twig_Extension
             'render_media_file_script'=> new \Twig_Function_Method($this, 'renderMediaFileScript'),
             'add_javascript_file' => new \Twig_Function_Method($this, 'add_javascript_file'),
             'render_javascript_files' => new \Twig_Function_Method($this, 'render_javascript_files'),
+            'include_js_files' => new \Twig_Function_Method($this, 'includeJsFiles')
 		);
 	}
 	
@@ -59,6 +60,15 @@ class InlineJavascriptTwigExtension extends \Twig_Extension
 	    if (!$hasRendered) {
 	        $hasRendered = true;
 	        return $this->twig->render('HelperBundle:InlineJavascript:media.file.js.twig');
+	    }
+	}
+	
+	public function includeJsFiles($files)
+	{
+	    static $hasRendered =false;
+	    if (!$hasRendered) {
+	        $hasRendered = true;
+	        return '<script type="text/javascript" src="'.\implode('"></script><script type="text/javascript" src="', $files).'"></script>';
 	    }
 	}
 	

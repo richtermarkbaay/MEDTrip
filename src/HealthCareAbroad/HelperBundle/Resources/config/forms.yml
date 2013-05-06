@@ -116,3 +116,8 @@ services:
             - [setLocationService, [@services.location]]
         tags:
             - { name: form.type, alias: fancy_country }
+
+    form.custom.select:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\CustomSelectFieldType
+        tags:
+            - { name: form.type, alias: custom_select }
