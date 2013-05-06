@@ -12,19 +12,18 @@
              <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
                 <div class="span6">
                     <label for="Country">Country</label>
-                    <div class="input-append hca-location combo-wrapper">
-                      {{ form_widget(form.country )}} 
-                    </div>
+                    {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
                 </div>
                 <div class="span6">
                     <label>State / Province</label>
                     {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
                 </div>
             </div>
+
             <div class="control-group">
                 <div class="span6">
                     <label>City</label>
-                    {{ form_widget(form.city, { attr: {class: 'selectAdressFields city_dropdown'} } )}}
+                    {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
                 </div>
                 <div class="span6">
                     <label for="zip"> Zip / Postal Code</label>
