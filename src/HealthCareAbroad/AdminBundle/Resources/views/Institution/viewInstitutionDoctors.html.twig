@@ -41,7 +41,11 @@
                         	    </td>
                         	</tr>
                 {% endfor %}
+                     
                 </table>
+                {% if pager.isPaginable %}
+                   {{ paginate(pager, 'admin_institution_doctors', app.request.query.all|merge({'institutionId': institution.id})) }}
+                {% endif %}
             {% endblock %}
 
         {% endembed %}

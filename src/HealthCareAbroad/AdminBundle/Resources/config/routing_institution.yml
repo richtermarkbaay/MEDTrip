@@ -94,7 +94,7 @@ admin_institution_featuredImage_upload:
         
 admin_institution_doctors:
     pattern: /admin/institution/{institutionId}/doctors
-    defaults: { _controller: AdminBundle:Institution:viewInstitutionDoctors }
+    defaults: { _controller: AdminBundle:Institution:viewInstitutionDoctors}
     requirements:
         _method: GET
         institutionId: \d+

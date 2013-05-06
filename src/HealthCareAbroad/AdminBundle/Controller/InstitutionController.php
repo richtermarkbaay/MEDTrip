@@ -2,7 +2,6 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-
 use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
@@ -43,7 +42,8 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionLanguageSpokenFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServicesFormType;
-
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
@@ -338,10 +338,23 @@ class InstitutionController extends Controller
    	    return $this->redirect($this->generateUrl('admin_institution_view' , array('institutionId' => $this->institution->getId())));
    	}
    	
-   	public function viewInstitutionDoctorsAction()
+   	/**
+   	 * @author Chaztine Blance
+   	 * @param Request $request
+   	 * @return \Symfony\Component\HttpFoundation\Response
+   	 */
+   	public function viewInstitutionDoctorsAction(Request $request)
    	{
+   	    $pagerAdapter = new DoctrineOrmAdapter($this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getAllDoctorsByInstitution($this->institution));
+   	    $pagerParams = array(
+   	                    'page' => $request->get('page', 1),
+   	                    'limit' => 10
+   	    );
+   	    $pager = new Pager($pagerAdapter, $pagerParams);
+   	    
    	    return $this->render('AdminBundle:Institution:viewInstitutionDoctors.html.twig', array(
-                'institutionDoctors' => $this->get('services.institution')->getAllDoctors($this->institution),
+                'institutionDoctors' => $pager->getResults(),
+                'pager' => $pager,
                 'institution' => $this->institution,
    	    ));
    	}
