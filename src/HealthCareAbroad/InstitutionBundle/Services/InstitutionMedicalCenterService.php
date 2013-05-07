@@ -416,6 +416,19 @@ class InstitutionMedicalCenterService
         return $results;
     }
     
+    public function getContactDetailsByInstitutionMedicalCenter(InstitutionMedicalCenter $center)
+    {
+        $connection = $this->doctrine->getEntityManager()->getConnection();
+        $query = "SELECT * FROM contact_details a
+        LEFT JOIN institution_medical_center_contact_details b ON a.id = b.contact_detail_id
+        WHERE b.institution_medical_center_id = :imcId";
+    
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('imcId', $center->getId());
+        $stmt->execute();
+    
+        return $stmt->fetchAll();
+    }
     /**
      * @deprecated
      */

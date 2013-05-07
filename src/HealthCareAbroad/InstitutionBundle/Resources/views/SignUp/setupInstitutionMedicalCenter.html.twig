@@ -131,7 +131,10 @@
                                 {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
                             </div>
                             
-                            {{ form_widget(form.contactNumber, { 'attr': {'class': 'span12'} }) }}
+                            {#{ form_widget(form.contactDetails, { 'attr': {'class': 'span12'} }) }#}
+                            {% for _widget in form.contactDetails %}
+                                {{ form_widget(_widget) }}
+                            {% endfor %}
                         </div>
                     </div>
                 </div>

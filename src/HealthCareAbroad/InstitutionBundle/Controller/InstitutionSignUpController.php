@@ -432,15 +432,19 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         else {
-            
         }
 
+        $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+        }
         $form = $this->createForm(new InstitutionMedicalCenterFormType(), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
             if ($form->isValid()) {
-                
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
                 
