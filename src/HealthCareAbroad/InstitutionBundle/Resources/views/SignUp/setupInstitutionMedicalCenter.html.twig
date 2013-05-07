@@ -60,53 +60,56 @@
                         </div>
                     
                         <div class="control-group">
-                            <input type="radio" name="request" id="inquiry" class="pull-left" checked>
-                            <label for="different-address-clinic">Same Address</label>
-                            <p>{{ institution_address_to_array(institution, ['address1', 'zipCode', 'city', 'state', 'country']) | join(', ') }}</p>
+                            <input type="radio" name="request" value ="1" onclick="InstitutionMedicalCenter.toggleAddress($(this));" data-toggle="#sameAddress" id="request-sameAdress" class="pull-left" checked >
+                            <label for="different-address-clinic" >Same Address</label>
+                            <span id="sameAddress">
+                                <p>{{ institution_address_to_array(institution, ['address1', 'zipCode', 'city', 'state', 'country']) | join(', ') }}</p>
+                            </span>
                         </div>
                         <hr>
 
                         <div class="control-group">
-                            <input type="radio" name="request" id="inquiry" class="pull-left">
-                            <label for="different-address-clinic">Different Address</label>
+                            <input type="radio" name="request" value ="2" id="request-newAddress" class="pull-left"  onclick="InstitutionMedicalCenter.toggleAddress($(this));" data-toggle="#newAddress" >
+                            <label for="different-address-clinic" >Different Address</label>
                         </div>
-
-                        {{ form_widget(form.address, { attr: {class: 'addressFields '} } )}}
-
-                        <div class="control-group">
-                            <div class="span12">
-                                <label for="Country">Country</label>
-                                <div class="input-append hca-location">
-                                    {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
+                        <div id="newAddress" style="display:none;">
+                            {{ form_widget(form.address, { attr: {class: 'addressFields '} } )}}
+    
+                            <div class="control-group">
+                                <div class="span6">
+                                    <label for="Country">Country</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.country, { attr: {class: 'addressFields '} } )}}
+                                    </div>
+                                </div>
+                                 <div class="span6">
+                                    <label>State / Province</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="span5">
-                                <label>State / Province</label>
-                                <div class="input-append hca-location">
-                                    {{ form_widget(form.state, { attr: {class: 'addressFields '} } )}}
+                            <div class="control-group">
+                                <div class="span6">
+                                    <label>City</label>
+                                    <div class="input-append hca-location">
+                                        {{ form_widget(form.city, { attr: {class: 'addressFields city_dropdown'} } )}}
+                                    </div>
+                                </div>
+                                <div class="span6">
+                                    <label for="zip">Zip Code</label>
+                                    {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
                                 </div>
                             </div>
-                            <div class="span5">
-                                <label>City</label>
-                                <div class="input-append hca-location">
-                                    {{ form_widget(form.city)}}
+                            <div class="control-group">
+                                <label for="Helpful hint">Helpful hint for getting there?</label>
+                                <input type="text" name="state" id="address-hint" placeholder="" class="span12 tooltip-wrap2">
+                                <div class="tooltip-content2">
+                                    If there are any instructions that will help someone find you that aren't
+                                    included in the address put them here. This could be something like, 'On
+                                    the 2nd loor', or 'Next door to the gas station', whatever will make it
+                                    easy for patients to find you!
                                 </div>
-                            </div>
-                            <div class="span2">
-                                <label for="zip">Zip Code</label>
-                                {{ form_widget(form.zipCode, { attr: {class: 'span12 addressFields'} } )}}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="Helpful hint">Helpful hint for getting there?</label>
-                            <input type="text" name="state" id="address-hint" placeholder="" class="span12 tooltip-wrap2">
-                            <div class="tooltip-content2">
-                                If there are any instructions that will help someone find you that aren't
-                                included in the address put them here. This could be something like, 'On
-                                the 2nd loor', or 'Next door to the gas station', whatever will make it
-                                easy for patients to find you!
                             </div>
                         </div>
                     </div>

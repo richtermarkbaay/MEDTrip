@@ -12,13 +12,25 @@ var InstitutionMedicalCenter = {
     },
     
     tabbedContent: {
-        container: null, 
-        tabs: {
-            'specializations' : {'url': '', 'container': null},
-            'services' : {'url': '', 'container': null},
-            'awards' : {'url': '', 'container': null},
-            'medical_specialists' : {'url': '', 'container': null}
-        }
+    	container: null, 
+    	tabs: {
+	   'specializations' : {'url': '', 'container': null},
+	   'services' : {'url': '', 'container': null},
+	   'awards' : {'url': '', 'container': null},
+    	}
+    },
+    
+    institutionInputs: {
+   	 'address': null,
+        'unit': null,
+        'bldg': null,
+        'hint': null
+   },
+   
+    setInstitutionInputs: function(_val){
+        this.institutionInputs = _val;
+        
+        return this;
     },
     
     _commonDialogOptions: {
@@ -41,16 +53,16 @@ var InstitutionMedicalCenter = {
         return this;
     },
     
-    toggle: function(_element){
-        _attr = $(_element.attr('data-toggle'));
-        _attr.toggle();
-        GoogleMap.initialize();
-        google.maps.event.trigger(GoogleMap.map, 'resize');
-    },
-    
-    hideAddressContainer: function(_element){
-        _attr = $(_element.attr('data-toggle'));
-        _attr.hide();
+    toggleAddress: function(_element){
+		 _attr = $(_element.attr('data-toggle'));
+		 if( _attr.selector == '#sameAddress') {
+			 _attr.show()
+			 $('#newAddress').hide();
+		 }if( _attr.selector == '#newAddress') {
+			 _attr.show()
+			 $('#sameAddress').hide();
+			 _attr.find(':input:not([disabled=disabled])').val('');
+		 } 
     },
     
     openProfileForm: function(_element){
@@ -58,6 +70,10 @@ var InstitutionMedicalCenter = {
     	_attr = _element.attr('href');
     	_element.next('div.show').hide();
     	$(_attr).toggle();
+    	if(_attr = '#address'){
+    		GoogleMap.initialize();
+    		google.maps.event.trigger(GoogleMap.map, 'resize');
+    	}
     },
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');

@@ -38,26 +38,9 @@
                     </span>
                 </span>
             </h3>
-             <div class="control-group">
-                <input type="radio" name="request" id="inquiry" class="pull-left" data-toggle="#addressContainer" onclick="InstitutionMedicalCenter.hideAddressContainer($(this));" checked>
-                <label for="different-address-clinic"> Same address as Hospital </label>
-                 <p>
-                    {% set _address = institution_address_to_array(institution) %}
-                    <span class="address_column">
-                        <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
-                    </span>
-                </p>
-            </div>
-            <hr>
-            <div class="control-group">
-                <input type="radio" name="request" id="inquiry" class="pull-left " data-toggle="#addressContainer" onclick="InstitutionMedicalCenter.toggle($(this));">
-                <label for="different-address-clinic"> Different Address  </label>
-            </div>
-            <div id="addressContainer" style="display: none;">
                 {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
                      with {formId: 'addressForm', fields: ['address']} 
                 %}
-            </div>
         </div>
     </div>
 </section>
