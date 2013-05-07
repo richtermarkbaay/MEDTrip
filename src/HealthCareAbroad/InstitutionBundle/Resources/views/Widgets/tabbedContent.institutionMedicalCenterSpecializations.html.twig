@@ -12,7 +12,7 @@
                                 <div class="accordion-group">
                                     <div class="accordion-heading">
                                         <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ institutionSpecialization.id }}">
-                                            <i class="icon-plus-sign pull-right"></i><h4>{{ institutionSpecialization.specialization.name }}</h4>
+                                           <i class="icon-remove-sign pull-right"></i> <i class="icon-edit pull-right"></i><h4>{{ institutionSpecialization.specialization.name }}</h4>
                                         </a>
                                     </div>
                                      {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
@@ -50,7 +50,7 @@
 <script type="text/javascript">
 $(document).on('show hide', '#accordion', function(e) {
     var target = $(e.target);
-    target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-plus-sign icon-minus-sign');
+    target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-edit icon-ok');
 
     var modifiableDiv = target.find('#panel' + target.data('specialization'));
     $('#treatments_block_'+target.data('specialization')).toggle();
