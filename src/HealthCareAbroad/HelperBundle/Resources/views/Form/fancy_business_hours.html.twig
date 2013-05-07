@@ -29,7 +29,12 @@
 
         {% for _bh in form.parent.vars.value.businessHours %}
             {# javascript code below #}
-            fbh.addData(fbh._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}), new Date('{{ _bh.opening | date("F d, Y H:i")}}'), new Date('{{ _bh.closing | date("F d, Y H:i")}}'));
+            fbh.addData(
+                fbh._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}), 
+                new Date('{{ _bh.opening | date("F d, Y H:i")}}'), 
+                new Date('{{ _bh.closing | date("F d, Y H:i")}}'), 
+                '{{_bh.notes}}'
+            );
             {# end javascript code #}
         {% endfor %}
 
