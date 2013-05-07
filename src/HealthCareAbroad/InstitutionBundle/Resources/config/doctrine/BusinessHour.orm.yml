@@ -20,6 +20,10 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
         closing:
             type: time
             nullable: true
+        notes:
+            type: string
+            length: 250
+            nullable: false
     manyToOne:
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
