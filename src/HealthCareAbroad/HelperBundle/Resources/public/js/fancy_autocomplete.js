@@ -144,9 +144,9 @@ var FancyAutocompleteWidget = function(widget, options){
             var matches = [];
             // variable "this" refers to the ui.autocomplete widget
             var dataSource = this.element.data('fancyAutocomplete').options.source;
-            dataSource.map(function(_i){
-                if (_i.id && ( !request.term || matcher.test(_i.label))) {
-                    matches.push({'id': _i.id, 'label': _i.label, 'custom_label': _i.custom_label ? _i.custom_label : null });
+            $.each(dataSource, function(_i, _each){
+            	if (_each.id && ( !request.term || matcher.test(_each.label))) {
+                    matches.push({'id': _each.id, 'label': _each.label, 'custom_label': _each.custom_label ? _each.custom_label : null });
                 }
             });
 
@@ -163,7 +163,7 @@ var FancyAutocompleteWidget = function(widget, options){
         _autocompleteSelect: function(widget, _options, item) {
             // check that the selected value is not the same as the new selected
             if (_options.valueContainer && _options.valueContainer.val() != item.id) {
-                console.log('changed value from '+_options.valueContainer.val()+' to '+item.id);
+                //console.log('changed value from '+_options.valueContainer.val()+' to '+item.id);
                 _options.valueContainer.val(item.id);
                 widget.val(item.label);
                 
@@ -209,14 +209,11 @@ var FancyAutocompleteWidget = function(widget, options){
                 autocomplete: {
                     minLength: 0,
                     delay: 0,
-                    appendTo: listWrapper
-                    /*response: function(event, ui) {
-                        if (ui.content.length > 0) {
-                        	listWrapper.removeClass('hide');
-                        }
-                    }*/
+                    appendTo: listWrapper,
+                    open: function(){
+                    	$('.ui-autocomplete').css('width', $(this).outerWidth() - 2); // minus 2 for input border
+                    }
                 },
-
                 maxItems: 50,
                 valueContainer: null,
                 reloadSource: function(){}

@@ -60,17 +60,14 @@
                       <label for="inquire_clinicName">Clinic Name</label>
                     {{ form_widget(form.clinicName, {attr: {class: 'span12'} } )}}
                 </div>
-                <div class="control-group {{ (form.country.vars.valid ? '' : 'error') }}">
-                    <label for="inquire_country">Country</label>
-                    <!-- div class="custom-select" style="position:relative">  -->
+                <div>
+                    <div class="control-group span6 {{ (form.country.vars.valid ? '' : 'error') }}">
+                        <label for="inquire_country">Country</label>
                         {{ form_widget(form.country, {attr: {class: 'span12'}}) }}
-                        <!-- <a onclick="alert($(this).prev().attr('id'));$(this).prev().attr('size', 5).change(function(){$(this).attr('size', 1)});" style="background: url(../../images/frontend/down-icon.png) no-repeat center center #fff; position:absolute; width: 30px; height: 20px; top: 5px; right: 5px; display: inline-block;"> </a>
-                    </div> -->
-                </div>
-                <div class="control-group {{ (form.city.vars.valid ? '' : 'error') }}">
-                    <label for="inquire_city">City</label>
-                    <div class="custom-select">
-                        {{ form_widget(form.city, {attr: {class: 'city_dropdown span12'} } )}}
+                    </div>
+                    <div class="control-group span6 {{ (form.city.vars.valid ? '' : 'error') }}">
+                        <label for="inquire_city">City</label>
+                        {{ form_widget(form.city, {attr: {class: 'span12'}}) }}
                     </div>
                 </div>
                 <div class="control-group {{ (form.contactNumber.vars.valid ? '' : 'error') }}">

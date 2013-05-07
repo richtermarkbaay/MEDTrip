@@ -15,7 +15,7 @@ class FeedbackMessageFormType extends AbstractType
 		$builder->add('name', 'text', array('label' => 'Youre Name'));
 		$builder->add('emailAddress', 'text', array('label' => 'Your Email Address '));
 		$builder->add('message', 'textarea', array('label' => 'Enter your message '));
-		$builder->add('country', 'country_list', array('empty_value' => 'Select Country' , 'label' => 'Your Country'));
+		$builder->add('country', 'fancy_country', array('label' => 'Your Country'));
 		$builder->add('captcha', 'captcha', array('label' => 'Please type the code '));
 	}
 

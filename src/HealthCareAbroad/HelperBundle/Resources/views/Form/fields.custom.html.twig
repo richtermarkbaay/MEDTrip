@@ -258,14 +258,150 @@
 
 {% block fancy_country_widget %}
     {% spaceless %}
-        <input class="hca-country pull-left" type="text" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn"> 
-        <input type="hidden" id="{{ form.parent.vars.name ~ '_' ~ form.vars.name }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+        <div class="fancy-country-wrapper">
+            {% set cityField = form.parent.vars.value.city is defined ? form.parent.vars.value.city : false %}
+            {% set city = cityField ? form.parent.vars.value.city.id : 0 %}
+            {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}            
+            {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
 
-        {% set city = form.parent.vars.value.city.id is defined ? form.parent.vars.value.city.id : '0' %}
-        {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}
-        
-        {% set valueContainer = form.parent.vars.name ~ '_' ~ form.vars.name %}
-        {{ render_countryJsonList_widget(city, country, valueContainer) | raw  }}
-        
+            <input type="hidden" id="{{ elemId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
+            <input type="text" id="input-{{ elemId }}" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
+
+            <button class="btn hca-location-btn show_list_btn" type="button">
+                <span class="icon-chevron-down"></span>
+            </button>
+            <div class="combolist-wrapper"></div>
+
+            {% set jsFiles = [asset('bundles/helper/js/fancy_autocomplete.js'), asset('bundles/helper/js/Location.js')] %}
+            {{ include_js_files(jsFiles) | raw }}
+
+            <!-- TODO: Need to move and improve js implementation -->
+            <script type="text/javascript">
+            (function($){
+                $(function(){
+                    var _inputElem = $('#input-{{ elemId }}');
+                	var _valueContainer = $('#{{ elemId }}');
+                	var _currentValue = _valueContainer.val();
+
+                    {% if cityField is not sameas(false) %}
+                        var _currentCity = '{{ city }}';
+                    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+                    	if('{{ country }}' != '') {
+                            Location.loadCities(_valueContainer, _currentCity);
+                        }
+                    {% endif %}
+
+
+                	_inputElem.fancyAutocomplete({
+                        source: window.JSON.parse('{{ countries | raw }}'),
+                        maxItems: 0,
+                        valueContainer:  _valueContainer,
+                        autocomplete: {minLength: 0},
+                        onAutocompleteSelectCallback: function(){
+                        	{% if cityField is not sameas(false) %}
+                                Location.loadCities( _valueContainer, _currentCity);
+                            {% endif %}
+                        	_inputElem.data('fancyAutocomplete');
+                        }
+                    });
+            
+                    _inputElem.val('{{ country }}');
+                    _valueContainer.val(_currentValue);
+                });
+            })(jQuery);
+            </script>
+
+        </div>
+    {% endspaceless %}
+{% endblock %}    
+
+{% block custom_select_widget %}
+    {% spaceless %}
+        {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
+        {% set empty_value = empty_value is defined and empty_value is not none ? empty_value|trans : '' %}
+
+        <div class="custom-select">
+            <input type="hidden" name="{{ form.vars.full_name }}" id="{{ elemId }}" value="{{ form.vars.data }}">
+            <input type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} id="input-{{ elemId }}" {% if choices[form.vars.data] is defined %} value="{{ choices[form.vars.data] }}" {% endif %} {% if choices|length == 0 %} disabled {% endif %} placeholder="{{ empty_value }}" readonly>
+            <button type="button" class="btn" id="btn-{{ elemId }}"><span class="icon-chevron-down"></span></button>
+            <ul id="select-{{ elemId }}" class="custom-select-list">
+                {% if choices|length and empty_value %}
+                <li class="custom-select-item" data-value="">{{ empty_value }}</li>
+                {% endif %}
+                {% for value, label in choices %}
+                    <li class="custom-select-item" data-value="{{ value }}">{{ label }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- TODO: Need to move and improve js implementation -->
+        <script type="text/javascript">
+        $(function(){
+            var customSelectBtn = $('#btn-{{ elemId }}');
+            var customSelectInput = $('#input-{{ elemId }}');
+            var customSelectValue = $('#{{ elemId }}');
+            var customSelectList = $('#select-{{ elemId }}');
+            //var customSelectWidth = (customSelectInput.outerWidth() + customSelectBtn.outerWidth()) - 2;
+            var customSelectWidth = customSelectInput.outerWidth() - 3;
+
+            customSelectList.css({width: customSelectWidth})
+                .children()
+                    .click(function(){
+                    	customSelectInput.val($(this).text());
+                    	customSelectValue.val($(this).attr('data-value'));
+                    	$(this).siblings('.selected').removeClass('selected');
+                    	$(this).addClass('selected');
+                    	customSelectList.hide();
+                    }).mouseover(function(){
+                    	$(this).siblings('.selected').removeClass('selected');
+                    	$(this).addClass('selected');
+                    });
+
+            customSelectBtn.click(function(){
+            	customSelectInput.focus();
+            });
+
+            customSelectInput.bind('focus', function(){
+            	customSelectList.toggle();
+            }).keypress(function(e) {
+                var currentItem = $('#select-{{ elemId }} > .custom-select-item.selected');
+
+                if((e.keyCode == 37 || e.keyCode == 38) && !currentItem.is(':first-child')) {
+                    prevItem = currentItem.prev();
+
+                	customSelectInput.val(prevItem.text());
+                	customSelectValue.val(prevItem.attr('data-value'));
+                	prevItem.siblings('.selected').removeClass('selected');
+                	prevItem.addClass('selected');
+
+                	if(prevItem.offset().top < (customSelectList.offset().top)) {
+                    	customSelectList.scrollTop(customSelectList.scrollTop()-26);
+                    }
+                } else if((e.keyCode == 39 || e.keyCode == 40) && !currentItem.is(':last-child')) {
+                	nextItem = currentItem.next();
+
+                	customSelectInput.val(nextItem.text());
+                	customSelectValue.val(nextItem.attr('data-value'));
+                	nextItem.siblings('.selected').removeClass('selected');
+                	nextItem.addClass('selected');
+
+                	if(nextItem.offset().top > (customSelectList.offset().top + customSelectList.height())) {
+                    	customSelectList.scrollTop(customSelectList.scrollTop()+26);
+                    }
+                } if(e.keyCode == 13) {
+                    customSelectList.hide();
+                	return false;
+                }
+            }).height(customSelectInput.parent().height() -2 ).css({lineHeight: customSelectInput.parent().css('height')});
+
+            $(document).click(function(e) {
+                if(customSelectList.is(':visible') && e.target.id != customSelectBtn.attr('id') && e.target.id != customSelectInput.attr('id')) {
+                    if(e.target.className.match(/\bcustom-select-item\b/) == null) {
+                    	customSelectList.hide();
+                    }
+                }
+            });
+        });
+        </script>
     {% endspaceless %}
 {% endblock %}    

@@ -3,18 +3,18 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title>{% block title %}{% endblock %}</title>
-        
+
         {% javascripts 
             'js/jquery/jquery-1.8.2.js'
             'js/jquery/jquery-ui-1.10.1.custom.min.js'
             'js/bootstrap.min.js'
 			'bundles/helper/js/Common.js'
-			output='js/compiled-institution.js'
+			output='js/institution/compiled-javascripts.js'
         %}
-        
+
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
-        
+
         {% stylesheets
 		    'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
             'css/bootstrap.min.css'
@@ -22,8 +22,6 @@
 			'css/font-awesome.min.css'
 			'css/hca-flags.css'
 			'css/institution/hca-admin.min.css'
-
-			output='css/compiled-institution.css'
         %}
             <link href="{{ asset_url }}" rel="stylesheet"/>
         {% endstylesheets %}
@@ -32,36 +30,38 @@
         
         <style type="text/css">
         
-            select.city_dropdown {
-                padding: 10px 5px;
-                width: 277px;
-            }
-        
             /********** jQuery Autocomplete Custom CSS *****/
-            
-            .combolist-wrapper {
-                position: relative;
-                top: -10px;
+
+            .fancy-country-wrapper {
+                height: 40px;
+                postition: relative;
             }
-            
-            .combolist-wrapper > .ui-menu > li > a > .flag16 {
+
+            .fancy-country-wrapper > input[type=text] {
+                display:inline-block;
+                margin: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                height: inherit;
+            }
+
+            .fancy-country-wrapper .combolist-wrapper > .ui-menu > li > a > .flag16 {
                 top: 3px;
                 margin: 0 7px 0 0;
                 position: relative;
             }
             
-            ul.ui-autocomplete.ui-menu {
-                overflow: auto;
+            .combolist-wrapper > ul.ui-autocomplete.ui-menu {
                 padding: 0;
-                border: 1px solid rgba(0, 0, 0, 0.2);
+                overflow: auto;
                 max-height: 300px;
+                border: 1px solid #DDDDDD;
+                border-top: none;
                 background-color: #f7f7f7;
-                width: 275px !important;
             }
             
             ul.ui-autocomplete.ui-menu li {
                 font-size: 14px;
-                /*border-bottom: 1px solid #EEEEEE;*/
             }
             
             ul.ui-autocomplete.ui-menu li:last-child {
@@ -78,7 +78,7 @@
             
             ul.ui-autocomplete.ui-menu .ui-menu-item a.ui-state-focus {
                 margin: 0;
-                background: rgba(0, 0, 0, 0.1);;
+                background-color: #DDD;
             }
             
             ul.ui-autocomplete.ui-menu li ul li {
@@ -112,9 +112,77 @@
                 border-color: #919191;
             }*/
             
-            .input-append .btn,.popup-box .btn {
-                padding: 6px 10px;
+            /** CUSTOM SELECT STYLES **/
+            .custom-select {
+                height: 40px;
+                position: relative;
             }
+        
+            .fancy-country-wrapper > button.btn,
+            .custom-select > button.btn {
+                border-radius: 0;
+                height: inherit;
+                padding: 0 7px;
+                position: absolute;
+                right: inherit;
+                margin-left: -30px;
+            }
+            
+            .custom-select > input[type=text] {
+                display:inline-block;
+                margin: 0;
+                padding-top: 0;
+                padding-bottom: 0;
+                height: inherit;
+            }
+            
+            .custom-select:after {
+                content: attr(data-button);
+            }
+
+            
+            .custom-select > input[readonly] {
+                background-color: #FFF;
+                cursor: default;
+            }
+
+            .custom-select > input[disabled] {
+                background-color: #EEEEEE !important;
+            }
+
+            .custom-select > input[type=text]:hover {
+                cursor: default;
+            }
+            
+            .custom-select > ul {
+                list-style:none;
+                border: 1px solid #aaa;
+                margin:0;
+                display:none;
+                background-color: #FFF;
+                position: relative;
+                top: -1px;
+                z-index: 1;
+                max-height: 312px;
+                overflow: auto;
+            }
+            
+            .custom-select > ul > li {
+                padding: 3px 10px;
+            }
+            
+            .custom-select > ul > li.selected {
+                background-color: #DDD;
+            }                    
+
+            .no-highlight {
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }            
             /********** End of jQuery Autocomplete Custom CSS ***********/
 
         </style>

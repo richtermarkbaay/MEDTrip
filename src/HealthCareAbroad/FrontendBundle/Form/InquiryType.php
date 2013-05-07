@@ -24,16 +24,16 @@ class InquiryType extends AbstractType
     {
         $cityId = 0;
         
-        $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
-        $builder->addEventSubscriber($subscriber);
+        //$subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
+        //$builder->addEventSubscriber($subscriber);
 
     	$builder
     	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subject')))))
     		->add('firstName', 'text', array('error_bubbling' => false))
     		->add('lastName', 'text', array('error_bubbling' => false))
     		->add('clinicName', 'text')
-    		->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country', 'attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')))
-    		->add('city','city_list', array('empty_value' => 'Select city'))
+    		->add('country', 'fancy_country')
+    		->add('city','city_list')
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))

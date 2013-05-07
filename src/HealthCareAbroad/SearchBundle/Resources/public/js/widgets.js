@@ -61,7 +61,6 @@ var BroadSearchWidget = {
                     $.each(response, function(_key, _data){
                         BroadSearchWidget.formComponents[_key].dataSource = _data;
                     });
-                    
                 }
              });
         }
@@ -117,6 +116,9 @@ var BroadSearchWidget = {
                        // check if both type-in values are empty
                        var _allEmpty = BroadSearchWidget.form.find('input.type_in:text[value=""]').length >= BroadSearchWidget.form.find('input.type_in:text').length;
                        BroadSearchWidget.submitButton.attr('disabled', _allEmpty);
+                   },
+                   open: function(event, ui) {
+                	   $('.ui-autocomplete').css('width','auto');
                    },
                    close: function(event, ui) {
                 	   listWrapper.addClass('hide');
@@ -243,7 +245,10 @@ var NarrowSearchWidget = {
                    });
 
                    response(matches);
-                }
+                },
+                open: function(event, ui) {
+             	   $('.ui-autocomplete').css('width','auto');
+                },
             });
         // override _renderItem function of UI.autocomplete
         field.data('ui-autocomplete')._renderItem = function(ul, item) {
