@@ -16,7 +16,13 @@
                     <div class="accordion-group">
                         <div class="accordion-heading">
                             <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
-                                <i class="icon-plus-sign pull-right"></i><h4>{{ specialization.name }}</h4>
+                                <i class="icon-plus-sign pull-right"></i>
+                                {% if specialization.media %}
+                                    <img src="{{ specialization_media_src(specialization.media) }}" class="pull-left">
+                                {% else %}
+                                    <img src="" class="pull-left" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
+                                {% endif %}
+                                <h4>{{ specialization.name }}</h4>
                             </a>
                         </div>
                         <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
@@ -59,13 +65,13 @@
 
 <script type="text/javascript">
 $(document).on('show hide', '#accordion', function(e) {
+	//$('#accordion').find('.accordion-group > .in.collapse').hide();
     var target = $(e.target);
     target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-plus-sign icon-minus-sign');
 
     var modifiableDiv = target.find('#panel' + target.data('specialization'));
 
     if (!modifiableDiv.data('loaded')) {
-
         /* TODO: ideally we should return the data not html */
         $.ajax({
             url: "{{ path('institution_ajax_loadSpecializationComponents') }}",
@@ -89,58 +95,22 @@ break the script.
 */
 $('#accordion').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
     var target = $(e.target);
-
-    target.parent().parent().find('input:checkbox[name^="treatments"]').each(function() {
-        if (target.attr('checked')) {
-            $(this).attr('checked', target.attr('checked'));
-        } else {
-            $(this).removeAttr('checked');
-        }
-    });
+    var subSpecializationContainerElem = target.parents('.sub-specialization-group:first');
+    subSpecializationContainerElem.find('input[type=checkbox].treatments').prop('checked', target.is(':checked'));
 });
 
 $('#accordion').on('click', 'input:checkbox[name^="treatments"]', function(e) {
     var target = $(e.target);
-    var subSpecializationCheckbox = target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
+    var subSpecializationContainerElem = target.parents('.sub-specialization-group:first');
+    var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
+    var checkedTreatmentElems = subSpecializationContainerElem.find('input[type=checkbox].treatments:checked');
 
-    if (target.attr('checked')) {
-        subSpecializationCheckbox.attr('checked', 'checked');
-    } else {
-        var uncheckSubSpecializationCheckbox = true;
-        target.parent().parent().find('input:checkbox[name^="treatments"]').each(function() {
-            if ($(this).attr('checked')) {
-                uncheckSubSpecializationCheckbox = false;
-
-                return false;/*break*/
-            }
-        });
-
-        if (uncheckSubSpecializationCheckbox) {
-            subSpecializationCheckbox.removeAttr('checked');
-        }
+    subSpecializationCheckbox.prop('checked', true);
+    if(checkedTreatmentElems.length == 0) {
+        subSpecializationCheckbox.prop('checked', target.is(':checked'));
     }
 });
 
-$('#submitFormLink').click(function(e) {
-    //TODO: validation
-    document.forms['specializationsForm'].submit();
-
-    return false;
-});
-
-/*
-$('.expandcollapse').click(function() {
-    $('.collapse').each(function(index) {
-        $(this).collapse("toggle");
-    });
-    alert('changing icon');
-    if ($(this).html() == "<i class=\"icon-white icon-plus-sign\"></i> Expand All") {
-        $(this).html("<i class=\"icon-white icon-minus-sign\"></i> Collapse All");
-    } else {
-        $(this).html("<i class=\"icon-white icon-plus-sign\"></i> Expand All");
-    };
-});
-*/
 </script>
 
 {% endblock %}
