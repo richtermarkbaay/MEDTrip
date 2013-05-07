@@ -94,41 +94,21 @@
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
-    <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-        <label for="state">Address</label>
-        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_street" >
-    </div>
-    <div class="control-group">
-        <div class="span4">
-            <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields">
+        {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
+        <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
+            <label for="state">Address</label>
+            <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
         </div>
-        <div class="span8">
-            <label for="Building Name">Building Name <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" class="span12 addressFields">
+        <div class="control-group">
+            <div class="span4">
+                <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
+                <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="{{ elemIdPrefix }}_roomNumber" class="span12 addressFields">
+            </div>
+            <div class="span8">
+                <label for="Building Name">Building Name <small>(Optional)</small></label>
+                <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="{{ elemIdPrefix }}_building" class="span12 addressFields">
+            </div>
         </div>
-    </div>
-
-    {#
-    <div>
-        <span >
-            <label>Unit or Room #</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" >
-        </span>
-       </div>
-    <div class="address3">
-        <span >
-            <label>Building</label>
-            <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" >
-        </span>
-    </div>
-       <div class="address">
-            <label>Street</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" >
-    </div>
-    <div class="clearfix"></div>
-    #}
-
     {% endspaceless %}
 {% endblock %}
 

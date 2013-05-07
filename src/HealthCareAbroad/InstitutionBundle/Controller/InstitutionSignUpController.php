@@ -353,6 +353,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $errorArr = array();
         
         $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
+
         if(!$contactDetails) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
@@ -435,11 +436,13 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
+
         if(!$contactDetails) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);
         }
+
         $form = $this->createForm(new InstitutionMedicalCenterFormType(), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
@@ -447,13 +450,15 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-                
+
                 $this->institutionMedicalCenter = $form->getData();
                 
-                if($_POST['request'] == 1){
+                if((bool)$request->get('isSameAddress')) {
                     $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
                     $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
+                    $this->institutionMedicalCenter->setCoordinates($this->institution->setCoordinates($coordinates));
                 }
+
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                     $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                 }
@@ -463,7 +468,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // update sign up step status of institution
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $this->get('services.institution.factory')->save($this->institution);
-                
+
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
                 
