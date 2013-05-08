@@ -36,23 +36,19 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
             'get_selected_GlobalAwards' => new \Twig_Function_Method($this, 'getselected_GlobalAwards'),
         );
     }
-    
+
     public function getselected_AnciliaryServices(Institution $institution)
     {
-        $ancillaryServicesData = array(
-                        'currentAncillaryData' => array(),
-                        'data' =>array(),
-        );
-        
-        foreach ($this->service->getInstitutionByPropertyType($institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
-            $ancillaryServicesData['currentAncillaryData'][] = array(
-                            'id' => $_selectedService->getId(),
-                            'value' => $_selectedService->getValue(),
-            );
-            $ancillaryServicesData['data'][] = $_selectedService->getValue();
+        $services = array();
+        $ancillaryServices = $this->service->getInstitutionByPropertyType($institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+
+        foreach ($ancillaryServices as $each) {
+            $services[$each->getValue()] = $each->getId();
         }
-        return $ancillaryServicesData;
+
+        return $services;
     }
+
     public function getselected_GlobalAwards(Institution $institution){
         
         $currentGlobalAwards = array(
@@ -68,6 +64,7 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
                 $currentGlobalAwards['data'][] = $data->getValue();
             }
         }
+
         return $currentGlobalAwards;
     }
     

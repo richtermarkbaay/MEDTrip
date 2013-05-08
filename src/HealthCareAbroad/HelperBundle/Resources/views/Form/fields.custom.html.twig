@@ -123,26 +123,11 @@
     {% endif %}
     
     <ul class="services-listing">
-    
         {% for choice in form.vars.choices %}
-        {% set _isSelected = choice.value in selected.data %}
-
-           {% if (_isSelected is defined and _isSelected ) %}
-                 {% for property in selected.currentAncillaryData %}
-                        {% if property.value == choice.value  %}
-                             <li class="hca-highlight">
-                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                                {{ choice.label }}
-                            </li>
-                         {% endif %}
-                     {% endfor %}
-                 {% else %}
-                     <li class="">
-                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                        {{ choice.label }}
-                    </li>
-            {% endif %}
-
+             <li class="hca-highlight">
+                <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
+                {{ choice.label }}
+            </li>
         {% endfor %}
     </ul>
     {% endspaceless %}
