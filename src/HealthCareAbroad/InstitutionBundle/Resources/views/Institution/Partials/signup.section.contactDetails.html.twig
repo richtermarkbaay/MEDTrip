@@ -6,7 +6,7 @@
     <div class="row-fluid tooltip-wrap">
         <div class="span12">
             <div class="tooltip-content">
-                <i class="icon-info-sign icon-2x pull-left"></i>This is how we will contact you to let you know about potential leads.  Please provide the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.
+                <i class="icon-lightbulb icon-2x pull-left"></i>This is how we will contact you to let you know about potential leads.  Please provide the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.
             </div>
             <div class="control-group">
                 <div class="span6">
@@ -18,10 +18,10 @@
                     {{ form_widget(_widget, { 'attr': {'class': 'span9'} }) }}  
                 {% endfor %}
             </div>
-            <div class="control-group website">
+            <div class="span12 control-group website">
                 <label for="institution_profile_form[websites]">{{ label }} Website</label>
                 <span class="pull-left"> http:// </span>
-                {{ form_widget(form.websites, { attr: {class: 'span11 pull-right'} } )}}
+                {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
             </div>
         </div>
     </div>

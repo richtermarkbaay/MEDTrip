@@ -20,7 +20,7 @@ class BusinessHourEntityViewTransformer implements DataTransformerInterface
             $obj->setWeekdayBitValue($decodedValue['weekdayBitValue']);
             $obj->setOpening(new \DateTime($decodedValue['opening']['date']));
             $obj->setClosing(new \DateTime($decodedValue['closing']['date']));
-            
+            $obj->setNotes($decodedValue['notes']);
             return $obj;
         }
     }
@@ -33,7 +33,7 @@ class BusinessHourEntityViewTransformer implements DataTransformerInterface
             $obj->setWeekdayBitValue($decodedValue['weekdayBitValue']);
             $obj->setOpening(new \DateTime($decodedValue['opening']));
             $obj->setClosing(new \DateTime($decodedValue['closing']));
-            
+            $obj->setNotes($decodedValue['notes']);
             return $obj;
         }
     }

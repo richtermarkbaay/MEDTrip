@@ -93,13 +93,14 @@ var FancyBusinessHours = function(_options){
      * 
      * @return object
      */
-    FancyBusinessHours.addData = function(days, openingDateTime, closingDateTime){
+    FancyBusinessHours.addData = function(days, openingDateTime, closingDateTime, notes){
         var _that = this;
         var _groupedData = this._processData({
             id: generateId(),
             weekdays: days,
             openingDateTime: openingDateTime,
-            closingDateTime: closingDateTime
+            closingDateTime: closingDateTime,
+            notes: notes
         });
         
         if (_groupedData && _groupedData.weekdaysBit > 0) {
@@ -180,7 +181,7 @@ var FancyBusinessHours = function(_options){
         var _data =  _initialData || {};
         var _w = new FancyBusinessHourWidget(this);
         _w.uuid = widgetId;
-        _w.initialize(_data.weekdays || null, _data.openingDateTime || null, _data.closingDateTime || null);
+        _w.initialize(_data.weekdays || null, _data.openingDateTime || null, _data.closingDateTime || null, _data.notes || null);
         this._createdWidgets[_w.uuid] = _w;
         return _w;
     };
@@ -228,7 +229,8 @@ var FancyBusinessHours = function(_options){
             id: null,
             weekdays: {},
             openingDateTime: null,
-            closingDateTime: null
+            closingDateTime: null,
+            notes: ''
         };
         // check required data
         if (_raw.id && _raw.openingDateTime && _raw.openingDateTime instanceof Date && _raw.closingDateTime && _raw.closingDateTime instanceof Date){
@@ -259,7 +261,8 @@ var FancyBusinessHours = function(_options){
                 var _data = {
                     weekdays: {},
                     openingDateTime: null,
-                    closingDateTime: null
+                    closingDateTime: null,
+                    notes: ''
                 };
                 // get the selected days
                 for (var _x=0;_x<_checkboxes.length;_x++) {
@@ -269,7 +272,7 @@ var FancyBusinessHours = function(_options){
                 // set the opening and closing time
                 _data.openingDateTime = _widget.openingTimePickerData;
                 _data.closingDateTime = _widget.closingTimePickerData;
-                
+                _data.notes = $.trim(_widget.notesElement.val());
                 return _data;
             }
         }
@@ -324,7 +327,8 @@ var FancyBusinessHours = function(_options){
         var _valueData = {
             weekdayBitValue: data.weekdaysBit,
             opening: toTimepickerString(data.openingDateTime),
-            closing: toTimepickerString(data.closingDateTime)
+            closing: toTimepickerString(data.closingDateTime),
+            notes: data.notes
         };
         _newEl.val(window.JSON.stringify(_valueData));
         _newEl.appendTo(this.formValueContainer);
@@ -367,7 +371,8 @@ var FancyBusinessHours = function(_options){
             weekdays: data.weekdays,
             openingDateTime: data.openingDateTime,
             closingDateTime: data.closingDateTime,
-            elementId: data.id
+            elementId: data.id,
+            notes: data.notes
         });
         
     }; // end _renderItemData
@@ -380,6 +385,9 @@ var FancyBusinessHours = function(_options){
             // there is an existing item, update it
             _el.find('.fbh_selected_days_label').html(item.label.toUpperCase());
             _el.find('.fbh_selected_time_label').html(toTimepickerString(item.openingDateTime)+" - "+toTimepickerString(item.closingDateTime));
+            
+            // update the notes
+            _toggleNotes(_el.find('.fbh_selected_item_notes'),item.notes);
         }
         else {
             this._renderNewItem(item);
@@ -431,6 +439,8 @@ var FancyBusinessHours = function(_options){
                 return false;
             });
         
+        // add the notes
+        _toggleNotes(_el.find('.fbh_selected_item_notes'),item.notes);
         _fbhInstance.dataContainer.append(_el);
         
         // we create a hidden widget for this item
@@ -459,6 +469,15 @@ var FancyBusinessHours = function(_options){
             : startDay.short;
         return _label;
     };
+    
+    var _toggleNotes = function(notesElement, notesData) {
+        if ('' != notesData) {
+            notesElement.html('<i class="icon-file-alt"></i>'+notesData).show();
+        }
+        else {
+            notesElement.html('').hide();
+        }
+    };
     /** end private  functions **/
     
     return FancyBusinessHours;
@@ -477,6 +496,7 @@ var FancyBusinessHourWidget = function(owner){
         openingTimePickerData: null, // Date object
         closingTimePicker: null, // timepicker UI widget
         closingTimePickerData: null, // Date object
+        notesElement: null,
         element: null, // element that represents this whole widget
         uuid: null, // identifier for this widget
         addButton: null
@@ -487,12 +507,14 @@ var FancyBusinessHourWidget = function(owner){
     /**
      * Initialize selector widget
      */
-    FancyBusinessHourWidget.initialize = function(days, openingDateTime, closingDateTime){
+    FancyBusinessHourWidget.initialize = function(days, openingDateTime, closingDateTime, notes){
         // get the prototype
         this.element = $(this._owner.selectorWidgetPrototype).filter('*'); // filter possible textnodes
         if (this.uuid != null) {
             this.element.attr('data-elementId', this.uuid);
         }
+        
+        this.notesElement = this.element.find('.fbh_notes').val(notes || ''); // set the notes element
         
         // init the timepicker elements
         this.openingTimePicker = this.element.find('.fbh_timepicker_opening');
@@ -528,7 +550,7 @@ var FancyBusinessHourWidget = function(owner){
             var _widget = _thatWidgetInstance._owner.getWidget(_widgetId);
             var _data = _widget._owner._captureDataFromWidget(_widget);
             if (_data) {
-                _widget._owner.addData(_data.weekdays, _data.openingDateTime, _data.closingDateTime);
+                _widget._owner.addData(_data.weekdays, _data.openingDateTime, _data.closingDateTime, _data.notes);
             }
             
             return false;

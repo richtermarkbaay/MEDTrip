@@ -64,15 +64,17 @@
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
         <div class="control-group social-media">
-            <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
-            <i class="icon-twitter icon-2x pull-left span1"></i>
-            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span11 pull-right">
+
             <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
-            <i class="icon-facebook icon-2x pull-left span1"></i>
-            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span11 pull-right">
+            <i class="icon-facebook icon-2x pull-left"><span> facebook.com/</span></i>
+            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span9 pull-right">
+            <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
+            <i class="icon-twitter icon-2x pull-left"><span> @</span></i>
+            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span11 pull-right">
             <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
-            <i class="icon-google-plus icon-2x pull-left span1"></i>
-            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span11 pull-right">
+            <i class="icon-google-plus icon-2x pull-left"><span> plus.google.com/</span></i>
+            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span9 pull-right">
+            <br><br>
         </div>
 
         {#
@@ -94,41 +96,21 @@
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
-    <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-        <label for="state">Address</label>
-        <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_street" >
-    </div>
-    <div class="control-group">
-        <div class="span4">
-            <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" class="span12 addressFields">
+        {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
+        <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
+            <label for="state">Address</label>
+            <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
         </div>
-        <div class="span8">
-            <label for="Building Name">Building Name <small>(Optional)</small></label>
-            <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" class="span12 addressFields">
+        <div class="control-group">
+            <div class="span4">
+                <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
+                <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="{{ elemIdPrefix }}_roomNumber" class="span12 addressFields">
+            </div>
+            <div class="span8">
+                <label for="Building Name">Building Name <small>(Optional)</small></label>
+                <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="{{ elemIdPrefix }}_building" class="span12 addressFields">
+            </div>
         </div>
-    </div>
-
-    {#
-    <div>
-        <span >
-            <label>Unit or Room #</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="institution_profile_form_roomNumber" >
-        </span>
-       </div>
-    <div class="address3">
-        <span >
-            <label>Building</label>
-            <input  class="addressFields" type="text"  value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="institution_profile_form_building" >
-        </span>
-    </div>
-       <div class="address">
-            <label>Street</label>
-            <input class="addressFields" type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="institution_profile_form_steet" >
-    </div>
-    <div class="clearfix"></div>
-    #}
-
     {% endspaceless %}
 {% endblock %}
 
@@ -141,26 +123,11 @@
     {% endif %}
     
     <ul class="services-listing">
-    
         {% for choice in form.vars.choices %}
-        {% set _isSelected = choice.value in selected.data %}
-
-           {% if (_isSelected is defined and _isSelected ) %}
-                 {% for property in selected.currentAncillaryData %}
-                        {% if property.value == choice.value  %}
-                             <li class="hca-highlight">
-                                <input type="checkbox" checked name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                                {{ choice.label }}
-                            </li>
-                         {% endif %}
-                     {% endfor %}
-                 {% else %}
-                     <li class="">
-                        <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                        {{ choice.label }}
-                    </li>
-            {% endif %}
-
+             <li class="hca-highlight">
+                <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
+                {{ choice.label }}
+            </li>
         {% endfor %}
     </ul>
     {% endspaceless %}
