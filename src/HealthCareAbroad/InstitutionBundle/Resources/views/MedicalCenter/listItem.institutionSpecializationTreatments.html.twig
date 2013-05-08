@@ -1,11 +1,16 @@
-<div class="show-specializations" >
-    <table class="table table-hover hca-clinic-list" id="specialization_block_{{ institutionSpecialization.id }}">
-        <tr class="hca-specializations">
-            <th>
-                <h4>{{ institutionSpecialization.specialization.name }} </h4>
-            </th>
-        </tr>
-        {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
-        	
-    </table>
+<div class="accordion-group">
+    <div class="accordion-heading">
+        <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ each.id }}">
+               </i> <i class="icon-plus pull-right"></i><h4>{{ each.specialization.name }}</h4>
+        </a>
+    </div>
+     {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
+    <div id="collapse{{ each.id }}" data-specialization="{{ each.specialization.id }}" class="collapse" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents') }}">
+        <div class="accordion-inner">
+            <div id="{{ 'panel' ~ each.specialization.id }}" data-loaded="0" class="row-fluid services-listing">
+                <center><img src="/images/institution/spinner_large.gif" /></center>
+            </div>
+        </div>
+    </div>
 </div>
+                                    			

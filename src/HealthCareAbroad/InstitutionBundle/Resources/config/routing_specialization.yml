@@ -13,3 +13,9 @@ institution_ajax_loadInstitutionMedicalCenterSpecializationComponents:
     requirements:
         _method:  GET
         
+        
+institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations:
+    pattern: /ns-institution/ajax/loadInstitutionMedicalCenterSpecializations
+    defaults: {_controller: InstitutionBundle:Specialization:ajaxAddSpecialization}
+    requirements:
+        _method:  GET

@@ -98,11 +98,7 @@ var InstitutionSpecialization = {
     submitAddSpecialization: function(domButtonElement) {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
-        // change button html and disable it
-        _button.html("Processing...").attr('disabled', true);
-        _modal = $(_button).parents('div.modal_form_container');
-        // Note. this is tightly coupled with html element structures
-        _form = _modal.find('form.modal_form');
+        _form = $(_button).parents('form#institutionSpecializationForm');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
@@ -111,12 +107,9 @@ var InstitutionSpecialization = {
             dataType: 'json',
             success: function(response) {
                 // insert new content after last specialization block
-            	//$('#specializationList').html(response.html);
-            	$(response.html).insertBefore($('#addAnotherSpecialization').parent());
-            	_modal.find('#specializationAccordion div').remove();
-                _modal.modal('hide');
-                _button.html(_buttonHtml).attr('disabled', false);
+            	$(response.html).prependTo($('#accordion'));
                 InstitutionMedicalCenter.displayCallout(response);
+                _form.hide();
             },
             error: function(response) {
                 console.log(response);
@@ -125,7 +118,25 @@ var InstitutionSpecialization = {
         });
         
         return false;
-    }
+    },
+    
+    toggle: function (_element){
+    	_attr = $(_element.attr('data-toggle'));
+    	
+    	$(_attr).show();
+    		_href = _element.attr('data-href');
+    	      $.ajax({
+    	            url: _href,
+    	            type: 'GET',
+    	            dataType: 'json',
+    	            success: function(response) {
+    	            	$(_attr.selector).html(response.html);
+    	            },
+    	            error: function(response) {
+    	                console.log(response);
+    	            }
+    	        });
+    },
 };
 
 var InstitutionSpecializationAutocomplete = {

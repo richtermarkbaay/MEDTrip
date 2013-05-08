@@ -79,5 +79,20 @@ class InstitutionSpecializationService
         
         return $result;
     }
+    
+    /**
+     * Newley added service for updated markup
+     * Get all unselected specializations in centers
+     * 
+     * @param Institution $institution
+     * @author Chaztine Blance
+     */
+    public function getNotSelectedSpecializations(Institution $institution){
+        $specializations = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitution($institution);
+        
+        $result = $this->doctrine->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($specializations);
+        
+        return $result;
+    }
    
 }

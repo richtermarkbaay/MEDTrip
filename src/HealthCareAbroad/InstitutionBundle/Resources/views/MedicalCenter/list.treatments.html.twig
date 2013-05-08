@@ -1,13 +1,24 @@
-{# --- this will be the list of institution specialization treatments in table format --- #}
-<table class="table" id="treatments_block_{{ institutionSpecialization.specialization.id }}">
-{% for _treatment in institutionSpecialization.treatments %}
-<tr id="treatment_id_{{ _treatment.id }}" >
-	<td class="treatment_name_{{ _treatment.id }}">{{ _treatment.name }}</td>
-</tr>
-{% else %}
-<tr>
-    <td colspan="2">This specialty has no treatments yet</td>
-</tr>
+{% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
+                
+{% for _subName, _groupedData in _groupedTreatments %}
+    {% if _groupedData.treatments | length %}
+    <li class="second" id="treatments_block">
+		<ul>
+		    {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
+		    <li><a>{{ _groupedData.subSpecialization.name }}</a></li>
+		    {% else %}
+		    <li><a>Other treatments</a></li>
+		    {% endif %}
+        	    
+    	    {% for treatment in _groupedData.treatments %}
+	 	    <li class="third">
+				<ul>
+					<li><a>{{ treatment.name }}</a></li>
+				</ul>
+			</li>
+	        {% endfor %}
+			
+		</ul>
+	</li>
+    {% endif %}
 {% endfor %}
-
-</table>

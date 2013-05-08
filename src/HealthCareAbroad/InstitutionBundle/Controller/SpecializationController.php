@@ -108,11 +108,11 @@ class SpecializationController extends InstitutionAwareController
     }
     
     /**
-     * Note: This might be needed by other parts of the system. If so move this to
-     * an appropriate and more generic controller.
+     * Load specializations in clninc profile
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @author Chaztine Blance
      */
     public function ajaxLoadMedicalCenterSpecializationComponentsAction(Request $request)
     {
@@ -124,16 +124,38 @@ class SpecializationController extends InstitutionAwareController
                 $specializationTreatments[] = $t->getId();
             }
         }
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
         
         //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
     
-        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
+        $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:specializationComponents.html.twig', array(
                         'specializationComponents' => $specializationComponents,
                         'specializationId' => $request->get('specializationId'),
                         'selectedTreatments' => $specializationTreatments,
+                        'formName' => InstitutionSpecializationFormType::NAME,
+                        'form' => $form->createView(),
         ));
     
         return new Response($html, 200);
     }
+    
+    /**
+     * Add a new specialization to medical center through ajax
+     * This load all Specializations not yet selected
+     * @author Chaztine Blance
+     */
+    public function ajaxAddSpecializationAction(Request $request)
+    {
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        
+           $params =  array(
+                        'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'specializations' => $specializations,
+        );
+        $html = $this->renderView('InstitutionBundle:Specialization:section_specialization.html.twig', $params);
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+    }
+    
 }
