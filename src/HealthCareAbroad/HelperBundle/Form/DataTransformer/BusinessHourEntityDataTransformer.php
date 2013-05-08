@@ -14,7 +14,8 @@ class BusinessHourEntityDataTransformer implements DataTransformerInterface
             $value = \json_encode(array(
                 'weekdayBitValue' => $value->getWeekdayBitValue(),
                 'opening' => $value->getOpening(),
-                'closing' => $value->getClosing()
+                'closing' => $value->getClosing(),
+                'notes' => $value->getNotes()
             ));
         }
         
@@ -35,6 +36,7 @@ class BusinessHourEntityDataTransformer implements DataTransformerInterface
             $obj->setWeekdayBitValue($decodedValue['weekdayBitValue']);
             $obj->setOpening(new \DateTime($decodedValue['opening']));
             $obj->setClosing(new \DateTime($decodedValue['closing']));
+            $obj->setNotes($decodedValue['notes']);
         }
         
         return $obj;

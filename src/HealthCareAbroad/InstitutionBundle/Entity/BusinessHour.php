@@ -28,6 +28,11 @@ class BusinessHour
      * @var \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
      */
     private $institutionMedicalCenter;
+    
+    /**
+     * @var string
+     */
+    private $notes;
 
 
     /**
@@ -130,5 +135,28 @@ class BusinessHour
     public function getInstitutionMedicalCenter()
     {
         return $this->institutionMedicalCenter;
+    }
+
+    /**
+     * Set notes
+     *
+     * @param string $notes
+     * @return BusinessHour
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+    
+        return $this;
+    }
+
+    /**
+     * Get notes
+     *
+     * @return string 
+     */
+    public function getNotes()
+    {
+        return $this->notes;
     }
 }
