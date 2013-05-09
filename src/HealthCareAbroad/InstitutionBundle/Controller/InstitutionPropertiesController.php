@@ -71,49 +71,51 @@ class InstitutionPropertiesController extends InstitutionAwareController
 //         return $this->_jsonResponse(array('success' => 1));
 //     }
     
-    /**
-     * Add a GlobalAward
-     * 
-     * @param Request $request
-     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
-     */
-    public function ajaxAddGlobalAwardAction(Request $request)
-    {
-        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
-        if (!$award) {
-            throw $this->createNotFoundException();
-        }
+//     /** This is an old codes for adding insititution global awards
+//      * Add a GlobalAward
+//      * 
+//      * @param Request $request
+//      * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
+//      */
+//     public function ajaxAddGlobalAwardAction(Request $request)
+//     {
+//         return new Response(\json_encode(array('html' => 'test')), 200, array('content-type' => 'application/json'));
+        
+//         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+//         if (!$award) {
+//             throw $this->createNotFoundException();
+//         }
     
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+//         $propertyService = $this->get('services.institution_property');
+//         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
     
-        // check if this medical center already have this property
-        if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $award->getId())) {
-            $response = new Response("Property value {$award->getId()} already exists.", 500);
-        }
-        else {
-            $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
-            $property->setValue($award->getId());
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($property);
-                $em->flush();
+//         // check if this medical center already have this property
+//         if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $award->getId())) {
+//             $response = new Response("Property value {$award->getId()} already exists.", 500);
+//         }
+//         else {
+//             $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
+//             $property->setValue($award->getId());
+//             try {
+//                 $em = $this->getDoctrine()->getEntityManager();
+//                 $em->persist($property);
+//                 $em->flush();
     
-                $html = $this->renderView('InstitutionBundle:Institution/Partials:row.globalAward.html.twig', array(
-                    'institution' => $this->institution,
-                    'award' => $award,
-                    'property' => $property
-                ));
+//                 $html = $this->renderView('InstitutionBundle:Institution/Partials:row.globalAward.html.twig', array(
+//                     'institution' => $this->institution,
+//                     'award' => $award,
+//                     'property' => $property
+//                 ));
     
-                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-            }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
-            }
-        }
+//                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+//             }
+//             catch (\Exception $e){
+//                 $response = new Response($e->getMessage(), 500);
+//             }
+//         }
     
-        return $response;
-    }
+//         return $response;
+//     }
     
     public function ajaxEditGlobalAwardAction()
     {

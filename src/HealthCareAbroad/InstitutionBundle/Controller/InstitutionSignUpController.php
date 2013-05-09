@@ -369,11 +369,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
             $form->bind($this->request);
-            
-            if ($form->isValid()) {
 
-                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
-                
+            if ($form->isValid()) {                
                 // set sign up status to current step number
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
@@ -394,6 +391,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+
+                $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
 
                 return $this->redirect($redirectUrl);
             }

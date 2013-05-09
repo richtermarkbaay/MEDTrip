@@ -40,25 +40,20 @@ var InstitutionSpecialization = {
     
     showAddTreatmentsForm: function(_linkElement) {
         _linkElement = $(_linkElement);
-        _modal = $(_linkElement.attr('data-target'));
-        _modal.modal('show');
-        _modal.find('.ajax_loader').show();
-        $('.ajax_content_container').hide();
+        _linkElement.hide();
+        _linkElement.next('#treatments-save').show();
+        _modifiableDiv = _linkElement.attr('data-target');
+        _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
+        _divToggle.show();
+        _divToggle.prev('#treatment_list').hide();
         $.ajax({
-           url: _linkElement.attr('href'),
-           type: 'GET',
-           dataType: 'json',
-           success: function(response) {
-               _modal.find('.ajax_loader').hide();
-               $('.ajax_content_container').show();
-               _modal.find('div.ajax_content_container').html(response.html);
-               _modal.find('button.submit_button').attr('disabled', false);
-           },
-           error: function(response) {
-               _modal.find('.ajax_loader').hide();
-               _modal.find('ajax_content_container').html('Failed loading treatments.');
-               console.log(response);
-           }
+            url: $(_modifiableDiv).attr('action'),
+            type: 'GET',
+            dataType: 'html',
+            success: function(response){
+                $(_modifiableDiv).html(response);
+//                _modifiableDiv.data('loaded', 1);
+            }
         });
     },
     
@@ -98,11 +93,7 @@ var InstitutionSpecialization = {
     submitAddSpecialization: function(domButtonElement) {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
-        // change button html and disable it
-        _button.html("Processing...").attr('disabled', true);
-        _modal = $(_button).parents('div.modal_form_container');
-        // Note. this is tightly coupled with html element structures
-        _form = _modal.find('form.modal_form');
+        _form = $(_button).parents('form#institutionSpecializationForm');
         _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
@@ -111,12 +102,9 @@ var InstitutionSpecialization = {
             dataType: 'json',
             success: function(response) {
                 // insert new content after last specialization block
-            	//$('#specializationList').html(response.html);
-            	$(response.html).insertBefore($('#addAnotherSpecialization').parent());
-            	_modal.find('#specializationAccordion div').remove();
-                _modal.modal('hide');
-                _button.html(_buttonHtml).attr('disabled', false);
+            	$(response.html).prependTo($('#accordion'));
                 InstitutionMedicalCenter.displayCallout(response);
+                _form.hide();
             },
             error: function(response) {
                 console.log(response);
@@ -125,7 +113,25 @@ var InstitutionSpecialization = {
         });
         
         return false;
-    }
+    },
+    
+    toggle: function (_element){
+    	_attr = $(_element.attr('data-toggle'));
+    	$(_attr).show();
+    	_element.next().find('.edit-specializations').toggle();
+    		_href = _element.attr('data-href');
+    	      $.ajax({
+    	            url: _href,
+    	            type: 'GET',
+    	            dataType: 'json',
+    	            success: function(response) {
+    	            	$(_attr.selector).html(response.html);
+    	            },
+    	            error: function(response) {
+    	                console.log(response);
+    	            }
+    	        });
+    },
 };
 
 var InstitutionSpecializationAutocomplete = {

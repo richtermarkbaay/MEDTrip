@@ -1,0 +1,18 @@
+ <div class="row-fluid specializations-edit-listing">
+{% for subSpecialization, treatments in specializationComponents %}
+<div class="span6">
+    <h4>
+        <input type="checkbox" name="subSpecialization" value="subSpecialization" /> {{ subSpecialization }}
+    </h4>
+    <ul>
+        {% for treatment in treatments %}
+            <li>
+                <input type="checkbox" id="treatments" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> {{ treatment.name }}
+            </li>
+        {% endfor %}
+    </ul>
+    
+</div>
+<input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+{% endfor %}
+</div>

@@ -458,8 +458,6 @@ class MedicalCenterController extends InstitutionAwareController
         $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
         if (\count($submittedSpecializations) > 0) {
             
-
-            
             foreach ($submittedSpecializations as $specializationId => $_data) {
 
                 $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
@@ -487,7 +485,7 @@ class MedicalCenterController extends InstitutionAwareController
                     
                     if ($request->isXmlHttpRequest()) {
                         $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
-                            'institutionSpecialization' => $_institutionSpecialization,
+                            'each' => $_institutionSpecialization,
                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
                             'commonDeleteForm' => $commonDeleteForm->createView()
                         ));
@@ -514,24 +512,6 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response(\json_encode($ajaxOutput),200, array('content-type' => 'application/json'));
             }
         }
-        else {
-            if (\count($errors) > 0) {
-                $request->getSession()->setFlash('notice', '<ul><li>'.\implode('</li><li>', $errors).'</li></ul>');
-                $response = $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())));
-            }
-            else {
-                // if single center institution, update sign up step status
-                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
-                    // Set Next Step
-                    
-                    
-                }
-
-                // redirect to next step
-                $response = $this->redirect($this->generateUrl($routeName,  array('imcId' => $this->institutionMedicalCenter->getId())));
-            }   
-        }
-        
         return $response;
     }
     

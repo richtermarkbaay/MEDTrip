@@ -1,5 +1,8 @@
-<table class="table table-hover table-striped hca-listing-awards-services">
-	{% for _service in ancillaryServicesData %}
-		{% include 'InstitutionBundle:Institution/Partials:row.ancillaryService.html.twig' %}
-	{% endfor %}
-</table>
+{% set selected = get_selected_AnciliaryServices(institution) %}
+<ul class="check-bullet-list ">
+    {% for _service in ancillaryServicesData %}
+        {% if(selected[_service.id] is defined) %}
+            <li>{{ _service.name |title }}</li>
+    	{% endif %}
+    {% endfor %}
+</ul>

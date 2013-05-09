@@ -3,6 +3,7 @@ var HCAGoogleMap = {
 	lat: '',
 	lng: '',
 	map: null,
+	zoom: 15,
 	layer: null,
 	latLngString: '',
 	marker: null,
@@ -10,15 +11,13 @@ var HCAGoogleMap = {
 	address: 'Washington, United States',
 	defaultAddress: 'Washington, United States', // City and Country Address
 	mapCanvasElem: document.getElementById('map_canvas'),
-	mapOnChangeCallback: null,
-	recursion: 0,
+	mapOnChangeCallback: function(){},
 
 	initialize: function(params) {
-		
 		HCAGoogleMap.setParams(params);
 
-		var options = { zoom: 15, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
-
+		var options = { zoom: HCAGoogleMap.zoom, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
+		
 		HCAGoogleMap.map = new google.maps.Map(HCAGoogleMap.mapCanvasElem, options);
 		HCAGoogleMap.geocoder = new google.maps.Geocoder();
 		HCAGoogleMap.geocoder.geocode({'address': HCAGoogleMap.address}, HCAGoogleMap.geocoderCallback);
@@ -27,6 +26,10 @@ var HCAGoogleMap = {
 	setParams: function(params) {
 		if(typeof params.mapCanvasElem != 'undefined') {
 			HCAGoogleMap.mapCanvasElem = params.mapCanvasElem;
+		}
+		
+		if(typeof params.zoom != 'undefined') {
+			HCAGoogleMap.zoom = params.zoom;			
 		}
 
 		if(typeof params.address != 'undefined') {
@@ -42,27 +45,23 @@ var HCAGoogleMap = {
 		}	
 	},
 	
-	geocoderCallback: function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK && HCAGoogleMap.recursion < 2) {
+	geocoderCallback: function(results, status) {		
+		if (status == google.maps.GeocoderStatus.OK) {
 			HCAGoogleMap.map.setCenter(results[0].geometry.location);
 	        HCAGoogleMap.lat = results[0].geometry.location.lat();
 	        HCAGoogleMap.lng = results[0].geometry.location.lng();		        
-	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + ", " + HCAGoogleMap.lng;
+	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
 	        
 	        HCAGoogleMap.setMarker(results[0].geometry.location);
 	        HCAGoogleMap.setLayer();
 
 	        google.maps.event.addListener(HCAGoogleMap.marker, 'click', HCAGoogleMap.toggleBounce);
 
-	        if(HCAGoogleMap.mapOnChangeCallback) {
-	        	HCAGoogleMap.mapOnChangeCallback();
-	        }
-	        
-	        HCAGoogleMap.recursion++;
-
 		} else {
-			HCAGoogleMap.geocoder.geocode({ 'address': HCAGoogleMap.defaultAddress}, HCAGoogleMap.geocoderCallback);
+			HCAGoogleMap.geocoder.geocode({ 'address': HCAGoogleMap.defaultAddress}, function(){});
 		}
+
+		HCAGoogleMap.mapOnChangeCallback();
 	},
 	
 	setMarker: function(markerPosition) {
@@ -74,9 +73,17 @@ var HCAGoogleMap = {
             map: HCAGoogleMap.map,
             position: markerPosition,
             draggable:true,
-            zoom: 15,
+            zoom: HCAGoogleMap.zoom,
             animation: google.maps.Animation.DROP
         });
+
+        // On marker position change Event Execute mapOnChangeCallback()
+        google.maps.event.addListener(HCAGoogleMap.marker, "dragend", function(event) {         	
+	        HCAGoogleMap.lat = event.latLng.lat();
+	        HCAGoogleMap.lng = event.latLng.lng();
+	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
+	        HCAGoogleMap.mapOnChangeCallback();
+        }); 
 	},
 	
 	setLayer: function() {
@@ -101,6 +108,9 @@ var HCAGoogleMap = {
 	updateMap: function(address) {
 		HCAGoogleMap.address = address;
 		HCAGoogleMap.geocoder.geocode({ 'address': address}, HCAGoogleMap.geocoderCallback);
+
+        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+        HCAGoogleMap.map.setCenter(HCAGoogleMap.map.getCenter());
 	},
 
 	toggleBounce: function() {

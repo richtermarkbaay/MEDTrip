@@ -69,12 +69,13 @@ Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     $(function(){
     
         GoogleMap.setInputs({
-	    	'selectedCity' : document.getElementById('institution_profile_form_city'),
-	    	'selectedCountry' : document.getElementById('institution_profile_form_country'),
+	    	'selectedCity' : document.getElementById('input-institution_profile_form_city'),
+	    	'selectedCountry' : document.getElementById('input-institution_profile_form_country'),
 	    	'inputCoordinates' : document.getElementById("institution_profile_form_coordinates"),
-	    	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
-	    	'selectedStreet' : document.getElementById('institution_profile_form_street'),
+	    	'selectedBuilding' : document.getElementById('institution_profile_form_address1_building'),
+	    	'selectedStreet' : document.getElementById('institution_profile_form_address1_street'),
 	    });
+	    
     	$("input:checkbox").click(function() {
             $(this).parent().toggleClass("hca-highlight");
         });
@@ -83,6 +84,29 @@ Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
      	   if( e.which === 13 )
      	       return false;
      	});
+{# /*
+    	var formName = "{{ form.vars.name }}";
+    	HCAGoogleMap.initialize({
+    		mapOnChangeCallback: function() {
+    			$('#' + formName + '_coordinates').val(HCAGoogleMap.latLngString);
+    		}
+    	});
+
+        function getAddress() {
+            var address = '';
+        	var building = $('#' + formName + '_address1_building').val();
+        	var street = $('#' + formName + '_address1_street').val();
+        	var city = $('#input-' + formName + '_city').val(); 
+            var country = $('#input-' + formName + '_country').val();
+
+            if(building != '') { address += building + ', '; }
+            if(street != '') { address += street + ', '; }
+            if(city != '' && $('#' + formName + '_city').val() != '') { address += city + ', '; }
+            if(country != '') { address += country; }
+
+            return address;
+        }
+*/ #}
     });
 })(jQuery);
 //-->

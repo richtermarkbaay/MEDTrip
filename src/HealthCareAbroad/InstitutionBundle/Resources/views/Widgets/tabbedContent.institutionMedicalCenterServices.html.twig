@@ -1,4 +1,11 @@
-
+<ul class="check-bullet-list ">
 {% for _service in ancillaryServicesData %}
-	{% include 'InstitutionBundle:Widgets:row.ancillaryService.html.twig' %}
+	{% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
+
+    {% if selected[_service.id] is defined  %}
+    <li>
+         {{ _service.name |title }}
+    </li>
+    {% endif %}
 {% endfor %}
+</ul>

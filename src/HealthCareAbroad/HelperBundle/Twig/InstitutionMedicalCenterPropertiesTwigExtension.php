@@ -39,33 +39,19 @@ class InstitutionMedicalCenterPropertiesTwigExtension extends \Twig_Extension
     
     public function getselected_medicalCenterServices(InstitutionMedicalCenter $center)
     {
-        $ancillaryServicesData = array(
-                        'currentAncillaryData' => array(),
-                        'data' =>array(),
-        );
+        $ancillaryServicesData = array( );
         foreach ($this->service->getInstitutionMedicalCenterByPropertyType($center, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
-            $ancillaryServicesData['currentAncillaryData'][] = array(
-                            'id' => $_selectedService->getId(),
-                            'value' => $_selectedService->getValue(),
-            );
-            $ancillaryServicesData['data'][] = $_selectedService->getValue();
+            $ancillaryServicesData[$_selectedService->getValue()] =   $_selectedService->getId();
         }
         
         return $ancillaryServicesData;
     }
     public function getselected_medicalCenterGlobalAwards(InstitutionMedicalCenter $center){
         
-        $currentGlobalAwards = array(
-                        'currentAwardsData' => array(),
-                        'data' =>array(),
-        );
+        $currentGlobalAwards = array( );
         foreach ($this->service->getGlobalAwardPropertiesByInstitutionMedicalCenter($center) as $_selected) {
             foreach ($_selected as $data) {
-                $currentGlobalAwards['currentAwardsData'][] = array(
-                                'id' => $data->getId(),
-                                'value' => $data->getValue(),
-                );
-                $currentGlobalAwards['data'][] = $data->getValue();
+                $currentGlobalAwards[$data->getValue()] = $data->getId();
             }
         }
         return $currentGlobalAwards;

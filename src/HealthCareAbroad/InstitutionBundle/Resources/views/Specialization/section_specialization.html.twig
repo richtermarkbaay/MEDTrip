@@ -1,0 +1,24 @@
+
+    <div class="accordion tooltip-wrap" id="accordion" >
+        {% for specialization in specializations %}
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
+                   </i> <i class="icon-plus pull-right"></i><h4>{{ specialization.name }}</h4>
+                </a>
+            </div>
+            <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class="collapse">
+                <div class="accordion-inner">
+                    <div id="{{ 'panel' ~ specialization.id }}" data-loaded="0" class="row-fluid services-listing">
+                        <center><img src="/images/institution/spinner_large.gif" /></center>
+                       
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+          <button type="submit" class="btn pull-right btn-primary btn-large" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
+            Save
+        </button>
+    </div>
+
