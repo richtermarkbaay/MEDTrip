@@ -83,7 +83,7 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMediaSites" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
         <div class="show">
             <h3> Social Media </h3>
-            <div class="activity-feeds" id="soclialMediaText">
+            <div id="soclialMediaText">
                 {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
                     <p> <i class="icon-{{ type }}"> </i>
                         http://www:  <b>{{ site }}</b>
@@ -105,7 +105,7 @@
          <a class="btn btn-misc btn-default pull-right btn-edit" href="#services" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
          <div class="show">
             <h3> Services </h3>
-            <div class="activity-feeds" id="serviceTable">
+            <div id="serviceTable">
                     {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig' %}
             </div>
         </div>
@@ -129,7 +129,7 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#awardsDiv" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
         <div class="show">
             <h3> Certifications, Affilations, Awards and Accreditations </h3>
-            <div class="activity-feeds" id="awardsText">
+            <div id="awardsText">
                 {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' %}
             </div>
         </div>
