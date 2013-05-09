@@ -4,6 +4,7 @@ namespace HealthCareAbroad\InstitutionBundle\Entity;
 
 class BusinessHour
 {
+    
     /**
      * @var integer
      */
@@ -25,14 +26,14 @@ class BusinessHour
     private $closing;
 
     /**
-     * @var \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-     */
-    private $institutionMedicalCenter;
-    
-    /**
      * @var string
      */
     private $notes;
+
+    /**
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter;
 
 
     /**
@@ -115,29 +116,6 @@ class BusinessHour
     }
 
     /**
-     * Set institutionMedicalCenter
-     *
-     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
-     * @return BusinessHour
-     */
-    public function setInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter = null)
-    {
-        $this->institutionMedicalCenter = $institutionMedicalCenter;
-    
-        return $this;
-    }
-
-    /**
-     * Get institutionMedicalCenter
-     *
-     * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
-     */
-    public function getInstitutionMedicalCenter()
-    {
-        return $this->institutionMedicalCenter;
-    }
-
-    /**
      * Set notes
      *
      * @param string $notes
@@ -158,5 +136,28 @@ class BusinessHour
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Set institutionMedicalCenter
+     *
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @return BusinessHour
+     */
+    public function setInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter = null)
+    {
+        $this->institutionMedicalCenter = $institutionMedicalCenter;
+    
+        return $this;
+    }
+
+    /**
+     * Get institutionMedicalCenter
+     *
+     * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
+     */
+    public function getInstitutionMedicalCenter()
+    {
+        return $this->institutionMedicalCenter;
     }
 }

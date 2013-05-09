@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\BusinessHour;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\MediaBundle\Services\FilesystemDirectory;
@@ -218,5 +220,22 @@ class InstitutionMediaService extends MediaService
     private function getSizesByType($imageType)
     {
         return isset($this->imageSizes[$imageType]) ? $this->imageSizes[$imageType] : array();
+    }
+    
+    public function saveBusinessHours(InstitutionMedicalCenter $center, $businessHours)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        foreach($businessHours as $_hour)
+        {
+            $hours = new BusinessHour();
+            $hours->setClosing($closing);
+            $hours->setInstitutionMedicalCenter($center);
+            $hours->setNotes($notes);
+            $hours->setOpening($opening);
+            $hours->setWeekdayBitValue($weekdayBitValue);
+            $em->persist($hours);
+        }
+        
+        $em->flush();
     }
 }

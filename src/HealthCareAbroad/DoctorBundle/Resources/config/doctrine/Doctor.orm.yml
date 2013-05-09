@@ -96,7 +96,6 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             cascade:
                 - "persist"
             mappedBy: null
-            inversedBy: doctors
             joinTable:
                 name: doctor_contact_details
                 joinColumns:

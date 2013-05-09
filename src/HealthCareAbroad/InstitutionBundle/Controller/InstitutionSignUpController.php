@@ -77,7 +77,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      * @var InstitutionMedicalCenter
      */
     private $institutionMedicalCenter;
-
+    
     /**
      * @var InstitutionService
      */
@@ -436,6 +436,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         else {
+            
         }
 
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);

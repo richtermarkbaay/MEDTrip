@@ -81,7 +81,12 @@ admin_institution_medicalCenter_updateGlobalAwards:
         imcId: \d+
         global_awardId: \d+
         _method: GET|POST
-
+admin_institution_medicalCenter_ajaxAddBusinessHours:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddBusinessHours
+    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddBusinessHours }
+    requirements:
+        _method: GET|POST
+        
 admin_institution_medicalCenter_ajaxUpdateBusinessHours:
     pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxUpdateBusinessHours
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxUpdateBusinessHours }
