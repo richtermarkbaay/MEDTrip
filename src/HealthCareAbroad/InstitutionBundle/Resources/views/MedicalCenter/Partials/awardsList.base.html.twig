@@ -1,7 +1,7 @@
 {% if awardsList.list|length %}
    <div id="{{ awardsList.containerId }}">
        <h4>{{ awardsList.header }}</h4>
-       <ul class="services-listing" style="max-height:none; border: none; padding: 0 10px;margin-bottom: 0">
+       <ul class="single-listing">
            {% for property in awardsList.list %}
                {% set award = property.valueObject %}
                        {% set _extraValueArr = json_to_array(property.extraValue, true) %}
