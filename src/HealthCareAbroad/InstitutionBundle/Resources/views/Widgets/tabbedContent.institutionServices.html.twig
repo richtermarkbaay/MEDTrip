@@ -1,9 +1,8 @@
 {% set selected = get_selected_AnciliaryServices(institution) %}
-
-<table class="table table-hover table-striped hca-listing-awards-services">
+<ul class="check-bullet-list ">
     {% for _service in ancillaryServicesData %}
         {% if(selected[_service.id] is defined) %}
-            <tr><td>{{ _service.name |title }}</td></tr>
+            <li>{{ _service.name |title }}</li>
     	{% endif %}
     {% endfor %}
-</table>
+</ul>

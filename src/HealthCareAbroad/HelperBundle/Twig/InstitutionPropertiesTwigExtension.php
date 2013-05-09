@@ -51,17 +51,10 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
 
     public function getselected_GlobalAwards(Institution $institution){
         
-        $currentGlobalAwards = array(
-                        'currentAwardsData' => array(),
-                        'data' =>array(),
-        );
+        $currentGlobalAwards = array( );
         foreach ($this->service->getGlobalAwardPropertiesByInstitution($institution) as $_selected) {
             foreach ($_selected as $data) {
-                $currentGlobalAwards['currentAwardsData'][] = array(
-                                'id' => $data->getId(),
-                                'value' => $data->getValue(),
-                );
-                $currentGlobalAwards['data'][] = $data->getValue();
+                $currentGlobalAwards[$data->getValue()] = $data->getId();
             }
         }
 

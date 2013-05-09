@@ -40,25 +40,20 @@ var InstitutionSpecialization = {
     
     showAddTreatmentsForm: function(_linkElement) {
         _linkElement = $(_linkElement);
-        _modal = $(_linkElement.attr('data-target'));
-        _modal.modal('show');
-        _modal.find('.ajax_loader').show();
-        $('.ajax_content_container').hide();
+        _linkElement.hide();
+        _linkElement.next('#treatments-save').show();
+        _modifiableDiv = _linkElement.attr('data-target');
+        _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
+        _divToggle.show();
+        _divToggle.prev('#treatment_list').hide();
         $.ajax({
-           url: _linkElement.attr('href'),
-           type: 'GET',
-           dataType: 'json',
-           success: function(response) {
-               _modal.find('.ajax_loader').hide();
-               $('.ajax_content_container').show();
-               _modal.find('div.ajax_content_container').html(response.html);
-               _modal.find('button.submit_button').attr('disabled', false);
-           },
-           error: function(response) {
-               _modal.find('.ajax_loader').hide();
-               _modal.find('ajax_content_container').html('Failed loading treatments.');
-               console.log(response);
-           }
+            url: $(_modifiableDiv).attr('action'),
+            type: 'GET',
+            dataType: 'html',
+            success: function(response){
+                $(_modifiableDiv).html(response);
+//                _modifiableDiv.data('loaded', 1);
+            }
         });
     },
     
@@ -122,8 +117,8 @@ var InstitutionSpecialization = {
     
     toggle: function (_element){
     	_attr = $(_element.attr('data-toggle'));
-    	
     	$(_attr).show();
+    	_element.next().find('.edit-specializations').toggle();
     		_href = _element.attr('data-href');
     	      $.ajax({
     	            url: _href,

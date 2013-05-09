@@ -121,7 +121,6 @@
     {% else %}
         {% set selected = get_selected_AnciliaryServices(form.parent.vars.value) %}
     {% endif %}
-    
     <ul class="services-listing">
         {% for choice in form.vars.choices %}
              <li class="hca-highlight">
@@ -200,22 +199,10 @@
                 <h3>{{key | capitalize }}s</h3>
                 <ul>
                      {% for choice in typeChoice %}
-                          {% set _isSelected = choice.value in selected.data %}
-                          {% if (_isSelected is defined and _isSelected ) %}
-                               {% for property in selected.currentAwardsData %}
-                                    {% if property.value == choice.value  %}
-                                        <li class="hca-highlight">
-                                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" checked>
-                                            {{ choice.label | raw }}
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                           {% else %}
-                                 <li class="">
-                                    <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                                    {{ choice.label | raw }}
-                                </li>
-                          {% endif %}
+                        <li class="hca-highlight">
+                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
+                            {{ choice.label | raw }}
+                        </li>
                     {% endfor %}
                 </ul>
             {% endfor %}

@@ -1,16 +1,17 @@
-<div class="accordion-group">
-    <div class="accordion-heading">
-        <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ each.id }}">
-               </i> <i class="icon-plus pull-right"></i><h4>{{ each.specialization.name }}</h4>
-        </a>
+    <div class="hca-specialization-details hca-edit">
+        <a ><i class="icon-remove-sign pull-right"></i></a>
+        <a id="specialization-button" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, specializationId: each.specialization.id }) }}" data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
+        <i class="icon-edit pull-right"></i></a>
+        <a style="display:none;" id="treatments-save"  data-target="#panel{{ each.specialization.id }}" onclick="">
+        <i class="icon-ok pull-right"></i></a>
+        <b>{{ each.specialization.name }}</b>
     </div>
+    <div id="treatment_list">
      {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
-    <div id="collapse{{ each.id }}" data-specialization="{{ each.specialization.id }}" class="collapse" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents') }}">
-        <div class="accordion-inner">
-            <div id="{{ 'panel' ~ each.specialization.id }}" data-loaded="0" class="row-fluid services-listing">
-                <center><img src="/images/institution/spinner_large.gif" /></center>
-            </div>
-        </div>
+     </div>
+    <div id="hca-specialization-content" class="row-fluid terms" data-specialization="{{ each.specialization.id }}" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents') }}">
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, specializationId: each.specialization.id }) }}" method="post">
+              <center><img src="/images/institution/spinner_large.gif" /></center>
+        </form>
     </div>
-</div>
-                                    			
+

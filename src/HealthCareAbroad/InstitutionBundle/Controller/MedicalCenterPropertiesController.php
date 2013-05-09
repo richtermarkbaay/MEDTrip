@@ -54,54 +54,54 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         }
     }
     
-    /**
-     * Add global award
-     * 
-     * @param Request $request
-     * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
-     */
-    public function ajaxAddGlobalAwardAction(Request $request)
-    {
-       $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+//     /** This is an old code for addding globl award
+//      * Add global award
+//      * 
+//      * @param Request $request
+//      * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
+//      */
+//     public function ajaxAddGlobalAwardAction(Request $request)
+//     {
+//        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
     
-        if (!$award) {
-            throw $this->createNotFoundException();
-        }
+//         if (!$award) {
+//             throw $this->createNotFoundException();
+//         }
     
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+//         $propertyService = $this->get('services.institution_medical_center_property');
+//         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
     
-        // check if this medical center already have this property
-        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
-            $response = new Response("Award {$award->getId()} already exists.", 500);
-        }
-        else {
-            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
-            $property->setValue($award->getId());
-            try {
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($property);
-                $em->flush();
+//         // check if this medical center already have this property
+//         if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
+//             $response = new Response("Award {$award->getId()} already exists.", 500);
+//         }
+//         else {
+//             $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+//             $property->setValue($award->getId());
+//             try {
+//                 $em = $this->getDoctrine()->getEntityManager();
+//                 $em->persist($property);
+//                 $em->flush();
     
-                $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
-                    'award' => $award,
-                    'property' => $property,
-                    'institution' => $this->institution,
-                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                    'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
-                ));
+//                 $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
+//                     'award' => $award,
+//                     'property' => $property,
+//                     'institution' => $this->institution,
+//                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                     'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+//                 ));
                 
-                $calloutView = $this->_getEditMedicalCenterCalloutView();
+//                 $calloutView = $this->_getEditMedicalCenterCalloutView();
     
-                $response = new Response(\json_encode(array('html' => $html, 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
-            }
-            catch (\Exception $e){
-                $response = new Response($e->getMessage(), 500);
-            }
-        }
+//                 $response = new Response(\json_encode(array('html' => $html, 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
+//             }
+//             catch (\Exception $e){
+//                 $response = new Response($e->getMessage(), 500);
+//             }
+//         }
     
-        return $response;
-    }
+//         return $response;
+//     }
     
     /**
      * Remove global award of an institution medical center
