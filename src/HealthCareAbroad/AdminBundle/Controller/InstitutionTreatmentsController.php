@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
@@ -173,6 +175,8 @@ class InstitutionTreatmentsController extends Controller
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
         
+        $businessFancyForm = $this->createForm(new FancyBusinessHourType());
+        
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         $currentGlobalAwards = $institutionMedicalCenterService->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
@@ -201,10 +205,11 @@ class InstitutionTreatmentsController extends Controller
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionSpecializations' => $institutionSpecializations,
-            'institutionMedicalCenterForm' => $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')))->createView(),
+            'institutionMedicalCenterForm' => $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')))->createView(),
             'institutionSpecializationFormName' => InstitutionSpecializationFormType::NAME,
             'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
             'form' => $form->createView(),
+            'fancyBusinessForm' => $businessFancyForm->createView(),
             'institutionServices' => $institutionAncillaryServices,
             'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
             'selectedSubMenu' => 'centers',
@@ -460,8 +465,35 @@ class InstitutionTreatmentsController extends Controller
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $specializations = $instSpecializationRepo->getByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
-        $params = array('specializations' => $specializations);
+        $params = array('specializations    ' => $specializations);
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
+    }
+    
+    public function ajaxAddBusinessHoursAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        $result = '';
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+        
+                $this->institutionMedicalCenter = $form->getData();
+                foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                    $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                }
+                
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($this->institutionMedicalCenter);
+                $result = $em->flush();
+            }
+        }
+        
+        $response = new Response(\json_encode($result),200, array('content-type' => 'application/json'));
+        
+        return $response;
+        
     }
     
     /*

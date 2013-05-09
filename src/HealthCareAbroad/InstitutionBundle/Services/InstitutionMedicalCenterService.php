@@ -496,7 +496,7 @@ class InstitutionMedicalCenterService
             'Saturday' => static::$defaultDailyValues,
         );
 
-        $businessHours = \json_decode($businessHours, true);
+        //$businessHours = \json_decode($businessHours, true);
         if (!$businessHours) {
             $businessHours = $defaultWeekValue;
         }

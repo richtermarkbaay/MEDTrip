@@ -10,9 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 class ContactDetail
 {
     
-    const TYPE_PHONE = 1;
-    const TYPE_MOBILE = 2;
-    const TYPE_FAX = 3;
     
     /**
      * @var integer
@@ -43,7 +40,8 @@ class ContactDetail
      * @var string
      */
     private $abbr;
-    
+
+
     /**
      * Get id
      *
@@ -145,7 +143,7 @@ class ContactDetail
     {
         return $this->areaCode;
     }
-    
+
     /**
      * Set abbr
      *
@@ -158,15 +156,14 @@ class ContactDetail
     
         return $this;
     }
-    
+
     /**
      * Get abbr
      *
-     * @return string
+     * @return string 
      */
     public function getAbbr()
     {
         return $this->abbr;
     }
-
 }

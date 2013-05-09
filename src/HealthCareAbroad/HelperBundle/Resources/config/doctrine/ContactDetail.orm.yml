@@ -33,4 +33,4 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
             type: string
             length: 25
             nullable: false
-            column: abbr
+            column: abbr            

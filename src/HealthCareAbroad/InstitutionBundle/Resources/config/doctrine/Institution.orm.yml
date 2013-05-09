@@ -117,7 +117,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             cascade:
                 - "persist"
             mappedBy: null
-            inversedBy: institution
             joinTable:
                 name: institution_contact_details
                 joinColumns:

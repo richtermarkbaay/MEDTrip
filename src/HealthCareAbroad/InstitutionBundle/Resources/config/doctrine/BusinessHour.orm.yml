@@ -27,7 +27,7 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
     manyToOne:
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
-            inversedBy: null
+            inversedBy: businessHours
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id

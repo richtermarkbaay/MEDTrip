@@ -137,6 +137,21 @@ var InstitutionMedicalCenter = {
          });
     },
     
+    submitFancyBusinessHoursForm: function(_formElement) {
+    	_href = $(_formElement).attr('href');
+    	_formId = $(_formElement).attr('data-formId');
+    	_formData = $(_formId).serialize();
+    	$.ajax({
+    		url: _href,
+    		data: _formData,
+    		type: "POST",
+    		success: function(response) {
+    			console.log(response);
+    		}
+    	})
+    	return false;
+    },
+    
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {

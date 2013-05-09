@@ -27,7 +27,6 @@ HealthCareAbroad\UserBundle\Entity\InstitutionUser:
             cascade:
                 - "persist"
             mappedBy: null
-            inversedBy: institutionUsers
             joinTable:
                 name: user_contact_details
                 joinColumns:
