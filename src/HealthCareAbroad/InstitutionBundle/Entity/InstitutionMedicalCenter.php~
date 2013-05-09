@@ -679,42 +679,4 @@ class InstitutionMedicalCenter
     {
         return $this->contactDetails;
     }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $institutionMedicalCenterProperties;
-
-
-    /**
-     * Add institutionMedicalCenterProperties
-     *
-     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
-    {
-        $this->institutionMedicalCenterProperties[] = $institutionMedicalCenterProperties;
-    
-        return $this;
-    }
-
-    /**
-     * Remove institutionMedicalCenterProperties
-     *
-     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
-     */
-    public function removeInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
-    {
-        $this->institutionMedicalCenterProperties->removeElement($institutionMedicalCenterProperties);
-    }
-
-    /**
-     * Get institutionMedicalCenterProperties
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionMedicalCenterProperties()
-    {
-        return $this->institutionMedicalCenterProperties;
-    }
 }

@@ -25,6 +25,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty:
                 referencedColumnName: id
         institutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+            inversedBy: institutionMedicalCenterProperties
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id

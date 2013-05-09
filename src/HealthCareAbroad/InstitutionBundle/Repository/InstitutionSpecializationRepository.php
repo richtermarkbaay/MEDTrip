@@ -210,7 +210,7 @@ class InstitutionSpecializationRepository extends EntityRepository
     public function getActiveSpecializationsByInstitution(Institution $institution)
     {
         $qb = $this->_em->createQueryBuilder();
-        $qb->select('b, d')
+        $qb->select('b, d, c')
         ->from('InstitutionBundle:InstitutionSpecialization', 'b')
         ->leftJoin('b.institutionMedicalCenter', 'c')
         ->leftJoin('b.specialization', 'd')

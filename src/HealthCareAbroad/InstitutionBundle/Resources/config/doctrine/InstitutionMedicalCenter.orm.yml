@@ -96,6 +96,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         institutionSpecializations:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
             mappedBy: institutionMedicalCenter
+        institutionMedicalCenterProperties:
+            targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty
+            mappedBy: institutionMedicalCenter
         businessHours:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\BusinessHour
             mappedBy: institutionMedicalCenter

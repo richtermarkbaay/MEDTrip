@@ -1,7 +1,8 @@
 <ul class="check-bullet-list ">
-{% for _service in ancillaryServicesData %}
-	{% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
+{% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
 
+{% for _service in ancillaryServicesData %}
+	
     {% if selected[_service.id] is defined  %}
     <li>
          {{ _service.name |title }}

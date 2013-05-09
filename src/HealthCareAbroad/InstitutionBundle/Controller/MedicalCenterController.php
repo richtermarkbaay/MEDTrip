@@ -66,7 +66,7 @@ class MedicalCenterController extends InstitutionAwareController
         $this->service = $this->get('services.institution_medical_center');
 
         if ($imcId=$this->getRequest()->get('imcId',0)) {
-            $this->institutionMedicalCenter = $this->repository->find($imcId);
+            $this->institutionMedicalCenter = $this->service->findById($imcId);
             
             // non-existent medical center group
             if (!$this->institutionMedicalCenter) {
@@ -139,7 +139,7 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-         
+        //$currentGlobalAwards = array();
         return $this->render($template, array(
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'specializations' => $institutionSpecializations,
@@ -911,6 +911,12 @@ class MedicalCenterController extends InstitutionAwareController
         return $response;
     }
     
+    /**
+     * Save Specialization treatments under clinic profile page
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Chaztine Blance
+     */
     public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
     {
         $debugMode = isset($_GET['hcaDebug']) && $_GET['hcaDebug'] == 1;
@@ -971,52 +977,6 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
         }
-        else {
-            $start = \microtime(true);
-            $form = $this->createForm('institutionSpecialization', new InstitutionSpecialization());
-            $end =  \microtime(true);
-            if ($debugMode) {
-                $diff = $end - $start;
-                //echo  "{$diff} ms"; exit;
-            }
-            $specialization = $institutionSpecialization->getSpecialization();
-            $availableTreatments = $this->get('services.institution_medical_center')
-                ->getAvailableTreatmentsByInstitutionSpecialization($institutionSpecialization);
-            
-            try {
-                
-                if ($debugMode) {
-                    $response = $this->render('::base.ajaxDebugger.html.twig', array(
-                        'availableTreatments' => $availableTreatments,
-                        'form' => $form->createView(),
-                        'formName' => InstitutionSpecializationFormType::NAME,
-                        'specialization' => $specialization,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institutionSpecialization' => $institutionSpecialization,
-                        //'currentTreatments' => $institutionSpecialization->getTreatments()
-                    ));
-                }
-                else {
-                    $html = $this->renderView('InstitutionBundle:MedicalCenter:ajaxEditInstitutionSpecialization.html.twig', array(
-                                    'availableTreatments' => $availableTreatments,
-                                    'form' => $form->createView(),
-                                    'formName' => InstitutionSpecializationFormType::NAME,
-                                    'specialization' => $specialization,
-                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                    'institutionSpecialization' => $institutionSpecialization,
-                                    'currentTreatments' => $institutionSpecialization->getTreatments()
-                    ));
-                    //echo $html; exit;
-                    
-                    $response = new Response(\json_encode(array('html' => $html)));
-                }
-            }
-            catch (\Exception $e) {
-                $response = new Response($e->getMessage(), 500);
-            }
-            
-        }
-        
         
         return $response;   
     }

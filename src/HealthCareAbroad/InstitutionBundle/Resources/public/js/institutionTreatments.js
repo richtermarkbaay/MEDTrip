@@ -59,28 +59,19 @@ var InstitutionSpecialization = {
     
     submitAddTreatmentsForm: function(_buttonElement) {
         _el = $(_buttonElement);
-        _modal = _el.parents('div.add_treatments_modal');
-        _form = _modal.find('form.add_treatments_form');
-        _html = _el.html();
-        _el.html(this._processing).attr('disabled', true);
+        _form = _buttonElement.attr('data-target');
+        _divToggle = $(_form).parent('#hca-specialization-content');
+        _divToggle.hide();
+        _divToggle.prev('#treatment_list').show();
         $.ajax({
-            url: _form.attr('action'),
-            data: _form.serialize(),
+            url: $(_form).attr('action'),
+            data: $(_form).serialize(),
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-                _modal.find('div.ajax_content_container').html('');
-                _modal.find('.ajax_loader').hide();
-                
-                // replace the treatments list
-                _modal.parents('div.specializations_block').find('.institution_specialization_treatments_container').html(response.html);
-                _modal.modal('hide');
-                InstitutionMedicalCenter.displayCallout(response);
+            	_divToggle.html(response.html);
             },
             error: function (response) {
-                _modal.find('div.ajax_content_container').html('');
-                _modal.find('.ajax_loader').hide();
-                _modal.modal('hide');
             }
         });
     },

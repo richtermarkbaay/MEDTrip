@@ -67,7 +67,7 @@ class TreatmentRepository extends EntityRepository
     public function getQueryBuilderForActiveTreatmentsBySpecialization($medicalCenter)
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('a')
+            ->select('a','b')
             ->from('TreatmentBundle:Treatment', 'a')
             ->innerJoin('a.treatment', 'b')
             ->where('b.medicalCenter = :medicalCenterId')
