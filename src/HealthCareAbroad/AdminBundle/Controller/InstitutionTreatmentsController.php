@@ -437,10 +437,18 @@ class InstitutionTreatmentsController extends Controller
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
-            $form->bind($this->request);
+            $form->bind($request);
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
                 $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
+            }
+            else {
+                $errors = array();
+                foreach ($form->getErrors() as $_err) {
+                    $errors[] = $_err->getMessage();
+                }
+//                 var_dump($errors)
+                $response = new Response(\json_encode(array('html' => \implode('<br />', $errors))), 400, array('content-type' => 'application/json'));
             }
         }
         else {
