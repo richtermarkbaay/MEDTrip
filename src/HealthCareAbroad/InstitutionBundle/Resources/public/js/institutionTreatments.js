@@ -47,34 +47,38 @@ var InstitutionSpecialization = {
         _divToggle.show();
         _divToggle.prev('#treatment_list').hide();
         $.ajax({
-            url: $(_modifiableDiv).attr('action'),
+            url: _divToggle.attr('data-href'),
             type: 'GET',
             dataType: 'html',
             success: function(response){
-                $(_modifiableDiv).html(response);
-//                _modifiableDiv.data('loaded', 1);
+            	$(_modifiableDiv).html(response);
             }
         });
     },
     
     submitAddTreatmentsForm: function(_buttonElement) {
-        _el = $(_buttonElement);
+    	_buttonElement = $(_buttonElement);
+    	_buttonElement.hide();
+    	_buttonElement.prev('#specialization-button').show();
         _form = _buttonElement.attr('data-target');
         _divToggle = $(_form).parent('#hca-specialization-content');
-        _divToggle.hide();
-        _divToggle.prev('#treatment_list').show();
+        $(_form).find('.specializations-edit-listing').hide();
+        $(_form).prepend('<center><img src="/images/institution/spinner_large.gif" /></center>')
         $.ajax({
             url: $(_form).attr('action'),
             data: $(_form).serialize(),
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-            	_divToggle.html(response.html);
+                _divToggle.prev('#treatment_list').show();
+            	_divToggle.prev('#treatment_list').html(response.html);
+            	 $(_form).hide();
             },
             error: function (response) {
             }
         });
     },
+    
     
     /**
      * Clicking on submit button of modal Add Specialization form

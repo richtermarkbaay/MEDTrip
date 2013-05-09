@@ -51,9 +51,9 @@ $(document).on('show hide', '#accordion', function(e) {
     if (!modifiableDiv.data('loaded')) {
         /* TODO: ideally we should return the data not html */
         $.ajax({
-            url: '{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents') }}',
+            url: '{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id }) }}',
             type: 'GET',
-            data: { 'specializationId': target.data('specialization'), 'imcId' : '{{ institutionMedicalCenter.id}}' },
+            data: { 'isId': target.data('specialization') },
             dataType: 'html',
             success: function(response){
                 modifiableDiv.html(response);

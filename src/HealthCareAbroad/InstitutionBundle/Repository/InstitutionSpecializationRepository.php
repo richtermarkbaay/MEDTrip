@@ -176,6 +176,20 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $result;
     }
+    
+    public function deleteTreatmentsBySpecializationId($institutionSpecializationId)
+    {
+        $conn = $this->_em->getConnection();
+        
+        $deleteQry = "DELETE FROM institution_treatments " .
+                        "WHERE institution_specialization_id = :institutionSpecializationId ";
+        
+        $deleteParams = array('institutionSpecializationId' => $institutionSpecializationId);
+        
+        $result = $conn->executeQuery($deleteQry, $deleteParams);
+        
+        return $result;
+    }
 
     /**
      * @deprecated use getActiveSpecializationsByInstitution

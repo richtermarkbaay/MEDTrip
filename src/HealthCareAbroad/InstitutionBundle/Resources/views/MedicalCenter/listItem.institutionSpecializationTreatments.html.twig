@@ -1,6 +1,6 @@
     <div class="hca-specialization-details hca-edit">
         <a ><i class="icon-remove-sign pull-right"></i></a>
-        <a id="specialization-button" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, specializationId: each.specialization.id }) }}" data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
+        <a id="specialization-button"  data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
         <i class="icon-edit pull-right"></i></a>
         <a style="display:none;" id="treatments-save"  data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.submitAddTreatmentsForm($(this));return false;">
         <i class="icon-ok pull-right"></i></a>
@@ -16,8 +16,8 @@
     <div id="treatment_list">
      {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
      </div>
-    <div id="hca-specialization-content" class="row-fluid terms" data-specialization="{{ each.specialization.id }}" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents') }}">
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, specializationId: each.specialization.id }) }}" method="post">
+    <div id="hca-specialization-content" class="row-fluid terms" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post">
               <center><img src="/images/institution/spinner_large.gif" /></center>
         </form>
     </div>

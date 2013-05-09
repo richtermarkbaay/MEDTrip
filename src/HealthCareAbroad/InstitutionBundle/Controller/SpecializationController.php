@@ -116,28 +116,79 @@ class SpecializationController extends InstitutionAwareController
      */
     public function ajaxLoadMedicalCenterSpecializationComponentsAction(Request $request)
     {
-        $specializationTreatments = array();
-        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
-        
-        foreach ($institutionSpecializations as $e) {
-            foreach ($e->getTreatments() as $t) {
-                $specializationTreatments[] = $t->getId();
+        $errors = array();
+        $output = array();
+        if ($request->isMethod('POST')) {
+
+            $debugMode = isset($_GET['hcaDebug']) && $_GET['hcaDebug'] == 1;
+            $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
+            if (!$institutionSpecialization ) {
+                throw $this->createNotFoundException('Invalid institution specialization');
             }
-        }
-        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
         
-        //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
-        $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
-    
-        $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:specializationComponents.html.twig', array(
-                        'specializationComponents' => $specializationComponents,
-                        'specializationId' => $request->get('specializationId'),
-                        'selectedTreatments' => $specializationTreatments,
-                        'formName' => InstitutionSpecializationFormType::NAME,
-                        'form' => $form->createView(),
-        ));
-    
-        return new Response($html, 200);
+            $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
+            $em = $this->getDoctrine()->getEntityManager();
+            foreach ($submittedSpecializations as $_isId => $_data) {
+                if ($_isId == $institutionSpecialization->getSpecialization()->getId()) {
+                    //delete treatments first
+                    $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->deleteTreatmentsBySpecializationId($request->get('isId'));
+                    // set passed treatments as choices
+                    $default_choices = array();
+                    $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
+                    foreach ($_treatment_choices as $_t) {
+                        $default_choices[$_t->getId()] = $_t->getName();
+                        // add the treatment
+                        $institutionSpecialization->addTreatment($_t);
+                    }
+        
+                    $form = $this->createForm('institutionSpecialization', $institutionSpecialization, array('default_choices' =>$default_choices ));
+                    $form->bind($_data);
+                    if ($form->isValid()) {
+                        try {
+                            $em->persist($institutionSpecialization);
+                            $em->flush();
+        
+                            $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
+                                            'each' => array( 'treatments' => $_treatment_choices) ,
+                            ));
+                        }catch (\Exception $e) {
+                            $errors[] = $e->getMessage();
+                        }
+                    }
+                    else {
+                        $errors[] = 'Failed form validation';
+                    }
+                }
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            if (\count($errors) > 0) {
+                $response = new Response('Errors: '.implode('\n',$errors), 400);
+            }
+        }else{
+        
+            $specializationTreatments = array();
+            $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
+            
+            foreach ($institutionSpecializations as $e) {
+                foreach ($e->getTreatments() as $t) {
+                    $specializationTreatments[] = $t->getId();
+                }
+            }
+            $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
+            
+            //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
+            $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('isId'));
+        
+            $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:specializationComponents.html.twig', array(
+                            'specializationComponents' => $specializationComponents,
+                            'specializationId' => $request->get('isId'),
+                            'selectedTreatments' => $specializationTreatments,
+                            'formName' => InstitutionSpecializationFormType::NAME,
+                            'form' => $form->createView(),
+            ));
+            return new Response($html, 200);
+        }
+        return $response;
     }
     
     /**
