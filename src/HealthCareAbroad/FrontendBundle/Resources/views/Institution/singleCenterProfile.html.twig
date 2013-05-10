@@ -20,7 +20,7 @@
 
         {% if institutionDoctors|length %}
             {% embed 'FrontendBundle:Embed:profileSection.html.twig' 
-                with {title: 'DOCTORS', headingClass : 'doctors-heading', class: 'one-col-description content' } %}
+                with {title: 'DOCTORS', class: 'doctors' } %}
                 {% block sectionContent %}
                     {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionDoctors } %}
                 {% endblock %}
