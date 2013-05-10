@@ -50,17 +50,32 @@
        <a class="btn btn-misc btn-default pull-right btn-edit" href="#contactNumber" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
        <div class="show">
             <h3> Clinic Contact Details </h3>
-              <div class="activity-feeds">
+              <div>
                 <p> <i class="icon-globe"> </i> http://www.
                     <b id="profileWebsitesText">  {{institutionMedicalCenter.websites}} </b>
                 </p>
                 <p> <i class="icon-envelope"> </i>
                     Email: <strong> <span id="profileEmailText"> {{institutionMedicalCenter.contactEmail}}</span>  </strong>
                 </p>
-                <p> <i class="icon-phone"> </i>
-                    Contact Number:
-                    <strong><span id="PhoneNumberText"> {{ render_institution_medical_center_contact_number(institutionMedicalCenter) }} </span> </strong>
-                </p>
+               {% set _contactDetails = render_institution_medical_center_contact_details(institutionMedicalCenter) %}
+                {% if _contactDetails is not null %}
+                    {% for contactDetail in _contactDetails %}
+                        <p> <i class="icon-phone"> </i>
+                        {% if(contactDetail.type == 'Phone') %}
+                            Phone Number:    
+                        {% elseif(contactDetail.type == 'Mobile') %}
+                            Mobile Number:
+                        {% else %}
+                            Fax:
+                        {% endif %}
+                            <strong><span id="{{contactDetail.type}}NumberText"> {{ contactDetail.number}}  </span> </strong>
+                    {% endfor %}
+                {% else %}
+                    <p> <i class="icon-phone"> </i>Phone
+                    <strong><span id="profileNumberText">   </span> </strong>
+                    </p>
+                {% endif %}  
+                
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="contactNumber">

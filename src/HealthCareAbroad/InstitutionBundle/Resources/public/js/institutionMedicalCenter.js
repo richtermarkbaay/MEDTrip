@@ -286,10 +286,9 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                    	var number = response.institutionMedicalCenter.contactNumber.phone_number;
 						$('#profileWebsitesText').html(response.institutionMedicalCenter.websitesString);
 						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
-						$('#profileNumberText').html(number.number);
+						$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
 						
                         break;
                     case 'socialMediaForm':

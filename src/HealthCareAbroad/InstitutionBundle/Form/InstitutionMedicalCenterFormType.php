@@ -39,7 +39,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         'zipCode',
         'state',
         'contactEmail',
-        'contactNumber',
+        'contactDetails',
         'address',
         'addressHint',
         'timezone',

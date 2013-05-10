@@ -74,6 +74,7 @@ services:
         class: HealthCareAbroad\HelperBundle\Twig\InstitutionMedicalCenterTwigExtension
         public: false
         calls:
+            - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
             - [setMediaExtension, [@services.media.twig.extension]]
             - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:

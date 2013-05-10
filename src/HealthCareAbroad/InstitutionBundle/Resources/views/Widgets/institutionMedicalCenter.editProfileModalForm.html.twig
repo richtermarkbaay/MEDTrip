@@ -44,7 +44,9 @@
                             {{ form_label(institutionMedicalCenterForm.contactEmail) }}
                             {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
                         </div>
-                            {{ form_widget(institutionMedicalCenterForm.contactDetails) }}
+                            {% for _widget in institutionMedicalCenterForm.contactDetails %}
+                                {{ form_widget(_widget) }}
+                            {% endfor %}
                     </div>
                     <div class="control-group website">
                         <label for="website"> Clinic Website </label>

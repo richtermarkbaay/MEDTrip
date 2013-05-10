@@ -138,7 +138,6 @@ var InstitutionSpecialization = {
               	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.children.item('h4').children;
               	_subSpecializationCheckbox.subSpecialization.setAttribute("checked", "checked");
                });
-        	
 
         }else{
         	_subSpecializationCheckbox = _target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');

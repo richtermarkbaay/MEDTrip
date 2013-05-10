@@ -47,7 +47,7 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-contact">
             <h3> Hospital Contact Details </h3>
-            <div>
+            <div >
                 <p> <i class="icon-globe"> </i> http://www.
                     <b id="profileWebsitesText">  {{institution.websites}} </b>
                 </p>
@@ -93,9 +93,9 @@
             <h3>  Hospital Social Media </h3>
             <div id="soclialMediaText">
                 {% for type, site in institution_websites_to_array(institution) %}
-               <p><i class="icon-{{ type }}"> </i>
-                    http://www:  <b>{{ site }}</b>
-                 </p>
+                        <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                            http://www:  <b>{{ site }}</b>
+                        </p>
                 {% endfor %}
             </div>
         </div>
