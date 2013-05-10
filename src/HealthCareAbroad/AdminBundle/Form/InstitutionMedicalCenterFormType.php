@@ -86,7 +86,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         //$this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Clinic Phone Number', 'display_both' => false));
-        $this->_add($builder, 'contactDetails', 'collection', array('label' => 'Clinic Phone Number', 'type' => 'contact_detail'));
+        $this->_add($builder, 'contactDetails', 'collection', array('label' => 'Clinic Phone Number', 'type' => 'contact_number_with_flag'));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         if (!$medicalCenter->getId()) {
             $medicalCenter->setWebsites($this->institution->getWebsites());
