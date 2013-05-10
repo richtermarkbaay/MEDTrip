@@ -48,7 +48,7 @@ var HCAGoogleMap = {
 			HCAGoogleMap.map.setCenter(results[0].geometry.location);
 	        HCAGoogleMap.lat = results[0].geometry.location.lat();
 	        HCAGoogleMap.lng = results[0].geometry.location.lng();		        
-	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + ", " + HCAGoogleMap.lng;
+	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
 	        
 	        HCAGoogleMap.setMarker(results[0].geometry.location);
 	        HCAGoogleMap.setLayer();
