@@ -53,6 +53,7 @@ var InstitutionSpecialization = {
             success: function(response){
             	$(_modifiableDiv).show();
             	$(_modifiableDiv).html(response);
+            	InstitutionSpecialization.treatmentsCheckBox();
             }
         });
     },
@@ -128,6 +129,22 @@ var InstitutionSpecialization = {
     	            }
     	        });
     },
+    
+    treatmentsCheckBox: function (){
+        _target = $('input:checkbox[id^="treatments"]:checked');
+        if(_target.length >1){
+        	
+        	  $.each(_target, function(_k, _v){
+              	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.children.item('h4').children;
+              	_subSpecializationCheckbox.subSpecialization.setAttribute("checked", "checked");
+               });
+        	
+
+        }else{
+        	_subSpecializationCheckbox = _target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
+           	_subSpecializationCheckbox.attr('checked', 'checked');
+        }
+    }
 };
 
 var InstitutionSpecializationAutocomplete = {
