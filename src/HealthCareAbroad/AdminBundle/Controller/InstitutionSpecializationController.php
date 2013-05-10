@@ -201,6 +201,16 @@ class InstitutionSpecializationController extends Controller
                 $request->getSession()->setFlash('notice', '<ul><li> Please provide at least one specialization.</li></ul>');
             }
         }
+        else {
+            $form = $this->createForm(new InstitutionSpecializationSelectorFormType());
+            $assignedSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->findByInstitutionMedicalCenter($this->institutionMedicalCenter);
+            $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($assignedSpecialization);
+            $specializationArr = array();
+            foreach ($specializations as $e) {
+                $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+            }
+        
+        }
         
         $params = array(
                 'form' => $form->createView(),
