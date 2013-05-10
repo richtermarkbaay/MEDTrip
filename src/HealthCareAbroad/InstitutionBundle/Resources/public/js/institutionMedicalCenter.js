@@ -162,7 +162,7 @@ var InstitutionMedicalCenter = {
     	
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $('.specialization_name_'+ _id).html();
+        _name = $(_linkElement).parent().find('b').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
         _modal.modal('show');
@@ -339,7 +339,7 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             success: function(response){
                 _formElement.parents('div.modal').modal('hide');
-                $('#specialization_block_'+response.id).remove();
+                $('#specialization_'+response.id).remove();
                 InstitutionMedicalCenter.displayCallout(response);
             }
          });

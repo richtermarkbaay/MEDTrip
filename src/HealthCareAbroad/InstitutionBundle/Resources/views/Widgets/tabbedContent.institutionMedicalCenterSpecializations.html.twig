@@ -1,13 +1,11 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-      <section class="section action-info hca-main-profile">
+      <section class="section action-info hca-main-profile" id="specialization_list_block">
       <h3> Specialization </h3>
         {% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
                     
         {% for each in specializations %}
-            <div class="specializations-listing-profile" id="specialization_{{each.id}}">
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
-              </div>
         {% endfor %}
     </section>
      <section class="section action-info hca-main-profile">
@@ -82,7 +80,7 @@ $('#accordion').on('click', 'input:checkbox[name="subSpecialization"]', function
     });
 });
 
-$('#accordion').on('click', 'input:checkbox[name^="treatments"]', function(e) {
+$('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
     var target = $(e.target);
     var subSpecializationCheckbox = target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
 

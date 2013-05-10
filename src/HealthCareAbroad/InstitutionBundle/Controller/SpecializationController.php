@@ -168,7 +168,6 @@ class SpecializationController extends InstitutionAwareController
         
             $specializationTreatments = array();
             $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
-            
             foreach ($institutionSpecializations as $e) {
                 foreach ($e->getTreatments() as $t) {
                     $specializationTreatments[] = $t->getId();
@@ -178,7 +177,6 @@ class SpecializationController extends InstitutionAwareController
             
             //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
             $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('isId'));
-        
             $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:specializationComponents.html.twig', array(
                             'specializationComponents' => $specializationComponents,
                             'specializationId' => $request->get('isId'),

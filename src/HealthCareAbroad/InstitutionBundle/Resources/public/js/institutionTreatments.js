@@ -51,6 +51,7 @@ var InstitutionSpecialization = {
             type: 'GET',
             dataType: 'html',
             success: function(response){
+            	$(_modifiableDiv).show();
             	$(_modifiableDiv).html(response);
             }
         });
@@ -97,7 +98,7 @@ var InstitutionSpecialization = {
             dataType: 'json',
             success: function(response) {
                 // insert new content after last specialization block
-            	$(response.html).prependTo($('#accordion'));
+            	$(response.html).insertAfter($('#specialization_list_block h3'));
                 InstitutionMedicalCenter.displayCallout(response);
                 _form.hide();
             },

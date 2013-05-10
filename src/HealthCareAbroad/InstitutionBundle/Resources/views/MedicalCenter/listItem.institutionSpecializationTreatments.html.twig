@@ -1,9 +1,12 @@
+<div class="specializations-listing-profile" id="specialization_{{each.id}}">
     <div class="hca-specialization-details hca-edit">
-        <a ><i class="icon-remove-sign pull-right"></i></a>
+    	<a data-target="#deleteSpecialization{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
+            <i class="icon-remove-sign pull-right"></i>
+        </a>
         <a id="specialization-button"  data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
-        <i class="icon-edit pull-right"></i></a>
+            <i class="icon-edit pull-right"></i></a>
         <a style="display:none;" id="treatments-save"  data-target="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.submitAddTreatmentsForm($(this));return false;">
-        <i class="icon-ok pull-right"></i></a>
+            <i class="icon-ok pull-right"></i></a>
         <span>
             {% if each.specialization.media %}
                 <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left">
@@ -22,3 +25,10 @@
         </form>
     </div>
 
+    <div id="deleteSpecialization{{ each.id }}" class="modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
+        {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
+        'institutionSpecialization' : each }
+    %}
+    </div>
+</div>
