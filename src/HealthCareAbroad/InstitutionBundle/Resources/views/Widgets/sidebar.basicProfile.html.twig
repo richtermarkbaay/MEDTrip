@@ -69,7 +69,7 @@ $(function(){
 		            type: 'post',
 		            data: { coordinates: HCAGoogleMap.latLngString },
 		            dataType: 'json',
-		            success: function(response){},
+		            success: function(response){ coordinates = HCAGoogleMap.latLngString; },
 			        error: function(){}
 		        });
 			}

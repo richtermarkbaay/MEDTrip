@@ -11,8 +11,6 @@ var HCAGoogleMap = {
 	defaultAddress: 'Washington, United States', // City and Country Address
 	mapCanvasElem: document.getElementById('map_canvas'),
 	mapOnChangeCallback: null,
-	
-	recursion: 0,
 
 	initialize: function(params) {
 		
@@ -44,7 +42,7 @@ var HCAGoogleMap = {
 	},
 	
 	geocoderCallback: function(results, status) {
-		if (status == google.maps.GeocoderStatus.OK && HCAGoogleMap.recursion < 2) {
+		if (status == google.maps.GeocoderStatus.OK) {
 			HCAGoogleMap.map.setCenter(results[0].geometry.location);
 	        HCAGoogleMap.lat = results[0].geometry.location.lat();
 	        HCAGoogleMap.lng = results[0].geometry.location.lng();		        
@@ -55,15 +53,13 @@ var HCAGoogleMap = {
 
 	        google.maps.event.addListener(HCAGoogleMap.marker, 'click', HCAGoogleMap.toggleBounce);
 
-	        if(HCAGoogleMap.mapOnChangeCallback) {
-	        	HCAGoogleMap.mapOnChangeCallback();
-	        }
-	        
-	        HCAGoogleMap.recursion++;
-
 		} else {
-			HCAGoogleMap.geocoder.geocode({ 'address': HCAGoogleMap.defaultAddress}, HCAGoogleMap.geocoderCallback);
+			HCAGoogleMap.geocoder.geocode({ 'address': HCAGoogleMap.defaultAddress}, function(){});
 		}
+	
+	    if(HCAGoogleMap.mapOnChangeCallback) {
+	    	HCAGoogleMap.mapOnChangeCallback();
+	    }
 	},
 	
 	setMarker: function(markerPosition) {
