@@ -101,7 +101,7 @@ $(function() {
         _modal = $('#view_admin_users_modal')
         _modal.modal('show');
         $.ajax({
-            url: _link.attr('href'),
+            url: _link.prop('href'),
             type: 'GET',
             dataType: 'json',
             success: function(response) {
