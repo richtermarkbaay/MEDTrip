@@ -4,7 +4,9 @@
         {% if each == 'description' %}
             {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
         {% elseif each == 'address' %}
-                    <div id="map_canvas" style="width: 530px; height: 300px"></div> 
+                     <div class="control-group" >
+                        <div id="map_canvas" style="width: 100%; height: 300px"></div> 
+                     </div>
                             {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
                             {{ form_widget(institutionMedicalCenterForm.coordinates) }}
                         <div class="control-group">

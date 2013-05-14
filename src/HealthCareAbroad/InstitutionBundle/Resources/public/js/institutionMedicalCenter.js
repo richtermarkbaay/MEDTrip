@@ -310,7 +310,6 @@ var InstitutionMedicalCenter = {
                   	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
                   	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
                   	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
-                  	  		console.log(websitesString);
 	                        $('#soclialMediaDiv').html(websitesString);
 	                        $('#alertSocialDiv').hide();
                   	break;
