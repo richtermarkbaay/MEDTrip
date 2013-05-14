@@ -454,15 +454,14 @@ class InstitutionSignUpController extends InstitutionAwareController
             if ($form->isValid()) {
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-
-                $this->institutionMedicalCenter = $form->getData();
-                
                 if((bool)$request->get('isSameAddress')) {
                     $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
                     $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
                     $this->institutionMedicalCenter->setCoordinates($this->institution->setCoordinates($coordinates));
                 }
-
+                
+                $this->institutionMedicalCenter = $form->getData();
+                
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                     $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                 }

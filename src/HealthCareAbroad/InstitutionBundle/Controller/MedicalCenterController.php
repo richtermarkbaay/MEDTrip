@@ -185,7 +185,6 @@ class MedicalCenterController extends InstitutionAwareController
                         ));
                 $form->bind($request);
                 if ($form->isValid()) {
-                    $this->institutionMedicalCenter = $form->getData();
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))

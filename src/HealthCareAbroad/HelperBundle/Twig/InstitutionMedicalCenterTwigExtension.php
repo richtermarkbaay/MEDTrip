@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
@@ -178,7 +180,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return \array_key_exists($institutionMedicalCenter->getStatus(), $statuses) ?  $statuses[$institutionMedicalCenter->getStatus()] : '';
     }
     
-    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array())
+    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array() )
     {
         $defaultIncludedKeys = array('address', 'zipCode', 'city', 'state','country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
