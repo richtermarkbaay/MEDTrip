@@ -243,7 +243,7 @@ var InstitutionMedicalCenter = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
-        _form = _button.parents('.hca-edit-box').find('form');
+        _form = _button.parents('form');
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
