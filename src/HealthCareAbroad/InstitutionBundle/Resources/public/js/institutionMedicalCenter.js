@@ -87,10 +87,7 @@ var InstitutionMedicalCenter = {
     	_element.parents('div.show').hide();
     	_element.parents('div.show').prev().hide();
     	$(_attr).toggle();
-    	if(_attr = '#address'){
-    		GoogleMap.initialize();
-    		google.maps.event.trigger(GoogleMap.map, 'resize');
-    	}
+    	
     },
     
     /**
@@ -301,7 +298,7 @@ var InstitutionMedicalCenter = {
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
                     		$("#alertDiv").attr('class', ' ');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.openProfileFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#contactNumber" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#contactNumber" ><i class="icon-plus"></i> Add Clinic Website</a>');
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}
 						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);

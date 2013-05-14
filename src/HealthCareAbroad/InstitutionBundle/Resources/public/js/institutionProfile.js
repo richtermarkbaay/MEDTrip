@@ -221,6 +221,14 @@ var InstitutionProfile = {
     	$('#'+_show.selector).toggle();
     	$(_attr).toggle();
     },
+    
+    openWebsiteFormButton: function(_element){
+    	_attr = _element.attr('href');
+    	_element.parents('div.show').hide();
+    	_element.parents('div.show').prev().hide();
+    	$(_attr).toggle();
+    },
+    
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');
     	_div.show();
@@ -300,7 +308,13 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                        $('#profileWebsitesText').html(response.institution.websitesString);
+                       	if(response.institution.websites){
+                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
+                    		$("#alertDiv").attr('class', ' ');
+                    	}else{
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}
                        	$('#profileEmailText').html(response.institution.contactEmail);
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
                         $('#MobileNumberText').html(response.institution.contactDetails.mobileNumber);

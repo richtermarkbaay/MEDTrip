@@ -47,9 +47,17 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-contact">
             <h3> Hospital Contact Details </h3>
-            <div >
-                <p> <i class="icon-globe"> </i> http://www.
-                    <b id="profileWebsitesText">  {{institution.websites}} </b>
+            <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
+                <p> <i class="icon-globe"> </i>
+                     <span id="profileWebsitesText"> 
+                        {% if institution.websites %}
+                           http://www.
+                           <b >  {{institution.websites}} </b>
+                        {% else %}
+                            <b> no hospital website </b> added.
+                            <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Hospital Website</a>
+                        {% endif %}
+                    </span>
                 </p>
                 <p> <i class="icon-envelope"> </i>
                     Email: <strong> <span id="profileEmailText"> {{institution.contactEmail}}</span>  </strong>
