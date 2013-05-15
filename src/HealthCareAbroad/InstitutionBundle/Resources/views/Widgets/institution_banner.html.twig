@@ -7,12 +7,12 @@
     {% endif %} 
 
 
-    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" {{ form_enctype(institutionForm) }} class="hidden">
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="hidden">
         <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
         <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
     </form>
 
-    <form method="POST" action="{{ path('institution_uploadLogo') }}" {{ form_enctype(institutionForm) }} class="hidden">
+    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="hidden">
         <a class="hca-logo file-browse-btn"  href="javascript:void(0)" onclick="$(this).next().click()">        
             <span class="rollover"></span>
             {% if institution.logo %}
