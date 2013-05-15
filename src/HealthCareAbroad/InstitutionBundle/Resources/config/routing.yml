@@ -135,3 +135,14 @@ institution_terms_of_use:
 #        _method: GET|POST
         
 
+institution_uploadLogo: 
+    pattern: /institution/uploadLogo
+    defaults: { _controller: InstitutionBundle:Institution:uploadLogo }
+    requirements:
+        _method: POST
+
+institution_uploadFeaturedImage: 
+    pattern: /institution/uploadFeaturedImage
+    defaults: { _controller: InstitutionBundle:Institution:uploadFeaturedImage }
+    requirements:
+        _method: POST
