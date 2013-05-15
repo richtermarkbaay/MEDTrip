@@ -1,44 +1,3 @@
-<style>
-    .file-browse-wrapper {
-        width: 106px;    
-        height: 28px;
-        background: linear-gradient(to bottom, #C4C4C4 0%, #AAAAAA 49%, #C4C4C4 100%) repeat scroll 0 0 transparent;
-        border-radius: 3px;
-        border: 1px solid #888888;
-        overflow:hidden;
-    }
-    
-    .file-browse-wrapper:before {
-        content: "";
-        position: relative;
-        top: 3px;
-        color: #333333;
-        left: 30px;
-        text-shadow: 0 1px 1px #CCC;
-    }
-    
-    .file-browse-wrapper:hover {
-        cursor: pointer;
-        background: linear-gradient(to bottom, #D6D6D6 0%, #AAAAAA 49%, #D6D6D6 100%) repeat scroll 0 0 transparent;
-    }
-    
-    .file-browse-wrapper:active {
-        background: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-    
-    .file-browse-wrapper > input[type=file]{
-    
-        margin-left:-145px;
-        
-        opacity:0;
-        
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        
-        filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-    
-    }
-</style>
-
 <section class="section media-upload">
     <h2>
         Logo and Banner
@@ -57,14 +16,10 @@
                 <img src="{{ logoImage }}" class="pull-left">
                 
                 <div class="media-body">
-                    <p>
-                        Your logo should be no smaller than 256 x 256 pixels.
-                    </p>
-                        
-                    <div class="file-browse-wrapper">
-
-                        {{ form_widget(form.logo) }}
-                    </div>
+                    <p>Your logo should be no smaller than 256 x 256 pixels.</p>
+                    <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Logo</button>
+                    {{ form_widget(form.logo) }}
+                    
                 </div>
             </div>
         </div>
@@ -74,15 +29,9 @@
                 <img src="{{ featuredImage }}" class="pull-left">
 
                 <div class="media-body">
-                    <p>
-                        Your banner should be no smaller than 950 pixels wide x 420 pixels high.
-                    </p>
-                    <div class="file-browse-wrapper">
-                        {{ form_widget(form.featuredMedia) }}
-                    </div>
-                    <!-- button class="btn btn-default">
-                        Upload Banner
-                    </button> -->
+                    <p>Your banner should be no smaller than 950 pixels wide x 420 pixels high.</p>
+                    <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Banner</button>
+                    {{ form_widget(form.featuredMedia) }}
                 </div>
             </div>
         </div>
