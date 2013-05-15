@@ -18,38 +18,13 @@
 			    {% include 'InstitutionBundle:Institution:profile.multipleCenter.html.twig' %}
 			{% endif %}
 
-
             <!-- Sidebar Content -->
 			{% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
 	        {% if (isSingleCenter is defined) and isSingleCenter %}
 	            {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
 	        {% endif %}
 
-			 <!-- Modal Institution name -->
-			{# {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-			     with {formId: 'nameModalForm', fields: ['name'], modalId: 'institutionNameModal', modalTitle: 'Edit Name'} 
-			%} 
-			#}
 			<!-- end Modal Institution name -->
-
-			
-		    <!-- Modal Institution Featured Image -->
-			{% include 'InstitutionBundle:Widgets:modal.institutionFeaturedImage.html.twig' 
-			     with {formId: 'featuredImageModalForm', fields: ['featured_image'], modalId: 'institutionFeaturedImageModal', modalTitle: 'Upload Featured Image'} 
-			%} <!-- end Modal Institution name -->
-
-
-			<!-- Modal Institution Logo -->
-			{% include 'InstitutionBundle:Widgets:modal.institutionLogo.html.twig' 
-			     with {formId: 'logoModalForm', modalId: 'institutionLogoModal', modalTitle: 'Upload Logo'} 
-			%} <!-- end Modal Institution name -->
-
-{#
-			<!-- Modal Institution description  -->
-            {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-                 with {formId: 'descriptionModalForm', fields: ['description'], modalId: 'institutionDescriptionModal', 'modalTitle': 'Edit Description'} 
-            %}<!-- end Modal Institution description -->
-#}
         {% endblock %}
         
     {% endembed %}
