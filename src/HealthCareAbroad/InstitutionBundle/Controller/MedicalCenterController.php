@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use Mapping\Fixture\Xml\Status;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -134,6 +138,11 @@ class MedicalCenterController extends InstitutionAwareController
             $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
         }
     
+        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+            $contactDetails = new ContactDetail();
+            $contactDetails->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($contactDetails);
+        }
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
@@ -165,13 +174,19 @@ class MedicalCenterController extends InstitutionAwareController
                 $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
+                
+                if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+                    $phoneNumber = new ContactDetail();
+                    $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+                }
+                
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                             InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true,
                             InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                         ));
                 $form->bind($request);
                 if ($form->isValid()) {
-                    $this->institutionMedicalCenter = $form->getData();
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))
@@ -214,19 +229,33 @@ class MedicalCenterController extends InstitutionAwareController
                             ));
                         
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                        }     
+                         if($key == 'contactDetails' ){
+                            $value = $this->institutionMedicalCenter->{'get'.$key}();
+                            $returnVal = array();
+                                foreach ($value as $keys => $a){
+                                   if($a->getType() == ContactDetailTypes::MOBILE){
+                                       $returnVal['mobileNumber'] = $a->getNumber();
+                                   }else{
+                                       $returnVal['phoneNumber'] =  $a->getNumber();
+                                   }
+                                }    
+                               
+                            $output['institutionMedicalCenter'][$key] = $returnVal;
                         }
-                        
-                        $value = $this->institutionMedicalCenter->{'get'.$key}();
-                        
-                        if(is_object($value)) {
-                            $value = $value->__toString();
+                        else{
+                            
+                            $value = $this->institutionMedicalCenter->{'get'.$key}();
+                            
+                            if(is_object($value)) {
+                                $value = $value->__toString();
+                            }
+                            
+                            if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
+                                $value = json_decode($value, true);
+                            }
+                            $output['institutionMedicalCenter'][$key] = $value;
                         }
-                        
-                        if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
-                            $value = json_decode($value, true);
-                        }
-                        
-                        $output['institutionMedicalCenter'][$key] = $value;
                     }
 
                     $output['form_error'] = 0;

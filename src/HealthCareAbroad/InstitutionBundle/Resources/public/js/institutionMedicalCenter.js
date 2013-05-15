@@ -82,6 +82,14 @@ var InstitutionMedicalCenter = {
     	_element.parent().hide();
     },
     
+    openWebsiteFormButton: function(_element){
+    	_attr = _element.attr('href');
+    	_element.parents('div.show').hide();
+    	_element.parents('div.show').prev().hide();
+    	$(_attr).toggle();
+    	
+    },
+    
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -235,7 +243,7 @@ var InstitutionMedicalCenter = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
-        _form = _button.parents('.hca-edit-box').find('form');
+        _form = _button.parents('form');
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
@@ -249,7 +257,7 @@ var InstitutionMedicalCenter = {
             	    case 'nameModalForm':
             	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
                         break;
-                    case 'descriptionForm':
+                    case '.':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
                         break;
                     case 'addressForm':
@@ -286,18 +294,24 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                    	var number = response.institutionMedicalCenter.contactNumber.phone_number;
-						$('#profileWebsitesText').html(response.institutionMedicalCenter.websitesString);
+                    	if(response.institutionMedicalCenter.websites){
+                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
+                    		$("#alertDiv").attr('class', ' ');
+                    	}else{
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#contactNumber" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}
 						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
-						$('#profileNumberText').html(number.number);
+						$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
 						
                         break;
-                    case 'socialMediaForm':
+                    case 'socicalMediaSitesForm':
                   	  var websites = response.institutionMedicalCenter.socialMediaSites, websitesString = ''; 
                   	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
                   	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
                   	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
-	                        $('#soclialMediaText').html(websitesString);
+	                        $('#soclialMediaDiv').html(websitesString);
+	                        $('#alertSocialDiv').hide();
                   	break;
                        
                     case 'servicesForm':

@@ -220,6 +220,14 @@ var InstitutionProfile = {
 	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
     	}
     },
+    
+    openWebsiteFormButton: function(_element){
+    	_attr = _element.attr('href');
+    	_element.parents('div.show').hide();
+    	_element.parents('div.show').prev().hide();
+    	$(_attr).toggle();
+    },
+    
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');
     	_div.show();
@@ -245,7 +253,7 @@ var InstitutionProfile = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-        _form = _button.parents('.hca-edit-box').find('form');
+        _form = _button.parents('form');
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
         _editButton = _button.parents('section.hca-main-profile').find('div.show').prev();
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
@@ -297,7 +305,13 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                        $('#profileWebsitesText').html(response.institution.websitesString);
+                       	if(response.institution.websites){
+                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
+                    		$("#alertDiv").attr('class', ' ');
+                    	}else{
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}
                        	$('#profileEmailText').html(response.institution.contactEmail);
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
                         $('#MobileNumberText').html(response.institution.contactDetails.mobileNumber);

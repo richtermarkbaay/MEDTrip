@@ -4,7 +4,9 @@
         {% if each == 'description' %}
             {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
         {% elseif each == 'address' %}
-                    <div id="map_canvas" style="width: 530px; height: 300px"></div> 
+                     <div class="control-group" >
+                        <div id="map_canvas" style="width: 100%; height: 300px"></div> 
+                     </div>
                             {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
                             {{ form_widget(institutionMedicalCenterForm.coordinates) }}
                         <div class="control-group">
@@ -44,7 +46,9 @@
                             {{ form_label(institutionMedicalCenterForm.contactEmail) }}
                             {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
                         </div>
-                            {{ form_widget(institutionMedicalCenterForm.contactDetails) }}
+                            {% for _widget in institutionMedicalCenterForm.contactDetails %}
+                                {{ form_widget(_widget) }}
+                            {% endfor %}
                     </div>
                     <div class="control-group website">
                         <label for="website"> Clinic Website </label>
@@ -71,10 +75,10 @@
     {% endfor %}
     
     {{ _csrf_token_widget | raw}}
-
+    <div class="row"> 
+        <div class="pull-right">
+             <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
+    	</div>
+    </div>
 </form>
-<div class="row"> 
-    <div class="pull-right">
-         <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
-	</div>
-</div>
+

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
@@ -19,6 +21,17 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     const SEARCH_RESULTS_CONTEXT = 3; // Search results
     const ADS_CONTEXT = 4; // Ads results
 
+    
+    /**
+     * @var InstitutionMedicalCenterService
+     */
+    private $institutionMedicalCenterService;
+    
+    public function setInstitutionMedicalCenterService(InstitutionMedicalCenterService $s)
+    {
+        $this->institutionMedicalCenterService = $s;
+    }
+    
     /**
      * @var MediaExtension
      */
@@ -44,6 +57,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
             'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
             'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
+            'render_institution_medical_center_contact_details' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_details'),
         );
     }
     
@@ -79,6 +93,31 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
         
         return $result;
+    }
+    
+    public function render_institution_medical_center_contact_details(InstitutionMedicalCenter $center)
+    {
+        $contactDetails = $this->institutionMedicalCenterService->getContactDetailsByInstitutionMedicalCenter($center);
+        if (\is_null($contactDetails) || !$contactDetails) {
+            return null;
+        }
+        else {
+            $contactDetailsArray = array();
+            foreach($contactDetails as $each) {
+                if($each['type'] == 1) {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Phone', 'number' => $each['number']);
+                }
+                else if($each['type'] == 2) {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Mobile', 'number' => $each['number']);
+                }
+                else {
+                    $contactDetailsArray[$each['type']] = array('type' => 'Fax', 'number' => $each['number']);
+                }
+            }
+    
+            return $result = $contactDetailsArray;
+    
+        }
     }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
@@ -141,7 +180,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return \array_key_exists($institutionMedicalCenter->getStatus(), $statuses) ?  $statuses[$institutionMedicalCenter->getStatus()] : '';
     }
     
-    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array())
+    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array() )
     {
         $defaultIncludedKeys = array('address', 'zipCode', 'city', 'state','country');
         $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);

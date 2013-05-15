@@ -4,7 +4,13 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
-                   </i> <i class="icon-plus pull-right"></i><h4>{{ specialization.name }}</h4>
+                   </i> <i class="icon-plus pull-right"></i>
+                    {% if specialization.media %}
+                        <img src="{{ specialization_media_src(specialization.media) }}" class="pull-left">
+                    {% else %}
+                        <img src="" class="pull-left" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
+                    {% endif %}
+                   <h4>{{ specialization.name }}</h4>
                 </a>
             </div>
             <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class="collapse">
