@@ -1,5 +1,5 @@
 <div class="hca-banner">
-    {% if not institution.featuredMedia %}
+    {% if institution.featuredMedia %}
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
     {% else %}
