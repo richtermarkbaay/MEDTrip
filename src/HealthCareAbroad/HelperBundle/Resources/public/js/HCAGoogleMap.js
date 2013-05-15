@@ -2,33 +2,50 @@ var HCAGoogleMap = {
 	tableId: 4442675,
 	lat: '',
 	lng: '',
-	map: null,
 	zoom: 15,
+	map: null,
 	layer: null,
-	latLngString: '',
 	marker: null,
-	geocoder: null,
+	latLngString: '',
+	geocoder: new google.maps.Geocoder(),
 	address: 'Washington, United States',
 	defaultAddress: 'Washington, United States', // City and Country Address
 	mapCanvasElem: document.getElementById('map_canvas'),
 	mapOnChangeCallback: function(){},
 
 	initialize: function(params) {
-		HCAGoogleMap.setParams(params);
+		HCAGoogleMap._setParams(params);
+		var mapOptions = { zoom: HCAGoogleMap.zoom, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
 
-		var options = { zoom: HCAGoogleMap.zoom, disableDefaultUI: true, mapTypeId: google.maps.MapTypeId.ROADMAP };
-		
-		HCAGoogleMap.map = new google.maps.Map(HCAGoogleMap.mapCanvasElem, options);
-		HCAGoogleMap.geocoder = new google.maps.Geocoder();
-		HCAGoogleMap.geocoder.geocode({'address': HCAGoogleMap.address}, HCAGoogleMap.geocoderCallback);
+		if(HCAGoogleMap.latLngString) {
+			mapOptions.center = new google.maps.LatLng(HCAGoogleMap.lat, HCAGoogleMap.lng);  
+			HCAGoogleMap.map = new google.maps.Map(HCAGoogleMap.mapCanvasElem, mapOptions);
+
+	        HCAGoogleMap._setMarker(HCAGoogleMap.map.getCenter());
+	        google.maps.event.addListener(HCAGoogleMap.marker, 'click', HCAGoogleMap._onMarkerClick);
+	        google.maps.event.addListener(HCAGoogleMap.marker, 'dragend', HCAGoogleMap._onMarkerDragend); 
+	        google.maps.event.addListener(HCAGoogleMap.map, 'resize', HCAGoogleMap._onMapResize);
+
+		} else {
+			HCAGoogleMap.map = new google.maps.Map(HCAGoogleMap.mapCanvasElem, mapOptions);
+			HCAGoogleMap.geocoder.geocode({'address': HCAGoogleMap.address}, HCAGoogleMap._geocoderCallback);
+		}
 	},
-	
-	setParams: function(params) {
+
+	// Private Functions
+	_setParams: function(params) {
 		if(typeof params.mapCanvasElem != 'undefined') {
 			HCAGoogleMap.mapCanvasElem = params.mapCanvasElem;
 		}
-		
-		if(typeof params.zoom != 'undefined') {
+
+		if(typeof params.latLngString != 'undefined') {
+			HCAGoogleMap.latLngString = params.latLngString;
+			coordinates = HCAGoogleMap.latLngString.split(',');
+			HCAGoogleMap.lat = coordinates[0];
+	        HCAGoogleMap.lng = coordinates[1];
+		}
+
+		if(typeof params.coordinates != 'undefined') {
 			HCAGoogleMap.zoom = params.zoom;			
 		}
 
@@ -45,17 +62,21 @@ var HCAGoogleMap = {
 		}	
 	},
 	
-	geocoderCallback: function(results, status) {		
+	_geocoderCallback: function(results, status) {		
+		//console.log('setGeocoderMap');
 		if (status == google.maps.GeocoderStatus.OK) {
-			HCAGoogleMap.map.setCenter(results[0].geometry.location);
+			latlngObj = results[0].geometry.location;
 	        HCAGoogleMap.lat = results[0].geometry.location.lat();
 	        HCAGoogleMap.lng = results[0].geometry.location.lng();		        
 	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
-	        
-	        HCAGoogleMap.setMarker(results[0].geometry.location);
-	        HCAGoogleMap.setLayer();
 
-	        google.maps.event.addListener(HCAGoogleMap.marker, 'click', HCAGoogleMap.toggleBounce);
+			HCAGoogleMap.map.setCenter(latlngObj);
+	        HCAGoogleMap._setMarker(latlngObj);
+	        HCAGoogleMap._setLayer();
+
+	        google.maps.event.addListener(HCAGoogleMap.marker, 'click', HCAGoogleMap._onMarkerClick);
+	        google.maps.event.addListener(HCAGoogleMap.marker, 'dragend', HCAGoogleMap._onMarkerDragend); 
+	        google.maps.event.addListener(HCAGoogleMap.map, 'resize', HCAGoogleMap._onMapResize);
 
 		} else {
 			HCAGoogleMap.geocoder.geocode({ 'address': HCAGoogleMap.defaultAddress}, function(){});
@@ -63,8 +84,8 @@ var HCAGoogleMap = {
 
 		HCAGoogleMap.mapOnChangeCallback();
 	},
-	
-	setMarker: function(markerPosition) {
+
+	_setMarker: function(markerPosition) {
         if (HCAGoogleMap.marker) {
         	HCAGoogleMap.marker.setMap(null);
         }
@@ -76,18 +97,9 @@ var HCAGoogleMap = {
             zoom: HCAGoogleMap.zoom,
             animation: google.maps.Animation.DROP
         });
-
-        // On marker position change Event Execute mapOnChangeCallback()
-        google.maps.event.addListener(HCAGoogleMap.marker, "dragend", function(event) {         	
-	        HCAGoogleMap.lat = event.latLng.lat();
-	        HCAGoogleMap.lng = event.latLng.lng();
-	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
-	        HCAGoogleMap.mapOnChangeCallback();
-        }); 
 	},
 	
-	setLayer: function() {
-
+	_setLayer: function() {
 		var options = {
 			query: {
 	            select: 'geometry',
@@ -96,7 +108,6 @@ var HCAGoogleMap = {
 	            limit: 1
 			}
 		};
-
 		if (!HCAGoogleMap.layer) {
         	HCAGoogleMap.layer = new google.maps.FusionTablesLayer(options);
         	HCAGoogleMap.layer.setMap(HCAGoogleMap.map);
@@ -104,20 +115,40 @@ var HCAGoogleMap = {
         	HCAGoogleMap.layer.setOptions(options);
         }
 	},
-	
-	updateMap: function(address) {
-		HCAGoogleMap.address = address;
-		HCAGoogleMap.geocoder.geocode({ 'address': address}, HCAGoogleMap.geocoderCallback);
 
-        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
-        HCAGoogleMap.map.setCenter(HCAGoogleMap.map.getCenter());
-	},
-
-	toggleBounce: function() {
+	_onMarkerClick: function() {
 		if (HCAGoogleMap.marker.getAnimation() != null) {
 			HCAGoogleMap.marker.setAnimation(null);
 		} else {
 			HCAGoogleMap.marker.setAnimation(google.maps.Animation.BOUNCE);
-		}		
-	}
+		}
+	},
+
+	_onMarkerDragend: function(location) { 
+	    HCAGoogleMap.lat = location.latLng.lat();
+	    HCAGoogleMap.lng = location.latLng.lng();		        
+	    HCAGoogleMap.latLngString = HCAGoogleMap.lat +','+ HCAGoogleMap.lng;
+
+	    setTimeout(function(){
+	    	HCAGoogleMap.map.panTo(location.latLng);
+	    }, 1000);
+
+	    HCAGoogleMap.mapOnChangeCallback();
+	},
+
+	_onMapResize: function() {
+    	setTimeout(function(){
+    		HCAGoogleMap.map.panTo(HCAGoogleMap.marker.getPosition());
+    	}, 500);
+	},
+	// End of Private Functions
+
+
+	// Public Functions
+	updateMap: function(address) {
+		//console.log('updateGeocoderMap');
+		HCAGoogleMap.address = address;
+		HCAGoogleMap.geocoder.geocode({ 'address': address}, HCAGoogleMap._geocoderCallback);
+		google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+	},
 }

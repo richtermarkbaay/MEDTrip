@@ -1,85 +1,86 @@
-        {% set isEditAddress = false %}
+<form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+    {{ form_errors(institutionForm) }}   
+    
+    {% for each in fields %}
+        {% if each == 'description' %}
+            <div class="control-group">    
+                {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
+            </div>
+        {% elseif each == 'name' %}
+            {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
+        {% elseif each == 'address1' %}
+                <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
+                <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
 
-        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
-            {{ form_errors(institutionForm) }}   
-            
-            {% for each in fields %}
-                {% if each == 'description' %}
-                 <div class="control-group">    
-                    {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
-                </div>
-                {% elseif each == 'name' %}
-                    {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
-                {% elseif each == 'address1' %}
-                    <div id="map_canvas" style="width: 530px; height: 300px"></div> 
-                            {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
-                            {{ form_widget(institutionForm.coordinates) }}
-                        <div class="control-group">
-                            <div class="span6 combo-wrapper">
-                                {{ form_row(institutionForm.country )}} 
-                            </div>
-                            <div class="span6">
-                                {{ form_label(institutionForm.state) }}
-                                {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
-                                {{ form_errors(institutionForm.state) }}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <div class="span6">
-                                {{ form_label(institutionForm.city)}}
-                                {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'hca-country pull-left'} } )}}
-                                {{ form_errors(institutionForm.city) }}
-                            </div>
-                            <div class="span6">
-                                {{ form_label(institutionForm.zipCode)}}
-                                {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
-                                {{ form_errors(institutionForm.zipCode) }}
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            {{ form_label(institutionForm.addressHint)}}
-                            {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
-                            {{ form_errors(institutionForm.addressHint) }}
-                        </div> 
-                {% elseif each == 'contactDetails' or each == 'websites' %}
-                <div class="span12">
-                    <div class="control-group">
-                        <div class="span6">
-                            {{ form_label(institutionForm.contactEmail) }}
-                            {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
-                        </div>
-                            {#{ form_widget(institutionForm.contactNumber) }#}
-                            {% for _widget in institutionForm.contactDetails %}
-                                {{ form_widget(_widget) }}
-                                {{ form_widget(_widget) }}
-                            {% endfor %}
+                {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
+                {{ form_widget(institutionForm.coordinates) }}
+                <div class="control-group">
+                    <div class="span6 combo-wrapper">
+                        {{ form_label(institutionForm.country) }}
+                        {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
+                        {{ form_errors(institutionForm.country) }}
                     </div>
-                    <div class="control-group website">
-                        {{ form_label(institutionForm.websites) }}
-                        <span class="pull-left"> http:// </span>
-                        {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
+                    <div class="span6">
+                        {{ form_label(institutionForm.state) }}
+                        {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
+                        {{ form_errors(institutionForm.state) }}
                     </div>
                 </div>
-                 {% elseif each == 'socialMediaSites' %}
-                     {{ form_widget(institutionForm.socialMediaSites )}}
-                 {% elseif each == 'services' %}
-                     <div class="control-group">
-                         {{ form_widget(institutionForm.services )}}
-                     </div>
-                 {% elseif each == 'awards' %}
-                     <div class="control-group">
-                         {{ form_widget(institutionForm.awards )}}
-                     </div>
-                 {% else %}
-                        {{ form_row(institutionForm[each]) }}
-                 {% endif %}
+                <div class="control-group">
+                    <div class="span6">
+                        {{ form_label(institutionForm.city)}}
+                        {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
+                        {{ form_errors(institutionForm.city) }}
+                    </div>
+                    <div class="span6">
+                        {{ form_label(institutionForm.zipCode)}}
+                        {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
+                        {{ form_errors(institutionForm.zipCode) }}
+                    </div>
+                </div>
+                <div class="control-group">
+                    {{ form_label(institutionForm.addressHint)}}
+                    {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
+                    {{ form_errors(institutionForm.addressHint) }}
+                </div> 
+        {% elseif each == 'contactDetails' or each == 'websites' %}
+            <div class="span12">
+                <div class="control-group">
+                    <div class="span6">
+                        {{ form_label(institutionForm.contactEmail) }}
+                        {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+                    </div>
+                        {#{ form_widget(institutionForm.contactNumber) }#}
+                        {% for _widget in institutionForm.contactDetails %}
+                            {{ form_widget(_widget) }}
+                            {{ form_widget(_widget) }}
+                        {% endfor %}
+                </div>
+                <div class="control-group website">
+                    {{ form_label(institutionForm.websites) }}
+                    <span class="pull-left"> http:// </span>
+                    {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
+                </div>
+            </div>
+         {% elseif each == 'socialMediaSites' %}
+             {{ form_widget(institutionForm.socialMediaSites )}}
+         {% elseif each == 'services' %}
+             <div class="control-group">
+                 {{ form_widget(institutionForm.services )}}
+             </div>
+         {% elseif each == 'awards' %}
+             <div class="control-group">
+                 {{ form_widget(institutionForm.awards )}}
+             </div>
+         {% else %}
+                {# form_row(institutionForm[each]) #}
+         {% endif %}
 
-            {% endfor %}
-            
-            {{ _csrf_token_widget | raw}}
-        </form>
+    {% endfor %}
+    
+    {{ _csrf_token_widget | raw}}
+
     <div class="row"> 
-        <div class="pull-right">
-    		<button class="btn btn-primary" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
-    	</div>
+		<button class="btn btn-primary pull-right" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
     </div>
+</form>

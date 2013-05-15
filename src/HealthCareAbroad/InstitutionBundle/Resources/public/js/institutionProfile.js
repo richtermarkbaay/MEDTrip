@@ -214,12 +214,11 @@ var InstitutionProfile = {
     	_element.toggle();
     	_show = $(_element.attr('data-toggle'));
     	_attr = _element.attr('href');
+    	$('#'+_show.selector + ', ' + _attr).toggle();
+
     	if(_attr == "#address"){
-    		GoogleMap.initialize();
-	        google.maps.event.trigger(GoogleMap.map, 'resize');
+	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
     	}
-    	$('#'+_show.selector).toggle();
-    	$(_attr).toggle();
     },
     closeProfileForm: function(_element){
     	_div = _element.parents('div.hca-edit-box').prev('div');
@@ -286,15 +285,13 @@ var InstitutionProfile = {
                                 address.push(response.institution[_v]);
                             }
                         });
-                        
-                		$('.addressLabel').html('Edit Address');
-                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
-                        
+                                                
                         $('.address_column').find('span.address_part').remove();
-                        $('.address_column').prepend(_html);
-                        
-                        if(GoogleMap.map) { 
-                        	GoogleMap.updateMap(_street_address + ',' + response.institution.city + ',' + response.institution.country);
+                        $('.address_column').html(address.join(', '));
+                                                
+                        if(HCAGoogleMap.map) { 
+                        	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institution.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institution.coordinates;
+                        	$('#institution-static-map').prop('src', mapStaticUrl);
                         }
                         
                         break;

@@ -274,7 +274,7 @@
         {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
         {% set empty_value = empty_value is defined and empty_value is not none ? empty_value|trans : '' %}
 
-        <div class="custom-select">
+        <div class="custom-select span">
             <input type="hidden" name="{{ form.vars.full_name }}" id="{{ elemId }}" value="{{ form.vars.data }}">
             <input type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} id="input-{{ elemId }}" {% if choices[form.vars.data] is defined %} value="{{ choices[form.vars.data] }}" {% endif %} {% if choices|length == 0 %} disabled {% endif %} placeholder="{{ empty_value }}" readonly>
             <button type="button" class="btn" id="btn-{{ elemId }}"><span class="icon-chevron-down"></span></button>
@@ -294,15 +294,13 @@
             var customSelectBtn = $('#btn-{{ elemId }}');
             var customSelectInput = $('#input-{{ elemId }}');
             var customSelectValue = $('#{{ elemId }}');
-            var customSelectList = $('#select-{{ elemId }}');
-            //var customSelectWidth = (customSelectInput.outerWidth() + customSelectBtn.outerWidth()) - 2;
-            var customSelectWidth = customSelectInput.outerWidth() - 3;
+            var customSelectList = $('#select-{{ elemId }}')
 
-            customSelectList.css({width: customSelectWidth})
+            customSelectList
                 .children()
                     .click(function(){
                     	customSelectInput.val($(this).text());
-                    	customSelectValue.val($(this).attr('data-value'));
+                    	customSelectValue.val($(this).attr('data-value')).trigger('change');
                     	$(this).siblings('.selected').removeClass('selected');
                     	$(this).addClass('selected');
                     	customSelectList.hide();
@@ -316,6 +314,7 @@
             });
 
             customSelectInput.bind('focus', function(){
+            	customSelectList.width(customSelectInput.outerWidth() - 2);
             	customSelectList.toggle();
             }).keypress(function(e) {
                 var currentItem = $('#select-{{ elemId }} > .custom-select-item.selected');
@@ -324,7 +323,7 @@
                     prevItem = currentItem.prev();
 
                 	customSelectInput.val(prevItem.text());
-                	customSelectValue.val(prevItem.attr('data-value'));
+                	customSelectValue.val(prevItem.attr('data-value')).change();
                 	prevItem.siblings('.selected').removeClass('selected');
                 	prevItem.addClass('selected');
 
@@ -335,7 +334,7 @@
                 	nextItem = currentItem.next();
 
                 	customSelectInput.val(nextItem.text());
-                	customSelectValue.val(nextItem.attr('data-value'));
+                	customSelectValue.val(nextItem.attr('data-value')).change();
                 	nextItem.siblings('.selected').removeClass('selected');
                 	nextItem.addClass('selected');
 

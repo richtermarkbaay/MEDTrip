@@ -41,7 +41,7 @@ var Location = {
 			   	.children()
 			   		.click(function(){
 			   			inputElem.val($(this).text());
-			   			valueElem.val($(this).attr('data-value'));
+			   			valueElem.val($(this).attr('data-value')).trigger('change');
 			   			$(this).siblings('.selected').removeClass('selected');
 			   			$(this).addClass('selected');
 			   			customSelectList.hide();

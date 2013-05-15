@@ -368,6 +368,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
+
             $form->bind($this->request);
 
             if ($form->isValid()) {                
@@ -460,7 +461,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 if((bool)$request->get('isSameAddress')) {
                     $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
                     $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
-                    $this->institutionMedicalCenter->setCoordinates($this->institution->setCoordinates($coordinates));
+                    $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
                 }
 
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
