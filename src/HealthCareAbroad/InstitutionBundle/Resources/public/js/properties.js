@@ -217,8 +217,15 @@
         // convert autocomplete value to JSON
         _form.hide();
         _form.prev('img#loader_ajax').show(); //display loading image
+        
+        _year = _autocomplete.val().replace(/,+/g, ',');
+      
+        _year = $.trim(_year);
+        _year = $.unique(_year.split(",")).filter(function(e){ return e.length}).join(",");
+        _newValYear = _year.replace(/, ,/g,',');
+  
         var _b = {
-            'year_acquired': _autocomplete ? split(_autocomplete.val()) : []
+            'year_acquired': _autocomplete ? split(_newValYear) : []
         };
         // NOTE: JSON is only available in modern browsers, IE8, FF, Chrome
         _extraValueJSON = window.JSON.stringify(_b);
