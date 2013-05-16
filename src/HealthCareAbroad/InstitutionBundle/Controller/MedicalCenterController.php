@@ -150,7 +150,7 @@ class MedicalCenterController extends InstitutionAwareController
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         
-        return $this->render($template, array(
+        return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
             'institution' => $this->institution,
