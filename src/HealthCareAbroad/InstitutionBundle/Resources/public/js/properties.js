@@ -33,9 +33,6 @@
         'year_acquired_json_key': 'year_acquired',
         'edit': {
             'modal': null, // jQuery element for the modal container
-            'data_label_target': '', // identifier of the element that will be replaced by value of data-label attr
-            'input_property_id': 'input.propertyId', // identifier of the hidden input element that will hold the value of the property id
-            'input_award_id': 'input.globalAwardId', // identifier of the hidden input element that will hold the value of the award id 
             'input_extraValueAutocomplete_json': 'input.extraValueAutocomplete_json', // identifier of the hidden input element that will hold the JSON value of the extraValue field
             'input_extraValueAutocomplete': 'input.extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
             'submit_button': 'button.submit', // identifier of the submit button
@@ -99,13 +96,12 @@
     
     $.globalAward.actions = {
         'edit': function (_self) {
-            
             $.globalAward._editForm = $.globalAward.options.edit.modal.find('form'); 
             
             // bind the form event
             $.globalAward._editForm.submit($.globalAward._submitEditForm);
             
-            // bind click event
+         // bind click event
             $(_self).click($.globalAward._clickEdit);
             
             return _self;
@@ -206,20 +202,9 @@
     
     $.globalAward._clickEdit = function(_event) {
         _el = $(this);
-        $.globalAward._editForm.attr('action', _el.attr('href'));
-        
-        // find the globalAwardId element and replace the value with the data-globalAwardId attr
-        $.globalAward._editForm.find($.globalAward.options.edit.input_award_id)
-            .val(_el.attr('data-globalAwardId'));
-        
-        // find the propertyId element and replace the value with the data-propertyId attr
-        $.globalAward._editForm.find($.globalAward.options.edit.input_property_id)
-            .val(_el.attr('data-propertyId'));
-        
-        $.globalAward.options.edit.data_label_target.html(_el.attr('data-label')); // replace data label value
-        //$.globalAward.options.edit.modal.find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.attr('data-propertyExtraValue'))// initialize autocomplete field values
-        _showModal($.globalAward.options.edit.modal);
-        
+        _el.parents('li').find('span#containerRow').hide();
+        _el.parents('li').find($.globalAward._editForm).show();
+        _el.parents('li').find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.parents('li').find('span.yearAcquired').html());
         return false;
     };
     // submit edit form handler
@@ -227,7 +212,7 @@
         _form = $(this);
         _button = _form.find($.globalAward.options.edit.submit_button);
         _buttonHtml = _button.html();
-        _button.html(_button.attr('data-loading-text')).attr('disabled', true);
+        _button.html('Loading...');
         _autocomplete = _form.find($.globalAward.options.edit.input_extraValueAutocomplete);
         // convert autocomplete value to JSON
         
@@ -238,6 +223,7 @@
         _extraValueJSON = window.JSON.stringify(_b);
         // update value of hidden extraValue field
         _form.find($.globalAward.options.edit.input_extraValueAutocomplete_json).val(_extraValueJSON);
+        _form.find('input.globalAwardId').val(_form.find('input[name="globalAwardId"]').val());
         $.ajax({
             url: _form.attr('action'),
             type: 'post',
@@ -246,14 +232,19 @@
             success: function(response) {
                 _currentRow = $(response.targetRow);
                 // currently only replace year acquired
-                _currentRow.find($.globalAward.options.edit.year_acquired_column).html(response.html);
-                _button.html(_buttonHtml).attr('disabled', false);
-                _hideModal($.globalAward.options.edit.modal);
-
-                // Display Message Callout
-                if(InstitutionMedicalCenter.isEditView) {
-                	InstitutionMedicalCenter.displayCallout(response);
+	                _currentRow.find($.globalAward.options.edit.year_acquired_column).html(response.html);
+                if(response.html != ''){
+                	_currentRow.find($.globalAward.options.edit.year_acquired_column).next('a.edit_global_award').html('<i class="icon-edit"></i>');
+                }else{
+                	_currentRow.find($.globalAward.options.edit.year_acquired_column).next('a.edit_global_award').html('Add Year');
                 }
+                _currentRow.find('span#containerRow').show();
+                _form.hide();
+                _button.html(_buttonHtml);
+//                // Display Message Callout
+//                if(InstitutionMedicalCenter.isEditView) {
+//                	InstitutionMedicalCenter.displayCallout(response);
+//                }
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);

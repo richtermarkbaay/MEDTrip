@@ -54,10 +54,9 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
         $currentGlobalAwards = array( );
         foreach ($this->service->getGlobalAwardPropertiesByInstitution($institution) as $_selected) {
             foreach ($_selected as $data) {
-                $currentGlobalAwards[$data->getValue()] = $data->getId();
+                $currentGlobalAwards[$data->getValue()] = $data->getExtraValue();
             }
         }
-
         return $currentGlobalAwards;
     }
     

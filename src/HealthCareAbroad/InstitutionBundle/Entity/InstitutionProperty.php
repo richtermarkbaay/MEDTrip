@@ -20,6 +20,11 @@ class InstitutionProperty
     private $value;
 
     /**
+     * @var text $extraValue
+     */
+    private $extraValue;
+    
+    /**
      * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
@@ -29,11 +34,7 @@ class InstitutionProperty
      */
     private $institutionPropertyType;
     
-    /**
-     * @var text $extraValue
-     */
-    private $extraValue;
-
+  
     /**
      * Get id
      *

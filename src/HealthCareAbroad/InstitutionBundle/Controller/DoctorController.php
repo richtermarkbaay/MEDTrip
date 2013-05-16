@@ -27,6 +27,7 @@ class DoctorController extends InstitutionAwareController
     
     public function preExecute()
     {
+        parent::preExecute();
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         
         if ($idId=$this->getRequest()->get('idId',0)) {
