@@ -21,9 +21,7 @@
                     {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
                     {{ form_row(form.description, { 'attr': {style: "width: 70%", class: "tinymce"} } ) }}
                     {{ form_row(form.contactEmail) }}
-                    {#{ form_row(form.contactNumber) }#}
                     {% for _widget in form.contactDetails %}
-                        {{ form_widget(_widget) }}
                         {{ form_widget(_widget) }}
                     {% endfor %}
                     {{ form_widget(form.address, { 'attr': {'class': 'span9'} }) }}
@@ -31,6 +29,8 @@
                     {{ form_widget(form.websites) }}
                     </br>
                     {{ form_widget(form.socialMediaSites) }}
+                    
+                    {{ form_widget(form._token)}}
                                         	                        	
                 	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
                 	<div class="clear"><br></div>
