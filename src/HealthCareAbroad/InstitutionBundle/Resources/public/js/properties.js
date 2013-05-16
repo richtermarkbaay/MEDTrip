@@ -213,10 +213,10 @@
         _form = $(this);
         _button = _form.find($.globalAward.options.edit.submit_button);
         _buttonHtml = _button.html();
-        _button.html('Loading...');
         _autocomplete = _form.find($.globalAward.options.edit.input_extraValueAutocomplete);
         // convert autocomplete value to JSON
-        
+        _form.hide();
+        _form.prev('img#loader_ajax').show(); //display loading image
         var _b = {
             'year_acquired': _autocomplete ? split(_autocomplete.val()) : []
         };
@@ -239,9 +239,8 @@
                 }else{
                 	_currentRow.find($.globalAward.options.edit.year_acquired_column).next('a.edit_global_award').html('Add Year');
                 }
+                _currentRow.find('img#loader_ajax').hide();
                 _currentRow.find('span#containerRow').show();
-                _form.hide();
-                _button.html(_buttonHtml);
 //                // Display Message Callout
 //                if(InstitutionMedicalCenter.isEditView) {
 //                	InstitutionMedicalCenter.displayCallout(response);

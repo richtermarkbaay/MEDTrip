@@ -14,6 +14,7 @@
                             <a class="edit_global_award" href="{{ path('institution_ajaxEditGlobalAward') }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
                        </span>
                        <span class="edit_award_form_container" >
+                           <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
                            {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
                        </span>
                    </div>
