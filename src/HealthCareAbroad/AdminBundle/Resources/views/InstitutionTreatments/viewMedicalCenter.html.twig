@@ -1,6 +1,7 @@
 {#admin_medicalCenter_logo_upload#}
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 
+{% set institutionMedicalCenter_token = form_widget(institutionMedicalCenterForm._token) %}
 {% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
 {% block content %}
     <div class="span9">
@@ -24,16 +25,7 @@
                 <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
                     {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
-                    <section class="section clinic-schedule">
-                        <form action="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', { 'institutionId': institution.id,'imcId':institutionMedicalCenter.id}) }}" method="POST" id="fancy_businessHours_form" >
-    
-                            {% include 'AdminBundle:Widgets/MedicalCenter:section.imc_businesshours.html.twig' %}
-                           <div class="modal-footer">
-                                <a href="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', {institutionId : institution.id, imcId: institutionMedicalCenter.id } ) }}" data-formId="#fancy_businessHours_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.submitFancyBusinessHoursForm($(this)); return false;" id="save_fancyBusinessHours" class="btn btn-primary submit-button">Submit</a>
-                           </div>
-                           {{ form_widget(institutionMedicalCenterForm._token) }}
-                        </form>
-                    </section>
+                    {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
         
                     <div id="media" class="treatmentbox">

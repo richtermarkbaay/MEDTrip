@@ -1,19 +1,44 @@
-    <div class="span4">
-        <section class="aside-box default">
-            <h3>
-                Why complete your profile?
-            </h3>
-            <p class="info-text">
-                The information you provide here appear with your listings. Completing
-                these will be helpful in creating a reputable profile for your organization.
-            </p>
-            <p class="info-text">
-                Images such as logos and photos help to enhance the appearance of your
-                listings, while helping you provide information in a visual way.
-            </p>
-            <p class="info-text">
-                Need some help?
-                <a href="#"><strong>Click Here</strong></a>
-            </p>
-        </section>
-    </div>
+<aside class="span4">
+    <section class="aside-box default dashboard-side">
+        <h3>
+            Promote this Medical Institution Profile
+        </h3>
+        <img src="images/healthcareabroad-logo.png" alt="Health Care Abroad Logo"
+        class="btn btn-small btn-code">
+        <p>
+            Copy the HTML source code and paste it into the code of your website or
+            blog. Clicking the button will automatically take users to your Medical
+            Institution Profile.
+        </p>
+        <a href="#" id="button">Show Source Code</a>
+        <div id="hca-hidden_content">
+            <form action="#">
+                <textarea rows="4" cols="50" id="" name="" title=""><a href="http://www.healthcareabroad.com/profile/clinic-account-name" target="_blank" rel="me"><img src="http://www.healthcareabroad.com/img/buttons/10_en_btn.gif" width="85" height="23" alt="Clinic Account Name"></a></textarea>
+            </form>
+        </div>
+        <script>
+                                        $(document).ready(function() {
+                $("#button").toggle(function() {
+                    $(this).text('Hide Source Code');
+                }, function() {
+                    $(this).text('Show Source Code');
+                }).click(function() {
+                    $("#hca-hidden_content").slideToggle("slow");
+                });
+            });
+        </script>
+    </section>
+    <section class="aside-box default dashboard-side">
+        <h3>
+            <small>  Current Membership: </small>  Basic
+        </h3>
+        <p>
+            Explaining the current membership status. Introducing Premimum Benefits
+            here. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
+            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
+            ex ea commodo consequat.
+        </p>
+        <a href="upgrade.html" class="btn btn-success btn-large">Go Premium now!</a>
+    </section>
+</aside>

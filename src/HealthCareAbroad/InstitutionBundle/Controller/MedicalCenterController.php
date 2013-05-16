@@ -360,6 +360,11 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         
+        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+            $contactDetails = new ContactDetail();
+            $contactDetails->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($contactDetails);
+        }
         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
         if ($request->isMethod('POST')) {
             $form->bind($request);

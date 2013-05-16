@@ -1,12 +1,15 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
     {% block modalBody %}
     <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_updateStatus', {'imcId': institutionMedicalCenter.id, 'institutionId' : institution.id} ) }}" id="status_medicalCenter_form" method="POST" class="basic-form">        
-        {{ form_errors(institutionMedicalCenterForm) }}   
+        {{ form_errors(form) }}   
     
         {{ form_row(institutionMedicalCenterForm.status) }}
+        <div>
+            {{ institutionMedicalCenter_token |raw }}
+        </div>
+        {#{ form_widget(institutionMedicalCenterForm._token)  }#}
         </br>
-        {{ form_rest(institutionMedicalCenterForm) }}
-                            	                        	
+        {#{ form_rest(institutionMedicalCenterForm) }#}
     </form>
     {% endblock %}
     {% block footerBody %}

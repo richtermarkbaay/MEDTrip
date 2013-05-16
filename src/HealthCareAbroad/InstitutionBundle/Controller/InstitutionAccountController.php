@@ -105,12 +105,14 @@ class InstitutionAccountController extends InstitutionAwareController
 
         } else {
             $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
+            $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
             $params =  array(
                 'institution' => $this->institution,
                 'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                 'institutionForm' => $form->createView(),
                 'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                'currentGlobalAwards' => $currentGlobalAwards
+                'currentGlobalAwards' => $currentGlobalAwards,
+                'editGlobalAwardForm' => $editGlobalAwardForm->createView()
             );
         }
 
@@ -154,8 +156,6 @@ class InstitutionAccountController extends InstitutionAwareController
                           $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
                           $propertyService->addServicesForInstitution($this->institution, $form['services']->getData());
                     }if(!empty($form['awards'])){
-                        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-                        $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
                         $propertyService->addAwardsForInstitution($this->institution, $form['awards']->getData());
                     }
                     
@@ -186,9 +186,10 @@ class InstitutionAccountController extends InstitutionAwareController
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                             
                         }if($key == 'awards'){
-                            
+                            $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $html = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
                                             'institution' => $this->institution,
+                                            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                             'currentGlobalAwards' => $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution),
                             ));
                             

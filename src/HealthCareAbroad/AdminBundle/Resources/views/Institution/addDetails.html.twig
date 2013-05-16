@@ -32,7 +32,10 @@
                                                 {{ form_errors(form) }}
                                                 {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
                                                 {{ form_row( form.contactEmail ) }}
-                                                {{ form_row( form.contactNumber) }}
+                                                {#{ form_row( form.contactNumber) }#}
+                                                {% for _widget in form.contactDetails %}
+                                                    {{ form_widget(_widget) }}
+                                                {% endfor %}
                                                 {{ form_widget( form.websites) }}
                                                 <hr />
                                                 <h4 style="margin-bottom: 10px;"> Institution Address </h4>
