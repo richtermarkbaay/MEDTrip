@@ -73,61 +73,11 @@ class InstitutionAccountController extends InstitutionAwareController
             $this->institutionMedicalCenter = $this->repository->find($imcId);
         }
 
-
         $this->institutionService = $this->get('services.institution');
         if ($this->institutionService->isSingleCenter($this->institution)) {
             $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
         }
         $this->request = $this->getRequest();
-
-    }
-
-    /**
-     * Landing page after signing up as an Institution. Logic will differ depending on the type of institution
-     *
-     * @param Request $request
-     */
-    public function completeProfileAfterRegistrationAction(Request $request)
-    {
-        //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
-        $this->institution->setName('');
-
-        $this->confirmationMessage = '<b>Congratulations!</b> Your account has been successfully created.';
-
-        switch ($this->institution->getType())
-        {
-            case InstitutionTypes::SINGLE_CENTER:
-                $response = $this->completeRegistrationSingleCenter();
-                break;
-            case InstitutionTypes::MULTIPLE_CENTER:
-            case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
-            default:
-                $response = $this->completeRegistrationMultipleCenter();
-                break;
-        }
-
-        return $response;
-    }
-
-    public function addServiceAction(Request $request)
-    {
-        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id');
-        $formActionUrl = $this->generateUrl('institution_addAncilliaryService', array('institutionId' => $this->institution->getId()));
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $this->get('services.institution_property')->save($form->getData());
-
-                return $this->redirect($formActionUrl);
-            }
-        }
-
-        $params = array(
-                        'formAction' => $formActionUrl,
-                        'form' => $form->createView()
-        );
-
-        return $this->render('InstitutionBundle:Institution:add.services.html.twig', $params);
     }
 
     /**
@@ -137,61 +87,34 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
-        $approvedCenters = $this->repository->getInstitutionMedicalCentersByStatusQueryBuilder($this->institution, InstitutionMedicalCenterStatus::APPROVED);
-        $pagerAdapter = new DoctrineOrmAdapter($approvedCenters);
-        $pagerParams = array(
-                        'page' => $request->get('page', 1),
-                        'limit' => 10
-        );
-        $pager = new Pager($pagerAdapter, $pagerParams);
-        
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        $templateVariables = array(
+        $params = array(
             'institutionForm' => $form->createView(),
             'institution' => $this->institution
         );
+
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
 
-            $templateVariables['isSingleCenter'] = true;
-
-            // set the first active medical center, ideally we should not do this anymore since a single center only has one center,
-            // but technically we don't impose that restriction in our tables so we could have multiple centers even if the institution is a single center type
-            $templateVariables['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-
-            $signupStepStatus = $this->institution->getSignupStepStatus();
-//             if(!InstitutionSignupStepStatus::hasCompletedSteps($signupStepStatus)) {
-//                 $routeName = InstitutionSignupStepStatus::getRouteNameByStatus($signupStepStatus);
-//                 $params = InstitutionSignupStepStatus::isStep1($signupStepStatus) ? array() : array('imcId' => $this->institutionMedicalCenter->getId());
-//                 return $this->redirect($this->generateUrl($routeName, $params));
-//             }
-//             else {
-//                 if (!$templateVariables['institutionMedicalCenter']) {
-//                     // this must have been created from HCA Admin since this single institution does not have a medical center
-//                     return $this->redirect($this->generateUrl(InstitutionSignupStepStatus::getRouteNameByStatus(InstitutionSignupStepStatus::STEP1)));
-//                 }
-//             }
-
-            $templateVariables['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $templateVariables['institutionMedicalCenter'])
-                ->createView();
+            $params['isSingleCenter'] = true;            
+            $params['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
+            $params['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType(), $params['institutionMedicalCenter'])->createView();
 
             // load medical center specializations
-            $templateVariables['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
-            $templateVariables['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
+            $params['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
+            $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
 
-        }
-        else {
+        } else {
             $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-            $templateVariables =  array(
-                            'institution' => $this->institution,
-                            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-                            'pager' => $pager,
-                            'institutionForm' => $form->createView(),
-                            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                            'currentGlobalAwards' => $currentGlobalAwards
+            $params =  array(
+                'institution' => $this->institution,
+                'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
+                'institutionForm' => $form->createView(),
+                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                'currentGlobalAwards' => $currentGlobalAwards
             );
         }
 
-        return $this->render('InstitutionBundle:Institution:profile.html.twig', $templateVariables);
+        return $this->render('InstitutionBundle:Institution:profile.html.twig', $params);
     }
 
     /**

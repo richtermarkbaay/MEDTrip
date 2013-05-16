@@ -24,8 +24,6 @@ use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
 
 use Symfony\Component\Validator\Constraints\Date;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-
 use HealthCareAbroad\SubSpecializationBundle\Entity\Specialization;
 use HealthCareAbroad\SubSpecializationBundle\Entity\SubSpecializationProcedure;
 
