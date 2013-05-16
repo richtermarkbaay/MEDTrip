@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
 use HealthCareAbroad\PagerBundle\Pager;
@@ -209,8 +213,15 @@ class InstitutionController extends Controller
     /**
      * Edit Institution Details
      */
-    public function editDetailsAction(Request $request){
+    public function editDetailsAction(Request $request)
+    {
 
+        if(!$this->institution->getContactDetails()->count()) {
+            $contactDetails = new ContactDetail();
+            $contactDetails->setType(ContactDetailTypes::PHONE);
+            $this->institution->addContactDetail($contactDetails);
+        }
+        
         // TODO - Need to verify? Temporarily removed OPTION_HIDDEN_FIELDS 'name'
     	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
 
