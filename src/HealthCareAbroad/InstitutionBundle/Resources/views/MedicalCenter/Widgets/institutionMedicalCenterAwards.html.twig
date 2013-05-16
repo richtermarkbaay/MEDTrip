@@ -25,8 +25,27 @@
         }
     }
 %}
+{% set _autocompleteWidget = form_widget(editGlobalAwardForm.extraValueAutocomplete ) %}
+{% set _exraValueWidget = form_widget(editGlobalAwardForm.extraValue) %}
+{% set _awardValueWidget = form_widget(editGlobalAwardForm.value) %}
+{% set _globalTokenWidget = form_widget(editGlobalAwardForm._token) %}
 
 {% for _awardsListData in _awardsByType %}
     {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
 {% endfor %}
         
+{% block inlineJavascriptCode %}
+    <script type="text/javascript">
+        $(function() {
+
+            $('span.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
+            
+            $('a.edit_global_award').globalAward('edit', {
+                'modal': $('span.edit_award_form_container'),
+                'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear'
+            });
+            
+        });
+        
+    </script>
+{% endblock %}

@@ -11,7 +11,7 @@
                    <div class="pull-right" >
                        <span id="containerRow">
                             <span class="yearAcquired" > {{ _yearAcquired }}</span> 
-                            <a class="edit_global_award" href="#" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
+                            <a class="edit_global_award" href="{{ path('institution_ajaxEditGlobalAward') }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
                        </span>
                        <span class="edit_award_form_container" >
                            {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}

@@ -51,7 +51,7 @@ class InstitutionMedicalCenterPropertiesTwigExtension extends \Twig_Extension
         $currentGlobalAwards = array( );
         foreach ($this->service->getGlobalAwardPropertiesByInstitutionMedicalCenter($center) as $_selected) {
             foreach ($_selected as $data) {
-                $currentGlobalAwards[$data->getValue()] = $data->getId();
+                $currentGlobalAwards[$data->getValue()] = $data->getExtraValue();
             }
         }
         return $currentGlobalAwards;

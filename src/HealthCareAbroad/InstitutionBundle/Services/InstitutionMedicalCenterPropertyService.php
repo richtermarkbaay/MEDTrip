@@ -215,13 +215,18 @@ class InstitutionMedicalCenterPropertyService
     
     public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), $propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
     {
+        $ids = array();
         $propertyType = $this->getAvailablePropertyType($propertyTypeName);
+        $currentProperties = $this->propertyRepository->getPropertyValues($propertyType, $institutionMedicalCenter);
+        
+        foreach ($currentProperties as $property) {
+            $ids[$property->getValue()] = $property->getExtraValue();
+        }
+        $this->removeInstitutionMedicalCenterPropertiesByPropertyType($propertyTypeName, $institutionMedicalCenter);
+        $em = $this->doctrine->getManager();
         if(empty($properties)){
             return;
         }
-        
-        $em = $this->doctrine->getManager();
-    
         //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
         foreach ($properties as $property) {
             $variableName = 'property'.$property;
@@ -229,10 +234,15 @@ class InstitutionMedicalCenterPropertyService
             $$variableName->setInstitution($institution);
             $$variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
             $$variableName->setInstitutionPropertyType($propertyType);
+            if (array_key_exists($property, $ids)) { //check if id exist already
+                $$variableName->setExtraValue($ids[$property]); // set ExtraValue
+            }
             $$variableName->setValue($property);
             $em->persist($$variableName);
         }
         $em->flush();
+        
+        return;
     }
     
     public function removeInstitutionMedicalCenterPropertiesByPropertyType($propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)

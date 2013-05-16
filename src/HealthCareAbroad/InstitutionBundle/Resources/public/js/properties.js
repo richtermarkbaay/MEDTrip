@@ -202,6 +202,7 @@
     
     $.globalAward._clickEdit = function(_event) {
         _el = $(this);
+        $.globalAward._editForm.attr('action', _el.attr('href'));
         _el.parents('li').find('span#containerRow').hide();
         _el.parents('li').find($.globalAward._editForm).show();
         _el.parents('li').find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.parents('li').find('span.yearAcquired').html());

@@ -148,15 +148,17 @@ class MedicalCenterController extends InstitutionAwareController
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        //$currentGlobalAwards = array();
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+        
         return $this->render($template, array(
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'specializations' => $institutionSpecializations,
-                        'institution' => $this->institution,
-                        'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                        'institutionMedicalCenterForm' => $form->createView(),
-                        'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
-                        'currentGlobalAwards' => $currentGlobalAwards
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'specializations' => $institutionSpecializations,
+            'institution' => $this->institution,
+            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+            'institutionMedicalCenterForm' => $form->createView(),
+            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+            'currentGlobalAwards' => $currentGlobalAwards,
+            'editGlobalAwardForm' => $editGlobalAwardForm->createView()
         ));
     }
     
@@ -196,7 +198,7 @@ class MedicalCenterController extends InstitutionAwareController
 
                     }if(!empty($form['awards']))
                     {
-                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+//                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['awards']->getData(),InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
                     }
                     
@@ -222,9 +224,11 @@ class MedicalCenterController extends InstitutionAwareController
                         
                         }if($key == 'awards')
                         {
+                            $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
                                     'institution' => $this->institution,
                                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                    'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                     'currentGlobalAwards' => $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter),
                             ));
                         

@@ -155,17 +155,12 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($imcProperty);
                     $em->flush();
-//                     $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:row.globalAward.html.twig', array(
-//                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
-//                         'award' => $globalAward,
-//                         'property' => $imcProperty
-//                     ));
                     $extraValue = \json_decode($imcProperty->getExtraValue(), true);
                     $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
                     $output = array(
                         'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
                         'html' => $yearAcquired,
-                        'calloutView' => $this->_getEditMedicalCenterCalloutView()
+//                         'calloutView' => $this->_getEditMedicalCenterCalloutView()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
