@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
@@ -111,7 +113,15 @@ class InstitutionController extends Controller
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createInstance();  	
-    	$form = $this->createForm(new InstitutionSignUpFormType(), $institution, array('include_terms_agreement' => false));
+    	$institutionUser = new InstitutionUser();
+    	$phoneNumber = new ContactDetail();
+    	$phoneNumber->setType(ContactDetailTypes::PHONE);
+    	$institutionUser->addContactDetail($phoneNumber);
+    	
+    	$mobileNumber = new ContactDetail();
+    	$mobileNumber->setType(ContactDetailTypes::MOBILE);
+    	$institutionUser->addContactDetail($mobileNumber);
+    	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
     
 	    	if ($request->isMethod('POST')) {
 	    		$form->bind($request);
@@ -173,8 +183,14 @@ class InstitutionController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Chaztine Blance
      */
-    public function addDetailsAction(Request $request){
-       
+    public function addDetailsAction(Request $request)
+    {
+
+        if(!$this->institution->getContactDetails()->count()) {
+            $contactDetails = new ContactDetail();
+            $contactDetails->setType(ContactDetailTypes::PHONE);
+            $this->institution->addContactDetail($contactDetails);
+        }
 	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
 
 	    // redirect to edit institution if status is already active

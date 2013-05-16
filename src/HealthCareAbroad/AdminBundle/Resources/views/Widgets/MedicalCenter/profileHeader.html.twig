@@ -22,7 +22,13 @@
                 </div>
                 <div class="span9">
                     <h3 style="padding:0">{{ institutionMedicalCenter.name }}</h3>
-                    <p>{{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }}</p>
+                    <p>{#{ json_decode(institutionMedicalCenter.contactNumber) | join('-') }#}</p>
+                    {% set _contactDetails = render_institution_medical_center_contact_details(institutionMedicalCenter) %}
+                    {% if _contactDetails is not null %}
+                        {% for contactDetail in _contactDetails %}
+                            <p> {{ contactDetail.number}} </p>
+                        {% endfor %}
+                    {% endif %}  
                     <p>{{ institution_address_to_array(institution) | join(', ')}}</p>
                     <a id="view_admin_users_link" href="{{ path('admin_institution_ajaxLoadAdminUsers', {institutionId: institution.id} ) }}" data-target="#view_admin_users_modal">View Admin Users</a>
                 </div>
