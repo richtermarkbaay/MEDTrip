@@ -1,17 +1,17 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
 
-    <div class="span6">
+    <div>
         {# contact_label_type(form.vars.value.type) #}
         <label for="Phone Number">{{ form.vars.value.type is defined and form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
         <div class="hca-countrycodes">
             <div class="input-prepend">
-                {% set phone = 'institutionSignUp_contactDetails_' ~  form.vars.name ~ '_number' %}
+                {% set phone = form.vars.id ~ '_number' %}
                   {{ render_contactNumber_widget(phone) | raw }}
                   {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="institutionSignUp_contactDetails_{{ form.vars.name }}_number" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_abbr">
-                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_country_code}}">
+                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="{{ form.vars.id ~ '_number' }}" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="{{ form.vars.id ~ '_abbr' }}">
+                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="{{ form.vars.id ~ '_country_code' }}">
             </div>
         </div>
     </div>
@@ -44,16 +44,16 @@
 {% block contact_detail_widget %}
     {% spaceless %}
     
-        <div class="span6">
+    <div>
         {# contact_label_type(form.vars.value.type) #}
         <label for="Phone Number">{{ form.vars.value.type is defined and form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
         <div class="hca-countrycodes">
             <div class="input-prepend">
-                {% set phone = 'institutionSignUp_contactDetails_' ~  form.vars.name ~ '_number' %}
+                {% set phone = form.vars.id ~ '_number' %}
                   {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="institutionSignUp_contactDetails_{{ form.vars.name }}_number" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_abbr">
-                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="institutionSignUp_contactDetails_{{ form.vars.name }}_country_code}}">
+                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="{{ form.vars.id ~ '_number' }}" maxlength="15"/>
+                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="{{ form.vars.id ~ '_abbr' }}">
+                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="{{ form.vars.id ~ '_country_code' }}">
             </div>
         </div>
     </div>

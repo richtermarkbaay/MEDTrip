@@ -26,7 +26,7 @@
                         {{ form_widget(_widget) }}
                         {{ form_widget(_widget) }}
                     {% endfor %}
-                    {{ form_row(form.address) }}
+                    {{ form_widget(form.address, { 'attr': {'class': 'span9'} }) }}
                     <hr>
                     {{ form_widget(form.websites) }}
                     </br>
