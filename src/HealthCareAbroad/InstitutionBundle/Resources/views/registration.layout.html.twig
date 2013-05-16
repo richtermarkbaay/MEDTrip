@@ -1,0 +1,23 @@
+{% extends '::base.institution.html.twig' %}
+
+{% block body %}
+
+    {# TODO: move this somewhere else #}
+    {# if confirmationMessage %}
+        {% include 'InstitutionBundle:Institution/Partials:confirmation.html.twig' with { message: confirmationMessage } %}
+    {% endif #}
+
+    <div id="main-wrap">
+        {% include 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}
+
+        <!-- Page content here -->
+        <div id="content" class="container">
+            {% block content %}{% endblock %}
+        </div>
+        
+           {% include 'InstitutionBundle:Widgets:footer.layout.html.twig' %}
+    </div><!-- end main wrap -->
+
+    {% block inlineJavascriptCode %}{% endblock %}
+
+{% endblock %}
