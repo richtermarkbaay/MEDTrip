@@ -1,36 +1,22 @@
 <section class="section row-fluid hca-clinic-heading">
     <div class="span3">
-        <a href="#medicalCenterLogoModal" class="gallerypic" title="" role="button" data-toggle="modal">
-            {% if institutionMedicalCenter.logo != '' %}
-                {# media(institutionMedicalCenter.logo, institution, 'default', {alt: 'institution medical center logo'}) | raw #}
-                <img src="{{ institution_media_src(institutionMedicalCenter.logo) }}" alt="" />
-             {% else %}
-                 <img class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
-             {% endif %}
-        </a>
-
+        <form class="hidden" enctype="multipart/form-data" action="{{ path('institution_medicalCenter_logo_upload', { imcId: institutionMedicalCenter.id } ) }}" method="POST">
+            <a href="javascript:void(0)" class="file-browse-btn" onclick="$(this).next().click()">
+                <span class="rollover hca-profile-photo-rollover"></span>
+                {% if institutionMedicalCenter.logo %}
+                    {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+                    <img src="{{ institution_media_src(institutionMedicalCenter.logo, logoSize) }}" alt="" class="imgborder"/>
+                 {% else %}
+                     <img class="imgborder" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
+                 {% endif %}
+            </a>
+            <input type="file" accept="image/*" onchange="$(this).parent().submit()" name="logo">
+        </form>
     </div>
     <div class="span9">
        <h1> {{ institutionMedicalCenter.name }}  </h1>
        <p> <small> under </small>
             <a href="hospital-profile.html">{{ institution.name }}</a>
         </p>
-    </div>
-</section>
-<section class="section row-fluid section-alert-info">
-    <div class="row span12 alert alert-block">
-        <div class="span3">
-            <img src="{{ asset('images/institution/beaker.png') }}" alt="beaker-progress" class="beaker" />
-            <div class="progress vertical bottom progress-info progress-xxlarge filled3">
-                <div class="bar" style="height:85%"> </div>
-            </div>
-        </div>
-        <div class="span9">
-            <button type="button" class="close" data-dismiss="alert">  &times; </button>
-            <h4> Your Clinic Profile is 25% complete.&nbsp;
-                <a href="#"><i class="icon-info-sign icon-1x"></i></a>
-            </h4>
-            <p> <a href="#">Upload a logo and make your hospital more recognizable to your prospective patients.</a> </p>
-        </div>
     </div>
 </section>

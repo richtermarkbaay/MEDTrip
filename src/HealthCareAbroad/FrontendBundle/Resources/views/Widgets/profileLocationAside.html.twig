@@ -1,7 +1,7 @@
 {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Location'} %}
 
     {% block asideContent %}
-	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ coordinates }}">
+	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ coordinates }}" id="instiuttion-static-map">
 	{% endblock %}
 	
 {% endembed %}

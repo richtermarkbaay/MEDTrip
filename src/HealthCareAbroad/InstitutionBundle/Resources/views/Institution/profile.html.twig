@@ -18,38 +18,13 @@
 			    {% include 'InstitutionBundle:Institution:profile.multipleCenter.html.twig' %}
 			{% endif %}
 
-
             <!-- Sidebar Content -->
 			{% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
 	        {% if (isSingleCenter is defined) and isSingleCenter %}
 	            {% include 'InstitutionBundle:Widgets:sidebar.businessHours.html.twig' %}
 	        {% endif %}
 
-			 <!-- Modal Institution name -->
-			{# {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-			     with {formId: 'nameModalForm', fields: ['name'], modalId: 'institutionNameModal', modalTitle: 'Edit Name'} 
-			%} 
-			#}
 			<!-- end Modal Institution name -->
-
-			
-		    <!-- Modal Institution Featured Image -->
-			{% include 'InstitutionBundle:Widgets:modal.institutionFeaturedImage.html.twig' 
-			     with {formId: 'featuredImageModalForm', fields: ['featured_image'], modalId: 'institutionFeaturedImageModal', modalTitle: 'Upload Featured Image'} 
-			%} <!-- end Modal Institution name -->
-
-
-			<!-- Modal Institution Logo -->
-			{% include 'InstitutionBundle:Widgets:modal.institutionLogo.html.twig' 
-			     with {formId: 'logoModalForm', modalId: 'institutionLogoModal', modalTitle: 'Upload Logo'} 
-			%} <!-- end Modal Institution name -->
-
-{#
-			<!-- Modal Institution description  -->
-            {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-                 with {formId: 'descriptionModalForm', fields: ['description'], modalId: 'institutionDescriptionModal', 'modalTitle': 'Edit Description'} 
-            %}<!-- end Modal Institution description -->
-#}
         {% endblock %}
         
     {% endembed %}
@@ -61,54 +36,52 @@
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
 <script type="text/javascript">
-Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 <!--
-(function($){
-    $(function(){
-    
-        GoogleMap.setInputs({
-	    	'selectedCity' : document.getElementById('input-institution_profile_form_city'),
-	    	'selectedCountry' : document.getElementById('input-institution_profile_form_country'),
-	    	'inputCoordinates' : document.getElementById("institution_profile_form_coordinates"),
-	    	'selectedBuilding' : document.getElementById('institution_profile_form_address1_building'),
-	    	'selectedStreet' : document.getElementById('institution_profile_form_address1_street'),
-	    });
-	    
-    	$("input:checkbox").click(function() {
-            $(this).parent().toggleClass("hca-highlight");
+    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+
+    var emailElem = $("#{{ institutionForm.getChild('contactEmail').vars.id }}");
+    var countryElem = $("#{{ institutionForm.getChild('country').vars.id }}");
+    var coordinatesElem = $("#{{ institutionForm.getChild('coordinates').vars.id }}");
+    var streetAddressElem = $("#{{ institutionForm.getChild('address1').vars.id }}_street");
+    var buildingAddressElem = $("#{{ institutionForm.getChild('address1').vars.id }}_building");
+    var cityElem = $("#{{ institutionForm.getChild('city').vars.id }}");
+    var countryInputElem = $("#input-{{ institutionForm.getChild('country').vars.id }}");
+
+    (function($){
+        $(function(){
+            emailElem.bind('keypress', function(e) {
+         	   if( e.which === 13 )
+         	       return false;
+         	});
+
+        	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
+        	HCAGoogleMap.initialize({
+        		latLngString: '{{ institution.coordinates }}',
+        		address: "{{ institution_address_to_array(institution)|join(',') }}",
+        		defaultAddress: city + "{{ institution.country.name }}",
+        		mapOnChangeCallback: function() {
+        			coordinatesElem.val(HCAGoogleMap.latLngString);
+        		}
+        	});        
         });
-
-        $('#institution_profile_form_contactEmail').bind('keypress', function(e) {
-     	   if( e.which === 13 )
-     	       return false;
-     	});
-{# /*
-    	var formName = "{{ form.vars.name }}";
-    	HCAGoogleMap.initialize({
-    		mapOnChangeCallback: function() {
-    			$('#' + formName + '_coordinates').val(HCAGoogleMap.latLngString);
-    		}
-    	});
-
-        function getAddress() {
-            var address = '';
-        	var building = $('#' + formName + '_address1_building').val();
-        	var street = $('#' + formName + '_address1_street').val();
-        	var city = $('#input-' + formName + '_city').val(); 
-            var country = $('#input-' + formName + '_country').val();
-
-            if(building != '') { address += building + ', '; }
-            if(street != '') { address += street + ', '; }
-            if(city != '' && $('#' + formName + '_city').val() != '') { address += city + ', '; }
-            if(country != '') { address += country; }
-
-            return address;
-        }
-*/ #}
-    });
-})(jQuery);
+    })(jQuery);
+    
+    function getAddress() {
+    	var address = ''; 
+        if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
+        if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
+        if(cityElem.val() != '') { address += $("#input-{{ institutionForm.getChild('city').vars.id }}").val() + ', '; }
+        if(countryElem.val() != '') { address += countryInputElem.val(); }
+        console.log(address);
+        
+        return address;
+    }
+    
+    function updateInstitutionStaticMap() {
+    	HCAGoogleMap.updateMap(getAddress());
+    }
 //-->
 </script>
 {% endblock %}

@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
 use HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
@@ -375,7 +377,14 @@ class InstitutionTreatmentsController extends Controller
 
     public function editMedicalCenterAction(Request $request)
     {
-        $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
+        $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+        $contactDetails = $institutionMedicalCenterService->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+        }
+        //$this->institutionMedicalCenter->addContactDetail(new ContactDetail());
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {
@@ -437,10 +446,18 @@ class InstitutionTreatmentsController extends Controller
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
-            $form->bind($this->request);
+            $form->bind($request);
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
                 $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
+            }
+            else {
+                $errors = array();
+                foreach ($form->getErrors() as $_err) {
+                    $errors[] = $_err->getMessage();
+                }
+//                 var_dump($errors)
+                $response = new Response(\json_encode(array('html' => \implode('<br />', $errors))), 400, array('content-type' => 'application/json'));
             }
         }
         else {

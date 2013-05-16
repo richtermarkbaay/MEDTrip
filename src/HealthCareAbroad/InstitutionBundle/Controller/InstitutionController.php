@@ -77,4 +77,24 @@ class InstitutionController extends InstitutionAwareController
 			'institutionLanguage' => $institutionLanguage
 		));
 	}
+	
+	public function uploadLogoAction()
+	{
+	    if($this->getRequest()->files->get('logo')) {
+	        $file = $this->getRequest()->files->get('logo');
+	        $this->get('services.institution.media')->uploadLogo($file, $this->institution);
+	    }
+
+	    return $this->redirect($this->getRequest()->headers->get('referer'));
+	}
+	
+	public function uploadFeaturedImageAction()
+	{
+	    if($this->getRequest()->files->get('featuredImage')) {
+	        $file = $this->getRequest()->files->get('featuredImage');
+	        $this->get('services.institution.media')->uploadFeaturedImage($file, $this->institution);
+	    }
+	    
+	    return $this->redirect($this->getRequest()->headers->get('referer'));
+	}
 }

@@ -1,21 +1,29 @@
 <div class="hca-banner">
-    {% if not institution.featuredMedia %}
+    {% if institution.featuredMedia %}
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
     {% else %}
      <img src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution" />
     {% endif %} 
-    <a href="#hca-upload-banner" data-toggle="modal" class="btn-large btn-banner">Change Cover</a>
 
-    <a class="hca-logo"  href="#hca-upload-logo" data-toggle="modal" class="btn-large btn-banner">
-        <span class="rollover"></span>
-        {% if institution.logo %}
-            {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-            <img src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
-        {% else %}
-            <img src="{{ imageplaceholder.institutionDefaultLogo }}" class="imgborder" alt="">             
-        {% endif %} 
-    </a>
+
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="hidden">
+        <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
+        <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
+    </form>
+
+    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="hidden">
+        <a class="hca-logo file-browse-btn"  href="javascript:void(0)" onclick="$(this).next().click()">        
+            <span class="rollover"></span>
+            {% if institution.logo %}
+                {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+                <img src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
+            {% else %}
+                <img src="{{ imageplaceholder.institutionDefaultLogo }}" class="imgborder" alt="">          
+            {% endif %} 
+        </a>
+        <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
+    </form>
    <div class="hca-institution-name"><h1><a href="#hca-edit-institution-name" data-toggle="modal"> {{ institution.name }} </a></h1></div>
     <div class="institution-details">
             <h3><i class="icon-map-marker"></i>{{ institution.city ~ ', ' ~ institution.country}}</h3>

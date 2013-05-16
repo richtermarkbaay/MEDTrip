@@ -30,6 +30,15 @@
         
         <style type="text/css">
         
+            form.hidden {
+                margin: 0;
+            }
+
+            .file-browse-btn + input[type=file]{
+                position: absolute;
+                visibility: hidden;    
+            }
+
             /********** jQuery Autocomplete Custom CSS *****/
 
             .fancy-country-wrapper {
@@ -114,8 +123,10 @@
             
             /** CUSTOM SELECT STYLES **/
             .custom-select {
+                margin-left: 0 !important;
                 height: 40px;
                 position: relative;
+                display: inline-block;
             }
         
             .fancy-country-wrapper > button.btn,
@@ -166,8 +177,8 @@
                 margin:0;
                 display:none;
                 background-color: #FFF;
-                position: relative;
-                top: -1px;
+                position: absolute;
+                top: 39px;
                 z-index: 1;
                 max-height: 312px;
                 overflow: auto;

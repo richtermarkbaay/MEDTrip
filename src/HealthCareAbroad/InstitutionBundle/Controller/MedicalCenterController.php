@@ -359,6 +359,11 @@ class MedicalCenterController extends InstitutionAwareController
             }
         }
         
+        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+            $contactDetails = new ContactDetail();
+            $contactDetails->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($contactDetails);
+        }
         $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -1108,23 +1113,12 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function uploadAction(Request $request)
     {
-        $fileBag = $request->files;
-
-        if ($fileBag->get('file')) {
-       
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institution);
-            if(is_object($result)) {
-
-                $media = $result;
-
-                // Delete current logo
-                $this->get('services.media')->delete($this->institutionMedicalCenter->getLogo(), $this->institution);
-
-                // Save new media as logo
-                $this->get('services.institution_medical_center')->saveMediaAsLogo($this->institutionMedicalCenter, $media);
-            }
+        if ($request->files->get('logo')) {
+            $file = $request->files->get('logo');
+            $this->get('services.institution.media')->medicalCenterUploadLogo($file, $this->institutionMedicalCenter);
         }
-        return $this->redirect($this->generateUrl('institution_medicalCenter_edit', array('imcId' => $this->institutionMedicalCenter->getId())));
+
+        return $this->redirect($this->getRequest()->headers->get('referer'));
     }
 
     private function _getEditMedicalCenterCalloutView()

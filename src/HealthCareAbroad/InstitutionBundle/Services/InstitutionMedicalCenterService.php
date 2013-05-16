@@ -272,8 +272,10 @@ class InstitutionMedicalCenterService
      */
     public function clearBusinessHours(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $this->doctrine->getRepository('InstitutionBundle:BusinessHour')
-            ->deleteByInstitutionMedicalCenter($institutionMedicalCenter);
+        if($institutionMedicalCenter->getId()) {
+            $this->doctrine->getRepository('InstitutionBundle:BusinessHour')
+            ->deleteByInstitutionMedicalCenter($institutionMedicalCenter);            
+        }
     }
 
 

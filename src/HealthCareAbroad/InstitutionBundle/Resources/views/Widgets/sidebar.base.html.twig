@@ -1,23 +1,18 @@
 <aside class="span4">
     <section class="aside-box default dashboard-side">
-        <h3>
-            Hospital Location
-        </h3>
+        <h3>Hospital Location</h3>
         {% block asideContent %}
-    	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}">
+    	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}" id="institution-static-map">
     	{% endblock %}
     	<small>
-            <a href="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}"
-            style="color:#000;text-align:left">
-                                    View Larger Map
-                                </a>
+    	    <a target="_blank" href="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=800x600&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}" style="color:#000;text-align:left">
+    	        View Larger Map
+    	    </a>
         </small>
-        <p>This is your Hospital Location if for some reason your location is not in the vicinity, please <a href="#">Edit your address</a>.</p>
+        <p>This is your Hospital Location if for some reason your location is not in the vicinity, please <a href="javascript:void(0);" onclick="$('#institution-edit-address-toggle').click()">Edit your address</a>.</p>
     </section>
     <section class="aside-box default dashboard-side">
-        <h3>
-            Add PHOTOS and VIDEOS to boost your Medical Institution Profile
-        </h3>
+        <h3>Add PHOTOS and VIDEOS to boost your Medical Institution Profile</h3>
         <div class="features">
             <div class="row-fluid">
                 <div class="hca-gallery-upload">
@@ -42,9 +37,7 @@
 <!--         </div> -->
 <!--     </section> -->
     <section class="aside-box default dashboard-side">
-        <h3>
-            Promote this Medical Institution Profile
-        </h3>
+        <h3>Promote this Medical Institution Profile</h3>
         <img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"
         class="btn btn-small btn-code">
         <p>
