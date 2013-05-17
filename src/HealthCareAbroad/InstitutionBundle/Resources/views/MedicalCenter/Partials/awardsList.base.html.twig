@@ -9,8 +9,8 @@
                    {% set award = property.valueObject %}
                    {% set _extraValueArr = json_to_array(property.extraValue, true) %}
                    {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
-                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" style="display: block;width: 100%;margin-bottom: 0">
-                       <div class="pull-right" >
+                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" >
+                       <span class="pull-right" >
                            <span id="containerRow">
                                 <span class="yearAcquired" > {{ _yearAcquired }}</span> 
                                 <a class="edit_global_award" href="{{ path('institution_medicalCenter_ajaxEditGlobalAward', {'imcId':institutionMedicalCenter.id} ) }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
@@ -19,7 +19,7 @@
                                <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
                                {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
                            </span>
-                       </div>
+                       </span>
                        {{ award.name }}
                    </li>
                 {% endif %}

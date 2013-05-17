@@ -11,7 +11,7 @@
                    {% set award = property.valueObject %}
                    {% set _extraValueArr = json_to_array(property.extraValue, true) %}
                    {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
-                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" style="display: block;width: 100%;margin-bottom: 0">
+                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}">
                        {{ award.name }}
                        <span class="pull-right" >
                            <span id="containerRow">
