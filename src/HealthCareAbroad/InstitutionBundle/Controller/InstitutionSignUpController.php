@@ -491,14 +491,12 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         $isSingleCenter = $this->institutionService->isSingleCenter($this->institution);
         $this->currentSignUpStep = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpStepByRoute':'getMultipleCenterSignUpStepByRoute')}($request->attributes->get('_route'));
-        
+        $error = '';
         //TODO: check institution signupStepStatus
 
         $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
 
         if ($request->isMethod('POST')) {
-            // TODO: validation
-
             //array of specialization ids each containing an array of treatment ids
             if ($treatments = $request->get('treatments')) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
@@ -509,12 +507,14 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 return $this->redirect($redirectUrl);
             }
+            $error = 'Please select at least one specialization.';
         }
 
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $specializations,
+            'error' => $error,
         ));
     }
 

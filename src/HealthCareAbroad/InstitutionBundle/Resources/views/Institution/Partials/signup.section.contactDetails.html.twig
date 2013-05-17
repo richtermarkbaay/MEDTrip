@@ -10,15 +10,15 @@
             </div>
             <div class="control-group">
                 <div class="span6">
-                    <label for="Phone Number">{{ label }} Email Address</label>
+                    {{ label }} Email Address</label>
                     {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
                 </div>
-                {% for _widget in form.contactDetails %}
-                    {{ form_widget(_widget, { 'attr': {'class': 'span9'} }) }}  
-                    {{ form_widget(_widget, { 'attr': {'class': 'span9'} }) }}  
-                {% endfor %}
-            </div>
-            <div class="span12 control-group website">
+                 <div class="span6">
+                    {% for _widget in form.contactDetails %}
+                        {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
+                    {% endfor %}
+                </div>
+            <div class="control-group website">
                 <label for="institution_profile_form[websites]">{{ label }} Website</label>
                 <span class="pull-left"> http:// </span>
                 {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}

@@ -1,7 +1,6 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
 
-    <div>
         {# contact_label_type(form.vars.value.type) #}
         <label for="Phone Number">{{ form.vars.value.type is defined and form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
         <div class="hca-countrycodes">
@@ -14,7 +13,6 @@
                 <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="{{ form.vars.id ~ '_country_code' }}">
             </div>
         </div>
-    </div>
 
     {% endspaceless %}
 {% endblock %}
