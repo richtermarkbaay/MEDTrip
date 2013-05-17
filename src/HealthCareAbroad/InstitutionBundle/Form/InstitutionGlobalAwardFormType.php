@@ -20,7 +20,7 @@ class InstitutionGlobalAwardFormType extends AbstractType
             'label' => 'Date acquired/awarded',
             'virtual' => true,
             'attr' => array(
-                'class' => 'globalAward_autocompleteYear'
+                'class' => 'globalAward_autocompleteYear pull-left'
             )
         ));
         $builder->add('extraValue', 'institution_global_award_extra_value', array('virtual' => false, 'attr' => array('class' => 'extraValueAutocomplete_json')));

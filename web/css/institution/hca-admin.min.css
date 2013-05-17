@@ -289,7 +289,7 @@ form label {
 form input[type="text"], form input[type="password"], form input[type="email"], form select {
   border-radius: 0;
   display: block;
-  height: 40px;
+  height: 35px;
   box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1); }
   form input[type="text"]::-webkit-input-placeholder, form input[type="password"]::-webkit-input-placeholder, form input[type="email"]::-webkit-input-placeholder, form select::-webkit-input-placeholder {
     color: rgba(0, 0, 0, 0.2) !important; }
@@ -454,7 +454,7 @@ hr {
           border-bottom: none;
           padding-bottom: 0;
           margin-bottom: 0;
-          padding-top: 70px; }
+          padding-top: 55px; }
         #content section.section.hca-clinic-heading p, #content section.section.hca-doctor-heading p {
           font-size: 16px;
           padding: 0;
@@ -587,7 +587,7 @@ hr {
             #content section.section .row-fluid.terms > div.media {
               padding: 10px 10px !important; }
         #content section.section .row-fluid > div {
-          padding: 30px; }
+          padding: 20px; }
           #content section.section .row-fluid > div.divider {
             border-left: 1px solid rgba(0, 0, 0, 0.1); }
           #content section.section .row-fluid > div.media {
@@ -890,19 +890,19 @@ ul.hca-notifications, ul.hca-inquiries {
   margin: 0; }
   .input-append.hca-clinic-status .btn, .popup-box.hca-clinic-status .btn {
     padding: 0 7px;
-    height: 40px;
+    height: 25px;
     border-radius: 0 !important; }
 .input-append.hca-location, .popup-box.hca-location {
   margin: 0; }
   .input-append.hca-location input.hca-country, .popup-box.hca-location input.hca-country {
     width: 235px;
-    height: 30px;
+    height: 25px;
     margin-bottom: 10px; }
     .input-append.hca-location input.hca-country.hca-city, .popup-box.hca-location input.hca-country.hca-city {
       width: 235px; }
   .input-append.hca-location .btn, .popup-box.hca-location .btn {
     padding: 0 7px;
-    height: 40px;
+    height: 35px;
     border-radius: 0 !important; }
 .input-append.hca-clinic-status, .popup-box.hca-clinic-status {
   margin-right: 10px; }
@@ -1007,7 +1007,7 @@ ul.hca-notifications, ul.hca-inquiries {
     outline: none;
     background: white;
     box-shadow: none;
-    height: 40px;
+    height: 35px;
     border-radius: 0; }
     .hca-countrycodes .btn-group.btn:first-child, .hca-countrycodes .btn.btn:first-child {
       border-radius: 0;
@@ -1172,6 +1172,16 @@ ul.hca-notifications, ul.hca-inquiries {
     margin-right: 4%;
     width: 100%;
     color: #6e6e6e; }
+    .single-listing li form {
+      margin-bottom: 0; }
+      .single-listing li form input[type="text"], .single-listing li form input[type="password"], .single-listing li form input[type="email"], .single-listing li form select {
+        height: 32px;
+        margin: 0;
+        padding: 0; }
+      .single-listing li form .btn {
+        margin-left: 5px;
+        height: 22px;
+        padding: 5px 10px; }
     .single-listing li.sub-specialization {
       background-color: white;
       font-weight: bold;
@@ -1771,6 +1781,62 @@ ul.hca-notifications, ul.hca-inquiries {
 
 #hca-hidden_content, #hca-clinic-content, #hca-specialization-content {
   display: none; }
+  #hca-hidden_content.doctors-listing, #hca-clinic-content.doctors-listing, #hca-specialization-content.doctors-listing {
+    background-color: #aeaeae;
+    padding: 20px 20px 5px 20px;
+    max-height: 300px;
+    overflow: auto; }
+    #hca-hidden_content.doctors-listing .row-fluid, #hca-clinic-content.doctors-listing .row-fluid, #hca-specialization-content.doctors-listing .row-fluid {
+      background-color: white;
+      padding: 10px;
+      width: 97%; }
+      #hca-hidden_content.doctors-listing .row-fluid textarea, #hca-clinic-content.doctors-listing .row-fluid textarea, #hca-specialization-content.doctors-listing .row-fluid textarea {
+        height: 150px; }
+      #hca-hidden_content.doctors-listing .row-fluid.hca-upload-file, #hca-clinic-content.doctors-listing .row-fluid.hca-upload-file, #hca-specialization-content.doctors-listing .row-fluid.hca-upload-file {
+        min-height: 600px; }
+      #hca-hidden_content.doctors-listing .row-fluid input.hca-country, #hca-hidden_content.doctors-listing .row-fluid input.hca-city, #hca-clinic-content.doctors-listing .row-fluid input.hca-country, #hca-clinic-content.doctors-listing .row-fluid input.hca-city, #hca-specialization-content.doctors-listing .row-fluid input.hca-country, #hca-specialization-content.doctors-listing .row-fluid input.hca-city {
+        width: 200px !important; }
+      #hca-hidden_content.doctors-listing .row-fluid input.hca-suffix, #hca-clinic-content.doctors-listing .row-fluid input.hca-suffix, #hca-specialization-content.doctors-listing .row-fluid input.hca-suffix {
+        width: 100px;
+        height: 25px; }
+      #hca-hidden_content.doctors-listing .row-fluid input.hca-languages, #hca-clinic-content.doctors-listing .row-fluid input.hca-languages, #hca-specialization-content.doctors-listing .row-fluid input.hca-languages {
+        width: 200px;
+        height: 25px; }
+      #hca-hidden_content.doctors-listing .row-fluid .dropbox, #hca-clinic-content.doctors-listing .row-fluid .dropbox, #hca-specialization-content.doctors-listing .row-fluid .dropbox {
+        height: 45px;
+        background-color: #c8c8c8;
+        border: 2px dashed white;
+        color: white;
+        text-align: center;
+        padding: 20px 0 0 0; }
+      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.zipcode, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.zipcode, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
+        max-height: 115px;
+        width: 268px; }
+      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.location-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.location-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.location-select {
+        max-height: 140px;
+        width: 235px;
+        margin-left: -213px; }
+      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.languages-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.languages-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
+        max-height: 140px;
+        width: 234px;
+        margin-left: -212px; }
+      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.suffix-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
+        max-height: 70px;
+        margin-left: -113px;
+        width: 50px; }
+      #hca-hidden_content.doctors-listing .row-fluid form, #hca-clinic-content.doctors-listing .row-fluid form, #hca-specialization-content.doctors-listing .row-fluid form {
+        margin-top: 5px;
+        margin-bottom: 8px; }
+        #hca-hidden_content.doctors-listing .row-fluid form .row-fluid, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid {
+          padding: 0 20px !important;
+          width: 92.85%; }
+          #hca-hidden_content.doctors-listing .row-fluid form .row-fluid ul, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid ul, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid ul {
+            max-height: 150px;
+            padding-top: 10px; }
+          #hca-hidden_content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
+            padding: 3px 0 !important; }
+            #hca-hidden_content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
+              border-bottom: none; }
 
 .hca-display-specializations div.edit-specializations {
   display: none; }
@@ -1889,6 +1955,46 @@ span.rollover {
     display: block;
     line-height: 24px;
     margin: 20px 80px; }
+
+.doctors-new-listing {
+  padding-top: 12px;
+  padding-left: 0; }
+  .doctors-new-listing .doctor-heading {
+    background-color: #e1e1e1;
+    padding: 10px 20px 30px 10px; }
+  .doctors-new-listing h4 {
+    padding: 2px 0 0 0;
+    margin: 0; }
+  .doctors-new-listing p {
+    color: #7b7b7b;
+    padding: 0;
+    margin: 0; }
+    .doctors-new-listing p span {
+      margin-left: 7px;
+      font-weight: bold; }
+    .doctors-new-listing p i {
+      margin-right: 5px; }
+  .doctors-new-listing img {
+    margin-right: 10px;
+    width: 50px; }
+  .doctors-new-listing .icon-edit, .doctors-new-listing .icon-ok {
+    margin-top: 10px;
+    margin-right: 10px; }
+  .doctors-new-listing .icon-remove-sign {
+    margin-top: 10px; }
+  .doctors-new-listing .icon-plus-sign {
+    color: #888888;
+    margin-top: 10px; }
+
+.icon-minus-sign {
+  margin-top: 5px; }
+
+a {
+  font-weight: bold;
+  color: black; }
+
+a:hover {
+  text-decoration: none; }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
   background-image: none;
@@ -2042,35 +2148,17 @@ h1, h2, h3, h4, h5 {
   .accordion .accordion-heading {
     background-color: #eeeeee;
     border-bottom: none; }
-    .accordion .accordion-heading.active {
-      background-color: #dbe5f0; }
     .accordion .accordion-heading img {
-      width: 35px;
-      margin-top: -6px; }
+      width: 45px; }
     .accordion .accordion-heading .icon-minus-sign {
-      margin-top: 5px; }
-    .accordion .accordion-heading .icon-ok {
-      margin-top: 5px; }
+      margin-top: 12px; }
     .accordion .accordion-heading .icon-plus-sign {
       color: #888888;
-      margin-top: 5px; }
-    .accordion .accordion-heading .icon-edit {
-      color: #888888;
-      margin-top: 5px; }
-    .accordion .accordion-heading .icon-remove-sign {
-      display: block;
-      color: #888888;
-      margin-left: 35px;
-      margin-top: 5px; }
-    .accordion .accordion-heading h4 {
-      margin: 0;
-      color: #585858;
-      padding: 7px 0 0 0; }
-    .accordion .accordion-heading a {
-      font-weight: bold;
-      color: black; }
-    .accordion .accordion-heading a:hover {
-      text-decoration: none; }
+      margin-top: 12px; }
+    .accordion .accordion-heading .icon-minus-sign {
+      margin-top: 7px; }
+    .accordion .accordion-heading .icon-ok {
+      margin-top: 7px; }
   .accordion .accordion-inner {
     max-height: 218px;
     overflow: auto; }
@@ -2131,40 +2219,30 @@ h1, h2, h3, h4, h5 {
     max-width: inherit;
     max-height: inherit;
     overflow-x: hidden; }
+    .modal .modal-body .alert.results {
+      margin-bottom: 0; }
+    .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing {
+      min-height: 95px; }
+      .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing .btn {
+        margin-top: 35px;
+        margin-right: 10px;
+        width: 180px; }
     .modal .modal-body .btn-primary a {
       color: white; }
       .modal .modal-body .btn-primary a:hover {
         text-decoration: none;
         color: #e1e1e1; }
-    .modal .modal-body input {
-      height: 30px; }
     .modal .modal-body textarea {
       height: 150px; }
     .modal .modal-body.hca-upload-file {
       min-height: 600px; }
-    .modal .modal-body input.hca-country, .modal .modal-body input.hca-city {
-      width: 287px !important; }
     .modal .modal-body input.hca-suffix {
-      width: 125px;
+      width: 100px;
       height: 30px; }
-    .modal .modal-body input.hca-languages {
-      width: 286px;
-      height: 30px; }
-    .modal .modal-body .dropdown-menu.zipcode {
-      max-height: 115px;
-      width: 294px; }
-    .modal .modal-body .dropdown-menu.location-select {
-      max-height: 140px;
-      width: 322px;
-      margin-left: -300px; }
-    .modal .modal-body .dropdown-menu.languages-select {
-      max-height: 140px;
-      width: 321px;
-      margin-left: -299px; }
     .modal .modal-body .dropdown-menu.suffix-select {
-      max-height: 140px;
-      margin-left: -138px;
-      width: 100px; }
+      max-height: 60px;
+      margin-left: -113px;
+      width: 50px; }
     .modal .modal-body .dropbox {
       height: 45px;
       background-color: #c8c8c8;
@@ -2187,27 +2265,6 @@ h1, h2, h3, h4, h5 {
       color: #737373; }
     .modal .modal-body.media-edit label {
       margin-top: 20px; }
-    .modal .modal-body .doctors-specializations {
-      border: 1px solid #cccccc;
-      padding: 8px 10px 8px 23px;
-      margin-bottom: 10px;
-      top: auto;
-      max-height: 135px;
-      overflow: auto; }
-      .modal .modal-body .doctors-specializations input {
-        margin-top: -3px; }
-      .modal .modal-body .doctors-specializations .span6 {
-        margin: 0 2px 0 0;
-        padding: 0; }
-        .modal .modal-body .doctors-specializations .span6 ul {
-          list-style: none;
-          margin: 0 0 20px 0; }
-          .modal .modal-body .doctors-specializations .span6 ul li {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            margin-right: 8px;
-            padding: 5px 0 5px 15px; }
-            .modal .modal-body .doctors-specializations .span6 ul li input {
-              padding: 0; }
     .modal .modal-body .tab-content {
       padding-bottom: 0; }
   .modal .modal-footer.button-wrapper > .btn {

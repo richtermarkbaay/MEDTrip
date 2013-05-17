@@ -1,8 +1,6 @@
 <form class="edit_award_form" action="" style="display:none;">
-    <div class="control-group">
         {{ _autocompleteWidget | raw }}
-    </div>
-    <button  class="btn btn-misc btn-default pull-right submit" type="submit"><i class="icon-ok"></i></button>
+    <button  class="btn btn-misc" type="submit"><i class="icon-ok"></i></button>
     <input type="hidden" name="globalAwardId" value="{{ award.id }}"/>
     <input type="hidden" name="propertyId" value="{{ property.id }}" />
     {{ _exraValueWidget | raw }}
