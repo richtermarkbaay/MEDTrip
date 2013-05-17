@@ -393,21 +393,25 @@ class InstitutionService
             $emptyFields[] = 'description';
         }
         
-//         if(!$institution->getLogo()) {
-//             $emptyFields[] = 'logo';
-//         }
+        if(!$center->getLogo()) {
+            $emptyFields[] = 'logo';
+        }
         
-//         if(!$institution->getContactDetails()->count()) {
-//             $emptyFields[] = 'contact details';
-//         }
+        if(!$center->getContactDetails()->count()) {
+            $emptyFields[] = 'contact details';
+        }
         
-//         if(!$institution->getSocialMediaSites()) {
-//             $emptyFields[] = 'social media sites';
-//         }
+        if(!$center->getSocialMediaSites()) {
+            $emptyFields[] = 'social media sites';
+        }
         
-//         if(!$this->institutionService->getAllGlobalAwards($institution)) {
-//             $emptyFields[] = 'awards, certification, affiliations and accreditations';
-//         }
+        if($center->getDoctors()) {
+            $emptyFields[] = 'doctors';
+        }
+        //if($this->inst//!$this->institutionService->getAllGlobalAwards($institution)) {
+        
+            //$emptyFields[] = 'awards, certification, affiliations and accreditations';
+        //}
         
         return $emptyFields;
     }

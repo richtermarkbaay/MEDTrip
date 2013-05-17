@@ -25,7 +25,7 @@
                         </span>
                     </li>
                 {% endfor %}
-                <a class="btn btn-link" href="">Click Here</a> to update.
+                <a class="btn btn-link" href="">Click Here to update</a>
             {% endif %}  
         </ul>
        
@@ -41,14 +41,12 @@
                     <li class="thumbnail hca-alert-inquiry">
                         <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
                         </i></span>
-                        <span>
+                        <span class="details-inline">
                             <b>{{ center.name }}</b>
                             This clinic doesn't have a 
-                            {% for each in center.fields %}
-                                {{ each }} 
-                            {% endfor %}
-                            yet you can <a class="btn btn-link" href="#">Click Here</a> to update.
+                            {{ center.fields | join(',') }}.
                         </span>
+                        <a class="btn btn-link pull-right" href="#">Click Here to update</a>
                     </li>
                 {% endfor %}
             {% endif %} 

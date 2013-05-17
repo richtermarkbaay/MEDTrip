@@ -569,38 +569,4 @@ class InstitutionMedicalCenterService
         }
     }
     
-    public function getInstitutionMedicalCentersListOfEmptyFields(InstitutionMedicalCenter $center)
-    {
-        $emptyFields = array();
-        //$isSingleCenter = $this->isSingleCenter($institution);
-        //         if(!$isSingleCenter && !$institution->getInstitutionMedicalCenters()) {
-        //             $emptyFields[] = 'centers';
-        //         }
-    
-        //         if($isSingleCenter && !$this->institutionService->getAllDoctors($institution)) {
-        //             $emptyFields[] = 'doctors';
-        //         }
-    
-        if(!$center->getDoctors()) {
-            $emptyFields[] = 'description';
-        }
-    
-        if(!$center->getLogo()) {
-            $emptyFields[] = 'logo';
-        }
-    
-        if(!$center->getContactDetails()->count()) {
-            $emptyFields[] = 'contact details';
-        }
-    
-        if(!$center->getSocialMediaSites()) {
-            $emptyFields[] = 'social media sites';
-        }
-    
-        if(!$this->institutionService->getAllGlobalAwards($institution)) {
-            $emptyFields[] = 'awards, certification, affiliations and accreditations';
-        }
-    
-        return $emptyFields;
-    }
 }
