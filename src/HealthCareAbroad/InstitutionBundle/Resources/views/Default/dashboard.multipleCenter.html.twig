@@ -13,28 +13,20 @@
     </section>
     <section class="section row-fluid">
         <h2> Suggestion for your Hospital </h2>
-       <ul class="thumbnails hca-alert-inquiry">
-            <li class="thumbnail hca-alert-inquiry">
-                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                </i></span>
-                <span>
-                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                </span>
-            </li>
-            <li class="thumbnail hca-alert-inquiry">
-                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                </i></span>
-                <span>
-                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                </span>
-            </li>
-            <li class="thumbnail hca-alert-inquiry">
-                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                </i></span>
-                <span>
-                    You currently have no logo for your Hospital yet. <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                </span>
-            </li>
+        {% set _suggestions = render_institution_suggestions(institution) %}
+        <ul class="thumbnails hca-alert-inquiry">
+            {% if _suggestions is not null %}
+                {% for suggestion in _suggestions %}
+                    <li class="thumbnail hca-alert-inquiry">
+                        <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                        </i></span>
+                        <span>
+                            {{ suggestion.description }}
+                        </span>
+                    </li>
+                {% endfor %}
+                <a class="btn btn-link" href="">Click Here</a> to update.
+            {% endif %}  
         </ul>
        
     </section>
@@ -43,33 +35,24 @@
             List of Incomplete Clinic Profile
         </h2>
          <ul class="thumbnails hca-alert-inquiry">
-                <li class="thumbnail hca-alert-inquiry">
-                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
-                    </i></span>
-                    <span>
-                        <b>Clinic's Name</b>
-                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                    </span>
-                </li>
-
-                <li class="thumbnail hca-alert-inquiry">
-                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
-                    </i></span>
-                    <span>
-                        <b>Clinic's Name</b>
-                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                    </span>
-                </li>
-
-                <li class="thumbnail hca-alert-inquiry">
-                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
-                    </i></span>
-                    <span>
-                        <b>Clinic's Name</b>
-                        This clinic doesn't have a logo yet you can <a class="btn btn-link" href="#">Click Here</a> to upload logo.
-                    </span>
-                </li>
-            </ul>
+             {% set _centers = render_incomplete_clinic_profile(institution) %}
+             {% if _centers is not null %}
+                {% for center in _centers %}
+                    <li class="thumbnail hca-alert-inquiry">
+                        <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                        </i></span>
+                        <span>
+                            <b>{{ center.name }}</b>
+                            This clinic doesn't have a 
+                            {% for each in center.fields %}
+                                {{ each }} 
+                            {% endfor %}
+                            yet you can <a class="btn btn-link" href="#">Click Here</a> to update.
+                        </span>
+                    </li>
+                {% endfor %}
+            {% endif %} 
+        </ul>
         
     </section>
     <section class="section row-fluid">

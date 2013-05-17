@@ -376,4 +376,40 @@ class InstitutionService
 //             $em->flush($institution);
 //         }
     }
+    
+    public function getListOfEmptyFieldsOnInstitution(InstitutionMedicalCenter $center)
+    {
+        $emptyFields = array();
+        //$isSingleCenter = $this->isSingleCenter($institution);
+//         if(!$isSingleCenter && !$institution->getInstitutionMedicalCenters()) {
+//             $emptyFields[] = 'centers';
+//         }
+        
+//         if($isSingleCenter && !$this->institutionService->getAllDoctors($institution)) {
+//             $emptyFields[] = 'doctors';
+//         }
+        
+        if(!$center->getDescription()) {
+            $emptyFields[] = 'description';
+        }
+        
+//         if(!$institution->getLogo()) {
+//             $emptyFields[] = 'logo';
+//         }
+        
+//         if(!$institution->getContactDetails()->count()) {
+//             $emptyFields[] = 'contact details';
+//         }
+        
+//         if(!$institution->getSocialMediaSites()) {
+//             $emptyFields[] = 'social media sites';
+//         }
+        
+//         if(!$this->institutionService->getAllGlobalAwards($institution)) {
+//             $emptyFields[] = 'awards, certification, affiliations and accreditations';
+//         }
+        
+        return $emptyFields;
+    }
+    
 }

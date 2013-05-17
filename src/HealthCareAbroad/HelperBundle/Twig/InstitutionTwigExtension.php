@@ -42,7 +42,9 @@ class InstitutionTwigExtension extends \Twig_Extension
         return array(
             'render_institution_logo' => new \Twig_Function_Method($this, 'render_institution_logo'),
             'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number'),
-            'render_institution_contact_details' => new \Twig_Function_Method($this, 'render_institution_contact_details')
+            'render_institution_contact_details' => new \Twig_Function_Method($this, 'render_institution_contact_details'),
+            'render_institution_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_suggestions'),
+            'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile')
         );
     }
     
@@ -51,6 +53,54 @@ class InstitutionTwigExtension extends \Twig_Extension
         return 'institution_twig_extension';    
     }
     
+    public function render_institution_suggestions(Institution $institution)
+    {
+        $suggestions = array();
+        $isSingleCenter = $this->institutionService->isSingleCenter($institution);
+        if(!$isSingleCenter && !$institution->getInstitutionMedicalCenters()) {
+            $suggestions[] = array('description' => 'You currently have no centers for your Hospital yet.');
+        }
+
+        if($isSingleCenter && !$this->institutionService->getAllDoctors($institution)) {
+            $suggestions[] = array('description' => 'You currently dont have doctors for your Hospital yet.');
+        }
+        
+        if(!$institution->getDescription()) {
+            $suggestions[] = array('description' => 'You currently have no description for your Hospital yet.');
+        }
+        
+        if(!$institution->getLogo()) {
+            $suggestions[] = array('description' => 'You currently have no logo for your Hospital yet.');
+        }
+            
+        if(!$institution->getContactDetails()->count()) {
+            $suggestions[] = array('description' => 'You currently have no contact details for your Hospital yet.');
+        }
+        
+        if(!$institution->getSocialMediaSites()) {
+            $suggestions[] = array('description' => 'You currently have no social media sites for your Hospital yet.');
+        }
+            
+        if(!$this->institutionService->getAllGlobalAwards($institution)) {
+            $suggestions[] = array('description' => 'You currently have no awards, certification, affiliations and accreditations for your Hospital yet.');
+        }
+        
+        return $suggestions;
+    }
+    public function render_incomplete_clinic_profile(Institution $institution)
+    {
+        $incompleteClinics = array();
+        $centers = $this->institutionService->getActiveMedicalCenters($institution);
+        foreach($centers as $each) {
+            $emptyFields = $this->institutionService->getListOfEmptyFieldsOnInstitution($each);
+            if(!empty($emptyFields)) {
+                $incompleteClinics[] = array('name'=> $each->getName(), 'fields' => $emptyFields);
+            }
+        }
+        
+//         var_dump($incompleteClinics);exit;
+        return $incompleteClinics;
+    }    
     public function render_institution_contact_number(Institution $institution)
     {
         $contactNumber = \json_decode($institution->getContactNumber(), true);

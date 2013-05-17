@@ -40,6 +40,8 @@ class DefaultController extends InstitutionAwareController
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $institutionAlerts = array();
     
+        
+        
         // TODO - Deprecated??
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
         //$news = $newsRepository->getLatestNews();
