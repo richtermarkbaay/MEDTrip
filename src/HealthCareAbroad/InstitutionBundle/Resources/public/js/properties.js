@@ -107,43 +107,22 @@
             return _self;
         },
         'autocompleteYear': function (_self) {
-            
-            _year = new Date().getFullYear();
-            availableTags = [];
-            while (_year >= $.globalAward.options.autocompleteYear.minimumYear) {
-                availableTags.push(_year.toString());
-                _year--;
-            }
             // autocomplete jquery plugin
             _self.bind('keydown', function (event){
-                if ( event.keyCode === $.ui.keyCode.TAB && $( this ).data( "autocomplete" ).menu.active ){
-                    event.preventDefault();
-                }
-            }).autocomplete({
-                minLength: 2,
-                source: function( request, response ) {
-                    // delegate back to autocomplete, but extract the last term
-                    response($.ui.autocomplete.filter(availableTags, extractLast( request.term ) ) );
-                },
-                focus: function() {
-                    // prevent value inserted on focus
-                    return false;
-                },
-                select: function( event, ui ) {
-                    var terms = split( this.value );
-                    // remove the current input
-                    terms.pop();
-                    // value has not been pushed yet
-                    if (terms.indexOf(ui.item.value)< 0) {
-                        // add the selected item
-                        terms.push( ui.item.value );
-                        // add placeholder to get the comma-and-space at the end
-                        terms.push( "" );
-                    }
-
-                    this.value = terms.join( ", " ).replace(/,\s*$/,''); // trime last ,
-                    return false;
-                }
+            	 if (!(event.keyCode == 8                                // backspace
+                         || event.keyCode == 9                               // tab
+                         || event.keyCode == 46                              // delete
+                         || event.keyCode == 61								// +
+                         || event.keyCode == 188						 // comma
+                         || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
+                         || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
+                         || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
+                         || (event.keyCode == 65 && (event.ctrlKey || event.shiftKey)))          // ctrl + a, on same control
+                         || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.shiftKey)  //shift and ! to - on same control
+                         || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.altKey)  //altKey and ! to - on same control
+                     ) {
+      				event.preventDefault();					
+      			}	
             });
             
             return _self;

@@ -87,7 +87,7 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $params = array(
             'institutionForm' => $form->createView(),
             'institution' => $this->institution
@@ -146,7 +146,7 @@ class InstitutionAccountController extends InstitutionAwareController
                     $mobileNumber->setType(ContactDetailTypes::MOBILE);
                     $this->institution->addContactDetail($mobileNumber);
                 }
-                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 $form->bind($request);
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
@@ -224,17 +224,13 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['form_error'] = 0;
                 }
                 else {
-                    // construct the error message
-                    $html ="<ul class='text-error' style='margin: 0px;'>";
-                    foreach ($form->getErrors() as $err){
-                         $html .= '<li>'.$err->getMessage().'</li>';
+                    $errors = array();
+                    $form_errors = $this->get('validator')->validate($form);
+                     
+                    foreach ($form_errors as $_err) {
+                        $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
                     }
-                    $html .= '</ul>';
-
-                    $output['form_error'] = 1;
-                    $output['form_error_html'] = $html;
-
-                    return new Response(\json_encode($output), 400, array('content-type' => 'application/json'));
+                    return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
             }
             catch (\Exception $e) {

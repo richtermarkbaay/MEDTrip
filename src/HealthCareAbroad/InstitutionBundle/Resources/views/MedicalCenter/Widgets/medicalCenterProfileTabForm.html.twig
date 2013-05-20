@@ -111,7 +111,7 @@
                     {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
                         <p> <i class="icon-{{ type == 'googleplus' ? 'google-plus':type }}"> </i>
                         {% if site %}
-                            http://www:  <b>{{ site }}</b>
+                            <b>{{ site }}</b>
                         {% else %}
                             <b> no {{ type }} </b> added.
                             <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#socialMediaSites" ><i class="icon-plus"></i> Add {{ type }}</a>

@@ -95,8 +95,8 @@
 {% block detailed_street_address_widget %}
     {% spaceless %}
         {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
-        <div class="control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-            <label for="state">Address</label>
+        <div class="address1 control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
+            <label for="{{ form.vars.full_name ~ '[street]' }}">Address</label>
             <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
         </div>
         <div class="control-group">

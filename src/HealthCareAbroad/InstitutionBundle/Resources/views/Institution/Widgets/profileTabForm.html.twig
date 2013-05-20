@@ -101,9 +101,9 @@
             <h3>  Hospital Social Media </h3>
             <div id="soclialMediaText">
                 {% for type, site in institution_websites_to_array(institution) %}
-                        <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                            http://www:  <b>{{ site }}</b>
-                        </p>
+                    <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                        <b>{{ site }}</b>
+                    </p>
                 {% endfor %}
             </div>
         </div>

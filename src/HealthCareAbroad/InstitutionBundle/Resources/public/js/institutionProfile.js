@@ -330,17 +330,27 @@ var InstitutionProfile = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
+                _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _form.find('.error').removeClass('error');
                 _divToShow.show();
                 _divToHide.hide();
                 _editButton.show();
-                _form.find('ul.text-error').remove();
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
-                _responseJson = $.parseJSON(response.responseText);
-                if (_responseJson.form_error) {
-                    _form.prepend($(_responseJson.form_error_html));
+                if (response.status==400) {
+                	console.log(response.responseText);
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_form.find('div.'+item.field).addClass('error');
+                        });
+                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
                 }
             }
         });

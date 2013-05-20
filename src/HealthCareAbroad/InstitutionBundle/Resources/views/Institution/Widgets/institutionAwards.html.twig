@@ -30,9 +30,26 @@
 {% set _exraValueWidget = form_widget(editGlobalAwardForm.extraValue) %}
 {% set _awardValueWidget = form_widget(editGlobalAwardForm.value) %}
 {% set _globalTokenWidget = form_widget(editGlobalAwardForm._token) %}
-{% for _awardsListData in _awardsByType %}
-    {% include 'InstitutionBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
-{% endfor %}
+
+{% if currentGlobalAwards.affiliation | length or currentGlobalAwards.accreditation | length or currentGlobalAwards.certificate | length or currentGlobalAwards.award | length %}
+     {% for _awardsListData in _awardsByType %}
+        {% include 'InstitutionBundle:Institution/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+    {% endfor %}
+{% else %}
+    <div class="alert alert-block">
+    <div class="hca-profile-sublevel">
+        Here you can showcase Certifications, Affilations, Awards and Accreditations given to your Clinic.
+    </div>
+    <p class="hca-helptext">
+        You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+        Awards and Accreditations for your Clinic.
+    </p>
+    <button type="button" class="btn btn-primary" href="#awardsDiv" onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;">
+        <i class="icon-plus"> </i>
+        Add Entry
+    </button>
+</div>   
+{% endif %}
 
 {% block inlineJavascriptCode %}
     <script type="text/javascript">
