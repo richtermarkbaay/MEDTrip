@@ -1,12 +1,21 @@
-<ul class="single-listing">
 {% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
+{% if(selected | length) %}
+    <ul class="single-listing">
+        {% for _service in ancillaryServicesData %}
+            {% if(selected[_service.id] is defined) %}
+                <li>{{ _service.name |title }}</li>
+        	{% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+ <div class="alert alert-block">
+    <p class="hca-helptext">
+        You haven't yet added any services for your hospital. Explain here the
+        need to add services for your hospital.
+    </p>
+    <button type="button" class="btn btn-primary" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" href="#services" >
+        <i class="icon-plus" >  </i>  Add Entry
+    </button>
+</div>
+{% endif %}
 
-{% for _service in ancillaryServicesData %}
-	
-    {% if selected[_service.id] is defined  %}
-    <li>
-         {{ _service.name |title }}
-    </li>
-    {% endif %}
-{% endfor %}
-</ul>

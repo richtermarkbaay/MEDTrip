@@ -23,9 +23,9 @@
         <div class="show">
             <h3> Clinic Address </h3>
             <p> <i class="icon-map-marker"> </i>
-                {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter) %}
+                {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city', 'state', 'country','zipCode']) %}
                 <span class="address_column">
-                    <span class="address_part "> {{ _medicalAddress | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                    <span class="address_part "> {{ _medicalAddress | join(',&nbsp;</span><span class="address_part">') | raw }}</span>
                 </span>
             </p>
         </div>
