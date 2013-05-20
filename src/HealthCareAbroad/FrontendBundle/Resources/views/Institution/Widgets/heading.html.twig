@@ -4,7 +4,7 @@
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
-    {% if institution.featuredMedia %}
+    {% if institution.featuredMedia and institution.payingClient %}
         {{ media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw }}
     {% else %}
         <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>

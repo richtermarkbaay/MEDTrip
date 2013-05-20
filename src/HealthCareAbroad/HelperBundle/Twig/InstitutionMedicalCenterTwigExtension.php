@@ -89,10 +89,12 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         // Default image
         $html = '<span class="hca-sprite clinic-default-logo '. (isset($options['attr']['class']) ? $options['attr']['class'] : '') .'"></span>';
 
-        if($institutionMedicalCenter->getLogo()) {
+        // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.
+        $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
+        
+        if($institutionMedicalCenter->getLogo() && ($institution->getPayingClient() || $isAdsContext)) {
             $html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);            
         } else {
-
             switch($options['context']) {
 
                 case self::FULL_PAGE_CONTEXT:

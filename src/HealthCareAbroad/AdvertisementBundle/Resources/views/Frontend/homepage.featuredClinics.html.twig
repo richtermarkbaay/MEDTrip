@@ -16,7 +16,7 @@
     			<div class="content row">
     				<div class="clinic-box">
     					<a href="{{ clinicUrl }}" class="small-logo-wrapper {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
-    					    {{ render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'small', alt: 'clinic logo'}}) | raw }}       				    
+    					    {{ render_institution_medical_center_logo(each.institutionMedicalCenter, {context: 4, attr: {class: 'small', alt: 'clinic logo'}}) | raw }}       				    
     					</a>
     
     					<!-- User Ratings Temporarily Commented -->

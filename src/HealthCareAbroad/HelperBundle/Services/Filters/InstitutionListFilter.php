@@ -66,7 +66,7 @@ class InstitutionListFilter extends ListFilter
     
     function setPayingClientOption()
     {
-        $options = array('all' => 'All', 1 => 'Yes', 0 => 'No');
+        $options = array(1 => 'Yes', 0 => 'No', ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
 
         $this->filterOptions['payingClient'] = array(
             'label' => 'Paying Client',

@@ -8,6 +8,8 @@ use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
 
 class InstitutionTwigExtension extends \Twig_Extension
 {
+    const ADS_CONTEXT = 4;
+
     /**
      * @var MediaExtension
      */
@@ -68,7 +70,11 @@ class InstitutionTwigExtension extends \Twig_Extension
         );
         $options = \array_merge($defaultOptions, $options);
         $html = '';
-        if ($institutionLogo = $institution->getLogo()) {
+        
+        // TODO - Institution Logo for non-paying client is temporarily enabled in ADS section.
+        $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
+        
+        if (($institutionLogo = $institution->getLogo()) && ($institution->getPayingClient() || $isAdsContext)) {
             if(isset($options['attr']['class']))
                 $options['attr']['class'] .= ' hospital-logo';
             else 
