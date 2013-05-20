@@ -60,6 +60,11 @@ class Institution
     private $coordinates;
 
     /**
+     * @var smallint $payingClient
+     */
+    private $payingClient;
+
+    /**
      * @var smallint $signupStepStatus
      */
     private $signupStepStatus;
@@ -342,6 +347,28 @@ class Institution
     public function getCoordinates()
     {
         return $this->coordinates;
+    }
+
+    /**
+     * Set payingClient
+     *
+     * @param smallint $payingClient
+     * @return Institution
+     */
+    public function setPayingClient($payingClient)
+    {
+        $this->payingClient = $payingClient;
+        return $this;
+    }
+    
+    /**
+     * Get payingClient
+     *
+     * @return smallint
+     */
+    public function getPayingClient()
+    {
+        return $this->payingClient;
     }
 
     /**

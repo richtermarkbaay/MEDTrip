@@ -21,6 +21,7 @@
             <div>
                 <table class="table table-bordered sortable-list">
                 <tr>
+                    <th width="50" align="center">Paying</a></th>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                     <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
                      <th width="200">Insititution Type</th>
@@ -31,11 +32,15 @@
 
                 {% for institution in institutions %}
                     <tr id="institution-{{institution.id}}">
+                        <td style="text-align: center;padding: 0">
+                            <input type="checkbox" value="1" {{ institution.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_updatePayingClient', {institutionId: institution.id}) }}">
+                            <div style="display:none">updating...</div>
+                        </td>
                         <td>
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
-                        <td>{{ institution.description | raw}}</td>
-                         
+                        <td>{{ substr(institution.description, 0, 100) }}</td>
+
                          {% set institutionTypeLabel = get_institution_type(institution.type)%}
                         <td>{{ institutionTypeLabel}}</td>
                         <td>{{ institution.country ? institution.country.name : '' }}</td>
@@ -49,8 +54,8 @@
                             </a>
                             <br/>
                             <a href="{{ path('admin_institution_edit_details', {institutionId:institution.id} ) }}" ><i class="icon-pencil"></i> Edit institution</a>
+                        </td>
                     </tr>
-                    
                 {% else  %}
                     <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
                 {% endfor %}
@@ -97,9 +102,27 @@
 
         $("a.show-update-status").click(function() {
         	$('div#status_institution_modal_form').modal('show');
-        	
+
             return false;
         });
+
+        $('input.update-paying-client').change(function(){
+            msgElem = $(this).next().html('updating...').show(); 
+            var params = {
+                payingClient: $(this).prop('checked') ? '1' : '0' 
+            };
+
+            $.post($(this).attr('data-update-url'), params, function(response){
+            	console.log(response);
+            	msgElem.html('done!');
+            	setTimeout(function(){
+            		msgElem.fadeOut();
+                }, 1000);
+            });
+            //console.log();
+        });
+
+        
     });
 </script>
 {% endblock %}

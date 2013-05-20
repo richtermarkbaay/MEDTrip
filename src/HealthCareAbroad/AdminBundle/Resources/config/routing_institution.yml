@@ -84,7 +84,7 @@ admin_institution_logo_upload:
     requirements:
         _method: POST|GET
         institutionId: \d+
-        
+
 admin_institution_featuredImage_upload:
     pattern: /admin/institution/{institutionId}/featured-image/upload
     defaults: { _controller: AdminBundle:Institution:upload, media_type: featuredImage }
@@ -98,3 +98,11 @@ admin_institution_doctors:
     requirements:
         _method: GET
         institutionId: \d+
+        
+admin_institution_updatePayingClient:
+    pattern: /admin/institution/{institutionId}/update-paying-client
+    defaults: { _controller: AdminBundle:Institution:updatePayingClient }
+    requirements:
+        institutionId: \d+
+        payingClient: \d+
+        _method: POST

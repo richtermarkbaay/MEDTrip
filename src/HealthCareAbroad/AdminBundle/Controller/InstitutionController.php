@@ -69,7 +69,7 @@ class InstitutionController extends Controller
     {
         $request = $this->getRequest();
         // Check Institution
-    
+
         if ($request->get('institutionId')) {
             
             //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
@@ -278,6 +278,25 @@ class InstitutionController extends Controller
         $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" has been updated!');
 
         return $this->redirect($this->generateUrl('admin_institution_index'));
+    }
+    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_INSTITUTION')")
+     */
+    public function updatePayingClientAction()
+    {
+        $request = $this->getRequest();
+        $this->institution->setPayingClient((int)$request->get('payingClient'));
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institution);
+        $em->flush($this->institution);
+
+        // dispatch EDIT institution event
+        $event = $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->institution);
+        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
+
+        return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
     }
     
     public function editStatusAction(Request $request)

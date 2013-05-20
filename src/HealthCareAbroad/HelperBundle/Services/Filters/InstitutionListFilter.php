@@ -22,10 +22,12 @@ class InstitutionListFilter extends ListFilter
         // Add country in validCriteria
         $this->addValidCriteria('country');
         $this->addValidCriteria('type');
+        $this->addValidCriteria('payingClient');
     }
     function setFilterOptions()
     {
         $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + InstitutionStatus::getBitValueLabels();
+        $this->setPayingClientOption();
         $this->setCountryFilterOption();
         $this->setTypeFilterOption();
         $this->setStatusFilterOption($statusOptions);
@@ -60,7 +62,17 @@ class InstitutionListFilter extends ListFilter
             'selected' => $this->queryParams['type'],
             'options' => $options
         );
-          
+    }
+    
+    function setPayingClientOption()
+    {
+        $options = array('all' => 'All', 1 => 'Yes', 0 => 'No');
+
+        $this->filterOptions['payingClient'] = array(
+            'label' => 'Paying Client',
+            'selected' => $this->queryParams['payingClient'],
+            'options' => $options
+        );
     }
     
     function buildQueryBuilder()
@@ -80,6 +92,11 @@ class InstitutionListFilter extends ListFilter
         if ($this->queryParams['type'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('a.type = :type');
             $this->queryBuilder->setParameter('type', $this->queryParams['type']);
+        }
+        
+        if ($this->queryParams['payingClient'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.payingClient = :payingClient');
+            $this->queryBuilder->setParameter('payingClient', $this->queryParams['payingClient']);
         }
         
         $sortBy = $this->sortBy ? $this->sortBy : 'name';
