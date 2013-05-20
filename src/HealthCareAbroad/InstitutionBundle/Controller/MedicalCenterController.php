@@ -263,19 +263,17 @@ class MedicalCenterController extends InstitutionAwareController
                     }
 
                     $output['form_error'] = 0;
-                    $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
+//                     $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
                     $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
                 }
-                else {
-                    // construct the error message
-                    $html ="<ul class='text-error'>";
-                    foreach ($form->getErrors() as $err){
-                        $html .= '<li>'.$err->getMessage().'</li>';
+                 else {
+                    $errors = array();
+                    $form_errors = $this->get('validator')->validate($form);
+                     
+                    foreach ($form_errors as $_err) {
+                        $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
                     }
-                    $html .= '</ul>';
-                    $output['form_error'] = 1;
-                    $output['form_error_html'] = $html;
-                    $response = new Response(\json_encode($output),400, array('content-type' => 'application/json'));
+                    return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
             }
             catch (\Exception $e) {

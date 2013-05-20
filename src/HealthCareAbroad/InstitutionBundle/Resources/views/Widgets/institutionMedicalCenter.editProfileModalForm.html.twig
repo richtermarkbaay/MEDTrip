@@ -1,4 +1,4 @@
-<form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" style="min-width: 400px;padding: 20px 20px 0;">
+<form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" >
     {% for each in fields %}
 
         {% if each == 'description' %}
@@ -40,23 +40,21 @@
                         </div> 
          
          {% elseif each == 'contactNumber' or each == 'websites' %}
-                <div class="span12">
-                    <div class="control-group">
-                        <div class="span6">
-                            {{ form_label(institutionMedicalCenterForm.contactEmail) }}
-                            {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
-                        </div>
-                       <div class="span6">
-                            {% for _widget in institutionMedicalCenterForm.contactDetails %}
-                                {{ form_widget(_widget) }}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="control-group website">
-                        <label for="website"> Clinic Website </label>
-                        <span class="pull-left"> http:// </span>
-                        {{ form_widget(institutionMedicalCenterForm.websites, { attr: {class: 'span11 pull-right'} } )}}
-                    </div>
+                <div class="contactEmail control-group span5">
+                    <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}">
+                        {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
+                    </label>
+                        {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
+                </div>
+                <div class="contactDetails control-group span5">
+                        {% for _widget in institutionMedicalCenterForm.contactDetails %}
+                            {{ form_widget(_widget) }}
+                        {% endfor %}
+                </div>
+                <div class="control-group website">
+                    <label for="website"> Clinic Website </label>
+                    <span class="pull-left"> http:// </span>
+                    {{ form_widget(institutionMedicalCenterForm.websites, { attr: {class: 'span11 pull-right'} } )}}
                 </div>
         {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionMedicalCenterForm.socialMediaSites )}}
