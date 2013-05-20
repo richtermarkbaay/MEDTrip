@@ -143,7 +143,7 @@ class MedicalCenterController extends InstitutionAwareController
             $contactDetails->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($contactDetails);
         }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
@@ -184,7 +184,7 @@ class MedicalCenterController extends InstitutionAwareController
                 }
                 
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
-                            InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true,
+                            InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
                             InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                         ));
                 $form->bind($request);

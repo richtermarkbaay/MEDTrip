@@ -322,18 +322,28 @@ var InstitutionMedicalCenter = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
+            	 _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                 _form.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
                 _divToShow.prev().show();
                 _divToShow.show();
                 _divToHide.hide();
                 // Display Callout Message
-                InstitutionMedicalCenter.displayCallout(response);
+//                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
-            	_button.html(_buttonHtml).attr('disabled', false);
-                _responseJson = $.parseJSON(response.responseText);
-                if (_responseJson.form_error) {
-                    _form.prepend($(_responseJson.form_error_html));
+                _button.html(_buttonHtml).attr('disabled', false);
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_form.find('div.'+item.field).addClass('error');
+                        });
+                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
                 }
             }
         });

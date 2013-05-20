@@ -2,7 +2,9 @@
     {% for each in fields %}
 
         {% if each == 'description' %}
-            {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
+            <div class="description control-group">   
+                {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
+            </div>
         {% elseif each == 'address' %}
                      <div class="control-group" >
                         <div id="map_canvas" style="width: 100%; height: 300px"></div> 
@@ -75,6 +77,7 @@
     {% endfor %}
     
     {{ _csrf_token_widget | raw}}
+    <div class="alert-box span8"></div>
     <div class="row"> 
         <div class="pull-right">
              <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>

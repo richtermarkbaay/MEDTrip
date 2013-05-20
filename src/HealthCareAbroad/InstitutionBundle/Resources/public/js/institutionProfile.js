@@ -338,9 +338,9 @@ var InstitutionProfile = {
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
+            	console.log(_form);
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
-                	console.log(response.responseText);
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         var _errorString = "";

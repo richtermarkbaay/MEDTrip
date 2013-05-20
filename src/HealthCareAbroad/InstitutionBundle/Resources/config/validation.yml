@@ -83,4 +83,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             - NotBlank: {message: 'Center name is required.'}
         description:
             - NotBlank: {message: 'Center details is required.'}
-            
+        address:
+            - NotBlank: {message: 'Please provide a valid address.' }
+        contactEmail:
+            - Email: {message: 'Please supply a valid contact email.' }      
