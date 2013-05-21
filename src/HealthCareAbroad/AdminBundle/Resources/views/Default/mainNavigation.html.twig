@@ -14,6 +14,7 @@
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Institutions <b class="caret"></b></a>
         <ul class="dropdown-menu">
             <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_index') }}">View all institutions</a></li>
+            <li class="{{ selectedSubTab == 'institutions_contactInfoList' ? 'active' : '' }}"><a href="{{ path('admin_institution_contactInfoList') }}">Institutions Contact Info</a></li>
             <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="{{ path('admin_institution_add') }}">Add new</a></li>
         </ul>
     </li>

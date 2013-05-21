@@ -1,3 +1,7 @@
+admin_institution_contactInfoList:
+    pattern: /admin/institutions/contact-info
+    defaults: { _controller: AdminBundle:Institution:institutionsContactInfo }
+
 admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
@@ -29,6 +33,13 @@ admin_institution_edit_details:
          institutionId: \d+
          _method: GET|POST
          
+admin_institution_getAjaxAccountData:
+    pattern:  /admin/institution/{institutionId}/account-data/{accountId}
+    defaults: { _controller: AdminBundle:Institution:getAjaxAccountData}
+    requirements:
+         accountId: \d+
+         institutionId: \d+
+         _method: GET
 ##-----         
 ## institution property related routes
 admin_institution_ajaxaddAncilliaryService:

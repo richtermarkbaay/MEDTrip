@@ -85,6 +85,33 @@ class InstitutionController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
      */
+    public function institutionsContactInfoAction()
+    {
+        $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getAllInstitutions();
+
+        $params = array('institutions' => $institutions, 'statuses' => InstitutionStatus::getBitValueLabels());
+        
+        return $this->render('AdminBundle:Institution:institutionsContactInfo.html.twig', $params);
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+    public function getAjaxAccountDataAction()
+    {
+        $result = array('error' => 'invalid account id!');
+        
+        if($accountId = $this->getRequest()->get('accountId')) {
+            $result = $this->get('services.institutionUser')->getAccountDataById($accountId);            
+            unset($result['password']);
+        }
+
+        return new Response(json_encode($result), 200, array('content-type' => 'application/json'));
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
     public function indexAction()
     {
         $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
