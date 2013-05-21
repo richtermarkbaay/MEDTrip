@@ -91,7 +91,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
         // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.
         $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
-        
+
         if($institutionMedicalCenter->getLogo() && ($institution->getPayingClient() || $isAdsContext)) {
             $html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);            
         } else {
@@ -109,7 +109,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                 case self::SEARCH_RESULTS_CONTEXT:
                 case self::ADS_CONTEXT:
-                    if ($institutionLogo = $institution->getLogo()) {
+                    if ($institutionLogo = $institution->getLogo() && $institution->getPayingClient()) {
                         $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
                     }
                     break;
