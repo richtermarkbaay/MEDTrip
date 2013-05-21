@@ -1,0 +1,74 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_contactInfoList'%}
+
+{% block content %}
+    <div id="content">
+        <div id="page-heading"><h3>List of Institutions Contact Details</h3></div>
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+                <div>
+                    <table class="table table-bordered sortable-list">
+                    <tr>
+                        <th width="5%">ID</th>
+                        <th width="32%">Name</th>
+                        <th width="30%">Contact Email</th>
+                        <th width="18%">Contact Number</th>
+                        <th width="5%">Paying</th>
+                        <th width="5%">Status</th>
+                        <th width="5%"></th>
+                    </tr>
+                    {% for each in institutions %}
+                        {% set user = each.institutionUsers.first %}
+                        <tr>
+                            <td>{{ each.id }}</td>
+                            <td><a href="{{ path('admin_institution_view', {institutionId: each.id}) }}" target="_blank">{{ each.name }}</a></td>
+                            <td>
+                                {{ each.contactEmail }}
+                                <a class="pull-right view-contact-info" href="{{ path('admin_institution_getAjaxAccountData', {institutionId: each.id, accountId: user.accountId}) }}">view contact person</a>
+                                <div style="display:none;margin-top: 10px;color: #333;border-top: 1px dashed #DDDDDD;padding-top: 5px;clear:both">
+                                    <div><b>Name:</b> &nbsp;<span class="contact-name"></span></div>
+                                    <div><b>Email:</b> &nbsp;<span class="contact-email"></span></div>
+                                </div>
+                            </td>
+                            <td>{{ json_decode(each.contactNumber)|join('') }}</td>
+                            <td>{{ each.payingClient ? 'Yes' : 'No' }}</td>
+                            <td>{{ statuses[each.status] }}</td>
+                            <td><a href="{{ path('admin_institution_edit_details', {institutionId: each.id}) }}" target="_blank">Edit</a></td>
+                        </tr>
+                    {% else  %}
+                        <tr><td class="empty-list" colspan="5">No records yet!</td></tr>
+                    {% endfor %}
+                    </table>
+                </div>
+
+                <script type="text/javascript">
+                	$(function(){
+                        $('.view-contact-info').click(function(){
+                            contactInfoElem = $(this).next();
+                            $(this).html('loading data...');
+                            if(contactInfoElem.is(':hidden')) {
+                                $.getJSON($(this).prop('href'), function(data){
+console.log(typeof data.error);
+                                	if(typeof data.error != 'undefined') {
+                                		contactInfoElem.html('<span style="color: #dd0000">Unable to load contact details! <b>' + data.error + '</b></span>').show();
+                                    } else {
+                                        var name = data.first_name + ' ' + data.last_name;
+                                        contactInfoElem.find('.contact-name').html(data.first_name + ' ' + data.last_name);
+                                        contactInfoElem.find('.contact-email').html(data.email);
+                                        contactInfoElem.show();
+                                    }
+
+                                    contactInfoElem.prev().hide();
+                                });
+                            }
+
+                            return false;
+                        });
+                    });
+                </script>            
+            
+            {% endblock %}
+        {% endembed %}
+    </div>
+{% endblock %}
