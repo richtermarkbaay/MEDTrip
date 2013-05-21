@@ -109,7 +109,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                 case self::SEARCH_RESULTS_CONTEXT:
                 case self::ADS_CONTEXT:
-                    if ($institutionLogo = $institution->getLogo() && $institution->getPayingClient()) {
+                    if (($institutionLogo = $institution->getLogo()) && $institution->getPayingClient()) {
                         $html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
                     }
                     break;
