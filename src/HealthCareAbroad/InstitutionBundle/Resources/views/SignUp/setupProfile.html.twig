@@ -51,7 +51,7 @@
                 </section>
 
                 {{ form_widget(form.coordinates) }}
-                {{ form_rest(form) }}
+                {{ form_widget(form._token) }}
 
                 {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
 
@@ -106,6 +106,17 @@ $(function(){
 
         return address;
     }
+
+    var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+
+    var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
+    
+    instututionGroupInput.autocomplete({
+        appendTo: "#autoDiv",
+        source: availableTags,
+    });
+    
+    
 });
 </script>
 {% endblock %}

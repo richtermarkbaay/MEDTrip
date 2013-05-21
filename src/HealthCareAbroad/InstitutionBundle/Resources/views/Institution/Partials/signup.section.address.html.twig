@@ -9,30 +9,33 @@
         </div>
 
             {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
-             <div class="control-group row-field {{ (form.country.vars.valid ? '' : 'error') }}">
-                <div class="span6">
-                    <label for="Country">Country</label>
-                    {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
-                </div>
-                <div class="span6">
+           <div class="country control-group {{ (form.address1.vars.valid ? '' : 'error') }} span5">
+                <label for="{{ form.children.country.vars.id }}">
+                    {{ form.children.country.vars.label }}
+                </label>
+                {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
+            </div>
+             <div class="state control-group span5 ">
                     <label>State / Province</label>
                     {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
-                </div>
             </div>
-
-            <div class="control-group">
-                <div class="span6">
-                    <label>City</label>
+            <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span5">
+                    <label for="{{ form.children.city.vars.id }}">
+                      {{ form.children.city.vars.label }}
+                    </label>
                     {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
-                </div>
-                <div class="span6">
-                    <label for="zip"> Zip / Postal Code</label>
+            </div>
+             <div class="zipCode control-group span5">
+                    <label for="{{ form.children.zipCode.vars.id }}">
+                     {{ form.children.zipCode.vars.label }}
+                    </label>
                     {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
-                </div>
             </div>
             <div class="control-group">
+                <div class="span12">
                 {{ form_row(form.addressHint, { attr: {class: 'span12 tooltip-wrap2'} } )}}
                 <div class="tooltip-content2">If there are any instructions that will help someone find you that aren't included in the address put them here.  This could be something like, 'On the 2nd loor', or 'Next door to the gas station', whatever will make it easy for patients to find you!</div>
+            </div>
             </div>
         </div>
     </div>

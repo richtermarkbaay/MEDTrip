@@ -5,7 +5,28 @@
                 {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
             </div>
         {% elseif each == 'name' %}
-            {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
+            <section>
+                <div class="aside-box info dashboard-side">
+                    <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
+                    Changing your Institution name here will change it in ALL Healthcare Abroad listings. Editing your Institution Name is subject to review and approval.
+                </div>
+            </section>
+            <section class="section institution-info">
+                <div class="row-fluid hca-clinic-modal">
+                  <div class="span12">
+                     <div class="name control-group ">
+                        <label for="{{ institutionForm.children.country.vars.id }}"> Medical Institution Name  </label>
+                        {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
+                    </div>
+        {% elseif each == 'medicalProviderGroups' %}
+                        <div class="control-group">
+                            <label for="medicalProviederGroups">  Network Name </label>
+                            {{ form_widget(institutionForm.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span10'} }) | replace({'__name__': '0'}) | raw}}
+                             <div id="autoDiv"> </div>
+                        </div>
+                    </div>    
+                </div>
+            </section>
         {% elseif each == 'address1' %}
             <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
             <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
@@ -75,7 +96,7 @@
     
     {{ _csrf_token_widget | raw}}
 
-     <div class="alert-box span8"></div>
+     <div class="alert-box span6"></div>
     
     <div class="row"> 
 		<button class="btn btn-primary pull-right" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>

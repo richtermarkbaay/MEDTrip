@@ -51,6 +51,16 @@
 
     (function($){
         $(function(){
+
+            var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+
+            var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
+            
+            instututionGroupInput.autocomplete({
+                appendTo: "#autoDiv",
+                source: availableTags,
+            });
+            
             emailElem.bind('keypress', function(e) {
          	   if( e.which === 13 )
          	       return false;
@@ -66,6 +76,7 @@
         		}
         	});        
         });
+        
     })(jQuery);
     
     function getAddress() {

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
+use Symfony\Component\Form\FormView;
 
 class MedicalProviderGroupListType extends AbstractType 
 {
@@ -21,17 +22,16 @@ class MedicalProviderGroupListType extends AbstractType
 	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$transformer = new MedicalProviderGroupTransformer($this->doctrine->getEntityManager());
-		$builder->prependNormTransformer($transformer);
+	    $builder->addModelTransformer(new MedicalProviderGroupTransformer($this->doctrine->getEntityManager()));
 	}
-   
-    public function getParent()
-    {
-        return 'text';
-    }
-
-    public function getName()
-    {
-        return 'medicalProviderGroup_autocomplete';
-    }
+	
+	public function getName()
+	{
+	    return 'medicalProviderGroup_list';
+	}
+	
+	public function getParent()
+	{
+	    return 'text';
+	}
 }

@@ -87,10 +87,17 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+        $medicalProviderGroupArr = array();
+        
+        foreach ($medicalProviderGroup as $e) {
+            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
+        
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $params = array(
             'institutionForm' => $form->createView(),
-            'institution' => $this->institution
+            'institution' => $this->institution,
         );
 
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
@@ -102,6 +109,7 @@ class InstitutionAccountController extends InstitutionAwareController
             // load medical center specializations
             $params['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
+            $params['medicalProvidersJSON'] = \json_encode($medicalProviderGroupArr);
 
         } else {
             $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
@@ -112,10 +120,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 'institutionForm' => $form->createView(),
                 'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'currentGlobalAwards' => $currentGlobalAwards,
-                'editGlobalAwardForm' => $editGlobalAwardForm->createView()
+                'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
             );
         }
-
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $params);
     }
 

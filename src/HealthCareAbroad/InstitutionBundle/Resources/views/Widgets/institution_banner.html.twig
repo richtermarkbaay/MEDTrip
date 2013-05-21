@@ -24,8 +24,20 @@
         </a>
         <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
     </form>
-   <div class="hca-institution-name"><h1><a href="#hca-edit-institution-name" data-toggle="modal"> {{ institution.name }} </a></h1></div>
+   <div class="hca-institution-name"><h1><a href="#hca-edit-institution-name" data-toggle="modal"> <span id="institutionNameText">{{ institution.name }}</span> </a></h1></div>
     <div class="institution-details">
             <h3><i class="icon-map-marker"></i>{{ institution.city ~ ', ' ~ institution.country}}</h3>
+    </div>
+</div>
+
+<!-- modal start Edit Institution Name -->
+<div id="hca-edit-institution-name" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header"> 
+        <h3 id="myModalLabel">  Edit Institution Name </h3> 
+    </div>
+    <div class="modal-body">
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+         with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups']} 
+        %}
     </div>
 </div>

@@ -44,6 +44,7 @@ class MedicalProviderGroupTransformer implements DataTransformerInterface
     }
 
     /**
+     * TODO seperate and create a service for adding new medical group.
      * Transforms a string (medicalProviderGroup) to an array object (medicalProviderGroup).
      *
      * @param  string $stringMedicalProviderGroups
@@ -51,31 +52,14 @@ class MedicalProviderGroupTransformer implements DataTransformerInterface
      */
     public function reverseTransform($stringMedicalProviderGroups)
     {
-    	$medicalProviderGroupsObjects = new ArrayCollection();
-
-    	if($stringMedicalProviderGroups == '')
-    		return $medicalProviderGroupsObjects;
-
     		$medicalProviderGroup = $this->em->getRepository('InstitutionBundle:MedicalProviderGroup')->findOneBy(array('name'=>trim($stringMedicalProviderGroups)));
     		
-    		// if medical Provider Exist return $medicalProviderGroupsObjects
-    		if($medicalProviderGroup) { 
-    		    
-    		    $medicalProviderGroupsObjects->add($medicalProviderGroup);
-    		}
-    		// else create new medical provider and return $medicalProviderGroupsObjects
-    		else{
-    		    
+    		if(!$medicalProviderGroup) { 
     		    $medicalProviderGroup = new MedicalProviderGroup();
     		    $medicalProviderGroup->setName($stringMedicalProviderGroups);
-    		    $medicalProviderGroup->setDescription('');
+    		    $medicalProviderGroup->setDescription(' ');
     		    $medicalProviderGroup->setStatus(MedicalProviderGroup::STATUS_ACTIVE);
-    		    $this->em->persist($medicalProviderGroup);
-    		    $this->em->flush();
-    		    
-    		    $medicalProviderGroupsObjects->add($medicalProviderGroup);
     		}
-    		    		
-		return $medicalProviderGroupsObjects;
+		return $medicalProviderGroup;
     }
 }
