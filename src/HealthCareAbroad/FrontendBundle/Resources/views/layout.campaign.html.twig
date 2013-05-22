@@ -1,0 +1,23 @@
+{% extends '::base.campaignIntro.html.twig' %}
+
+{% block title %}{{ parent() }} &raquo; HealthcareAbroad.com{% endblock %}
+
+{% block body %}
+
+    {% block header %}
+        {% include 'FrontendBundle:CampaignIntro/Widgets:header.html.twig' %}
+    {% endblock %}
+    
+    {% block content %}{% endblock %}
+    
+    {% block javascripts %}
+      <script type="text/javascript">
+                            $(document).ready(function() {
+                    $("#menu").sticky({
+                        topSpacing: 0
+                    });
+                });
+        </script>
+    {% endblock %}
+    {% block inlineJavascriptCode %}{% endblock %}
+{% endblock %}

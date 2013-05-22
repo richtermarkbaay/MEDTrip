@@ -6,7 +6,11 @@ FrontendBundle_institution:
 FrontendBundle_feedback:
     resource: "@FrontendBundle/Resources/config/routing.feedback.yml"
     prefix:   /
-
+    
+frontend_campaign_intro:
+    pattern:  /hca_intro/index.html
+    defaults: { _controller: FrontendBundle:CampaignIntro:index}
+    
 frontend_newsletter_subscribe:
     pattern: /subscribe-newswletter
     defaults: { _controller: FrontendBundle:Default:subscribeNewsletter}
