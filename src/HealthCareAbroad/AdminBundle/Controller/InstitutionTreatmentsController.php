@@ -104,12 +104,15 @@ class InstitutionTreatmentsController extends Controller
     public function viewAllMedicalCentersAction()
     {
         $institutionService = $this->get('services.institution');
+
         $institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
             if ($firstMedicalCenter) {
                 // forward action to viewing a medical center
-                $response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $firstMedicalCenter, 'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($firstMedicalCenter->getBusinessHours(),true))));
+                //$response = $this->forward('AdminBundle:InstitutionTreatments:viewMedicalCenter',array('institution' => $this->institution, 'center' => $firstMedicalCenter, 'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($firstMedicalCenter->getBusinessHours(),true))));
+                $params = array('institutionId' => $this->institution->getId(), 'imcId' => $firstMedicalCenter->getId());
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', $params));
             }
             else {
                 // no medical center yet, redirect to add medical center with 
