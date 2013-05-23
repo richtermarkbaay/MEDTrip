@@ -10,7 +10,8 @@
     
         {% block wrappedContent %}
 
-            <!-- Main Content -->     
+            <!-- Main Content -->    
+            {% include 'InstitutionBundle:Widgets:modal.institutionName.html.twig'  %}
             {% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}       
 			{% if (isSingleCenter is defined) and isSingleCenter %}
 			    {% include 'InstitutionBundle:Institution:profile.singleCenter.html.twig' %}

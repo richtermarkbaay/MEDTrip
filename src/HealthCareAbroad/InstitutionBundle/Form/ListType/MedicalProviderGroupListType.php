@@ -4,7 +4,6 @@ namespace HealthCareAbroad\InstitutionBundle\Form\ListType;
 use HealthCareAbroad\InstitutionBundle\Form\Transformer\MedicalProviderGroupTransformer;
 
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
@@ -12,7 +11,6 @@ use Symfony\Component\Form\FormView;
 
 class MedicalProviderGroupListType extends AbstractType 
 {
-	
 	protected  $doctrine;
 	
 	function setDoctrine($doctrine)

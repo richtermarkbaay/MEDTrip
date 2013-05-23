@@ -15,14 +15,20 @@
                 <div class="row-fluid hca-clinic-modal">
                   <div class="span12">
                      <div class="name control-group ">
-                        <label for="{{ institutionForm.children.country.vars.id }}"> Medical Institution Name  </label>
+                        <label for="medicalProviderGroups"> Medical Institution Name  </label>
                         {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
                     </div>
         {% elseif each == 'medicalProviderGroups' %}
                         <div class="control-group">
                             <label for="medicalProviederGroups">  Network Name </label>
-                            {{ form_widget(institutionForm.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span10'} }) | replace({'__name__': '0'}) | raw}}
-                             <div id="autoDiv"> </div>
+                               {% for _i in institutionForm.medicalProviderGroups %}
+                                 {{ form_widget(_i, {'attr': {class: 'span10'} })  }}
+                                 {% else %}
+                                 <input id="institution_profile_form_medicalProviderGroups_0" class="span10" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                               {% endfor %}
+                             <div id="autoDiv">
+                      
+                              </div>
                         </div>
                     </div>    
                 </div>
@@ -95,10 +101,11 @@
     {% endfor %}
     
     {{ _csrf_token_widget | raw}}
-
-     <div class="alert-box span6"></div>
+    {% if displayButton is not defined %}
+     <div class="alert-box span8"></div>
     
     <div class="row"> 
 		<button class="btn btn-primary pull-right" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
     </div>
+    {% endif %}
 </form>

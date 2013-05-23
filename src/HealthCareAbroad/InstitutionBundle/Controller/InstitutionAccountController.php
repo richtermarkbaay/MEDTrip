@@ -95,10 +95,6 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-        $params = array(
-            'institutionForm' => $form->createView(),
-            'institution' => $this->institution,
-        );
 
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
 
@@ -137,10 +133,8 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $propertyService = $this->get('services.institution_property');
         $output = array();
-
         if ($request->isMethod('POST')) {
             try {
-                // set all other fields except those passed as hidden
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
@@ -155,9 +149,22 @@ class InstitutionAccountController extends InstitutionAwareController
                     $this->institution->addContactDetail($mobileNumber);
                 }
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-                $form->bind($request);
+                
+                $formRequestData = $request->get($form->getName());
+                
+                if (isset($formRequestData['medicalProviderGroups']) ) {
+                    // we always expect 1 medical provider group
+                    // if it is empty remove it from the array
+                    if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                        unset($formRequestData['medicalProviderGroups'][0]);
+                    }
+                } 
+                
+                $form->bind($formRequestData);
+                
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
+                    
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
@@ -214,6 +221,13 @@ class InstitutionAccountController extends InstitutionAwareController
                                    }
                                 }    
                                
+                            $output['institution'][$key] = $returnVal;
+                        } 
+                         if($key == 'medicalProviderGroups' ){
+                            $value = $this->institution->{'get'.$key}();
+                           
+                            $returnVal = ($value[0] != null ? $value[0]->getName() : '' );   
+                    
                             $output['institution'][$key] = $returnVal;
                         }
                         else{

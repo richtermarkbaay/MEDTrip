@@ -99,7 +99,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     manyToMany:
         medicalProviderGroups:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup
-            cascade: 
+            cascade:
                 - "persist"
             mappedBy: null
             joinTable:

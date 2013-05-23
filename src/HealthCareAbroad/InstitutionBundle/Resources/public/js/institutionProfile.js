@@ -254,6 +254,11 @@ var InstitutionProfile = {
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
         _form = _button.parents('form');
+        _parent = _button.parents('form');
+        if(!_form.attr('action')){
+        	_form = _button.parents('div#hca-edit-institution-name').find('form');
+        	_parent = _button.parents('div#hca-edit-institution-name');
+        }
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
         _editButton = _button.parents('section.hca-main-profile').find('div.show').prev();
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
@@ -268,6 +273,8 @@ var InstitutionProfile = {
                 switch(_form.attr('id')){
                     case 'nameModalForm':
                         $('#institutionNameText').html(response.institution.name);
+                        $('#networkName').html(response.institution.medicalProviderGroups);
+                        _form.parents('div.modal').modal('hide');
                     	break;
     
                     case 'descriptionModalForm':
@@ -330,8 +337,8 @@ var InstitutionProfile = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
-                _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                _form.find('.error').removeClass('error');
+                _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _parent.find('.error').removeClass('error');
                 _divToShow.show();
                 _divToHide.hide();
                 _editButton.show();
@@ -345,10 +352,10 @@ var InstitutionProfile = {
                         var _errorString = "";
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
-                        	_form.find('div.'+item.field).addClass('error');
+                        	_parent.find('div.'+item.field).addClass('error');
                         });
-                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
                     }
                 }
             }

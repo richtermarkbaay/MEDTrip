@@ -1,20 +1,13 @@
-<!-- Modal Edit Name of the Institution -->
-  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="editinstitutionname" style="display: none;">
-    <div class="modal-header">
-      <button aria-hidden="true" data-dismiss="modal" class="close" type="button">x</button>
-      <h3>Edit Institution Name</h3>
-    </div>
-    <div class="modal-body"> 
-      <!-- content number start-->
-      <div>
-        <input type="text" class="institution_name" value="Name of the Institution" id="institution_name" name="institution_name">
-      </div>
-      
-      <!-- content number end--> 
-    </div>
-    <div class="modal-footer">
-      <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-      <button class="btn btn-primary">Submit</button>
-    </div>
-  </div>
-  <!-- End Modal Edit Name of the Institution--> 
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'hca-edit-institution-name', 'title': 'Edit Institution Name' }} %}
+    {% block modalBody %}
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
+         with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups'], displayButton : 'false'} 
+        %}
+    {% endblock %}
+    {% block footerBody %}
+         <div class="alert-box span4"></div>
+        <div class="row"> 
+    		<button class="btn btn-primary pull-right" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
+        </div>
+    {% endblock %}
+{% endembed %}

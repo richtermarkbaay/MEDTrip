@@ -108,13 +108,10 @@ class InstitutionProfileFormType extends AbstractType
             $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
             $builder->addEventSubscriber($subscriber);
         }
-        
-//         $builder->add( 'medicalProviderGroups', 'collection' , array('type' => new MedicalProviderGroupListType(), 'allow_add' => true) );
-        //$builder->add( 'medicalProviderGroups', new MedicalProviderGroupListType() );
 
         $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea', array('required' => false));
-        $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true));
+        $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true, 'required' => false));
         $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country'));
         $this->_add($builder, 'city', 'city_list', array('label' => 'City'));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Postal Code'));
