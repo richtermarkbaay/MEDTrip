@@ -2,7 +2,7 @@
 {% set mainNavigation = {selected: 'clinics'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
  {% block content %}
-        {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
+    {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}    
             <h1>
@@ -21,7 +21,6 @@
                        <div class="tab-pane" id="expired"> </div>
                    </div>
             </div>
-              {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
         {% endblock %}
         
     {% endembed %}
