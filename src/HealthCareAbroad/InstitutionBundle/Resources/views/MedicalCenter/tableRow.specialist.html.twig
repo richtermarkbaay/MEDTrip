@@ -22,4 +22,12 @@
         </div>
     </div>
 </li>
+{% else %}
+    <div class="alert alert-block">
+        <p class="hca-helptext">
+            You haven't yet added any doctors affiliated to this Clinic. Text here
+            explaining the need to add doctors in every your Clinic.
+        </p>
+        <a  href="#add-doctor" class="btn btn-primary" data-toggle="modal" ><i class="icon-user-md"></i> Add Doctor</a>
+    </div>
 {% endfor %}

@@ -98,6 +98,9 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
+            	if($('#specialization_list_block').find('div.alert-block')){
+            		$('#specialization_list_block').find('div.alert-block').hide();
+            	}
                 // insert new content after last specialization block
             	$(response.html).insertAfter($('#specialization_list_block h3'));
                 InstitutionMedicalCenter.displayCallout(response);
@@ -115,7 +118,9 @@ var InstitutionSpecialization = {
     toggle: function (_element){
     	_attr = $(_element.attr('data-toggle'));
     	$(_attr).show();
-    	_element.next().find('.edit-specializations').toggle();
+    	$(_attr.selector).html('');
+    	$(_attr).parents('form').show();
+    	_element.next().find('.edit-specializations').show();
     		_href = _element.attr('data-href');
     	      $.ajax({
     	            url: _href,

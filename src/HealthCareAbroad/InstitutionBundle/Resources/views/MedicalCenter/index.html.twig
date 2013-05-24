@@ -2,16 +2,16 @@
 {% set mainNavigation = {selected: 'clinics'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
  {% block content %}
- 
+        {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}    
-               <h1>
-                    <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
-                    <a href="#add-new-center" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
-                </h1>
-             <div class="tabbable">
-                    <!-- Only required for left/right tabs -->
-                    {% include 'InstitutionBundle:MedicalCenter/Widgets:tab.listings.html.twig' %}
+            <h1>
+                <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
+                <a href="#add-new-center" data-target="#add-new-center" class="btn btn-primary btn-large pull-right"  onclick="InstitutionMedicalCenter.showCommonModal($(this));">Add {{ clinicClassLabel.singular | title }}</a>
+            </h1>
+            <div class="tabbable">
+                <!-- Only required for left/right tabs -->
+                   {% include 'InstitutionBundle:MedicalCenter/Widgets:tab.listings.html.twig' %}
                    <div class="tab-content" id="medicalCenterListing">
                        <div class="tab-pane active" id=all>
                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
@@ -19,7 +19,7 @@
                        <div class="tab-pane" id="draft"> </div>
                        <div class="tab-pane" id="pending"> </div>
                        <div class="tab-pane" id="expired"> </div>
-                    </div>
+                   </div>
             </div>
               {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
         {% endblock %}
