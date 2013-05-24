@@ -6,6 +6,16 @@
                     
         {% for each in specializations %}
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
+        {% else %}
+            <div class="alert alert-block">
+                <div class="hca-profile-sublevel">
+                    Here you can showcase specializations of your Clinic.
+                </div>
+                <p class="hca-helptext">
+                    You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+                    Awards and Accreditations for your Clinic.
+                </p>
+            </div>
         {% endfor %}
     </section>
      <section class="section action-info hca-main-profile">

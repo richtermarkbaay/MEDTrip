@@ -278,7 +278,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
-
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
 
         if (!$this->institutionService->isSingleCenter($this->institution)) {
@@ -336,12 +336,18 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
+        $medicalProviderGroupArr = array();
+        
+        foreach ($medicalProviderGroup as $e) {
+            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
         return $this->render('InstitutionBundle:SignUp:setupProfile.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'isSingleCenter' => true,
             'error' => $error,
-            'error_list' => $errorArr
+            'error_list' => $errorArr,
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
         ));
     }
 
@@ -355,7 +361,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error = false;
         $success = false;
         $errorArr = array();
-        
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
 
         if(!$contactDetails) {
@@ -368,14 +374,18 @@ class InstitutionSignUpController extends InstitutionAwareController
         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
-
+        
             $form->bind($this->request);
-
-            if ($form->isValid()) {                
+           
+            if ($form->isValid()) { 
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($this->institution);
+                
                 // set sign up status to current step number
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
-
+              
                 $fileBag = $this->request->files->get('institution_profile_form');
 
                 if($fileBag['logo']) {
@@ -407,6 +417,12 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
             }
         }
+        
+        $medicalProviderGroupArr = array();
+        
+        foreach ($medicalProviderGroup as $e) {
+            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
 
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
@@ -414,6 +430,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
             'error' => $error,
             'error_list' => $errorArr,
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
         ));
     }
 

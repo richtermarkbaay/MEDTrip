@@ -431,7 +431,6 @@ hr {
       margin-bottom: 2em; }
       #content section.section.inquiries .row {
         margin-left: 20px;
-        margin-top: -50px;
         margin-bottom: 20px; }
         #content section.section.inquiries .row input {
           display: inline-block;
@@ -813,7 +812,8 @@ hr {
 
 ul.hca-notifications, ul.hca-inquiries {
   list-style: none;
-  margin: 0; }
+  margin: 0;
+  clear: both; }
   ul.hca-notifications input, ul.hca-inquiries input {
     width: 20px;
     display: inline-block;
@@ -1452,7 +1452,7 @@ ul.hca-notifications, ul.hca-inquiries {
   .clinictime .hourbox .span12 {
     margin-left: -1px; }
   .clinictime .hourbox span {
-    padding: 9px 5px; }
+    padding: 7px 5px; }
   .clinictime .hourbox .span3, .clinictime .hourbox .span2 {
     text-align: right;
     padding-right: 8px;
@@ -2162,112 +2162,110 @@ h1, h2, h3, h4, h5 {
     max-height: 218px;
     overflow: auto; }
 
-.modal {
-  position: absolute; }
-  .modal i {
-    margin-right: 5px; }
-  .modal .tooltip-content2 {
-    margin-left: -200px; }
-  .modal b {
-    color: #5a5a5a; }
-  .modal .row-fluid {
-    background-color: white !important;
-    border: none !important; }
-    .modal .row-fluid .span12.roles {
-      background-color: #eeeeee !important;
-      border: 1px solid rgba(0, 0, 0, 0.1) !important;
-      padding: 0 !important; }
-      .modal .row-fluid .span12.roles hr {
-        margin: 0 20px; }
-      .modal .row-fluid .span12.roles label {
-        min-height: 28px;
-        display: block;
-        padding: 12px 20px 0 40px; }
-    .modal .row-fluid.hca-clinic-modal {
-      background-color: #eeeeee !important;
-      padding: 20px 0px 5px 20px;
-      width: 97%;
-      margin-bottom: 20px; }
-  .modal.hca-doctors-modal {
-    width: 700px;
-    margin-left: -350px; }
-    .modal.hca-doctors-modal form {
-      margin-bottom: 0; }
-  .modal.hca-file-modal {
-    width: 700px;
-    margin-left: -350px; }
-    .modal.hca-file-modal form {
-      margin-bottom: 0; }
-  .modal .confirm-email {
-    background-color: none; }
-  .modal.message {
-    text-align: center; }
-    .modal.message h3 {
-      color: #009933;
-      opacity: .75;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-      padding: 20px 50px 0 20px;
-      margin: 0 30px; }
-    .modal.message h2 {
-      border-bottom: 2px solid rgba(0, 0, 0, 0.1);
-      padding: 20px 70px 0 70px; }
-    .modal.message .btn {
-      margin-top: 40px;
-      margin-bottom: 15px; }
-  .modal .modal-body {
-    max-width: inherit;
-    max-height: inherit;
-    overflow-x: hidden; }
-    .modal .modal-body .alert.results {
-      margin-bottom: 0; }
-    .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing {
-      min-height: 95px; }
-      .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing .btn {
-        margin-top: 35px;
-        margin-right: 10px;
-        width: 180px; }
-    .modal .modal-body .btn-primary a {
-      color: white; }
-      .modal .modal-body .btn-primary a:hover {
-        text-decoration: none;
-        color: #e1e1e1; }
-    .modal .modal-body textarea {
-      height: 150px; }
-    .modal .modal-body.hca-upload-file {
-      min-height: 600px; }
-    .modal .modal-body input.hca-suffix {
-      width: 100px;
-      height: 30px; }
-    .modal .modal-body .dropdown-menu.suffix-select {
-      max-height: 60px;
-      margin-left: -113px;
-      width: 50px; }
-    .modal .modal-body .dropbox {
-      height: 45px;
-      background-color: #c8c8c8;
-      border: 2px dashed white;
-      color: white;
+.modal i {
+  margin-right: 5px; }
+.modal .tooltip-content2 {
+  margin-left: -200px; }
+.modal b {
+  color: #5a5a5a; }
+.modal .row-fluid {
+  background-color: white !important;
+  border: none !important; }
+  .modal .row-fluid .span12.roles {
+    background-color: #eeeeee !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 0 !important; }
+    .modal .row-fluid .span12.roles hr {
+      margin: 0 20px; }
+    .modal .row-fluid .span12.roles label {
+      min-height: 28px;
+      display: block;
+      padding: 12px 20px 0 40px; }
+  .modal .row-fluid.hca-clinic-modal {
+    background-color: #eeeeee !important;
+    padding: 20px 0px 5px 20px;
+    width: 97%;
+    margin-bottom: 20px; }
+.modal.hca-doctors-modal {
+  width: 700px;
+  margin-left: -350px; }
+  .modal.hca-doctors-modal form {
+    margin-bottom: 0; }
+.modal.hca-file-modal {
+  width: 700px;
+  margin-left: -350px; }
+  .modal.hca-file-modal form {
+    margin-bottom: 0; }
+.modal .confirm-email {
+  background-color: none; }
+.modal.message {
+  text-align: center; }
+  .modal.message h3 {
+    color: #009933;
+    opacity: .75;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 20px 50px 0 20px;
+    margin: 0 30px; }
+  .modal.message h2 {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    padding: 20px 70px 0 70px; }
+  .modal.message .btn {
+    margin-top: 40px;
+    margin-bottom: 15px; }
+.modal .modal-body {
+  max-width: inherit;
+  max-height: inherit;
+  overflow-x: hidden; }
+  .modal .modal-body .alert.results {
+    margin-bottom: 0; }
+  .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing {
+    min-height: 95px; }
+    .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing .btn {
+      margin-top: 35px;
+      margin-right: 10px;
+      width: 180px; }
+  .modal .modal-body .btn-primary a {
+    color: white; }
+    .modal .modal-body .btn-primary a:hover {
+      text-decoration: none;
+      color: #e1e1e1; }
+  .modal .modal-body textarea {
+    height: 150px; }
+  .modal .modal-body.hca-upload-file {
+    min-height: 600px; }
+  .modal .modal-body input.hca-suffix {
+    width: 100px;
+    height: 30px; }
+  .modal .modal-body .dropdown-menu.suffix-select {
+    max-height: 60px;
+    margin-left: -113px;
+    width: 50px; }
+  .modal .modal-body .dropbox {
+    height: 45px;
+    background-color: #c8c8c8;
+    border: 2px dashed white;
+    color: white;
+    text-align: center;
+    padding: 20px 0 0 0; }
+    .modal .modal-body .dropbox.hca-main-edit {
+      height: 200px;
       text-align: center;
-      padding: 20px 0 0 0; }
-      .modal .modal-body .dropbox.hca-main-edit {
-        height: 200px;
-        text-align: center;
-        padding-top: 100px; }
-        .modal .modal-body .dropbox.hca-main-edit .btn {
-          margin-top: 20px; }
-      .modal .modal-body .dropbox label {
-        font-weight: normal; }
-    .modal .modal-body.center {
-      text-align: center; }
-    .modal .modal-body.media-edit p {
-      line-height: 20px;
-      color: #737373; }
-    .modal .modal-body.media-edit label {
-      margin-top: 20px; }
-    .modal .modal-body .tab-content {
-      padding-bottom: 0; }
-  .modal .modal-footer.button-wrapper > .btn {
-    margin: 5px; }
+      padding-top: 100px; }
+      .modal .modal-body .dropbox.hca-main-edit .btn {
+        margin-top: 20px; }
+    .modal .modal-body .dropbox label {
+      font-weight: normal; }
+  .modal .modal-body.center {
+    text-align: center; }
+  .modal .modal-body.media-edit p {
+    line-height: 20px;
+    color: #737373; }
+  .modal .modal-body.media-edit label {
+    margin-top: 20px; }
+  .modal .modal-body .tab-content {
+    padding-bottom: 0; }
+.modal .modal-footer.button-wrapper > .btn {
+  margin: 5px; }
 
 .alert {
   border-radius: 0!important; }

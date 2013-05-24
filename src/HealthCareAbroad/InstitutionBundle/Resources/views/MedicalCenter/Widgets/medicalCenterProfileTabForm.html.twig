@@ -3,7 +3,19 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">  Edit </a>
         <div class="show">
             <h3> About your Clinic </h3>
-            <p><span id="clinicDescriptionText">{{ institutionMedicalCenter.description | raw }} </span></p>
+                <p><span id="clinicDescriptionText"> {{ institutionMedicalCenter.description != '' ? institutionMedicalCenter.description | raw : '' }} </span></p>
+            {% if institutionMedicalCenter.description == ' ' %}
+                <div class="alert alert-block">
+                    <div class="hca-profile-sublevel">
+                        Here you can showcase description about your Clinic.
+                    </div>
+                    <p class="hca-helptext">
+                        You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+                        Awards and Accreditations for your Clinic.
+                    </p>
+                    <a href="#description" type="button" class="btn btn-primary" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;"> <i class="icon-plus">  </i> Add Entry </a>
+                </div>
+            {% endif %}
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
@@ -23,9 +35,9 @@
         <div class="show">
             <h3> Clinic Address </h3>
             <p> <i class="icon-map-marker"> </i>
-                {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter) %}
+                {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city', 'state', 'country','zipCode']) %}
                 <span class="address_column">
-                    <span class="address_part "> {{ _medicalAddress | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+                    <span class="address_part "> {{ _medicalAddress | join(',&nbsp;</span><span class="address_part">') | raw }}</span>
                 </span>
             </p>
         </div>
@@ -106,20 +118,16 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMediaSites" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
         <div class="show">
             <h3> Social Media </h3>
-            {% if institutionMedicalCenter.socialMediaSites %}
-                <div id="soclialMediaDiv">
+            <div id="soclialMediaDiv">
+                {% if institutionMedicalCenter.socialMediaSites %}
                     {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-                        <p> <i class="icon-{{ type == 'googleplus' ? 'google-plus':type }}"> </i>
-                        {% if site %}
-                            http://www:  <b>{{ site }}</b>
-                        {% else %}
-                            <b> no {{ type }} </b> added.
-                            <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#socialMediaSites" ><i class="icon-plus"></i> Add {{ type }}</a>
-                        {% endif %}
+                        <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                            <b>{{ site ? site : 'no account added'}}</b>
                         </p>
                     {% endfor %}
-                </div>
-            {% else %}   
+                {% endif %}
+            </div>
+              {% if institutionMedicalCenter.socialMediaSites is empty %} 
                 <div class="alert alert-block" id="alertSocialDiv">
                     <div class="hca-profile-sublevel">
                         Here you can showcase social media account of your Clinic.

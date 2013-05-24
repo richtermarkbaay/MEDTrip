@@ -87,11 +87,14 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function profileAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-        $params = array(
-            'institutionForm' => $form->createView(),
-            'institution' => $this->institution
-        );
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+        $medicalProviderGroupArr = array();
+        
+        foreach ($medicalProviderGroup as $e) {
+            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
+        
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
 
@@ -102,6 +105,7 @@ class InstitutionAccountController extends InstitutionAwareController
             // load medical center specializations
             $params['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
+            $params['medicalProvidersJSON'] = \json_encode($medicalProviderGroupArr);
 
         } else {
             $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
@@ -112,10 +116,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 'institutionForm' => $form->createView(),
                 'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'currentGlobalAwards' => $currentGlobalAwards,
-                'editGlobalAwardForm' => $editGlobalAwardForm->createView()
+                'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
             );
         }
-
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $params);
     }
 
@@ -129,10 +133,8 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $propertyService = $this->get('services.institution_property');
         $output = array();
-
         if ($request->isMethod('POST')) {
             try {
-                // set all other fields except those passed as hidden
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
@@ -146,10 +148,23 @@ class InstitutionAccountController extends InstitutionAwareController
                     $mobileNumber->setType(ContactDetailTypes::MOBILE);
                     $this->institution->addContactDetail($mobileNumber);
                 }
-                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => true, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-                $form->bind($request);
+                $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+                
+                $formRequestData = $request->get($form->getName());
+                
+                if (isset($formRequestData['medicalProviderGroups']) ) {
+                    // we always expect 1 medical provider group
+                    // if it is empty remove it from the array
+                    if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                        unset($formRequestData['medicalProviderGroups'][0]);
+                    }
+                } 
+                
+                $form->bind($formRequestData);
+                
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
+                    
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
@@ -207,6 +222,13 @@ class InstitutionAccountController extends InstitutionAwareController
                                 }    
                                
                             $output['institution'][$key] = $returnVal;
+                        } 
+                         if($key == 'medicalProviderGroups' ){
+                            $value = $this->institution->{'get'.$key}();
+                           
+                            $returnVal = ($value[0] != null ? $value[0]->getName() : '' );   
+                    
+                            $output['institution'][$key] = $returnVal;
                         }
                         else{
                             $value = $this->institution->{'get'.$key}();
@@ -224,17 +246,13 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['form_error'] = 0;
                 }
                 else {
-                    // construct the error message
-                    $html ="<ul class='text-error' style='margin: 0px;'>";
-                    foreach ($form->getErrors() as $err){
-                         $html .= '<li>'.$err->getMessage().'</li>';
+                    $errors = array();
+                    $form_errors = $this->get('validator')->validate($form);
+                     
+                    foreach ($form_errors as $_err) {
+                        $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
                     }
-                    $html .= '</ul>';
-
-                    $output['form_error'] = 1;
-                    $output['form_error_html'] = $html;
-
-                    return new Response(\json_encode($output), 400, array('content-type' => 'application/json'));
+                    return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
             }
             catch (\Exception $e) {

@@ -244,6 +244,11 @@ var InstitutionMedicalCenter = {
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
         _form = _button.parents('form');
+        _parent = _button.parents('form');
+        if(!_form.attr('action')){
+        	_form = _button.parents('div#edit-medical-center-name').find('form');
+        	_parent = _button.parents('div#edit-medical-center-name');
+        }
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
@@ -256,9 +261,13 @@ var InstitutionMedicalCenter = {
             	switch(_form.attr('id')){
             	    case 'nameModalForm':
             	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
+            	        _form.parents('div.modal').modal('hide');
                         break;
-                    case '.':
+                    case 'descriptionForm':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
+                        if($('#clinicDescriptionText').parent('p').next('.alert')){
+                        	$('#clinicDescriptionText').parent('p').next('.alert').hide();
+                        }
                         break;
                     case 'addressForm':
                     	var address = [];
@@ -307,33 +316,90 @@ var InstitutionMedicalCenter = {
                         break;
                     case 'socicalMediaSitesForm':
                   	  var websites = response.institutionMedicalCenter.socialMediaSites, websitesString = ''; 
-                  	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-                  	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-                  	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                     	if(websites.twitter){
+		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+		                  	}else{
+		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
+		                  	}
+		                  	if(websites.facebook){
+		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
+							}
+		                  	if(websites.googleplus){
+		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
+							}
+                  	  		
 	                        $('#soclialMediaDiv').html(websitesString);
 	                        $('#alertSocialDiv').hide();
                   	break;
                        
                     case 'servicesForm':
-                    	$('#servicesTable').html(response.html);
+                    	$('#serviceTable').html(response.html);
                     	break;
                     	
                     case 'awardsForm':
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
+            	_parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _parent.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
                 _divToShow.prev().show();
                 _divToShow.show();
                 _divToHide.hide();
                 // Display Callout Message
-                InstitutionMedicalCenter.displayCallout(response);
+//                InstitutionMedicalCenter.displayCallout(response);
             },
             error: function(response) {
-            	_button.html(_buttonHtml).attr('disabled', false);
-                _responseJson = $.parseJSON(response.responseText);
-                if (_responseJson.form_error) {
-                    _form.prepend($(_responseJson.form_error_html));
+                _button.html(_buttonHtml).attr('disabled', false);
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_parent.find('div.'+item.field).addClass('error');
+                        });
+                        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
+                }
+            }
+        });
+        return false;
+    },
+    
+    submitAddNewMedicalCenter: function(domButtonElement) {
+        _button = $(domButtonElement);
+        _buttonHtml = _button.html();
+        _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
+        _form = _button.parents('div#add-new-center').find('form');
+        _data = _form.serialize();
+        $.ajax({
+            url: _form.attr('action'),
+            data: _data,
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+            	window.location = response.redirect;
+            },
+            error: function(response) {
+            	_form.html("")
+                _button.html(_buttonHtml).attr('disabled', false);
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_button.parents('div#add-new-center').find('div.'+item.field).addClass('error');
+                        });
+                        _button.parents('div#add-new-center').find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _button.parents('div#add-new-center').find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
                 }
             }
         });

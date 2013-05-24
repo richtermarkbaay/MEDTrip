@@ -31,12 +31,12 @@ services:
         tags:
             - { name: form.type, alias: institutionTreatment_list }
     
-    form.medical_provider_group_list:
+    form.medicalProviderGroup_list:
         class: HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType
         calls:
             - [setDoctrine, [@doctrine]]
         tags:
-            - { name: form.type, alias: medicalProviderGroup_autocomplete }
+            - { name: form.type, alias: medicalProviderGroup_list }
      
     form.specialization_selector:
         class: HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationSelectorFormType

@@ -254,6 +254,11 @@ var InstitutionProfile = {
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
         _form = _button.parents('form');
+        _parent = _button.parents('form');
+        if(!_form.attr('action')){
+        	_form = _button.parents('div#hca-edit-institution-name').find('form');
+        	_parent = _button.parents('div#hca-edit-institution-name');
+        }
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
         _editButton = _button.parents('section.hca-main-profile').find('div.show').prev();
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
@@ -268,6 +273,8 @@ var InstitutionProfile = {
                 switch(_form.attr('id')){
                     case 'nameModalForm':
                         $('#institutionNameText').html(response.institution.name);
+                        $('#networkName').html(response.institution.medicalProviderGroups);
+                        _form.parents('div.modal').modal('hide');
                     	break;
     
                     case 'descriptionModalForm':
@@ -318,9 +325,21 @@ var InstitutionProfile = {
                         break;
                     case 'socialMediaForm':
                     	  var websites = response.institution.socialMediaSites, websitesString = ''; 
-                    	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-                    	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-                    	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                      	if(websites.twitter){
+		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+		                  	}else{
+		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
+		                  	}
+		                  	if(websites.facebook){
+		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
+							}
+		                  	if(websites.googleplus){
+		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
+							}
 	                        $('#soclialMediaText').html(websitesString);
                     	break;
                     case 'serviceForm':
@@ -330,17 +349,26 @@ var InstitutionProfile = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
+                _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _parent.find('.error').removeClass('error');
                 _divToShow.show();
                 _divToHide.hide();
                 _editButton.show();
-                _form.find('ul.text-error').remove();
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
-                _responseJson = $.parseJSON(response.responseText);
-                if (_responseJson.form_error) {
-                    _form.prepend($(_responseJson.form_error_html));
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_parent.find('div.'+item.field).addClass('error');
+                        });
+                        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
                 }
             }
         });

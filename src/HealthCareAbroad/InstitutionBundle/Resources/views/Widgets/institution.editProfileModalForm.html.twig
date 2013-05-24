@@ -1,61 +1,82 @@
 <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
-    {{ form_errors(institutionForm) }}   
-    
     {% for each in fields %}
         {% if each == 'description' %}
-            <div class="control-group">    
+            <div class="description control-group">   
                 {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
             </div>
         {% elseif each == 'name' %}
-            {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
+            <section>
+                <div class="aside-box info dashboard-side">
+                    <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
+                    Changing your Institution name here will change it in ALL Healthcare Abroad listings. Editing your Institution Name is subject to review and approval.
+                </div>
+            </section>
+            <section class="section institution-info">
+                <div class="row-fluid hca-clinic-modal">
+                  <div class="span12">
+                     <div class="name control-group ">
+                        <label for="medicalProviderGroups"> Medical Institution Name  </label>
+                        {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
+                    </div>
+        {% elseif each == 'medicalProviderGroups' %}
+                        <div class="control-group">
+                            <label for="medicalProviederGroups">  Network Name </label>
+                               {% for _i in institutionForm.medicalProviderGroups %}
+                                 {{ form_widget(_i, {'attr': {class: 'span10'} })  }}
+                                 {% else %}
+                                 <input id="institution_profile_form_medicalProviderGroups_0" class="span10" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                               {% endfor %}
+                             <div id="autoDiv">
+                      
+                              </div>
+                        </div>
+                    </div>    
+                </div>
+            </section>
         {% elseif each == 'address1' %}
             <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
             <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
 
             {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
             {{ form_widget(institutionForm.coordinates) }}
-            <div class="control-group">
-                <div class="span6 combo-wrapper">
-                    {{ form_label(institutionForm.country) }}
+            <div class="country control-group span5">
+                    <label for="{{ institutionForm.children.country.vars.id }}">
+                        {{ institutionForm.children.country.vars.label }}
+                    </label>
                     {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
-                    {{ form_errors(institutionForm.country) }}
-                </div>
-                <div class="span6">
+            </div>
+           <div class="state control-group span5">
                     {{ form_label(institutionForm.state) }}
                     {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
-                    {{ form_errors(institutionForm.state) }}
-                </div>
             </div>
-            <div class="control-group">
-                <div class="span6">
-                    {{ form_label(institutionForm.city)}}
+            <div class="city control-group span5">
+                     <label for="{{ institutionForm.children.city.vars.id }}">
+                      {{ institutionForm.children.city.vars.label }}
+                    </label>
                     {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
-                    {{ form_errors(institutionForm.city) }}
-                </div>
-                <div class="span6">
-                    {{ form_label(institutionForm.zipCode)}}
+            </div>
+            <div class="zipCode control-group span5">
+                    <label for="{{ institutionForm.children.zipCode.vars.id }}">
+                     {{ institutionForm.children.zipCode.vars.label }}
+                    </label>
                     {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
-                    {{ form_errors(institutionForm.zipCode) }}
-                </div>
             </div>
             <div class="control-group">
                 {{ form_label(institutionForm.addressHint)}}
                 {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
-                {{ form_errors(institutionForm.addressHint) }}
             </div> 
         {% elseif each == 'contactDetails' or each == 'websites' %}
 
-            <div class="control-group">
-                <div class="span6">
-                    {{ form_label(institutionForm.contactEmail) }}
+            <div class="contactEmail control-group span5">
+                    <label for="{{ institutionForm.children.contactEmail.vars.id }}">
+                        {{ institutionForm.children.contactEmail.vars.label }}
+                    </label>
                     {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
-                </div>
-                <div class="span6">
-                    {#{ form_widget(institutionForm.contactNumber) }#}
+            </div>
+             <div class="contactDetails control-group span5">
                     {% for _widget in institutionForm.contactDetails %}
                         {{ form_widget(_widget) }}
                     {% endfor %}
-                </div>
             </div>
             <div class="control-group website">
                 {{ form_label(institutionForm.websites) }}
@@ -80,9 +101,11 @@
     {% endfor %}
     
     {{ _csrf_token_widget | raw}}
-
-
+    {% if displayButton is not defined %}
+     <div class="alert-box span8"></div>
+    
     <div class="row"> 
 		<button class="btn btn-primary pull-right" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
     </div>
+    {% endif %}
 </form>

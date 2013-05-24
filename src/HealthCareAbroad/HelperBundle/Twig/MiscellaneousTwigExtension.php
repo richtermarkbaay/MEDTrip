@@ -143,19 +143,24 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         if (!\is_null($websites)) {
             \array_walk($websites, function(&$v, $key){
                 // if it matches http or https
-            
-                if ($v != '' && ! \preg_match('/^https?:\/\//i', $v)) {
-                    $v = 'http://'.$v;
+                $prefix = MiscellaneousTwigExtension::_getPrefix($key);
+                if ($v !='' && ! \preg_match($prefix, $v) ) {
+                    if(\preg_match('/^https?:\/\//i', $v)){
+                        $value = preg_replace('/^https?:\/\//i', '', $v);
+                        if($key == 'googleplus'){
+                            $v = 'http://plus.google.com/'.$value;
+                        }else{
+                            $v = 'http://'.$key.'.com/'.$value;
+                        }
+                    }
                 }
-            
+                
             });
         }
         else {
             // invalid JSON string
             $websites = array();
         }
-        
-
         return $websites;
     }
 
@@ -240,8 +245,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         }
     
         \array_walk($socialMedia, function(&$v, $key){
-            // if it matches http or https
-            if (! \preg_match('/^https?:\/\//i', $v)) {
+         if (! \preg_match('/^https?:\/\//i', $v)) {
                 $v = 'http://'.$v;
             }
         });
@@ -256,5 +260,15 @@ class MiscellaneousTwigExtension extends \Twig_Extension
                 unset($array[$k]);
             }
         }
+    }
+    static function _getPrefix($key)
+    {
+        $prefixes = array(
+            'facebook' => '~^https?://(?:www\.)?facebook.com//?~',
+            'twitter' => '~^https?://(?:www\.)?twitter.com//?~',
+            'googleplus' => '~^https?://(?:www\.)?plus.google.com//?~'
+        );
+    
+        return $prefixes[$key];
     }
 }

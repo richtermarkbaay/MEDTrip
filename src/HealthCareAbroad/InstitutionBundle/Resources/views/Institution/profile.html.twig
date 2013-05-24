@@ -5,12 +5,12 @@
 {% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
-
+    {% include 'InstitutionBundle:Widgets:modal.institutionName.html.twig' %}   
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
     
         {% block wrappedContent %}
 
-            <!-- Main Content -->     
+            <!-- Main Content -->    
             {% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}       
 			{% if (isSingleCenter is defined) and isSingleCenter %}
 			    {% include 'InstitutionBundle:Institution:profile.singleCenter.html.twig' %}
@@ -51,6 +51,16 @@
 
     (function($){
         $(function(){
+
+            var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+
+            var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
+            
+            instututionGroupInput.autocomplete({
+                appendTo: "#autoDiv",
+                source: availableTags,
+            });
+            
             emailElem.bind('keypress', function(e) {
          	   if( e.which === 13 )
          	       return false;
@@ -66,6 +76,7 @@
         		}
         	});        
         });
+        
     })(jQuery);
     
     function getAddress() {

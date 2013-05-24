@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType;
+
 use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -51,6 +53,7 @@ class InstitutionProfileFormType extends AbstractType
     private static $fieldNames = array(
         'name',
         'description',
+        'medicalProviderGroups',
         'country',
         'city',
         'zipCode',
@@ -65,7 +68,7 @@ class InstitutionProfileFormType extends AbstractType
         'awards',
         'coordinates',
         'logo',
-        'featuredMedia'
+        'featuredMedia',
     );
 
     public function __construct(array $options = array())
@@ -106,22 +109,21 @@ class InstitutionProfileFormType extends AbstractType
             $builder->addEventSubscriber($subscriber);
         }
 
-        $this->_add($builder, 'name', 'text', array('data' => ''));
+        $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea', array('required' => false));
-//         $this->_add($builder, 'country', 'globalCountry_list', array('attr' => array('onchange'=>'Location.loadCities($(this), '. $cityId . ')')));
-        $this->_add($builder, 'country', 'fancy_country');
-        $this->_add($builder, 'city', 'city_list');
+        $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true, 'required' => false));
+        $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country'));
+        $this->_add($builder, 'city', 'city_list', array('label' => 'City'));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Postal Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
-        //$this->_add($builder, 'contactNumber', 'contact_number_with_flag', array('label' => 'Institution Phone Number', 'display_both' => false));
-        $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_number_with_flag'));
+        $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'contact_number_with_flag', 'constraints'=>array(new NotBlank())));
         $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
-        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false ));
+        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false));
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'coordinates', 'hidden');
@@ -139,6 +141,7 @@ class InstitutionProfileFormType extends AbstractType
 
     private function _add(FormBuilderInterface $builder, $fieldName, $fieldType, array $options=array())
     {
+        
         if ($this->_isRemoved($fieldName)) {
 
             // this field is flagged as removed, don't add this to builder

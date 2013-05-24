@@ -192,9 +192,8 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $street_address = !\is_null($street_address)
                 ?  $this->_removeEmptyValueInArray($street_address)
                 : array();
-            
             if (\count($street_address)) {
-                $returnVal['address'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
+                $returnVal['address'] = ucwords(preg_replace('/\,+$/','', \trim(\implode(', ', $street_address))));
             }
             else {
                 // try to fetch the institution adress

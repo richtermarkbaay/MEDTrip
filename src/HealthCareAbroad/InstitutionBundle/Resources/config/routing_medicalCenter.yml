@@ -50,18 +50,11 @@ institution_medicalCenter_loadTabbedContents:
         _method: GET
         imcId: \d+
 
-institution_medicalCenter_addDetails:
-    pattern: /medical-center/{imcId}/add/details
-    defaults: { _controller: InstitutionBundle:MedicalCenter:addDetails, imcId: ~ }
-    requirements:
-        _method: GET|POST
-        imcId: \d+
-
 institution_medicalCenter_add:
     pattern: /medical-center/add-new
     defaults: { _controller: InstitutionBundle:MedicalCenter:addMedicalCenter }
     requirements:
-        _method: GET|POST
+        _method: POST
         
 institution_medicalCenter_addSpecializations:
     pattern: /medical-center/{imcId}/specializations/add
