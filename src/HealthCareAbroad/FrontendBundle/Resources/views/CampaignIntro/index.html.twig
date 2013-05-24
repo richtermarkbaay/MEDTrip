@@ -1,7 +1,69 @@
   {% extends 'FrontendBundle::layout.campaign.html.twig' %}
   
   {% block content %}
-   <!-- Services starts -->
+   <!-- Wrapper starts -->
+  
+                <!-- Home starts -->
+                <div id="home_superslide">
+                    <!-- Container starts -->
+                    <div class="container">
+                        <img src="{{ asset('images/frontend/campaign/healthcareabroad-logo-big.png') }}" alt="client_1" />
+                        <h1>
+                            the resource for global
+                            <span>
+                                healthcare
+                            </span>
+                            <br>
+                            a comprehensive,
+                            <span>
+                                unbiased
+                            </span>
+                            directory
+                        </h1>
+                    </div>
+                    <!-- // Container -->
+                    <div class="clr">
+                    </div>
+                </div>
+                <!-- Home end -->
+                <!-- Menu starts -->
+                <div id="menu" class="row-fluid">
+                    <!-- Content wrapper starts -->
+                    <div class="container">
+                        <!-- Logo starts -->
+                        <div class="span3 pull-left">
+                            <a href="#home_superslide"><img src="{{ asset('images/frontend/campaign/healthcareabroad-logo.png') }}" alt="client_1" /></a>
+                        </div>
+                        <div class="span9 pull-right">
+                            <div class="menu_nav">
+                                <div id="nav_wrap">
+                                    <ul class="arrowunderline" id="nav">
+                                        <li class="services">
+                                            <a href="#services">&nbsp;&nbsp;Introduction</a>
+                                        </li>
+                                        <li class="aboutus">
+                                            <a href="#about">Homepage</a>
+                                        </li>
+                                        <li class="team">
+                                            <a href="#team">Results Page</a>
+                                        </li>
+                                        <li>
+                                            <a href="#news">Clinic Page</a>
+                                        </li>
+                                        <li class="media">
+                                            <a href="#media">Hospital Page</a>
+                                        </li>
+                                        <li class="pricing">
+                                            <a href="#pricing">Who is HealthCareAbroad?</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- // Content wrapper -->
+                </div>
+     <!-- Services starts -->
                 <div id="services">
                     <!-- Container starts -->
                     <div class="pattern_glow">
@@ -263,116 +325,28 @@
                             </h2>
                             <div class="image-map-homepage">
                                 <img src="{{ asset('images/frontend/campaign/healthcareabroad-homepage.jpg') }}" alt="client_1" />
-                                <div class="circle a-home">
-                                    <span class="tooltip-wrap">
-                                        A
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
+                                <div id="parts-images">
+                                    <a data-toggle="popover" data-content="Quick Links - Links to see all of the treatments and destinations displayed alphabetically. Allows users to narrow down their search in multiple ways, based on their personal style and technological comfort level."
+                                    class="circle a-home">A</a>
+                                    <a data-toggle="popover" data-content="Modern, clear, search function - Predictive text and drop boxes provide fast, easy, and accurate access to HealthcareAbroad.com directories. Multiple input methods allow users to search in whatever manner is most natural and intuitive to them."
+                                    class="circle b-home">B</a>
+                                    <a data-toggle="popover" data-content="The Showcase Feature - This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features."
+                                    class="circle c-home">C</a>
+                                    <a data-toggle="popover" data-content="Instant Access to high quality content - Links to guides, news, travel information, and educational pieces add value for site visitors, and help educate and encourage further exploration."
+                                    class="circle d-home">D</a>
+                                    <a data-toggle="popover" data-content="Homepage Featured Clinic - A listing with text, a photo, logo, and 2 key points. An excellent way to drive awareness and traffic. Limited to 6 features. Subscription is based on a calendar month."
+                                    class="circle e-home">E</a>
+                                    <a data-toggle="popover" data-content="Common Treatments - Picked by editors based on search volume and trends, this list of Common Treatments with description gives site visitors another way to find services they may be interested in."
+                                    class="circle f-home">F</a>
+                                    <a data-toggle="popover" data-content="Side Column Media Feature - Either a high quality photo advertisement, or a short promotional video can be embedded here. Helps reinforce brand recognition and presence."
+                                    class="circle g-home">G</a>
+                                    <a data-toggle="popover" data-content="Destinations Feature - Allows national and tourism agencies to promote entire country or regions medical facilities as a whole."
+                                    class="circle h-home">H</a>
+                                    <a data-toggle="popover" data-content="Newsletter Signup - Users can join the newsletter which will allow them to stay up to date on any important events or deals."
+                                    class="circle i-home">I</a>
+                                    <a data-toggle="popover" data-content="Client Registration and Login - Allows new clinics to quickly and easily join the site, and allows existing clinics to access and manage their accounts."
+                                    class="circle j-home">J</a>
                                 </div>
-                                <div class="circle b-home">
-                                    <span class="tooltip-wrap">
-                                        B
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle c-home">
-                                    <span class="tooltip-wrap">
-                                        C
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle d-home">
-                                    <span class="tooltip-wrap">
-                                        D
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle e-home">
-                                    <span class="tooltip-wrap">
-                                        E
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle f-home">
-                                    <span class="tooltip-wrap">
-                                        F
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle g-home">
-                                    <span class="tooltip-wrap">
-                                        G
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle h-home">
-                                    <span class="tooltip-wrap">
-                                        H
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <div class="circle i-home">
-                                    <span class="tooltip-wrap">
-                                        I
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div>
-                                <!-- <div class="circle j-home">
-                                    <span class="tooltip-wrap">
-                                        J
-                                        <span class="tooltip-content hca-edit pull-left">
-                                            <i class="icon-map-marker icon-2x pull-left">
-                                            </i>
-                                            Providing your complete address helps us push you to the right searches,
-                                            and helps patients plan their travel better.
-                                        </span>
-                                    </span>
-                                </div> -->
                             </div>
                             <h1>
                                 Homepage
@@ -602,27 +576,21 @@
                         </h2>
                         <div class="image-map-homepage">
                             <img src="{{ asset('images/frontend/campaign/healthcareabroad-results.jpg') }}" alt="client_1" />
-                            <div class="circle a-home">
-                                <span class="tooltip-wrap">
-                                    B
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
-                            </div>
-                            <div class="circle b-home">
-                                <span class="tooltip-wrap">
-                                    A
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
+                            <div id="parts-images">
+                                <a data-toggle="popover" data-content="Results Page Featured Clinic - A targeted highly visible option for a month-long burst of traffic on a specific speciality, country, city or combination search results page. This feature is at the top of the page and includes a description, logo, photo and 2 highlights with thumbnail images."
+                                class="circle a-results">A</a>
+                                <a data-toggle="popover" data-content="Logo and Photo Package (Top Tier) - A Logo and Photo Package includes all of the same features as a Logo Package with the addition of a photo embedded into your results page listing. This photo improves interest and reinforces brand awareness to entice potential patients. This package gets your listing in the premium top tier of the results page."
+                                class="circle c-results">C</a>
+                                <a data-toggle="popover" data-content="Filter Search - Allows site visitors to easily zero in on a clinic by selecting the treatment, country, or the city that they are interested in."
+                                class="circle b-results">B</a>
+                                <a data-toggle="popover" data-content="Results Global Media Ad - The Results Global Media Ad appears sitewide for all searches, regardless of specialization or destination. It is not result specific. It is also the only advertising space available to non-clinics. Due to its wide reaching exposure this ad is limited to a rotation of 5 and those advertisers may only buy 2 months out of 12. Finally, priority for this ad space is given to non-clinic or non-hospital advertisers."
+                                class="circle d-results">D</a>
+                                <a data-toggle="popover" data-content="Logo Package (Middle Tier) - A Logo Package includes all of the same features as a Linked Listing with the important brand building element of your logo on the results page. The addition of a logo side-by-side with your search result listing helps boost attention, retention, and recognition. Additionally, this package gets your listing in the 2nd tier of the results page"
+                                class="circle e-results">E</a>
+                                <a data-toggle="popover" data-content="Linked Listing (Base Tier) - A Linked Listing includes all of the same features as a Forever Free Listing with many additional benefits to build your brand and make it much easier for you to directly reach your patients. Patients can connect to your clinic through social media, web links, and a phone number. Strengthen your clinic's brand by including a logo, photos, and videos on your full listing page. This ad option boosts a listing's ranking into the 3rd tier on the page."
+                                class="circle f-results">F</a>
+                                <a data-toggle="popover" data-content="Basic Forever Free Listing (Bottom Tier) - Your clinic will be displayed with an abbreviated description with a link to view the full details on your clinic page. This page will show the services, certifications, treatments, address and location of your clinic. Doctors can be added to your listing along with their training, specializations, and awards. All of these details can be controlled through a easy-to-use, intelligent client interface."
+                                class="circle g-results">G</a>
                             </div>
                         </div>
                         <h1>
@@ -812,30 +780,38 @@
                                 Clinic Page
                             </h2>
                             <div class="image-map-homepage">
-                            <img src="{{ asset('images/frontend/campaign/healthcareabroad-homepage.jpg') }}" alt="client_1" />
-                            <div class="circle a-home">
-                                <span class="tooltip-wrap">
-                                    B
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
+                                <img src="{{ asset('images/frontend/campaign/healthcareabroad-clinic.jpg') }}" alt="client_1" />
+                                <div id="parts-images">
+                                    <!-- <a data-toggle="popover" data-content="Hospital Group - If the clinic
+                                    is associated or affiliated with a parent organization a link to their
+                                    profile will be shown. This helps increase brand awareness across an entire
+                                    organization, and allows site visitors to quickly and easily see what other
+                                    services and procedures a hospital offers." class="circle a-clinic">A</a> -->
+                                    <a data-toggle="popover" data-content="Clinic Logo - A logo allows you to establish brand recognition and builds trust and credibility with site users. Available with enhanced listing."
+                                    class="circle b-clinic">B</a>
+                                    <a data-toggle="popover" data-content="Clinic Contact Information - Healthcare Abroad makes it easy for site users to get in contact with you. With just a click, they can send you a contact email. These inquiries can easily be managed via email or the secure clinic portal on the HealthcareAbroad.com web site."
+                                    class="circle c-clinic">C</a>
+                                    <a data-toggle="popover" data-content="Map Location of Clinic - We have partnered with Google to map the location of your clinic to build validity and credibility with users, as well as helps users create a deeper association with your organization."
+                                    class="circle d-clinic">D</a>
+                                    <a data-toggle="popover" data-content="Long-form Description - All the information about your clinic that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your chance to set your clinic apart."
+                                    class="circle e-clinic">E</a>
+                                    <a data-toggle="popover" data-content="Operating Hours - Your clinic's hours of operation are clearly listed by day."
+                                    class="circle f-clinic">F</a>
+                                    <a data-toggle="popover" data-content="Specializations and Treatments - Here all specialties of your clinic, and the treatments that correspond with those specialties will be listed."
+                                    class="circle g-clinic">G</a>
+                                    <a data-toggle="popover" data-content="Photos and Videos - Photos and videos build strong brands and excite potential participants, along with creating enhanced credibility and trust. All these factors make decisions easier and more likely. Available with enhanced listing."
+                                    class="circle h-clinic">H</a>
+                                    <a data-toggle="popover" data-content="Services and Awards &amp; Accreditations - If your clinic offers unique services, such as hospital pickup and drop off, concierge, or any other amenities, they will be listed here. Additionally, if your clinic has any recognized accreditations, be they from JCI, ISO, or another recognized accreditation agency, they will be listed here as well."
+                                    class="circle i-clinic">I</a>
+                                    <a data-toggle="popover" data-content="Social Media Links - Allow users to contact you through as many social channels as you maintain. Be it Twitter, Facebook, or Google+, users will be able to quickly and easily access your social media. Available with enhanced listing."
+                                    class="circle j-clinic">J</a>
+                                    <a data-toggle="popover" data-content="Doctor List - List all of the doctors that work in the clinic, along with their specialties."
+                                    class="circle k-clinic">K</a>
+                                    <!-- <a data-toggle="popover" data-content="Clinic Contact Information
+                                    - Enhanced listings will also be able to contact you by phone and directly
+                                    link to your website." class="circle c2-clinic">C</a> -->
+                                </div>
                             </div>
-                            <div class="circle b-home">
-                                <span class="tooltip-wrap">
-                                    A
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
                             <h1>
                                 Clinic Page
                             </h1>
@@ -955,7 +931,7 @@
                                 </span>
                                 <div class="media-body">
                                     <h4>
-                                        Services and Accreditations and Awards
+                                        Services and Awards &amp; Accreditations
                                         <br>
                                         <small>
                                             If your clinic offers unique services, such as hospital pickup and drop
@@ -1091,27 +1067,23 @@
                         </h2>
                         <div class="image-map-homepage">
                             <img src="{{ asset('images/frontend/campaign/healthcareabroad-hospital.jpg') }}" alt="client_1" />
-                            <div class="circle a-home">
-                                <span class="tooltip-wrap">
-                                    B
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
-                            </div>
-                            <div class="circle b-home">
-                                <span class="tooltip-wrap">
-                                    A
-                                    <span class="tooltip-content hca-edit pull-left">
-                                        <i class="icon-map-marker icon-2x pull-left">
-                                        </i>
-                                        Providing your complete address helps us push you to the right searches,
-                                        and helps patients plan their travel better.
-                                    </span>
-                                </span>
+                            <div id="parts-images">
+                                <a data-toggle="popover" data-content="Header Image - A large image to establish your brand and reputation. Available with enhanced listing."
+                                class="circle a-hospital">A</a>
+                                <a data-toggle="popover" data-content="Logo - Your logo for the entire organization. Logos allows you to establish brand recognition and builds trust and credibility with site users. Available with enhanced listing."
+                                class="circle b-hospital">B</a>
+                                <a data-toggle="popover" data-content="Contact Information - Healthcare Abroad makes it easy for site users to get in contact with you. With just a click, they can send you a contact email, get the contact number, and find your physical location. Additionally, all of these inquiries are logged and presented in the tools to manage your listing, which are provided with every Healthcare Abroad listing. Phone contact Available with enhanced listing."
+                                class="circle c-hospital">C</a>
+                                <a data-toggle="popover" data-content="Tabbed Navigation - Users can easily switch between howing an overview of the hospital to a list of all the doctors that work at the hospital, along with their corresponding specialties."
+                                class="circle d-hospital">D</a>
+                                <a data-toggle="popover" data-content="Clinic List - A list of all the clinics in your organization, with links to their personal clinic listings."
+                                class="circle e-hospital">E</a>
+                                <a data-toggle="popover" data-content="Photos and Videos- Photos and videos help give users a more complete image of your organization, and makes decisions easier and more likely. Available with enhanced listing."
+                                class="circle f-hospital">F</a>
+                                <a data-toggle="popover" data-content="Social Media Integration - Allow users to contact you through as many social channels as you maintain. Be it Twitter, Facebook, or Google+, users will be able to quickly and easily access your social media. Available with enhanced listing."
+                                class="circle g-hospital">G</a>
+                                <a data-toggle="popover" data-content="Services and Awards &amp; Accreditations - If your clinic offers unique services, such as hospital pickup and drop off, concierge, or any other amenities, they will be listed here. Additionally, if your clinic has any recognized accreditations, be they from JCI, ISO, or another recognized accreditation agency, they will be listed here as well."
+                                class="circle h-hospital">H</a>
                             </div>
                         </div>
                         <h1>
@@ -1196,11 +1168,11 @@
                         </div>
                         <div class="media">
                             <span class="circle pull-left">
-                                F
+                                H
                             </span>
                             <div class="media-body">
                                 <h4>
-                                    Services and Accreditations and Awards
+                                    Services and Awards &amp; Accreditations
                                     <br>
                                     <small>
                                         If your clinic offers unique services, such as hospital pickup and drop
@@ -1216,7 +1188,7 @@
                         </div>
                         <div class="media">
                             <span class="circle pull-left">
-                                H
+                                E
                             </span>
                             <div class="media-body">
                                 <h4>
@@ -1256,7 +1228,7 @@
                         </div>
                         <div class="media">
                             <span class="circle pull-left">
-                                E
+                                F
                             </span>
                             <div class="media-body">
                                 <h4>
@@ -1345,7 +1317,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="media-heading">
-                                            &nbsp;&nbsp;7050 West Custer Avenue Lakewood, Colorado 80226 U.S.A.
+                                            7050 West Custer Avenue Lakewood, Colorado 80226 U.S.A.
                                         </p>
                                     </div>
                                 </div>
@@ -1356,7 +1328,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="media-heading">
-                                            &nbsp;&nbsp;US Office: 720.257.5277
+                                            US Office: 720.257.5277
                                         </p>
                                     </div>
                                 </div>
@@ -1367,7 +1339,7 @@
                                     </span>
                                     <div class="media-body">
                                         <p class="media-heading">
-                                            &nbsp;&nbsp;US Fax: 720.230.5431
+                                            US Fax: 720.230.5431
                                         </p>
                                     </div>
                                 </div>
