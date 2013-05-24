@@ -9,17 +9,30 @@
                 <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
                 <a href="#add-new-center" data-target="#add-new-center" class="btn btn-primary btn-large pull-right"  onclick="InstitutionMedicalCenter.showCommonModal($(this));">Add {{ clinicClassLabel.singular | title }}</a>
             </h1>
-            <div class="tabbable">
-                <!-- Only required for left/right tabs -->
-                   {% include 'InstitutionBundle:MedicalCenter/Widgets:tab.listings.html.twig' %}
+             <div class="tabbable">
+                    <!-- Only required for left/right tabs -->
+                    <ul class="nav nav-tabs hca-tab">
+                        <li class="active">
+                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{ total.status.2 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#draft" data-toggle="tab">Draft <span class="badge badge-default">  {{ total.status.4 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#pending" data-toggle="tab">Pending<span class="badge badge-important"> {{ total.status.8 | length }}</span></a>
+                        </li>
+                        <li>
+                            <a href="#expired" data-toggle="tab">Expired <span class="badge ">{{ total.status.16 | length }}</span></span></a>
+                        </li>
+                    </ul>
                    <div class="tab-content" id="medicalCenterListing">
-                       <div class="tab-pane active" id=all>
-                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
+                        <div class="tab-pane active" id=all>
+                             {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
                        </div>
                        <div class="tab-pane" id="draft"> </div>
                        <div class="tab-pane" id="pending"> </div>
                        <div class="tab-pane" id="expired"> </div>
-                   </div>
+                    </div>
             </div>
         {% endblock %}
         
