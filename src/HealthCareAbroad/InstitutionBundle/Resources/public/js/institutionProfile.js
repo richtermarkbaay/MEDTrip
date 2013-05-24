@@ -325,9 +325,21 @@ var InstitutionProfile = {
                         break;
                     case 'socialMediaForm':
                     	  var websites = response.institution.socialMediaSites, websitesString = ''; 
-                    	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-                    	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-                    	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                      	if(websites.twitter){
+		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+		                  	}else{
+		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
+		                  	}
+		                  	if(websites.facebook){
+		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
+							}
+		                  	if(websites.googleplus){
+		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
+							}
 	                        $('#soclialMediaText').html(websitesString);
                     	break;
                     case 'serviceForm':

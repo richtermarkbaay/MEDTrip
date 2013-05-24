@@ -121,13 +121,8 @@
             <div id="soclialMediaDiv">
                 {% if institutionMedicalCenter.socialMediaSites %}
                     {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-                        <p> <i class="icon-{{ type == 'googleplus' ? 'google-plus':type }}"> </i>
-                        {% if site %}
-                            <b>{{ site }}</b>
-                        {% else %}
-                            <b> no {{ type }} </b> added.
-                            <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#socialMediaSites" ><i class="icon-plus"></i> Add {{ type }}</a>
-                        {% endif %}
+                        <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                            <b>{{ site ? site : 'no account added'}}</b>
                         </p>
                     {% endfor %}
                 {% endif %}

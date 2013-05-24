@@ -316,9 +316,22 @@ var InstitutionMedicalCenter = {
                         break;
                     case 'socicalMediaSitesForm':
                   	  var websites = response.institutionMedicalCenter.socialMediaSites, websitesString = ''; 
-                  	  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-                  	  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-                  	  		websitesString += '<p><i class="icon-google-plus"> </i> <b>'+ websites.googleplus + "</b></p>";
+	                     	if(websites.twitter){
+		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
+		                  	}else{
+		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
+		                  	}
+		                  	if(websites.facebook){
+		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
+							}
+		                  	if(websites.googleplus){
+		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
+							}else{
+								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
+							}
+                  	  		
 	                        $('#soclialMediaDiv').html(websitesString);
 	                        $('#alertSocialDiv').hide();
                   	break;
@@ -374,6 +387,7 @@ var InstitutionMedicalCenter = {
             	window.location = response.redirect;
             },
             error: function(response) {
+            	_form.html("")
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
@@ -381,10 +395,10 @@ var InstitutionMedicalCenter = {
                         var _errorString = "";
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
-                        	_form.find('div.'+item.field).addClass('error');
+                        	_button.parents('div#add-new-center').find('div.'+item.field).addClass('error');
                         });
-                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                        _button.parents('div#add-new-center').find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _button.parents('div#add-new-center').find('.alert-box').addClass('alert alert-error').html(_errorString);
                     }
                 }
             }

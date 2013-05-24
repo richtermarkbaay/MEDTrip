@@ -99,10 +99,10 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMedia" data-toggle="show-social" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-social">
             <h3>  Hospital Social Media </h3>
-            <div id="soclialMediaText">
+            <div id="soclialMediaText" class="">
                 {% for type, site in institution_websites_to_array(institution) %}
-                    <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                        <b>{{ site }}</b>
+                    <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                        <b>{{ site ? site : 'no account added'}}</b>
                     </p>
                 {% endfor %}
             </div>
