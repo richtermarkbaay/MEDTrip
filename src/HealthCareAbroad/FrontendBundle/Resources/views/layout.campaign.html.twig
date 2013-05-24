@@ -11,13 +11,21 @@
     {% block content %}  <div id="wrapper"></div>{% endblock %}
     
     {% block javascripts %}
-      <script type="text/javascript">
+                  <script type="text/javascript">
                             $(document).ready(function() {
                     $("#menu").sticky({
                         topSpacing: 0
                     });
                 });
-        </script>
+            </script>
+            <script type="text/javascript">
+                            $(function() {
+                    $('body').popover({
+                        selector: '[data-toggle="popover"]',
+                        placement: 'top'
+                    });
+                });
+            </script>
     {% endblock %}
     {% block inlineJavascriptCode %}{% endblock %}
 {% endblock %}
