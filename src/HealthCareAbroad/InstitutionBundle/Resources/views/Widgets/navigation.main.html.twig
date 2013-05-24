@@ -10,18 +10,21 @@
                     <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i>Dashboard</a>
                 </li>
                 <li class="{{ 'profile' == mainNavigation.selected  ? 'active' : '' }}">
-                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>Hospital</a> 
+                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>Hospital Profile</a> 
                 </li>
                 <li class="{{ 'clinics' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="{{ path('institution_medicalCenter_index') }}"><i class="icon-medkit"></i> Clinics</a>
                 </li>      
-                {#                      
+                {% if isInquiry is defined %}                      
                 <li class="{{ 'doctors' == mainNavigation.selected  ? 'active' : '' }}">
-                    <a href="doctors-listing.html"><i class="icon-user-md"></i> Doctors</a>
+                    <a href="doctors-listing.html"><i class="icon-user-md"></i>All Doctors</a>
                 </li>               
-                #}             
+                {% endif %}             
                 <li class="{{ 'users' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="users.html"><i class="icon-group"></i> Users</a>
+                </li>
+                <li class="{{ 'users' == mainNavigation.selected  ? 'active' : '' }}">
+                    <a href="users.html"><i class="icon-group"></i> Media Gallery</a>
                 </li>
             </ul>
         </div>

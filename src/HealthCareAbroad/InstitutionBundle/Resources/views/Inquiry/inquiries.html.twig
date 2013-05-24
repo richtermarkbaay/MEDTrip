@@ -1,0 +1,64 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: ''} %}
+{% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
+{% block content %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+            {#% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %#}
+            <div id="mainInquiryDiv" class="span12">
+                {% include 'InstitutionBundle:Inquiry:inquiries_section.html.twig' %}
+            </div>
+            <!--End of one columns data-->
+                    
+        {% endblock %}
+        
+    {% endembed %}
+{% endblock %}
+{% block inlineJavascriptCode %}
+    <script src="{{ asset('bundles/institution/js/institutionInquiry.js') }}"></script>
+    <script type="text/javascript">
+    $(function() {
+    	var _inquiries = $.parseJSON('{{ inquiries | raw}}');
+    	var _prototype = '{{ getTemplateContents("InstitutionBundle:Inquiry/Widgets:listItem.inquiry.html.twig") | raw }}';
+    	
+    	
+    	/*_cntr = $('#inquiryCntr').val();
+    	if(!_cntr) {
+    	    _cntr = 2;
+    	    _lastIndex = 0;
+    	}*/
+    	//loadInquiry(_cntr);
+    	InstitutionInquiry.setInquiryData(_inquiries);
+    	InstitutionInquiry.setTemplatePrototype(_prototype);
+    	InstitutionInquiry._loadContent();
+    	/*function loadInquiry(_cntr)
+    	{                                
+    		$.each(inquiries, function(_k, value) {
+            	if(_k + 1 <= _cntr && _k + 1 > _lastIndex ) {
+                	var el = $(_prototype);
+                	el.find('a.inquiry_sender').html(value.sender);
+                	$(el.find('a.inquiry_sender')).attr('href', value.viewPath);
+                	el.find('a.inquiry_message').html(value.message);
+                	$(el.find('a.inquiry_message')).attr('href', value.viewPath);
+                	$(el.find('a.inquiry_view')).attr('href', value.viewPath);
+                	$(el.find('a.inquiry_remove')).attr('href', value.removePath);
+                	el.find('input.inquiry_cntr').val(_k + 1);
+                	
+                	$('#inquiryList ul.hca-inquiries').append(el);
+            	}
+        	});
+    		_lastIndex = _cntr;
+    	}*/
+
+    	$('.inquiry_showMore').click(function() {
+    	    _cntr = parseInt(_cntr) + parseInt(_cntr);
+    	    $('#inquiryCntr').val(_cntr);
+    	    InstitutionInquiry._loadContent();
+
+    	    return false;
+        });
+    	    	
+    });
+    </script>
+{% endblock %}
+

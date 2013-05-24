@@ -9,7 +9,7 @@ services:
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
             - [setInstitutionPropertyService, [@services.institution_property]]
-            
+            - [setRouter, [@router]]
     services.institution.factory:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
         arguments: [@doctrine]

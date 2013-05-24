@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -44,7 +46,10 @@ class InstitutionTwigExtension extends \Twig_Extension
             'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number'),
             'render_institution_contact_details' => new \Twig_Function_Method($this, 'render_institution_contact_details'),
             'render_institution_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_suggestions'),
-            'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile')
+            'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile'),
+            'render_institution_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_inquiries'),
+            'render_institution_unread_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_unread_inquiries'),
+            'render_institution_read_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_read_inquiries')
         );
     }
     
@@ -98,9 +103,30 @@ class InstitutionTwigExtension extends \Twig_Extension
             }
         }
         
-//         var_dump($incompleteClinics);exit;
         return $incompleteClinics;
     }    
+    
+    public function render_institution_inquiries(Institution $institution)
+    {
+        $inquiries = $this->institutionService->getInstitutionInquiries($institution);
+
+        return $inquiries;
+    }
+    
+    public function render_institution_unread_inquiries(Institution $institution)
+    {
+        $unread_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD);
+//         var_dump($unread_inquiries);exit;
+        return $unread_inquiries;
+    }
+    
+    public function render_institution_read_inquiries(Institution $institution)
+    {
+        $read_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ);
+        //         var_dump($unread_inquiries);exit;
+        return $read_inquiries;
+    }
+    
     public function render_institution_contact_number(Institution $institution)
     {
         $contactNumber = \json_decode($institution->getContactNumber(), true);

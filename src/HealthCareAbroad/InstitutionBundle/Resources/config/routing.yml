@@ -124,7 +124,43 @@ institution_terms_of_use:
     pattern: /institution/termsofuse.html
     defaults: { _controller: InstitutionBundle:StaticPage:termsOfUse }
     requirements:
-        _method: GET   
+        _method: GET
+        
+institution_inquiries:
+    pattern: /institution/inquiries
+    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    requirements:
+        _method: GET|POST
+        
+institution_view_inquiry:
+    pattern: /institution/inquiry/{id}/view
+    defaults: { _controller: InstitutionBundle:Default:viewInquiry }
+    requirements:
+        _method: GET|POST 
+
+institution_delete_inquiry:
+    pattern: /institution/inquiry/{id}/remove
+    defaults: { _controller: InstitutionBundle:Default:removeInquiry }
+    requirements:
+        _method: GET|POST
+
+institution_mark_inquiry:
+    pattern: /institution/inquiry/ajaxMarkInquiry
+    defaults: { _controller: InstitutionBundle:Default:ajaxMarkInquiry }
+    requirements:
+        _method: GET|POST
+       
+institution_view_readInquiries:
+    pattern: /institution/{tabName}-inquiries
+    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    requirements:
+        _method: GET|POST 
+       
+institution_view_unreadInquiries:
+    pattern: /institution/{tabName}-inquiries
+    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    requirements:
+        _method: GET|POST 
         
 # removed this route, this will cause invalid urls to fall here. 
 # TODO: find a better approach for static pages

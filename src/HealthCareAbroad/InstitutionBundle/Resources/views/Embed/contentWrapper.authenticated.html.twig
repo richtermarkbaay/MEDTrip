@@ -9,9 +9,15 @@
                     /
                 </span>
             </li>
+            {% if isInquiry is not defined %}
             <li class="active">
                 Manage Hospital
             </li>
+            {% else %}
+            <li class="active">
+                Inquiries
+            </li>
+            {% endif %}
         </ul>
     {% endif %}
             <!-- callout -->

@@ -1,5 +1,8 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'dashboard'} %}
+{% set _inquiries = render_institution_inquiries(institution) %}
+{% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
+{% set _read_inquiries = render_institution_read_inquiries(institution) %}
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
@@ -11,6 +14,7 @@
             Now that patients can find your Medical Institution on HealthcareAbroad, make sure that they find complete and relevant information about everything that you have to offer. <br><br>However it seems there are couple of things need to be done. Just a few more things in order to make your Medical Institution Profile more comprehensive and recognizable to your prospective patients. To finish up, just complete the items listed below:
         </div>
     </section>
+    
     <section class="section row-fluid">
         <h2> Suggestion for your Hospital </h2>
         {% set _suggestions = render_institution_suggestions(institution) %}
@@ -25,7 +29,7 @@
                         </span>
                     </li>
                 {% endfor %}
-                <a class="btn btn-link" href="">Click Here to update</a>
+                <a class="btn btn-link" href="{{ path('institution_account_profile') }}">Click Here to update</a>
             {% endif %}  
         </ul>
        
@@ -46,7 +50,7 @@
                             This clinic doesn't have a 
                             {{ center.fields | join(',') }}.
                         </span>
-                        <a class="btn btn-link pull-right" href="#">Click Here to update</a>
+                        <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">Click Here to update</a>
                     </li>
                 {% endfor %}
             {% endif %} 
@@ -57,52 +61,26 @@
         <h2>
             Latest Inquiries
         </h2>
+        {% if _inquiries is not null %}
         <table class="table table-hover hca-inquiry">
+            {% for inquiry in _inquiries %}
             <tr>
                 <td>
                     <i class="icon-envelope icon-2x hca-earth">
                     </i>
                 </td>
                 <td>
-                    John Doe
+                    {{ inquiry.inquirerName }}
                 </td>
                 <td>
-                    Your Hospital Profile is almost complete
+                    {{ inquiry.message }}
                 </td>
                 <td>
-                    10/11/2013
+                    {{ inquiry.dateCreated | date("m/d/Y") }}
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <i class="icon-envelope icon-2x hca-earth">
-                    </i>
-                </td>
-                <td>
-                    John Doe
-                </td>
-                <td>
-                    Your Hospital Profile is almost complete
-                </td>
-                <td>
-                    10/11/2013
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <i class="icon-envelope icon-2x hca-earth">
-                    </i>
-                </td>
-                <td>
-                    John Doe
-                </td>
-                <td>
-                    Your Hospital Profile is almost complete
-                </td>
-                <td>
-                    10/11/2013
-                </td>
-            </tr>
+            {% endfor %}
+        {% endif %}
         </table>
     </section>
 </div>

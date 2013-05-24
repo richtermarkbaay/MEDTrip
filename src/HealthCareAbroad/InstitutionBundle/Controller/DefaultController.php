@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -60,6 +64,80 @@ class DefaultController extends InstitutionAwareController
                         'institution' => $this->institution,
                         'isDashBoard' => true
         ));
+    }
+    
+    public function viewAllInquiriesAction(Request $request)
+    {
+        $tab = $request->get('tabName','all');
+        $template = "InstitutionBundle:Inquiry:inquiries.html.twig";
+        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        
+        return $this->render($template, array(
+                        'institution' => $this->institution,
+                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
+                        'isInquiry' => true,
+                        'tab' => $tab
+        ));
+    }
+    
+    public function viewInquiryAction(Request $request)
+    {
+        $inquiryId = $request->get('id');
+        $inquiry = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry')->findOneById($inquiryId);
+        $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_READ);
+        
+        return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
+                        'inquiry' => $inquiry,
+                        'isInquiry' => true
+        ));
+    }
+    
+    public function removeInquiryAction(Request $request)
+    {
+        $inquiryId = $request->get('id');
+        $inquiry = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry')->findOneById($inquiryId);
+        $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
+        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        
+//         return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
+//                         'inquiry' => $inquiry,
+//                         'isInquiry' => true
+//         ));
+        
+        $output['html'] =  $this->renderView("InstitutionBundle:Inquiry:inquiries_section.html.twig", array(
+                        'institution' => $this->institution,
+                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
+                        'isInquiry' => true,
+                        'isInquirySection' => true,
+                        'tab' => $tab
+        ));
+        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        
+        return $response;
+//         }
+        
+    }
+    
+    public function ajaxMarkInquiryAction(Request $request)
+    {
+        $inquiryList = $request->get('inquiryListArr');
+        $inquiryStatus = InstitutionInquiry::STATUS_READ;
+        $tab = $request->get('tab');
+        if($request->get('status') == '1') {
+            $inquiryStatus = InstitutionInquiry::STATUS_UNREAD;
+        }
+        $this->get('services.institution')->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
+        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        /*$output['html'] =  $this->renderView("InstitutionBundle:Inquiry:inquiries_section.html.twig", array(
+                        'institution' => $this->institution,
+                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
+                        'isInquiry' => true,
+                        'isInquirySection' => true,
+                        'tab' => $tab
+        ));*/
+        $response = new Response(\json_encode($inquiryArr, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
+        
+        return $response;
     }
     
     public function addClinicAction()

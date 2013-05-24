@@ -1,0 +1,48 @@
+<section class="section inquiries">
+    <h1>
+        Inquiries
+    </h1>
+    <ul class="breadcrumb messages-box">
+        <li>
+            <a href="{{ path('institution_inquiries') }}"><b>ALL</b></a>
+            <span class="divider">
+                |
+            </span>
+        </li>
+        <li>
+            <a id="readTab" href="{{ path('institution_view_readInquiries', {'tabName' : 'read'}) }}"><b>Read Messages</b><span>({{ render_institution_read_inquiries(institution) | length }})</span></a>
+            <span class="divider">
+                |
+            </span>
+        </li>
+        <li>
+            <a id="unreadTab" href="{{ path('institution_view_unreadInquiries', {'tabName' : 'unread'}) }}">Unread Messages<span>({{ render_institution_unread_inquiries(institution) | length }})</span></a>
+        </li>
+    </ul>
+    <div class="pagination pagination-right">
+        Showing 1-15 of 100
+        <a href="">Next</a>
+    </div>
+    <div class="span12 row"> 
+        <input id="inquiryCheckAll" data-mainDivId="#mainInquiryDiv" data-divId="#inquiryList" data-tab="{{ tab }}" onclick="InstitutionInquiry.selectAllInquiry($(this)); " class="pull-left" type="checkbox">
+        <div class="span11 btn-group">
+            <a href="{{ path('institution_mark_inquiry') }}" data-checkAllId="#inquiryCheckAll" data-statusInquiry="2" data-divId="#inquiryList" onclick="InstitutionInquiry._doInquiry($(this)); return false;" class="btn">
+                Mark as read
+            </a>
+            <a href="{{ path('institution_mark_inquiry') }}" data-checkAllId="#inquiryCheckAll" data-statusInquiry="1" data-divId="#inquiryList" onclick="InstitutionInquiry._doInquiry($(this)); return false;" class="btn">
+                Mark as unread
+            </a>
+        </div>
+    </div>
+    <div id="inquiryList">
+        <ul class="hca-inquiries">
+        {% if inquiries is not null and isInquirySection is defined %}
+            {% for inquiry in json_decode(inquiries) %}
+                {% include 'InstitutionBundle:Inquiry/Widgets:listItem.inquiry.html.twig' %}
+            {% endfor %}
+        {% endif %}
+        </ul>
+    </div>
+    <br>
+    <a class="btn inquiry_showMore pull-right">Show More</a>
+</section>

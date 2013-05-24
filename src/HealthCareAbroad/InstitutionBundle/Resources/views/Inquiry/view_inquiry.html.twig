@@ -1,0 +1,92 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: ''} %}
+{% set _inquiries = render_institution_inquiries(institution) %}
+{% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
+{% set _read_inquiries = render_institution_read_inquiries(institution) %}
+{% block content %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+        {% block wrappedContent %}
+            {#% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %#}
+            <h1>
+                Inquiries
+            </h1>
+            <div class="span8">
+                <section class="section account-info">
+                    <ul class="messages">
+                        <li class="message header">
+                            <span class="messages-returnbox">
+                                <i class="icon-arrow-left">
+                                </i><a href="{{ path('institution_inquiries') }}">Return</a>
+                            </span>
+                            <!--  >span class="messages-actions">
+                                <div class="btn-group">
+                                    <button class="btn">
+                                        Mark as unread
+                                    </button>
+                                </div>
+                            </span-->
+                        </li>
+                    </ul>
+                </section>
+                <section>
+                    <div class="row-fluid">
+                        <h4>
+                            {{ inquiry.inquirerName }}
+                            <br><small>wrote 2 days ago</small>
+                        </h4>
+                        
+                        <p>
+                            {{ inquiry.message }}
+                        </p>
+                    </div>
+                </section>
+            </div>
+            <aside class="span4">
+                <section class="aside-box default dashboard-side">
+                    <h2>
+                        Couple of things need to be done.
+                        <br>
+                        <small>
+                            Your Hospital Profile is almost complete*. Please give some time to complete
+                            the things that are listed below:
+                        </small>
+                    </h2>
+                    <div class="features">
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                1
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Upload Logo and Banner
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                2
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Add Doctors
+                                </span>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <span class="numbercircle pull-left">
+                                3
+                            </span>
+                            <div class="media-body">
+                                <span class="main-step">
+                                    Add Hospital Services
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        {% endblock %}
+        
+    {% endembed %}
+{% endblock %}
+

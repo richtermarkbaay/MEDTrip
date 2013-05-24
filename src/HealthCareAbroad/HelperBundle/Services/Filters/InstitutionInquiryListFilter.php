@@ -49,6 +49,11 @@ class InstitutionInquiryListFilter extends ListFilter
     {
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
         
+        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        }
+        
         if ($this->queryParams['field'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->innerJoin('a.institution', 'b'); 
             $this->queryBuilder->where('b.name LIKE :searchKey');

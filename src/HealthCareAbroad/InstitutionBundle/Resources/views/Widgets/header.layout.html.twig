@@ -8,10 +8,10 @@
             </div>
             <div class="pull-right">
                 <div class="navbar">
-                    {% if not isSingleCenter and isDashBoard is defined %}
+                    {% if not isSingleCenter and isDashBoard is defined or isInquiry is defined %}
                     <ul class="nav">
                         <li>
-                            <a href="notifications.html"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> 10 </span></a>
+                            <a href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ _unread_inquiries | length}} </span></a>
                         </li>
                         <li>
                             <a href="clinic-listing-all.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>

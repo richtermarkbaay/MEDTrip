@@ -68,7 +68,8 @@ final class ListFilterFactory
             'admin_inquire' => 'InquiryListFilter',
         	'admin_institution_inquire' => 'InstitutionInquiryListFilter',
             'admin_error_reports' => 'ErrorReportListFilter',
-            'admin_feedback' => 'FeedbackListFilter'
+            'admin_feedback' => 'FeedbackListFilter',
+            //'institution_inquiries' => 'InstitutionInquiryListFilter'
         );
     }
 
