@@ -105,12 +105,28 @@ class MedicalCenterController extends InstitutionAwareController
         $results = $this->repository->getInstitutionMedicalCentersByStatus($this->institution, $status);
         $list = InstitutionMedicalCenterStatus::getStatusList();
         $total = $this->service->getMedicalCenterCountByStatus($this->institution->getInstitutionMedicalCenters());
+        
+        if (!$this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
+            $this->institutionMedicalCenter->setInstitution($this->institution);
+        }
+        
+        $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        
+        if(!$contactDetails) {
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+        }
+        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $parameters = array(
                         'total' => $total,
                         'medicalCenters' => $results,
                         'navStatus' => strtolower($list[$status]),
                         'institution' => $this->institution,
-                        'statusList' => InstitutionMedicalCenterStatus::getStatusList()
+                        'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
+                        'institutionMedicalCenterForm' => $form->createView(),
         );
         
         if( $request->get('status'))
@@ -187,6 +203,7 @@ class MedicalCenterController extends InstitutionAwareController
                             InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
                             InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                         ));
+                
                 $form->bind($request);
                 if ($form->isValid()) {
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
@@ -333,68 +350,62 @@ class MedicalCenterController extends InstitutionAwareController
         return $response;
     }
     
-    /**
+    /** edited for newly markup
+     * Add new CLINIC CENTER
      * @author Chaztine Blance
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addMedicalCenterAction(Request $request)
     {
-        return $this->addDetailsAction($request);
+        if ($request->isMethod('POST')) {
+     
+            if (!$this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+                $this->institutionMedicalCenter = new InstitutionMedicalCenter();
+                $this->institutionMedicalCenter->setInstitution($this->institution);
+            }
+            
+            $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
+            unset($formVariables['_token']);
+            $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
+            
+            if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+                $phoneNumber = new ContactDetail();
+                $phoneNumber->setType(ContactDetailTypes::PHONE);
+                $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+            }
+            
+            $this->institutionMedicalCenter->setDescription(' ');
+            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
+            $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
+            $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
+            
+            $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
+                InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
+                InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
+            ));
+            
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')->saveAsDraft($form->getData());
+                $output =  $this->generateUrl('institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId()));
+                
+                $response = new Response(\json_encode(array('redirect' => $output)), 200, array('content-type' => 'application/json'));
+            }      
+            else {
+                $errors = array();
+                $form_errors = $this->get('validator')->validate($form);
+                 
+                foreach ($form_errors as $_err) {
+                    $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
+                }
+                $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+            }
+            
+        }
+        return $response;
     }
          
-    /**
-     * This is the first step when creating a new InstitutionMedicalCenter. Add details of a InstitutionMedicalCenter
-     * 
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addDetailsAction(Request $request)
-    {
-        if (is_null($this->institutionMedicalCenter)) {
-            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-            $this->institutionMedicalCenter->setInstitution($this->institution);
-        }
-        else {
-            // there is an imcId in the Request, check if this is a draft
-            if ($this->institutionMedicalCenter && !$this->service->isDraft($this->institutionMedicalCenter)) {
-                return $this->_redirectIndexWithFlashMessage('Invalid draft medical center', 'error');
-            }
-        }
-        
-        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($contactDetails);
-        }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(),$this->institutionMedicalCenter);
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            
-            if ($form->isValid()) {
-                
-                // initialize business hours default submitted data
-                $defaultDailyData = array('isOpen' => 0, 'notes' => '');
-                $businessHours = $request->get('businessHours', array());
-                foreach ($businessHours as $_day => $data) {
-                    $businessHours[$_day] = \array_merge($defaultDailyData, $data);
-                }
-                
-                $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
-                $form->getData()->setBusinessHours($jsonEncodedBusinessHours);
-                
-                $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-                    ->saveAsDraft($form->getData());
-
-                // TODO: fire event
-                
-                // redirect to step 2;
-                return $this->redirect($this->generateUrl('institution_medicalCenter_addSpecializations',array('imcId' => $this->institutionMedicalCenter->getId())));
-            }
-        }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:addDetails.html.twig', array('form' => $form->createView(), 'institutionMedicalCenter' => $this->institutionMedicalCenter));
-    }
-    
     /*
      * 
      * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter

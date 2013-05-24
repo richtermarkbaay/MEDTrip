@@ -4,10 +4,10 @@
  {% block content %}
  
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
-    {% block wrappedContent %}    
+        {% block wrappedContent %}    
                <h1>
                     <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
-                    <a href="#add-clinic" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
+                    <a href="#add-new-center" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add {{ clinicClassLabel.singular | title }}</a>
                 </h1>
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
@@ -21,7 +21,7 @@
                        <div class="tab-pane" id="expired"> </div>
                     </div>
             </div>
-               
+              {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
         {% endblock %}
         
     {% endembed %}
@@ -30,6 +30,7 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionMedicalCenterTab.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript">
 <!--
     (function($){

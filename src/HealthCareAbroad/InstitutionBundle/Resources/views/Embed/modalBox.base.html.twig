@@ -1,4 +1,4 @@
-<div id="{{ modal.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="{{ modal.id }}" class="modal hide fade {{ modal.class is defined ? modal.class : '' }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-header">
         <button type="button" class="Closed" data-dismiss="modal" aria-hidden="true">x</button> 
         <h3 id="myModalLabel">{{ modal.title }}</h3> 

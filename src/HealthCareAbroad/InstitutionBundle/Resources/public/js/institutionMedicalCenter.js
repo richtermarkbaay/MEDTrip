@@ -350,6 +350,39 @@ var InstitutionMedicalCenter = {
         return false;
     },
     
+    submitAddNewMedicalCenter: function(domButtonElement) {
+        _button = $(domButtonElement);
+        _buttonHtml = _button.html();
+        _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
+        _form = _button.parents('div#add-new-center').find('form');
+        _data = _form.serialize();
+        $.ajax({
+            url: _form.attr('action'),
+            data: _data,
+            type: 'POST',
+            dataType: 'json',
+            success: function(response) {
+            	window.location = response.redirect;
+            },
+            error: function(response) {
+                _button.html(_buttonHtml).attr('disabled', false);
+                if (response.status==400) {
+                    var errors = $.parseJSON(response.responseText).html;
+                    if (errors.length) {
+                        var _errorString = "";
+                        $.each(errors, function(key, item){
+                        	_errorString += item.error+"<br>";
+                        	_form.find('div.'+item.field).addClass('error');
+                        });
+                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                    }
+                }
+            }
+        });
+        return false;
+    },
+    
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {

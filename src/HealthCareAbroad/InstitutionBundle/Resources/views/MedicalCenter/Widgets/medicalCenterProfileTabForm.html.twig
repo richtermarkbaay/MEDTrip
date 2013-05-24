@@ -3,7 +3,20 @@
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">  Edit </a>
         <div class="show">
             <h3> About your Clinic </h3>
-            <p><span id="clinicDescriptionText">{{ institutionMedicalCenter.description | raw }} </span></p>
+            {% if institutionMedicalCenter.description == '' %}
+                <p><span id="clinicDescriptionText">{{ institutionMedicalCenter.description | raw }} </span></p>
+            {% else %}
+                <div class="alert alert-block">
+                    <div class="hca-profile-sublevel">
+                        Here you can showcase description about your Clinic.
+                    </div>
+                    <p class="hca-helptext">
+                        You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+                        Awards and Accreditations for your Clinic.
+                    </p>
+                    <a  href="#description" type="button" class="btn btn-primary" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;"> <i class="icon-plus">  </i> Add Entry </a>
+                </div>
+            {% endif %}
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
