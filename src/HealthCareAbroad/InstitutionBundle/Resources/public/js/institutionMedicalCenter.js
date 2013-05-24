@@ -244,6 +244,11 @@ var InstitutionMedicalCenter = {
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
         _form = _button.parents('form');
+        _parent = _button.parents('form');
+        if(!_form.attr('action')){
+        	_form = _button.parents('div#edit-medical-center-name').find('form');
+        	_parent = _button.parents('div#edit-medical-center-name');
+        }
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
@@ -256,9 +261,13 @@ var InstitutionMedicalCenter = {
             	switch(_form.attr('id')){
             	    case 'nameModalForm':
             	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
+            	        _form.parents('div.modal').modal('hide');
                         break;
-                    case '.':
+                    case 'descriptionForm':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
+                        if($('#clinicDescriptionText').parent('p').next('.alert')){
+                        	$('#clinicDescriptionText').parent('p').next('.alert').hide();
+                        }
                         break;
                     case 'addressForm':
                     	var address = [];
@@ -315,15 +324,15 @@ var InstitutionMedicalCenter = {
                   	break;
                        
                     case 'servicesForm':
-                    	$('#servicesTable').html(response.html);
+                    	$('#serviceTable').html(response.html);
                     	break;
                     	
                     case 'awardsForm':
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
-            	 _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                 _form.find('.error').removeClass('error');
+            	_parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _parent.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
                 _divToShow.prev().show();
                 _divToShow.show();
@@ -339,10 +348,10 @@ var InstitutionMedicalCenter = {
                         var _errorString = "";
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
-                        	_form.find('div.'+item.field).addClass('error');
+                        	_parent.find('div.'+item.field).addClass('error');
                         });
-                        _form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _form.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                        _parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
                     }
                 }
             }

@@ -1,7 +1,23 @@
 <form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" >
     {% for each in fields %}
-
-        {% if each == 'description' %}
+          {% if each == 'name' %}
+            <section>
+                <div class="aside-box info dashboard-side">
+                    <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
+                    Changing your Clinic name here will change it in ALL Healthcare Abroad listings. Editing your Clinic Name is subject to review and approval.
+                </div>
+            </section>
+            <section class="section institution-info">
+                <div class="row-fluid hca-clinic-modal">
+                    <div class="span12">
+                        <div class="name control-group">   
+                            {{ form_label(institutionMedicalCenterForm.name) }}
+                            {{ form_widget(institutionMedicalCenterForm.name, { 'attr': {class: 'span10'} })  }}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        {% elseif each == 'description' %}
             <div class="description control-group">   
                 {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
             </div>
@@ -73,15 +89,17 @@
         {% else %}
             {{ form_row(institutionMedicalCenterForm[each]) }}
         {% endif %}
-
     {% endfor %}
     
     {{ _csrf_token_widget | raw}}
+    
+     {% if displayButton is not defined %}
         <div class="alert-box span8"></div>
         <div class="row"> 
             <div class="pull-right">
                  <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
         	</div>
         </div>
+     {% endif %}
 </form>
 

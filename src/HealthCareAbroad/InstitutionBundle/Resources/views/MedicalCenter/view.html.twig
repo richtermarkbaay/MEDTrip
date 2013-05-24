@@ -3,6 +3,7 @@
 {% set _csrf_token_widget = form_widget(institutionMedicalCenterForm._token) %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
+    {% include 'InstitutionBundle:MedicalCenter/Widgets:modal.institutionMedicalCenterName.html.twig' %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
             			 <div class="tab-content span8">

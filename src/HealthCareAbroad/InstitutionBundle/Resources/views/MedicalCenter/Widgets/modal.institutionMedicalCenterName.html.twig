@@ -1,0 +1,12 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-medical-center-name', 'title': 'Edit Clinic Name' }} %}
+    {% block modalBody %}
+        {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
+             with {formId: 'nameModalForm', fields: ['name'],displayButton : 'false'} 
+        %}
+    {% endblock %}
+    {% block footerBody %}
+         <div class="alert-box span4"></div>
+        <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
+		<button class="btn pull-right btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
+    {% endblock %}
+{% endembed %}
