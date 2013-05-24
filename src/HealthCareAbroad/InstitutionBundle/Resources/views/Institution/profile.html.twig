@@ -5,7 +5,7 @@
 {% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
-
+    {% include 'InstitutionBundle:Widgets:modal.institutionName.html.twig' %}   
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
     
         {% block wrappedContent %}
