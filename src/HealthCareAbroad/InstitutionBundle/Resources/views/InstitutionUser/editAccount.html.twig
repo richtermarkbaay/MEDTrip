@@ -1,35 +1,24 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set selectedTab = 'manage_account'%}
-
+{% set mainNavigation = {selected: 'Manage Account Profile'} %}
 {% block content %}
-<div id="content" class="container">
-     <ul class="breadcrumb">
-        <li>
-            <a href="#"><i class="icon-home"></i></a> <span class="divider"> / </span>
-        </li>
-        <li class="active">
-            Manage Clinic
-        </li>
-    </ul>
-
-	<div class="row">
-		<div class=span8>
-			<section class="section account-info">
-				<h2>Personal Information</h2>
-				 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
-			</section>
-			<section class="section institution-info">
-    			<h2>Login Information</h2>
-                   {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
-            </section>
-        </div>
-		     {% include 'InstitutionBundle:Widgets:dashboard.sidebarLabel.html.twig' %}
-		     
-     </div>
-	<!--End of row-->
-</div>
-{% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
-
+{% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+ {% block wrappedContent %}
+    		<div class=span8>
+    			<section class="section account-info">
+    				<h2>Personal Information</h2>
+    				 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
+    			</section>
+    			<section class="section institution-info">
+        			<h2>Login Information</h2>
+                       {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
+                </section>
+            </div>
+    		     {% include 'InstitutionBundle:InstitutionUser/Widgets:sidebar.manage_account.html.twig' %}
+    		     
+    	<!--End of row-->
+            {% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionUserProfile.js') }}" ></script>
