@@ -8,7 +8,7 @@ FrontendBundle_feedback:
     prefix:   /
     
 frontend_campaign_intro:
-    pattern:  /hca_intro/index.html
+    pattern:  /advertising-guide.html
     defaults: { _controller: FrontendBundle:CampaignIntro:index}
     
 frontend_newsletter_subscribe:
