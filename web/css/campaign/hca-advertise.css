@@ -71,32 +71,37 @@ input[type=submit]{background-color:#fe6100;background-repeat:repeat;background-
 .e-home{margin-top:-2010px;margin-left:300px}
 .f-home{margin-top:-1450px;margin-left:720px}
 .g-home{margin-top:-960px;margin-left:730px}
-.a-results{margin-top:-2510px;margin-left:300px}
-.b-results{margin-top:-2510px;margin-left:730px}
-.c-results{margin-top:-2260px;margin-left:300px}
-.d-results{margin-top:-2200px;margin-left:730px}
-.e-results{margin-top:-2090px;margin-left:300px}
-.f-results{margin-top:-1890px;margin-left:300px}
-.g-results{margin-top:-1710px;margin-left:300px}
-.a-clinic{margin-top:-2440px;margin-left:300px}
-.b-clinic{margin-top:-2360px;margin-left:80px}
-.c-clinic{margin-top:-2360px;margin-left:240px}
-.d-clinic{margin-top:-2250px;margin-left:670px}
-.e-clinic{margin-top:-2250px;margin-left:300px}
-.f-clinic{margin-top:-2130px;margin-left:670px}
-.g-clinic{margin-top:-2030px;margin-left:280px}
-.h-clinic{margin-top:-2020px;margin-left:730px}
-.i-clinic{margin-top:-1260px;margin-left:280px}
+.h-home{margin-top:-870px;margin-left:310px}
+.i-home{margin-top:-560px;margin-left:730px}
+.j-home{margin-top:-360px;margin-left:730px}
+.a-results{margin-top:-1710px;margin-left:300px}
+.b-results{margin-top:-1550px;margin-left:730px}
+.c-results{margin-top:-1450px;margin-left:420px}
+.d-results{margin-top:-1200px;margin-left:740px}
+.e-results{margin-top:-1190px;margin-left:300px}
+.f-results{margin-top:-1000px;margin-left:300px}
+.g-results{margin-top:-810px;margin-left:300px}
+.a-clinic{margin-top:-2310px;margin-left:120px}
+.b-clinic{margin-top:-2160px;margin-left:100px}
+.c-clinic{margin-top:-2100px;margin-left:250px}
+.d-clinic{margin-top:-2030px;margin-left:750px}
+.e-clinic{margin-top:-2010px;margin-left:300px}
+.f-clinic{margin-top:-1800px;margin-left:740px}
+.g-clinic{margin-top:-1860px;margin-left:280px}
+.h-clinic{margin-top:-1530px;margin-left:740px}
+.i-clinic{margin-top:-1305px;margin-left:320px}
+.j-clinic{margin-top:-1225px;margin-left:720px}
+.k-clinic{margin-top:-1010px;margin-left:270px}
 .c2-clinic{margin-top:-2310px;margin-left:320px}
 .a-hospital{margin-top:-2910px;margin-left:600px}
 .b-hospital{margin-top:-2800px;margin-left:80px}
 .c-hospital{margin-top:-2730px;margin-left:520px}
 .d-hospital{margin-top:-2635px;margin-left:160px}
 .e-hospital{margin-top:-2330px;margin-left:280px}
-.f-hospital{margin-top:-2190px;margin-left:730px}
-.g-hospital{margin-top:-2080px;margin-left:730px}
-.h-hospital{margin-top:-1000px;margin-left:310px}
-.i-hospital{margin-top:-1260px;margin-left:310px}
+.f-hospital{margin-top:-2500px;margin-left:730px}
+.g-hospital{margin-top:-2200px;margin-left:730px}
+.h-hospital{margin-top:-1920px;margin-left:730px}
+.i-hospital{margin-top:-990px;margin-left:310px}
 .hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0}
 .input-block-level{display:block;width:100%;min-height:28px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box}
 .popover{position:absolute;top:0;left:0;z-index:1010;display:none;padding:5px}
@@ -118,8 +123,3 @@ input[type=submit]{background-color:#fe6100;background-repeat:repeat;background-
 #about,#news{background:#FFF 50% 0 repeat fixed;background-position:left top;width:100%;height:auto;overflow:hidden;margin:-20px auto 0;padding:40px 0 80px}
 #about .container h3,#news .container h3,#media .container h3,#pricing .container h3,#portfolio .container h3,#contact .container h3{color:#7f8d83}
 #about .media .media-body,#team .media .media-body,#news .media .media-body{display:block;margin-left:60px}
-.h-home,.h-results{margin-top:-895px;margin-left:290px}
-.i-home,.i-results{margin-top:-520px;margin-left:730px}
-.j-home,.j-results{margin-top:-320px;margin-left:730px}
-.k-home,.k-results,.k-clinic,.k-hospital{margin-top:-850px;margin-left:280px}
-.j-clinic,.j-hospital{margin-top:-1780px;margin-left:730px}
