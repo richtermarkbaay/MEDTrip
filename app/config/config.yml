@@ -8,17 +8,17 @@ imports:
     #- { resource: elastic_search.yml }
 
 framework:
-    #esi:             ~
-    #translator:      { fallback: %locale% }
-    secret:          %secret%
+    #esi: ~
+    #translator: { fallback: %locale% }
+    secret: %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         #strict_parameters: %kernel.debug%
-    form:            true
+    form: true
     csrf_protection: true
-    validation:      { enabled: true, enable_annotations: true }
-    templating:      { engines: ['twig'] } #assets_version: SomeVersionScheme
-    default_locale:  %locale%
+    validation: { enabled: true, enable_annotations: true }
+    templating: { engines: ['twig'] } #assets_version: SomeVersionScheme
+    default_locale: %locale%
     session: true
     trusted_proxies: ~
     session:
@@ -29,7 +29,7 @@ twig:
         resources:
             - 'HelperBundle:Form:fields.custom.html.twig'
             - 'HelperBundle:Form:fancy_business_hours.html.twig'
-    debug:            %kernel.debug%
+    debug: %kernel.debug%
     strict_variables: %kernel.debug%
     exception_controller: HealthCareAbroad\HelperBundle\Controller\CustomExceptionController::showAction
     globals:
@@ -52,45 +52,45 @@ twig:
 
 # Assetic Configuration
 assetic:
-    debug:          %kernel.debug%
+    debug: %kernel.debug%
     use_controller: false
-    bundles:        [FrontendBundle]
+    bundles: [FrontendBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
         #closure:
-        #    jar: %kernel.root_dir%/Resources/java/compiler.jar
+        # jar: %kernel.root_dir%/Resources/java/compiler.jar
         #yui_css:
-        #    jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
+        # jar: %kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar
 
 # Doctrine Configuration
 doctrine:
     dbal:
         connections:
             default:
-                driver:   %database_driver%
-                host:     %database_host%
-                port:     %database_port%
-                dbname:   %database_name%
-                user:     %database_user%
+                driver: %database_driver%
+                host: %database_host%
+                port: %database_port%
+                dbname: %database_name%
+                user: %database_user%
                 password: %database_password%
-                charset:  UTF8
+                charset: UTF8
             logger:
-                driver:   %database_driver%
-                host:     %database_host%
-                port:     %database_port%
-                dbname:   %database_name%
-                user:     %database_user%
+                driver: %database_driver%
+                host: %database_host%
+                port: %database_port%
+                dbname: %database_name%
+                user: %database_user%
                 password: %database_password%
-                charset:  UTF8
+                charset: UTF8
             statistics:
-                driver:   %database_driver%
-                host:     %database_host%
-                port:     %database_port%
-                dbname:   %statistics_db_name%
-                user:     %statistics_db_user%
+                driver: %database_driver%
+                host: %database_host%
+                port: %database_port%
+                dbname: %statistics_db_name%
+                user: %statistics_db_user%
                 password: %statistics_db_password%
-                charset:  UTF8
+                charset: UTF8
 
     orm:
         auto_generate_proxy_classes: %kernel.debug%
@@ -126,11 +126,11 @@ doctrine:
 
 # Swiftmailer Configuration
 swiftmailer:
-    port:      %mailer_port%
+    port: %mailer_port%
     transport: %mailer_transport%
-    host:      %mailer_host%
-    username:  %mailer_user%
-    password:  %mailer_password%
+    host: %mailer_host%
+    username: %mailer_user%
+    password: %mailer_password%
     spool:
         type: file
         path: %kernel.root_dir%/../spool
@@ -148,7 +148,7 @@ stfalcon_tinymce:
 
 # MailChimp configuration
 rezzza_mail_chimp:
-    api_key:    %mailchimp_api_key%
+    api_key: %mailchimp_api_key%
     connection: %mailchimp_connection%
 
 # Captcha configuration
