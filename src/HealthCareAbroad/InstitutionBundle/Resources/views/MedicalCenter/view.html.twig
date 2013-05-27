@@ -1,5 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'medical_centers'} %}
+{% set mainNavigation = {selected: 'clinics' , label : institution.name , url: path('institution_account_profile') } %}
+{% set subNavigation = {selected: 'clinics' , label : institutionMedicalCenter.name } %}
 {% set _csrf_token_widget = form_widget(institutionMedicalCenterForm._token) %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}

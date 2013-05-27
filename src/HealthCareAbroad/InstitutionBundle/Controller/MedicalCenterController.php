@@ -457,40 +457,6 @@ class MedicalCenterController extends InstitutionAwareController
         ));
     }
     
-     /**
-     * This is the second step when creating a center. This will add InstitutionMedicalCenter to the passed InstitutionMedicalCenter.
-     * Expected GET parameters:
-     *     - imcId institutionMedicalCenterId
-     * 
-     * @author Chaztine Blance
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     */
-    public function addSpecializationsAction(Request $request)
-    {
-        $service = $this->get('services.institution_medical_center');
-
-        if (!$this->institutionMedicalCenter) {
-            throw $this->createNotFoundException('Invalid institutionMedicalCenter');
-        }
-        $assignedSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->findByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($assignedSpecialization);
-        $form = $this->createForm(new InstitutionSpecializationSelectorFormType());
-        $specializationArr = array();
-
-        foreach ($specializations as $e) {
-            $specializationArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-        }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:addSpecializations.html.twig', array(
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'institution' => $this->institution,
-            'specializationsJSON' => \json_encode($specializationArr),
-            'form' => $form->createView(),
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution)
-        ));
-    }
-    
     /**
      * TODO: Separate logic for AJAX request.
      * @param Request $request
@@ -561,57 +527,6 @@ class MedicalCenterController extends InstitutionAwareController
         }
         return $response;
     }
-    
-    public function addAncilliaryServicesAction(Request $request)
-    {
-        $form = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $this->institutionMedicalCenter, 'ancilliary_service_id');
-        $propertyService = $this->get('services.institution_medical_center_property');
-        $medicalCenterService = $this->get('services.institution_medical_center');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-        
-
-        if ($request->isMethod('POST')) {
-            
-            $form->bind($request);
-            if ($form->isValid()) {
-                $data = $form->getData();
-                
-                // clear first the existing ancilliary services of this medical center
-                $medicalCenterService->clearPropertyValues($this->institutionMedicalCenter, $propertyType);
-                
-                // value is a doctrine collection of OfferService entity
-                foreach ($data->getValue() as $_value) {
-                    $_new = clone($data);
-                    $_new->setValue($_value->getId());
-                    $propertyService->save($_new);
-                }
-                
-                if ($this->get('services.institution')->isSingleCenter($this->institution)) {
-                    
-                }
-                
-                
-
-                return $this->redirect($this->generateUrl($routeName, array('imcId' => $this->institutionMedicalCenter->getId())));
-            }
-            else {
-                $request->getSession()->setFlash('notice', 'Please fill up form properly.');
-            }
-        }
-        $selectedServices = array();
-        foreach ($medicalCenterService->getPropertyValues($this->institutionMedicalCenter, $propertyType) as $_prop) {
-            $selectedServices[] = $_prop->getValue();
-        }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:addAncilliaryService.html.twig', array(
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'form' => $form->createView(),
-            'selectedServices' => $selectedServices
-        ));
-    }
-    
-    
     
     public function addDoctorsAction()
     {

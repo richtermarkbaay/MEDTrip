@@ -90,6 +90,7 @@ var InstitutionSpecialization = {
     submitAddSpecialization: function(domButtonElement) {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
+        _button.html('Processing...').attr('disabled', true);
         _form = $(_button).parents('form#institutionSpecializationForm');
         _data = _form.serialize();
         $.ajax({
@@ -105,9 +106,10 @@ var InstitutionSpecialization = {
             	$(response.html).insertAfter($('#specialization_list_block h3'));
                 InstitutionMedicalCenter.displayCallout(response);
                 _form.hide();
+                $('#new_specializationButton').show();
+                _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
-                console.log(response);
                 _button.html(_buttonHtml).attr('disabled', false);
             }
         });
@@ -118,8 +120,9 @@ var InstitutionSpecialization = {
     toggle: function (_element){
     	_attr = $(_element.attr('data-toggle'));
     	$(_attr).show();
-    	$(_attr.selector).html('');
+    	$(_attr.selector).html('<center><img src="/images/institution/spinner_large.gif" /></center>');
     	$(_attr).parents('form').show();
+    	_element.hide();
     	_element.next().find('.edit-specializations').show();
     		_href = _element.attr('data-href');
     	      $.ajax({

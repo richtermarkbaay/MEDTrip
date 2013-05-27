@@ -1,22 +1,32 @@
+{% set _mainNavDefaults = {'selected' : 'dashboard'} %}
+{% set mainNavigation = mainNavigation is defined ? _mainNavDefaults | merge(mainNavigation) : _mainNavDefaults %}
 {% set contentSpanClass = contentSpanClass is defined ? contentSpanClass : 'span12 marginleft0' %}
 <div id="content" class="container">
     <div class="row">
     {% if isNoBreadCrumbs is not defined %}
         <ul class="breadcrumb">
             <li>
-             <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i></a>
-                <span class="divider">
-                    /
-                </span>
+             <a href="{{ path('institution_homepage')}}"><i class="{{ 'dashboard' == mainNavigation.selected ? 'icon-home' : 'icon-h-sign' }}"></i></a>
+                <span class="divider"> / </span>
             </li>
             {% if isInquiry is not defined %}
-            <li class="active">
-                Manage Hospital
+            <li class="{{ subNavigation is not defined ? 'active' : '' }}">
+                {% if mainNavigation.url is not defined %}
+                    {{ mainNavigation.selected | capitalize }}
+                 {% else %}
+                    <a href="{{mainNavigation.url}}">{{ mainNavigation.label | capitalize }}</a>
+                    <span class="divider">  / </span>
+               {% endif %}
             </li>
             {% else %}
             <li class="active">
                 Inquiries
             </li>
+            {% endif %}
+            {% if subNavigation is defined %}
+                <li class="active">
+                     {{ subNavigation.label | capitalize }}
+                </li>
             {% endif %}
         </ul>
     {% endif %}
@@ -30,3 +40,4 @@
         {% block sidebar %}{% endblock %}
     </div>        
 </div>
+
