@@ -76,7 +76,7 @@ class DefaultController extends InstitutionAwareController
                         'institution' => $this->institution,
                         'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
                         'isInquiry' => true,
-                        'tab' => $tab
+                        'tabName' => $tab
         ));
     }
     
@@ -94,48 +94,36 @@ class DefaultController extends InstitutionAwareController
     
     public function removeInquiryAction(Request $request)
     {
+        $institutionService = $this->get('services.institution');
         $inquiryId = $request->get('id');
+        $tab = $request->get('tabName');
         $inquiry = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry')->findOneById($inquiryId);
-        $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
-        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
-        
-//         return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
-//                         'inquiry' => $inquiry,
-//                         'isInquiry' => true
-//         ));
-        
-        $output['html'] =  $this->renderView("InstitutionBundle:Inquiry:inquiries_section.html.twig", array(
-                        'institution' => $this->institution,
-                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
-                        'isInquiry' => true,
-                        'isInquirySection' => true,
-                        'tab' => $tab
-        ));
-        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        $institutionService->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
+        $inquiryArr = $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        $output = array('inquiryList' => $inquiryArr,
+                        'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
+                        'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
+        $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
         
         return $response;
-//         }
         
     }
     
-    public function ajaxMarkInquiryAction(Request $request)
+    public function ajaxSetInstitutionInquiryStatusAction(Request $request)
     {
+        $institutionService = $this->get('services.institution');
         $inquiryList = $request->get('inquiryListArr');
         $inquiryStatus = InstitutionInquiry::STATUS_READ;
-        $tab = $request->get('tab');
+        $tab = $request->get('tabName');
         if($request->get('status') == '1') {
             $inquiryStatus = InstitutionInquiry::STATUS_UNREAD;
         }
-        $this->get('services.institution')->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
-        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
-        /*$output['html'] =  $this->renderView("InstitutionBundle:Inquiry:inquiries_section.html.twig", array(
-                        'institution' => $this->institution,
-                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
-                        'isInquiry' => true,
-                        'isInquirySection' => true,
-                        'tab' => $tab
-        ));*/
-        $response = new Response(\json_encode($inquiryArr, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
+        $inquiries = $institutionService->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
+        $inquiryArr = $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        $output = array('inquiryList' => $inquiryArr,
+                        'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
+                        'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
+        $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
         
         return $response;
     }

@@ -415,7 +415,6 @@ class InstitutionService
     
     public function getInstitutionInquiries(Institution $institution)
     {
-        //return $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findBy($institution);
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
         $qb->select('a')
         ->from('InstitutionBundle:InstitutionInquiry', 'a')
@@ -431,6 +430,7 @@ class InstitutionService
     public function getInstitutionInquiriesBySelectedTab(Institution $institution, $tab)
     {
         if($tab == "all") {
+            
             $inquiries = $this->getInstitutionInquiries($institution);
         }
         elseif ($tab == "read") {
@@ -445,6 +445,7 @@ class InstitutionService
             $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
                             'id' => $each->getId(),
                             'message' => $each->getMessage(),
+                            'status' => $tab . '-inquiry',                            
                             'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
                             'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
         

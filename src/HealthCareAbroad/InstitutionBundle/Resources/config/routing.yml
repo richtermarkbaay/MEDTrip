@@ -145,8 +145,8 @@ institution_delete_inquiry:
         _method: GET|POST
 
 institution_mark_inquiry:
-    pattern: /institution/inquiry/ajaxMarkInquiry
-    defaults: { _controller: InstitutionBundle:Default:ajaxMarkInquiry }
+    pattern: /institution/inquiry/ajaxSetInstitutionInquiryStatus
+    defaults: { _controller: InstitutionBundle:Default:ajaxSetInstitutionInquiryStatus }
     requirements:
         _method: GET|POST
        

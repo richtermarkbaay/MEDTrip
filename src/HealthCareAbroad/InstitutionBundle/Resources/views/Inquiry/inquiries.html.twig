@@ -21,35 +21,12 @@
     	var _inquiries = $.parseJSON('{{ inquiries | raw}}');
     	var _prototype = '{{ getTemplateContents("InstitutionBundle:Inquiry/Widgets:listItem.inquiry.html.twig") | raw }}';
     	
-    	
-    	/*_cntr = $('#inquiryCntr').val();
-    	if(!_cntr) {
-    	    _cntr = 2;
-    	    _lastIndex = 0;
-    	}*/
-    	//loadInquiry(_cntr);
+    	InstitutionInquiry._tab = '{{ tabName }}';
+    	InstitutionInquiry._divId = '#inquiryList';
     	InstitutionInquiry.setInquiryData(_inquiries);
     	InstitutionInquiry.setTemplatePrototype(_prototype);
     	InstitutionInquiry._loadContent();
-    	/*function loadInquiry(_cntr)
-    	{                                
-    		$.each(inquiries, function(_k, value) {
-            	if(_k + 1 <= _cntr && _k + 1 > _lastIndex ) {
-                	var el = $(_prototype);
-                	el.find('a.inquiry_sender').html(value.sender);
-                	$(el.find('a.inquiry_sender')).attr('href', value.viewPath);
-                	el.find('a.inquiry_message').html(value.message);
-                	$(el.find('a.inquiry_message')).attr('href', value.viewPath);
-                	$(el.find('a.inquiry_view')).attr('href', value.viewPath);
-                	$(el.find('a.inquiry_remove')).attr('href', value.removePath);
-                	el.find('input.inquiry_cntr').val(_k + 1);
-                	
-                	$('#inquiryList ul.hca-inquiries').append(el);
-            	}
-        	});
-    		_lastIndex = _cntr;
-    	}*/
-
+    	
     	$('.inquiry_showMore').click(function() {
     	    _cntr = parseInt(_cntr) + parseInt(_cntr);
     	    $('#inquiryCntr').val(_cntr);
