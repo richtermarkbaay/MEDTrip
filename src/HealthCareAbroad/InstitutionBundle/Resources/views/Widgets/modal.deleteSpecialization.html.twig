@@ -1,8 +1,8 @@
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    <h3>Delete Specialization</h3>
+    <h2 id="myModalLabel">Delete Specialization</h2>
 </div>
-<div class="modal-body">
+<div class="modal-body ">
     <p>Are you sure you want to delete
     	<strong> {{ institutionSpecialization.specialization.name }}?</strong>
     </p>
@@ -12,6 +12,6 @@
     <form action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': institutionSpecialization.id } ) }}">
         {{ _commonDeleteCsrfTokenWidget | raw }}
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this).parents('form')); return true;">Delete</button>
+	    <button data-loading-text="Processing..." class="btn btn-danger delete-button pull-right" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this).parents('form')); return true;">Delete</button>
     </form>
 </div>
