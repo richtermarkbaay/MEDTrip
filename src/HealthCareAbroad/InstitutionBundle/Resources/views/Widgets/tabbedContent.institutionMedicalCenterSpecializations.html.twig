@@ -20,7 +20,7 @@
     </section>
      <section class="section action-info hca-main-profile">
         <div class="hca-display-specializations">
-            <button onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary btn-edit pull-right">Add New Specializations</button>
+            <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary btn-edit pull-right">Add New Specializations</button>
             <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">
                <div class="edit-specializations">
                     <div class="row-fluid terms hca-edit-box">
