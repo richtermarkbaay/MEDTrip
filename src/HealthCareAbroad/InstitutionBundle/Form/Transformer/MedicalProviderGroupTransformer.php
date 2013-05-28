@@ -55,7 +55,7 @@ class MedicalProviderGroupTransformer implements DataTransformerInterface
     public function reverseTransform($stringMedicalProviderGroups)
     {
         if (null === $stringMedicalProviderGroups) {
-            return null;
+            return '';
         }
         
         

@@ -299,8 +299,19 @@ class InstitutionSignUpController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution , array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
-
+            
+            $formRequestData = $this->request->get($form->getName());
+            
+            if (isset($formRequestData['medicalProviderGroups']) ) {
+                // we always expect 1 medical provider group
+                // if it is empty remove it from the array
+                if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                    unset($formRequestData['medicalProviderGroups'][0]);
+                }
+            }
+            
+            $form->bind($formRequestData);
+            
             if ($form->isValid()) {
 
                 // set the sign up status of this single center institution
@@ -375,7 +386,16 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
         
-            $form->bind($this->request);
+            $formRequestData = $this->request->get($form->getName());
+            if (isset($formRequestData['medicalProviderGroups']) ) {
+                // we always expect 1 medical provider group
+                // if it is empty remove it from the array
+                if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                    unset($formRequestData['medicalProviderGroups'][0]);
+                }
+            }
+            
+            $form->bind($formRequestData);
            
             if ($form->isValid()) { 
                 
@@ -440,6 +460,8 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
+        $error = false;
+        $errorArr = array();
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
             throw $this->createNotFoundException();
@@ -468,16 +490,27 @@ class InstitutionSignUpController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterFormType(), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
 
         if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
+            
+            $formRequestData = $request->get($form->getName());
+                
+            if((bool)$request->get('isSameAddress')) {
+                $formRequestData['address'] = $this->institution->getAddress1();
+                $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
+                $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
+            }
+            
+            if (isset($formRequestData['medicalProviderGroups']) ) {
+                // we always expect 1 medical provider group
+                // if it is empty remove it from the array
+                if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                    unset($formRequestData['medicalProviderGroups'][0]);
+                }
+            }
+                
+            $form->bind($formRequestData);
             if ($form->isValid()) {
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-                if((bool)$request->get('isSameAddress')) {
-
-                    $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
-                    $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
-                    $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
-                }
                 
                 $this->institutionMedicalCenter = $form->getData();
                 
@@ -495,12 +528,22 @@ class InstitutionSignUpController extends InstitutionAwareController
                 
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
+            $error = true;
+            $form_errors = $this->get('validator')->validate($form);
+            
+            if($form_errors){
+                foreach ($form_errors as $_err) {
+                    $errorArr[] = $_err->getMessage();
+                }
+            }
         }
 
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-            'institutionMedicalCenter' => $this->institutionMedicalCenter
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'error' => $error,
+            'error_list' => $errorArr,
         ));
     }
 
