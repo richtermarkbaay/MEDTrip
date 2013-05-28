@@ -50,9 +50,10 @@
             <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
                 <p> <i class="icon-globe"> </i>
                      <span id="profileWebsitesText"> 
-                        {% if institution.websites %}
+                     {% set _website = get_website_from_array(institution.websites)  %}
+                        {% if _website %}
                            http://www.
-                           <b >  {{institution.websites}} </b>
+                           <b >  {{_website}} </b>
                         {% else %}
                             <b> no hospital website </b> added.
                             <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Hospital Website</a>
