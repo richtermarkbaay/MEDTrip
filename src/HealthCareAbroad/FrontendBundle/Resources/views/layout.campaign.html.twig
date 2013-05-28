@@ -22,7 +22,7 @@
             $('body').popover({
                 selector: '[data-toggle="popover"]',
                 placement: 'top',
-                title :'<a href="http://www.healthcareabroad.com/" target="_blank" class="btn btn-large btn-primary">INQUIRE FOR AVAILABILITY</a>',
+                title :'<a href="{{ path('frontend_page_inquiry') }}" target="_blank" class="btn btn-large btn-primary">INQUIRE FOR AVAILABILITY</a>',
                 html : true,
             });
             $('html').on('mouseup', function(e) {
