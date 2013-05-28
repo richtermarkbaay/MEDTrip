@@ -60,8 +60,7 @@ class DoctorController extends Controller
             $title = 'Add Doctor Details';
         }
         
-        $contactDetails = $this->get('services.doctor')->getContactDetailsByDoctor($doctor);
-        if(!$contactDetails) {
+        if(!$doctor->getContactDetails()->count()) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $doctor->addContactDetail($phoneNumber);

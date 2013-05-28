@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Command;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -19,11 +21,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
-class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
+class ScriptImportOldInstitutionMedicalCenterContactCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('script:loadInstitutionContacts')->setDescription('Check scripts');
+        $this->setName('script:loadImcContacts')->setDescription('Check scripts');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -32,16 +34,15 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
         //get all institution contacts        
         $contacts = array();
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
-        $institutionResult = $em->getRepository('InstitutionBundle:Institution')->findAll();
+        $centerResult = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findAll();
         
         //get contactDetails of each institution
-        
         $contactDetail = new ContactDetail();
-        foreach($institutionResult as $institution) {
-            $institution = $this->saveContactDetail($institution);
-            echo "institutionId: ".$institution->getId()."\n";
+        foreach($centerResult as $center) {
+            $institution = $this->saveContactDetail($center);
+            echo "imcId: ".$center->getId()."\n";
             echo \memory_get_usage(true)."\n";
-            $em->persist($institution);
+            $em->persist($center);
         }
         $em->flush();
         
@@ -49,11 +50,11 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
         exit;
     
     }
-    public function saveContactDetail(Institution $institution)
+    public function saveContactDetail(InstitutionMedicalCenter $center)
     {
         $contactIdsArray = array();
-        $contactNumber = $institution->getContactNumber();
-       // $contactNumberArray =  \json_decode($institution->getContactNumber(), true);
+        $contactNumber = $center->getContactNumber();
+       // $contactNumberArray =  \json_decode($center->getContactNumber(), true);
         //if (\is_array($contactNumberArray)){
             if($contactNumber) {
                 $contactDetail = new ContactDetail();
@@ -65,6 +66,6 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
             }
         //}
         
-        return $institution;
+        return $center;
     }
 }

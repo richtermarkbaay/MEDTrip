@@ -113,7 +113,7 @@ class MedicalCenterController extends InstitutionAwareController
         
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
         
-        if(!$contactDetails) {
+        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);

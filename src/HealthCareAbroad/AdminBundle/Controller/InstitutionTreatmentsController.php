@@ -378,13 +378,11 @@ class InstitutionTreatmentsController extends Controller
     public function editMedicalCenterAction(Request $request)
     {
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
-        $contactDetails = $institutionMedicalCenterService->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        if(!$contactDetails) {
+        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);
         }
-        //$this->institutionMedicalCenter->addContactDetail(new ContactDetail());
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {

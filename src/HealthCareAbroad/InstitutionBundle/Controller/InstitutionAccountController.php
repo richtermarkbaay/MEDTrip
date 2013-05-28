@@ -138,15 +138,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-                $contactDetails = $this->get('services.institution')->getContactDetailsByInstitution($this->institution);
-                if(!$contactDetails) {
+                if(!$this->institution->getContactDetails()->count()) {
                     $phoneNumber = new ContactDetail();
                     $phoneNumber->setType(ContactDetailTypes::PHONE);
                     $this->institution->addContactDetail($phoneNumber);
-                    
-                    $mobileNumber = new ContactDetail();
-                    $mobileNumber->setType(ContactDetailTypes::MOBILE);
-                    $this->institution->addContactDetail($mobileNumber);
                 }
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
