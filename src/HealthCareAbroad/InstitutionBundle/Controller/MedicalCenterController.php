@@ -196,14 +196,14 @@ class MedicalCenterController extends InstitutionAwareController
                 if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
                     $phoneNumber = new ContactDetail();
                     $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $phoneNumber->setNumber('');
                     $this->institutionMedicalCenter->addContactDetail($phoneNumber);
                 }
                 
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
-                            InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
-                            InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
-                        ));
-                
+                    InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
+                    InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
+                ));
                 $form->bind($request);
                 if ($form->isValid()) {
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
@@ -267,10 +267,6 @@ class MedicalCenterController extends InstitutionAwareController
                         else{
                             
                             $value = $this->institutionMedicalCenter->{'get'.$key}();
-                            
-                            if(is_object($value)) {
-                                $value = $value->__toString();
-                            }
                             
                             if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);

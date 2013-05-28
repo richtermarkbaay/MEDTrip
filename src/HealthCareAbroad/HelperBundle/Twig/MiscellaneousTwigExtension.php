@@ -41,6 +41,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
             'json_websites_to_array' => new \Twig_Function_Method($this, 'json_websites_to_array'),
             'institutionMedicalCenter_websites_to_array' => new \Twig_Function_Method($this, 'institutionMedicalCenter_websites_to_array'),
+            'get_website_from_array' => new \Twig_Function_Method($this, 'get_website_from_array'),
         );
     }
 
@@ -271,4 +272,20 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     
         return $prefixes[$key];
     }
+    public function get_website_from_array($websiteJson)
+    {
+        $website = \json_decode($websiteJson, true);
+        
+        if(!is_array($website)) {
+            return $websiteJson;
+        }
+        
+        foreach($website as $key => $v){
+            if ($key == 'main') {
+                $string = preg_replace('~^http?://(?:www\.)?~','', $v);
+            }
+        }
+        return $string;
+    }
+    
 }

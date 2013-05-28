@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
@@ -94,6 +96,12 @@ class InstitutionAccountController extends InstitutionAwareController
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
         
+        $contactDetails = $this->get('services.institution')->getContactDetailsByInstitution($this->institution);
+        if(!$contactDetails) {
+            $phoneNumber =new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $this->institution->addContactDetail($phoneNumber);
+        }
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
@@ -227,10 +235,6 @@ class InstitutionAccountController extends InstitutionAwareController
                         }
                         else{
                             $value = $this->institution->{'get'.$key}();
-        
-                            if(is_object($value)) {
-                                $value = $value->__toString();
-                            }
         
                             if($key == 'address1' || $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);

@@ -21,7 +21,8 @@
     <div class="hca-display">
         <a id="institution-edit-address-toggle" class="btn btn-misc btn-default pull-right btn-edit" href="#address" data-toggle="show-address" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-address">
-            <h3>  Hospital Address </h3>
+            <h3>  Hospital Address 
+            </h3>
             <div>
                 <span class="icon-map-marker"> </span>
                 {% set _address = institution_address_to_array(institution) %}
@@ -33,7 +34,13 @@
         <div class="row-fluid hca-edit-box" style="display:none;" id="address">
            <a class="btn btn-link pull-right" href="#address" data-toggle="show-address" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
            <h3> Hospital Address
-                <a href="#"> <i class="icon-info-sign icon-1x"> </i> </a>
+                <span class="tooltip-wrap hca-edit">
+                    <i class="icon-info-sign"> </i>
+                    <span class="tooltip-content hca-edit pull-left">
+                        <i class="icon-map-marker icon-2x pull-left"> </i>
+                        Providing your complete address helps us push you to the right searches, and helps patients plan their travel better.
+                    </span>
+                </span>
             </h3>
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                  with {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
@@ -50,9 +57,10 @@
             <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
                 <p> <i class="icon-globe"> </i>
                      <span id="profileWebsitesText"> 
-                        {% if institution.websites %}
+                     {% set _website = get_website_from_array(institution.websites)  %}
+                        {% if _website %}
                            http://www.
-                           <b >  {{institution.websites}} </b>
+                           <b >  {{_website}} </b>
                         {% else %}
                             <b> no hospital website </b> added.
                             <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Hospital Website</a>
@@ -85,7 +93,16 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="number">
             <a class="btn btn-link pull-right" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3> Hospital Contact Details </h3>
+            <h3> Hospital Contact Details 
+                 <span class="tooltip-wrap hca-edit">
+                    <i class="icon-info-sign"> </i>
+                    <span class="tooltip-content hca-edit pull-left">
+                        <i class="icon-phone-sign icon-2x pull-left"> </i>
+                        This is how we will contact you to let you know about potential leads. Please provide the correct phone numbers and email addresses to make sure
+                        you don't miss any inquiries that may come through <b> HealthcareAbroad </b>. <br>
+                    </span>
+                </span>
+            </h3>
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                  with {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'} 
             %}
@@ -130,7 +147,17 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="servicesContainerDiv">
             <a class="btn btn-link pull-right" href="#servicesContainerDiv" data-toggle="show-services" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3> Hospital Services  </h3>
+            <h3> Hospital Services  
+                <span class="tooltip-wrap hca-edit">
+                    <i class="icon-info-sign"> </i>
+                    <span class="tooltip-content hca-edit pull-left">
+                        <i class="icon-ambulance icon-2x pull-left"> </i>
+                        Patients, especially medical tourists, always want to know what facilities and services are offered by clinics. This gives them an idea about the
+                        level of care and support that can be expected from an institution.<br> <br>
+                        Please indicate only what you actually provide. Being honest helps patients plan their trip better, and lets them know what to prepare for.
+                    </span>
+                </span>
+            </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'serviceForm', fields: ['services']} 
                 %}
@@ -143,14 +170,23 @@
     <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#awardsDiv" data-toggle="show-awards" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-awards">
-            <h3>  Certifications, Affilations, Awards and Accreditations  </h3>
+            <h3>  Certifications, Affilations, Awards and Accreditations  
+            </h3>
             <div id="awardsText">
                {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' %}
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="awardsDiv">
             <a class="btn btn-link pull-right" href="#awardsDiv" data-toggle="show-awards" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3> Certifications, Affilations, Awards and Accreditations </h3>
+            <h3> Certifications, Affilations, Awards <br> and Accreditations 
+                <span class="tooltip-wrap hca-edit">
+                    <i class="icon-info-sign"> </i>
+                    <span class="tooltip-content hca-edit pull-left">
+                        <i class="icon-asterisk icon-2x pull-left"> </i> <b> Awards </b> , <b> Certifications </b> and <b> Affiliations </b> are indicators that assure patients and their family that your facility
+                        is reliable, reputable and meets acceptable, if not superior, standards.
+                    </span>
+                </span>
+            </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'awardsForm', fields: ['awards']} 
                 %}

@@ -5,11 +5,11 @@
         
         <div class="pull-left">
             <p>Inquries are sent to:
-                <a href="#">clinicname@domain.com</a>
+                <a href="#">{{ institutionMedicalCenter.contactEmail }}</a>
                 <img alt="Health Care Abroad Verify Icon" src="{{ asset('images/institution/verify-icon.png') }} ">
             </p>
             <p>Website clicks are sent to: 
-                <a href="#">http://domain.com</a>
+                <a href="#">{{ institutionMedicalCenter.websites }}</a>
             </p>
             {#---
             <p>
@@ -19,8 +19,6 @@
         </div>
     </div>
     <div class="listing-action-button pull-right">
-        Date of Expiration:
-        <span>02 Feb 2014</span>
         <a class="btn btn-misc" href="{{ path('institution_medicalCenter_view', {imcId: institutionMedicalCenter.id}) }}">
             <i class="icon-edit"></i>View Clinic's Profile
         </a>
