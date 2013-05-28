@@ -19,10 +19,6 @@
             <a id="unreadTab" href="{{ path('institution_view_unreadInquiries', {'tabName' : 'unread'}) }}">Unread Messages<span>({{ render_institution_unread_inquiries(institution) | length }})</span></a>
         </li>
     </ul>
-    <div class="pagination pagination-right">
-        Showing 1-15 of 100
-        <a href="">Next</a>
-    </div>
     <div class="span12 row"> 
         <input id="inquiryCheckAll" data-mainDivId="#mainInquiryDiv" data-divId="#inquiryList" data-tab="{{ tabName }}" onclick="InstitutionInquiry.selectAllInquiry($(this)); " class="pull-left" type="checkbox">
         <div class="span11 btn-group">
@@ -36,11 +32,6 @@
     </div>
     <div id="inquiryList">
         <ul class="hca-inquiries">
-        {% if inquiries is not null and isInquirySection is defined %}
-            {% for inquiry in json_decode(inquiries) %}
-                {% include 'InstitutionBundle:Inquiry/Widgets:listItem.inquiry.html.twig' %}
-            {% endfor %}
-        {% endif %}
         </ul>
     </div>
     <br>

@@ -69,7 +69,7 @@
                     </i>
                 </td>
                 <td>
-                    {{ inquiry.inquirerName }}
+                   <a href="{{ path('institution_view_inquiry', {id : inquiry.id}) }}"> {{ inquiry.inquirerName }} </a>
                 </td>
                 <td>
                     {{ inquiry.message }}

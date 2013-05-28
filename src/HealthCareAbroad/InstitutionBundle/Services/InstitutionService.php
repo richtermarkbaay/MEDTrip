@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use Symfony\Component\Validator\Constraints\DateTime;
+
+use HealthCareAbroad\HelperBundle\Twig\TimeAgoExtension;
+
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
@@ -38,11 +42,12 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\HelperBundle\Entity\City;
 use HealthCareAbroad\HelperBundle\Entity\Country;
+use HeathCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension;
 class InstitutionService
 {    	
     protected $doctrine;
     protected $router;
-
+    protected $timeAgoExt;
     /** 
      * @var static Institution
      */
@@ -66,6 +71,11 @@ class InstitutionService
     public function setRouter(Router $router)
     {
         $this->router = $router;
+    }
+    
+    public function setTimeAgoExtension(\HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension $timeAgoExt)
+    {
+        $this->timeAgoExt = $timeAgoExt;
     }
     
     /**
@@ -430,7 +440,6 @@ class InstitutionService
     public function getInstitutionInquiriesBySelectedTab(Institution $institution, $tab)
     {
         if($tab == "all") {
-            
             $inquiries = $this->getInstitutionInquiries($institution);
         }
         elseif ($tab == "read") {
@@ -439,13 +448,19 @@ class InstitutionService
         else {
             $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD); 
         }
-        
         $inquiryArr = array();
         foreach ($inquiries as $each) {
+            if($each->getStatus() == '1') {
+                $status = 'unread';
+            }
+            else {
+                $status = 'read';
+            }
             $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
                             'id' => $each->getId(),
                             'message' => $each->getMessage(),
-                            'status' => $tab . '-inquiry',                            
+                            'status' => $status,         
+                            'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
                             'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
                             'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
         

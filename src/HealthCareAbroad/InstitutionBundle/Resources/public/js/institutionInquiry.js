@@ -4,6 +4,7 @@ var InstitutionInquiry = {
     _prototype: '',
     _tab: '',
     _divId: '',
+    _inquiryBannerCntrId: '',
     
     setInquiryData: function(_inquiries) {
     	this._inquiries = _inquiries;
@@ -20,8 +21,11 @@ var InstitutionInquiry = {
     	$.each(InstitutionInquiry._inquiries, function(_k, value) {
         	if(_k + 1 <= _cntr && _k + 1 > _lastIndex ) {
             	var el = $(InstitutionInquiry._prototype);
+            	el.attr('class', value.status);
+            	el.find('a.inquiry_sender').html(value.sender);
             	el.find('a.inquiry_sender').html(value.sender);
             	$(el.find('a.inquiry_sender')).attr('href', value.viewPath);
+            	el.find('span.sender-details small').html(value.timeAgo);
             	el.find('a.inquiry_message').html(value.message);
             	$(el.find('a.inquiry_message')).attr('href', value.viewPath);
             	$(el.find('a.inquiry_view')).attr('href', value.viewPath);
@@ -40,7 +44,7 @@ var InstitutionInquiry = {
     _checkInquiryCounter: function() {
     	_cntr = $('#inquiryCntr').val();
     	if(!_cntr) {
-    	    _cntr = 2;
+    	    _cntr = 10;
     	    _lastIndex = 0;
     	}
     },
@@ -99,6 +103,7 @@ var InstitutionInquiry = {
     _setInquiryCounter: function(_response) {
     	$('#readTab').find('span').html("("+_response.readCntr.length+")");
     	$('#unreadTab').find('span').html("("+_response.unreadCntr.length+")");
+    	$(InstitutionInquiry._inquiryBannerCntrId).find('span').html("("+_response.unreadCntr.length+")");
     },
     
     _removeInquiry: function (_linkElement) {

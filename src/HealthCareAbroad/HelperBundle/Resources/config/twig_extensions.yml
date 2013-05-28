@@ -13,6 +13,12 @@ services:
         public: false
         tags:
             - { name: twig.extension }
+            
+    services.timeAgo.twig.extension:
+        class: HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension
+        public: false
+        tags:
+            - { name: twig.extension }
 
     services.helpetext.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\HelpTextTwigExtension

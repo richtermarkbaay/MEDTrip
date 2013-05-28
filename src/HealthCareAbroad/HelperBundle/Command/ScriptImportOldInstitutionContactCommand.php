@@ -29,12 +29,16 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         
-        //get all doctors contacts        
+        //get all institution contacts        
         $contacts = array();
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $institutionResult = $em->getRepository('InstitutionBundle:Institution')->findAll();
         
-        //get contactDetails of each doctor
+        //get contactDetails of each institution
+        
+        
+        
+        
         $contactDetail = new ContactDetail();
         foreach($institutionResult as $institution) {
             $institution = $this->saveContactDetail($institution);

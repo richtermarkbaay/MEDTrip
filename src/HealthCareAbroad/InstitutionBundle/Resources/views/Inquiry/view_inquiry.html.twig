@@ -16,7 +16,7 @@
                         <li class="message header">
                             <span class="messages-returnbox">
                                 <i class="icon-arrow-left">
-                                </i><a href="{{ path('institution_inquiries') }}">Return</a>
+                                </i><a href="{{ prevPath }}">Return</a>
                             </span>
                             <!--  >span class="messages-actions">
                                 <div class="btn-group">
@@ -32,7 +32,7 @@
                     <div class="row-fluid">
                         <h4>
                             {{ inquiry.inquirerName }}
-                            <br><small>wrote 2 days ago</small>
+                            <br><small>wrote {{ time_ago_in_words(inquiry.dateCreated)}} </small>
                         </h4>
                         
                         <p>

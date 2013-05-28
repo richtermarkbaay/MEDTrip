@@ -8,7 +8,7 @@
                 <div class="navbar">
                     <ul class="nav hca-nav">
                         <li>
-                            <a href="inquiries.html"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> 10 </span></a>
+                            <a href="inquiries.html"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ render_institution_unread_inquiries(institution) | length}} </span></a>
                         </li>
                         <li>
                             <a href="notifications.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>

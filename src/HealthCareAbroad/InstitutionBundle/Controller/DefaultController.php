@@ -88,7 +88,8 @@ class DefaultController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
                         'inquiry' => $inquiry,
-                        'isInquiry' => true
+                        'isInquiry' => true,
+                        'prevPath' => $this->getRequest()->headers->get('referer')
         ));
     }
     
