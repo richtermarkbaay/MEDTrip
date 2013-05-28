@@ -268,10 +268,6 @@ class MedicalCenterController extends InstitutionAwareController
                             
                             $value = $this->institutionMedicalCenter->{'get'.$key}();
                             
-                            if(is_object($value)) {
-                                $value = $value->__toString();
-                            }
-                            
                             if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);
                             }
