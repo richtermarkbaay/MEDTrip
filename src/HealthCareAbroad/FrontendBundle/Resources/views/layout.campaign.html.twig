@@ -11,21 +11,31 @@
     {% block content %}  <div id="wrapper"></div>{% endblock %}
     
     {% block javascripts %}
-                  <script type="text/javascript">
-                            $(document).ready(function() {
-                    $("#menu").sticky({
-                        topSpacing: 0
-                    });
+      <script type="text/javascript">
+        $(function() {
+            $(document).ready(function() {
+                $("#menu").sticky({
+                    topSpacing: 0
                 });
-            </script>
-            <script type="text/javascript">
-                            $(function() {
-                    $('body').popover({
-                        selector: '[data-toggle="popover"]',
-                        placement: 'top'
+            });
+            
+            $('body').popover({
+                selector: '[data-toggle="popover"]',
+                placement: 'top',
+                title :'<a href="http://www.healthcareabroad.com/" target="_blank" class="btn btn-large btn-primary">INQUIRE FOR AVAILABILITY</a>',
+                html : true,
+            });
+            $('html').on('mouseup', function(e) {
+                if(!$(e.target).closest('.popover').length) {
+                    $('.popover').each(function(){
+                        $(this.previousSibling).popover('hide');
                     });
-                });
-            </script>
+                }
+            });
+
+        });
+
+    </script>
     {% endblock %}
     {% block inlineJavascriptCode %}{% endblock %}
 {% endblock %}

@@ -91,7 +91,11 @@
 #menu #nav ul li { margin:3px 0 3px 0px; }
 #parts-images{display: none;}
 #right_nav{display: none;}
+.btn-advertise{
+  font-size: 25px;
+  line-height: 1.25em;}
 }
+
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) {
 #nav_wrap{display: none;}
@@ -102,6 +106,10 @@
 	width:120px;
 	height:55px;
 
+}
+.btn-advertise{
+  font-size: 25px;
+  line-height: 1.25em;
 }
 /* // Common section */
 
