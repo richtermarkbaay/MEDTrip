@@ -124,16 +124,22 @@
                             Please provide the correct phone numbers and email addresses to make sure
                             you don't miss any inquiries that may come through HealthcareAbroad.
                         </div>
-                        
-                         <div class="contactEmail control-group span5 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
-                            <label for="Phone Number">Clinic Email Address</label>
-                            {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                        <div class="row-fluid terms">
+                            <div class="contactEmail control-group span6 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                                <label for="Phone Number">Clinic Email Address</label>
+                                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                            </div>
+                            <div class="control-group span5">
+                                {#{ form_widget(form.contactDetails, { 'attr': {'class': 'span12'} }) }#}
+                                {% for _widget in form.contactDetails %}
+                                    {{ form_widget(_widget) }}
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="control-group span5">
-                            {#{ form_widget(form.contactDetails, { 'attr': {'class': 'span12'} }) }#}
-                            {% for _widget in form.contactDetails %}
-                                {{ form_widget(_widget) }}
-                            {% endfor %}
+                         <div class="control-group website">
+                            <label for="website">Clinic Website</label>
+                            <span class="pull-left">http://</span>
+                            {{ form_widget(form.websites, {attr: {class: 'span11 pull-right'} })}}
                         </div>
                     </div>
                 </div>
@@ -142,11 +148,6 @@
             <section class="section socialmedia-info">
                 <h2>Website and Social Media<small>(Optional)</small></h2>
                 <div class="row-fluid">
-                    <div class="control-group website">
-                        <label for="website">Clinic Website</label>
-                        <span class="pull-left">http://</span>
-                        {{ form_widget(form.websites, {attr: {class: 'span11 pull-right'} })}}
-                    </div>
                     {{ form_widget(form.socialMediaSites) }}
                 </div>
             </section>

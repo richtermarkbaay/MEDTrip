@@ -475,8 +475,10 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter = new InstitutionMedicalCenter();
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
-        else {
-            
+        
+        //check if center doesnt have address yet, if so temp set address from institution
+        if(is_null($this->institutionMedicalCenter->getAddress())) {
+            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
         }
 
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -487,7 +489,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);
         }
 
-        $form = $this->createForm(new InstitutionMedicalCenterFormType(), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => true));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
             

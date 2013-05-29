@@ -8,16 +8,18 @@
             <div class="tooltip-content">
                 <i class="icon-lightbulb icon-2x pull-left"></i>This is how we will contact you to let you know about potential leads.  Please provide the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.
             </div>
-             <div class="contactEmail control-group span5 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
-                    <label for="{{ form.children.contactEmail.vars.id }}">
-                        {{ form.children.contactEmail.vars.label }}
-                    </label>
-                    {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+            <div class="row-fluid terms">
+                <div class="contactEmail control-group span6 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                        <label for="{{ form.children.contactEmail.vars.id }}">
+                            {{ form.children.contactEmail.vars.label }}
+                        </label>
+                        {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                    </div>
+                  <div class="contactDetails control-group span6">
+                        {% for _widget in form.contactDetails %}
+                            {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
+                        {% endfor %}
                 </div>
-              <div class="contactDetails control-group span5">
-                    {% for _widget in form.contactDetails %}
-                        {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
-                    {% endfor %}
             </div>
             <div class="control-group website">
                 <div class="span12">

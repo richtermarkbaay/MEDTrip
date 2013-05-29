@@ -14,7 +14,7 @@
                 {% set countryCode = form.getChild('country_code') %}
 
                 {{ render_contactNumber_widget(number.vars.id, form.vars.value.abbr) | raw }}
-                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span9 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="phone" maxlength="15"/>
+                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span11 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="phone" maxlength="15"/>
                 <input id="{{ abbr.vars.id }}" name="{{ abbr.vars.full_name }}" type="hidden"  value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}">
                 <input id="{{ countryCode.vars.id }}" name="{{ countryCode.vars.full_name }}" type="hidden" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}">
             </div>
@@ -118,14 +118,18 @@
             <label for="{{ form.vars.full_name ~ '[street]' }}">Address</label>
             <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
         </div>
-        <div class="control-group">
+        <div class="row-fluid terms">
             <div class="span4">
-                <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
-                <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="{{ elemIdPrefix }}_roomNumber" class="span12 addressFields">
+                <div class="control-group">
+                    <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
+                    <input type="text" value="{{ form.vars.value.room_number }}" name="{{ form.vars.full_name ~ '[room_number]' }}" id="{{ elemIdPrefix }}_roomNumber" class="span12 addressFields">
+               </div>
             </div>
-            <div class="span8">
-                <label for="Building Name">Building Name <small>(Optional)</small></label>
-                <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="{{ elemIdPrefix }}_building" class="span12 addressFields">
+                <div class="span8">
+                    <div class="control-group">
+                    <label for="Building Name">Building Name <small>(Optional)</small></label>
+                    <input type="text" value="{{ form.vars.value.building }}" name="{{ form.vars.full_name ~ '[building]' }}" id="{{ elemIdPrefix }}_building" class="span12 addressFields">
+                </div>
             </div>
         </div>
     {% endspaceless %}

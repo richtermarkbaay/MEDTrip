@@ -71,7 +71,9 @@
                        <div class="row-fluid">
                             <div class="span12">
                                 {% for _widget in form.contactDetails %}
-                                    {{ form_widget(_widget) }}
+                                    <div class="span6">
+                                        {{ form_widget(_widget) }}
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
