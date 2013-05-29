@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selecte: 'users', label: 'Manage Account Profile'} %}
+{% set mainNavigation = {selected: 'users',  label : 'Manage Account Profile'} %}
 {% block content %}
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
  {% block wrappedContent %}
