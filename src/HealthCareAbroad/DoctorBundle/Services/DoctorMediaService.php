@@ -18,6 +18,8 @@ class DoctorMediaService extends MediaService
 {
     const LOGO_TYPE_IMAGE = 1;
     
+    public $mediaTwigExtension;
+    
     private $imageSizes = array(
         self::LOGO_TYPE_IMAGE => array(ImageSizes::DOCTOR_LOGO) 
     );   
@@ -37,6 +39,11 @@ class DoctorMediaService extends MediaService
         $this->uploadDirectory = $directory;
     }
 
+    
+    function setMediaTwigExtension($mediaTwigExtension)
+    {
+        $this->mediaTwigExtension = $mediaTwigExtension;
+    }
 
     function uploadLogo($file, Doctor $doctor, $flushObject = true)
     {

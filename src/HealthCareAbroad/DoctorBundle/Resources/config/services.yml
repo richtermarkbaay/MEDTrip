@@ -7,11 +7,12 @@ services:
     
     services.doctor:
         class: HealthCareAbroad\DoctorBundle\Services\DoctorService
-        arguments: [@doctrine]
+        arguments: [@doctrine, @services.doctor.media]
     
     services.doctor.media:
         class: HealthCareAbroad\DoctorBundle\Services\DoctorMediaService
         calls:
+            - [setMediaTwigExtension, [@services.media.twig.extension]]
             - [setFilesystem, [@doctor_filesystem]] 
             - [setEntityManager, [@doctrine.orm.entity_manager]]
             - [setUploadDirectory, [%local_web_root%/%media_doctor_subdir%]]

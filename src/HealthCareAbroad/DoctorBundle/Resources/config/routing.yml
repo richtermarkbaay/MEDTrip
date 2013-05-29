@@ -1,0 +1,5 @@
+search_doctors:
+    pattern: /search_doctors
+    defaults: { _controller: DoctorBundle:Default:searchDoctors }
+    requirements: 
+        _method: GET
