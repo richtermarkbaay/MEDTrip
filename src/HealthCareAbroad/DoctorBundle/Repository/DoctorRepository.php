@@ -9,6 +9,21 @@ use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 class DoctorRepository extends EntityRepository
 {
+    public function getDoctorsByCriteria($criteria = array())
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder()
+        ->select('a, b')
+        ->from('DoctorBundle:Doctor', 'a')
+        ->leftJoin('a.specializations', 'b')
+        ->where('a.status = :active')->setParameter('active', Doctor::STATUS_ACTIVE);;
+
+        foreach($criteria as $key => $value) {
+            $qb->andWhere("a.$key = :$key")->setParameter($key, $value);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+    
     public function getDoctorsBySearchTerm($searchTerm)
     {
         $query = $this->getEntityManager()->createQueryBuilder()

@@ -34,9 +34,44 @@
             margin: 0 0 1px;
             padding: 5px 10px;
             }
+
+            .align-right {    
+                text-align: right;
+            }
+        
+            .doctors-listing {
+                overflow: auto;
+                max-height: 300px;
+                margin-bottom: 10px;
+                padding: 20px 20px 5px;
+                background-color: #AEAEAE;
+                border-bottom: 1px solid #DDDDDD;;
+            }
             
+            .doctors-listing > form {
+                padding: 10px;
+                background: #FFF;
+            }
+
+            .clearfix:before,
+            .clearfix:after {
+              content: ".";    
+              display: block;    
+              height: 0;    
+              overflow: hidden; 
+            }
+            .clearfix:after {clear: both;}
+            .clearfix {zoom: 1;} /* IE < 8 */
+
             form.hidden {
                 margin: 0;
+            }
+            
+            .btn[disabled],
+            .btn[disabled]:hover {
+                box-shadow: none;
+                background: #cccccc;
+                border-color: #cccccc;
             }
 
             .details-inline {
@@ -218,6 +253,8 @@
     </head>
     
     <body>
+        {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
+
         {% block body %}{% endblock %}
     
         <script type="text/javascript">

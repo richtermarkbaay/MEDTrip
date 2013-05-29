@@ -19,7 +19,7 @@ use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpDoctorFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
 
 use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
 
@@ -580,40 +580,97 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupDoctorsAction(Request $request)
     {
+
+        //var_dump($request->headers->get('referer')); exit;
+        
         //TODO: check institution signupStepStatus
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
 
-        $form = $this->createForm(new InstitutionSignUpDoctorFormType(), $doctor);
+        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
+
                 $doctor = $form->getData();
-                $doctor->setStatus(1);
-                $doctor = $this->signUpService->addDoctor($doctor, $this->getDoctrine());
+                $doctor->setStatus(Doctor::STATUS_ACTIVE);
 
-                $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($doctor);
+                $em->flush($doctor);
 
-                return new Response(json_encode(array(
-                                'doctor' => array('firstName' => $doctor->getFirstName(), 'lastName' => $doctor->getLastName()),
-                                'rowDoctor' => $rowDoctor)),
-                200, array('Content-Type'=>'application/json'));
-
+                $data = array(
+                    'status' => true,
+                    'message' => 'Doctor has been added to your clinic!',
+                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
+                );
             } else {
-                var_dump($form->getErrorsAsString()); exit;
+                $data = array('status' => false, 'message' => $form->getErrorsAsString());
             }
+
+            return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
         }
 
-        return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', array(
-                        'form' => $form->createView(),
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'confirmationMessage' => "<b>Congratulations!</b> Your account has been successfully created."
-        ));
-    }
+        $params = array(
+            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())
+        );
 
+        $editDoctor = new Doctor();
+        if($this->institutionMedicalCenter->getDoctors()->count()) {
+            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();            
+        }
+
+        if(!$editDoctor->getContactDetails()->count()) {
+            $contactDetail = new ContactDetail();
+            //$contactDetail->setType(ContactDetailTypes::MOBILE);
+            $editDoctor->addContactDetail($contactDetail);
+        }
+        
+        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+        $params['editForm'] = $editForm->createView();
+
+
+        return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
+    }
+    
+    public function editDoctorAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
+        
+        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+        
+        var_dump($request->get('editInstitutionMedicalCenterDoctorForm')); exit;
+        
+        if ($request->isMethod('POST')) {    
+            $form->bind($request);
+        
+            if ($form->isValid()) {
+                $doctor = $form->getData();
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($doctor);
+                $em->flush($doctor);
+        
+                $data = array(
+                    'status' => true,
+                    'message' => 'Doctor has been added to your clinic!',
+                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
+                );
+            } else {
+                $data = array('status' => false, 'message' => $form->getErrorsAsString());
+            }
+        
+            return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
+        }
+
+        return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
+    }
+    
     /**
      * Note: This might be needed by other parts of the system. If so move this to
      * an appropriate and more generic controller.
@@ -636,28 +693,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
-    public function ajaxDeleteDoctorAction(Request $request)
-    {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
-
-        $em = $this->getDoctrine()->getManager();
-
-        try {
-            $em->remove($doctor);
-            $em->flush();
-
-            $success = 1;
-        } catch (Exception $e) {
-            $success = 0;
-        }
-
-        return new Response(json_encode(array('success' => $success)), 200, array('Content-Type'=>'application/json'));
-    }
-
     public function ajaxEditDoctorAction(Request $request)
     {
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id', 0));
-
+exit;
         if (!$doctor) {
             throw new \Exception('Invalid doctor');
         }

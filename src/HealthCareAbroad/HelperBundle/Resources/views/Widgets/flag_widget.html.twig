@@ -1,23 +1,73 @@
-    <button class="btn dropdown-toggle" data-toggle="dropdown" >
-        <span class="flag16 {{ abbr ? abbr : 'ph' }}"> </span>
-        <span class="caret">
-        </span>
+<div class="flag-selector-widget" style="display:inline-block"> 
+    <button type="button" class="btn flag-list-toggle">
+        <span class="flag16 {{ abbr }}"> </span>
+        <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu zipcode">
+    <ul class="dropdown-menu zipcode flag-list">
         {% for _list in countryList %}
-            <li onclick="$.ContactNumberFormAction.dropdownCountryCode($(this), '{{inputId}}'); return false;"><span class="flag16 {{ _list.abbr | lower}}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span></li>
+            <li data-abbr="{{ _list.abbr | lower }}" data-code="{{ _list.code }}" class="{{ _list.abbr|lower == abbr ? 'selected' : '' }}">
+                <span class="flag16 {{ _list.abbr | lower }}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span>
+            </li>
         {% endfor %}
     </ul>
-  
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
-<script language="javascript" type="text/javascript">
-(function($){
-    $(function(){
+</div>
 
-        $('input.numberSelector').ContactNumberForm('contactInputField');
-    	$.ContactNumberFormAction._setJsonValue($.parseJSON('{{ countryJson | raw}}'));
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+(function($){
+    $(function(){ 
+    	console.log('flagJSLoaded');
+    	var countryCodes = [];
+        var flagList = $('#{{ inputId }}').siblings('.flag-selector-widget:first').find('.flag-list > li');
+    	
+    	$.each(flagList, function(){
+    		countryCodes.push($(this).attr('data-code'));
         });
-    })(jQuery);
+        
+        $('.flag-list > li').click(function(){
+            prevSelectedElem = $(this).siblings('.selected:first');
+
+            if(prevSelectedElem.length) { 
+            	$(this).siblings().removeClass('selected');
+                $(this).addClass('selected');
+
+            	$('#{{ inputId }}').val('+' + $(this).attr('data-code') +  $('#{{ inputId }}').val().substr(prevSelectedElem.attr('data-code').length+1)).change();
+                $(this).parent().prev().find('.flag16').attr('class', 'flag16 ' + $(this).attr('data-abbr'));
+            }
+        	
+            $(this).parent().hide();
+        });
+
+        $('.flag-selector-widget > .flag-list-toggle').click(function() {
+            $(this).next().toggle();
+        });
+
+        $('#{{ inputId }}').keydown(function( event ) {
+        	validateNumbers(event);
+	    }).keyup(function(event){
+	    	validateNumbers(event);
+			if($.inArray($(this).val().substr(1), countryCodes) !== -1 && $(this).val().length > 1) {
+    			//console.log('yes: ' + $(this).val().substr(1));
+    			$(this).siblings('.flag-selector-widget:first').find('.flag-list > li[data-code='+ $(this).val().substr(1) +']').click();
+    		}
+	    });
+    });
+})(jQuery);
+
+function validateNumbers(event){
+    if (!(event.keyCode == 8                                // backspace
+            || event.keyCode == 9                               // tab
+            || event.keyCode == 46                              // delete
+            || event.keyCode == 61								// +
+            || (event.keyCode >= 35 && event.keyCode <= 40)     // arrow keys/home/end
+            || (event.keyCode >= 48 && event.keyCode <= 57)     // numbers on keyboard
+            || (event.keyCode >= 96 && event.keyCode <= 105)    // number on keypad
+            || (event.keyCode == 65 && (event.ctrlKey || event.shiftKey)))          // ctrl + a, on same control
+            || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.shiftKey)  //shift and ! to - on same control
+            || ((event.keyCode >= 48 && event.keyCode <= 58 || event.keyCode == 173 ) && event.altKey))  //altKey and ! to - on same control 
+    {
+        event.preventDefault();
+    }
+}
 </script>	
 {% endblock %}

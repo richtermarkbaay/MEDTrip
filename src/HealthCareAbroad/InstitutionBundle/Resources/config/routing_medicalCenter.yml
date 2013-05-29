@@ -123,13 +123,20 @@ institution_medicalCenter_addExistingDoctor:
         imcId: \d+
 
 institution_medicalCenter_removeDoctor:
-    pattern: /medical-center/remove-doctor/{imcId}/{doctorId}
+    pattern: /medical-center/{imcId}/remove-doctor
     defaults: { _controller: InstitutionBundle:MedicalCenter:removeDoctor }
     requirements:
         _method: GET|POST
+        doctorId: \d+
         imcId: \d+
 
-
+institution_medicalCenter_ajaxUpdateDoctor:
+    pattern: /medical-center/{imcId}/update-doctor/{doctorId}
+    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateDoctor }
+    requirements:
+        _method: POST
+        doctorId: \d+
+        imcId: \d+
         
 institution_medicalCenter_ajaxAddAncillaryService:
     pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService

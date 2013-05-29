@@ -78,12 +78,12 @@ class InstitutionKernelEventListener
             // not a client admin route
             return false;
         }
-        
+
         // TODO: Quick fix only. We may want to check security context here instead
-        if ($matchedRoute == 'institution_login') {
+        if ($matchedRoute == 'institution_login' || in_array($matchedRoute, $this->_getAllowedSignupRoutes())) {
             return;
         }
-        
+
         // validate sign up flow status if it's not complete yet
         if (SignUpService::COMPLETED_SIGNUP_FLOW_STATUS != $session->get('institutionSignupStepStatus') ) {
             $response = $this->validateSignUpStatus($session, $matchedRoute);
@@ -122,11 +122,17 @@ class InstitutionKernelEventListener
                     $medicalCenter = $this->institutionService->getFirstMedicalCenterByInstitutionId($session->get('institutionId'));
                     $routeParams = array('imcId' => $medicalCenter ?  $medicalCenter->getId() : 0);
                 }
+                
                 // redirect to incomplete step in signup flow
                 $response = new RedirectResponse($this->router->generate($routeName, $routeParams));
             }
         }
         
         return $response;
+    }
+    
+    private function _getAllowedSignupRoutes() {
+
+        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor');
     }
 }

@@ -11,6 +11,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 
 class FlagTwigExtension extends \Twig_Extension
 {
+    static $isFlagJsCodeLoaded = false;
     
     /**
      * @var \Twig_Environment
@@ -34,25 +35,18 @@ class FlagTwigExtension extends \Twig_Extension
         );
     }
     
+
     public function render_contactCountryList_widget($string = null, $abbr = null,$twigTemplate = null)
     {
-        $code = array();
-        $datas = array();
-        $countryGlobalData = $this->service->getGlobalCountryList();
-   
-        $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:flag_widget.html.twig' : $twigTemplate;
-        
-        foreach ($countryGlobalData as $var => $a){
-            $datas[] = $a;
-            $code[] =  array(
-                        'id' => $a['abbr'],
-                        'value' => $a['code'],
-            );
+        if(!self::$isFlagJsCodeLoaded) {
+            self::$isFlagJsCodeLoaded = true; 
         }
-        $params = array( 'countryJson' => \json_encode($code),
-                        'countryList' => $datas,
-                        'inputId' => $string,
-                        'abbr' => $abbr);
+
+        $countries = $this->service->getGlobalCountryList();
+        $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:flag_widget.html.twig' : $twigTemplate;
+
+        $params = array('countryList' => $countries, 'abbr' => $abbr, 'inputId' => $string, 'loadJsCode' => !self::$isFlagJsCodeLoaded);
+
         return $this->twig->render($twigTemplate, $params);
     }
 

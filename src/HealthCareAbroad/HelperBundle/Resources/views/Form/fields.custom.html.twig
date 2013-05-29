@@ -1,19 +1,38 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
+    <div>
 
         {# contact_label_type(form.vars.value.type) #}
-        <label for="Phone Number">{{ form.vars.value.type is defined and form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
+        {% if form.vars.value.type %}
+            <label>{{ form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
+        {% endif %}
+
         <div class="hca-countrycodes">
             <div class="input-prepend">
-                {% set phone = form.vars.id ~ '_number' %}
-                  {{ render_contactNumber_widget(phone, form.vars.value.abbr) | raw }}
-                  {# append numberSelector to class attribute#}
-                <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="{{ form.vars.id ~ '_number' }}" maxlength="15"/>
-                <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="{{ form.vars.id ~ '_abbr' }}">
-                <input type="hidden" name="{{ form.vars.full_name ~ '[country_code]' }}" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}"  id="{{ form.vars.id ~ '_country_code' }}">
+                {% set number = form.getChild('number') %}
+                {% set abbr = form.getChild('abbr') %}
+                {% set countryCode = form.getChild('country_code') %}
+
+                {{ render_contactNumber_widget(number.vars.id, form.vars.value.abbr) | raw }}
+                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span9 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="phone" maxlength="15"/>
+                <input id="{{ abbr.vars.id }}" name="{{ abbr.vars.full_name }}" type="hidden"  value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}">
+                <input id="{{ countryCode.vars.id }}" name="{{ countryCode.vars.full_name }}" type="hidden" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}">
             </div>
         </div>
-
+    </div>
+    
+    <script type="text/javascript">
+    (function($){
+        $(function(){
+            $('#{{ number.vars.id }}').change(function(){
+                selected = $(this).parent().find('.flag-selector-widget:first > .flag-list > li.selected:first');
+                console.log(selected.attr('data-abbr'));
+                $('#{{ abbr.vars.id }}').val(selected.attr('data-abbr'));
+                $('#{{ countryCode.vars.id }}').val(selected.attr('data-code'));
+            });
+        });
+    })(jQuery);
+    </script>
     {% endspaceless %}
 {% endblock %}
 
@@ -141,14 +160,9 @@
     <ul class="specializations-listing">
         {% for choice in form.vars.choices %}
         <li>
-            <input type="checkbox" {% if choice.data in specializations %}checked{% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" /> <b>{{ choice.label }}</b>
-            <ul>
-            {% for key, treatment in treatments %}
-                <li>
-                    <input type="checkbox" name="service" value="{{ key }}" > {{ treatment }}
-                </li>
-            {% endfor %}
-            </ul>
+            <label style="font-weight:normal">
+                <input type="checkbox" {% if choice.data in specializations %}checked{% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
+            </label>
         </li>
         {% endfor %}
     </ul>
@@ -352,6 +366,8 @@
                     }
                 }
             });
+
+            customSelectList.parents('.modal-body').addClass('clearfix').css('overflow', 'visible');
         });
         </script>
     {% endspaceless %}

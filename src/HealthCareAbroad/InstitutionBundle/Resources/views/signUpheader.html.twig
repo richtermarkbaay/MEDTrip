@@ -2,12 +2,8 @@
 
 {% block title %}{{ parent() }} &raquo; Institution Panel{% endblock %}
 
-{% block body %}
-
-<body>
-   
+{% block body %}   
    <div class="container">
-
 		<div class="span5" style="float:none; margin:0 auto; background-color: #F4F4F4; border-radius: 6px 6px 6px 6px; margin-bottom: 30px; margin-top: 20px; padding: 25px 25px 10px 25px;">
 			
 			<div style="margin: -85px 0 20px 55px;"><img src="{{ asset('images/institution/medical-clip.png') }}" alt="Medical Clip" longdesc="#">
@@ -33,7 +29,4 @@
 			<p>&copy; Chromedia Far East Inc. <a href="{{ path('frontend_main_homepage') }}">www.HealthCareAbroad.com</a>. All rights reserved.</p>
 		</footer>
 	</div>
- 
-</body>
-
 {% endblock %}

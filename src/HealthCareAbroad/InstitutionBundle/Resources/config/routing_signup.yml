@@ -35,14 +35,15 @@ institution_ajax_loadSpecializationComponents:
     requirements:
         _method:  GET
 
-institution_ajax_addDoctor:
+institution_ajax_addExistingDoctor:
     pattern: /institution/ajax/addDoctor/{imcId}
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxAddDoctor}
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxAddExistingDoctor}
     requirements:
-        _method:  GET
+        doctorId: \d+
+        _method:  POST
 
 institution_signup_ajax_deleteDoctor:
-    pattern: /institution/ajax/deleteDoctor/{id}
+    pattern: /institution/{imcId}/ajax/deleteDoctor/{id}
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxDeleteDoctor, id: 0}
     requirements:
         _method:  POST

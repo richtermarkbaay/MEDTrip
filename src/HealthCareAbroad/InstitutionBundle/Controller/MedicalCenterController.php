@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
@@ -633,20 +635,67 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addExistingDoctorAction(Request $request)
     {
+        $result = array('status' => false);
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
         if (!$doctor) {
-            throw $this->createNotFoundException('Invalid doctor.');
+            $result['message'] = 'Invalid doctor.';
         }
-        
         try{
             $this->institutionMedicalCenter->addDoctor($doctor);
             $this->service->save($this->institutionMedicalCenter);
+            $result['status'] = true;
+            $result['doctor'] = $this->get('services.doctor')->toArrayDoctor($doctor);
         }
-        catch (\Exception $e) {
-                
+        catch (\Exception $e) {}
+
+        return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Ajax handler for update doctor to an InstitutionMedicalCenter
+     * Expected parameters:
+     *     - imcId institutionMedicalCenterId
+     *     - doctorId
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxUpdateDoctorAction(Request $request)
+    {
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
+
+        if(!$doctor->getContactDetails()->count()) {
+            $doctor->addContactDetail(new ContactDetail());
         }
+
+        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
+        $form->bind($request);
         
-        return new Response(\json_encode(array()),200, array('content-type' => 'application/json'));
+        if ($form->isValid()) {
+            $fileBag = $request->files->get($form->getName()); 
+
+            if(isset($fileBag['media'])) {
+                $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor);
+            }
+
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($doctor);
+            $em->flush();
+
+            $data = array(
+                'status' => true,
+                'message' => 'Doctor has been added to your clinic!',
+                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
+            );
+        } else {
+            $data = array('status' => false, 'message' => $form->getErrorsAsString());
+        }
+
+        $request->getSession()->setFlash('notice', 'Doctor has been updated.');
+
+        return $this->redirect($request->headers->get('referer'));
+        
+        //return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -660,20 +709,21 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function removeDoctorAction(Request $request)
     {
+        $result = array('status' => false);
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
         if (!$doctor) {
-            throw $this->createNotFoundException('Invalid doctor.');
+            $result['message'] = 'Invalid Doctor Id.';
         }
 
         try{
             $this->institutionMedicalCenter->removeDoctor($doctor);
             $this->service->save($this->institutionMedicalCenter);
+            $result['status'] = true;
+            $result['message'] = 'Doctor successfully removed from your clinic.';
         }
-        catch (\Exception $e) {
-        
-        }
-        $responseContent['calloutView'] = $this->_getEditMedicalCenterCalloutView();
-        return new Response(\json_encode($responseContent),200, array('content-type' => 'application/json'));
+        catch (\Exception $e) {}
+
+        return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
     
     /**
