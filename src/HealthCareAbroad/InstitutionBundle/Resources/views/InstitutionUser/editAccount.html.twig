@@ -1,19 +1,93 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'Manage Account Profile'} %}
+{% set mainNavigation = {selecte: 'users', label: 'Manage Account Profile'} %}
 {% block content %}
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
  {% block wrappedContent %}
-    		<div class=span8>
-    			<section class="section account-info">
-    				<h2>Personal Information</h2>
-    				 {% include 'InstitutionBundle:InstitutionUser:editProfileForm.html.twig' %}
-    			</section>
-    			<section class="section institution-info">
-        			<h2>Login Information</h2>
-                       {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
+		<div class=span8>
+		     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
+                 <section class="section account-info manage-data">
+                    <h2> Personal Information </h2>
+                    {% if error %}
+                        <div class="alert alert-error">
+                            {% for each in error_list %}
+                            	{{ each }} <br>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {% for alert, message in app.session.flashes %}
+                        	{% if alert == 'warning' %}
+                        	    {% set class = '' %}
+                        	{% elseif alert == 'error' %}
+                        	    {% set class = 'alert-error' %}
+                        	{% elseif alert == 'success' %}
+                        	    {% set class = 'alert-success' %}
+                        	{% elseif (alert == 'notice') or alert == 'info' %}
+                        	    {% set class = 'alert-info' %}
+                        	{% else %}
+                        	    {% set class = '' %}
+                        	{% endif %}
+                            <div class="alert {{ class }}">
+                                {{ message | raw}}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                   <div class="row-fluid">
+                        <div class="span12">
+                            <div class="span6">
+                                <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
+                                    <label for="account-firstname">  Your First Name  </label>
+                                    {{ form_widget(form.firstName, { 'attr': {class: 'span12'} })  }}
+                                </div>
+                            </div>
+                            <div class="span6">
+                                <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
+                                    <label for="account-lastname">  Your Last Name  </label>
+                                     {{ form_widget(form.lastName, { 'attr': {class: 'span12'} })  }}
+                                </div>
+                            </div>
+                             {{ form_row(form.jobTitle, { 'attr': {class: 'span6'} })  }}
+                             <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
+                                <label for="email"> Email address <small> (Your own personal email.) </small> </label>
+                                {{ form_widget(form.email, { 'attr': {class: 'span6 tooltip-wrap2'} })  }}
+                                <div class="tooltip-content2 hca-email">
+                                    Your email address will be your username when you log in.
+                                </div>
+                              </div>
+                               <div class="control-group row-field {{ (form.password.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_password">
+                                    Set your password <small>( Must be atleast 6 characters long ) </small>
+                                </label>
+                               {{ form_widget(form.password, { 'attr': {'class': 'span6'} }) }}
+                            </div>
+                             <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
+                                <label for="institutionSignUp_confirmPassword"> Re-type your password </label>
+                                   {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
+                            </div>
+                        </div>
+                    </div>
+		         </section>
+		         <section class="section institution-info">
+                    <h2> Personal Contact Information </h2>
+                       <div class="row-fluid">
+                            <div class="span12">
+                                {% for _widget in form.contactDetails %}
+                                    {{ form_widget(_widget) }}
+                                {% endfor %}
+                            </div>
+                        </div>
                 </section>
-            </div>
-    		     {% include 'InstitutionBundle:InstitutionUser/Widgets:sidebar.manage_account.html.twig' %}
+                 <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                             {{ form_rest(form) }}
+                            <button type="submit" class="btn pull-right btn-primary btn-large" >Save Changes</button>
+                            <button class="btn pull-right btn-large btn-link"> Cancel </button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+	     {% include 'InstitutionBundle:InstitutionUser/Widgets:sidebar.manage_account.html.twig' %}
     		     
     	<!--End of row-->
             {% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
@@ -23,3 +97,11 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionUserProfile.js') }}" ></script>
 {% endblock %}
+{#
+	<section class="section institution-info">
+		<h2>Login Information</h2>
+           {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
+    </section>
+    #}
+
+           

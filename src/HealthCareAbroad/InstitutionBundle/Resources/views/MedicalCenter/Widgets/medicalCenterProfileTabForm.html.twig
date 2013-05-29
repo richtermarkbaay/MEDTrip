@@ -20,7 +20,6 @@
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
             <h3> Clinic Description
-                <a href="#"> <i class="icon-info-sign icon-1x pull-right"> </i> </a>
             </h3>
             {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
                  with {formId: 'descriptionForm', fields: ['description']} 

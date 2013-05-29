@@ -122,9 +122,15 @@ class InstitutionUserService extends UserService
         if (!$siteUser->getAccountId()) {
             throw InvalidInstitutionUserOperationException::illegalUpdateWithNoAccountId();
         }
+        $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));
 
         // update user in chromedia global accounts
         $siteUser = $this->updateUser($siteUser);
+        
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($siteUser);
+        $em->flush();
+        
         return $siteUser;
     }
 

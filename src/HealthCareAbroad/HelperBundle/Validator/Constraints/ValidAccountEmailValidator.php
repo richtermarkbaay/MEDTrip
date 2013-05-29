@@ -45,13 +45,16 @@ class ValidAccountEmailValidator extends EmailValidator
         }
         
         $constraint->message = $currentMessage; // switch to original constraint message
-        $user = $this->service->find(array('email'=> $value), array());
-        if (!$user) {
-            return;
+        if($constraint->currentAccountEmail != $value){ // if email set is same as the current email do nothing
+            $user = $this->service->find(array('email'=> $value), array());
+            
+            if (!$user) {
+                return;
+            }
+            
+            $this->context->addViolation($constraint->message, array('{{ field }}' => $value));
         }
-	
-		$this->context->addViolation($constraint->message, array('{{ field }}' => $value));
-		
+        
         return;
     }
 }

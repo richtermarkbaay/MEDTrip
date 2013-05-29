@@ -34,7 +34,7 @@ class FlagTwigExtension extends \Twig_Extension
         );
     }
     
-    public function render_contactCountryList_widget($string = null, $twigTemplate = null)
+    public function render_contactCountryList_widget($string = null, $abbr = null,$twigTemplate = null)
     {
         $code = array();
         $datas = array();
@@ -51,7 +51,8 @@ class FlagTwigExtension extends \Twig_Extension
         }
         $params = array( 'countryJson' => \json_encode($code),
                         'countryList' => $datas,
-                        'inputId' => $string);
+                        'inputId' => $string,
+                        'abbr' => $abbr);
         return $this->twig->render($twigTemplate, $params);
     }
 

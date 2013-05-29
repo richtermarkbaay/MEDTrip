@@ -6,7 +6,7 @@
         <div class="hca-countrycodes">
             <div class="input-prepend">
                 {% set phone = form.vars.id ~ '_number' %}
-                  {{ render_contactNumber_widget(phone) | raw }}
+                  {{ render_contactNumber_widget(phone, form.vars.value.abbr) | raw }}
                   {# append numberSelector to class attribute#}
                 <input type="text" class="span9 numberSelector" required value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" name="{{ form.vars.full_name ~ '[number]' }}" data-type="phone" id="{{ form.vars.id ~ '_number' }}" maxlength="15"/>
                 <input type="hidden" name="{{ form.vars.full_name ~ '[abbr]' }}" value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}"  id="{{ form.vars.id ~ '_abbr' }}">

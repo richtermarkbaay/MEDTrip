@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserResetPasswordType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserPasswordToken;
@@ -69,7 +75,8 @@ class InstitutionUserController extends Controller
      */
     public function editAccountAction(Request $request)
     {
-        $output = array();
+        $error = false;
+        $errorArr = array();
         $accountId = $request->get('accountId', null);
         $session = $request->getSession();
         if (!$accountId ){
@@ -81,53 +88,45 @@ class InstitutionUserController extends Controller
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
-        $formChangePassword = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
-        $form = $this->createForm(new UserAccountDetailType(), $institutionUser);
-
-          if($request->isMethod('POST')){
-                if ( $request->get("institutionUserChangePasswordType")) {
-                    $formChangePassword->bind($request);
-                    if ($formChangePassword->isValid()) {
-                       
-                        $institutionUser->setPassword(SecurityHelper::hash_sha256($formChangePassword->get('new_password')->getData()));
-                        // dispatch event
-                            $this->get('services.institution_user')->update($institutionUser);
-                            $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_CHANGE_PASSWORD_INSTITUTION_USER, $institutionUser));
         
-                            $output['alert'] ="Success! Updated Password";
-                            $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:form.changePassword.html.twig', array(
-                                            'formChangePassword' => $formChangePassword->createView(),
-                                            'institutionUser' => $institutionUser
-                            ));
-                    }else{
-                        $output['alert'] ="Failed to update password";
-                    }
-                }
-                else {
-                    $form->bind($request);
-                    if ($form->isValid()) {
-                        $institutionUser = $this->get('services.institution_user')->update($institutionUser);
-                        // create event on editAccount and dispatch
-                        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION_USER, $institutionUser));
+        if(!$institutionUser->getContactDetails()){
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $institutionUser->addContactDetail($phoneNumber);
             
-                        $output['alert'] ="Success! Updated Account";
-                        $output['html'] = $this->renderView('InstitutionBundle:InstitutionUser:editProfileForm.html.twig', array(
-                                'form' => $form->createView(),
-                                'institutionUser' => $institutionUser
-                        ));
+            $mobileNumber = new ContactDetail(); 
+            $mobileNumber->setType(ContactDetailTypes::MOBILE);
+            $institutionUser->addContactDetail($mobileNumber);
+        }
+        $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser,  array('include_terms_agreement' => false, 'institution_types' => false));
+        $em = $this->getDoctrine()->getManager();
+        
+          if($request->isMethod('POST')){
+            $form->bind($request);
+            if ($form->isValid()) {
+                    $institutionUser = $form->getData();
+                    $this->get('services.institution_user')->update($institutionUser);
+                    // create event on editAccount and dispatch
+                    $this->get('services.institution_user')->setSessionVariables($institutionUser);
+                    $this->get('session')->setFlash('success', 'You have successfuly edit your account.');
+            }else{
+                $error = true;
+                $form_errors = $this->get('validator')->validate($form);
+                if($form_errors){
+                    foreach ($form_errors as $_err) {
+                        $errorArr[] = $_err->getMessage();
                     }
                 }
-                $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-                
-                return $response;
             }
+        }
         
         return $this->render('InstitutionBundle:InstitutionUser:editAccount.html.twig', array(
-                        'form' => $form->createView(),
-                        'formChangePassword' => $formChangePassword->createView(),
-                        'institutionUser' => $institutionUser,
-                        'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution))
-                        );
+                'form' => $form->createView(),
+                'institutionUser' => $institutionUser,
+                'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+                'error' => $error,
+                'error_list' => $errorArr
+        ));
     }
     
     public function inviteAction()
@@ -249,4 +248,7 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig',$params);
     }
 
+    public function changePasswordAction(){
+        
+    }
 }

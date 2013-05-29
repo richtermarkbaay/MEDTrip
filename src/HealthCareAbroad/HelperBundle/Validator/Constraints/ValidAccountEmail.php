@@ -14,7 +14,7 @@ class ValidAccountEmail extends Constraint
     public $checkMX = false;
     public $checkHost = false;
     public $field;
-    
+    public $currentAccountEmail;
 
     /**
      * {@inheritDoc}
@@ -23,6 +23,7 @@ class ValidAccountEmail extends Constraint
     {
     	return 'field';
     }
+    
     
     public function validatedBy()
     {
@@ -44,6 +45,6 @@ class ValidAccountEmail extends Constraint
     public function getRequiredOptions()
     { 
     	
-    	return array('field');
+    	return array('field','currentAccountEmail');
     }
 }

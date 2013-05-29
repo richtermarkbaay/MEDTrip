@@ -174,7 +174,7 @@ abstract class UserService
             'first_name' => $user->getFirstName(),
             'last_name' => $user->getLastName(),
             'middle_name' => $user->getMiddleName(),
-            'password' => $user->getPassword()
+            'password' => $user->getPassword(),
         );
 
         $response = $this->request->post($this->chromediaAccountsUri.'/'.$user->getAccountId(), array('data' => \base64_encode(\json_encode($formData))));
