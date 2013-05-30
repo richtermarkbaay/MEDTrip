@@ -1,6 +1,6 @@
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
-    <div>
+    <div class="control-group">
 
         {# contact_label_type(form.vars.value.type) #}
         {% if form.vars.value.type %}
@@ -13,9 +13,9 @@
                 {% set abbr = form.getChild('abbr') %}
                 {% set countryCode = form.getChild('country_code') %}
 
-                {{ render_contactNumber_widget(number.vars.id, form.vars.value.abbr) | raw }}
-                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span11 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="phone" maxlength="15"/>
-                <input id="{{ abbr.vars.id }}" name="{{ abbr.vars.full_name }}" type="hidden"  value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}">
+                {{ render_contactNumber_widget() | raw }}
+                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span10 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="number" maxlength="15"/>
+                <input id="{{ abbr.vars.id }}" name="{{ abbr.vars.full_name }}" type="hidden"  value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}" data-type="abbr">
                 <input id="{{ countryCode.vars.id }}" name="{{ countryCode.vars.full_name }}" type="hidden" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}">
             </div>
         </div>
@@ -26,9 +26,12 @@
         $(function(){
             $('#{{ number.vars.id }}').change(function(){
                 selected = $(this).parent().find('.flag-selector-widget:first > .flag-list > li.selected:first');
-                console.log(selected.attr('data-abbr'));
-                $('#{{ abbr.vars.id }}').val(selected.attr('data-abbr'));
-                $('#{{ countryCode.vars.id }}').val(selected.attr('data-code'));
+//console.log($(this));
+                //if(selected.length) {
+                    $('#{{ abbr.vars.id }}').val(selected.attr('data-abbr'));
+                    $('#{{ countryCode.vars.id }}').val(selected.attr('data-code'));
+                //}
+
             });
         });
     })(jQuery);
