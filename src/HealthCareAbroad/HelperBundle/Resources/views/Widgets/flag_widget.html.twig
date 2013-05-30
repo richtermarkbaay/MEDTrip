@@ -1,29 +1,78 @@
 <div class="flag-selector-widget" style="display:inline-block"> 
     <button type="button" class="btn flag-list-toggle">
-        <span class="flag16 {{ abbr }}"> </span>
+        <span class="flag16 "> </span>
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu zipcode flag-list">
+    <ul class="dropdown-menu zipcode flag-list" style="display:none">
         {% for _list in countryList %}
-            <li data-abbr="{{ _list.abbr | lower }}" data-code="{{ _list.code }}" class="{{ _list.abbr|lower == abbr ? 'selected' : '' }}">
+            <li data-abbr="{{ _list.abbr | lower }}" data-code="{{ _list.code }}">
                 <span class="flag16 {{ _list.abbr | lower }}"></span><span class="code">{{ _list.name }} (+{{ _list.code }})</span>
             </li>
         {% endfor %}
     </ul>
 </div>
 
+
+{% if loadJs %}
+
+{% set inputId = 'test    ' %}
+
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
 (function($){
     $(function(){ 
-    	console.log('flagJSLoaded');
     	var countryCodes = [];
-        var flagList = $('#{{ inputId }}').siblings('.flag-selector-widget:first').find('.flag-list > li');
+        var flagList = $('.flag-selector-widget:first').find('.flag-list > li');
     	
     	$.each(flagList, function(){
     		countryCodes.push($(this).attr('data-code'));
         });
-        
+
+	    $('.flag-selector-widget > .flag-list-toggle').click(function(){
+    	    $(this).next().toggle();
+    	});
+
+	    $('input[data-type=number]').keydown(function( event ) {
+        	validateNumbers(event);
+	    }).keyup(function(event){
+	    	validateNumbers(event);
+			if($.inArray($(this).val().substr(1), countryCodes) !== -1 && $(this).val().length > 1) {
+				$(this).siblings('.flag-selector-widget:first').find('.flag-list > li[data-code='+ $(this).val().substr(1) +']').click();
+    		}
+	    });
+
+
+    	$.each($('.flag-selector-widget'), function(elem){
+        	//console.log(this);
+        	//console.log($(this));
+        	//console.log($(this).siblings('input[data-type=number]:first'));
+        	
+    	    flagWidget = $(this);
+    	    flagListElem = $(this).find('.flag-list:first');
+    	    abbrElem = $(this).siblings('input[data-type=abbr]:first');
+    	    prevSelectedElem = flagListElem.find('li[data-abbr='+abbrElem.val()+']');
+
+        	flagWidget.find('.flag-list-toggle > .flag16:first').attr('class', 'flag16 ' + abbrElem.val());
+
+    	    flagListElem.children('li').click(function(){
+                inputElem = $(this).parents('.flag-selector-widget:first').siblings('input[data-type=number]:first');
+
+                //if(prevSelectedElem.length) { 
+                	$(this).siblings().removeClass('selected');
+                    $(this).addClass('selected');
+                    //inputElem.val('+' + $(this).attr('data-code') +  inputElem.val().substr(prevSelectedElem.attr('data-code').length+1)).change();
+                ///} else {
+                	inputElem.val('+' + $(this).attr('data-code')).change();
+                //}
+
+                $(this).parent().prev().find('.flag16').attr('class', 'flag16 ' + $(this).attr('data-abbr'));
+                $(this).parent().hide();
+            });
+    	    
+    		//console.log($(this));
+        });
+
+    	/*
         $('.flag-list > li').click(function(){
             prevSelectedElem = $(this).siblings('.selected:first');
 
@@ -36,21 +85,23 @@
             }
         	
             $(this).parent().hide();
-        });
+        }); */
 
-        $('.flag-selector-widget > .flag-list-toggle').click(function() {
-            $(this).next().toggle();
-        });
+        //$('.flag-selector-widget > .flag-list-toggle').click(function() {
+            //$(this).next().toggle();
+        //});
 
+        /*
         $('#{{ inputId }}').keydown(function( event ) {
         	validateNumbers(event);
 	    }).keyup(function(event){
 	    	validateNumbers(event);
 			if($.inArray($(this).val().substr(1), countryCodes) !== -1 && $(this).val().length > 1) {
-    			//console.log('yes: ' + $(this).val().substr(1));
     			$(this).siblings('.flag-selector-widget:first').find('.flag-list > li[data-code='+ $(this).val().substr(1) +']').click();
     		}
-	    });
+	    }); */
+
+	    
     });
 })(jQuery);
 
@@ -71,3 +122,5 @@ function validateNumbers(event){
 }
 </script>	
 {% endblock %}
+
+{% endif %}

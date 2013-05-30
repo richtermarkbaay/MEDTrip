@@ -36,16 +36,18 @@ class FlagTwigExtension extends \Twig_Extension
     }
     
 
-    public function render_contactCountryList_widget($string = null, $abbr = null,$twigTemplate = null)
+    public function render_contactCountryList_widget($twigTemplate = null)
     {
-        if(!self::$isFlagJsCodeLoaded) {
-            self::$isFlagJsCodeLoaded = true; 
-        }
 
         $countries = $this->service->getGlobalCountryList();
         $twigTemplate = \is_null($twigTemplate) ? 'HelperBundle:Widgets:flag_widget.html.twig' : $twigTemplate;
 
-        $params = array('countryList' => $countries, 'abbr' => $abbr, 'inputId' => $string, 'loadJsCode' => !self::$isFlagJsCodeLoaded);
+        $params = array('countryList' => $countries, 'loadJsCode' => !self::$isFlagJsCodeLoaded, 'loadJs' => false);
+        
+        if(!static::$isFlagJsCodeLoaded) {
+            static::$isFlagJsCodeLoaded = true;
+            $params['loadJs'] = true;
+        }
 
         return $this->twig->render($twigTemplate, $params);
     }

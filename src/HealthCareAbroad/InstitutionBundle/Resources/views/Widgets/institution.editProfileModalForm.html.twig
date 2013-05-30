@@ -39,44 +39,49 @@
 
             {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
             {{ form_widget(institutionForm.coordinates) }}
-            <div class="country control-group span5">
-                    <label for="{{ institutionForm.children.country.vars.id }}">
-                        {{ institutionForm.children.country.vars.label }}
-                    </label>
-                    {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
+             <div class="row-fluid terms">
+                <div class="country control-group span5">
+                        <label for="{{ institutionForm.children.country.vars.id }}">
+                            {{ institutionForm.children.country.vars.label }}
+                        </label>
+                        {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
+                </div>
+                <div class="state control-group span5">
+                        {{ form_label(institutionForm.state) }}
+                        {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
+                </div>
             </div>
-           <div class="state control-group span5">
-                    {{ form_label(institutionForm.state) }}
-                    {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
-            </div>
-            <div class="city control-group span5">
-                     <label for="{{ institutionForm.children.city.vars.id }}">
-                      {{ institutionForm.children.city.vars.label }}
-                    </label>
-                    {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
-            </div>
-            <div class="zipCode control-group span5">
-                    <label for="{{ institutionForm.children.zipCode.vars.id }}">
-                     {{ institutionForm.children.zipCode.vars.label }}
-                    </label>
-                    {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
+            <div class="row-fluid terms">
+                <div class="city control-group span5">
+                         <label for="{{ institutionForm.children.city.vars.id }}">
+                          {{ institutionForm.children.city.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
+                </div>
+                <div class="zipCode control-group span5">
+                        <label for="{{ institutionForm.children.zipCode.vars.id }}">
+                         {{ institutionForm.children.zipCode.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
+                </div>
             </div>
             <div class="control-group">
                 {{ form_label(institutionForm.addressHint)}}
                 {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
             </div> 
         {% elseif each == 'contactDetails' or each == 'websites' %}
-
-            <div class="contactEmail control-group span5">
-                    <label for="{{ institutionForm.children.contactEmail.vars.id }}">
-                        {{ institutionForm.children.contactEmail.vars.label }}
-                    </label>
-                    {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
-            </div>
-             <div class="contactDetails control-group span5">
-                    {% for _widget in institutionForm.contactDetails %}
-                        {{ form_widget(_widget) }}
-                    {% endfor %}
+            <div class="row-fluid terms">
+                <div class="contactEmail control-group span5">
+                        <label for="{{ institutionForm.children.contactEmail.vars.id }}">
+                            {{ institutionForm.children.contactEmail.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+                </div>
+                 <div class="contactDetails span6">
+                        {% for _widget in institutionForm.contactDetails %}
+                            {{ form_widget(_widget) }}
+                        {% endfor %}
+                </div>
             </div>
             <div class="control-group website">
                 {{ form_label(institutionForm.websites) }}

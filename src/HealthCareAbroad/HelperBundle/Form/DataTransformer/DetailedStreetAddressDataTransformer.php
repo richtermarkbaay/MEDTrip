@@ -27,9 +27,8 @@ class DetailedStreetAddressDataTransformer implements DataTransformerInterface
         $json_value = \json_decode($value, true);
         
         if (!$json_value) {
-            $json_value = array('room_number' => '', 'building' => '', 'street' => $value);
+            $json_value = array('room_number' => '', 'building' => '', 'street' => '');
         }
-        
         return $json_value;
     }
     
