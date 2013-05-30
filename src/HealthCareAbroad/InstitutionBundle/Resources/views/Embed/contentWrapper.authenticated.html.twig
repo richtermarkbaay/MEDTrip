@@ -12,9 +12,9 @@
             {% if isInquiry is not defined %}
             <li class="{{ subNavigation is not defined ? 'active' : '' }}">
                 {% if mainNavigation.url is not defined %}
-                    {{ mainNavigation.selected | capitalize }}
+                    {{ mainNavigation.label is defined ? mainNavigation.label : mainNavigation.selected | title }}
                  {% else %}
-                    <a href="{{mainNavigation.url}}">{{ mainNavigation.label | capitalize }}</a>
+                    <a href="{{mainNavigation.url}}">{{ mainNavigation.label | title }}</a>
                     <span class="divider">  / </span>
                {% endif %}
             </li>
@@ -25,7 +25,7 @@
             {% endif %}
             {% if subNavigation is defined %}
                 <li class="active">
-                     {{ subNavigation.label | capitalize }}
+                     {{ subNavigation.label | title }}
                 </li>
             {% endif %}
         </ul>

@@ -71,8 +71,7 @@ var InstitutionMedicalCenter = {
     	_element.next('div.show').hide();
     	$(_attr).toggle();
     	if(_attr = '#address'){
-    		GoogleMap.initialize();
-    		google.maps.event.trigger(GoogleMap.map, 'resize');
+    		google.maps.event.trigger(HCAGoogleMap.map, 'resize');
     	}
     },
     closeProfileForm: function(_element){

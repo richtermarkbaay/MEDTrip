@@ -22,9 +22,8 @@
                 {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
             </div>
         {% elseif each == 'address' %}
-                     <div class="control-group" >
-                        <div id="map_canvas" style="width: 100%; height: 300px"></div> 
-                     </div>
+                        <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
+                        <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
                             {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
                             {{ form_widget(institutionMedicalCenterForm.coordinates) }}
                      <div class="row-fluid terms">
