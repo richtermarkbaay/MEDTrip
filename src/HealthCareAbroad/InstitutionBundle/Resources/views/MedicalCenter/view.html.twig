@@ -32,7 +32,7 @@
                         
                         {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
                             {% block sidebarWrappedContent %}
-                             {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
+                             {% include 'InstitutionBundle:MedicalCenter/Widgets:sidebar.institutionMedicalCenter.html.twig' %}
                             {% endblock %}
                         {% endembed %}
                                         		
@@ -48,27 +48,33 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-<script type="text/javascript" src="{{ asset('bundles/helper/js/google_map.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
 <script type="text/javascript">
-<!--
-        function toggle(button) {
-            // Change the button caption
-            button.innerHTML = button.innerHTML == 'Edit' ? 'x' : 'Edit';
-            // Change the parent div's CSS class
-            var div = button.parentNode;
-            div.className = div.className == 'hca-display' ? 'hca-edit' : 'hca-display';
-        }
+    function toggle(button) {
+        // Change the button caption
+        button.innerHTML = button.innerHTML == 'Edit' ? 'x' : 'Edit';
+        // Change the parent div's CSS class
+        var div = button.parentNode;
+        div.className = div.className == 'hca-display' ? 'hca-edit' : 'hca-display';
+    }
+    
+    var countryElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
+    var coordinatesElem = $("#{{ institutionMedicalCenterForm.getChild('coordinates').vars.id }}");
+    var streetAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_street");
+    var buildingAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_building");
+    var cityElem = $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}");
+    var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     (function($){
-
         $(function(){
-
-            GoogleMap.setInputs({
-    	    	'selectedCity' : document.getElementById('institutionMedicalCenter_city'),
-    	    	'selectedCountry' : document.getElementById('institutionMedicalCenter_country'),
-    	    	'inputCoordinates' : document.getElementById("institutionMedicalCenter_coordinates"),
-    	    	'selectedBuilding' : document.getElementById('institution_profile_form_building'),
-    	    	'selectedStreet' : document.getElementById('institution_profile_form_street'),
-    	    });
+            console.log('{{ institutionMedicalCenter.coordinates }}');
+        	HCAGoogleMap.initialize({
+        		latLngString: '{{ institutionMedicalCenter.coordinates }}',
+        		address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
+        		defaultAddress: cityElem.val() + ',' + countryElem.val(),
+        		mapOnChangeCallback: function() {
+        			coordinatesElem.val(HCAGoogleMap.latLngString);
+        		}
+        	});  
         	
             $("input:checkbox").click(function() {
                 $(this).parent().toggleClass("hca-highlight");
@@ -93,6 +99,19 @@
         });
 
     })(jQuery);
-//-->
+
+    function getAddress() {
+    	var address = ''; 
+        if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
+        if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
+        if(cityElem.val() != '') { address += $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}").val() + ', '; }
+        if(countryElem.val() != '') { address += countryInputElem.val(); }
+        
+        return address;
+    }
+    
+    function updateInstitutionStaticMap() {
+    	HCAGoogleMap.updateMap(getAddress());
+    }
 </script>
 {% endblock %}
