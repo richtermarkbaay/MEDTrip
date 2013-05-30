@@ -5,6 +5,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserFormType;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -82,6 +86,11 @@ class InstitutionAccountController extends InstitutionAwareController
         $this->request = $this->getRequest();
     }
 
+    public function ajaxAddInstitutionUserAction(Request $request)
+    {
+        
+    }
+    
     /**
      * Action page for Institution Profile Page
      *

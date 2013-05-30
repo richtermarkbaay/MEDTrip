@@ -1,69 +1,81 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-
+{% set mainNavigation = {selected: 'users'} %}
 {% block content %}
-<!-- start content -->
-<div id="content">
-    <!--  start page-heading -->
-    <div id="page-heading">
-    	<h1>{{ app.session.get('institutionName') }} List of Staff</h1>
-    </div>
-
-    <!-- end page-heading -->
-    
-    {% embed '::contentWrapper.admin.html.twig' %}
-        
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-			<table style="width:100%;">
-                <tr>
-                    <td style="vertical-align: top;width:100%; ">
-                        <!--  start table-content  -->
-                        <div id="table-content">
-			                 
-			                {% if app.session.hasFlash('notice') %}
-                                {% include '::notice.admin.html.twig' with {'class': 'notice', 'message':  app.session.flash('notice') } %}
-                            {% endif %}
-			
-                			    <table border="0" width="100%" cellpadding="0" cellspacing="0" class="generic-table" id="staff-list">
-                    				<tr>
-                    					<th class="table-header-repeat line-left minwidth-1"> <a href="#">Last Name</a></th>
-                    					<th class="table-header-repeat line-left minwidth-1"><a href="#">First Name</a></th>
-                    					<th class="table-header-repeat line-left minwidth-1"><a href="#">Middle Name</a></th>
-                    					<th class="table-header-repeat line-left"><a href="#">Email</a></th>
-                    					<th class="table-header-options line-left"><a href="#">Options</a> </th>
-                    				</tr>
-                    				
-                    				{% set even = false %}
-                    				{% for staff in users %}
-                    				    <tr class="{{ even ? 'alternate-row' : ''}}">
-                        					<td>{{ staff.lastName | title }}</td>
-                        					<td>{{ staff.firstName | title }}</td>
-                        					<td>{{ staff.middleName | title }}</td>
-                        					<td>{{ staff.email }}</td>
-                        					<td class="options-width">
-                            					<a href="{{ path('institution_editAccount', {accountId: staff.accountId }) }}" title="Edit" class="icon-1 info-tooltip"></a>
-                            					<a href="#" title="Delete" class="icon-2 info-tooltip"></a>
-                            					<a href="#" title="Activate {{ staff.fullName | title}}" class="icon-5 info-tooltip"></a>
-                        					</td>
-                        				</tr>
-                        				{% set even = even ? false : true %}    
-                    				{% endfor %}
-                    				
-                                </table>
-                                <!--  end staff-list................................... --> 
-                                
-                          </div>
-                          <!--  end table-content  -->
-                          
-                    </td>
-                 
-                </tr>
-            </table>
-                               
+            <h1>
+                <i class="icon-group"></i>Create a Team
+            </h1>
+            <div class="span8">
+                <form action="/" method="post">
+                    <section class="section account-info manage-data">
+                        <h2>
+                            Members
+                        </h2>
+                    </section>
+                    <section>
+                        <table class="table table-striped table-hover user-lists">
+                            {% set even = false %}
+            				{% for staff in users %}
+                                <tr>
+                                    <td><i class="icon-user icon-2x"></i></td>
+                                    <td><a href="#">{{staff.firstName}}-{{ staff.email}}</a></td>
+                                    <td>{{staff.institutionUserType.name}}</td>
+                                    <td></td>
+                                </tr>
+                                {% set even = even ? false : true %}    
+            				{% endfor %}
+                            
+                        </table>
+                        <!-- >div class="row-fluid">
+                            <div class="span12">
+                                <div class="row-field">
+                                    <a href="#add-user" class="btn btn-primary btn-large pull-right" data-toggle="modal">
+                                        <i class="icon-plus"></i> Add User
+                                    </a>
+                                </div>
+                            </div>
+                        </div-->
+                    </section>
+                </form>
+                <!-- Modal Form for Adding Users-->
+                {% include 'InstitutionBundle:InstitutionUser/Modals:modal.addUser.html.twig' %}     
+            </div>
+            <aside class="span4">
+                <section class="aside-box default">
+                    <h2>
+                        What is a TEAM?
+                    </h2>
+                    <div class="hca-sub-label">
+                        Faster team collaboration by allowing other users to share an account plan.
+                    </div>
+                    <div class="features">
+                        <div class="media">
+                            <div class="media-body">
+                                <i class="icon-check icon-2x pull-left">
+                                </i>
+                                <p>
+                                    Delegate administrations
+                                </p>
+                            </div>
+                        </div>
+                        <div class="media">
+                            <div class="media-body">
+                                <i class="icon-check icon-2x pull-left">
+                                </i>
+                                <p>
+                                    Manage Medical Insitution Profile
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+            <!--End of one columns data-->
+                    
         {% endblock %}
         
     {% endembed %}
-
-</div>
-<!--  end content -->
-<div class="clear">&nbsp;</div>
 {% endblock %}

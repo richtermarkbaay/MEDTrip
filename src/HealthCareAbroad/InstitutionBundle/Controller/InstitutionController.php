@@ -7,6 +7,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserFormType;
+
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
@@ -76,6 +80,20 @@ class InstitutionController extends InstitutionAwareController
 			'languagesJSON' => \json_encode($languageArr),
 			'institutionLanguage' => $institutionLanguage
 		));
+	}
+	public function viewAllStaffAction(Request $request)
+	{
+	    
+	    $users = $this->get('services.institution')->getAllStaffOfInstitution($this->institution);
+	    $userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($this->institution);
+	    //         echo $this->institution->getId();
+	    $institutionUser = new InstitutionUser();
+	    $form = $this->createForm(new InstitutionUserFormType(), $institutionUser);
+	    return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array(
+	                    'users' => $users,
+	                    'userTypes' => $userTypes,
+	                    'form' => $form->createView()
+	    ));
 	}
 	
 	public function uploadLogoAction()
