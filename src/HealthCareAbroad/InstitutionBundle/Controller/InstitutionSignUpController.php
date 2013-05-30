@@ -476,11 +476,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         
-        //check if center doesnt have address yet, if so temp set address from institution
-        if(is_null($this->institutionMedicalCenter->getAddress())) {
-            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
-            $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
-        }
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         if(!$contactDetails) {
@@ -496,7 +491,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $formRequestData = $request->get($form->getName());
                 
             if((bool)$request->get('isSameAddress')) {
-                $formRequestData['address'] = $this->institution->getAddress1();
+                $formRequestData['address'] = json_decode($this->institution->getAddress1(), true);
                 $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
                 $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
             }
@@ -539,7 +534,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
             }
         }
-
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,

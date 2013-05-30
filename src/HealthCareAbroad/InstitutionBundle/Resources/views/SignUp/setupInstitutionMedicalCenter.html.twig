@@ -32,7 +32,7 @@
                                 Cardiology Center at Sacred Heart Hospital'.
                             </div>
                         </div>
-                        <div class="control-group description {{ (form.description.vars.valid ? '' : 'error') }}">
+                        <div class="control-group {{ (form.description.vars.valid ? '' : 'error') }}">
                             <label for="description">Description <small>(Optional)</small></label>
                             {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
                             <div class="tooltip-content2 hca-textarea">
