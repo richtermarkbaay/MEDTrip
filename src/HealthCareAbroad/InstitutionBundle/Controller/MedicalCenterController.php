@@ -269,8 +269,15 @@ class MedicalCenterController extends InstitutionAwareController
                         else{
                             
                             $value = $this->institutionMedicalCenter->{'get'.$key}();
+                            if($key == 'address') {
+                                $value = json_decode($value, true);
+                                $output['institutionMedicalCenter']['country']= $this->institution->getCountry()->getName();
+                                $output['institutionMedicalCenter']['city'] = $this->institution->getCity()->getName();
+                                $output['institutionMedicalCenter']['state'] = $this->institution->getState();
+                                $output['institutionMedicalCenter']['zipCode'] = $this->institution->getZipCode();
+                            }
                             
-                            if($key == 'address' || $key == 'contactNumber' || $key == 'socialMediaSites') {
+                            if($key == 'contactNumber' || $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);
                             }
                             $output['institutionMedicalCenter'][$key] = $value;

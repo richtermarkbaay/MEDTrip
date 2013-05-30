@@ -287,7 +287,7 @@ var InstitutionMedicalCenter = {
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
                             if (response.institutionMedicalCenter[_v]) {
-                                address.push(response.institution[_v]);
+                                address.push(response.institutionMedicalCenter[_v]);
                             }
                         });
                         
