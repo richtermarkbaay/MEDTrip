@@ -86,6 +86,9 @@ var InstitutionMedicalCenter = {
     	_element.parents('div.show').hide();
     	_element.parents('div.show').prev().hide();
     	$(_attr).toggle();
+    	if(_attr = '#address'){
+    		google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+    	}
     	
     },
     
@@ -294,11 +297,11 @@ var InstitutionMedicalCenter = {
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').prepend(_html);
                         
-//                        //HCAGoogleMap.updateMap();
-//                        if(HCAGoogleMap.map) { 
-//                            HCAGoogleMap.updateMap(_street_address + ',' + HCAGoogleMap.defaultAddress);
-//                        }
-
+                        if(HCAGoogleMap.map) { 
+                        	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institutionMedicalCenter.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institutionMedicalCenter.coordinates;
+                        	$('#medical-center-static-map').prop('src', mapStaticUrl);
+                        }
+                        
                         break;
     
                     case 'contactForm':
