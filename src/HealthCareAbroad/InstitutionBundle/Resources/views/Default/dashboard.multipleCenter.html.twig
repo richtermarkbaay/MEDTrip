@@ -18,7 +18,7 @@
         <h2> Suggestion for your Hospital </h2>
         {% set _suggestions = render_institution_suggestions(institution) %}
         <ul class="thumbnails hca-alert-inquiry">
-            {% if _suggestions is not null %}
+            {% if _suggestions is not empty %}
                 {% for suggestion in _suggestions %}
                     <li class="thumbnail hca-alert-inquiry">
                         <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
@@ -39,7 +39,7 @@
         </h2>
          <ul class="thumbnails hca-alert-inquiry">
              {% set _centers = render_incomplete_clinic_profile(institution) %}
-             {% if _centers is not null %}
+             {% if _centers is not empty %}
                 {% for center in _centers %}
                     <li class="thumbnail hca-alert-inquiry">
                         <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
@@ -60,7 +60,7 @@
         <h2>
             Latest Inquiries
         </h2>
-        {% if _inquiries is not null %}
+        {% if _inquiries is not empty %}
         <table class="table table-hover hca-inquiry">
             {% for inquiry in _inquiries %}
             <tr>
@@ -79,6 +79,12 @@
                 </td>
             </tr>
             {% endfor %}
+        {% else %}
+            <tr>
+                <td>
+                   <p>No Inquiries</p>
+                </td>
+            </tr>
         {% endif %}
         </table>
     </section>
@@ -88,4 +94,16 @@
         
     {% endembed %}
 {% endblock %}
+{% block inlineJavascriptCode %}
+    <script type="text/javascript">
+    $(function() {
 
+    	var _inquiryCntrBanner = $('#inquiry_banner_cntr').find('span').html();
+    	if(_inquiryCntrBanner == ' 0 ') {
+    		$('#inquiry_banner_cntr').find('span').removeAttr('class').html('');
+
+    	    return false;
+    	}
+    });
+    </script>
+{% endblock %}
