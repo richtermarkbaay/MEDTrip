@@ -34,9 +34,7 @@
     
             <section id="doneSection" {% if not institutionMedicalCenter.doctors|length %} style="display:none" {% endif %}>
 
-                <a href="dashboard-hospital-initial.html" class="btn pull-right btn-success btn-large">
-                    Done Adding Doctors
-                </a>
+                <a href="{{ path('institution_signup_finish') }}" class="btn pull-right btn-success btn-large">Done Adding Doctors</a>
                 
             </section>
         </div>
@@ -158,7 +156,6 @@
             var editFormWrapper = $(this).parent().next();
 
         	if($(this).find('.icon-ok')) {
-            	console.log('submitForm');
         		editFormWrapper.find('.edit-doctor-form:first').submit();
             }
 
@@ -174,9 +171,15 @@
             	editForm.find("#{{ editForm.getChild('contactEmail').vars.id }}").val(doctor.contactEmail);
 
             	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_number").val('');
+            	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_abbr").val('');
+            	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_code").val('');
+
             	$.each(doctor.contactDetails, function(i){
-                	number = (doctor.contactDetails[i].areaCode ? doctor.contactDetails[i].areaCode : '') + doctor.contactDetails[i].number
-                	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_number").val(number);
+                	numberElem = editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_number").val(doctor.contactDetails[i].number);
+                	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_abbr").val(doctor.contactDetails[i].abbr);
+                	editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_country_code").val(doctor.contactDetails[i].countryCode);
+
+                	numberElem.siblings('.flag-selector-widget:first').find('.flag16:first').attr('class', 'flag16 ' + doctor.contactDetails[i].abbr);
                 });
 
             	editForm.find('.specializations-listing input[type=checkbox]').removeAttr('checked');
@@ -197,6 +200,9 @@
                 if(btnIcon.hasClass('icon-edit')) {
                 	btnIcon.removeClass('icon-edit').addClass('icon-ok');
                 } else {
+
+                	$('.medicalCenter-doctors')
+                    
                 	btnIcon.removeClass('icon-ok').addClass('icon-edit');
                 }
             });
