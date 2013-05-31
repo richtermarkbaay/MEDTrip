@@ -16,45 +16,44 @@
     
     <section class="section row-fluid">
         <h2> Suggestion for your Hospital </h2>
+        
         {% set _suggestions = render_institution_suggestions(institution) %}
+        {% if _suggestions is not empty %}
         <ul class="thumbnails hca-alert-inquiry">
-            {% if _suggestions is not empty %}
-                {% for suggestion in _suggestions %}
-                    <li class="thumbnail hca-alert-inquiry">
-                        <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                        </i></span>
-                        <span>
-                            {{ suggestion.description }}
-                        </span>
-                    </li>
-                {% endfor %}
-                <a class="btn btn-link" href="{{ path('institution_account_profile') }}">Click Here to update</a>
-            {% endif %}  
+            {% for suggestion in _suggestions %}
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
+                    </i></span>
+                    <span>
+                        {{ suggestion.description }}
+                    </span>
+                </li>
+            {% endfor %}
+            <a class="btn btn-link" href="{{ path('institution_account_profile') }}">Click Here to update</a>
         </ul>
-       
+        {% endif %}  
     </section>
     <section class="section row-fluid">
         <h2>
             List of Incomplete Clinic Profile
         </h2>
-         <ul class="thumbnails hca-alert-inquiry">
-             {% set _centers = render_incomplete_clinic_profile(institution) %}
-             {% if _centers is not empty %}
-                {% for center in _centers %}
-                    <li class="thumbnail hca-alert-inquiry">
-                        <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
-                        </i></span>
-                        <span class="details-inline">
-                            <b>{{ center.name }}</b>
-                            This clinic doesn't have a 
-                            {{ center.fields | join(',') }}.
-                        </span>
-                        <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">Click Here to update</a>
-                    </li>
-                {% endfor %}
-            {% endif %} 
+        {% set _centers = render_incomplete_clinic_profile(institution) %}
+        {% if _centers is not empty %}
+        <ul class="thumbnails hca-alert-inquiry">
+            {% for center in _centers %}
+                <li class="thumbnail hca-alert-inquiry">
+                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
+                    </i></span>
+                    <span class="details-inline">
+                        <b>{{ center.name }}</b>
+                        This clinic doesn't have a 
+                        {{ center.fields | join(',') }}.
+                    </span>
+                    <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">Click Here to update</a>
+                </li>
+            {% endfor %}
         </ul>
-        
+        {% endif %} 
     </section>
     <section class="section row-fluid">
         <h2>
