@@ -76,9 +76,9 @@
         		}
         	});  
         	
-            $("input:checkbox").click(function() {
-                $(this).parent().toggleClass("hca-highlight");
-            });
+        	 $("input:checkbox").click(function() {
+                 $(this).parents('li').toggleClass("hca-highlight");
+             });
 
             InstitutionMedicalCenter.isEditView = true;
 

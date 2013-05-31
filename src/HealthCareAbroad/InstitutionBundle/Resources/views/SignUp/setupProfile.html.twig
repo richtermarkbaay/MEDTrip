@@ -93,7 +93,7 @@ $(function(){
     });
 
     $("input:checkbox").click(function() {
-        $(this).parent().toggleClass("hca-highlight");
+        $(this).parents('li').toggleClass("hca-highlight");
     });
 
     function getAddress() {

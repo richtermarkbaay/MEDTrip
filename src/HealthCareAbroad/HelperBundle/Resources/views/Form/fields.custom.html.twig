@@ -149,8 +149,10 @@
     <ul class="services-listing">
         {% for choice in form.vars.choices %}
              <li class="{{ selected[choice.value] is defined ? '' : 'hca-highlight' }}">
-                <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                {{ choice.label }}
+                <label for="{{ form.vars.full_name ~ choice.value }}">
+                    <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
+                    {{ choice.label }}
+                </label>
             </li>
         {% endfor %}
     </ul>
@@ -220,8 +222,10 @@
                 <ul>
                      {% for choice in typeChoice %}
                         <li class="{{ selected[choice.value] is defined ? '' : 'hca-highlight' }} ">
-                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
-                            {{ choice.label | raw }}
+                            <label for="{{ form.vars.full_name ~ choice.value }}">
+                                <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
+                                {{ choice.label | raw }}
+                            </label>
                         </li>
                     {% endfor %}
                 </ul>

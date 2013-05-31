@@ -67,7 +67,7 @@
          	});
 
             $("input:checkbox").click(function() {
-                $(this).parent().toggleClass("hca-highlight");
+                $(this).parents('li').toggleClass("hca-highlight");
             });
 
         	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
