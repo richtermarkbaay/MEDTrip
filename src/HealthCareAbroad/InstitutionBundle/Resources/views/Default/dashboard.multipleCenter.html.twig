@@ -3,6 +3,7 @@
 {% set _inquiries = render_institution_inquiries(institution) %}
 {% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
 {% set _read_inquiries = render_institution_read_inquiries(institution) %}
+{% set label = 'Hospital' %}
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
@@ -15,8 +16,7 @@
     </section>
     
     <section class="section row-fluid">
-        <h2> Suggestion for your Hospital </h2>
-        
+        <h2> Suggestion for your {{ label }} </h2>
         {% set _suggestions = render_institution_suggestions(institution) %}
         {% if _suggestions is not empty %}
         <ul class="thumbnails hca-alert-inquiry">
