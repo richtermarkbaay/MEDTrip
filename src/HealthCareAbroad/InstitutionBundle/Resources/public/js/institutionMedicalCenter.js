@@ -389,7 +389,6 @@ var InstitutionMedicalCenter = {
             	window.location = response.redirect;
             },
             error: function(response) {
-            	_form.html("")
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;

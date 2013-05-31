@@ -10,7 +10,7 @@
                     <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i>Dashboard</a>
                 </li>
                 <li class="{{ 'manage hospital' == mainNavigation.selected  ? 'active' : '' }}">
-                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>{{ label }} Profile</a> 
+                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>{{ clinicClassLabel.singular | title }} Profile</a> 
                 </li>
                 {% if institution.type != 3 %}
                 <li class="{{ 'clinics' == mainNavigation.selected  ? 'active' : '' }}">

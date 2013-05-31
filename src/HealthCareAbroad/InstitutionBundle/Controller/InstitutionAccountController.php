@@ -112,19 +112,19 @@ class InstitutionAccountController extends InstitutionAwareController
             $this->institution->addContactDetail($phoneNumber);
         }
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-
+        
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
-
+            
+            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
             $params['isSingleCenter'] = true;            
-            $params['institutionMedicalCenter'] = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-            $params['institutionMedicalCenterForm'] = $this->createForm(new InstitutionMedicalCenterFormType(), $params['institutionMedicalCenter'])->createView();
-
-            // load medical center specializations
-            $params['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
-            $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
+            $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
+            $params['institution'] = $this->institution;
+            $params['institutionMedicalCenterForm'] = $form->createView();
+            $params['specializations'] = '';
             $params['medicalProvidersJSON'] = \json_encode($medicalProviderGroupArr);
 
         } else {
+            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
             $params =  array(

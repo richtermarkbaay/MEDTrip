@@ -1,7 +1,6 @@
 
 <div class="span9">
     <h1><span>Manage {{ clinicClassLabel.singular | title }}</span></h1>
-
     <div class="row"> 
         <div class="span2">
             <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
@@ -32,71 +31,51 @@
             
         </div>
     </div>
-    <!-- end row -->
+   
     <div class="tabbable">
-        <ul class="nav nav-tabs profile_tabs">
-            <li class="active">
-                <a data-toggle="tab" class="profile_tab_links" href="#specializations_tab_content">Specializations</a>
-            </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#services_tab_content">Services</a>
-            </li>
-            <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#awards_tab_content">Awards</a>
-            </li>
-           <li class="">
-                <a data-toggle="tab" class="profile_tab_links" href="#medical_specialists_tab_content">Medical Specialist</a>
-            </li>
-            
-        </ul>
-        <div class="tab-content" id="tabbed_content">
-            <div id="specializations_tab_content" class="tab-pane active">
-                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
-            </div>
-            <div id="services_tab_content" class="tab-pane"><span>Loading ancillary services</span></div>
-            <div id="awards_tab_content" class="tab-pane"><span>Loading clinic awards, certificates and affiliations</span></div>
-            <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
-        </div><!-- /.tab-content -->
+        {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
+            tabNavigation: { links: [
+                { label: 'Clinic Profile', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
+                { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
+                { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
+            ]}
+        } %}
+        
+       <div class="tab-content" id="tabbed_content">
+           <div id="profile_tab" class="tab-pane active">
+                {% include 'InstitutionBundle:MedicalCenter/Widgets:medicalCenterProfileTabForm.html.twig' %}
+           </div>
+           <div id="specializations_tab_content" class="tab-pane">
+               {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
+           </div>
+           <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
+       </div><!-- /.tab-content -->
     </div>
     
 </div>
 
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionTreatments.js') }}"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 <script type="text/javascript">
-<!--
 (function($){
     $(function(){
-
-        $('#institutionDescriptionText').truncateByHeight({'visibleRows': 5});
-        
-        InstitutionMedicalCenter.initializeTabs({
-            'services' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "services", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#services_tab_content')},
-            'awards' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "awards", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#awards_tab_content')},
-            'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
-        })
-        .initializeTabbedContentContainerElement($('div#tabbed_content'))
-        .loadTabbedContents();
-
-        var _nsUrl = '{{ path("institution_medicalCenter_ajaxSpecializationSource", {institutionId: institution.id, imcId: institutionMedicalCenter.id}) }}';
-        // setup autocomplete for add specialization
-        InstitutionSpecializationAutocomplete.singleSelectionOnly = true;
-        InstitutionSpecializationAutocomplete
-        .setAutocompleteOptions({
-            source : _nsUrl,
-            target: $('input.autocomplete_specialization_selector'),
-            selectedDataContainer: $('#specializationAccordion') 
-        })
-        .setLoaderElement($('#specializationLoading'))
-        .setLoadSpecializationFormUri('{{ path("institution_medical_center_ajaxLoadSpecializationAccordionEntry", { "treatmentsListOnly":1,"imcId": institutionMedicalCenter.id } ) }}')
-        .autocomplete();
-
-        InstitutionSpecialization.setSpecializationsListContainerElement($('div#specializations_tab_content div.row-fluid'));
-    });
-})(jQuery);
-//-->
+    	 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+         InstitutionMedicalCenter.initializeTabs({
+             'medical_specialists' : {'url': '{{ path("institution_load_tabbed_contents_singleProfile", {"institutionId": institution.id, "content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
+         })
+         .initializeTabbedContentContainerElement($('div#tabbed_content'))
+         .loadTabbedContents();
+         $('#clinicDescriptionText').truncateByHeight({
+             'visibleRows': 5
+         });
+         
+        });
+    
+    })(jQuery);
+    
 </script>
 {% endblock %}

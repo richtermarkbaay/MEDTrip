@@ -134,11 +134,6 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function viewAction(Request $request)
     {
-        //check if center doesnt have address yet, if so temp set address from institution
-        if(is_null($this->institutionMedicalCenter->getAddress())) {
-            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
-        }
-    
         if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
             $contactDetails = new ContactDetail();
             $contactDetails->setType(ContactDetailTypes::PHONE);

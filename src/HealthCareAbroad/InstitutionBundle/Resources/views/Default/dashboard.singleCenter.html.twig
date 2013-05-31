@@ -17,7 +17,7 @@
     
     <section class="section row-fluid">
         <h2> Suggestion for your {{ label }} </h2>
-        {% set _suggestions = render_institution_suggestions(institution) %}
+        {% set _suggestions = render_institution_single_center_suggestions(institution) %}
         <ul class="thumbnails hca-alert-inquiry">
             {% if _suggestions is not empty %}
                 {% for suggestion in _suggestions %}
