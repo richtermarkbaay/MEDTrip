@@ -12,9 +12,9 @@
                             <div class="tabbable">
                                 {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
                                     tabNavigation: { links: [
-                                        { label: 'Clinic Profile', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
+                                        { label: 'Clinic Details', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
                                         { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
-                                        { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
+                                        { label: 'Doctors', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
                                     ]}
                                 } %}
                                 
@@ -25,7 +25,7 @@
                                    <div id="specializations_tab_content" class="tab-pane">
                                        {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
                                    </div>
-                                   <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
+                                   <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading Doctors list</span></div>
                                </div><!-- /.tab-content -->
                             </div>
                         </div><!-- end .span9 -->

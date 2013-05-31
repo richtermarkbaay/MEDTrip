@@ -3,13 +3,13 @@
     <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" data-toggle="show-about" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-about">
-            <h3> About your Hospital </h3>
+            <h3> Description </h3>
             <span> Here you can present your hospital general description. </span>
             <p class="hca-helptext" id="institutionDescriptionText"> {{ institution.description }} </p>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
             <a class="btn btn-link pull-right" href="#description" data-toggle="show-about" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-           <h3> Hospital Description </h3>
+           <h3> Description </h3>
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                  with {formId: 'descriptionModalForm', fields: ['description']} 
             %}
@@ -21,7 +21,7 @@
     <div class="hca-display">
         <a id="institution-edit-address-toggle" class="btn btn-misc btn-default pull-right btn-edit" href="#address" data-toggle="show-address" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-address">
-            <h3>  Hospital Address 
+            <h3>  Address 
             </h3>
             <div>
                 <span class="icon-map-marker"> </span>
@@ -33,7 +33,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="address">
            <a class="btn btn-link pull-right" href="#address" data-toggle="show-address" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-           <h3> Hospital Address
+           <h3> Address
                 <span class="tooltip-wrap hca-edit">
                     <i class="icon-info-sign"> </i>
                     <span class="tooltip-content hca-edit pull-left">
@@ -53,7 +53,7 @@
      <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-contact">
-            <h3> Hospital Contact Details </h3>
+            <h3> Contact Details </h3>
             <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
                 <p> <i class="icon-globe"> </i>
                      <span id="profileWebsitesText"> 
@@ -93,7 +93,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="number">
             <a class="btn btn-link pull-right" href="#number" data-toggle="show-contact" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3> Hospital Contact Details 
+            <h3> Contact Details 
                  <span class="tooltip-wrap hca-edit">
                     <i class="icon-info-sign"> </i>
                     <span class="tooltip-content hca-edit pull-left">
@@ -115,7 +115,7 @@
      <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#socialMedia" data-toggle="show-social" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-social">
-            <h3>  Hospital Social Media </h3>
+            <h3> Social Media </h3>
             <div id="soclialMediaText" class="">
                 {% for type, site in institution_websites_to_array(institution) %}
                     <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
@@ -126,7 +126,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="socialMedia">
             <a class="btn btn-link pull-right" href="#socialMedia" data-toggle="show-social" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3>  Hospital Social Media </h3>
+            <h3> Social Media </h3>
                 {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
                      with {formId: 'socialMediaForm', fields: ['socialMediaSites']} 
                 %}
@@ -139,15 +139,15 @@
     <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#servicesContainerDiv" data-toggle="show-services" onclick="InstitutionProfile.openProfileForm($(this)); return false;">Edit</a>
         <div class="show" id="show-services">
-                <h3> Hospital Services </h3>
-                <h4> List of Services offered by Your Hospital. </h4>
+                <h3> Services </h3>
+                <h4> List of Services offered. </h4>
             <div id="serviesText">
                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig' %}
             </div>
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="servicesContainerDiv">
             <a class="btn btn-link pull-right" href="#servicesContainerDiv" data-toggle="show-services" onclick="InstitutionProfile.closeProfileForm($(this)); return false;"> <i class="icon-remove"> </i></a>
-            <h3> Hospital Services  
+            <h3> Services  
                 <span class="tooltip-wrap hca-edit">
                     <i class="icon-info-sign"> </i>
                     <span class="tooltip-content hca-edit pull-left">

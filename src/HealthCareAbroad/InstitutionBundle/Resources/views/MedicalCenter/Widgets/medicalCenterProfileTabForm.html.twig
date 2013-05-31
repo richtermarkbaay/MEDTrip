@@ -2,7 +2,7 @@
     <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#description" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">  Edit </a>
         <div class="show">
-            <h3> About your Clinic </h3>
+            <h3> Description</h3>
                 <p><span id="clinicDescriptionText"> {{ institutionMedicalCenter.description != '' ? institutionMedicalCenter.description | raw : '' }} </span></p>
             {% if institutionMedicalCenter.description == ' ' %}
                 <div class="alert alert-block">
@@ -19,7 +19,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="description">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
-            <h3> Clinic Description
+            <h3> Description
             </h3>
             {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' 
                  with {formId: 'descriptionForm', fields: ['description']} 
@@ -32,7 +32,7 @@
     <div class="hca-display">
         <a class="btn btn-misc btn-default pull-right btn-edit" href="#address" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
         <div class="show">
-            <h3> Clinic Address </h3>
+            <h3> Address </h3>
             <p> <i class="icon-map-marker"> </i>
                 {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city', 'state', 'country','zipCode']) %}
                 <span class="address_column">
@@ -42,7 +42,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="address">
             <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
-            <h3> Clinic Address
+            <h3> Address
                 <span class="tooltip-wrap hca-edit">
                     <i class="icon-info-sign"> </i>
                     <span class="tooltip-content hca-edit pull-left">
@@ -62,7 +62,7 @@
     <div class="hca-display">
        <a class="btn btn-misc btn-default pull-right btn-edit" href="#contactNumber" onclick="InstitutionMedicalCenter.openProfileForm($(this)); return false;">Edit</a>
        <div class="show">
-            <h3> Clinic Contact Details </h3>
+            <h3> Contact Details </h3>
               <div id="alertDiv" class="{{ institutionMedicalCenter.websites ? '' :'alert alert-block' }}">
                 <p>  <i class="icon-globe"  ></i>
                     <span id="profileWebsitesText"> 
@@ -102,7 +102,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="contactNumber">
             <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
-            <h3> Clinic Contact Details
+            <h3> Contact Details
                 <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"></i>
                     <span class="tooltip-content hca-edit pull-left">  <i class="icon-phone-sign icon-2x pull-left"> </i>
                         This is how we will contact you to let you know about potential leads. Please provide the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through <b>HealthcareAbroad</b>.<br>
@@ -162,7 +162,7 @@
         </div>
         <div class="row-fluid hca-edit-box" style="display:none;" id="services">
         <button class="btn btn-misc btn-default pull-right btn-edit" onclick="InstitutionMedicalCenter.closeProfileForm($(this)); return false;">x</button>
-            <h3> Clinic Services
+            <h3> Services
                 <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"></i>
                     <span class="tooltip-content hca-edit pull-left"> <i class="icon-ambulance icon-2x pull-left"> </i>
                         Patients, especially medical tourists, always want to know what facilities and services are offered by clinics. This gives them an idea about the level of care and support that can be expected from an institution. <br><br> Please indicate only what you actually provide. Being honest helps patients plan their trip better, and lets them know what to prepare for.

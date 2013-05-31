@@ -1,54 +1,22 @@
 
-<div class="span9">
-    <h1><span>Manage {{ clinicClassLabel.singular | title }}</span></h1>
-    <div class="row"> 
-        <div class="span2">
-            <a data-toggle="modal" role="button" title="" class="gallerypic" href="#institutionLogoModal"> 
-                        {% if institution.logo %}
-                            {# media(institution.logo, institution, 'default', {alt: 'institution logo'}) | raw #}
-                            <img src="{{ institution_media_src(institution.logo) }}" alt="" /> 
-                        {% else %}
-                             <img width="140" height="90" class="pic" alt="[Gallery Photo]" src="{{ asset('images/institution/image_ph.png') }}" /> 
-                        {% endif %}
-               
-                <span class="image-icon"><img width="32" height="32" title="Change Profile Logo" alt="Zoom" src="{{ asset('images/institution/image-icon.png') }}"></span> 
-            </a>
-        </div>
-        
-        <div class="span7">
-            <h2 id="institutionNameText" class="pull-left">{{ institution.name }}</h2>
-            <div class="editname">
-                <i title="Edit" class="icon-pencil"></i>
-                <a href="#institutionNameModal" data-toggle="modal" role="button"><small>Edit</small></a>
-            </div>
-            <div class="maincontentblock">
-                <div style="display: inline-block;" id="institutionDescriptionText">
-                    {{ institution.description | raw }}
-                </div>
-                <i title="Edit" class="icon-pencil"></i>
-                <a href="#institutionDescriptionModal" data-toggle="modal" role="button"><small>Edit</small></a>
-            </div>
-            
-        </div>
-    </div>
-   
+<div class=" span8 tab-content">
     <div class="tabbable">
         {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
             tabNavigation: { links: [
-                { label: 'Clinic Profile', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
+                { label: 'Details', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
                 { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
-                { label: 'Medical Specialists', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
+                { label: 'Doctors', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
             ]}
         } %}
         
        <div class="tab-content" id="tabbed_content">
            <div id="profile_tab" class="tab-pane active">
-                {% include 'InstitutionBundle:MedicalCenter/Widgets:medicalCenterProfileTabForm.html.twig' %}
+               {% include 'InstitutionBundle:Institution/Widgets:profileTabForm.html.twig' %}
            </div>
            <div id="specializations_tab_content" class="tab-pane">
                {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
            </div>
-           <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading medical specialists</span></div>
+           <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading Doctors list</span></div>
        </div><!-- /.tab-content -->
     </div>
     
