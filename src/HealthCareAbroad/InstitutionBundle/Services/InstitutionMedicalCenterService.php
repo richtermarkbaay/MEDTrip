@@ -401,18 +401,16 @@ class InstitutionMedicalCenterService
     **/
     
     
-    public function getMedicalCenterCountByStatus($medicalCenters){
-        $results = array('status'=> array (
-                        '1' => array(),
-                        '2' => array(),
-                        '4' => array(),
-                        '8' => array(),
-                        '16' => array(),
-                        '32' => array(),
-        ));
+    public function groupMedicalCentersByStatus($medicalCenters){
+        $results = array(
+            InstitutionMedicalCenterStatus::APPROVED => array(),
+            InstitutionMedicalCenterStatus::DRAFT => array(),
+            InstitutionMedicalCenterStatus::PENDING => array(),
+            InstitutionMedicalCenterStatus::EXPIRED => array(),
+        );
 
-        foreach ($medicalCenters as $var){
-            $results['status'][$var->getStatus()][] = $var->getStatus();
+        foreach ($medicalCenters as $each){
+            $results[$each->getStatus()][] = $each;
         }
 
         return $results;

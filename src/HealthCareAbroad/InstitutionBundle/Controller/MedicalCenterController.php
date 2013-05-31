@@ -101,43 +101,26 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function indexAction(Request $request)
     {
-        $output = array();
-        $status = $request->get('status', 2);
+        // Medical Centers Group By Status
+        $medicalCenters = $this->service->groupMedicalCentersByStatus($this->institution->getInstitutionMedicalCenters());
         
-        $results = $this->repository->getInstitutionMedicalCentersByStatus($this->institution, $status);
-        $list = InstitutionMedicalCenterStatus::getStatusList();
-        $total = $this->service->getMedicalCenterCountByStatus($this->institution->getInstitutionMedicalCenters());
         
-        if (!$this->institutionMedicalCenter instanceof InstitutionMedicalCenter) {
-            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-            $this->institutionMedicalCenter->setInstitution($this->institution);
-        }
-        
-        $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        
-        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-        }
-        
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
+        // Add Medical Center Form
+        $institutionMedicalCenter = new InstitutionMedicalCenter();
+        $institutionMedicalCenter->setInstitution($this->institution);
+        $phoneNumber = new ContactDetail();
+        $phoneNumber->setType(ContactDetailTypes::PHONE);
+        $institutionMedicalCenter->addContactDetail($phoneNumber);
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
+
         $parameters = array(
-                        'total' => $total,
-                        'medicalCenters' => $results,
-                        'navStatus' => strtolower($list[$status]),
-                        'institution' => $this->institution,
-                        'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-                        'institutionMedicalCenterForm' => $form->createView(),
+            'institution' => $this->institution,
+            'institutionMedicalCenterForm' => $form->createView(),
+            'approvedMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::APPROVED],
+            'draftMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::DRAFT],
+            'pendingMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::PENDING],
+            'expiredMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::PENDING],
         );
-        
-        if( $request->get('status'))
-        {
-            $output['status'] = strtolower($list[$status]);
-            $output['output'] = array('html' => $this->renderView('InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig', $parameters));
-            
-            return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-        }
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);
     }

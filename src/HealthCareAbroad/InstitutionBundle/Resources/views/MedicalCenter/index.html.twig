@@ -13,23 +13,24 @@
                     <!-- Only required for left/right tabs -->
                     <ul class="nav nav-tabs hca-tab">
                         <li class="active">
-                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{ total.status.2 | length }}</span></a>
+                            <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{ approvedMedicalCenters|length }}</span></a>
                         </li>
                         <li>
-                            <a href="#draft" data-toggle="tab">Draft <span class="badge badge-default">  {{ total.status.4 | length }}</span></a>
+                            <a href="#draft" data-toggle="tab">Draft <span class="badge badge-default"> {{ draftMedicalCenters|length }}</span></a>
                         </li>
                         <li>
-                            <a href="#pending" data-toggle="tab">Pending<span class="badge badge-important"> {{ total.status.8 | length }}</span></a>
+                            <a href="#pending" data-toggle="tab">Pending<span class="badge badge-important"></span></a>
                         </li>
                         <li>
-                            <a href="#expired" data-toggle="tab">Expired <span class="badge ">{{ total.status.16 | length }}</span></span></a>
+                            <a href="#expired" data-toggle="tab">Expired <span class="badge "></span></a>
                         </li>
                     </ul>
                    <div class="tab-content" id="medicalCenterListing">
-                        <div class="tab-pane active" id=all>
-                             {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig'%}
+                        
+                        <div class="tab-pane active" id=all></div>
+                       <div class="tab-pane" id="draft">
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: draftMedicalCenters, centerType: 'Draft' } %}
                        </div>
-                       <div class="tab-pane" id="draft"> </div>
                        <div class="tab-pane" id="pending"> </div>
                        <div class="tab-pane" id="expired"> </div>
                     </div>
@@ -45,10 +46,12 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript">
 <!--
+
     (function($){
         $(function(){
             $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
         });
+        {#/*
         _url_base = '{{ path("institution_medicalCenter_index") }}'; 
         ClinicListing.setAjaxUrls({
             'loadPending': _url_base+'?status=8',
@@ -57,7 +60,7 @@
        }); 
         ClinicListing.loadTabbedContentsOfClinics(); 
        ClinicListing.tabbedContentElement = $('#medicalCenterListing');
-       
+       */#}
         function grow(_el) {
             _el.css('height', '').css('overflow', '');
             _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');
