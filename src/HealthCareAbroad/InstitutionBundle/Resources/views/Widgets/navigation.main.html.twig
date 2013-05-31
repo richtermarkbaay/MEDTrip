@@ -1,5 +1,5 @@
 <!-- New template do not remove -->
-
+{% set clinicClassLabel = (isSingleCenter is defined) and isSingleCenter ? 'Clinic' : 'Hospital' %}
 {% set _mainNavDefaults = {'selected' : 'dashboard'} %}
 {% set mainNavigation = mainNavigation is defined ? _mainNavDefaults | merge(mainNavigation) : _mainNavDefaults %}
 <nav id="nav">
@@ -10,7 +10,7 @@
                     <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i>Dashboard</a>
                 </li>
                 <li class="{{ 'manage hospital' == mainNavigation.selected  ? 'active' : '' }}">
-                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>{{ clinicClassLabel.singular | title }} Profile</a> 
+                    <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>{{ clinicClassLabel | title }} Profile</a> 
                 </li>
                 {% if institution.type != 3 %}
                 <li class="{{ 'clinics' == mainNavigation.selected  ? 'active' : '' }}">
