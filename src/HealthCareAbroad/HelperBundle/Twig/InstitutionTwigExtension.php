@@ -77,7 +77,15 @@ class InstitutionTwigExtension extends \Twig_Extension
         if(!$institution->getLogo()) {
             $suggestions[] = array('description' => 'You currently have no logo for your Hospital yet.');
         }
-            
+        
+        if(!$institution->getFeaturedMedia()) {
+            $suggestions[] = array('description' => 'You currently have no banner for your Hospital yet.');
+        }
+
+        if(!$institution->getGallery()->count()) {
+            $suggestions[] = array('description' => 'You currently have no media gallery/photos for your Hospital yet.');
+        }
+        
         if(!$institution->getContactDetails()->count()) {
             $suggestions[] = array('description' => 'You currently have no contact details for your Hospital yet.');
         }
