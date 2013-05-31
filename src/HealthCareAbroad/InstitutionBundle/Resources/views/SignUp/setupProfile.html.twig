@@ -92,6 +92,10 @@ $(function(){
         $('#institutionProfileForm').submit();
     });
 
+    $("input:checkbox").click(function() {
+        $(this).parents('li').toggleClass("hca-highlight");
+    });
+
     function getAddress() {
         var address = '';
     	var building = $('#' + formName + '_address1_building').val();

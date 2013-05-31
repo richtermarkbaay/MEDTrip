@@ -476,11 +476,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         
-        //check if center doesnt have address yet, if so temp set address from institution
-        if(is_null($this->institutionMedicalCenter->getAddress())) {
-            $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
-            $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
-        }
         $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         if(!$contactDetails) {
@@ -496,7 +491,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $formRequestData = $request->get($form->getName());
                 
             if((bool)$request->get('isSameAddress')) {
-                $formRequestData['address'] = $this->institution->getAddress1();
+                $formRequestData['address'] = json_decode($this->institution->getAddress1(), true);
                 $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
                 $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
             }
@@ -539,7 +534,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
             }
         }
-
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
@@ -695,41 +689,17 @@ class InstitutionSignUpController extends InstitutionAwareController
         //return new Response($html, 200, array('Content-Type'=>'application/json'));
     }
 
-    public function ajaxEditDoctorAction(Request $request)
+    public function finishAction(Request $request)
     {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id', 0));
-exit;
-        if (!$doctor) {
-            throw new \Exception('Invalid doctor');
+        if($this->institution->getInstitutionMedicalCenters()->count() && $this->institution->getInstitutionMedicalCenters()->first()->getDoctors()->count()) {
+            $this->institution->setSignupStepStatus(SignUpService::COMPLETED_SIGNUP_FLOW_STATUS);
+            $this->get('services.institution.factory')->save($this->institution);
+            $this->getRequest()->getSession()->set('institutionSignupStepStatus', $this->institution->getSignupStepStatus());
         }
 
-        $form = $this->createForm(new InstitutionSignUpDoctorFormType(), $doctor);
-
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $doctor = $form->getData();
-
-                $doctor = $this->signUpService->editDoctor($doctor, $this->getDoctrine());
-
-                $rowDoctor = $this->renderView('InstitutionBundle:SignUp/Partials:row.doctor.html.twig', array('doctor' => $doctor));
-
-                return new Response(json_encode(array('rowDoctor' => $rowDoctor)), 200, array('Content-Type'=>'application/json'));
-
-            } else {
-                var_dump($form->getErrorsAsString()); exit;
-            }
-        }
-
-        $html = $this->renderView('InstitutionBundle:SignUp/Widgets:modalForm.doctors.html.twig', array(
-                        'form' => $form->createView(),
-                        'editMode' => true
-        ));
-
-        return new Response($html, 200, array('Content-Type'=>'application/json'));
+        return $this->redirect($this->generateUrl('institution_homepage'));
     }
-
+    
     private function getProxyMedicalCenter()
     {
         //This will have identical values with related institution

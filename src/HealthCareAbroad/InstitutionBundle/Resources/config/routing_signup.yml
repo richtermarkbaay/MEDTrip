@@ -28,6 +28,12 @@ institution_signup_setup_doctors:
     requirements:
         _method: GET|POST
 
+institution_signup_finish:
+    pattern: /institution/setup-finish
+    defaults: {_controller: InstitutionBundle:InstitutionSignUp:finish }
+    requirements:
+        _method: GET
+        
 # AJAX
 institution_ajax_loadSpecializationComponents:
     pattern: /ns-institution/ajax/loadSpecializationComponents

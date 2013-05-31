@@ -116,6 +116,7 @@
 
 {% block detailed_street_address_widget %}
     {% spaceless %}
+
         {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
         <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
             <label for="{{ form.vars.full_name ~ '[street]' }}">Address</label>
@@ -147,9 +148,11 @@
     {% endif %}
     <ul class="services-listing">
         {% for choice in form.vars.choices %}
-             <li class="hca-highlight">
-                <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
-                {{ choice.label }}
+             <li class="{{ selected[choice.value] is defined ? '' : 'hca-highlight' }}">
+                <label for="{{ form.vars.full_name ~ choice.value }}">
+                    <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
+                    {{ choice.label }}
+                </label>
             </li>
         {% endfor %}
     </ul>
@@ -218,9 +221,11 @@
                 <h3>{{key | capitalize }}s</h3>
                 <ul>
                      {% for choice in typeChoice %}
-                        <li class="hca-highlight">
-                            <input type="checkbox" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
-                            {{ choice.label | raw }}
+                        <li class="{{ selected[choice.value] is defined ? '' : 'hca-highlight' }} ">
+                            <label for="{{ form.vars.full_name ~ choice.value }}">
+                                <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
+                                {{ choice.label | raw }}
+                            </label>
                         </li>
                     {% endfor %}
                 </ul>

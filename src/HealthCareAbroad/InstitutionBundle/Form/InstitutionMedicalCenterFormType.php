@@ -98,7 +98,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => true));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => true ));
-        $this->_add($builder, 'coordinates', 'hidden');
+            
+        $this->_add($builder, 'coordinates', 'hidden', array('attr' => array('value' => ($medicalCenter->getCoordinates() ? $medicalCenter->getCoordinates() : $this->institution->getCoordinates()) )));
 
     }
 

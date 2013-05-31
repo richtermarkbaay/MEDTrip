@@ -133,6 +133,6 @@ class InstitutionKernelEventListener
     
     private function _getAllowedSignupRoutes() {
 
-        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor');
+        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor', 'institution_signup_finish');
     }
 }

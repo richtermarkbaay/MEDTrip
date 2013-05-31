@@ -66,6 +66,10 @@
          	       return false;
          	});
 
+            $("input:checkbox").click(function() {
+                $(this).parents('li').toggleClass("hca-highlight");
+            });
+
         	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
         	HCAGoogleMap.initialize({
         		latLngString: '{{ institution.coordinates }}',
