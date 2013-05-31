@@ -263,7 +263,7 @@ class InstitutionService
     public function getAllNotExpiredArchivedAndInactiveMedicalCenters(Institution $institution)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status != :inActive AND a.status != :expired AND a.status != :archived ";
-        $query = $this->_em->createQuery($dql)
+        $query = $this->doctrine->getEntityManager()->createQuery($dql)
         ->setParameter('institutionId', $institution->getId())
         ->setParameter('inActive', InstitutionMedicalCenterStatus::INACTIVE)
         ->setParameter('expired', InstitutionMedicalCenterStatus::EXPIRED)

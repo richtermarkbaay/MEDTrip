@@ -82,7 +82,7 @@ class InstitutionTwigExtension extends \Twig_Extension
             $suggestions[] = array('description' => 'You currently have no banner for your Hospital yet.');
         }
 
-        if(!$institution->getGallery()->count()) {
+        if(!$institution->getGallery()) {
             $suggestions[] = array('description' => 'You currently have no media gallery/photos for your Hospital yet.');
         }
         
