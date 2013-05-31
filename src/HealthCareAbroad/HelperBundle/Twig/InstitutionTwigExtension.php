@@ -95,7 +95,7 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function render_incomplete_clinic_profile(Institution $institution)
     {
         $incompleteClinics = array();
-        $centers = $this->institutionService->getActiveMedicalCenters($institution);
+        $centers = $this->institutionService->getAllNotExpiredArchivedAndInactiveMedicalCenters($institution);
         foreach($centers as $each) {
             $emptyFields = $this->institutionService->getListOfEmptyFieldsOnInstitution($each);
             if(!empty($emptyFields)) {
