@@ -1,9 +1,13 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: 'manage hospital'} %}
+{% if (isSingleCenter is defined) and isSingleCenter %}
+    {% set mainNavigation = {selected: 'manage hospital' , label : institution.name } %}
+{% else %}
+    {% set mainNavigation = {selected: 'manage hospital'} %}
+{% endif %}
+
 {% set _csrf_token_widget = form_widget(institutionForm._token) %}
 {% set globalAwardClassLabel = getClassLabel('global_award') %}
 {% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
-{% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
     {% include 'InstitutionBundle:Widgets:modal.institutionName.html.twig' %}   
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
