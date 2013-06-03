@@ -49,7 +49,7 @@
                         This clinic doesn't have a 
                         {{ center.fields | join(',') }}.
                     </span>
-                    <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">Click Here to update</a>
+                    <a class="btn btn-link pull-right" href="{{ path('institution_medicalCenter_view', {imcId: center.id}) }}">Click Here to update</a>
                 </li>
             {% endfor %}
         </ul>

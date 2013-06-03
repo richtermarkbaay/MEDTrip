@@ -9,18 +9,13 @@
                 <img alt="Health Care Abroad Verify Icon" src="{{ asset('images/institution/verify-icon.png') }} ">
             </p>
             <p>Website clicks are sent to: 
-                <a href="#">{{ institutionMedicalCenter.websites }}</a>
+                <a href="#">{{ get_website_from_array(institutionMedicalCenter.websites) }}</a>
             </p>
-            {#---
-            <p>
-                Assigned Admin:
-                <a href="manage-account-profile.html"><b>Username</b></a>
-            </p>---#}
         </div>
     </div>
     <div class="listing-action-button pull-right">
         <a class="btn btn-misc" href="{{ path('institution_medicalCenter_view', {imcId: institutionMedicalCenter.id}) }}">
-            <i class="icon-edit"></i>View Clinic's Profile
+            <i class="icon-edit"></i>Edit Clinic's Profile
         </a>
     </div>
 </li><!-- end .hca-clinic-listing -->

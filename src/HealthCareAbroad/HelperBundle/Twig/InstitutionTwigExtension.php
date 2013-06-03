@@ -165,7 +165,7 @@ class InstitutionTwigExtension extends \Twig_Extension
         foreach($centers as $each) {
             $emptyFields = $this->institutionService->getListOfEmptyFieldsOnInstitution($each);
             if(!empty($emptyFields)) {
-                $incompleteClinics[] = array('name'=> $each->getName(), 'fields' => $emptyFields);
+                $incompleteClinics[] = array('id' => $each->getId(), 'name'=> $each->getName(), 'fields' => $emptyFields);
             }
         }
         
