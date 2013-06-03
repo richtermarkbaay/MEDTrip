@@ -1,6 +1,6 @@
 <aside class="span4">
     <section class="aside-box default dashboard-side">
-        <h3>Hospital Location</h3>
+        <h3> Location</h3>
         {% block asideContent %}
     	    <img src="http://maps.googleapis.com/maps/api/staticmap?center={{ institution.coordinates }}&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C{{ institution.coordinates }}" id="institution-static-map">
     	{% endblock %}
