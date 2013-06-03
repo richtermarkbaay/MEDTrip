@@ -22,6 +22,7 @@
                     <table id="advertisement-list" class="table table-bordered sortable-list">
                         <tr>
                             <th id="column-title"><a href="{{ app.request.uri }}" class="{{ sortBy == 'title' ? 'sort-' ~ sortOrder : default }}">Title</a></th>
+                            <th>Institution Name</th>
                             <th>Description</th>
                             <th id="column-advertisementType">
                                 <a href="{{ app.request.uri }}" class="{{ sortBy == 'advertisementType' ? 'sort-' ~ sortOrder : '' }}">Type</a>
@@ -36,6 +37,7 @@
   						{% for each in advertisements %}
     	                    <tr>
     	                        <td>{{ each.title }}</td>
+    	                        <td>{{ each.institution.name }}</td>
     	                        <td>{{ each.description(30) }}</td>
     	                        <td>{{ each.advertisementType.name }}</td>
     	                        <td>{{ each.dateExpiry.date|date("m/d/Y") }}</td>  
