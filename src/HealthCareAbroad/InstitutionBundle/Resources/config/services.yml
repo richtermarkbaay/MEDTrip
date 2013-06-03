@@ -9,6 +9,7 @@ services:
         calls:
             - [setInstitutionUserService, [@services.institution_user]]
             - [setInstitutionPropertyService, [@services.institution_property]]
+            - [setTimeAgoExtension, [@services.timeAgo.twig.extension]]
             - [setRouter, [@router]]
     services.institution.factory:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionFactory
