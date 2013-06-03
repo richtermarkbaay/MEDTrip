@@ -103,7 +103,7 @@ class MedicalCenterController extends InstitutionAwareController
     {
         // Medical Centers Group By Status
         $medicalCenters = $this->service->groupMedicalCentersByStatus($this->institution->getInstitutionMedicalCenters());
-        
+//         var_dump($medicalCenters[InstitutionMedicalCenterStatus::ARCHIVED]);exit;
         
         // Add Medical Center Form
         $institutionMedicalCenter = new InstitutionMedicalCenter();
@@ -120,6 +120,7 @@ class MedicalCenterController extends InstitutionAwareController
             'draftMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::DRAFT],
             'pendingMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::PENDING],
             'expiredMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::EXPIRED],
+            'archivedMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::ARCHIVED],
         );
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);

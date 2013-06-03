@@ -407,6 +407,7 @@ class InstitutionMedicalCenterService
             InstitutionMedicalCenterStatus::DRAFT => array(),
             InstitutionMedicalCenterStatus::PENDING => array(),
             InstitutionMedicalCenterStatus::EXPIRED => array(),
+            InstitutionMedicalCenterStatus::ARCHIVED => array()
         );
 
         foreach ($medicalCenters as $each){
