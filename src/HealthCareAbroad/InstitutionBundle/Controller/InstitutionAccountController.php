@@ -130,7 +130,7 @@ class InstitutionAccountController extends InstitutionAwareController
             $params['currentGlobalAwards'] = $currentGlobalAwards;
             $params['editGlobalAwardForm'] = $editGlobalAwardForm->createView();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
-            $params['institution'] = $this->institution;
+            $params['ancillaryServicesData'] = $this->get('services.helper.ancillary_service')->getActiveAncillaryServices();
 
         } else {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
@@ -155,6 +155,9 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
+        if (\is_null($this->institutionMedicalCenter)) {
+            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
+        }
         $propertyService = $this->get('services.institution_property');
         $output = array();
         if ($request->isMethod('POST')) {
@@ -165,6 +168,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 if(!$this->institution->getContactDetails()->count()) {
                     $phoneNumber = new ContactDetail();
                     $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $phoneNumber->setNumber('');
                     $this->institution->addContactDetail($phoneNumber);
                 }
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
@@ -196,7 +200,6 @@ class InstitutionAccountController extends InstitutionAwareController
                     // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
                     if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
                         $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-
                         $center->setName($this->institution->getName());
                         $center->setDescription($this->institution->getDescription());
                         $center->setAddress($this->institution->getAddress1());
