@@ -88,12 +88,18 @@ $(function(){
 				} else {
 					addLink = '<a data-doctor-id="'+ i +'" class="btn btn-misc pull-right add-existsing-doctor" href="' + "{{ path('institution_medicalCenter_addExistingDoctor', {imcId: institutionMedicalCenter.id}) }}" + '"><i class="icon-medkit"></i>Add to My Clinic</a>';
 				}
+			    console.log(doctors[i].specializations);
 
+			    var specializationString = '';
+			    $.each(doctors[i].specializations, function(key) {
+			    	specializationString += ', ' + doctors[i].specializations[key]; 
+				});
+			    
     			matchedString += '<li data-doctor-id="'+i+'" class="thumbnail hca-clinic-listing">' + 
         	        '<img alt="" src="' + (doctors[i].mediaSrc ? doctors[i].mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}') + '" class="pull-left img-polaroid">' +
                     '<div class="medicalcenter-name add-doctors-listing pull-left">' +
                         '<h3 class="doctor-name" style="text-transform: capitalize;">'+ getFullName(doctors[i]) + '</h3>' +
-                        '<p><i class="icon-stethoscope"></i><span class="specializations">'+doctors[i].specializations.join(', ')+'</span></p>' +
+                        '<p><i class="icon-stethoscope"></i><span class="specializations">'+specializationString.substr(1)+'</span></p>' +
                     '</div>' + addLink +
                 '</li>';
 

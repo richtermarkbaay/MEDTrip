@@ -1,6 +1,6 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% if (isSingleCenter is defined) and isSingleCenter %}
-    {% set mainNavigation = {selected: 'manage hospital' , label : institution.name } %}
+    {% set mainNavigation = {selected: 'manage hospital' , label : institution.name | title } %}
 {% else %}
     {% set mainNavigation = {selected: 'manage hospital'} %}
 {% endif %}

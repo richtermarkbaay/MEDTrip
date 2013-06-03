@@ -294,13 +294,14 @@ var InstitutionProfile = {
                         } else {
                         	_street_address = '';
                         }
+                       
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
                             if (response.institution[_v]) {
                                 address.push(response.institution[_v]);
                             }
                         });
-                                                
+                          
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').html(address.join(', '));
                                                 

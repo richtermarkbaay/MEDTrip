@@ -16,10 +16,12 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation] }
         contactEmail:
             - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation] }
-#        zipCode:
-#            - NotBlank: {message: 'Zip code is required.', groups: [editInstitutionInformation] }
-#            - MinLength: { limit: 3, message: 'Zip Code must be atleast 3 digits.' }
-#            - MaxLength: { limit: 6, message: 'Maximum digits must be 6 only.' }
+        zipCode:
+            - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation] }
+            - MinLength: { limit: 3, message: 'Postal Code must be atleast 3 digits.' }
+            - MaxLength: { limit: 6, message: 'Maximum digits must be 6 only.' }
+        state:
+            - NotBlank: {message: 'Please provide your state.', groups: [editInstitutionInformation] }
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
     properties:
         name:

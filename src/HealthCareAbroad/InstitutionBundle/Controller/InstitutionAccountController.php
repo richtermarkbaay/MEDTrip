@@ -210,7 +210,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
                         $this->get('services.institution_medical_center')->save($center);
                     }
-
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
                         if($key == 'services'){
@@ -252,12 +251,14 @@ class InstitutionAccountController extends InstitutionAwareController
                     
                             $output['institution'][$key] = $returnVal;
                         }
+                        if($key == 'address1') {
+                            $value = $this->institution->{'get'.$key}();
+                            $value = json_decode($value, true);
+                            $output['institution'][$key] = $value;
+                        }
                         else{
                             $value = $this->institution->{'get'.$key}();
-        
-                            if($key == 'address1' || $key == 'socialMediaSites') {
-                                $value = json_decode($value, true);
-                            }
+                            $value = json_decode($value, true);
                             $output['institution'][$key] = $value;
                         }
                     }
