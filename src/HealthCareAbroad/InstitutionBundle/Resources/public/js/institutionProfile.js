@@ -269,7 +269,6 @@ var InstitutionProfile = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-            	
                 switch(_form.attr('id')){
                     case 'nameModalForm':
                         $('#institutionNameText').html(response.institution.name);
@@ -301,7 +300,6 @@ var InstitutionProfile = {
                                 address.push(response.institution[_v]);
                             }
                         });
-                          
                         $('.address_column').find('span.address_part').remove();
                         $('.address_column').html(address.join(', '));
                                                 

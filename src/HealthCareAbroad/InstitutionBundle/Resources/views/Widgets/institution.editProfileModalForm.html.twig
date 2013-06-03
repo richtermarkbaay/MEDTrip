@@ -86,7 +86,7 @@
             <div class="control-group website">
                 {{ form_label(institutionForm.websites) }}
                 <span class="pull-left"> http:// </span>
-                {{ form_widget(get_website_from_array(institutionForm.websites), { attr: {class: 'span11 pull-right'} } )}}
+                {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
 
          {% elseif each == 'socialMediaSites' %}

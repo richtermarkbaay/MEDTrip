@@ -251,14 +251,15 @@ class InstitutionAccountController extends InstitutionAwareController
                     
                             $output['institution'][$key] = $returnVal;
                         }
-                        if($key == 'address1') {
-                            $value = $this->institution->{'get'.$key}();
-                            $value = json_decode($value, true);
-                            $output['institution'][$key] = $value;
+                        if($key == 'country' || $key == 'city' ) {
+                            $output['institution']['country']= $this->institution->getCountry()->getName();
+                            $output['institution']['city'] = $this->institution->getCity()->getName();
                         }
                         else{
                             $value = $this->institution->{'get'.$key}();
-                            $value = json_decode($value, true);
+                            if($key == 'address1' || $key == 'socialMediaSites') {
+                                $value = json_decode($value, true);
+                            }
                             $output['institution'][$key] = $value;
                         }
                     }
