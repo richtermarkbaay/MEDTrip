@@ -50,13 +50,29 @@ class InstitutionTwigExtension extends \Twig_Extension
             'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile'),
             'render_institution_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_inquiries'),
             'render_institution_unread_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_unread_inquiries'),
-            'render_institution_read_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_read_inquiries')
+            'render_institution_read_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_read_inquiries'),
+            'contact_label_type' =>   new \Twig_Function_Method($this, 'contact_label_type')
         );
     }
     
     public function getName()
     {
         return 'institution_twig_extension';    
+    }
+    
+    public function contact_label_type($contactType)
+    {
+        if($contactType == 1) {
+            $label = 'Phone Number';
+        }
+        else if($contactType == 2) {
+            $label = 'Mobile Number';
+        }
+        else {
+            $label = 'Fax Number';
+        }
+        
+        return $label;
     }
     
     public function render_institution_suggestions(Institution $institution)

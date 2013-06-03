@@ -24,14 +24,21 @@
                         <li>
                             <a href="#expired" data-toggle="tab">Expired <span class="badge "></span></a>
                         </li>
+                        <li>
+                            <a href="#archived" data-toggle="tab">Archived <span class="badge "></span></a>
+                        </li>
                     </ul>
                    <div class="tab-content" id="medicalCenterListing">
                         
-                        <div class="tab-pane active" id=all></div>
+                       <div class="tab-pane active" id=all>
+                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: approvedMedicalCenters, centerType: 'Current Listing' } %}
+                       </div>
                        <div class="tab-pane" id="draft">
                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: draftMedicalCenters, centerType: 'Draft' } %}
                        </div>
-                       <div class="tab-pane" id="pending"> </div>
+                       <div class="tab-pane" id="pending">
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: approvedMedicalCenters, centerType: 'Current Listing' } %}
+                       </div>
                        <div class="tab-pane" id="expired"> </div>
                     </div>
             </div>

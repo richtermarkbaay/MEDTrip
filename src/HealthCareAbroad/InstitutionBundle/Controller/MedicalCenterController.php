@@ -119,7 +119,7 @@ class MedicalCenterController extends InstitutionAwareController
             'approvedMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::APPROVED],
             'draftMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::DRAFT],
             'pendingMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::PENDING],
-            'expiredMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::PENDING],
+            'expiredMedicalCenters' => $medicalCenters[InstitutionMedicalCenterStatus::EXPIRED],
         );
         
         return $this->render('InstitutionBundle:MedicalCenter:index.html.twig', $parameters);

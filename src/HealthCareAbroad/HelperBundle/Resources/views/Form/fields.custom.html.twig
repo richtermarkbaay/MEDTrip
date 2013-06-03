@@ -2,9 +2,8 @@
     {% spaceless %}
     <div class="control-group">
 
-        {# contact_label_type(form.vars.value.type) #}
         {% if form.vars.value.type %}
-            <label>{{ form.vars.value.type == 2 ? 'Mobile Number' : 'Phone Number'  }}</label>
+            <label>{{ contact_label_type(form.vars.value.type) }}</label>
         {% endif %}
 
         <div class="hca-countrycodes">
