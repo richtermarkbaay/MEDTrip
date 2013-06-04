@@ -24,13 +24,10 @@
     (function($){
         $(function(){
             $('#{{ number.vars.id }}').change(function(){
+
                 selected = $(this).parent().find('.flag-selector-widget:first > .flag-list > li.selected:first');
-//console.log($(this));
-                //if(selected.length) {
                     $('#{{ abbr.vars.id }}').val(selected.attr('data-abbr'));
                     $('#{{ countryCode.vars.id }}').val(selected.attr('data-code'));
-                //}
-
             });
         });
     })(jQuery);

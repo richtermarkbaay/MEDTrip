@@ -15,7 +15,7 @@
 
 {% if loadJs %}
 
-{% set inputId = 'test    ' %}
+{% set inputId = 'test' %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
@@ -52,7 +52,9 @@
     	    abbrElem = $(this).siblings('input[data-type=abbr]:first');
     	    prevSelectedElem = flagListElem.find('li[data-abbr='+abbrElem.val()+']');
 
-        	flagWidget.find('.flag-list-toggle > .flag16:first').attr('class', 'flag16 ' + abbrElem.val());
+    	    abbr = abbrElem.val() != '' ? abbrElem.val() : flagListElem.children(':first').attr('data-abbr');
+    	    
+        	flagWidget.find('.flag-list-toggle > .flag16:first').attr('class', 'flag16 ' + abbr);
 
     	    flagListElem.children('li').click(function(){
                 inputElem = $(this).parents('.flag-selector-widget:first').siblings('input[data-type=number]:first');

@@ -48,7 +48,6 @@ class FlagTwigExtension extends \Twig_Extension
             static::$isFlagJsCodeLoaded = true;
             $params['loadJs'] = true;
         }
-
         return $this->twig->render($twigTemplate, $params);
     }
 

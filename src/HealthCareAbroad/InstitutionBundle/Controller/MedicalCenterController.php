@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -391,55 +393,72 @@ class MedicalCenterController extends InstitutionAwareController
         return $response;
     }
          
-    /*
-     * 
-     * This is the last step in creating a center. This will add medicalSpecialist on InstitutionMedicalCenter
+   /**
+     * @author Chaztine Blance
+     * Modified for new markup in adding specialist in clinic profile doctors tab
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addMedicalSpecialistAction(Request $request)
     {
+        if (!$this->institutionMedicalCenter) {
+            throw $this->createNotFoundException("Invalid medical center");
+        }
         
-        $isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
-        $doctors = $this->institutionMedicalCenter->getDoctors();//$this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter->getId());
-        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
+        $output = array();
+        $content = $request->get('content', null);
+        
+        $doctor = new Doctor();
+        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
 
+        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+        
         if ($request->isMethod('POST')) {
-            
             $form->bind($request);
+        
             if ($form->isValid()) {
-                $params = array();
-                if ($isSingleCenter) {
-                    // Update SignupStepStatus
-                    // TODO: @deprecated
-                } else {
-                    $calloutParams = array(
-                        '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
-                        '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
-                    );
-                    $calloutMessage = $this->get('services.institution.callouts')->get('success_add_center', $calloutParams);
-                    $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-                    
-                    $params['imcId'] = $this->institutionMedicalCenter->getId();
-                    
-                }
-
-                return $this->redirect($this->generateUrl($routeName, $params));
+        
+                $doctor = $form->getData();
+                $doctor->setStatus(Doctor::STATUS_ACTIVE);
+        
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($doctor);
+                $em->flush($doctor);
+        
+                $data = array(
+                                'status' => true,
+                                'message' => 'Doctor has been added to your clinic!',
+                                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
+                );
+            } else {
+                $data = array('status' => false, 'message' => $form->getErrorsAsString());
             }
+        
+            return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
         }
-
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-           $doctorArr[] = array('value' => $each->getFirstName() ." ". $each->getLastName(), 'id' => $each->getId());
-        }
-
-        return $this->render('InstitutionBundle:MedicalCenter:add.medicalSpecialist.html.twig', array(
+        
+        $params = array(
             'form' => $form->createView(),
-            'isNoBreadCrumbs' => true,
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $isSingleCenter,
-            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
-            'doctors' => $doctors//\json_encode($doctorArr, JSON_HEX_APOS)
-        ));
+            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())
+        );
+        
+        
+        if($this->institutionMedicalCenter->getDoctors()->count()) {
+            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+        }
+        
+        if(!$editDoctor->getContactDetails()->count()) {
+            $contactDetail = new ContactDetail();
+            $editDoctor->addContactDetail($contactDetail);
+        }
+        
+        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+        $params['editForm'] = $editForm->createView();
+        
+        $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$params));
+        
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
     
     /**
@@ -512,27 +531,7 @@ class MedicalCenterController extends InstitutionAwareController
         }
         return $response;
     }
-    
-    public function addDoctorsAction()
-    {
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
-        $form = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
-        $doctorArr = array();
-        foreach ($doctors as $e) {
-            $doctorArr[] = array('value' => $e->getFirstName() ." ". $e->getLastName(), 'id' => $e->getId());
-        }
-        
-        return $this->render('InstitutionBundle:MedicalCenter:addDoctors.html.twig', array(
-            'form' => $form->createView(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'doctorsJSON' => \json_encode($doctorArr, JSON_HEX_APOS),
-            'currentDoctors' => $this->institutionMedicalCenter->getDoctors()
-        ));
-    }
-    
-    
-    
+
     public function saveAction(Request $request)
     {
     
@@ -656,7 +655,6 @@ class MedicalCenterController extends InstitutionAwareController
             $number->setType(ContactDetailTypes::PHONE);
             $doctor->addContactDetail($number);
         }
- 
          
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
         $form->bind($request);
