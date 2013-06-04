@@ -1,7 +1,7 @@
 <script type="text/javascript">
 (function($){
 	$(function(){
-    	
+
         {% if institutionMedicalCenter.doctors|length < 1 %}
             $('#add-doctor').modal('show');
         {% endif %}
@@ -104,10 +104,10 @@
 
         /** modal Js**/
         var confirmMessageElem = $('#confirmation-message');
-    	var lastNameElem = $("#{{ form.getChild('lastName').vars.id }}");
-    	var firstNameElem = $("#{{ form.getChild('firstName').vars.id }}");
-    	var middleNameElem = $("#{{ form.getChild('middleName').vars.id }}");
-    	var suffixElem = $("#{{ form.getChild('suffix').vars.id }}");
+    	var lastNameElem = $("#{{ doctorForm.getChild('lastName').vars.id }}");
+    	var firstNameElem = $("#{{ doctorForm.getChild('firstName').vars.id }}");
+    	var middleNameElem = $("#{{ doctorForm.getChild('middleName').vars.id }}");
+    	var suffixElem = $("#{{ doctorForm.getChild('suffix').vars.id }}");
         var fullName = getInputFullName();
     
     	$('#doctorForm').submit(function(e){

@@ -143,6 +143,10 @@ class MedicalCenterController extends InstitutionAwareController
             $contactDetails->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($contactDetails);
         }
+        
+        $doctor = new Doctor();
+        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
@@ -150,15 +154,28 @@ class MedicalCenterController extends InstitutionAwareController
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         
+        $editDoctor = new Doctor();
+        if($this->institutionMedicalCenter->getDoctors()->count()) {
+            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+        }
+        if(!$editDoctor->getContactDetails()->count()) {
+            $contactDetail = new ContactDetail();
+            $editDoctor->addContactDetail($contactDetail);
+        }
+        
+        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+        
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'specializations' => $institutionSpecializations,
-            'institution' => $this->institution,
             'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards,
-            'editGlobalAwardForm' => $editGlobalAwardForm->createView()
+            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+            'doctors' =>  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors()),
+            'doctorForm' => $doctorForm->createView(),
+            'editForm' => $editForm->createView()
         ));
     }
     
@@ -433,32 +450,8 @@ class MedicalCenterController extends InstitutionAwareController
                 $data = array('status' => false, 'message' => $form->getErrorsAsString());
             }
         
-            return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
         }
-        
-        $params = array(
-            'form' => $form->createView(),
-            'institution' => $this->institution,
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())
-        );
-        
-        
-        if($this->institutionMedicalCenter->getDoctors()->count()) {
-            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
-        }
-        
-        if(!$editDoctor->getContactDetails()->count()) {
-            $contactDetail = new ContactDetail();
-            $editDoctor->addContactDetail($contactDetail);
-        }
-        
-        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-        $params['editForm'] = $editForm->createView();
-        
-        $output['medical_specialists'] = array('html' => $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig',$params));
-        
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
     }
     
     /**

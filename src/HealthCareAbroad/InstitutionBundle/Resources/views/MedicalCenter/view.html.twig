@@ -25,7 +25,9 @@
                                    <div id="specializations_tab_content" class="tab-pane">
                                        {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
                                    </div>
-                                   <div id="medical_specialists_tab_content" class="tab-pane"><span>Loading Doctors list</span></div>
+                                   <div id="medical_specialists_tab_content" class="tab-pane"> 
+                                    {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecialists.html.twig' %}
+                                   </div>
                                </div><!-- /.tab-content -->
                             </div>
                         </div><!-- end .span9 -->
@@ -88,11 +90,15 @@
            	});
             
             Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
+
+
+            /* TODO: Old Code - Must replace! 
             InstitutionMedicalCenter.initializeTabs({
                 'medical_specialists' : {'url': '{{ path("institution_add_medical_specialist", {"institutionId": institution.id, "content": "medical_specialists", "imcId": institutionMedicalCenter.id } ) }}', 'container': $('div#medical_specialists_tab_content') }
             })
             .initializeTabbedContentContainerElement($('div#tabbed_content'))
             .loadTabbedContents();
+            */
             $('#clinicDescriptionText').truncateByHeight({
                 'visibleRows': 5
             });

@@ -15,12 +15,11 @@
 
 {% if loadJs %}
 
-{% set inputId = 'test' %}
-
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
 (function($){
-    $(function(){ 
+    $(function(){
+        console.log('loadFlagWidgetJs'); 
     	var countryCodes = [];
         var flagList = $('.flag-selector-widget:first').find('.flag-list > li');
     	
@@ -43,7 +42,7 @@
 
 
     	$.each($('.flag-selector-widget'), function(elem){
-        	//console.log(this);
+        	console.log('testselectorwidget');
         	//console.log($(this));
         	//console.log($(this).siblings('input[data-type=number]:first'));
         	
@@ -73,7 +72,7 @@
     	    
     		//console.log($(this));
         });
-
+    	{#
     	/*
         $('.flag-list > li').click(function(){
             prevSelectedElem = $(this).siblings('.selected:first');
@@ -101,7 +100,7 @@
 			if($.inArray($(this).val().substr(1), countryCodes) !== -1 && $(this).val().length > 1) {
     			$(this).siblings('.flag-selector-widget:first').find('.flag-list > li[data-code='+ $(this).val().substr(1) +']').click();
     		}
-	    }); */
+	    }); */ #}
 
 	    
     });

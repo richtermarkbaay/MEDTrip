@@ -31,7 +31,7 @@ class InstitutionMedicalCenterDoctorFormType extends AbstractType
             ->add('media', new InstitutionMediaFileType($options['data']->getMedia()), array('label' => 'Logo'), array('required' => false))
             ->add('specializations', 'doctorSpecializations_list', array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
             ->add('contactEmail', 'email', array('label' => 'Contact Email'))
-            ->add('contactDetails', 'collection', array('type' => 'contact_number_with_flag', 'label' => ''));
+            ->add('contactDetails', 'collection', array('type' => 'contact_number_with_flag'));
     }
 
     private function _getSuffixes()
