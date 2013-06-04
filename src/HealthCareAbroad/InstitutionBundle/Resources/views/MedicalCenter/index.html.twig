@@ -12,9 +12,11 @@
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
                     <ul class="nav nav-tabs hca-tab">
+                        {% if (approvedMedicalCenters|length) != 0 %}
                         <li class="active">
                             <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{ approvedMedicalCenters|length }}</span></a>
                         </li>
+                        {% endif %}
                         {% if (draftMedicalCenters|length) != 0 %}
                         <li>
                             <a href="#draft" data-toggle="tab">Draft <span class="badge badge-default"> {{ draftMedicalCenters|length }}</span></a>
@@ -37,10 +39,11 @@
                         {% endif %}
                     </ul>
                    <div class="tab-content" id="medicalCenterListing">
-                        
+                       {% if (approvedMedicalCenters|length) != 0 %}
                        <div class="tab-pane active" id=all>
                             {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: approvedMedicalCenters, centerType: 'Current Listing' } %}
                        </div>
+                       {% endif %}
                        {% if (draftMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="draft">
                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: draftMedicalCenters, centerType: 'Draft' } %}

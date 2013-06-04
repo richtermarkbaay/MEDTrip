@@ -8,10 +8,21 @@
             </div>
             <div class="pull-right">
                 <div class="navbar">
-                    {% if not isSingleCenter and isDashBoard is defined or isInquiry is defined %}
+                    <script type="text/javascript">
+                    $(function() {
+                    	
+                    	var _inquiryCntrBanner = $('#inquiry_banner_cntr').find('span').html();
+                    	if(_inquiryCntrBanner == ' 0 ') {
+                    		$('#inquiry_banner_cntr').find('span').removeAttr('class').html('');
+                
+                    	    return false;
+                    	}
+                    });
+                    </script>
+                    {% if not isSingleCenter or isDashBoard is defined or isInquiry is defined %}
                     <ul class="nav">
                         <li>
-                            <a id="inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ _unread_inquiries | length}} </span></a>
+                            <a id="inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ render_institution_unread_inquiries(institution) | length}} </span></a>
                         </li>
                         <!-- li>
                             <a href="clinic-listing-all.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>

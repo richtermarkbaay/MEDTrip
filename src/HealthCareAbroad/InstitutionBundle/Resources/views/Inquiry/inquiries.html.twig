@@ -29,13 +29,6 @@
     	InstitutionInquiry.setTemplatePrototype(_prototype);
     	InstitutionInquiry._loadContent();
 
-    	var _inquiryCntrBanner = $('#inquiry_banner_cntr').find('span').html();
-    	if(_inquiryCntrBanner == ' 0 ') {
-    		$('#inquiry_banner_cntr').find('span').removeAttr('class').html('');
-
-    	    return false;
-    	}
-    	
     	$('.inquiry_showMore').click(function() {
     	    _cntr = parseInt(_cntr) + parseInt(_cntr);
     	    $('#inquiryCntr').val(_cntr);

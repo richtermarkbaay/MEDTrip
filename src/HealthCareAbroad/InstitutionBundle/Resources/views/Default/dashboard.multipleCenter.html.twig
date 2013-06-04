@@ -94,15 +94,5 @@
     {% endembed %}
 {% endblock %}
 {% block inlineJavascriptCode %}
-    <script type="text/javascript">
-    $(function() {
-
-    	var _inquiryCntrBanner = $('#inquiry_banner_cntr').find('span').html();
-    	if(_inquiryCntrBanner == ' 0 ') {
-    		$('#inquiry_banner_cntr').find('span').removeAttr('class').html('');
-
-    	    return false;
-    	}
-    });
-    </script>
+    <script src="{{ asset('bundles/institution/js/institutionInquiry.js') }}"></script>
 {% endblock %}
