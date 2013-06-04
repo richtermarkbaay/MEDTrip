@@ -652,11 +652,18 @@ class MedicalCenterController extends InstitutionAwareController
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
 
         if(!$doctor->getContactDetails()->count()) {
-            $doctor->addContactDetail(new ContactDetail());
+            $number = new ContactDetail();
+            $number->setType(ContactDetailTypes::PHONE);
+            $doctor->addContactDetail($number);
         }
-
+ 
+         
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
         $form->bind($request);
+
+        if(!$doctor->getContactDetails()->first()->getNumber()) {
+            $doctor->getContactDetails()->remove(0);
+        }
         
         if ($form->isValid()) {
             $fileBag = $request->files->get($form->getName()); 
