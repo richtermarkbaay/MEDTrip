@@ -5,6 +5,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
+
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserFormType;
@@ -121,6 +125,21 @@ class InstitutionAccountController extends InstitutionAwareController
             if (\is_null($this->institutionMedicalCenter)) {
                 $this->institutionMedicalCenter = new InstitutionMedicalCenter();
             }
+            
+            $doctor = new Doctor();
+            $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
+            $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+            $editDoctor = new Doctor();
+            if($this->institutionMedicalCenter->getDoctors()->count()) {
+                $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+            }
+            if(!$editDoctor->getContactDetails()->count()) {
+                $contactDetail = new ContactDetail();
+                $editDoctor->addContactDetail($contactDetail);
+            }
+            
+            $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+            
             $params['isSingleCenter'] = true;            
             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
             $params['institution'] = $this->institution;
@@ -131,6 +150,9 @@ class InstitutionAccountController extends InstitutionAwareController
             $params['editGlobalAwardForm'] = $editGlobalAwardForm->createView();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
             $params['ancillaryServicesData'] = $this->get('services.helper.ancillary_service')->getActiveAncillaryServices();
+            $params['doctors'] =  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors());
+            $params['doctorForm'] = $doctorForm->createView();
+            $params['editForm'] = $editForm->createView();
 
         } else {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));

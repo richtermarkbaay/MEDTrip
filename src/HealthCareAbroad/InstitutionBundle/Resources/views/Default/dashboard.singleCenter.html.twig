@@ -48,7 +48,7 @@
                     </i>
                 </td>
                 <td>
-                   <a href="{{ path('institution_view_inquiry', {id : inquiry.id}) }}"> {{ inquiry.inquirerName }} </a>
+                   <a href="{{ path('institution_view_inquiry', {id : inquiry.id}) }}"> {{ inquiry.inquirerName | title }} </a>
                 </td>
                 <td>
                     {{ inquiry.message }}
