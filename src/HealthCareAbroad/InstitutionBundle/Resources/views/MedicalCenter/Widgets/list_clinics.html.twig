@@ -5,7 +5,7 @@
             {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
             <img src="{{ institution_media_src(institutionMedicalCenter.logo, logoSize) }}" alt="" class="pull-left img-polaroid"/>
          {% else %}
-             <img class="imgborder" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
+             <img class=" pull-left img-polaroid" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
          {% endif %}
         <div class="medicalcenter-name pull-left">
             <h3>{{ institutionMedicalCenter.name }}</h3>
