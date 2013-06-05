@@ -19,7 +19,7 @@
     <div id="treatment_list">
      {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
      </div>
-    <div id="hca-specialization-content" class="row-fluid terms" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
+    <div style="display:none;"  id="hca-specialization-content" class="row-fluid terms" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
        <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post">
               <center><img src="/images/institution/spinner_large.gif" /></center>
         </form>

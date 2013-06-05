@@ -412,6 +412,17 @@ hr {
   position: relative;
   padding: 1em 0 3em 0;
   word-wrap: break-word; }
+  #content .confirm-msg {
+    margin-top: 10px;
+    margin-bottom: 10px; }
+    #content .confirm-msg .alert {
+      padding: 20px 20px 8px 20px;
+      color: #888888; }
+    #content .confirm-msg h4 {
+      font-weight: normal;
+      font-size: 130%; }
+      #content .confirm-msg h4 span {
+        font-size: 95%; }
   #content .span8 .tabbable {
     margin-right: 0;
     margin-left: 0; }
@@ -1798,63 +1809,66 @@ ul.hca-notifications, ul.hca-inquiries {
   position: absolute;
   z-index: 1000; }
 
-#hca-hidden_content, #hca-clinic-content, #hca-specialization-content {
+.hca-hidden-content, .hca-clinic-content, .hca-specialization-content {
   display: none; }
-  #hca-hidden_content.doctors-listing, #hca-clinic-content.doctors-listing, #hca-specialization-content.doctors-listing {
+  .hca-hidden-content.doctors-listing, .hca-clinic-content.doctors-listing, .hca-specialization-content.doctors-listing {
     background-color: #aeaeae;
     padding: 20px 20px 5px 20px;
     max-height: 300px;
+    border-bottom: 1px solid #aeaeae;
     overflow: auto; }
-    #hca-hidden_content.doctors-listing .row-fluid, #hca-clinic-content.doctors-listing .row-fluid, #hca-specialization-content.doctors-listing .row-fluid {
+    .hca-hidden-content.doctors-listing form, .hca-clinic-content.doctors-listing form, .hca-specialization-content.doctors-listing form {
       background-color: white;
-      padding: 10px;
+      padding: 10px 5px; }
+    .hca-hidden-content.doctors-listing .row-fluid, .hca-clinic-content.doctors-listing .row-fluid, .hca-specialization-content.doctors-listing .row-fluid {
+      padding: 5px 10px 0 10px;
       width: 97%; }
-      #hca-hidden_content.doctors-listing .row-fluid textarea, #hca-clinic-content.doctors-listing .row-fluid textarea, #hca-specialization-content.doctors-listing .row-fluid textarea {
+      .hca-hidden-content.doctors-listing .row-fluid textarea, .hca-clinic-content.doctors-listing .row-fluid textarea, .hca-specialization-content.doctors-listing .row-fluid textarea {
         height: 150px; }
-      #hca-hidden_content.doctors-listing .row-fluid.hca-upload-file, #hca-clinic-content.doctors-listing .row-fluid.hca-upload-file, #hca-specialization-content.doctors-listing .row-fluid.hca-upload-file {
+      .hca-hidden-content.doctors-listing .row-fluid.hca-upload-file, .hca-clinic-content.doctors-listing .row-fluid.hca-upload-file, .hca-specialization-content.doctors-listing .row-fluid.hca-upload-file {
         min-height: 600px; }
-      #hca-hidden_content.doctors-listing .row-fluid input.hca-country, #hca-hidden_content.doctors-listing .row-fluid input.hca-city, #hca-clinic-content.doctors-listing .row-fluid input.hca-country, #hca-clinic-content.doctors-listing .row-fluid input.hca-city, #hca-specialization-content.doctors-listing .row-fluid input.hca-country, #hca-specialization-content.doctors-listing .row-fluid input.hca-city {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-country, .hca-hidden-content.doctors-listing .row-fluid input.hca-city, .hca-clinic-content.doctors-listing .row-fluid input.hca-country, .hca-clinic-content.doctors-listing .row-fluid input.hca-city, .hca-specialization-content.doctors-listing .row-fluid input.hca-country, .hca-specialization-content.doctors-listing .row-fluid input.hca-city {
         width: 200px !important; }
-      #hca-hidden_content.doctors-listing .row-fluid input.hca-suffix, #hca-clinic-content.doctors-listing .row-fluid input.hca-suffix, #hca-specialization-content.doctors-listing .row-fluid input.hca-suffix {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-suffix, .hca-clinic-content.doctors-listing .row-fluid input.hca-suffix, .hca-specialization-content.doctors-listing .row-fluid input.hca-suffix {
         width: 100px;
         height: 25px; }
-      #hca-hidden_content.doctors-listing .row-fluid input.hca-languages, #hca-clinic-content.doctors-listing .row-fluid input.hca-languages, #hca-specialization-content.doctors-listing .row-fluid input.hca-languages {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-languages, .hca-clinic-content.doctors-listing .row-fluid input.hca-languages, .hca-specialization-content.doctors-listing .row-fluid input.hca-languages {
         width: 200px;
         height: 25px; }
-      #hca-hidden_content.doctors-listing .row-fluid .dropbox, #hca-clinic-content.doctors-listing .row-fluid .dropbox, #hca-specialization-content.doctors-listing .row-fluid .dropbox {
+      .hca-hidden-content.doctors-listing .row-fluid .dropbox, .hca-clinic-content.doctors-listing .row-fluid .dropbox, .hca-specialization-content.doctors-listing .row-fluid .dropbox {
         height: 45px;
         background-color: #c8c8c8;
         border: 2px dashed white;
         color: white;
         text-align: center;
         padding: 20px 0 0 0; }
-      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.zipcode, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.zipcode, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.zipcode, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.zipcode, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
         max-height: 115px;
         width: 268px; }
-      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.location-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.location-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.location-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.location-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.location-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.location-select {
         max-height: 140px;
         width: 235px;
         margin-left: -213px; }
-      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.languages-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.languages-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.languages-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.languages-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
         max-height: 140px;
         width: 234px;
         margin-left: -212px; }
-      #hca-hidden_content.doctors-listing .row-fluid .dropdown-menu.suffix-select, #hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, #hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
         max-height: 70px;
         margin-left: -113px;
         width: 50px; }
-      #hca-hidden_content.doctors-listing .row-fluid form, #hca-clinic-content.doctors-listing .row-fluid form, #hca-specialization-content.doctors-listing .row-fluid form {
+      .hca-hidden-content.doctors-listing .row-fluid form, .hca-clinic-content.doctors-listing .row-fluid form, .hca-specialization-content.doctors-listing .row-fluid form {
         margin-top: 5px;
         margin-bottom: 8px; }
-        #hca-hidden_content.doctors-listing .row-fluid form .row-fluid, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid {
+        .hca-hidden-content.doctors-listing .row-fluid form .row-fluid, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid {
           padding: 0 20px !important;
           width: 92.85%; }
-          #hca-hidden_content.doctors-listing .row-fluid form .row-fluid ul, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid ul, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid ul {
+          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid ul, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid ul, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid ul {
             max-height: 150px;
             padding-top: 10px; }
-          #hca-hidden_content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
+          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
             padding: 3px 0 !important; }
-            #hca-hidden_content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, #hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, #hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
+            .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
               border-bottom: none; }
 
 .hca-display-specializations div.edit-specializations {
@@ -1981,6 +1995,13 @@ span.rollover {
   .doctors-new-listing .doctor-heading {
     background-color: #e1e1e1;
     padding: 10px 20px 30px 10px; }
+    .doctors-new-listing .doctor-heading span.rollover {
+      margin: 6px;
+      padding: 12px;
+      background-position: 10px;
+      background-size: 55%;
+      width: 25px;
+      height: 25px; }
   .doctors-new-listing h4 {
     padding: 2px 0 0 0;
     margin: 0; }

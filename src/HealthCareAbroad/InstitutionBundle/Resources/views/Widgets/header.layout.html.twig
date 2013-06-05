@@ -19,7 +19,6 @@
                     	}
                     });
                     </script>
-                    {% if not isSingleCenter or isDashBoard is defined or isInquiry is defined %}
                     <ul class="nav">
                         <li>
                             <a id="inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ render_institution_unread_inquiries(institution) | length}} </span></a>
@@ -31,7 +30,6 @@
                             <a href="clinic-listing-all.html"><i class="icon-medkit"></i>Clinics</a>
                         </li> -->
                     </ul>
-                    {% endif %}
                     <ul class="nav">
                         <li>
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') | title}} {{ app.session.get('userLastName') | title }}<i class="icon-caret-down"></i></a>
