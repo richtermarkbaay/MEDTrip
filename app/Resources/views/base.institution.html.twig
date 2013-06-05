@@ -20,6 +20,7 @@
             'css/bootstrap.min.css'
 			'css/bootstrap-timepicker.min.css'
 			'css/font-awesome.min.css'
+			'css/dropzone.css'
 			'css/hca-flags.css'
 			'css/institution/hca-admin.min.css'
         %}
@@ -29,10 +30,17 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
-        
+            .modal.fade.in {
+                top: 200px;
+            }
+
+            .table.hca-media h4 {
+                word-break: break-all;
+            }
+
             p.alert-block {
-            margin: 0 0 1px;
-            padding: 5px 10px;
+                margin: 0 0 1px;
+                padding: 5px 10px;
             }
 
             .align-right {    

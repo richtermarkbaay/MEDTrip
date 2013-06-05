@@ -1,11 +1,12 @@
 <div id="{{ modal.id }}" class="modal hide fade {{ modal.class is defined ? modal.class : '' }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
+    <div class="modal-header"> 
         <h3 id="myModalLabel">{{ modal.title }}</h3> 
     </div>
 
     <div class=" modal-body" style="{{ modal.customBodyStyle is defined ? modal.customBodyStyle : '' }}">{% block modalBody %}{% endblock %}</div> 
-     <div class="modal-footer ">
-    {% block footerBody %}{% endblock %}
+
+    <div class="modal-footer">
+        {% block footerBody %}{% endblock %}
     </div>
     <!-- end modal-body -->
 </div>

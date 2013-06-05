@@ -1,0 +1,59 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'gallery'} %}
+
+{% block content %}   
+    {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+
+        {% block wrappedContent %}
+            <h1>
+                <i class="icon-picture"></i>Media Gallery
+                <a href="#add-media" class="btn btn-primary btn-large pull-right" data-toggle="modal"><i class="icon-picture"></i>Add New Media</a>
+            </h1>
+
+            {% if institution.gallery and institution.gallery.media|length %}
+                {% set gallery = institution.gallery %}
+                <div class="span12">
+                    <table class="table table-hover hca-media">
+                        <thead>
+                            <tr><th>file</th><th>Published In</th><th>actions</th></tr>
+                        </thead>
+                        <tbody>
+                        {% set thumbnail = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
+                        {% for each in gallery.media %}
+                            {% set hasClinics = mediaClinics[each.id] is defined %}
+                            <tr id="media-item-{{each.id}}">
+                                <td>
+                                    <img src="{{ institution_media_src(each, thumbnail) }}" alt="institution" class="pull-left" style="width:55px;height:55px;border: 1px solid #eee;margin-right: 20px;"/>
+                                    <h4 class="media-heading">{{ each.caption }}</h4>
+                                    <span class="type" style="margin:0">{{ each.contentType }}</span>
+                                </td>
+                                <td>
+                                    {% if hasClinics %}
+                                        {% for center in medicalCenters %}
+                                            {% if center.id in mediaClinics[each.id] %}
+                                            <p><i class="icon-medkit" style="position:relative;top:4px"></i><span class="clinic-name-{{ each.id }}" style="margin:0">{{ center.name }}</span></p>
+                                            {% endif %} 
+                                        {% endfor %}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc" data-toggle="modal" style="color:#FE6500"><i class="icon-edit"></i>edit</a>
+                                        <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}"><i class="icon-trash"></i>delete</a>
+                                    </div>
+                                    
+                                    {% include 'InstitutionBundle:MediaGallery/Widgets:editModalForm.html.twig' with {media: each, selectedClinics: hasClinics ? mediaClinics[each.id] : [] } %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+            {% include 'InstitutionBundle:MediaGallery/Widgets:addModalForm.html.twig' %}
+            {% include 'InstitutionBundle:MediaGallery/Widgets:deleteModal.html.twig' %}
+            
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
