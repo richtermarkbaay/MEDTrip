@@ -11,7 +11,7 @@
             </h1>
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
-                    <ul class="nav nav-tabs hca-tab">
+                    <ul id="listingTabs" class="nav nav-tabs hca-tab">
                         {% if (approvedMedicalCenters|length) != 0 %}
                         <li class="active">
                             <a href="#all" data-toggle="tab">Current Listing<span class="badge"> {{ approvedMedicalCenters|length }}</span></a>
@@ -105,6 +105,7 @@
             _el.parents('td').find('a.collapse_toggle').addClass('collapsed').html('<small>More</small>');
             _el.parents('td').find('a.collapse_toggle').show();
         }
+        $('#listingTabs a:first').tab('show');
     })(jQuery);
 //-->
 </script>

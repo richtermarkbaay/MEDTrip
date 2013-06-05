@@ -577,8 +577,6 @@ class InstitutionSignUpController extends InstitutionAwareController
     public function setupDoctorsAction(Request $request)
     {
 
-        //var_dump($request->headers->get('referer')); exit;
-        
         //TODO: check institution signupStepStatus
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -639,8 +637,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
         
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
-        
-        var_dump($request->get('editInstitutionMedicalCenterDoctorForm')); exit;
         
         if ($request->isMethod('POST')) {    
             $form->bind($request);

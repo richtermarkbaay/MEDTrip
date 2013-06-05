@@ -460,21 +460,23 @@ class InstitutionService
             $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD); 
         }
         $inquiryArr = array();
-        foreach ($inquiries as $each) {
-            if($each->getStatus() == '1') {
-                $status = 'unread';
+        if(count($inquiries) != 0  ) {
+            foreach ($inquiries as $each) {
+                if($each->getStatus() == '1') {
+                    $status = 'unread';
+                }
+                else {
+                    $status = 'read';
+                }
+                $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
+                                'id' => $each->getId(),
+                                'message' => $each->getMessage(),
+                                'status' => $status,         
+                                'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
+                                'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
+                                'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
+            
             }
-            else {
-                $status = 'read';
-            }
-            $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
-                            'id' => $each->getId(),
-                            'message' => $each->getMessage(),
-                            'status' => $status,         
-                            'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
-                            'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
-                            'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
-        
         }
         
         return $inquiryArr;
