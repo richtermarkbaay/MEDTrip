@@ -8,7 +8,7 @@
                 <li class="{{ 'dashboard' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="{{ path('institution_homepage')}}"><i class="icon-h-sign"></i>Dashboard</a>
                 </li>
-                <li class="{{ 'manage hospital' == mainNavigation.selected  ? 'active' : '' }}">
+                <li class="{{ 'manage profile' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="{{ path('institution_account_profile') }}"><i class="icon-hospital"></i>Your Profile</a> 
                 </li>
                 {% if institution.type != 3 %}
