@@ -11,6 +11,7 @@ use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
 use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 
@@ -48,7 +49,8 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionLanguageSpokenFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionOfferedServicesFormType;
-
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
 use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
@@ -75,7 +77,7 @@ class InstitutionController extends Controller
     {
         $request = $this->getRequest();
         // Check Institution
-    
+
         if ($request->get('institutionId')) {
             
             //$this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($request->get('institutionId'));
@@ -91,13 +93,42 @@ class InstitutionController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
      */
+    public function institutionsContactInfoAction()
+    {
+        $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getAllInstitutions();
+
+        $params = array('institutions' => $institutions, 'statuses' => InstitutionStatus::getBitValueLabels());
+        
+        return $this->render('AdminBundle:Institution:institutionsContactInfo.html.twig', $params);
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+    public function getAjaxAccountDataAction()
+    {
+        $result = array('error' => 'invalid account id!');
+        
+        if($accountId = $this->getRequest()->get('accountId')) {
+            $result = $this->get('services.institutionUser')->getAccountDataById($accountId);            
+            unset($result['password']);
+        }
+
+        return new Response(json_encode($result), 200, array('content-type' => 'application/json'));
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
     public function indexAction()
     {
+        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
             'statusList' => InstitutionStatus::getBitValueLabels(),
-            'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus()
+            'updateStatusOptions' => InstitutionStatus::getBitValueForActiveStatus(),
+            'institutionStatusForm' =>$institutionStatusForm->createView()
         );
 
         return $this->render('AdminBundle:Institution:index.html.twig', $params);
@@ -235,7 +266,7 @@ class InstitutionController extends Controller
         
         // TODO - Need to verify? Temporarily removed OPTION_HIDDEN_FIELDS 'name'
     	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
-
+    	$institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites','type')));
     	if ($request->isMethod('POST')) {
     		$form->bindRequest($request);
     		if ($form->isValid()) {
@@ -252,7 +283,8 @@ class InstitutionController extends Controller
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
 			'form' => $form->createView(),
 			'institution' => $this->institution,
-			'id' => $this->institution->getId()
+			'id' => $this->institution->getId(),
+    	    'institutionStatusForm' => $institutionStatusForm->createView()
     	));
     }
     
@@ -263,11 +295,13 @@ class InstitutionController extends Controller
     {   
         $institutionService = $this->get('services.institution');
         $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
+        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         
         return $this->render('AdminBundle:Institution:view.html.twig', array(
             'recentMedicalCenters' => $recentMedicalCenters,
             'institution' => $this->institution,
-            'isSingleCenter' => $institutionService->isSingleCenter($this->institution)
+            'isSingleCenter' => $institutionService->isSingleCenter($this->institution),
+            'institutionStatusForm' => $form->createView()
         ));
     }
     
@@ -330,6 +364,50 @@ class InstitutionController extends Controller
    	
    	/**
    	 * Upload Institution Logo
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
+     */
+    public function updatePayingClientAction()
+    {
+        $request = $this->getRequest();
+        $this->institution->setPayingClient((int)$request->get('payingClient'));
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->persist($this->institution);
+        $em->flush($this->institution);
+
+        // dispatch EDIT institution event
+        $event = $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->institution);
+        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
+
+        return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+    }
+    
+    public function editStatusAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $template = 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig';
+        $output = array();
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $this->get('services.institution')->save($form->getData());
+                $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" status has been updated!');
+            }
+        }
+        else {
+            $output['html'] =  $this->renderView($template, array(
+                            'institution' => $this->institution,
+                            'institutionStatusForm' => $form->createView()
+            ));
+        }
+        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+        
+        return $response;
+    }
+    
+   	/**
+   	 * Upload logo for Institution
    	 * @param Request $request
    	 */
    	public function uploadLogoAction(Request $request)
@@ -379,5 +457,26 @@ class InstitutionController extends Controller
    	    }
    	
    	    return $response;
+   	}
+   	
+   	/**
+   	 * @author Chaztine Blance
+   	 * @param Request $request
+   	 * @return \Symfony\Component\HttpFoundation\Response
+   	 */
+   	public function viewInstitutionDoctorsAction(Request $request)
+   	{
+   	    $pagerAdapter = new DoctrineOrmAdapter($this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getAllDoctorsByInstitution($this->institution));
+   	    $pagerParams = array(
+   	                    'page' => $request->get('page', 1),
+   	                    'limit' => 10
+   	    );
+   	    $pager = new Pager($pagerAdapter, $pagerParams);
+   	    
+   	    return $this->render('AdminBundle:Institution:viewInstitutionDoctors.html.twig', array(
+                'institutionDoctors' => $pager->getResults(),
+                'pager' => $pager,
+                'institution' => $this->institution,
+   	    ));
    	}
 }

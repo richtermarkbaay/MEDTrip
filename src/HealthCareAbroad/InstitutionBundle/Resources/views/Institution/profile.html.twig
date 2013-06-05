@@ -112,7 +112,6 @@
         if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
         if(cityElem.val() != '') { address += $("#input-{{ institutionForm.getChild('city').vars.id }}").val() + ', '; }
         if(countryElem.val() != '') { address += countryInputElem.val(); }
-        console.log(address);
         
         return address;
     }

@@ -1,3 +1,7 @@
+admin_institution_contactInfoList:
+    pattern: /admin/institutions/contact-info
+    defaults: { _controller: AdminBundle:Institution:institutionsContactInfo }
+
 admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
@@ -29,6 +33,13 @@ admin_institution_edit_details:
          institutionId: \d+
          _method: GET|POST
          
+admin_institution_getAjaxAccountData:
+    pattern:  /admin/institution/{institutionId}/account-data/{accountId}
+    defaults: { _controller: AdminBundle:Institution:getAjaxAccountData}
+    requirements:
+         accountId: \d+
+         institutionId: \d+
+         _method: GET
 ##-----         
 ## institution property related routes
 admin_institution_ajaxaddAncilliaryService:
@@ -72,7 +83,6 @@ admin_institution_updateStatus:
         status: \d+
         _method: POST
 
-
 #Institution Media Related Routes
 admin_institution_gallery:
     pattern: /admin/institution/{institutionId}/gallery/{page}
@@ -89,6 +99,12 @@ admin_institution_gallery_add:
         _method: GET
         institutionId: \d+
 
+admin_institution_editStatus:
+    pattern: /admin/institution/{institutionId}/edit-status
+    defaults: { _controller: AdminBundle:Institution:editStatus }
+    requirements:
+        _method: POST|GET
+                
 admin_institution_logo_upload:
     pattern: /admin/institution/{institutionId}/logo/upload
     defaults: { _controller: AdminBundle:Institution:uploadLogo }
@@ -107,4 +123,20 @@ admin_institution_media_upload:
     pattern: /admin/institution/{institutionId}/media/upload
     defaults: { _controller: AdminBundle:Institution:uploadMedia }
     requirements:
+        _method: POST|GET
+        institutionId: \d+
+        
+admin_institution_doctors:
+    pattern: /admin/institution/{institutionId}/doctors
+    defaults: { _controller: AdminBundle:Institution:viewInstitutionDoctors}
+    requirements:
+        _method: GET
+        institutionId: \d+
+        
+admin_institution_updatePayingClient:
+    pattern: /admin/institution/{institutionId}/update-paying-client
+    defaults: { _controller: AdminBundle:Institution:updatePayingClient }
+    requirements:
+        institutionId: \d+
+        payingClient: \d+
         _method: POST

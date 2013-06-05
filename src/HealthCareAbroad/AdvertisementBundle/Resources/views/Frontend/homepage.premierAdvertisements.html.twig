@@ -23,7 +23,7 @@
         
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,
-    	        link: {url: institutionUrl, html: render_institution_logo(highlight.institution, {attr: {class: 'mini'}}), class: 'mini-logo-wrapper'}
+    	        link: {url: institutionUrl, html: render_institution_logo(highlight.institution, {context: 4, attr: {class: 'mini'}}), class: 'mini-logo-wrapper'}
     	    }
     	%}
     </div>

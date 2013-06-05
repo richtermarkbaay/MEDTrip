@@ -85,6 +85,12 @@ class Retriever
         return $video;
     }
 
+    // Search Results Image Ads
+    public function getSearchResultsImageAds(array $criteria = array(), $limit = 1)
+    {
+        return $this->adevertisementDenormalizedRepo->getActiveSearchResultsImageAds($criteria, $limit);
+    }
+    
     
     // Search Results Featured Clinic by Criteria
     public function getSearchResultsFeaturedClinicByCriteria(array $criteria = array(), $limit = 1)

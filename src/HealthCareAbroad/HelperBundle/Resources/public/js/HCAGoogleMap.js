@@ -69,7 +69,6 @@ var HCAGoogleMap = {
 	        HCAGoogleMap.lat = results[0].geometry.location.lat();
 	        HCAGoogleMap.lng = results[0].geometry.location.lng();		        
 	        HCAGoogleMap.latLngString = HCAGoogleMap.lat + "," + HCAGoogleMap.lng;
-
 			HCAGoogleMap.map.setCenter(latlngObj);
 	        HCAGoogleMap._setMarker(latlngObj);
 	        HCAGoogleMap._setLayer();
@@ -83,6 +82,7 @@ var HCAGoogleMap = {
 		}
 
 		HCAGoogleMap.mapOnChangeCallback();
+
 	},
 
 	_setMarker: function(markerPosition) {

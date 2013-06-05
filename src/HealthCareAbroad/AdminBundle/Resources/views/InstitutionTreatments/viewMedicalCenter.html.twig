@@ -9,7 +9,7 @@
         {% embed 'HelperBundle:Widgets:section.html.twig' 
             with {
                     title: institutionMedicalCenter.name,
-                    actions: isSingleCenter ? [] : [
+                    actions: [
                         {link:  path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
                                 label: 'Edit Clinic Profile' | title, 
                                 'icon' : 'icon-ok' },
@@ -244,10 +244,10 @@
                 return false;
             });
 
-            $('a.port_services').click(function() {
+            /*$('a.port_services').click(function() {
             	$('div#institution_ancillaryServices_modal_form').modal('show');
                 return false;
-            });
+            });*/
 
         });
 

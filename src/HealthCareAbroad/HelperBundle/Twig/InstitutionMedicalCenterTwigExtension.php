@@ -135,15 +135,15 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $institution = $institutionMedicalCenter->getInstitution();
 
         // Default image
-
         $html = '<span class="hca-sprite clinic-default-logo logo"></span>';
 
 
-        if($institutionMedicalCenter->getLogo()) {
-            //$html = $this->mediaExtension->getMedia($institutionMedicalCenter->getLogo(), $institution, $options['media_format'], $options['attr']);
+        // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.
+        $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
+
+        if($institutionMedicalCenter->getLogo() && ($institution->getPayingClient() || $isAdsContext)) {
             $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institutionMedicalCenter->getLogo(), $options['size']);
             $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
-
         } else {
             switch($options['context']) {
 
@@ -153,19 +153,18 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                     if ($institutionSpecialization && $institutionSpecialization->getSpecialization()->getMedia()) {
                         $specialization = $institutionSpecialization->getSpecialization();
-                        //$html = $this->mediaExtension->getMedia($specialization->getMedia(), $specialization, $options['media_format'], $options['attr']);
                         $mediaSrc = $this->mediaExtension->getSpecializationMediaSrc($specialization->getMedia(), ImageSizes::SMALL);
                     }
                     break;
 
                 case self::SEARCH_RESULTS_CONTEXT:
                 case self::ADS_CONTEXT:
-                    if ($institution->getLogo()) {
-                        //$html = $this->mediaExtension->getMedia($institutionLogo, $institution, $options['media_format'], $options['attr']);
+
+                    if (($institutionLogo = $institution->getLogo()) && $institution->getPayingClient()) {
                         $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
                     }
                     break;
-                    
+
                 $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
             }
         }

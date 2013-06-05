@@ -164,6 +164,9 @@ class SearchTermRepository extends EntityRepository
         if ($groupedByCenters) {
             $qb->groupBy('imc.id');
         }
+        
+        // temp ordering so that latest items show up first
+        $qb->orderBy('inst.id', 'DESC');
 
         return $qb;
     }
@@ -198,6 +201,9 @@ class SearchTermRepository extends EntityRepository
 
         // we may not need this?
         $qb->groupBy('inst.id');
+        
+        // temp ordering so that latest items show up first
+        $qb->orderBy('inst.dateCreated', 'DESC');
 
         return $qb;
     }
@@ -226,6 +232,9 @@ class SearchTermRepository extends EntityRepository
         ->setParameter('termId', $termId)
         ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
 
+        // temp ordering so that latest items show up first
+        $qb->orderBy('inst.id', 'DESC');
+        
         return $qb;
     }
 
@@ -328,6 +337,9 @@ class SearchTermRepository extends EntityRepository
         }
 
         $qb->groupBy('imc.id');
+        
+        // temp ordering so that latest items show up first
+        $qb->orderBy('inst.id', 'DESC');
 
         return $qb->getQuery()->getResult();
     }
@@ -388,6 +400,9 @@ class SearchTermRepository extends EntityRepository
 
         // we may not need this?
         $qb->groupBy('imc.id');
+        
+        // temp ordering so that latest items show up first
+        $qb->orderBy('inst.id', 'DESC');
 
         return $qb;
     }

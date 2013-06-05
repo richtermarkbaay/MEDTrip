@@ -12,6 +12,8 @@ use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 class InstitutionTwigExtension extends \Twig_Extension
 {
+    const ADS_CONTEXT = 4;
+
     /**
      * @var MediaExtension
      */
@@ -254,21 +256,32 @@ class InstitutionTwigExtension extends \Twig_Extension
     
     public function render_institution_logo(Institution $institution, array $options = array())
     {
+        $defaultOptions = array(
+                        'attr' => array(),
+                        'media_format' => 'default',
+                        'placeholder' => ''
+        );
+        $options = \array_merge($defaultOptions, $options);
+        $html = '';
+        
+        // TODO - Institution Logo for non-paying client is temporarily enabled in ADS section.
+        $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
+        
+        if (($institutionLogo = $institution->getLogo()) && ($institution->getPayingClient() || $isAdsContext)) {
+            if(isset($options['attr']['class']))
+                $options['attr']['class'] .= ' hospital-logo';
+            else 
+                $options['attr']['class'] = 'hospital-logo';
 
-        if(!isset($options['attr']['class'])) {
-            $options['attr']['class'] = '';
-        }
+            if(!isset($options['size'])) {
+                $options['size'] = ImageSizes::MEDIUM;
+            }    
 
-        if(!isset($options['size'])) {
-            $options['size'] = ImageSizes::MEDIUM;
-        }
-
-        if ($institution->getLogo()) {
             $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), $options['size']);
             $html = '<img src="'.$mediaSrc.'" class="hospital-logo">';
-        }
-        else {
-            $html = '<span class="hca-sprite hospital-default-logo '. $options['attr']['class'] .'"></span>';
+
+        } else {
+            $html = '<span class="hca-sprite hospital-default-logo '. isset($options['attr']['class']) ? $options['attr']['class'] : '' .'"></span>';
         }
 
         return $html;

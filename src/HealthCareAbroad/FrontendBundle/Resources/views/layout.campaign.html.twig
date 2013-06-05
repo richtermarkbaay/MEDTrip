@@ -1,0 +1,41 @@
+{% extends '::base.campaignIntro.html.twig' %}
+
+{% block title %}{{ parent() }} &raquo; HealthcareAbroad.com{% endblock %}
+
+{% block body %}
+
+    {% block header %}
+        {% include 'FrontendBundle:CampaignIntro/Widgets:header.html.twig' %}
+    {% endblock %}
+     
+    {% block content %}  <div id="wrapper"></div>{% endblock %}
+    
+    {% block javascripts %}        
+    <script type="text/javascript">
+    $(function() {
+
+    	   $(document).ready(function() {
+               $("#menu").sticky({
+                   topSpacing: 0
+               });
+           });
+        
+        $('body').popover({
+            selector: '[data-toggle="popover"]',
+            placement: 'top',
+            html : true,
+        });
+        $('html').on('mouseup', function(e) {
+            if(!$(e.target).closest('.popover').length) {
+                $('.popover').each(function(){
+                    $(this.previousSibling).popover('hide');
+                });
+            }
+        });
+
+    });
+
+    </script>
+    {% endblock %}
+    {% block inlineJavascriptCode %}{% endblock %}
+{% endblock %}

@@ -4,8 +4,7 @@
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
-    {% if institution.featuredMedia %}
-        {# media(institution.featuredMedia, institution, 'default', {class: 'featured-image'}) | raw #}
+    {% if institution.featuredMedia and institution.payingClient %}
         {% set size = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img src="{{ institution_media_src(institution.featuredMedia, size) }}" class="featured-image" alt=""/>
     {% else %}

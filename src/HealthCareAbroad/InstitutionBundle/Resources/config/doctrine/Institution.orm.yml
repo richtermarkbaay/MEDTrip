@@ -57,6 +57,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: string
             length: 100
             column: coordinates
+        payingClient:
+            type: smallint
+            nullable: false
+            column: paying_client
         signupStepStatus:
             type: smallint
             nullable: false

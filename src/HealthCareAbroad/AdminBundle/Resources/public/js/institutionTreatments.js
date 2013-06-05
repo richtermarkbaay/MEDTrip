@@ -98,5 +98,28 @@ var InstitutionSpecialization = {
                 _modal.modal('hide');
             }
         });
-    }
+    },
+    
+    removeSpecialization: function(_linkElement) {
+        var _linkElement = $(_linkElement);
+        if (_linkElement.hasClass('disabled')) {
+            return false;
+        }
+        _href = _linkElement.attr('href');
+        _html = _linkElement.html();
+        _linkElement.html(this._processing).addClass('disabled');
+        
+        $.ajax({
+            url: _href,
+            type: 'POST',
+            success: function(response) {
+            	_linkElement.parents('div#specialization_block_'+response.id).remove();
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        });
+        
+        return false;
+    },
 };

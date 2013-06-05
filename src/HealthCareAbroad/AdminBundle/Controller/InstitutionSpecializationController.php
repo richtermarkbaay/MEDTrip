@@ -254,4 +254,34 @@ class InstitutionSpecializationController extends Controller
         $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:specializationAccordion.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
+    
+    public function ajaxRemoveSpecializationAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+        ->find($request->get('isId', 0));
+        
+        if (!$institutionSpecialization) {
+            throw $this->createNotFoundException('Invalid instituiton specialization');
+        }
+    
+        if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
+            return new Response("Cannot remove specialization that does not belong to this institution", 401);
+        }
+    
+        try
+        {
+            $_id = $institutionSpecialization->getId();
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($institutionSpecialization);
+            $em->flush();
+            
+            $responseContent = array('id' => $_id);
+            $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
+        }
+        
+        catch (\Exception $e) {
+            $response = new Response($e->getMessage(), 500);
+        }
+            return $response;
+    }
 }

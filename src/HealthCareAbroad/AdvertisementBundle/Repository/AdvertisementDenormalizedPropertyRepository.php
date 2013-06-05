@@ -122,4 +122,29 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
 
         return $result;
     }
+    
+    public function getActiveSearchResultsImageAds(array $criteria = array(), $limit = null)
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->select('a,b,c')
+        ->leftJoin('a.institution', 'b')
+        ->leftJoin('a.media', 'c')
+        ->where('a.advertisementType = :type')
+        ->andWhere('a.status = :status')
+        ->orderBy('a.dateExpiry', 'ASC')
+        ->setParameter('type', 13)
+        ->setParameter('status', AdvertisementStatuses::ACTIVE);
+
+        foreach($criteria as $key => $value) {
+            $qb->andWhere("a.$key = :$key")->setParameter($key, $value);
+        }
+        
+        if(!is_null($limit)) {
+            $qb->setMaxResults($limit);
+        }
+        
+        $result = $qb->getQuery()->getResult();
+    
+        return $result;
+    }
 }

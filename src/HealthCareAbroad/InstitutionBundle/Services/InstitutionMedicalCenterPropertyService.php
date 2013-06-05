@@ -212,7 +212,6 @@ class InstitutionMedicalCenterPropertyService
         return $properties;
     }
     
-    
     public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), $propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $ids = array();
@@ -256,5 +255,17 @@ class InstitutionMedicalCenterPropertyService
             $em->flush();
         }
         return;
+    }
+    public function getCurrentAndSelectedAncillaryServicesByPropertyType(InstitutionMedicalCenter $center, $propertyName, $ancillaryServicesData)
+    {
+        foreach ($this->getInstitutionMedicalCenterByPropertyType($center, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+            $ancillaryServicesData['currentAncillaryData'][] = array(
+                            'id' => $_selectedService->getId(),
+                            'value' => $_selectedService->getValue(),
+            );
+            $ancillaryServicesData['selected'][] = $_selectedService->getValue();
+        }
+        
+        return $ancillaryServicesData;
     }
 }

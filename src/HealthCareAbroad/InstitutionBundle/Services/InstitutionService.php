@@ -201,6 +201,22 @@ class InstitutionService
     }
     
     /**
+     * Save Institution to database
+     *
+     * @param Institution $institution
+     * @return Institution
+     */
+    public function save(Institution $institution)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($institution);
+        $em->flush();
+    
+        return $institution;
+    }
+    
+    
+    /**
      * 
      * @param Institution $institution
      * @return boolean

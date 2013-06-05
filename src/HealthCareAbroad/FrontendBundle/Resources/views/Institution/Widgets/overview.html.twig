@@ -2,8 +2,10 @@
     {{ institution.description | raw }}
 </div>
 
+{% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
+
 {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
 
-{% include 'FrontendBundle:Institution/Widgets:clinicList.html.twig' %}
+
 
 

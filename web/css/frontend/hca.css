@@ -2463,9 +2463,14 @@ ul.three-column-list > li {
     margin-bottom: 40px;
 }
 
+.widget-wrapper > h4 > a,
 .widget-wrapper > h4 {
     color: #4D4D4D;
     text-align:center;
+}
+
+.widget-wrapper > h4 > a:hover {
+	color: #4D4D4D;
 }
 
 .widget-wrapper > p {
@@ -2499,6 +2504,14 @@ ul.three-column-list > li {
     color: #5F615F;
     background-color: #fff;
     max-width: 110px;
+}
+
+.widget-wrapper.media-ads {
+	border: none !important;
+}
+
+.widget-wrapper.media-ads > a > img {
+	width: 100%;
 }
 
 .widget-wrapper > h4.widget-heading.align-left {

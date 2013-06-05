@@ -27,6 +27,7 @@ class HelpTextTwigExtension extends \Twig_Extension
             'strpos' => new \Twig_Function_Method($this, 'strpos'),
             'hasSubstr' => new \Twig_Function_Method($this, 'hasSubstr'),
             'lcfirst' => new \Twig_Function_Method($this, 'lcfirst'),
+            'substr' => new \Twig_Function_Method($this, 'substr'),
         );
      }
      
@@ -51,7 +52,16 @@ class HelpTextTwigExtension extends \Twig_Extension
      {
          return strpos($string, $findme);
      }
-     
+
+     public function substr($string, $start, $length = null)
+     {
+         if(!$length) {
+             $length = strlen($string);
+         }
+         
+        return substr($string, $start, $length);
+     }
+
      public function hasSubstr($string, $findme)
      {
          $pos = strpos($string, $findme);

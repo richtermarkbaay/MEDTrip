@@ -1,36 +1,21 @@
 <div class="hca-v-sprite footer-border"></div>
 <div id="footer-wrapper">
 	<div class="top-content-wrapper container"> <!--This is for the upper part of footer-->
-		<div class="site-map-section span4"> <!--This is for Site Map-->
-            <h4>Site Map</h4>
-
-			<h5><span>Company</span></h5>
-			<ul class="circle-bullet-list">
-                <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
-                <li><a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a></li>
-                 <li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
-                 <li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
-                <!--li><a href="#">Site Map</a></li -->
-            </ul>
-
-            <h5><span>Contact Us</span></h5>
-            <ul class="circle-bullet-list">
-                <li>
-                    <a id="feedback-message" href="#">Feedback</a>
-                    {{ render_feedback_form() | raw }}
-                </li>
-                <li>
-                    <a href="{{ path('frontend_page_inquiry') }}">Advertising Inquiry</a>
-                </li>
-            </ul>
-
+       	<div class="site-map-section span4">
+   	    	<h4>Latest Tweets</h4>
+   	    	<div class="twitter-section">
+       	    	<span class="pull-right">
+       	    	    <a href="https://twitter.com/HCAbroad" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @HCAbroad</a>
+                </span>
+       	    	<a class="twitter-timeline" href="https://twitter.com/HCAbroad" data-tweet-limit="3" data-border-color="#AAAAAA" height="150" data-chrome="noheader nofooter transparent" data-widget-id="329771659437424641">Tweets by @HCAbroad</a>
+                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		    </div>
 		</div>
 
 		<div class="facebook-section span4"> <!--This is for the Facebook API-->
 			<h4>Like Us on Facebook</h4>
-            <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
+          <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
 		</div>
-
 		<div class="subscribe-section span4"> <!--This is for the Subscriptions-->
 			{{ render_newsletter_subscription_form() |raw }}
 			<div class="register row">
@@ -53,11 +38,19 @@
 
         <p>&copy; Copyright 2013, Healthcareabroad.com Inc. All rights reserved</p>
 		<ul class="site-nav unstyled inline-list">
+		    <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
+		    <li class="divider">/</li>
+			<li><a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a></li>
+			<li class="divider">/</li>
+		    <li>  <a id="feedback-message" href="#">Feedback</a>
+                {{ render_feedback_form() | raw }}
+            </li>
+            <li class="divider">/</li>
+            <li> <a href="{{ path('frontend_campaign_intro') }}">Advertise</a> </li>
+		    <li class="divider">/</li>
 			<li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
 			<li class="divider">/</li>
 			<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
-			<li class="divider">/</li>
-			<li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
 		</ul>
 	</div>
 </div>

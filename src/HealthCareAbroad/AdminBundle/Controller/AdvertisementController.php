@@ -44,7 +44,7 @@ class AdvertisementController extends Controller
 
     public function preExecute()
     {
-        $ad = $this->getRequest()->get('advertisement');
+        $ad = $this->getRequest()->get('advertisement'); 
         $institutionId = $ad ? $ad['institution'] : null;
 
         if ($advertisementId = $this->getRequest()->get('advertisementId', 0)) {
@@ -68,7 +68,7 @@ class AdvertisementController extends Controller
             $this->institution = $this->advertisement->getInstitution();
         }
 
-        if ($institutionId = $this->getRequest()->get('institutionId', $institutionId) && !$this->advertisement) {
+        if (($institutionId = $this->getRequest()->get('institutionId', $institutionId)) && !$this->advertisement) {
 
             $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f')->from('InstitutionBundle:Institution', 'a')
@@ -154,6 +154,7 @@ class AdvertisementController extends Controller
             'formAction' => $this->generateUrl('admin_advertisement_update', array('advertisementId' => $this->advertisement->getId())),
             'form' => $form->createView(),
             'ads_filesystem' => $this->get('advertisement_filesystem'),
+            'isEditMode' => true,
             'step' => (int)$request->get('step', 2)
         ));
     }

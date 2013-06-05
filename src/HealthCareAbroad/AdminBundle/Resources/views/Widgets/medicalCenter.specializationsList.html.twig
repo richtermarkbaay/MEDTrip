@@ -13,13 +13,15 @@
     {% for institutionSpecialization in institutionSpecializations %}
         {% set _editSpecializationModalId = 'editspecializationmodal_' ~ institutionSpecialization.id %}
         {% set _editSpecializationUri = path('admin_medicalCenter_ajaxEditSpecialization', {'imcId':institutionMedicalCenter.id, 'isId':institutionSpecialization.id, 'institutionId': institution.id} ) %}
-         <div class="maincontentblock">
+         <div class="maincontentblock" id="specialization_block_{{institutionSpecialization.id}}">
            <table class="table table-striped table-bordered bootstrap-datatable">
                 <thead>
                     <tr>
                         <th colspan="2">{{ institutionSpecialization.specialization.name |title}}
+                            <i class="icon-trash" title="Delete"></i>
+                    		<a href="{{ path('admin_medicalCenter_ajaxRemoveSpecialization', {institutionId: institution.id,imcId: institutionMedicalCenter.id, isId: institutionSpecialization.id }) }}" onclick="InstitutionSpecialization.removeSpecialization(this); return false;" title="" ><small>Delete Specialization</small></a>
         					<i class="icon-pencil" title=""></i>
-        					 <a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
+        					<a data-target="#{{ _editSpecializationModalId }}" href="{{ _editSpecializationUri }}" onclick="InstitutionSpecialization.showAddTreatmentsForm(this); return false;"><small>Add Treatments</small></a>
                         </th>
         			</tr>
                 </thead>

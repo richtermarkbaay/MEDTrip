@@ -1,4 +1,4 @@
-{% if media | length %}
+{% if media|length and institution.payingClient %}
 
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Photos'} %}
     

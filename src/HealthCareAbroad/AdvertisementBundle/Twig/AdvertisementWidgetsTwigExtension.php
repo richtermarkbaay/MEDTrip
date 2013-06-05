@@ -29,7 +29,8 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             'render_homepage_featured_video_ad' => new \Twig_Function_Method($this, 'render_homepage_featured_video_ad'),
 
             'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_institution_ad'),
-            'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad')
+            'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad'),
+            'render_search_results_image_ad' => new \Twig_Function_Method($this, 'render_search_results_image_ad'),
         );
     }
 
@@ -97,6 +98,15 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
     }
 
+
+    public function render_search_results_image_ad($params = array())
+    {
+        $ads = $this->retrieverService->getSearchResultsImageAds($params);
+        $this->twig->addGlobal('imageAds', $ads);
+
+        return $this->twig->display('AdvertisementBundle:Frontend:imageAd.html.twig');
+    }
+    
     public function getName()
     {
         return 'advertisement_widgets_twig_extension';

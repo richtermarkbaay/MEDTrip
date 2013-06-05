@@ -5,3 +5,4 @@ User-agent: *
 Disallow: /frontend/
 Disallow: /admin/
 Disallow: /institution/
+Disallow: /pdf/

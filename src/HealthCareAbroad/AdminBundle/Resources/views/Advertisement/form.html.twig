@@ -96,7 +96,8 @@
         				    <button type="button" class="btn btn-primary" id="next-btn">Next</button>
 
     				    {% else %}
-        				    {{ form_row(form.institution) }}
+
+    				        {{ form_row(form.institution) }}
         				
         				    {{ form_row(form.advertisementType) }}
 
@@ -212,6 +213,14 @@
 
     $(function(){
 
+        {% if isEditMode is defined and isEditMode %}
+            $('#advertisement_institution').mousedown(function(){
+                alert('Choosing different Institution is not allowed in edit mode.')
+                return false;
+            }).attr('readonly', true);
+        {% endif %}
+    
+    	
     	{% if step == 2 %}  
             $('#advertisement_institution, #advertisement_advertisementType').change(function(){
                 var institutionId = $('#advertisement_institution').val();
@@ -298,7 +307,6 @@
            // Select one option.
            $(this).val(selectedValue);
         });
-
     });
 </script>
 {% endblock %}

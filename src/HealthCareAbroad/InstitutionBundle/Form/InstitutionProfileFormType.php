@@ -9,6 +9,7 @@ use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\HelperBundle\Form\FieldType\LocationFieldType;
 
@@ -69,6 +70,8 @@ class InstitutionProfileFormType extends AbstractType
         'coordinates',
         'logo',
         'featuredMedia',
+        'coordinates',
+        'type'
     );
 
     public function __construct(array $options = array())
@@ -127,6 +130,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'coordinates', 'hidden');
+        $this->_add($builder, 'type', 'choice', array('label' => 'Institution Type' ,'multiple' => false, 'choices' => InstitutionTypes::getFormChoices()));
     }
 
     private function _isHidden($fieldName)
