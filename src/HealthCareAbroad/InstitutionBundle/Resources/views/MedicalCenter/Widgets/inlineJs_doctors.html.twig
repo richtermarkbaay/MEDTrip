@@ -2,10 +2,10 @@
 (function($){
 	$(function(){
 
-        {% if institutionMedicalCenter.doctors|length < 1 %}
+        /*{% if institutionMedicalCenter.doctors|length < 1 %}
             $('#add-doctor').modal('show');
         {% endif %}
-
+        */
         $('#add-doctor').on('show', function(){
             $('.doctors-listing').hide();
         });
@@ -195,6 +195,7 @@
     	function showAddConfirmationMessage(response)
     	{
     		if(response.status) {
+    			$('#doctorsList').find('.alert').remove();
     			confirmMessageElem.find('p:first').html('Doctor has been added to your clinic!');
     			confirmMessageElem.find('.alert').prop('class', 'alert alert-success');
     
@@ -205,14 +206,14 @@
                 }
     
     			var doctorString = '<div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 5px;min-height:60px;padding: 10px" data-doctor-id="'+response.doctor.id+'">' +
-        		    '<a href="#"><i class="icon-remove-sign pull-right"></i></a>' +
-                    '<a id="button" href="#"><i class="icon-edit pull-right"></i></a>' +
+        		    '<a href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id , doctorId : 'response.doctor.id' }) }}" class="remove-doctor"><i class="icon-remove-sign pull-right"></i></a>' +
+                    '<a data-doctor="" href="" class="edit-doctor-btn"><i class="icon-edit pull-right"></i></a>' +
                     '<span><img alt="" src="' + (response.doctor.mediaSrc ? response.doctor.mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}') +'" class="pull-left img-polaroid"></span>'+
                     '<h4 style="text-transform: capitalize;">Dr. ' + getFullName(response.doctor) + '</h4>' + specializations +
                 '</div>';
     
         		$('#doctorsList').prepend(doctorString);
-        		$('#doctorsList').find('h2').remove();
+        		//$('#doctorsList').find('h3').remove();
         		$('#doneSection').show();
     
     		} else {

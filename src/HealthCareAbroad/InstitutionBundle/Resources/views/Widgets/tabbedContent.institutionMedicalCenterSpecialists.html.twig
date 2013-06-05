@@ -2,9 +2,7 @@
     {% block tabbedContent %}
          <section class="doctors-listing">
             <h3> Your Doctors
-            {% if doctors | length %}
                 <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary pull-right" data-toggle="modal">Search Add Doctor</a>
-                {% endif %}
             </h3>
                  <section id="doctorsList" class="doctors-new-listing">
                     {% for doctor in doctors %}
@@ -23,7 +21,6 @@
                             <p class="hca-helptext">
                                 You haven't yet added any doctors affiliated to this Clinic. Text here explaining the need to add doctors in every your Clinic.
                             </p>
-                            <a  href="#add-doctor" id="addDoctorButton" class="btn btn-primary" data-toggle="modal" ><i class="icon-user-md"></i> Add Doctor</a>
                         </div>
                     {% endfor %}
                 </section>
