@@ -18,17 +18,9 @@
                 </script>
                 <div class="navbar">
                 
-                    <ul class="nav hca-nav">
-                        <li>
-                            <a id="reg_inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}" ><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ render_institution_unread_inquiries(institution) | length}} </span></a>
-                        </li>
-                        <!-- li>
-                            <a href="notifications.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>
-                        </li-->
-                    </ul>
                     <ul class="nav">
                         <li>
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') }} {{ app.session.get('userLastName') }}<i class="icon-caret-down"></i></a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') | title }} {{ app.session.get('userLastName') | title }}<i class="icon-caret-down"></i></a>
                             <ul class="dropdown-menu">
                                 <li> <a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a> </li>
                                  {#<li class="divider"> </li>
