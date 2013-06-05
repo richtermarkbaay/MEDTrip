@@ -308,7 +308,7 @@ class InstitutionController extends Controller
     }
     
     /**
-     * @PreAuthorize("hasAnyRole('CAN_MANAGE_INSTITUTION')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTION')")
      */
     public function updatePayingClientAction()
     {
