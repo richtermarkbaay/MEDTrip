@@ -1,6 +1,31 @@
 <ul class="thumbnails">
 {% for institutionMedicalCenter in medicalCenters %}
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:row.medicalCenter.html.twig' %}
+    <li class="thumbnail hca-clinic-listing">
+        {% if institutionMedicalCenter.logo %}
+            {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+            <img src="{{ institution_media_src(institutionMedicalCenter.logo, logoSize) }}" alt="" class="pull-left img-polaroid"/>
+         {% else %}
+             <img class="imgborder" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
+         {% endif %}
+        <div class="medicalcenter-name pull-left">
+            <h3>{{ institutionMedicalCenter.name }}</h3>
+            
+            <div class="pull-left">
+                <p>Inquries are sent to:
+                    <a href="#">{{ institutionMedicalCenter.contactEmail }}</a>
+                    <img alt="Health Care Abroad Verify Icon" src="{{ asset('images/institution/verify-icon.png') }} ">
+                </p>
+                <p>Website clicks are sent to: 
+                    <a href="http://{{ get_website_from_array(institutionMedicalCenter.websites) }}">www.{{ get_website_from_array(institutionMedicalCenter.websites) }}</a>
+                </p>
+            </div>
+        </div>
+        <div class="listing-action-button pull-right">
+            <a class="btn btn-misc" href="{{ path('institution_medicalCenter_view', {imcId: institutionMedicalCenter.id}) }}">
+                <i class="icon-edit"></i>Edit Clinic's Profile
+            </a>
+        </div>
+    </li><!-- end .hca-clinic-listing -->
 {% else %}
     <li class="thumbnail">
         <p><h4>No {{ centerType | capitalize }} listing </h4></p>
