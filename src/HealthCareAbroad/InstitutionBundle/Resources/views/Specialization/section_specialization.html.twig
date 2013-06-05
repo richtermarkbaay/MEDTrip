@@ -4,7 +4,7 @@
         <div class="accordion-group">
             <div class="accordion-heading">
                 <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
-                   </i> <i class="icon-plus pull-right"></i>
+                   </i> <i class="icon-plus-sign pull-right icon-edit icon-ok"></i>
                     {% if specialization.media %}
                         <img src="{{ specialization_media_src(specialization.media) }}" class="pull-left">
                     {% else %}
@@ -15,7 +15,7 @@
             </div>
             <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class="collapse">
                 <div class="accordion-inner">
-                    <div id="{{ 'panel' ~ specialization.id }}" data-loaded="0" class="row-fluid services-listing">
+                    <div id="{{ 'panel' ~ specialization.id }}" data-loaded="0">
                         <center><img src="/images/institution/spinner_large.gif" /></center>
                        
                     </div>

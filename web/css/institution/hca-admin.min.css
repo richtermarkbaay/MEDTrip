@@ -553,6 +553,8 @@ hr {
           border: none; }
           #content section.section .row-fluid.hca-edit-box .accordion {
             width: 100%; }
+            #content section.section .row-fluid.hca-edit-box .accordion .accordion-inner {
+              padding: 0; }
           #content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
             margin: 20px; }
           #content section.section .row-fluid.hca-edit-box h3 {
@@ -589,6 +591,21 @@ hr {
             padding: 0px; }
             #content section.section .row-fluid.terms > div.media {
               padding: 10px 10px !important; }
+          #content section.section .row-fluid.terms .accordion-inner .span6 li {
+            line-height: 1.35em; }
+            #content section.section .row-fluid.terms .accordion-inner .span6 li:last-child {
+              padding-bottom: 10px; }
+          #content section.section .row-fluid.terms .specialization-edit-listing {
+            background-color: white;
+            overflow: auto;
+            max-height: 218px; }
+            #content section.section .row-fluid.terms .specialization-edit-listing input[type="radio"], #content section.section .row-fluid.terms .specialization-edit-listing input[type="checkbox"] {
+              margin-top: -2px; }
+            #content section.section .row-fluid.terms .specialization-edit-listing ul {
+              margin: 0; }
+              #content section.section .row-fluid.terms .specialization-edit-listing ul li {
+                list-style: none;
+                line-height: 2em; }
         #content section.section .row-fluid > div {
           padding: 20px; }
           #content section.section .row-fluid > div.divider {

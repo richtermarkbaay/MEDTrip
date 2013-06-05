@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
-{% set mainNavigation = {selected: ''} %}
+{% set mainNavigation = {selected: 'inquiries'} %}
 {% set _inquiries = render_institution_inquiries(institution) %}
 {% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
 {% set _read_inquiries = render_institution_read_inquiries(institution) %}

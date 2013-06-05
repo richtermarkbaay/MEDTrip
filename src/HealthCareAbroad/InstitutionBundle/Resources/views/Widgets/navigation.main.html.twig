@@ -16,11 +16,13 @@
                     <a href="{{ path('institution_medicalCenter_index') }}"><i class="icon-medkit"></i> Clinics</a>
                 </li>     
                 {% endif %} 
+                {#
                 {% if isInquiry is defined %}                      
                 <li class="{{ 'doctors' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="doctors-listing.html"><i class="icon-user-md"></i>All Doctors</a>
                 </li>               
-                {% endif %}             
+                {% endif %}     
+                #}        
                 <li class="{{ 'users' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="users.html"><i class="icon-group"></i> Users</a>
                 </li>
