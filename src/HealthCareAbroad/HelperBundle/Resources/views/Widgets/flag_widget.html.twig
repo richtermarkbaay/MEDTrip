@@ -15,12 +15,11 @@
 
 {% if loadJs %}
 
-{% set inputId = 'test    ' %}
-
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
 (function($){
-    $(function(){ 
+    $(function(){
+        console.log('loadFlagWidgetJs'); 
     	var countryCodes = [];
         var flagList = $('.flag-selector-widget:first').find('.flag-list > li');
     	
@@ -43,7 +42,7 @@
 
 
     	$.each($('.flag-selector-widget'), function(elem){
-        	//console.log(this);
+        	console.log('testselectorwidget');
         	//console.log($(this));
         	//console.log($(this).siblings('input[data-type=number]:first'));
         	
@@ -52,7 +51,9 @@
     	    abbrElem = $(this).siblings('input[data-type=abbr]:first');
     	    prevSelectedElem = flagListElem.find('li[data-abbr='+abbrElem.val()+']');
 
-        	flagWidget.find('.flag-list-toggle > .flag16:first').attr('class', 'flag16 ' + abbrElem.val());
+    	    abbr = abbrElem.val() != '' ? abbrElem.val() : flagListElem.children(':first').attr('data-abbr');
+    	    
+        	flagWidget.find('.flag-list-toggle > .flag16:first').attr('class', 'flag16 ' + abbr);
 
     	    flagListElem.children('li').click(function(){
                 inputElem = $(this).parents('.flag-selector-widget:first').siblings('input[data-type=number]:first');
@@ -71,7 +72,7 @@
     	    
     		//console.log($(this));
         });
-
+    	{#
     	/*
         $('.flag-list > li').click(function(){
             prevSelectedElem = $(this).siblings('.selected:first');
@@ -99,7 +100,7 @@
 			if($.inArray($(this).val().substr(1), countryCodes) !== -1 && $(this).val().length > 1) {
     			$(this).siblings('.flag-selector-widget:first').find('.flag-list > li[data-code='+ $(this).val().substr(1) +']').click();
     		}
-	    }); */
+	    }); */ #}
 
 	    
     });
