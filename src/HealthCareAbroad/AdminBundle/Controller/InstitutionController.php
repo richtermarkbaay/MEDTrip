@@ -10,7 +10,6 @@ use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
-use HealthCareAbroad\PagerBundle\Pager;
 use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
