@@ -427,6 +427,12 @@ hr {
       margin: 0; }
     #content section.section {
       margin-bottom: 2em; }
+      #content section.section.media-upload h4 {
+        color: #a2a2a2;
+        font-weight: normal;
+        line-height: 1.40em;
+        font-size: 120%;
+        margin-top: -8px; }
       #content section.section.inquiries .row {
         margin-left: 20px;
         margin-bottom: 20px; }
