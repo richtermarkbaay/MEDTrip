@@ -20,6 +20,8 @@ abstract class InstitutionAwareController extends Controller
      */
     protected $institution;
     
+    protected $eagerLoadEntities = array();
+    
     /**
      * Convenience function to help controllers set up common variables
      */
@@ -27,11 +29,17 @@ abstract class InstitutionAwareController extends Controller
     {
         $institutionId = $this->getRequest()->getSession()->get('institutionId', 0);
         if ($institutionId) {
-            $institution = $this->get('services.institution.factory')->findById($institutionId);
+            
+            if(count($this->eagerLoadEntities)) {
+                $institution = $this->get('services.institution.factory')->findByIdWithEagerLoadEntities($institutionId, $this->eagerLoadEntities);             
+            } else {
+                $institution = $this->get('services.institution.factory')->findById($institutionId);
+            }
+
             if (!$institution) {
                 $this->throwInvalidInstitutionException();
             }
-        
+
             $this->setInstitution($institution);
         }
     }
@@ -56,5 +64,9 @@ abstract class InstitutionAwareController extends Controller
     protected function jsonResponse()
     {
         
+    }
+
+    protected function setEagerLoadEntities($entitiesNames = array()) {
+        $this->eagerLoadEntities = $entitiesNames;
     }
 }

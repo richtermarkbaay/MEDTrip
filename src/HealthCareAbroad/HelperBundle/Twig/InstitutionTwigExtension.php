@@ -152,7 +152,7 @@ class InstitutionTwigExtension extends \Twig_Extension
         }
         
         if(!$this->institutionService->getAllGlobalAwards($institution)) {
-            $suggestions[] = array('description' => 'You currently have no awards, certification, affiliations and accreditations for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently have no awards, certification, affiliations and accreditations for your Clinic yet.');
         }
         
         return $suggestions;

@@ -1,0 +1,58 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'delete-media', class: 'hca-file-modal delete-media', 'title': 'Delete Media' }} %}
+    {% block modalBody %}            
+
+        <div class="alert alert -info">
+            <i class="icon-trash icon-2x"></i>
+            <span>Text here - disadvantages in deleting media</span>
+        </div>
+        <h4>Are you sure you want to permanently delete this media file name?</h4>
+        <p>
+            This media will be also deleted in following clinics:
+        </p>
+        <ul class="clinic-list"></ul>
+        
+        <div class="align-right">
+            <a href="#" onclick="$('#delete-media').modal('hide')" class="btn">Cancel</a> &nbsp;
+            <button id="confirm-delete-media-btn" class="btn btn-primary" type="button"><i class="icon-trash"></i>Confirm Delete</button>
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+$(function(){
+	var mediaId;
+    $(".delete-media").click(function(){
+        mediaId = $(this).attr('data-media_id');
+        var deleteWrapperElem = $('#delete-media');
+
+        clinicListElem = deleteWrapperElem.find('ul.clinic-list:first').empty();
+
+        $.each($('.hca-media .clinic-name-' + mediaId), function(){
+        	clinicListElem.append('<li>' + $(this).html() + '</li>');
+        });
+
+        if(clinicListElem.html() == '') {
+        	clinicListElem.hide().prev().hide();
+        } else {
+        	clinicListElem.show().prev().show();
+        }
+    });
+
+    $('#confirm-delete-media-btn').click(function(){
+
+        var params = {mediaId: mediaId};
+        deleteBtn = $(this).attr('disabled', 'disabled').text('Deleting...');
+        $.post("{{ path('institution_mediaGallery_delete', {institutionId: institution.id}) }}", params, function(response){
+        	console.log(response);
+            if(response) {
+            	deleteBtn.removeAttr('disabled').text('Confirm Delete');
+            	$('#delete-media').modal('hide');
+                $('#media-item-' + params.mediaId).fadeOut(1000, function(){$(this).remove()});
+            }
+        });
+    });
+    
+});
+</script>
+{% endblock %}

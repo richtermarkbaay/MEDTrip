@@ -57,7 +57,7 @@ class InstitutionUserSignUpFormType extends AbstractType
         ->add('jobTitle', 'text', array( 'required' => false, 'label' => 'Job Title'))
         ->add('contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_number_with_flag'))
         ->add('email', 'email', array( 'error_bubbling' => false, 'constraints' => array(new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))))
-        ->add('password', 'password', array('label' => 'Password','error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')))))
+        ->add('password', 'password', array('label' => 'Password','error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')) , new MinLength(array('limit' => 6,'message' => 'Password is too short. Please enter at least 6 characters.')))))
         ->add('confirm_password', 'password', array('label' => 'Re-type password','virtual' => true,'error_bubbling' => false,'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))))
         
         ;

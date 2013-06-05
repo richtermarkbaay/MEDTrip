@@ -608,7 +608,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         $params = array(
-            'form' => $form->createView(),
+            'doctorForm' => $form->createView(),
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())

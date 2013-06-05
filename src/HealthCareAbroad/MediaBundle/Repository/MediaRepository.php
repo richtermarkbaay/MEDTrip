@@ -25,4 +25,12 @@ class MediaRepository extends EntityRepository
 
         return $query->getOneOrNullResult();
     }
+    
+    public function getMediaByIds($mediaIds = array())
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb->add('where', $qb->expr()->in('a.id', $mediaIds));
+
+        return $qb->getQuery()->getResult();
+    }
 }

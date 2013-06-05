@@ -9,7 +9,6 @@
              <a href="{{ path('institution_homepage')}}"><i class="{{ 'dashboard' == mainNavigation.selected ? 'icon-home' : 'icon-h-sign' }}"></i></a>
                 <span class="divider"> / </span>
             </li>
-            {% if isInquiry is not defined %}
             <li class="{{ subNavigation is not defined ? 'active' : '' }}">
                 {% if mainNavigation.url is not defined %}
                     {{ mainNavigation.label is defined ? mainNavigation.label : mainNavigation.selected | title }}
@@ -18,11 +17,6 @@
                     <span class="divider">  / </span>
                {% endif %}
             </li>
-            {% else %}
-            <li class="active">
-                Inquiries
-            </li>
-            {% endif %}
             {% if subNavigation is defined %}
                 <li class="active">
                      {{ subNavigation.label | title }}

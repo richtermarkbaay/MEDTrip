@@ -1,0 +1,19 @@
+<div class="row-fluid control-group">
+    <label>
+        Publish this Image file with a specific clinic.<br>
+        <small>
+            This will automatically update your clinic profile and make sure to select
+            the correct image file.
+        </small>
+    </label>
+    <ul class="media-listing" style="width: auto;display:block">
+        {% for center in medicalCenters %}
+        <li>
+            <label style="font-weight:normal">
+                <input type="checkbox" class="pull-left" value="{{ center.id }}" name="medical_center_ids[]" {% if center.id in selectedClinics %}checked="checked"{% endif %} style="margin-top: 0">
+                {{ center.name }}
+            </label>
+        </li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,92 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'add-media', class: 'hca-file-modal', 'title': 'Add New Media' }} %}
+    {% block modalBody %}            
+
+    <div class="tabbable">
+        <ul class="nav nav-tabs">
+            <li class="active"><a href="#pane1" data-toggle="tab"><i class="icon-upload"></i>Upload Photo</a></li>
+            <li><a href="#pane2" data-toggle="tab"><i class="icon-facetime-video"></i>Add Video</a></li>
+        </ul>
+        <div class="tab-content">
+            <div id="pane1" class="tab-pane active">
+                <form name="institutionMedia" action="{{ path('institution_mediaGallery_linkFileToClinics') }}" enctype="multipart/form-data" method="post">
+                    <div id="custom-dropzone" class="dropzone">
+                            <div id="previews" class="dropzone-previews"></div>
+                            <input name="file" type="file" accept="image/*" style="visibility:hidden"/>
+                            <div class="dropzone-controls">
+                                <label>Drag Photo or if you prefer...</label>
+                                <span id="clickable" class="btn btn-primary">
+                                    Select Photo from your Computer
+                                </span>
+                            </div>
+                    </div>
+                    <input type="hidden" name="media_ids" id="mediaIds">
+
+                    <p><small>Maximum upload file size:</small>2MB</p>
+
+                    {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+
+                    <div class="align-right">
+                        <a href="#" onclick="$('#add-media').modal('hide')" class="btn">Cancel</a> &nbsp;
+                        <button class="btn btn-primary" type="submit"><i class="icon-save"></i>Save Changes</button>
+                    </div>
+                </form>
+            </div>
+            <div id="pane2" class="tab-pane">
+                <h4>Link Video</h4>
+                <div class="alert alert-info">
+                    <div class="media">
+                        <i class="icon-facetime-video icon-4x pull-left"></i>
+                        <div class="media-body">
+                            <h4 class="media-heading">Rules in Linking Videos (Youtube and Vimeo)</h4>
+                            <ul>
+                                <li>Make sure the video is set to public</li>
+                                <li>Click the SHARE TAB under the video</li>
+                                <li>Copy the URL and paste it into the form below.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <form action="#">
+                    <div class="row-fluid control-group">
+                        <label for="video-title">Enter Video url</label>
+                        <input type="text" class="span10"><br/>
+                        <small>
+                            Example:<br/>
+                            <p><b>For Youtube:</b>http://www.youtube.com/watch?v=YE7VzlLtp4isYE7VzlLtp-4
+                            <br/>
+                            <b>For Vimeo:</b>http://www.youtube.com/watch?v=YE7VzlLtp-4isYE7VzlLtp-
+                            </p>
+                        </small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {% endblock %}
+{% endembed %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="/js/dropzone.js" ></script>
+
+<script type="text/javascript">
+$(function(){
+    $("#custom-dropzone").dropzone({
+        url: "{{ path('institution_mediaGallery_upload') }}", // Set the url
+        method: "post",
+        previewsContainer: "#previews", // Define the container to display the previews
+        clickable: "#clickable", // Define the element that should be used as click trigger to select files.
+        success: function(file, response){
+            console.log(response);
+            if($('#mediaIds').val() != '') {
+            	$('#mediaIds').val($('#mediaIds').val() + ',' + response.mediaId);
+            } else {
+            	$('#mediaIds').val(response.mediaId);
+            }
+
+        }
+    });	
+});
+</script>
+{% endblock %}

@@ -40,6 +40,12 @@ InstitutionBundle_userType:
 InstitutionBundle_userRole:
     resource: "@InstitutionBundle/Resources/config/routing_userRole.yml"
     prefix:   /institution
+
+# Routes for Institution MediaGallery #
+InstitutionBundle_mediaGallery:
+    resource: "@InstitutionBundle/Resources/config/routing_mediaGallery.yml"
+    prefix:   /institution
+
     
 InstitutionBundle_account:
     resource: "@InstitutionBundle/Resources/config/routing_account.yml"
@@ -58,13 +64,7 @@ InstitutionBundle_doctor:
 InstitutionBundle_properties:
     resource: "@InstitutionBundle/Resources/config/routing_institutionProperties.yml"
     prefix:   /
-    
-institution_gallery:
-    pattern: /institution/gallery
-    defaults: { _controller: MediaBundle:Default:gallery }
-    requirements:
-        _method: GET
-       
+
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
