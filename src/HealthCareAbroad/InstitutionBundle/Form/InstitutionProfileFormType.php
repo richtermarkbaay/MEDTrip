@@ -114,7 +114,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true, 'required' => false));
         $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country'));
         $this->_add($builder, 'city', 'city_list', array('label' => 'City'));
-        $this->_add($builder, 'zipCode', 'text', array('label' => 'Postal Code'));
+        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));

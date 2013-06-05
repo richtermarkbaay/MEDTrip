@@ -2,6 +2,11 @@
 {% set mainNavigation = {selected: 'clinics'} %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
  {% block content %}
+     <div id="back-top">
+        <div class="backtotop img-rounded">
+            <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
+        </div>
+    </div>
     {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}    
@@ -82,19 +87,26 @@
 <!--
 
     (function($){
+        
         $(function(){
+
+            $("#back-top").hide();
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('#back-top').fadeIn();
+                } else {
+                     $('#back-top').fadeOut();
+                }
+            });
+            $('#back-top a').click(function() {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+            
             $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
         });
-        {#/*
-        _url_base = '{{ path("institution_medicalCenter_index") }}'; 
-        ClinicListing.setAjaxUrls({
-            'loadPending': _url_base+'?status=8',
-            'loadDraft': _url_base+'?status=4',
-            'loadExpired': _url_base+'?status=16',
-       }); 
-        ClinicListing.loadTabbedContentsOfClinics(); 
-       ClinicListing.tabbedContentElement = $('#medicalCenterListing');
-       */#}
         function grow(_el) {
             _el.css('height', '').css('overflow', '');
             _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');

@@ -7,6 +7,11 @@
     {% include 'InstitutionBundle:MedicalCenter/Widgets:modal.institutionMedicalCenterName.html.twig' %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
+            <div id="back-top">
+                <div class="backtotop img-rounded">
+                    <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
+                </div>
+            </div>
             			 <div class="tab-content span8">
                             {% include 'InstitutionBundle:MedicalCenter/Widgets:profileHeader.html.twig' %}
                             <div class="tabbable">
@@ -68,7 +73,6 @@
     var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     (function($){
         $(function(){
-            console.log('{{ institutionMedicalCenter.coordinates }}');
         	HCAGoogleMap.initialize({
         		latLngString: '{{ institutionMedicalCenter.coordinates }}',
         		address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
@@ -94,6 +98,22 @@
             $('#clinicDescriptionText').truncateByHeight({
                 'visibleRows': 5
             });
+
+            $("#back-top").hide();
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('#back-top').fadeIn();
+                } else {
+                     $('#back-top').fadeOut();
+                }
+            });
+            $('#back-top a').click(function() {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+            
         });
 
     })(jQuery);

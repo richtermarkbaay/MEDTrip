@@ -82,7 +82,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'businessHours', 'fancy_business_hours');
 
         $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
-        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
+        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code ','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
         $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
         $this->_add($builder, 'country', 'text', array('label' => 'Country','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getCountry())));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Clinic Email Address'));

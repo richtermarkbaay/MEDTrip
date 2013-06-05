@@ -13,7 +13,11 @@
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
     
         {% block wrappedContent %}
-
+             <div id="back-top">
+                <div class="backtotop img-rounded">
+                    <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
+                </div>
+            </div>
             <!-- Main Content -->    
             {% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}       
 			{% if (isSingleCenter is defined) and isSingleCenter %}
@@ -56,6 +60,21 @@
     (function($){
         $(function(){
 
+            $("#back-top").hide();
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 100) {
+                    $('#back-top').fadeIn();
+                } else {
+                     $('#back-top').fadeOut();
+                }
+            });
+            $('#back-top a').click(function() {
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+            
             var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
 
             var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
@@ -101,6 +120,6 @@
     function updateInstitutionStaticMap() {
     	HCAGoogleMap.updateMap(getAddress());
     }
-//-->
+
 </script>
 {% endblock %}
