@@ -1,8 +1,8 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% if (isSingleCenter is defined) and isSingleCenter %}
-    {% set mainNavigation = {selected: 'manage hospital' , label : institution.name | title } %}
+    {% set mainNavigation = {selected: 'manage profile' , label : institution.name | title } %}
 {% else %}
-    {% set mainNavigation = {selected: 'manage hospital'} %}
+    {% set mainNavigation = {selected: 'manage profile'} %}
 {% endif %}
 
 {% set _csrf_token_widget = form_widget(institutionForm._token) %}
