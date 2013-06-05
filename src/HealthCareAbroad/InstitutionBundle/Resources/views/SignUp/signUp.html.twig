@@ -112,7 +112,7 @@
                                {% for _key, _typeChoice in form.type.vars.choices %}
                                     {% set _inputId =  form.type.vars.id ~ '_' ~ _key %}
                                     <label class="radio" for="{{ _inputId }}">
-                                    <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}">
+                                    <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.type.vars.full_name }}" {% if form.type.vars.data == _typeChoice.value %} checked="checked"{% endif %}>
                                     {{ _typeChoice.label }}</label> 
                                    {% if not loop.last %}
                                    <hr>
