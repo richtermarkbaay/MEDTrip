@@ -85,7 +85,7 @@ parameters:
     cfe_company_name: Chromedia Far East Inc.    
     
     imageplaceholder:
-        institutionFeaturedImage: /images/frontend/default-hospital-featured-image.png 
+        institutionFeaturedImage: /images/default-hospital-featured-image.png 
         institutionDefaultLogo: /images/institution/default-hospital-logo.png
         doctorDefaultImage: /images/institution/default-doctor-icon.png
         destinationIcon: ''
