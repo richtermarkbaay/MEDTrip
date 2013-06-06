@@ -1,21 +1,24 @@
 <section id="doctorsList" class="doctors-new-listing">
     {% for doctor in institutionMedicalCenter.doctors %}
-        <div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px; min-height: 60px;padding: 10px">
+        <div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px; min-height: 60px;padding: 10px;position:relative;">
+
+            <!--div class="updating" style="width: 100%; height: 100%; display: block; position: absolute; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.3; z-index: 8;">
+            </div> -->
+        
             <a href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" class="remove-doctor"><i class="icon-remove-sign pull-right"></i></a>
             <a data-doctor="{{ json_encode(doctors[doctor.id]) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" class="edit-doctor-btn"><i class="icon-edit pull-right"></i></a>
-    
+
             <form action="{{ path('institution_doctor_logo_upload', {doctorId: doctor.id, imcId: institutionMedicalCenter.id}) }}" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">
                 <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media ? doctor_media_src(doctor.media, thumbnailSize) : imageplaceholder.doctorDefaultImage }}" class="pull-left img-polaroid">
                 <span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>
                 <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
             </form>
-    
-    
-    
+
             <h4 class="full-name">Dr. {{ doctor.firstName|title }} {{ doctor.middleName ? doctor.middleName|slice(0,1)|title ~ '. ' : '' }}{{ doctor.lastName|title }} {{ doctor.suffix ? doctor.suffix : '' }}</h4>
-            {% if doctor.specializations|length %}
-                <p><i class="icon-stethoscope"></i>Specializations:<span class="doctor-specializations">{{ doctor.specializations|join(', ') }}</span></p>
-            {% endif %}
+            <p class="" style="{{ doctor.specializations|length ? 'block' : 'none' }}">
+                <i class="icon-stethoscope"></i>Specializations:
+                <span class="doctor-specializations">{{ doctor.specializations|join(', ') }}</span>
+            </p>
         </div>
         <div class="hca-hidden-content doctors-listing edit-doctor-wrapper" data-doctor-id="{{ doctor.id }}" style="display:none"></div>
     {% else %}

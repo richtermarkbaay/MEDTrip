@@ -129,7 +129,7 @@ class DoctorService
             $name .= ucfirst(substr($doctor->getMiddleName(), 0, 1)) . '. ';
         }
 
-        $name .= $doctor->getLastName();
+        $name .= ucwords($doctor->getLastName());
         
         if($doctor->getSuffix()) {
             $name .= ' ' .$doctor->getSuffix();
