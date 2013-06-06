@@ -322,6 +322,7 @@ input[type=submit]{background-color:#fe6100;background-repeat:repeat;background-
   font-size: 20px;
   margin-top: 30px;
   margin-left: 0px;
+  line-height: 1.25em;
   text-transform: uppercase;
   font-weight: bold;
 }
@@ -407,9 +408,6 @@ input[type=submit]{background-color:#fe6100;background-repeat:repeat;background-
   color: #FFFFFF;
   border-radius: 10px;
   margin-top: 20px;
-}
-@-moz-document url-prefix() { 
-  .selector {
-     color:lime;
-  }
+  text-transform: uppercase;
+  line-height: 1.25em;
 }
