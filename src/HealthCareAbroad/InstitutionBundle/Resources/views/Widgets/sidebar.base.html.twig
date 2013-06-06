@@ -21,8 +21,8 @@
             {% for each in gallery.media %}
                 {% if loop.index <= 6 %} {# display images up to 6 only #}
                 <li>
-                    <a class="fancybox large-thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
-                    <img class="thumbnail" src="{{ institution_media_src(each, thumbnail) }}" alt=""> </a>
+                    <a class="fancybox large-thumbnail" rel="gallery" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
+                    <img class="thumbnail" src="{{ institution_media_src(each, thumbnail) }}" alt="" width="60"> </a>
                 </li>
                 {% endif %}
             {% endfor %}
@@ -42,17 +42,6 @@
             </div>
         {% endif %}
     </section>
-    <section class="aside-box default dashboard-side">
-        <h3>Promote this Medical Institution Profile</h3>
-        <img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"
-        class="btn btn-small btn-code">
-        <p>
-            Copy the HTML source code and paste it into the code of your website or
-            blog. Clicking the button will automatically take users to your Medical
-            Institution Profile.
-        </p>
-        <a href="#"><i class="icon-caret-right"></i>&nbsp;Show Source Code</a>
-    </section>
 </aside>
     
 <link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
@@ -60,7 +49,12 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $(".fancybox").fancybox();
+        $(".fancybox").fancybox({
+        	'autoDimensions'	: false,
+			'width'         		: 350,
+			'height'        		: 'auto',
+			'transitionIn'		: 'none',
+            });
     });
 
 </script>
