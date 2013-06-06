@@ -24,7 +24,7 @@
                 {% endif %}     
                 #}        
                 <li class="{{ 'users' == mainNavigation.selected  ? 'active' : '' }}">
-                    <a href="users.html"><i class="icon-group"></i> Users</a>
+                    <a href="{{ path('institution_users') }}"><i class="icon-group"></i> Users</a>
                 </li>
                 <li class="{{ 'gallery' == mainNavigation.selected  ? 'active' : '' }}">
                     <a href="{{ path('institution_mediaGallery_index') }}"><i class="icon-picture"></i> Media Gallery</a>

@@ -184,14 +184,14 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function render_institution_unread_inquiries(Institution $institution)
     {
         $unread_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD);
-//         var_dump($unread_inquiries);exit;
+        
         return $unread_inquiries;
     }
     
     public function render_institution_read_inquiries(Institution $institution)
     {
         $read_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ);
-        //         var_dump($unread_inquiries);exit;
+        
         return $read_inquiries;
     }
     
