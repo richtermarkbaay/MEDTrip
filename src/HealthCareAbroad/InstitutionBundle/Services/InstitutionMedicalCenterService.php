@@ -545,27 +545,30 @@ class InstitutionMedicalCenterService
 
     public function addMedicalCenterSpecializationsWithTreatments(InstitutionMedicalCenter $institutionMedicalCenter, array $specializationsWithTreatments)
     {
-        $em = $this->doctrine->getManager();
         $specializationRepo = $this->doctrine->getRepository('TreatmentBundle:Specialization');
-        $treatmentRepo = $this->doctrine->getRepository('TreatmentBundle:Treatment');
 
         //TODO: optimize this is very db intensive
+        
         foreach ($specializationsWithTreatments as $specializationId => $treatmentIds) {
             $specialization = $specializationRepo->find($specializationId);
 
-            $institutionSpecialization = new InstitutionSpecialization();
-            $institutionSpecialization->setInstitutionMedicalCenter($institutionMedicalCenter);
-            $institutionSpecialization->setSpecialization($specialization);
-            $institutionSpecialization->setDescription($specialization->getDescription());
-            $institutionSpecialization->setStatus(1);
-
+            $conn = $this->doctrine->getEntityManager()->getConnection();
+            $subQuery = '';
+            $subQuery1 = '';
+            $subQuery1 .= "('".$specialization->getDescription()."', 1, ".$specialization->getId().", ".$institutionMedicalCenter->getId()."),";
+            
             foreach ($treatmentIds as $treatmentId) {
-                $institutionSpecialization->addTreatment($treatmentRepo->find($treatmentId));
+                $subQuery .= "(". $specializationId.", ". $treatmentId ."),";
             }
-
-            $em->persist($institutionSpecialization);
-            $em->flush($institutionSpecialization);
+            $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
+            $sqlQuery = "INSERT INTO institution_treatments (institution_specialization_id, treatment_id) VALUES $subQuery";
+            $conn->executeQuery($sqlQuery);
+            
         }
+        $subQuery1 = substr($subQuery1, 0 , -1) . " ON DUPLICATE KEY UPDATE status = 1";
+        $sqlQuery1 = "INSERT INTO institution_specializations (description, status, specialization_id, institution_medical_center_id) VALUES $subQuery1";
+        $conn->executeQuery($sqlQuery1);
+        $conn->close();
     }
     
 }

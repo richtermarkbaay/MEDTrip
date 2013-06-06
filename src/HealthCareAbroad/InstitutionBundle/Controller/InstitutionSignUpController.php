@@ -560,7 +560,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // next step url
                 $redirectUrl = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
-
                 return $this->redirect($redirectUrl);
             }
             $error = 'Please select at least one specialization.';
