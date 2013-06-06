@@ -645,7 +645,7 @@ class MedicalCenterController extends InstitutionAwareController
 
         if(!$doctor->getContactDetails()->count()) {
             $number = new ContactDetail();
-            $number->setType(ContactDetailTypes::PHONE);
+            //$number->setType(ContactDetailTypes::PHONE);
             $doctor->addContactDetail($number);
         }
          

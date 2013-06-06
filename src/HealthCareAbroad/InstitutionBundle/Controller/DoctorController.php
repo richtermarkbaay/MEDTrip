@@ -106,33 +106,24 @@ class DoctorController extends InstitutionAwareController
     }
     
     /**
-     * Upload logo for Institution
+     * Upload logo for Doctor - UPDATED FUNCTION, DO NOT REMOVE
      * @param Request $request
      */
     public function uploadAction(Request $request)
     {
-        $response = new Response();
-    
-        $fileBag = $request->files;
-    
-        if ($fileBag->get('file')) {
-    
-            $result = $this->get('services.media')->upload($fileBag->get('file'), $this->institutionDoctor);
-    
-            if(is_object($result)) {
-                 
-                $media = $result;
-                $this->institutionDoctor->setMedia($media);
-                
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($this->institutionDoctor);
-                $em->flush();
-            }
+        $data = array('status' => false);
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
+
+
+        if (($file = $request->files->get('file')) && $doctor) {
+            $media = $this->get('services.doctor.media')->uploadLogo($file, $doctor, true);
+            $data['status'] = true;
+            $data['doctor'] = $this->get('services.doctor')->toArrayDoctor($doctor);
         }
-    
-        return $this->redirect($this->generateUrl('institution_manageDoctorProfile', array('idId' => $this->institutionDoctor->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
+
+        return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
     }
-    
+
     public function ajaxUpdateDoctorByFieldAction(Request $request)
     {
         if ($request->isMethod('POST')) {

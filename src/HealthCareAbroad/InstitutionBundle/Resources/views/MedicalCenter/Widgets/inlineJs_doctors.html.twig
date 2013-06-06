@@ -2,12 +2,27 @@
 (function($){
 	$(function(){
 
-        /*{% if institutionMedicalCenter.doctors|length < 1 %}
-            $('#add-doctor').modal('show');
-        {% endif %}
-        */
+		$('form.ajaxUploadForm').ajaxForm({
+		 /* beforeSend: function(e) {},
+		    uploadProgress: function(event, position, total, percentComplete) {},*/
+
+		    success: function(response) {
+		        if(response.status) {
+			        $('#doctor-thumbnail-'+response.doctor.id).attr('src', response.doctor.mediaSrc).css('opacity', 1).next().show();
+			    } else {
+				    alert('ERROR: Unable to upload Logo!');
+				}
+		    },
+			complete: function(xhr) {
+				//status.html(xhr.responseText) 
+			}
+		}).submit(function(){
+			$(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
+	    });
+
         $('#add-doctor').on('show', function(){
-            $('.doctors-listing').hide();
+        	window.location.href = '#';
+            //$('.doctors-listing').hide();
         });
 
         $('#add-doctor').on('hide', function(){
@@ -48,7 +63,10 @@
             var editFormWrapper = $(this).parent().next();
 
         	if($(this).find('.icon-ok')) {
-        		editFormWrapper.find('.edit-doctor-form:first').submit();
+        		editFormWrapper.find('.edit-doctor-form:first').submit(function(){
+            		console.log('saveAjax');
+            		return false;
+        	    });
             }
 
             if(editFormWrapper.is(':hidden')) { 
@@ -258,6 +276,7 @@
     		return name;
     	}
 	});
+	
 })(jQuery);
 
     function resetDoctorForms(currentDoctorId)

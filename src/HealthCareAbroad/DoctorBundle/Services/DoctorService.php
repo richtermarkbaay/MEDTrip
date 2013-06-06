@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\DoctorBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use Doctrine\ORM\EntityManager;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -112,8 +114,8 @@ class DoctorService
         );
         
         if($doctor->getMedia()) {
-            $src = $this->doctorMediaService->mediaTwigExtension->getDoctorMediaSrc($doctor->getMedia());
-            $data[$doctor->getId()]['mediaSrc'] = $src;
+            $src = $this->doctorMediaService->mediaTwigExtension->getDoctorMediaSrc($doctor->getMedia(), ImageSizes::DOCTOR_LOGO);
+            $data['mediaSrc'] = $src;
         }
 
         return $data;

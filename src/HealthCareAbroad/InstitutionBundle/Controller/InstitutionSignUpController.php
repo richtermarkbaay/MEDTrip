@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -610,6 +612,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             'doctorForm' => $form->createView(),
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'thumbnailSize' => ImageSizes::DOCTOR_LOGO,
             'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())
         );
 

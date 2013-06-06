@@ -22,14 +22,12 @@ institution_load_tabbed_contents_doctor:
         idId: \d+
         imcId: \d+
         
-doctor_logo_upload:
-    pattern: /medical-center/{imcId}/doctor/{idId}/logo/upload/
+institution_doctor_logo_upload:
+    pattern: /medical-center/{imcId}/doctor/{doctorId}/upload/logo
     defaults: { _controller: InstitutionBundle:Doctor:upload }
     requirements:
         _method: POST
-        idId: \d+
-        imcId: \d+
-        
+
 doctor_update_byField:
     pattern: /medical-center/{imcId}/doctor/{idId}/update/
     defaults: { _controller: InstitutionBundle:Doctor:ajaxUpdateDoctorByField }

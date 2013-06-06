@@ -3,38 +3,22 @@
 {% set setUpProfile = true %}
                 
 {% block content %}
-
     <div class="row">
         <h1>{{ institutionMedicalCenter.name | title }}</h1>
     
         <div class="span8">
-            <section>
-                <div class="row-fluid">
-                    <h2 class="pull-left">List of Doctors </h2>
+            <section class="row-fluid">
+                <h2>
+                    List of Doctors 
                     <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary btn-large pull-right" data-toggle="modal">Search Add Doctor</a>
-                </div>
-            </section>
-            <section id="doctorsList" class="doctors-new-listing">
-                {% for doctor in institutionMedicalCenter.doctors %}
-                    <div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px; min-height: 60px;padding: 10px">
-                        <a href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" class="remove-doctor"><i class="icon-remove-sign pull-right"></i></a>
-                        <a data-doctor="{{ json_encode(doctors[doctor.id]) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" class="edit-doctor-btn"><i class="icon-edit pull-right"></i></a>
-                        <span><img alt="" src="{{ doctor.media is defined ? doctor_media_src(doctor.media) : imageplaceholder.doctorDefaultImage }}" class="pull-left img-polaroid"></span>
-                        <h4>Dr. {{ doctor.firstName|title }} {{ doctor.middleName ? doctor.middleName|slice(0,1)|title ~ '. ' : '' }}{{ doctor.lastName|title }} {{ doctor.suffix ? doctor.suffix : '' }}</h4>
-                        {% if doctor.specializations|length %}
-                            <p><i class="icon-stethoscope"></i>Specializations:<span>{{ doctor.specializations|join(', ') }}</span></p>
-                        {% endif %}
-                    </div>
-                    <div class="doctors-listing edit-doctor-wrapper" data-doctor-id="{{ doctor.id }}" style="display:none"></div>
-                {% else %}
-                    <h2><small>No doctors on the list, please add your doctors now. {{ institutionMedicalCenter.doctors|length }}</small></h2>
-                {% endfor %}
-            </section>
-    
-            <section id="doneSection" {% if not institutionMedicalCenter.doctors|length %} style="display:none" {% endif %}>
-
-                <a href="{{ path('institution_signup_finish') }}" class="btn pull-right btn-success btn-large">Done Adding Doctors</a>
+                </h2>
                 
+            </section>
+
+            {% include 'InstitutionBundle:MedicalCenter/Widgets:doctorsList.html.twig' %}
+
+            <section id="doneSection" {% if not institutionMedicalCenter.doctors|length %} style="display:none" {% endif %} style="margin-top: 15px;">
+                <a href="{{ path('institution_signup_finish') }}" class="btn pull-right btn-success btn-large">Done Adding Doctors</a>
             </section>
         </div>
 
@@ -42,10 +26,4 @@
             {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
         </aside>
     </div>
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:form.editDoctors.html.twig' %}
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:modalForm.doctors.html.twig'  with { path : path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id })  } %}
-
-{% endblock %}
-{% block inlineJavascriptCode %}
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:inlineJs_doctors.html.twig' %}
 {% endblock %}
