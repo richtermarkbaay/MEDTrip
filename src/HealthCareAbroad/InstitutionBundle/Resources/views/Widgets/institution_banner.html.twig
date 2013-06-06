@@ -3,7 +3,7 @@
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
     {% else %}
-     <img src="{{ imageplaceholder.institutionFeaturedImage }}" alt="institution" />
+     <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
     {% endif %} 
 
 

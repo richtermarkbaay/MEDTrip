@@ -4,7 +4,7 @@
         <div class="show">
             <h3> Description</h3>
                 <p><span id="clinicDescriptionText"> {{ institutionMedicalCenter.description != '' ? institutionMedicalCenter.description | raw : '' }} </span></p>
-            {% if institutionMedicalCenter.description == ' ' %}
+            {% if institutionMedicalCenter.description is empty %}
                 <div class="alert alert-block">
                     <div class="hca-profile-sublevel">
                         Here you can showcase description about your Clinic.

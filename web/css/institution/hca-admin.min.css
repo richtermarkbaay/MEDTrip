@@ -490,8 +490,6 @@ hr {
             margin-top: 5px; }
         #content section.section.hca-main-profile .control-group .clinictime {
           margin: 0 -20px !important; }
-        #content section.section.hca-main-profile .social-media label {
-          margin-top: 0 !important; }
         #content section.section.hca-main-profile p {
           color: #6e6e6e; }
           #content section.section.hca-main-profile p b {
@@ -541,10 +539,21 @@ hr {
             margin-top: 10px;
             color: #a2a2a2; }
         #content section.section .row-fluid .social-media {
-          margin-top: -15px;
-          padding-bottom: 20px; }
-          #content section.section .row-fluid .social-media .span11 {
-            width: 88%; }
+          margin-top: -10px;
+          margin-bottom: 0px; }
+          #content section.section .row-fluid .social-media .icon-twitter {
+            color: #00a0d1; }
+          #content section.section .row-fluid .social-media .icon-facebook {
+            color: #3b5998; }
+          #content section.section .row-fluid .social-media .icon-google-plus {
+            color: #C63D2D; }
+          #content section.section .row-fluid .social-media span {
+            font-size: 15px;
+            font-family: 'PT Sans';
+            margin-right: 3px;
+            color: #a2a2a2;
+            display: block;
+            margin-top: 10px; }
           #content section.section .row-fluid .social-media label {
             width: 100%;
             clear: both;
@@ -552,14 +561,14 @@ hr {
           #content section.section .row-fluid .social-media .icon-2x {
             font-size: 1.75em;
             line-height: 1.8em;
-            color: #888888;
-            margin-right: 0; }
-            #content section.section .row-fluid .social-media .icon-2x.span2 {
-              width: 50px; }
+            font-weight: 500;
+            padding-left: 12px; }
             #content section.section .row-fluid .social-media .icon-2x span {
-              font-size: 15px;
+              font-size: 14px;
               font-family: 'PT Sans';
-              display: inline-block; }
+              display: inline-block;
+              margin-right: 5px;
+              color: #888888; }
         #content section.section .row-fluid.hca-edit-box {
           border: none; }
           #content section.section .row-fluid.hca-edit-box .accordion {

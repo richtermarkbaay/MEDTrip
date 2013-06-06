@@ -82,31 +82,16 @@
         <div class="control-group social-media">
 
             <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
-            <i class="icon-facebook icon-2x pull-left"><span> facebook.com/</span></i>
-            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span9 pull-right">
+            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span7 pull-right">
+            <i class="icon-facebook icon-2x"></i> <span class="pull-right">https://facebook.com/</span>
             <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
-            <i class="icon-twitter icon-2x pull-left"><span> @</span></i>
-            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span11 pull-right">
+            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span7 pull-right">
+            <i class="icon-twitter icon-2x pull-left"></i><span class="pull-right">https://twitter.com/</span>
             <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
-            <i class="icon-google-plus icon-2x pull-left"><span> plus.google.com/</span></i>
-            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span9 pull-right">
+            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span7 pull-right">
+            <i class="icon-google-plus icon-2x"></i><span class="pull-right">https://plus.google.com/</span>
             <br><br>
         </div>
-
-        {#
-        <div>
-                <label >Institution Website</label>
-                <input type="text" value="{{ form.vars.value.main }}" name="{{ form.vars.full_name ~ '[main]' }}" >
-
-                <label >Facebook Account</label>
-                <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}"  >
-
-                <label >Twitter Account</label>
-                <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}"  >
-
-        </div>
-        <div class="clearfix"></div>
-        #}
     {% endspaceless %}
 {% endblock %}
 
