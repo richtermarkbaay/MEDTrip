@@ -53,23 +53,17 @@
             });
             return false;
         });
-    
+        
         $(".edit-doctor-btn").click(function(e) {
-            
+                
             e.preventDefault();
             doctor = $.parseJSON($(this).attr('data-doctor'));
 
             var btnIcon = $(this).find('i');
             var editFormWrapper = $(this).parent().next();
 
-        	if($(this).find('.icon-ok')) {
-        		editFormWrapper.find('.edit-doctor-form:first').submit(function(){
-            		console.log('saveAjax');
-            		return false;
-        	    });
-            }
-
             if(editFormWrapper.is(':hidden')) { 
+
             	editForm = $('#edit-doctor-form').clone();
             	editForm.removeAttr('id').removeAttr('style').attr('action', $(this).attr('href'));
 
@@ -97,22 +91,32 @@
                 	editForm.find('.specializations-listing input[value='+id+']').attr('checked', 'checked');                	
                 });
 
-            	editFormWrapper.html(editForm);
+        		editForm.submit(function(e){
+        		    $.post($(this).attr('action'), $(this).serialize(), function(response){
+        			    var specializationString = '';
+        			    $.each(response.doctor.specializations, function(key) {
+        			    	specializationString += ', ' + response.doctor.specializations[key]; 
+        				});
 
-                $('.submit-doctor-btn').click(function(){
-                    console.log($(this).parents('form:first'));
-                    $(this).parents('form:first').submit();
-                    return false;
-                });
+        		    	editFormWrapper.prev().find('h4.full-name:first').text(response.doctor.fullName);
+        		    	editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString);
+            		    btnIcon.parent().attr('data-doctor', JSON.stringify(response.doctor));
+            		});
+
+            		e.preventDefault();
+        	    });
+
+            	editFormWrapper.html(editForm);
             }
 
+            if($(this).find('.icon-ok').length) {
+            	editFormWrapper.find('.edit-doctor-form:first').submit();
+            }
+            
             editFormWrapper.slideToggle("slow", function(){
                 if(btnIcon.hasClass('icon-edit')) {
                 	btnIcon.removeClass('icon-edit').addClass('icon-ok');
                 } else {
-
-                	$('.medicalCenter-doctors')
-                    
                 	btnIcon.removeClass('icon-ok').addClass('icon-edit');
                 }
             });

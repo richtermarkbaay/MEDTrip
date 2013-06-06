@@ -105,6 +105,7 @@ class DoctorService
             'lastName' => $doctor->getLastName(),
             'firstName' => $doctor->getFirstName(),
             'middleName' => $doctor->getMiddleName(),
+            'fullName' => $this->_getFullName($doctor),
             'contactEmail' => $doctor->getContactEmail(),
             'gender' => $doctor->getGender(),
             'suffix' => $doctor->getSuffix(),
@@ -119,5 +120,21 @@ class DoctorService
         }
 
         return $data;
+    }
+    
+    private function _getFullName(Doctor $doctor)
+    {
+        $name = 'Dr.' . ucwords($doctor->getFirstName()) . ' ';
+        if($doctor->getMiddleName()) {
+            $name .= ucfirst(substr($doctor->getMiddleName(), 0, 1)) . '. ';
+        }
+
+        $name .= $doctor->getLastName();
+        
+        if($doctor->getSuffix()) {
+            $name .= ' ' .$doctor->getSuffix();
+        }
+        
+        return $name;
     }
 }

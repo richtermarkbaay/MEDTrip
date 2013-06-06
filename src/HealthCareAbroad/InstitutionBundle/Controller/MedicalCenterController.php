@@ -648,7 +648,6 @@ class MedicalCenterController extends InstitutionAwareController
 
         if(!$doctor->getContactDetails()->count()) {
             $number = new ContactDetail();
-            //$number->setType(ContactDetailTypes::PHONE);
             $doctor->addContactDetail($number);
         }
          
@@ -681,9 +680,7 @@ class MedicalCenterController extends InstitutionAwareController
 
         $request->getSession()->setFlash('notice', 'Doctor has been updated.');
 
-        return $this->redirect($request->headers->get('referer'));
-        
-        //return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
+        return new Response(\json_encode($data),200, array('content-type' => 'application/json'));
     }
     
     /**

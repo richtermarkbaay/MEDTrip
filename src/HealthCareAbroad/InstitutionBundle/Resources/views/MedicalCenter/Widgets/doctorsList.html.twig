@@ -12,9 +12,9 @@
     
     
     
-            <h4>Dr. {{ doctor.firstName|title }} {{ doctor.middleName ? doctor.middleName|slice(0,1)|title ~ '. ' : '' }}{{ doctor.lastName|title }} {{ doctor.suffix ? doctor.suffix : '' }}</h4>
+            <h4 class="full-name">Dr. {{ doctor.firstName|title }} {{ doctor.middleName ? doctor.middleName|slice(0,1)|title ~ '. ' : '' }}{{ doctor.lastName|title }} {{ doctor.suffix ? doctor.suffix : '' }}</h4>
             {% if doctor.specializations|length %}
-                <p><i class="icon-stethoscope"></i>Specializations:<span>{{ doctor.specializations|join(', ') }}</span></p>
+                <p><i class="icon-stethoscope"></i>Specializations:<span class="doctor-specializations">{{ doctor.specializations|join(', ') }}</span></p>
             {% endif %}
         </div>
         <div class="hca-hidden-content doctors-listing edit-doctor-wrapper" data-doctor-id="{{ doctor.id }}" style="display:none"></div>
