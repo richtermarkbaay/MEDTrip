@@ -57,3 +57,27 @@
         {% endblock %}
     {% endembed %}
 {% endblock %}
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+
+(function($){
+
+    $(window).load(function () {
+        $url = window.location.search.substring(1);
+        var param = $url.split("=");
+        
+        if(param[1] == 1){
+            $('#add-media').modal('show');
+        }if(param[1] > 1){ 
+             $('#add-media').modal('show');
+             $("input:checkbox[name='medical_center_ids[]']").each(function(){
+            	 if($(this).val() == param[1]){
+            	    $(this).attr('checked', "checked");
+            	 }
+             });
+        }
+    });
+})(jQuery);
+    
+</script>
+{% endblock %}

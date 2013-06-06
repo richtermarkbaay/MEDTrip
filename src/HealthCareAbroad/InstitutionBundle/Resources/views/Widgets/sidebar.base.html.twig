@@ -11,31 +11,37 @@
         </small>
         <p>This is your Location if for some reason your location is not in the vicinity, please <a href="javascript:void(0);" onclick="$('#institution-edit-address-toggle').click()">Edit your address</a>.</p>
     </section>
-    <section class="aside-box default dashboard-side">
-        <h3>Add PHOTOS and VIDEOS to boost your Medical Institution Profile</h3>
+     <section class="aside-box default dashboard-side">
+      {% if institution.gallery and institution.gallery.media|length %}
+        <h3> MEDIA </h3>
         <div class="features">
-            <div class="row-fluid">
-                <div class="hca-gallery-upload">
-                    <div class="span6 hca-upload-media">
-                        <a href="#"><i class="icon-picture icon-4x hca-earth"></i>Upload Images</a>
-                    </div>
-                    <div class="span6 hca-upload-media">
-                        <a href="#"><i class="icon-facetime-video icon-4x hca-earth"></i>Upload/Link Video</a>
+            <ul class="thumbnails">
+            {% set gallery = institution.gallery %}
+            {% set thumbnail = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
+            {% for each in gallery.media %}
+                {% if loop.index <= 6 %} {# display images up to 6 only #}
+                <li>
+                    <a class="fancybox large-thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
+                    <img class="thumbnail" src="{{ institution_media_src(each, thumbnail) }}" alt=""> </a>
+                </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+             <a href="{{ path('institution_mediaGallery_index' , {return: 1}) }}" class="btn btn-primary btn-medium">Upload Media Here</a>
+        </div>
+        {% else %}
+            <h3> Add PHOTOS to boost your Medical Institution Profile </h3>
+            <div class="features">
+                <div class="row-fluid">
+                    <div class="hca-gallery-upload">
+                        <div class="span6 hca-upload-media">
+                            <a href="{{ path('institution_mediaGallery_index' , {return: 1}) }}" ><i class="icon-picture icon-4x hca-earth"></i>Upload Media Here</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     </section>
-<!--     <section class="aside-box default dashboard-side"> -->
-<!--         <h3> -->
-<!--             Show your Profile to Friends and Followers -->
-<!--         </h3> -->
-<!--         <div class="hca-social-link"> -->
-<!--             <a href="#" class="btn facebook"><i class="icon-facebook hca-earth"></i>Facebook</a> -->
-<!--             <a href="#" class="btn twitter"><i class="icon-twitter hca-earth"></i>Twitter</a> -->
-<!--             <a href="#" class="btn googleplus"><i class="icon-google-plus hca-earth"></i>Google Plus</a> -->
-<!--         </div> -->
-<!--     </section> -->
     <section class="aside-box default dashboard-side">
         <h3>Promote this Medical Institution Profile</h3>
         <img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"
@@ -49,4 +55,12 @@
     </section>
 </aside>
     
-    
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".fancybox").fancybox();
+    });
+
+</script>
