@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
@@ -173,6 +175,7 @@ class MedicalCenterController extends InstitutionAwareController
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards,
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+            'thumbnailSize' => ImageSizes::DOCTOR_LOGO,
             'doctors' =>  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors()),
             'doctorForm' => $doctorForm->createView(),
             'editForm' => $editForm->createView()
