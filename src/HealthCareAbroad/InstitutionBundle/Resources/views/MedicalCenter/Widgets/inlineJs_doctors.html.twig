@@ -99,7 +99,7 @@
         				});
 
         		    	editFormWrapper.prev().find('h4.full-name:first').text(response.doctor.fullName);
-        		    	editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString);
+        		    	editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString.substr(1));
             		    btnIcon.parent().attr('data-doctor', JSON.stringify(response.doctor));
             		});
 

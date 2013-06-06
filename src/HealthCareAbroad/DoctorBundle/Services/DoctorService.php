@@ -124,7 +124,7 @@ class DoctorService
     
     private function _getFullName(Doctor $doctor)
     {
-        $name = 'Dr.' . ucwords($doctor->getFirstName()) . ' ';
+        $name = 'Dr. ' . ucwords($doctor->getFirstName()) . ' ';
         if($doctor->getMiddleName()) {
             $name .= ucfirst(substr($doctor->getMiddleName(), 0, 1)) . '. ';
         }
