@@ -627,6 +627,9 @@ class MedicalCenterController extends InstitutionAwareController
             $this->service->save($this->institutionMedicalCenter);
             $result['status'] = true;
             $result['doctor'] = $this->get('services.doctor')->toArrayDoctor($doctor);
+            $result['doctor']['editDoctorUrl'] = $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
+            $result['doctor']['removeDoctorUrl'] = $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
+            $result['doctor']['uploadLogoUrl'] = $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
         }
         catch (\Exception $e) {}
 
@@ -672,7 +675,10 @@ class MedicalCenterController extends InstitutionAwareController
             $data = array(
                 'status' => true,
                 'message' => 'Doctor has been added to your clinic!',
-                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
+                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor),
+                'editDoctorUrl' => $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
+                'removeDoctorUrl' => $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
+                'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))                
             );
         } else {
             $data = array('status' => false, 'message' => $form->getErrorsAsString());

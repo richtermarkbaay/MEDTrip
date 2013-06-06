@@ -22,14 +22,14 @@
 
         $('#add-doctor').on('show', function(){
         	window.location.href = '#';
-            //$('.doctors-listing').hide();
+        	$('#doctor-search-results').hide();
         });
 
         $('#add-doctor').on('hide', function(){
         	$("#main-wrap").scrollTop(0);
         });
 
-        $('.remove-doctor').live('click', function(e) {
+        $('.remove-doctor-btn').live('click', function(e) {
     
             if($(this).attr('disabled') == 'disabled') {
             	return false;
@@ -41,7 +41,7 @@
             $.post($(this).attr('href'), function(response) {
             	$('#confirmation-message').find('p:first').html(response.message);
                 if(response.status) {
-                	doctorItem.fadeOut(500,function(){ doctorItem.remove(); $('#confirmation-message').show(); });
+                	doctorItem.fadeOut(500,function(){ doctorItem.next().remove(); doctorItem.remove(); $('#confirmation-message').show(); });
         			$('#confirmation-message').find('.alert').prop('class', 'alert alert-success');
     
                 } else {
@@ -140,7 +140,8 @@
     		return false;
     	});
     
-    	$('#search-doctor').click(function(){
+    	$('#search-doctor').click(function() {
+        	$('#doctor-search-results').fadeIn();
     		$('#matchedDoctorList').html('<div style="text-align:center">searching doctors...</div>');
             var params = {
         		lastName: getCleanVal(lastNameElem),
@@ -214,38 +215,28 @@
     		if(response.status) {
     			$('#doctorsList').find('.alert').remove();
     			confirmMessageElem.find('p:first').html('Doctor has been added to your clinic!');
-    			confirmMessageElem.find('.alert').prop('class', 'alert alert-success');
+    			confirmMessageElem.find('.alert').attr('class', 'alert alert-success');
 
 			    var specializationString = '';
 			    $.each(response.doctor.specializations, function(key) {
 			    	specializationString += ', ' + response.doctor.specializations[key]; 
 				});
 
-                if (specializationString == '') {
-                	specializationString = 'please add specialization.';
+                var doctorItemElem = $('#doctor-item-template').clone();
+
+                if(specializationString) {
+                	doctorItemElem.find('.doctor-specializations').text(specializationString.substr(1));
                 }
 
-    			var doctorString = '<div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px;min-height:60px;padding: 10px" data-doctor-id="'+response.doctor.id+'">' +
-        		    '<a href="'+response.removeDoctorUrl+'" class="remove-doctor"><i class="icon-remove-sign pull-right"></i></a>' +
-                    '<a href="'+response.editDoctorUrl+'" class="edit-doctor-btn"><i class="icon-edit pull-right"></i></a>' +
-
-                    '<form action="'+response.uploadLogoUrl+'" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">' +
-                        '<img id="doctor-thumbnail-'+response.doctor.id+'" alt="" src="'+(response.doctor.mediaSrc ? response.doctor.mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}')+'" class="pull-left img-polaroid">' +
-                        '<span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>' +
-                        '<input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>' +
-                    '</form>' +
-                    '<h4 class="full-name">' + response.doctor.fullName + '</h4>' + 
-                    '<p><i class="icon-stethoscope"></i>Specializations:<span class="doctor-specializations">' + specializationString + '</span></p>' +
-                '</div><div class="hca-hidden-content doctors-listing edit-doctor-wrapper" data-doctor-id="'+response.doctor.id+'" style="display:none"></div>';
-    
-        		$('#doctorsList').prepend(doctorString);
-        		//$('#doctorsList').find('h3').remove();
-        		$('#doctorsList').find('.doctor-heading:first-child > a.edit-doctor-btn').attr('data-doctor', JSON.stringify(response.doctor));        		
-
-        		$('#doctorsList').find('.doctor-heading:first-child > form.ajaxUploadForm').ajaxForm({
-    			    success: function(response) {
-    			        if(response.status) {
-    				        $('#doctor-thumbnail-'+response.doctor.id).attr('src', response.doctor.mediaSrc).css('opacity', 1).next().show();
+                doctorItemElem.find('.edit-doctor-btn').attr('href', response.editDoctorUrl).attr('data-doctor', JSON.stringify(response.doctor));
+                doctorItemElem.find('.remove-doctor-btn').attr('href', response.removeDoctorUrl);
+                doctorItemElem.find('.full-name').text(response.doctor.fullName);
+                doctorItemElem.find('.edit-doctor-wrapper').attr('data-doctor-id', response.doctor.id);
+                doctorItemElem.find('.doctor-thumbnail').attr('id', 'doctor-thumbnail-' +response.doctor.id).attr('src', response.doctor.mediaSrc ? response.doctor.mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}');
+                doctorItemElem.find('form.ajaxUploadForm').attr('action', response.uploadLogoUrl).ajaxForm({
+    			    success: function(res) {
+    			        if(res.status) {
+    				        $('#doctor-thumbnail-'+response.doctor.id).attr('src', res.doctor.mediaSrc).css('opacity', 1).next().show();
     				    } else {
     					    alert('ERROR: Unable to upload Logo!');
     					}
@@ -253,6 +244,9 @@
     			}).submit(function(){
     				$(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
     		    });
+
+        		$('#doctorsList').prepend(doctorItemElem.show());
+        		$('#empty-doctors-msg').remove();
 
         		$('#doneSection').show();
     
