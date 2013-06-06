@@ -1,5 +1,6 @@
 <ul class="thumbnails">
 {% for institutionMedicalCenter in medicalCenters %}
+    {% set _website = get_website_from_array(institutionMedicalCenter.websites) %}
     <li class="thumbnail hca-clinic-listing">
         {% if institutionMedicalCenter.logo %}
             {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
@@ -11,20 +12,24 @@
             <h3>{{ institutionMedicalCenter.name | title }}</h3>
             
             <div class="pull-left">
+                {% if (institutionMedicalCenter.contactEmail | length) != 0  %}
                 <p>Inquries are sent to:
                     <a href="#">{{ institutionMedicalCenter.contactEmail }}</a>
                     <img alt="Health Care Abroad Verify Icon" src="{{ asset('images/institution/verify-icon.png') }} ">
                 </p>
+                {% endif %}
+                {% if (_website | length) != 0  %}
                 <p>Website clicks are sent to: 
-                    <a href="http://{{ get_website_from_array(institutionMedicalCenter.websites) }}">www.{{ get_website_from_array(institutionMedicalCenter.websites) }}</a>
+                    <a href="http://{{ get_website_from_array(institutionMedicalCenter.websites) }}">www.{{ _website }}</a>
                 </p>
+                {% endif %}
             </div>
         </div>
-        <div class="listing-action-button pull-right">
-            <a class="btn btn-misc" href="{{ path('institution_medicalCenter_view', {imcId: institutionMedicalCenter.id}) }}">
-                <i class="icon-edit"></i>Edit Clinic's Profile
-            </a>
-        </div>
+
+        <a class="btn btn-misc edit-clinic-btn pull-right" href="{{ path('institution_medicalCenter_view', {imcId: institutionMedicalCenter.id}) }}">
+            <i class="icon-edit"></i>Edit Clinic's Profile
+        </a>
+
     </li><!-- end .hca-clinic-listing -->
 {% else %}
     <li class="thumbnail">
