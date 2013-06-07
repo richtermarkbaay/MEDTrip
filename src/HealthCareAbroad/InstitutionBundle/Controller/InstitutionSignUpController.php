@@ -180,7 +180,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setContactNumber('');
                 $institution->setDescription('');
                 $institution->setCoordinates('');
-                $institution->setType($form->get('type')->getData());
+                $institution->setType($_POST['institutionUserSignUp']['type']);
                 $institution->setState('');
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -384,7 +384,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
         
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-        $institutionTypeLabels = InstitutionTypes::getLabelList();
+//         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
         if ($this->request->isMethod('POST')) {
         
@@ -449,7 +449,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-            'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
+//             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
             'error' => $error,
             'error_list' => $errorArr,
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)

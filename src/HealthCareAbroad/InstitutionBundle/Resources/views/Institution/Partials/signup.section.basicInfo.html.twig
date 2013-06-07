@@ -1,29 +1,29 @@
 <section class="section institution-info">
-    <h2>Basic Information<br><small>Basic information about the {{ label }} you are adding.</small></h2>
+    <h2>Basic Information<br><small>Basic information about the {{ label | lower }} you are adding.</small></h2>
     <div class="row-fluid">
         <div class="span12">
              <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
-                <label for="institution-name">Name of the {{ label }}</label>
+                <label for="institution-name">Name of the {{ label  }}</label>
                 {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
                  <div class="tooltip-content2">
-                    The full name of the hospital, which will be displayed with all of your clinics.
+                    The full name of the {{ label | lower }}, which will be displayed with all of your clinics.
                 </div>
             </div>
             <div class="control-group">
                 <label for="website">Description <small>(Optional)</small></label>
                 {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
                 <div class="tooltip-content2 hca-textarea">
-                    Providing an in depth description of your hospital (not clinic, that comes later) give patients a better idea of your facility and its details.  Make sure to include things like a brief history of the facility, any notable achievements, capacity, and unique treatments or technologies.
+                    Include things like a brief history of the facility, any notable achievements, capacity, and unique treatments or technologies. <br>
+                    Providing an in depth description of your hospital gives patients a better idea of your facility and its details. (Do not describe individual clinics or departments yet, you will be able to add descriptions for each later.)  
                 </div>
                 <div class="description">
-                    <small> you can edit / add Description later
-                        <span class="pull-right"> No Web Addresses No Contact Information </span>
+                    <small> You can edit this Description later. Please do not include web addresses and contact information here. You will be able to add them in later steps.
                     </small>
                 </div>
             </div>
             <div class="control-group">
                 <label for="network-group">
-                    Is this {{ label }} part of a larger {{ label }} group with branches in multiple locations?<br/>
+                    Is this {{ label | lower }} part of a larger {{ label | lower }} group with branches in multiple locations?<br/>
                     If so, please name the group/network. <small>( Optional )</small>
                 </label>
                     {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span12'} }) | replace({'__name__': '0'}) | raw}}
