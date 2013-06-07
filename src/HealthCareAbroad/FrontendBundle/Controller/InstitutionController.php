@@ -58,7 +58,6 @@ class InstitutionController extends ResponseHeadersController
 
     public function profileAction($institutionSlug)
     {
-//         echo "test";exit;
         $institutionService = $this->get('services.institution');
         $gallery = $this->institution->getGallery();
 
@@ -75,9 +74,9 @@ class InstitutionController extends ResponseHeadersController
         if($params['isSingleCenterInstitution']) {
             $centerService = $this->get('services.institution_medical_center');
             $params['institutionMedicalCenter'] = $institutionService->getFirstMedicalCenter($this->institution);
-            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($params['institutionMedicalCenter']);//echo "test";exit;
+            $params['institutionAwards'] = $centerService->getMedicalCenterGlobalAwards($params['institutionMedicalCenter']);
             $params['institutionServices'] = $centerService->getMedicalCenterServices($params['institutionMedicalCenter']);
-        } else {//echo "test2";exit;
+        } else {
             $params['institutionAwards'] = $institutionService->getAllGlobalAwards($this->institution);
             $params['institutionServices'] = $institutionService->getInstitutionServices($this->institution);
         }
