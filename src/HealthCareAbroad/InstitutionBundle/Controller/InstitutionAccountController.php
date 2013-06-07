@@ -290,6 +290,15 @@ class InstitutionAccountController extends InstitutionAwareController
                     }
                     
                     $output['form_error'] = 0;
+                    
+                    /*
+                     * TODO: Needs to change the validation for awards and services
+                     * Always expects empty if form submitted are from awards or services
+                     */
+                    if(empty($output['institution'])){ 
+                        $errors[] = array('error' => 'Please select at least one.');
+                        return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+                    }
                 }
                 else {
                     $errors = array();

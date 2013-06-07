@@ -268,7 +268,11 @@ var InstitutionMedicalCenter = {
                     case 'descriptionForm':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
                         if($('#clinicDescriptionText').parent('p').next('.alert')){
-                        	$('#clinicDescriptionText').parent('p').next('.alert').hide();
+                        	if(response.institutionMedicalCenter.description){
+                        		$('#clinicDescriptionText').parent('p').next('.alert').hide();
+                        	}else{
+                        		$('#clinicDescriptionText').parent('p').next('.alert').show();
+                        	}
                         }
                         break;
                     case 'addressForm':

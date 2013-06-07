@@ -295,7 +295,16 @@ class MedicalCenterController extends InstitutionAwareController
                     }
 
                     $output['form_error'] = 0;
-//                     $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
+                    
+                    /*
+                     * TODO: Needs to change the validation for awards and services
+                    * Always expects empty if form submitted are from awards or services
+                    */
+                    if(empty($output['institutionMedicalCenter'])){
+                        $errors[] = array('error' => 'Please select at least one.');
+                        return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+                    }
+                    
                     $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
                 }
                  else {
