@@ -1,108 +1,62 @@
-<form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" >
-    {% for each in fields %}
-          {% if each == 'name' %}
-            <section>
-                <div class="aside-box info dashboard-side">
-                    <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
-                    Changing your Clinic name here will change it in ALL Healthcare Abroad listings. Editing your Clinic Name is subject to review and approval.
-                </div>
-            </section>
-            <section class="section institution-info">
-                <div class="row-fluid hca-clinic-modal">
-                    <div class="span12">
-                        <div class="name control-group">   
-                            {{ form_label(institutionMedicalCenterForm.name) }}
-                            {{ form_widget(institutionMedicalCenterForm.name, { 'attr': {class: 'span10'} })  }}
-                        </div>
-                    </div>
-                </div>
-            </section>
-        {% elseif each == 'description' %}
-            <div class="description control-group">   
-                {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
-            </div>
-        {% elseif each == 'address' %}
-                        <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
-                        <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
-                            {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
-                            {{ form_widget(institutionMedicalCenterForm.coordinates) }}
-                     <div class="row-fluid terms">
-                        <div class="control-group">
-                            <div class="span6 input-append hca-location">
-                                {{ form_label(institutionMedicalCenterForm.country) }}
-                                {{ form_widget(institutionMedicalCenterForm.country , {attr: {class: 'hca-country pull-left'} } )}} 
-                            </div>
-                             <div class="span6">
-                                {{ form_label(institutionMedicalCenterForm.city)}}
-                                {{ form_widget(institutionMedicalCenterForm.city, {label: 'City', attr: {class: 'hca-country pull-left'} } )}}
-                                {{ form_errors(institutionMedicalCenterForm.city) }}
-                            </div>
-                          
-                        </div>
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, customBodyStyle: 'width: 400px'}} %}
+    {% block modalBody %}
+    
+        {% set isEditAddress = false %}
 
-                        <div class="control-group">
-                             <div class="span6">
-                                {{ form_label(institutionMedicalCenterForm.state) }}
-                                {{ form_widget(institutionMedicalCenterForm.state, { attr: {class: 'span12'} } )}}
-                                {{ form_errors(institutionMedicalCenterForm.state) }}
+        <form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}">
+
+            {% for each in fields %}
+
+                {% if each == 'description' %}
+                    {{ form_row(institutionForm[each], { 'attr': { class: 'tinymce'} })  }}
+                {% elseif each == 'name' %}
+                    {{ form_row(institutionForm[each], { label: isSingleCenter ? 'Clinic name' : 'Institution name', 'attr': {class: 'span6'} })  }}
+                {% elseif each == 'address1' %}
+                    <div>       
+                        {{ form_widget(institutionForm.address1) }}
+                            <div class="address2">
+                                <span>
+                                    {{ form_label(institutionForm.country) }}
+                                    {{ form_widget(institutionForm.country, {attr: {class: 'country_dropdown'} } )}}
+                                    {{ form_errors(institutionForm.country) }}
+                                </span> 
+                                <span>
+                                    {{ form_label(institutionForm.city)}}
+                                    {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'city_dropdown'} } )}}
+                                    {{ form_errors(institutionForm.city) }}
+                                </span>
                             </div>
-                            <div class="span6">
-                                {{ form_label(institutionMedicalCenterForm.zipCode)}}
-                                {{ form_widget(institutionMedicalCenterForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
-                                {{ form_errors(institutionMedicalCenterForm.zipCode) }}
+                            
+                            <div class="address2">
+                                <span>
+                                    {{ form_label(institutionForm.state) }}
+                                    {{ form_widget(institutionForm.state, { attr: {class: ''} } )}}
+                                    {{ form_errors(institutionForm.state) }}
+                                </span>
+                                <span>
+                                    {{ form_label(institutionForm.zipCode)}}
+                                    {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: ''} } )}}
+                                    {{ form_errors(institutionForm.zipCode) }}
+                                </span>
                             </div>
-                        </div>
-                        </div>    
-                        <div class="control-group">
-                            {{ form_label(institutionMedicalCenterForm.addressHint)}}
-                            {{ form_widget(institutionMedicalCenterForm.addressHint, {attr: {class: 'span12'} } )}}
-                            {{ form_errors(institutionMedicalCenterForm.addressHint) }}
-                        </div> 
-         
-         {% elseif each == 'contactNumber' or each == 'websites' %}
-                 <div class="row-fluid terms">
-                    <div class="contactEmail control-group span5">
-                        <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}">
-                            {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
-                        </label>
-                            {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
-                    </div>
-                    <div class="contactDetails span6">
-                            {% for _widget in institutionMedicalCenterForm.contactDetails %}
-                                {{ form_widget(_widget) }}
-                            {% endfor %}
-                    </div>
-                </div>
-                <div class="control-group website">
-                    <label for="website"> Clinic Website </label>
-                    <span class="pull-left"> http:// </span>
-                    {{ form_widget(institutionMedicalCenterForm.websites, { attr: {class: 'span11 pull-right'} } )}}
-                </div>
-        {% elseif each == 'socialMediaSites' %}
-             {{ form_widget(institutionMedicalCenterForm.socialMediaSites )}}
-        {% elseif each == 'status' %}
-            {{ form_widget(institutionMedicalCenterForm[each]) }}
-        {% elseif each == 'services' %}
-             <div class="control-group">
-                 {{ form_widget(institutionMedicalCenterForm.services )}}
-             </div>
-        {% elseif each == 'awards' %}
-             <div class="control-group">
-                 {{ form_widget(institutionMedicalCenterForm.awards )}}
-             </div>
-        {% else %}
-            {{ form_row(institutionMedicalCenterForm[each]) }}
-        {% endif %}
-    {% endfor %}
-    
-    {{ _csrf_token_widget | raw}}
-    
-     {% if displayButton is not defined %}
-        <div class="alert-box span8"></div>
-        <div class="row"> 
-            <div class="pull-right">
-                 <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
-        	</div>
-        </div>
-     {% endif %}
-</form>
+                    </div>                    
+                    
+                {% elseif each == 'contactNumber' or each == 'websites' %}
+                    {{ form_widget(institutionForm[each]) }}
+                {% else %}
+                    {{ form_row(institutionForm[each]) }}
+                {% endif %}
+
+            {% endfor %}
+            
+            {{ _csrf_token_widget | raw}}
+
+        </form>
+        
+    {% endblock %}
+
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button class="btn btn-primary submit-button" onclick="return InstitutionProfile.submitInstitutionSidebarForms(this);">Submit</button>
+    {% endblock %}
+{% endembed %}
