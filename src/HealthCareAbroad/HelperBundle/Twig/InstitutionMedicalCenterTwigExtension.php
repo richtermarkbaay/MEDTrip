@@ -135,7 +135,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $institution = $institutionMedicalCenter->getInstitution();
 
         // Default image
-        $html = '<span class="hca-sprite clinic-default-logo logo"></span>';
+        $html = '<span class="hca-sprite clinic-default-logo logo '.$options['attr']['class'].'"></span>';
 
 
         // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.

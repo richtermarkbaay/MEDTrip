@@ -1783,7 +1783,7 @@ form.search-form > button.btn:active {
 #content-wrapper .hospital-header-wrapper > .info-wrapper > .logo-wrapper {
     left: 20px;
     bottom: 20px;
-    width: 125px;
+    width: 135px;
     height: 135px;
     padding: 0;
     border: none;
@@ -1794,7 +1794,7 @@ form.search-form > button.btn:active {
 }
 
 #content-wrapper .hospital-header-wrapper > .info-wrapper > .logo-wrapper > * {
-    max-width: 125px;
+    max-width: 135px;
     max-height: 135px;
 }
 
