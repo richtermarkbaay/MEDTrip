@@ -92,7 +92,7 @@ $('#accordion').on('click', 'input:checkbox[name="subSpecialization"]', function
 
 $('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
     var target = $(e.target);
-    var subSpecializationCheckbox = target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
+    var subSpecializationCheckbox = target.parents('div.span6').find('input:checkbox[name="subSpecialization"]');
 
     if (target.attr('checked')) {
         subSpecializationCheckbox.attr('checked', 'checked');

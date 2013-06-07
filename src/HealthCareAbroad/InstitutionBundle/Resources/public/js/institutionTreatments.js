@@ -41,18 +41,21 @@ var InstitutionSpecialization = {
     showAddTreatmentsForm: function(_linkElement) {
         _linkElement = $(_linkElement);
         _linkElement.hide();
-        _linkElement.next('#treatments-save').show();
-        _modifiableDiv = _linkElement.attr('data-target');
+        _modifiableDiv = _linkElement.attr('href');
         _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
         _divToggle.show();
-        _divToggle.prev('#treatment_list').hide();
+        
+        $('#loader_text'+_linkElement.attr('data-target')).show();
         $.ajax({
             url: _divToggle.attr('data-href'),
             type: 'GET',
             dataType: 'html',
             success: function(response){
+            	_divToggle.prev('#treatment_list').hide();
+            	_linkElement.next('#treatments-save').show();
             	$(_modifiableDiv).show();
             	$(_modifiableDiv).html(response);
+            	$('#loader_text'+_linkElement.attr('data-target')).hide();
             	InstitutionSpecialization.treatmentsCheckBox();
             }
         });
@@ -61,20 +64,21 @@ var InstitutionSpecialization = {
     submitAddTreatmentsForm: function(_buttonElement) {
     	_buttonElement = $(_buttonElement);
     	_buttonElement.hide();
-    	_buttonElement.prev('#specialization-button').show();
-        _form = _buttonElement.attr('data-target');
+        _form = _buttonElement.attr('href');
         _divToggle = $(_form).parent('#hca-specialization-content');
-        $(_form).find('.specializations-edit-listing').hide();
-        $(_form).prepend('<center><img src="/images/institution/spinner_large.gif" /></center>')
+//        $(_form).find('.specializations-edit-listing').hide();
+        $('#loader_text'+_buttonElement.attr('data-target')).show();
         $.ajax({
             url: $(_form).attr('action'),
             data: $(_form).serialize(),
             type: 'POST',
             dataType: 'json',
             success: function (response) {
+            	_buttonElement.prev('#specialization-button').show();
                 _divToggle.prev('#treatment_list').show();
             	_divToggle.prev('#treatment_list').html(response.html);
             	 $(_form).hide();
+            	 $('#loader_text'+_buttonElement.attr('data-target')).hide();
             },
             error: function (response) {
             }
@@ -143,12 +147,12 @@ var InstitutionSpecialization = {
         if(_target.length >1){
         	
         	  $.each(_target, function(_k, _v){
-              	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.children.item('h4').children;
+              	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.parentNode.children.item('h4').children.item('label').children;
               	_subSpecializationCheckbox.subSpecialization.setAttribute("checked", "checked");
                });
 
         }else{
-        	_subSpecializationCheckbox = _target.parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
+        	_subSpecializationCheckbox = _target.parent().parent().parent().parent().find('input:checkbox[name="subSpecialization"]');
            	_subSpecializationCheckbox.attr('checked', 'checked');
         }
     }

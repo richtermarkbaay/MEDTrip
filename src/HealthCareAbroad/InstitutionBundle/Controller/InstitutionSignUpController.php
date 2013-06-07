@@ -181,7 +181,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setContactNumber('');
                 $institution->setDescription('');
                 $institution->setCoordinates('');
-                $institution->setType($postData['type']);
+                $institution->setType($postData['type']); /* FIX ME! */
                 $institution->setState('');
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());

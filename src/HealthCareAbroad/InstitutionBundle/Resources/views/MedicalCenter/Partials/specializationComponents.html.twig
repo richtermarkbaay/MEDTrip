@@ -2,12 +2,18 @@
 {% for subSpecialization, treatments in specializationComponents %}
 <div class="span6">
     <h4>
-        <input type="checkbox" name="subSpecialization" value="subSpecialization" /> {{ subSpecialization }}
+        <label for="{{ subSpecialization }}"> 
+            <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
+            {{ subSpecialization }}
+        </label>
     </h4>
     <ul>
         {% for treatment in treatments %}
             <li>
-                <input type="checkbox" id="treatments" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> {{ treatment.name }}
+                <label for="treatments{{ treatment.id }}"> 
+                    <input type="checkbox" id="treatments{{ treatment.id }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
+                   {{ treatment.name }} 
+                </label>
             </li>
         {% endfor %}
     </ul>
