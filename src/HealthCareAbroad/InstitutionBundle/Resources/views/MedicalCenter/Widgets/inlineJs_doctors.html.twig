@@ -23,6 +23,8 @@
         $('#add-doctor').on('show', function(){
         	window.location.href = '#';
         	$('#doctor-search-results').hide();
+        	$('#add-doctor-btn').hide();
+        	$('#search-doctor-btn').show();
         });
 
         $('#add-doctor').on('hide', function(){
@@ -133,14 +135,18 @@
     
     	$('#doctorForm').submit(function(e){
         	addDoctorForm = $(this);
-    		$.post(addDoctorForm.prop('action'), addDoctorForm.serialize(), function(response){
+        	$('#add-doctor-btn').attr('disabled', 'disabled').find('span').text('Saving...');
+    		$.post(addDoctorForm.prop('action'), addDoctorForm.serialize(), function(response) {
+    			addDoctorForm.find('input[type=text]').val('');
+            	$('#add-doctor-btn').removeAttr('disabled', 'disabled').find('span').text('Add Doctor');
     			showAddConfirmationMessage(response);
     		});
     
     		return false;
     	});
     
-    	$('#search-doctor').click(function() {
+    	$('#search-doctor-btn').click(function() {
+    		$(this).attr('disabled', 'disabled').find('span').text('Searching...');
         	$('#doctor-search-results').fadeIn();
     		$('#matchedDoctorList').html('<div style="text-align:center">searching doctors...</div>');
             var params = {
@@ -153,6 +159,8 @@
 
     		$.getJSON("{{ path('search_doctors') }}", { criteria: params }, function(doctors) {
     			var matchedString = '';
+    			$('#search-doctor-btn').removeAttr('disabled').find('span').text('Search Doctor');
+    			
     			$.each(doctors, function(i) {
 
     				if($('.medicalCenter-doctors[data-doctor-id='+i+']').length) {
@@ -166,7 +174,7 @@
     			    	specializationString += ', ' + doctors[i].specializations[key]; 
     				});
     			    
-        			matchedString += '<li data-doctor-id="'+i+'" class="thumbnail hca-clinic-listing">' +         			
+        			matchedString += '<li data-doctor-id="'+i+'" class="thumbnail hca-clinic-listing" style="min-height:75px">' +         			
             	        '<img alt="" src="' + (doctors[i].mediaSrc ? doctors[i].mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}') + '" class="pull-left img-polaroid">' +
                         '<div class="medicalcenter-name add-doctors-listing pull-left">' +
                             '<h3 class="doctor-name" style="text-transform: capitalize;">'+ doctors[i].fullName + '</h3>' +
@@ -195,7 +203,7 @@
     				});
     			} else {
     				$('#matchedDoctorList').html('<div style="text-align:center">No matched Doctors!.</div>');
-    				$('#search-doctor').hide();
+    				$('#search-doctor-btn').hide();
     				$('#add-doctor-btn').fadeIn();
     			}
     		});
@@ -204,7 +212,7 @@
     
     	$(lastNameElem.add(firstNameElem.add(middleNameElem.add(suffixElem)))).keyup(function(){
     		if(fullName != getInputFullName()) {
-    			$('#search-doctor').fadeIn();
+    			$('#search-doctor-btn').fadeIn();
     			$('#add-doctor-btn').hide();
     		}
     		//console.log(fullName + " = " + getInputFullName());

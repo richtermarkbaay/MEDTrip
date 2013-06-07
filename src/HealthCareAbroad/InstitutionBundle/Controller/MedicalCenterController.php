@@ -16,7 +16,7 @@ use Mapping\Fixture\Xml\Status;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use HealthCareAbroad\PagerBundle\Pager;
@@ -49,6 +49,11 @@ use Gaufrette\File;
  */
 class MedicalCenterController extends InstitutionAwareController
 {
+    /**
+     * @var Institution
+     */
+    //private $institution = null;
+    
     /**
      * @var InstitutionMedicalCenter
      */
@@ -87,14 +92,16 @@ class MedicalCenterController extends InstitutionAwareController
                     return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
                 }
             }
+            
+//             $this->institution = $this->institutionMedicalCenter->getInstitution();
+//             $this->get('twig')->addGlobal('institution', $this->institution);
+//             $this->get('twig')->addGlobal('isSingleCenter', $this->get('services.institution')->isSingleCenter($this->institution));
 
             // medical center group does not belong to this institution
             if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
                 return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
             }
         }
-        
-
     }
     
     /**
@@ -149,10 +156,9 @@ class MedicalCenterController extends InstitutionAwareController
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+        
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-        $template = 'InstitutionBundle:MedicalCenter:view.html.twig';
-        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
-        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+        
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         
@@ -169,12 +175,14 @@ class MedicalCenterController extends InstitutionAwareController
         
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'specializations' => $institutionSpecializations,
-            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'institutionMedicalCenterForm' => $form->createView(),
+
+            'specializations' => $this->institutionMedicalCenter->getInstitutionSpecializations(),
+            'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards,
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+
             'thumbnailSize' => ImageSizes::DOCTOR_LOGO,
             'doctors' =>  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors()),
             'doctorForm' => $doctorForm->createView(),
