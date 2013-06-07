@@ -14,7 +14,6 @@
 			});
 
 			$(".nav-pills a").click(function (e) {
-				//var index = $(this).index();
 				var index = $(this).attr("data-to") - 1;
 				$("#feature_carousel").carousel(index);
 				e.preventDefault();
@@ -40,14 +39,14 @@
 				}
 			});
 
-			// Custom tip implementation
+			/* Custom tip implementation
 			// This is temporary, I will make a standard and more abstract module once I'm feeling ok
-			// Hate this stupid cold
+			// Hate this stupid cold */
 			$('.tip').each(function(){
 				$(this).mouseover(function(e){
 					var bbox = $(this).parent()
 					, 	tx = bbox.position().left - bbox.outerWidth()/2;
-					//tx = tx - $('.tooltip').outerWidth()/2 - 50;
+					/*tx = tx - $('.tooltip').outerWidth()/2 - 50; */
 					$('.tooltip')
 					.css('left', tx + "px")
 					.html($(this).attr("data-original-title"))
