@@ -281,7 +281,7 @@ var InstitutionProfile = {
                         break;
     
                     case 'addressModalForm':
-                        var address = [];
+                    	var address = [];
                         var _street_address = [];
                         $.each(response.institution.address1, function(_k, _v){
                            if ($.trim(_v) != '') {
@@ -293,15 +293,18 @@ var InstitutionProfile = {
                         } else {
                         	_street_address = '';
                         }
-                       
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
                             if (response.institution[_v]) {
                                 address.push(response.institution[_v]);
                             }
                         });
+                        
+                		$('.addressLabel').html('Edit Address');
+                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
+                        
                         $('.address_column').find('span.address_part').remove();
-                        $('.address_column').html(address.join(', '));
+                        $('.address_column').prepend(_html);
                                                 
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institution.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institution.coordinates;
@@ -320,7 +323,6 @@ var InstitutionProfile = {
                     	}
                        	$('#profileEmailText').html(response.institution.contactEmail);
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
-                        $('#MobileNumberText').html(response.institution.contactDetails.mobileNumber);
                         break;
                     case 'socialMediaForm':
                     	  var websites = response.institution.socialMediaSites, websitesString = ''; 

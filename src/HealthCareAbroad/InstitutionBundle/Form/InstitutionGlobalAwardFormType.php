@@ -20,7 +20,7 @@ class InstitutionGlobalAwardFormType extends AbstractType
             'label' => 'Date acquired/awarded',
             'virtual' => true,
             'attr' => array(
-                'class' => 'globalAward_autocompleteYear pull-left',
+                'class' => 'pull-left',
                 'placeholder' => 'e.g 2013, 2012, 2011'
             )
         ));

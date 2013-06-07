@@ -279,7 +279,7 @@ class MedicalCenterController extends InstitutionAwareController
                                 $output['institutionMedicalCenter']['zipCode'] = $this->institution->getZipCode();
                             }
                             
-                            if($key == 'contactNumber' || $key == 'socialMediaSites') {
+                            if( $key == 'socialMediaSites') {
                                 $value = json_decode($value, true);
                             }
                             $output['institutionMedicalCenter'][$key] = $value;

@@ -184,7 +184,11 @@
         $.globalAward._editForm.attr('action', _el.attr('href'));
         _el.parents('li').find('span#containerRow').hide();
         _el.parents('li').find($.globalAward._editForm).show();
-        _el.parents('li').find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.parents('li').find('span.yearAcquired').html());
+        if(_el.parents('li').find('span.yearAcquired').html() == " "){
+        	_el.parents('li').find($.globalAward.options.edit.input_extraValueAutocomplete).val('');
+        }else{
+        	_el.parents('li').find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.parents('li').find('span.yearAcquired').html());
+        }
         return false;
     };
     // submit edit form handler

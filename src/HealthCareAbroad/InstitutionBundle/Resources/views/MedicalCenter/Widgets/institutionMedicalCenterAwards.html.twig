@@ -53,11 +53,10 @@
     <script type="text/javascript">
         $(function() {
 
-            $('span.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
-            
+            $('span.edit_award_form_container').find('input#institution_global_award_form_extraValueAutocomplete').globalAward('autocompleteYear');
             $('a.edit_global_award').globalAward('edit', {
                 'modal': $('span.edit_award_form_container'),
-                'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear'
+                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete'
             });
             
         });

@@ -243,7 +243,7 @@ class InstitutionAccountController extends InstitutionAwareController
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                             
-                        }if($key == 'awards'){
+                        }elseif($key == 'awards'){
                             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $html = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
                                             'institution' => $this->institution,
@@ -253,38 +253,42 @@ class InstitutionAccountController extends InstitutionAwareController
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                         }
-                        if($key == 'contactDetails' ){
+                        elseif($key == 'medicalProviderGroups' ){
                             $value = $this->institution->{'get'.$key}();
-                            $returnVal = array();
-                                foreach ($value as $keys => $a){
-                                   if($a->getType() == ContactDetailTypes::MOBILE){
-                                       $returnVal['mobileNumber'] = $a->getNumber();
-                                   }else{
-                                       $returnVal['phoneNumber'] =  $a->getNumber();
-                                   }
-                                }    
-                               
-                            $output['institution'][$key] = $returnVal;
-                        } 
-                         if($key == 'medicalProviderGroups' ){
-                            $value = $this->institution->{'get'.$key}();
-                           
-                            $returnVal = ($value[0] != null ? $value[0]->getName() : '' );   
-                    
+                            $returnVal = ($value[0] != null ? $value[0]->getName() : '' );
+                        
                             $output['institution'][$key] = $returnVal;
                         }
-                        if($key == 'country' || $key == 'city' ) {
-                            $output['institution']['country']= $this->institution->getCountry()->getName();
-                            $output['institution']['city'] = $this->institution->getCity()->getName();
-                        }
-                        else{
+                        elseif($key == 'contactDetails' ){
                             $value = $this->institution->{'get'.$key}();
-                            if($key == 'address1' || $key == 'socialMediaSites') {
-                                $value = json_decode($value, true);
+                            foreach ($value as $keys => $a){
+                                if($a->getType() == ContactDetailTypes::PHONE){
+                                     $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
+                                }
                             }
+                        }
+                        elseif($key == 'address1') {
+                            $value = $this->institution->{'get'.$key}();
+                            $value = json_decode($value, true);
                             $output['institution'][$key] = $value;
                         }
+                        elseif( $key == 'socialMediaSites') {
+                            $value = $this->institution->{'get'.$key}();
+                            $value = json_decode($value, true);
+                            $output['institution'][$key] = $value;
+                        }
+                        elseif($key == 'country') {
+                            $output['institution'][$key] = $this->institution->getCountry()->getName();
+                        }
+                        elseif( $key == 'city' ) {
+                            $output['institution'][$key] = $this->institution->getCity()->getName();
+                        }
+                       else{  
+                           $value = $this->institution->{'get'.$key}();
+                           $output['institution'][$key] = $value;
+                        }
                     }
+                    
                     $output['form_error'] = 0;
                 }
                 else {
