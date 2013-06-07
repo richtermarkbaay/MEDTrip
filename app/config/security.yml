@@ -81,6 +81,18 @@ security:
         institution.signup:
             pattern: ^/institution/register.html$
             security: false
+            
+        institution.terms.of.use:
+            pattern: ^/institution/termsofuse.html
+            security: false
+            
+        institution.privacy.policy:
+            pattern: ^/institution/privacypolicy.html
+            security: false
+            
+        institution.faq:
+            pattern: ^/institution/faq.html
+            security: false
 
         institution_login:
             pattern:  ^/institution/login$

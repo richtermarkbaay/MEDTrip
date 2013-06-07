@@ -28,4 +28,14 @@ class StaticPageController extends Controller
         return $this->render('InstitutionBundle:Main:terms_of_use.html.twig');
     }
     
+    public function privacyPolicyAction(Request $request)
+    {
+        return $this->render('InstitutionBundle:Main:privacy_policy.html.twig');
+    }
+    
+    public function faqAction(Request $request)
+    {
+        return $this->render('InstitutionBundle:Main:faq.html.twig');
+    }
+    
 }

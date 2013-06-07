@@ -126,6 +126,18 @@ institution_terms_of_use:
     requirements:
         _method: GET
         
+institution_privicy_policy:
+    pattern: /institution/privacypolicy.html
+    defaults: { _controller: InstitutionBundle:StaticPage:privacyPolicy }
+    requirements:
+        _method: GET
+        
+institution_faq:
+    pattern: /institution/faq.html
+    defaults: { _controller: InstitutionBundle:StaticPage:faq }
+    requirements:
+        _method: GET
+        
 institution_inquiries:
     pattern: /institution/inquiries
     defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }

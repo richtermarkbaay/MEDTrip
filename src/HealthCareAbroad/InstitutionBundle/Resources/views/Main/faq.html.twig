@@ -1,0 +1,14 @@
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+{% block title %} Healthcareabroad Frequently Asked Questions  {% endblock %}
+
+{% block content %}
+    {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
+        with {'pageTitle': 'Frequently Asked Questions ', 'contentSpanClass': 'span12'} 
+    %}
+        {% block wrappedContent %}
+           
+        {% endblock %}
+            
+    {% endembed %}
+    
+{% endblock %}
