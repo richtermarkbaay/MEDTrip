@@ -171,6 +171,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
+                $postData = $request->get('institutionUserSignUp');
                 
                 $institutionUser = $form->getData();
                 // initialize required database fields
@@ -180,7 +181,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setContactNumber('');
                 $institution->setDescription('');
                 $institution->setCoordinates('');
-                $institution->setType($_POST['institutionUserSignUp']['type']);
+                $institution->setType($postData['type']);
                 $institution->setState('');
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -599,10 +600,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $data = array(
                     'status' => true,
                     'message' => 'Doctor has been added to your clinic!',
-                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor),
-                    'editDoctorUrl' => $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
-                    'removeDoctorUrl' => $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
-                    'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))
+                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
                 );
             } else {
                 $data = array('status' => false, 'message' => $form->getErrorsAsString());
