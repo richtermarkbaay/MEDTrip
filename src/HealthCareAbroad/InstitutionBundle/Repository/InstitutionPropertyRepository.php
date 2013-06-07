@@ -32,7 +32,7 @@ class InstitutionPropertyRepository extends EntityRepository
     public function getAllServicesByInstitution($institution)
     {
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT a,b FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.status = 1";
+        $query = "SELECT a.*, b.* FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.status = 1";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('id', $institution->getId());
         $stmt->execute();
@@ -60,7 +60,7 @@ class InstitutionPropertyRepository extends EntityRepository
          * 
          * @TODO Verify Correct query
          */
-        $query = "SELECT a,b FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.id NOT IN ({$idsNotIn})";
+        $query = "SELECT a.* ,b.* FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.id NOT IN ({$idsNotIn})";
         //$query = "SELECT * FROM institution_properties a RIGHT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND a.institution_property_type_id = :propertyType AND b.id NOT IN ({$idsNotIn})";
         
         

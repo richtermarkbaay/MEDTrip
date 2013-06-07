@@ -345,6 +345,9 @@ class InstitutionService
         $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->getAllServicesByInstitution($institution);
          
         return $ancilliaryServices;
+        
+        
+        
     }
     
     /**

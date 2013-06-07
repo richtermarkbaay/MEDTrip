@@ -281,7 +281,13 @@ class InstitutionTwigExtension extends \Twig_Extension
             $html = '<img src="'.$mediaSrc.'" class="hospital-logo">';
 
         } else {
-            $html = '<span class="hca-sprite hospital-default-logo '. isset($options['attr']['class']) ? $options['attr']['class'] : '' .'"></span>';
+            if(isset($options['attr']['class'])) {
+                $html = '<span class="hca-sprite hospital-default-logo '. $options['attr']['class'] .'"></span>';
+            }
+            else {
+                $html = '<span class="hca-sprite hospital-default-logo"></span>';
+            }
+            //$html = '<span class="hca-sprite hospital-default-logo '. isset($options['attr']['class']) ? $options['attr']['class'] : '' .'"></span>';
         }
 
         return $html;
