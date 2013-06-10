@@ -1,6 +1,17 @@
 /**
  * Handler for client-side functionalities in institution profile page
  */
+
+/**
+ * Created a function to capitalize every first text return
+ * @author: Chaztine Blance
+ */
+function ucwords (str) {
+  return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+    return $1.toUpperCase();
+  });
+}
+
 var InstitutionProfile = {
 		
     removePropertyUri: '',
@@ -271,8 +282,8 @@ var InstitutionProfile = {
             success: function(response) {
                 switch(_form.attr('id')){
                     case 'nameModalForm':
-                        $('#institutionNameText').html(response.institution.name);
-                        $('#networkName').html(response.institution.medicalProviderGroups);
+                        $('#institutionNameText').html(ucwords(response.institution.name));
+                        $('#networkName').html(ucwords(response.institution.medicalProviderGroups));
                         _form.parents('div.modal').modal('hide');
                     	break;
     
@@ -296,7 +307,7 @@ var InstitutionProfile = {
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
                             if (response.institution[_v]) {
-                                address.push(response.institution[_v]);
+                                address.push(ucwords(response.institution[_v]));
                             }
                         });
                         
