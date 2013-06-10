@@ -1,6 +1,17 @@
 /**
  * @author Allejo Chris G. Velarde
  */
+
+/**
+ * Created a function to capitalize every first text return
+ * @author: Chaztine Blance
+ */
+function ucwords (str) {
+  return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+    return $1.toUpperCase();
+  });
+}
+
 var InstitutionMedicalCenter = {
     isEditView: false,
     removePropertyUri: '',
@@ -262,7 +273,7 @@ var InstitutionMedicalCenter = {
             success: function(response) {
             	switch(_form.attr('id')){
             	    case 'nameModalForm':
-            	        $('#clinicNameText').html(response.institutionMedicalCenter.name);
+            	        $('#clinicNameText').html(ucwords(response.institutionMedicalCenter.name));
             	        _form.parents('div.modal').modal('hide');
                         break;
                     case 'descriptionForm':
@@ -284,14 +295,14 @@ var InstitutionMedicalCenter = {
                            } 
                         });
                         if (_street_address.length) {
-                            address.push(_street_address.join(', '));
+                            address.push(ucwords(_street_address.join(', ')));
                         } else {
                         	_street_address = '';
                         }
                         _keys = ['city', 'state', 'country', 'zipCode'];
                         $.each(_keys, function(_k, _v){
                             if (response.institutionMedicalCenter[_v]) {
-                                address.push(response.institutionMedicalCenter[_v]);
+                                address.push(ucwords(response.institutionMedicalCenter[_v]));
                             }
                         });
                         
