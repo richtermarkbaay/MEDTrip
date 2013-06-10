@@ -100,7 +100,7 @@
 
         {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
         <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-            <label for="{{ form.vars.full_name ~ '[street]' }}">Address</label>
+            <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address</label>
             <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
         </div>
         <div class="row-fluid terms">

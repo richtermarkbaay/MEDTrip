@@ -552,12 +552,14 @@ class InstitutionSignUpController extends InstitutionAwareController
         $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
 
         if ($request->isMethod('POST')) {
+            
             //array of specialization ids each containing an array of treatment ids
             if ($treatments = $request->get('treatments')) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep, true);
 
                 // next step url
+      
                 $redirectUrl = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
                 return $this->redirect($redirectUrl);
             }
