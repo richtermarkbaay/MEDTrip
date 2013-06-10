@@ -702,6 +702,10 @@ hr {
     border: 1px solid rgba(0, 0, 0, 0.1); }
     .aside-box .row-fluid .hca-gallery-upload {
       padding: 20px; }
+      .aside-box .row-fluid .hca-gallery-upload .alert {
+        font-weight: bold !important; }
+        .aside-box .row-fluid .hca-gallery-upload .alert .icon-picture {
+          color: white; }
       .aside-box .row-fluid .hca-gallery-upload .span6 {
         text-align: center;
         margin-bottom: 5px; }
@@ -774,6 +778,14 @@ hr {
         padding-top: 5px; }
   .aside-box .features {
     margin-top: 20px; }
+    .aside-box .features .hca-profile-sublevel {
+      font-weight: bold;
+      color: #414141; }
+    .aside-box .features .hca-helptext {
+      color: #505050; }
+    .aside-box .features .btn i {
+      color: white;
+      margin-right: 5px; }
     .aside-box .features hr {
       color: white;
       border-top: 1px solid white;
@@ -784,6 +796,11 @@ hr {
       margin-bottom: 0px; }
       .aside-box .features ul.thumbnails li {
         margin-left: 18px; }
+
+.loading-specializations {
+  display: inline-block;
+  margin-top: 8px;
+  color: #a2a2a2; }
 
 .hca-banner {
   margin-left: 20px;

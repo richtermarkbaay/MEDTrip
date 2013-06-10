@@ -32,11 +32,12 @@
         {% else %}
             <h3> Add PHOTOS to boost your Clinic Profile </h3>
             <div class="features">
-                <div class="row-fluid">
-                    <div class="hca-gallery-upload">
-                        <div class="span6 hca-upload-media">
-                            <a href="{{ path('institution_mediaGallery_index', {return: institutionMedicalCenter.id}) }}" ><i class="icon-picture icon-4x hca-earth"></i>Upload Media Here</a>
-                        </div>
+                <div class="row">
+
+                    <div class="hca-gallery-upload alert alert-block">
+                    <div class="hca-profile-sublevel"> Here you can showcase description about your Clinic. </div>
+<p class="hca-helptext"> You haven't yet added any Media File for your Clinic. Explain here the need to add Media File for your Clinic. </p>
+                            <a href="{{ path('institution_mediaGallery_index', {return: institutionMedicalCenter.id}) }}" class="btn btn-primary" ><i class="icon-picture icon-24x hca-earth"></i>Upload Media Here</a>
                     </div>
                 </div>
             </div>
