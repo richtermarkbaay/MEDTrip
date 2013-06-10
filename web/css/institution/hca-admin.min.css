@@ -2,6 +2,9 @@
 .btn-group.open .btn-primary.dropdown-toggle {
   background-color: #6AB0F7; }
 
+.btn-dashboard {
+  margin-right: 10px; }
+
 .btn {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;

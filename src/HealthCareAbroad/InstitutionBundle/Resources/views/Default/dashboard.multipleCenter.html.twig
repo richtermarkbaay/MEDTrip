@@ -17,7 +17,7 @@
     
     <section class="section row-fluid">
         <h2> Suggestion for your {{ label }}
-            <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
+            <a class="btn btn-primary pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
          </h2>
         {% set _suggestions = render_institution_suggestions(institution) %}
         {% if _suggestions is not empty %}
@@ -50,7 +50,7 @@
                         This clinic doesn't have a 
                         {{ center.fields | join(',') }}.
                     </span>
-                    <a class="btn btn-link pull-right" href="{{ path('institution_medicalCenter_view', {imcId: center.id}) }}">CLICK HERE TO UPDATE</a>
+                    <a class="btn btn-primary btn-dashboard pull-right" href="{{ path('institution_medicalCenter_view', {imcId: center.id}) }}">CLICK HERE TO UPDATE</a>
                 </li>
             {% endfor %}
         </ul>

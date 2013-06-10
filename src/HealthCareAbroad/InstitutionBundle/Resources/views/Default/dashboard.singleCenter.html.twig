@@ -17,7 +17,7 @@
     
     <section class="section row-fluid">
         <h2> Suggestion for your {{ label }} 
-         <a class="btn btn-link pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
+         <a class="btn btn-primary pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
         </h2>
         {% set _suggestions = render_institution_single_center_suggestions(institution) %}
         <ul class="thumbnails hca-alert-inquiry">
