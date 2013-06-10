@@ -87,7 +87,7 @@ class InstitutionProfileFormType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            self::OPTION_HIDDEN_FIELDS => array(),
+            self::OPTION_HIDDEN_FIELDS => array('type'),
             self::OPTION_REMOVED_FIELDS => array(),
             self::OPTION_BUBBLE_ALL_ERRORS => false,
             'validation_groups' => array('editInstitutionInformation', 'Default')
@@ -98,6 +98,7 @@ class InstitutionProfileFormType extends AbstractType
     {
         $this->options = $options;
         $this->institution = $builder->getData();
+        
         if (!$this->institution instanceof Institution ) {
             throw InstitutionFormException::nonInstitutionFormData(__CLASS__, $this->institution);
         }
@@ -111,7 +112,6 @@ class InstitutionProfileFormType extends AbstractType
             $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
             $builder->addEventSubscriber($subscriber);
         }
-
         $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true, 'required' => false));
@@ -119,7 +119,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'city', 'city_list', array('label' => 'City'));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
-        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address '));
+        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address ', 'required' => false));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'contact_number_with_flag', 'constraints'=>array(new NotBlank())));
@@ -130,7 +130,7 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'coordinates', 'hidden');
-        $this->_add($builder, 'type', 'choice', array('label' => 'Institution Type' ,'multiple' => false, 'choices' => InstitutionTypes::getFormChoices()));
+        $this->_add($builder, 'type', 'choice', array ('label' => 'Institution Type' , 'empty_value' => false,'multiple' => false, 'choices' => InstitutionTypes::getFormChoices()));
     }
 
     private function _isHidden($fieldName)

@@ -172,7 +172,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($request);
             if ($form->isValid()) {
                 $postData = $request->get('institutionUserSignUp');
-                
+               
                 $institutionUser = $form->getData();
                 // initialize required database fields
                 $institution->setName(uniqid());
@@ -181,7 +181,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setContactNumber('');
                 $institution->setDescription('');
                 $institution->setCoordinates('');
-                $institution->setType($postData['type']); /* FIX ME! */
+                $institution->setType(trim($postData['type'])); /* FIX ME! */
                 $institution->setState('');
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -236,11 +236,11 @@ class InstitutionSignUpController extends InstitutionAwareController
      *
      * @param Request $request
      */
-    public function setupProfileAction()
+    public function setupProfileAction(Request $request)
     {
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
-        
+
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -260,7 +260,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // TODO: check and redirect properly to next page if institution's sign up status is ahead of this step
 
-                $response = $this->setupProfileMultipleCenterAction();
+                $response = $this->setupProfileMultipleCenterAction($request);
                 break;
         }
 
@@ -299,8 +299,9 @@ class InstitutionSignUpController extends InstitutionAwareController
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institution->addContactDetail($phoneNumber);
         }
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution , array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-
+        
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
+        
         if ($this->request->isMethod('POST')) {
             
             $formRequestData = $this->request->get($form->getName());
@@ -314,7 +315,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
             
             $form->bind($formRequestData);
-            
             if ($form->isValid()) {
 
                 // set the sign up status of this single center institution
@@ -370,7 +370,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      *
      * @param Request $request
      */
-    private function setupProfileMultipleCenterAction()
+    private function setupProfileMultipleCenterAction(Request $request)
     {
         $error = false;
         $success = false;
@@ -383,13 +383,12 @@ class InstitutionSignUpController extends InstitutionAwareController
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institution->addContactDetail($phoneNumber);
         }
-        
-        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-//         $institutionTypeLabels = InstitutionTypes::getLabelList();
 
-        if ($this->request->isMethod('POST')) {
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         
-            $formRequestData = $this->request->get($form->getName());
+        if ($request->isMethod('POST')) {
+            $formRequestData = $request->get($form->getName());
+            
             if (isset($formRequestData['medicalProviderGroups']) ) {
                 // we always expect 1 medical provider group
                 // if it is empty remove it from the array
@@ -398,10 +397,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
             }
             
-            $form->bind($formRequestData);
-           
+            $form->bind($formRequestData); 
             if ($form->isValid()) { 
-                
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
                 
@@ -409,7 +406,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
               
-                $fileBag = $this->request->files->get('institution_profile_form');
+                $fileBag = $request->files->get('institution_profile_form');
 
                 if($fileBag['logo']) {
                     $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
@@ -450,7 +447,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-//             'institutionTypeLabel' => $institutionTypeLabels[$this->institution->getType()],
             'error' => $error,
             'error_list' => $errorArr,
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)

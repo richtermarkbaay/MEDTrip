@@ -3,6 +3,9 @@
 {% block content %}
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
  {% block wrappedContent %}
+    <h1>
+        <i class="icon-user"></i> Manage Account Profile
+    </h1>
 		<div class=span8>
 		     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
                  <section class="section account-info manage-data">

@@ -19,7 +19,7 @@
             				{% for staff in users %}
                                 <tr>
                                     <td><i class="icon-user icon-2x"></i></td>
-                                    <td><a href="#">{{staff.firstName}}-{{ staff.email}}</a></td>
+                                    <td><a href="{{ path('institution_editAccount',{accountId : staff.id }) }}">{{staff.firstName}}-{{ staff.email}}</a></td>
                                     <td>{{staff.institutionUserType.name}}</td>
                                     <td></td>
                                 </tr>
