@@ -525,8 +525,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
         if(!$error){
-            $calloutMessage = $this->get('services.institution.callouts')->get('signup_success_add_hospital');
-            $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+            $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
         }
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),

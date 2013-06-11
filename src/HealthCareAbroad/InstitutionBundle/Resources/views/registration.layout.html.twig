@@ -2,11 +2,7 @@
 
 {% block body %}
     <div id="main-wrap">
-        {% set callout = app.session.flashbag.get('callout_message') %}
-        {% if callout[0] is defined %}
-            {% set callout = callout[0] %}
-            {% include 'InstitutionBundle:Widgets:callout.html.twig' %}
-        {% endif %}
+        {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
         {% include 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}
         <!-- Page content here -->
         <div id="content" class="container">

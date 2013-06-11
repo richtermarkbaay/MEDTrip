@@ -1,15 +1,10 @@
-{% if callout|length %}
-<div id="confirmation-message">
-            <div class="confirmation-box">
-                <div class="alert alert-success">
-                  <p>
-                    {% if callout['highlight'] is defined %}
-                	     <b>{{ callout['highlight'] | raw }}</b>
-                    {% endif %}
-                    
-                    {{ callout['subText'] is defined ? callout['subText'] | raw : '' }}
-                </p>
+ {% if callout|length %}
+    <div class="row-fluid">
+        <div class="span12 aside-box success">
+            {% if callout['highlight'] is defined %}
+              <h4>{{ callout['highlight'] | raw }}</h4>
+            {% endif %}
+            <p>{{ callout['subText'] is defined ? callout['subText'] | raw : '' }}</p>
        </div>
-    </div>
-</div>
+    </div>  
 {% endif %}

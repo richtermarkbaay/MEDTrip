@@ -14,7 +14,3 @@ parameters:
             highlight: "Your Clinic {CENTER_NAME} has been added! Review the clinic information below or <a href={ADD_CLINIC_URL}>Add another Clinic >></a> "
         success_edit_center:
             highlight: "Your edits to {CENTER_NAME} have been saved! Review the clinic information below or <a href={ADD_CLINIC_URL}>Add another Clinic >></a>"
-        signup_success_add_hospital:
-            highlight: "Congratulations!"
-            subText: "You have setup your Hospital's profile."
-            
