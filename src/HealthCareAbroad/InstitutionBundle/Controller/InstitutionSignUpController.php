@@ -253,7 +253,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $response = $this->setupProfileSingleCenterAction();
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
-            case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
+            //case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
             default:
                 // get the current step by this route
                 $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));

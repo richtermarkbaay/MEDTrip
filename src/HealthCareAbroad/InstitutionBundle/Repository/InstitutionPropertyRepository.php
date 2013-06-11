@@ -66,7 +66,7 @@ class InstitutionPropertyRepository extends EntityRepository
         
         $stmt = $connection->prepare($query);
         $stmt->bindValue('id', $institution->getId());
-        $stmt->bindValue('propertyType', $ancillaryServicePropertyType->getId());
+        //$stmt->bindValue('propertyType', $ancillaryServicePropertyType->getId());
         $stmt->execute();
         
         return $stmt->fetchAll();
