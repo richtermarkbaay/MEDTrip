@@ -54,7 +54,7 @@ class InstitutionListFilter extends ListFilter
         $typeLabel = InstitutionTypes::getLabelList();
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         $options[InstitutionTypes::MULTIPLE_CENTER] = $typeLabel[InstitutionTypes::MULTIPLE_CENTER];
-        $options[InstitutionTypes::MEDICAL_TOURISM_FACILITATOR] = $typeLabel[InstitutionTypes::MEDICAL_TOURISM_FACILITATOR];
+        //$options[InstitutionTypes::MEDICAL_TOURISM_FACILITATOR] = $typeLabel[InstitutionTypes::MEDICAL_TOURISM_FACILITATOR];
         $options[InstitutionTypes::SINGLE_CENTER] = $typeLabel[InstitutionTypes::SINGLE_CENTER];
 
         $this->filterOptions['type'] = array(

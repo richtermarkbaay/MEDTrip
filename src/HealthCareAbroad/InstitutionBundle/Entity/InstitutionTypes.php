@@ -5,7 +5,7 @@ final class InstitutionTypes
 {
     const MULTIPLE_CENTER = 1;
 
-    const MEDICAL_TOURISM_FACILITATOR = 2;
+    //const MEDICAL_TOURISM_FACILITATOR = 2;
     
     const SINGLE_CENTER = 3;
     
@@ -14,7 +14,7 @@ final class InstitutionTypes
         return array(
             self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
             self::SINGLE_CENTER => 'A single clinic or an Independent healthcare provider',
-            self::MEDICAL_TOURISM_FACILITATOR => 'A Medical Tourism Facilitator / Agent',
+            //self::MEDICAL_TOURISM_FACILITATOR => 'A Medical Tourism Facilitator / Agent',
         );
     }
     
@@ -23,7 +23,7 @@ final class InstitutionTypes
         return array(
             self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
             self::SINGLE_CENTER => 'A single clinic or an Independent healthcare provider',
-            self::MEDICAL_TOURISM_FACILITATOR => 'I\'m a Medical Tourism Facilitator / Agent',
+            //self::MEDICAL_TOURISM_FACILITATOR => 'I\'m a Medical Tourism Facilitator / Agent',
         );
     }
     
