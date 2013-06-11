@@ -12,18 +12,22 @@
                     <div class="span12">
                         <div class="name control-group">   
                             {{ form_label(institutionMedicalCenterForm.name) }}
-                            {{ form_widget(institutionMedicalCenterForm.name, { 'attr': {class: 'span10'} })  }}
+                            {{ form_widget(institutionMedicalCenterForm.name, { 'attr': {class: 'span12'} })  }}
                         </div>
                     </div>
                 </div>
             </section>
         {% elseif each == 'description' %}
             <div class="description control-group">   
-                {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12'} })  }}
+                {{ form_widget(institutionMedicalCenterForm[each], { 'attr': {class: 'span12 tooltip-wrap2'} })  }}
+                <div class="tooltip-content2 hca-textarea">
+                    All the information about your clinic that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your
+                    chance to set your clinic apart. DO NOT include any emails, URLs, or contact information.
+                </div>
             </div>
         {% elseif each == 'address' %}
                         <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
-                        <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="position:relative; top: -20px;left:-20px;">Review map location</a>
+                        <a href="javascript:updateInstitutionStaticMap()" style="margin-right:20px;" class="pull-right label label-success">Review map location</a><br>
                             {{ form_widget(institutionMedicalCenterForm.address, {attr: {'class': 'span12'}}) }}
                             {{ form_widget(institutionMedicalCenterForm.coordinates) }}
                      <div class="row-fluid terms">

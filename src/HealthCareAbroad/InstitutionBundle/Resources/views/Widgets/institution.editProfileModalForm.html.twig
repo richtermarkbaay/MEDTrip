@@ -2,7 +2,11 @@
     {% for each in fields %}
         {% if each == 'description' %}
             <div class="description control-group">   
-                {{ form_widget(institutionForm[each], { 'attr': { class: 'span12', rows: '4', cols: '50' }})  }}
+                {{ form_widget(institutionForm[each], { 'attr': { class: 'span12 tooltip-wrap2', rows: '4', cols: '50' }})  }}
+                <div class="tooltip-content2 hca-textarea">
+                    All the information about your hospital that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your
+                    chance to set your hospital apart. DO NOT include any emails, URLs, or contact information.
+                </div>
             </div>
         {% elseif each == 'name' %}
             <section>
