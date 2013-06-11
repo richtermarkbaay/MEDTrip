@@ -36,9 +36,13 @@
              </div>
             <div class="control-group">
                 <div class="span12">
-                {{ form_row(form.addressHint, { attr: {class: 'span12 tooltip-wrap2'} } )}}
-                <div class="tooltip-content2">If there are any instructions that will help someone find you that aren't included in the address put them here.  This could be something like, 'On the 2nd loor', or 'Next door to the gas station', whatever will make it easy for patients to find you!</div>
-            </div>
+                    {{ form_label(form.addressHint )}}
+                    {{ form_widget(form.addressHint, { attr: {class: 'span12 tooltip-wrap3'} } )}}
+                    <div class="tooltip-content3">
+                        If there are any instructions that will help someone find you that aren't included in the address put them here. This could be something like, 'On
+                        the 2nd loor', or 'Next door to the gas station', whatever will make it easy for patients to find you!
+                    </div>
+                </div>
             </div>
         </div>
     </div>

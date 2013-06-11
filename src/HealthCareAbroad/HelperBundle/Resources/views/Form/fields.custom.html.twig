@@ -225,7 +225,7 @@
             {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
 
             <input type="hidden" id="{{ elemId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
-            <input type="text" id="input-{{ elemId }}" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
+            <input required="required" type="text" id="input-{{ elemId }}" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
 
             <button class="btn hca-location-btn show_list_btn" type="button">
                 <span class="icon-chevron-down"></span>
