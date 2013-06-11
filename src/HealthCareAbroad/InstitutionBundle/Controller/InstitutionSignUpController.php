@@ -494,15 +494,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
                 $this->institutionMedicalCenter->setCoordinates($this->institution->getCoordinates());
             }
-            
-            if (isset($formRequestData['medicalProviderGroups']) ) {
-                // we always expect 1 medical provider group
-                // if it is empty remove it from the array
-                if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
-                    unset($formRequestData['medicalProviderGroups'][0]);
-                }
-            }
-                
             $form->bind($formRequestData);
             if ($form->isValid()) {
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
@@ -532,6 +523,10 @@ class InstitutionSignUpController extends InstitutionAwareController
                     $errorArr[] = $_err->getMessage();
                 }
             }
+        }
+        if(!$error){
+            $calloutMessage = $this->get('services.institution.callouts')->get('signup_success_add_hospital');
+            $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
         }
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),

@@ -4,6 +4,13 @@
 
 {% block content %}
 <div class="row">
+    <div class="span12 confirm-msg">
+        <div class="alert alert-info"><h4>Congratulations,
+            <b> {{ institution.name | title }} </b>
+            <span>has been added to</span> HealthcareAbroad.com.</h4> 
+            <p>Next, please add your first clinic profile. You will be able to add all of your clinics at your convenience in future steps.</p>
+        </div>
+    </div>
     <h1>Add New Clinic</h1>
 
     <div class="span8">
@@ -16,7 +23,6 @@
                     {% endfor %}
                 </div>
             {% endif %}
-            
             
             <section class="section institution-info">
                 <h2>Basic Information<br><small>Basic information about the clinic you are adding.</small></h2>

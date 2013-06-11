@@ -126,8 +126,8 @@
                         <div class="span12 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
                             <label class="checkbox">
                                 {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's 
-                                <a href="{{ path('institution_terms_of_use') }}">Terms of Use</a> and 
-                                <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>.
+                                <a href="{{ path('institution_terms_of_use') }}" target="_blank">Terms of Use</a> and 
+                                <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a>.
                             </label>
                         </div>
                     </div>
