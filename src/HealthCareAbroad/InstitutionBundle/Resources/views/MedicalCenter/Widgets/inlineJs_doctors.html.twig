@@ -31,15 +31,13 @@
         });
 
         $('.remove-doctor-btn').live('click', function(e) {
-            doctorItem = $(this).parent();
-            doctorItem.parent().addClass('disabled');
-            
+            doctorItem = $(this).parent().parent().addClass('disabled');
+
             $.post($(this).attr('href'), function(response) {
             	$('#confirmation-message').find('p:first').html(response.message);
                 if(response.status) {
-                	doctorItem.fadeOut(500,function(){ doctorItem.next().remove(); doctorItem.remove(); $('#confirmation-message').show(); });
+                	doctorItem.fadeOut(500,function(){ doctorItem.remove(); $('#confirmation-message').show(); });
         			$('#confirmation-message').find('.alert').prop('class', 'alert alert-success');
-    
                 } else {
         			$('#confirmation-message').find('.alert').prop('class', 'alert alert-error');
         			$('#confirmation-message').show()
@@ -168,7 +166,7 @@
     			    	specializationString += ', ' + doctors[i].specializations[key]; 
     				});
     			    
-        			matchedString += '<li data-doctor-id="'+i+'" class="thumbnail hca-clinic-listing" style="min-height:75px">' +         			
+        			matchedString += '<li data-doctor-id="'+i+'" class="thumbnail hca-clinic-listing" style="min-height:95px">' +         			
             	        '<img alt="" src="' + (doctors[i].mediaSrc ? doctors[i].mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}') + '" class="pull-left img-polaroid">' +
                         '<div class="medicalcenter-name add-doctors-listing pull-left">' +
                             '<h3 class="doctor-name" style="text-transform: capitalize;">'+ doctors[i].fullName + '</h3>' +
@@ -259,12 +257,13 @@
     
         	if($('#matchedDoctorList').find('li a.add-existsing-doctor').length > 1 && response.status) {
         		$('.add-existsing-doctor[data-doctor-id='+response.doctor.id+']').replaceWith('<span style="color: #AAA; vertical-align: middle; display: inline-block; margin: 35px 10px;" class="pull-right">Added to your clinic</span>');
-        		return;
+            } else {
+        		confirmMessageElem.show();
+        		$('#add-doctor').modal('hide');
+        		setTimeout(function() {confirmMessageElem.fadeOut("slow")}, 5000);
             }
 
-    		confirmMessageElem.show();
-    		$('#add-doctor').modal('hide');
-    		setTimeout(function() {confirmMessageElem.fadeOut("slow")}, 5000);
+
     	}
     
         function getCleanVal(elem)
