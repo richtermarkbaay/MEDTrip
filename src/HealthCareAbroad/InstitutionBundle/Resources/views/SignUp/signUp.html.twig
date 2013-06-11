@@ -127,7 +127,7 @@
                             <label class="checkbox">
                                 {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's 
                                 <a href="{{ path('institution_terms_of_use') }}" target="_blank">Terms of Use</a> and 
-                                <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a>.
+                                <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a> *.
                             </label>
                         </div>
                     </div>
@@ -135,7 +135,11 @@
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
+                            <div class="span6"><label>* <small>Required Fields</small></label></div>
+                            <div class="span6">
                             <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
+                            </div>
+
                         </div>
                     </div>
                 </section>

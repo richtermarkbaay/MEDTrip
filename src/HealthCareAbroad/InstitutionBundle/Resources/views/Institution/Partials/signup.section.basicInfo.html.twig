@@ -3,7 +3,7 @@
     <div class="row-fluid">
         <div class="span12">
              <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
-                <label for="institution-name">Name of the {{ label  }}</label>
+                <label for="institution-name">Name of the {{ label  }} *</label>
                 {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
                  <div class="tooltip-content2">
                      {% if (isSingleCenter is defined) and isSingleCenter %}

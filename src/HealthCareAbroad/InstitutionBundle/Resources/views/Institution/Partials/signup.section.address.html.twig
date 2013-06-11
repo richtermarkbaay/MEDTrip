@@ -12,7 +12,7 @@
             <div class="row-fluid terms">
                <div class="country span6 control-group {{ (form.address1.vars.valid ? '' : 'error') }}">
                     <label for="{{ form.children.country.vars.id }}">
-                        {{ form.children.country.vars.label }}
+                        {{ form.children.country.vars.label }} *
                     </label>
                     {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
                 </div>
@@ -30,7 +30,7 @@
                  <div class="zipCode control-group span6 {{ (form.zipCode.vars.valid ? '' : 'error') }}">
                         <label for="{{ form.children.zipCode.vars.id }}">
                          {{ form.children.zipCode.vars.label }}
-                        </label>
+                        *</label>
                         {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
                 </div>
              </div>

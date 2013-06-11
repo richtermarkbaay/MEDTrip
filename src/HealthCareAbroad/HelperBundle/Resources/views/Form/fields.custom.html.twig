@@ -13,7 +13,7 @@
                 {% set countryCode = form.getChild('country_code') %}
 
                 {{ render_contactNumber_widget() | raw }}
-                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span10 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="number" maxlength="15"/>
+                <input id="{{ number.vars.id }}" name="{{ number.vars.full_name }}"  type="text" class="span12 numberSelector" value="{{ form.vars.value.number | length ? form.vars.value.number : '+63' }}" data-type="number" maxlength="15"/>
                 <input id="{{ abbr.vars.id }}" name="{{ abbr.vars.full_name }}" type="hidden"  value="{{ form.vars.value.abbr ? form.vars.value.abbr : 'ph' }}" data-type="abbr">
                 <input id="{{ countryCode.vars.id }}" name="{{ countryCode.vars.full_name }}" type="hidden" value="{{ form.vars.value.countryCode ? form.vars.value.countryCode : '+63' }}">
             </div>
@@ -99,10 +99,6 @@
     {% spaceless %}
 
         {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
-        <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-            <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address</label>
-            <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
-        </div>
         <div class="row-fluid terms">
             <div class="span4">
                 <div class="control-group">
@@ -117,6 +113,11 @@
                 </div>
             </div>
         </div>
+        <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
+            <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address</label>
+            <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
+        </div>
+
     {% endspaceless %}
 {% endblock %}
 
