@@ -574,6 +574,8 @@ hr {
               color: #888888; }
         #content section.section .row-fluid.hca-edit-box {
           border: none; }
+          #content section.section .row-fluid.hca-edit-box.specializations {
+            margin-top: 0px; }
           #content section.section .row-fluid.hca-edit-box .accordion {
             width: 100%; }
             #content section.section .row-fluid.hca-edit-box .accordion .accordion-inner {
@@ -874,6 +876,145 @@ hr {
         color: white;
         text-decoration: none; }
         .hca-banner .hca-institution-name h1 a:hover {
+          text-decoration: none; }
+
+.hca-banner3 {
+  height: 420px;
+  display: block;
+  margin-bottom: 20px;
+  width: 990px; }
+  .hca-banner3 .tooltip-logo {
+    position: absolute;
+    margin-top: 170px;
+    margin-left: 10px;
+    display: block;
+    z-index: 999999;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    width: 250px;
+    padding: 20px 25px; }
+    .hca-banner3 .tooltip-logo:after {
+      width: 0px;
+      height: 0px;
+      content: "";
+      display: inline-block;
+      left: 10%;
+      bottom: 30%;
+      position: absolute;
+      bottom: -10px;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 10px solid rgba(0, 0, 0, 0.75); }
+  .hca-banner3 .tooltip-cover {
+    position: absolute;
+    margin-top: 270px;
+    margin-left: 460px;
+    display: block;
+    z-index: 999999;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    width: 250px;
+    padding: 20px 25px; }
+    .hca-banner3 .tooltip-cover:after {
+      width: 0px;
+      height: 0px;
+      content: "";
+      display: inline-block;
+      top: 10%;
+      right: -10px;
+      position: absolute;
+      bottom: -10px;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 10px solid rgba(0, 0, 0, 0.75); }
+  .hca-banner3 .upload-logo {
+    margin-top: -160px;
+    display: block;
+    position: absolute;
+    z-index: 9999; }
+  .hca-banner3 .hca-logo {
+    margin-top: -155px; }
+  .hca-banner3 .btn-logo {
+    display: block;
+    position: absolute;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.95);
+    border: none;
+    color: #a6bed9;
+    opacity: 0.75;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
+    margin-top: -61px;
+    z-index: 99999;
+    font-size: 14px; }
+    .hca-banner3 .btn-logo a {
+      text-decoration: none; }
+      .hca-banner3 .btn-logo a:hover {
+        text-decoration: none; }
+  .hca-banner3 .btn-banner {
+    display: block;
+    position: absolute;
+    right: 11px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border: none;
+    color: #a6bed9;
+    opacity: 0.75;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
+    margin-top: -150px; }
+    .hca-banner3 .btn-banner a {
+      text-decoration: none; }
+      .hca-banner3 .btn-banner a:hover {
+        text-decoration: none; }
+  .hca-banner3 .institution-details {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.35);
+    position: relative;
+    min-height: 60px;
+    width: 100%;
+    top: 445px; }
+    .hca-banner3 .institution-details .btn {
+      margin-right: 20px;
+      margin-top: -51px; }
+      .hca-banner3 .institution-details .btn.manage-page {
+        margin-top: 18px; }
+    .hca-banner3 .institution-details h3 {
+      left: 185px;
+      margin-top: 12px;
+      color: #e1e1e1;
+      display: block;
+      position: relative;
+      font-weight: normal; }
+      .hca-banner3 .institution-details h3 i {
+        margin-right: 7px; }
+  .hca-banner3 .hca-institution-name {
+    display: block;
+    position: absolute;
+    min-height: 80px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 10px 5px 10px; }
+    .hca-banner3 .hca-institution-name .btn-default {
+      display: inline-block;
+      font-family: 'PT Sans';
+      margin-left: 15px; }
+    .hca-banner3 .hca-institution-name h1 {
+      border-bottom: none !important;
+      margin: 0 !important;
+      padding: 0 5px 5px 5px;
+      color: white;
+      padding-bottom: 10px !important;
+      display: inline-block; }
+      .hca-banner3 .hca-institution-name h1 small {
+        display: block;
+        position: relative;
+        font-size: 18px;
+        padding-top: 5px; }
+      .hca-banner3 .hca-institution-name h1 a {
+        color: white;
+        text-decoration: none; }
+        .hca-banner3 .hca-institution-name h1 a:hover {
           text-decoration: none; }
 
 .hca-highlight {
@@ -1745,7 +1886,7 @@ ul.hca-notifications, ul.hca-inquiries {
 .tooltip-wrap:focus .tooltip-content {
   display: block; }
 
-.tooltip-content2 {
+.tooltip-content2, .tooltip-content3 {
   display: none; }
 
 .tooltip-wrap2 {
@@ -1767,7 +1908,7 @@ ul.hca-notifications, ul.hca-inquiries {
   color: white;
   font-size: 14px; }
   .tooltip-wrap2:focus + .tooltip-content2.hca-textarea {
-    margin-top: -200px; }
+    margin-top: -240px; }
   .tooltip-wrap2:focus + .tooltip-content2.hca-email {
     left: 325px; }
   .tooltip-wrap2:focus + .tooltip-content2:after {
@@ -1776,7 +1917,36 @@ ul.hca-notifications, ul.hca-inquiries {
     content: "";
     display: inline-block;
     left: 50%;
-    top: 13%;
+    top: 23%;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid black; }
+
+.tooltip-wrap3:focus + .tooltip-content3 {
+  display: block;
+  width: 240px;
+  height: auto;
+  background-color: black;
+  position: absolute;
+  left: 610px;
+  z-index: 1000;
+  padding: 10px 20px;
+  margin-top: -60px;
+  color: white;
+  font-size: 14px; }
+  .tooltip-wrap3:focus + .tooltip-content3.hca-textarea {
+    margin-top: -240px; }
+  .tooltip-wrap3:focus + .tooltip-content3.hca-email {
+    left: 325px; }
+  .tooltip-wrap3:focus + .tooltip-content3:after {
+    width: 0px;
+    height: 0px;
+    content: "";
+    display: inline-block;
+    left: 50%;
+    top: 16%;
     position: absolute;
     left: -10px;
     border-top: 10px solid transparent;
@@ -1907,6 +2077,19 @@ ul.hca-notifications, ul.hca-inquiries {
             padding: 3px 0 !important; }
             .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
               border-bottom: none; }
+  .hca-hidden-content.specializations-profile-listing, .hca-clinic-content.specializations-profile-listing, .hca-specialization-content.specializations-profile-listing {
+    background-color: #aeaeae;
+    padding: 20px 20px 5px 20px;
+    border-bottom: 1px solid #aeaeae;
+    max-height: 200px;
+    overflow: auto; }
+    .hca-hidden-content.specializations-profile-listing .specializations-listing, .hca-clinic-content.specializations-profile-listing .specializations-listing, .hca-specialization-content.specializations-profile-listing .specializations-listing {
+      max-height: none; }
+    .hca-hidden-content.specializations-profile-listing form, .hca-clinic-content.specializations-profile-listing form, .hca-specialization-content.specializations-profile-listing form {
+      background-color: white;
+      padding: 10px 5px; }
+      .hca-hidden-content.specializations-profile-listing form label input[type="radio"], .hca-hidden-content.specializations-profile-listing form label input[type="checkbox"], .hca-clinic-content.specializations-profile-listing form label input[type="radio"], .hca-clinic-content.specializations-profile-listing form label input[type="checkbox"], .hca-specialization-content.specializations-profile-listing form label input[type="radio"], .hca-specialization-content.specializations-profile-listing form label input[type="checkbox"] {
+        margin-top: -5px; }
 
 .hca-display-specializations div.edit-specializations {
   display: none; }
@@ -2026,40 +2209,40 @@ span.rollover {
     line-height: 24px;
     margin: 20px 80px; }
 
-.doctors-new-listing {
+.doctors-new-listing, .specializations-profile-listing {
   padding-top: 12px;
   padding-left: 0; }
-  .doctors-new-listing .doctor-heading {
+  .doctors-new-listing .doctor-heading, .doctors-new-listing .specializations-heading, .specializations-profile-listing .doctor-heading, .specializations-profile-listing .specializations-heading {
     background-color: #e1e1e1;
-    padding: 10px 20px 30px 10px; }
-    .doctors-new-listing .doctor-heading span.rollover {
+    padding: 10px 20px 2px 10px; }
+    .doctors-new-listing .doctor-heading span.rollover, .doctors-new-listing .specializations-heading span.rollover, .specializations-profile-listing .doctor-heading span.rollover, .specializations-profile-listing .specializations-heading span.rollover {
       margin: 6px;
       padding: 12px;
       background-position: 10px;
       background-size: 55%;
       width: 25px;
       height: 25px; }
-  .doctors-new-listing h4 {
+  .doctors-new-listing h4, .specializations-profile-listing h4 {
     padding: 2px 0 0 0;
     margin: 0; }
-  .doctors-new-listing p {
+  .doctors-new-listing p, .specializations-profile-listing p {
     color: #7b7b7b;
-    padding: 0;
+    padding: 0 0 25px 0;
     margin: 0; }
-    .doctors-new-listing p span {
+    .doctors-new-listing p span, .specializations-profile-listing p span {
       margin-left: 7px;
       font-weight: bold; }
-    .doctors-new-listing p i {
+    .doctors-new-listing p i, .specializations-profile-listing p i {
       margin-right: 5px; }
-  .doctors-new-listing img {
+  .doctors-new-listing img, .specializations-profile-listing img {
     margin-right: 10px;
     width: 50px; }
-  .doctors-new-listing .icon-edit, .doctors-new-listing .icon-ok {
+  .doctors-new-listing .icon-edit, .doctors-new-listing .icon-ok, .specializations-profile-listing .icon-edit, .specializations-profile-listing .icon-ok {
     margin-top: 10px;
     margin-right: 10px; }
-  .doctors-new-listing .icon-remove-sign {
+  .doctors-new-listing .icon-remove-sign, .specializations-profile-listing .icon-remove-sign {
     margin-top: 10px; }
-  .doctors-new-listing .icon-plus-sign {
+  .doctors-new-listing .icon-plus-sign, .specializations-profile-listing .icon-plus-sign {
     color: #888888;
     margin-top: 10px; }
 
@@ -2072,6 +2255,9 @@ a {
 
 a:hover {
   text-decoration: none; }
+
+.hca-display-specializations {
+  display: block; }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
   background-image: none;
