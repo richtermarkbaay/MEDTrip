@@ -411,7 +411,12 @@ class InstitutionService
     public function getAllDoctors(Institution $institution)
     {
         $institutionDoctors = array();
-        foreach($institution->getInstitutionMedicalCenters() as $each) {
+        // use repository instead: edit by Chris
+        $qb = $this->doctrine->getRepository('DoctorBundle:Doctor')
+            ->getAllDoctorsByInstitution($institution);
+        $institutionDoctors = $qb->getQuery()->getResult();
+        
+        /**foreach($institution->getInstitutionMedicalCenters() as $each) {
             $doctors = $each->getDoctors();
 
             foreach($doctors as $doctor) {
@@ -419,7 +424,7 @@ class InstitutionService
                     $institutionDoctors[$doctor->getId()] = $doctor;                    
                 }
             }
-        }
+        }**/
 
         return $institutionDoctors;
     }
