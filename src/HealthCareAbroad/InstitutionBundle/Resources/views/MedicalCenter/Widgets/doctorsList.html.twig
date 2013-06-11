@@ -53,10 +53,9 @@
     </div>
     <!-- END OF DOCTOR ITEM TEMPLATE -->
 
-
-    <h2 id="empty-doctors-msg" style="display: {{ institutionMedicalCenter.doctors|length ? 'none' : 'block' }}">
-        <small>No doctors on the list, please add your doctors now. {{ institutionMedicalCenter.doctors|length }}</small>
-    </h2>
+    <p id="empty-doctors-msg" style="display: {{ institutionMedicalCenter.doctors|length ? 'none' : 'block' }}">
+       You have not yet added any doctors.Patients want to know about who will be performing their treatment. Providing detailed information about the practitioners at your facility will build trust with patients and make them more likely to submit an inquiry.
+    </p>
 </section>
 
 {% include 'InstitutionBundle:MedicalCenter/Widgets:form.editDoctors.html.twig' %}

@@ -2,7 +2,7 @@
 {% for subSpecialization, treatments in specializationComponents %}
 <div class="span6">
     <h4>
-        <label for="{{ subSpecialization }}"> 
+        <label > 
             <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
             {{ subSpecialization }}
         </label>
@@ -10,7 +10,7 @@
     <ul>
         {% for treatment in treatments %}
             <li>
-                <label for="treatments{{ treatment.id }}"> 
+                <label> 
                     <input type="checkbox" id="treatments{{ treatment.id }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
                    {{ treatment.name }} 
                 </label>

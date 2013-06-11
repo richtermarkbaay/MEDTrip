@@ -78,39 +78,23 @@ at the same time we don't want every click event to fire and run these code.
 Note: These are heavily reliant on the html markup. Changes to the structure might
 break the script.
 */
-$('#accordion').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
-    var target = $(e.target);
+$('form[name="specializationsForm"]').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
+	    var target = $(e.target);
+	    var subSpecializationContainerElem = target.parents('div.span6:first');
+	    subSpecializationContainerElem.find('input:checkbox[id^="treatments"]').prop('checked', target.is(':checked'));
+	});
 
-    target.parent().parent().find('input:checkbox[name^="institutionSpecialization"]').each(function() {
-        if (target.attr('checked')) {
-            $(this).attr('checked', target.attr('checked'));
-        } else {
-            $(this).removeAttr('checked');
-        }
-    });
-});
+	$('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
+	    var target = $(e.target);
+	    var subSpecializationContainerElem = target.parents('div.span6:first');
+	    var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
+	    var checkedTreatmentElems = subSpecializationContainerElem.find('input:checkbox[id^="treatments"]:checked');
 
-$('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
-    var target = $(e.target);
-    var subSpecializationCheckbox = target.parents('div.span6').find('input:checkbox[name="subSpecialization"]');
-
-    if (target.attr('checked')) {
-        subSpecializationCheckbox.attr('checked', 'checked');
-    } else {
-        var uncheckSubSpecializationCheckbox = true;
-        target.parent().parent().find('input:checkbox[name^="institutionSpecialization"]').each(function() {
-            if ($(this).attr('checked')) {
-                uncheckSubSpecializationCheckbox = false;
-
-                return false;/*break*/
-            }
-        });
-
-        if (uncheckSubSpecializationCheckbox) {
-            subSpecializationCheckbox.removeAttr('checked');
-        }
-    }
-});
+	    subSpecializationCheckbox.prop('checked', true);
+	    if(checkedTreatmentElems.length == 0) {
+	        subSpecializationCheckbox.prop('checked', target.is(':checked'));
+	    }
+	});
 
 $('#submitFormLink').click(function(e) {
     //TODO: validation

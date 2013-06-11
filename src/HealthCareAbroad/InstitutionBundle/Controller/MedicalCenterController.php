@@ -172,7 +172,6 @@ class MedicalCenterController extends InstitutionAwareController
         }
         
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-        
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionMedicalCenterForm' => $form->createView(),
