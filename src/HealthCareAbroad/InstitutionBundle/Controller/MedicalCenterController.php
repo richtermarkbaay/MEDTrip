@@ -691,10 +691,7 @@ class MedicalCenterController extends InstitutionAwareController
             $data = array(
                 'status' => true,
                 'message' => 'Doctor has been added to your clinic!',
-                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor),
-                'editDoctorUrl' => $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
-                'removeDoctorUrl' => $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
-                'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))                
+                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
             );
         } else {
             $data = array('status' => false, 'message' => $form->getErrorsAsString());

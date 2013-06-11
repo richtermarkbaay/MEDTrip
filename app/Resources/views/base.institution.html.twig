@@ -10,6 +10,7 @@
             'js/jquery/jquery.form.min.js'
             'js/bootstrap.min.js'
 			'bundles/helper/js/Common.js'
+			'bundles/helper/js/CustomSelect.js'
 			output='js/institution/compiled-javascripts.js'
         %}
 
@@ -32,6 +33,24 @@
         
         <style type="text/css">
         
+            #doctorsList > div {
+                position: relative;
+            }
+            
+            #doctorsList > div.disabled {
+                opacity: .3;
+            }
+            
+            #doctorsList > div.disabled:before {
+                background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+                content: "";
+                display: block;
+                height: 100%;
+                position: absolute;
+                width: 100%;
+                z-index: 99999;
+            }
+
             .thumbnails li.thumbnail.hca-clinic-listing {
                 min-height: 95px;
             }
@@ -43,11 +62,6 @@
             .thumbnails li.thumbnail:first-child .btn.btn-misc {
                 margin-top: 33px;
             }
-
-            .modal.fade.in {
-                top: 200px;
-            }
-            
             .table.hca-media h4 {
                 word-break: break-all;
             }
@@ -93,7 +107,7 @@
             /********** jQuery Autocomplete Custom CSS *****/
 
             .fancy-country-wrapper {
-                height: 40px;
+                height: 35px;
                 postition: relative;
             }
 
@@ -175,7 +189,7 @@
             /** CUSTOM SELECT STYLES **/
             .custom-select {
                 margin-left: 0 !important;
-                height: 40px;
+                height: 35px;
                 position: relative;
                 display: inline-block;
             }
@@ -183,11 +197,16 @@
             .fancy-country-wrapper > button.btn,
             .custom-select > button.btn {
                 border-radius: 0;
+                border-top: 0;
+                border-bottom: 0;
                 height: inherit;
-                padding: 0 7px;
-                /*position: absolute;*/
+                padding: 0 5px;
                 right: inherit;
-                margin-left: -30px;
+                margin-left: -26px;
+            }
+            
+            .fancy-country-wrapper > button.btn {
+                height: 33px;
             }
             
             .custom-select > input[type=text] {
@@ -223,16 +242,17 @@
             }
             
             .custom-select > ul {
-                list-style:none;
-                border: 1px solid #aaa;
-                margin:0;
-                display:none;
-                background-color: #FFF;
-                position: absolute;
-                top: 39px;
+                top: 35px;
                 z-index: 1;
-                max-height: 312px;
+                margin: 0;
+                display:none;
                 overflow: auto;
+                list-style: none;
+                max-height: 312px;
+                position: absolute;
+                border: 1px solid #CCCCCC;
+                background-color: #FFFFFF;
+                border-top: 0;
             }
             
             .custom-select > ul > li {

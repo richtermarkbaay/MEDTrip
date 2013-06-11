@@ -3,7 +3,7 @@
         <h3 id="myModalLabel">{{ modal.title }}</h3> 
     </div>
 
-    <div class=" modal-body" style="{{ modal.customBodyStyle is defined ? modal.customBodyStyle : '' }}">{% block modalBody %}{% endblock %}</div> 
+    <div class=" modal-body clearfix" style="overflow:visible;{{ modal.customBodyStyle is defined ? modal.customBodyStyle : '' }}">{% block modalBody %}{% endblock %}</div> 
 
     <div class="modal-footer">
         {% block footerBody %}{% endblock %}

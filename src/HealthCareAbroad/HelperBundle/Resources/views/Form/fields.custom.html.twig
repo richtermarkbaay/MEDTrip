@@ -278,12 +278,11 @@
     {% spaceless %}
         {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
         {% set empty_value = empty_value is defined and empty_value is not none ? empty_value|trans : '' %}
-
         <div class="custom-select span">
-            <input type="hidden" name="{{ form.vars.full_name }}" id="{{ elemId }}" value="{{ form.vars.data }}">
-            <input type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} id="input-{{ elemId }}" {% if choices[form.vars.data] is defined %} value="{{ choices[form.vars.data] }}" {% endif %} {% if choices|length == 0 %} disabled {% endif %} placeholder="{{ empty_value }}" readonly>
-            <button type="button" class="btn" id="btn-{{ elemId }}"><span class="icon-chevron-down"></span></button>
-            <ul id="select-{{ elemId }}" class="custom-select-list">
+            <input type="hidden" name="{{ form.vars.full_name }}" id="{{ elemId }}" value="{{ form.vars.data }}" data-elem="value">
+            <input type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} id="input-{{ elemId }}" {% if choices[form.vars.data] is defined %} value="{{ choices[form.vars.data] }}" {% endif %} {% if choices|length == 0 %} disabled {% endif %} placeholder="{{ empty_value }}" readonly data-elem="input">
+            <button type="button" class="btn" id="btn-{{ elemId }}" data-elem="btn"><span class="icon-chevron-down"></span></button>
+            <ul id="select-{{ elemId }}" class="custom-select-list" data-elem="list">
                 {% if choices|length and empty_value %}
                 <li class="custom-select-item" data-value="">{{ empty_value }}</li>
                 {% endif %}
@@ -292,76 +291,5 @@
                 {% endfor %}
             </ul>
         </div>
-
-        <!-- TODO: Need to move and improve js implementation -->
-        <script type="text/javascript">
-        $(function(){
-            var customSelectBtn = $('#btn-{{ elemId }}');
-            var customSelectInput = $('#input-{{ elemId }}');
-            var customSelectValue = $('#{{ elemId }}');
-            var customSelectList = $('#select-{{ elemId }}')
-
-            customSelectList
-                .children()
-                    .click(function(){
-                    	customSelectInput.val($(this).text());
-                    	customSelectValue.val($(this).attr('data-value')).trigger('change');
-                    	$(this).siblings('.selected').removeClass('selected');
-                    	$(this).addClass('selected');
-                    	customSelectList.hide();
-                    }).mouseover(function(){
-                    	$(this).siblings('.selected').removeClass('selected');
-                    	$(this).addClass('selected');
-                    });
-
-            customSelectBtn.click(function(){
-            	customSelectInput.focus();
-            });
-
-            customSelectInput.bind('focus', function(){
-            	customSelectList.width(customSelectInput.outerWidth() - 2);
-            	customSelectList.toggle();
-            }).keypress(function(e) {
-                var currentItem = $('#select-{{ elemId }} > .custom-select-item.selected');
-
-                if((e.keyCode == 37 || e.keyCode == 38) && !currentItem.is(':first-child')) {
-                    prevItem = currentItem.prev();
-
-                	customSelectInput.val(prevItem.text());
-                	customSelectValue.val(prevItem.attr('data-value')).change();
-                	prevItem.siblings('.selected').removeClass('selected');
-                	prevItem.addClass('selected');
-
-                	if(prevItem.offset().top < (customSelectList.offset().top)) {
-                    	customSelectList.scrollTop(customSelectList.scrollTop()-26);
-                    }
-                } else if((e.keyCode == 39 || e.keyCode == 40) && !currentItem.is(':last-child')) {
-                	nextItem = currentItem.next();
-
-                	customSelectInput.val(nextItem.text());
-                	customSelectValue.val(nextItem.attr('data-value')).change();
-                	nextItem.siblings('.selected').removeClass('selected');
-                	nextItem.addClass('selected');
-
-                	if(nextItem.offset().top > (customSelectList.offset().top + customSelectList.height())) {
-                    	customSelectList.scrollTop(customSelectList.scrollTop()+26);
-                    }
-                } if(e.keyCode == 13) {
-                    customSelectList.hide();
-                	return false;
-                }
-            }).height(customSelectInput.parent().height() -2 ).css({lineHeight: customSelectInput.parent().css('height')});
-
-            $(document).click(function(e) {
-                if(customSelectList.is(':visible') && e.target.id != customSelectBtn.attr('id') && e.target.id != customSelectInput.attr('id')) {
-                    if(e.target.className.match(/\bcustom-select-item\b/) == null) {
-                    	customSelectList.hide();
-                    }
-                }
-            });
-
-            customSelectList.parents('.modal-body').addClass('clearfix').css('overflow', 'visible');
-        });
-        </script>
     {% endspaceless %}
 {% endblock %}    

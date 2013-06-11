@@ -22,9 +22,8 @@
 
         $('#add-doctor').on('show', function(){
         	window.location.href = '#';
-        	$('#doctor-search-results').hide();
-        	$('#add-doctor-btn').hide();
         	$('#search-doctor-btn').show();
+        	$('#doctor-search-results, #add-doctor-btn').hide();
         });
 
         $('#add-doctor').on('hide', function(){
@@ -32,14 +31,8 @@
         });
 
         $('.remove-doctor-btn').live('click', function(e) {
-    
-            if($(this).attr('disabled') == 'disabled') {
-            	return false;
-            }
-    
-            $(this).attr('disabled', 'disabled').css({opacity:.3,cursor: 'default'});
-    
-            doctorItem = $(this).parent();
+            doctorItem = $(this).parent().addClass('disabled');
+            
             $.post($(this).attr('href'), function(response) {
             	$('#confirmation-message').find('p:first').html(response.message);
                 if(response.status) {
@@ -53,11 +46,11 @@
     
                 setTimeout(function() {$('#confirmation-message').fadeOut('slow')}, 5000); 
             });
+
             return false;
         });
         
         $(".edit-doctor-btn").live('click', function(e) {
-            e.preventDefault();
             doctor = $.parseJSON($(this).attr('data-doctor'));
 
             var btnIcon = $(this).find('i');
@@ -65,8 +58,8 @@
 
             if(editFormWrapper.is(':hidden')) { 
 
-            	editForm = $('#edit-doctor-form').clone();
-            	editForm.removeAttr('id').removeAttr('style').attr('action', $(this).attr('href'));
+            	editForm = $('#edit-doctor-form');
+            	editForm.removeAttr('style').attr('action', $(this).attr('href'));
 
             	editForm.find("#{{ editForm.getChild('lastName').vars.id }}").val(doctor.lastName);
             	editForm.find("#{{ editForm.getChild('firstName').vars.id }}").val(doctor.firstName);
@@ -92,8 +85,8 @@
                 	editForm.find('.specializations-listing input[value='+id+']').attr('checked', 'checked');                	
                 });
 
-        		editForm.submit(function(e){
-        		    $.post($(this).attr('action'), $(this).serialize(), function(response){
+        		editForm.ajaxForm({
+    			    success: function(response) {
         			    var specializationString = '';
         			    $.each(response.doctor.specializations, function(key) {
         			    	specializationString += ', ' + response.doctor.specializations[key]; 
@@ -102,27 +95,28 @@
         		    	editFormWrapper.prev().find('h4.full-name:first').text(response.doctor.fullName);
         		    	editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString.substr(1));
             		    btnIcon.parent().attr('data-doctor', JSON.stringify(response.doctor));
-            		});
-
-            		e.preventDefault();
+    			    }
         	    });
 
             	editFormWrapper.html(editForm);
             }
 
             if($(this).find('.icon-ok').length) {
-            	editFormWrapper.find('.edit-doctor-form:first').submit();
+            	editForm.submit();
             }
             
             editFormWrapper.slideToggle("slow", function(){
                 if(btnIcon.hasClass('icon-edit')) {
+                	$('#doctorsList').children('div').addClass('disabled');
+                    $('#doctor-item-'+doctor.id).removeClass('disabled');
                 	btnIcon.removeClass('icon-edit').addClass('icon-ok');
                 } else {
                 	btnIcon.removeClass('icon-ok').addClass('icon-edit');
+                	$('#doctorsList').children('div').removeClass('disabled');
                 }
             });
 
-            resetDoctorForms(doctor.id);
+            return false;
         });
 
         /** modal Js**/
@@ -162,8 +156,7 @@
     			$('#search-doctor-btn').removeAttr('disabled').find('span').text('Search Doctor');
     			
     			$.each(doctors, function(i) {
-
-    				if($('.medicalCenter-doctors[data-doctor-id='+i+']').length) {
+    				if($('#doctor-item-'+i).length) {
     					addLink = '<span class="pull-right" style="color: #AAA; vertical-align: middle; display: inline-block; margin: 35px 10px;">Already Added</span>';
     				} else {
     					addLink = '<a data-doctor-id="'+ i +'" class="btn btn-misc pull-right add-existsing-doctor" href="' + "{{ path('institution_medicalCenter_addExistingDoctor', {imcId: institutionMedicalCenter.id}) }}" + '"><i class="icon-medkit"></i>Add to My Clinic</a>';
@@ -236,6 +229,7 @@
                 	doctorItemElem.find('.doctor-specializations').text(specializationString.substr(1));
                 }
 
+                doctorItemElem.attr('id', 'doctor-item-'+response.doctor.id);
                 doctorItemElem.find('.edit-doctor-btn').attr('href', response.editDoctorUrl).attr('data-doctor', JSON.stringify(response.doctor));
                 doctorItemElem.find('.remove-doctor-btn').attr('href', response.removeDoctorUrl);
                 doctorItemElem.find('.full-name').text(response.doctor.fullName);
@@ -274,7 +268,7 @@
     	}
     
         function getCleanVal(elem)
-        {
+        {            
             return $.trim(elem.val().toLowerCase());
         }
     
@@ -285,35 +279,4 @@
 	});
 	
 })(jQuery);
-
-    function resetDoctorForms(currentDoctorId)
-    {
-        $('.edit-doctor-wrapper').each(function() {
-            $(this).remove('.edit-doctor-form');
-            doctorId = $(this).attr('data-doctor-id');
-
-            if(doctorId != currentDoctorId) {
-                $(this).slideUp().prev().find('.icon-ok:first').removeClass('icon-ok').addClass('icon-edit');
-
-            	$(this).find('input[id^="{{ editForm.vars.id }}_"]').attr('id', 
-        		function(){
-            		if($(this).attr('id').substr(-4, 4) != 'temp') {
-
-            	        elemId = $(this).attr('id');
-            	        if(elemId.substr(-6, 6) == 'suffix') {
-                	        $(this).parent().find('#input-' + elemId + ', #select-' + elemId + ', #btn-' + elemId).attr('id', function(){return $(this).attr('id') + '_temp'});
-                	    }
-
-            	        newId = $(this).attr('id') + '_temp';
-            	        //console.log($(this).attr('id'));
-            	        return newId;
-                	}
-        	    });
-            }
-        });
-    }
-
-    var InstitutionMedicalCenterDoctor = {
-    	    
-    }
 </script>

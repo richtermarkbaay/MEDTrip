@@ -19,7 +19,7 @@
                         tabNavigation: { links: [
                             { label: 'Clinic Details', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
                             { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
-                            { label: 'Doctors', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
+                            { label: 'Doctors', 'href' : '#doctors_tab_content', 'icon' : 'user-md' },
                         ]}
                     } %}
                     
@@ -30,7 +30,7 @@
                         <div id="specializations_tab_content" class="tab-pane">
                            {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
                         </div>
-                        <div id="medical_specialists_tab_content" class="tab-pane">                       
+                        <div id="doctors_tab_content" class="tab-pane">                       
                             {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
                                 {% block tabbedContent %}
                                      <section class="doctors-listing">

@@ -1,11 +1,5 @@
-<!-- modal add doctor start -->
-
-<div id="add-doctor" class="modal hide fade hca-doctors-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-header">
-        <h3 id="myModalLabel modal-label">Search And Add Doctor</h3>
-    </div>
-
-    <div class="modal-body">
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'add-doctor', class: 'hca-doctors-modal', 'title': 'Search and Add Doctor' }} %}
+    {% block modalBody %}            
         <div class="alert alert-info">
             <i class="icon-info-sign icon-4x pull-left"></i>
             Knowing who will administer their procedures is a primary concern for patients. Quite often, access to good doctors is the main reason for their decision to travel abroad for treatment.
@@ -45,5 +39,5 @@
                 <ul id="matchedDoctorList" class="thumbnails"></ul>
             </div>
         </section>
-    </div>
-</div>
+    {% endblock %}
+{% endembed %}
