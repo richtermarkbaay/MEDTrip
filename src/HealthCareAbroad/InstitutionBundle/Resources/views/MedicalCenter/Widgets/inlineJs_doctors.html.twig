@@ -14,7 +14,7 @@
 				}
 		    },
 			complete: function(xhr) {
-				//status.html(xhr.responseText) 
+ 
 			}
 		}).submit(function(){
 			$(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
@@ -31,7 +31,8 @@
         });
 
         $('.remove-doctor-btn').live('click', function(e) {
-            doctorItem = $(this).parent().addClass('disabled');
+            doctorItem = $(this).parent();
+            doctorItem.parent().addClass('disabled');
             
             $.post($(this).attr('href'), function(response) {
             	$('#confirmation-message').find('p:first').html(response.message);
@@ -59,6 +60,7 @@
             if(editFormWrapper.is(':hidden')) { 
 
             	editForm = $('#edit-doctor-form');
+            	editFormWrapper.empty();
             	editForm.removeAttr('style').attr('action', $(this).attr('href'));
 
             	editForm.find("#{{ editForm.getChild('lastName').vars.id }}").val(doctor.lastName);
@@ -102,7 +104,7 @@
             }
 
             if($(this).find('.icon-ok').length) {
-            	editForm.submit();
+            	$('#edit-doctor-form').submit();
             }
             
             editFormWrapper.slideToggle("slow", function(){
@@ -127,16 +129,15 @@
     	var suffixElem = $("#{{ doctorForm.getChild('suffix').vars.id }}");
         var fullName = getInputFullName();
     
-    	$('#doctorForm').submit(function(e){
-        	addDoctorForm = $(this);
-        	$('#add-doctor-btn').attr('disabled', 'disabled').find('span').text('Saving...');
-    		$.post(addDoctorForm.prop('action'), addDoctorForm.serialize(), function(response) {
-    			addDoctorForm.find('input[type=text]').val('');
+    	$('#doctorForm').ajaxForm({
+    	    beforeSend: function(e) {
+            	$('#add-doctor-btn').attr('disabled', 'disabled').find('span').text('Saving...');        	    
+        	},
+		    success: function(response) {
+    			$('#doctorForm').find('input[type=text]').val('');
             	$('#add-doctor-btn').removeAttr('disabled', 'disabled').find('span').text('Add Doctor');
     			showAddConfirmationMessage(response);
-    		});
-    
-    		return false;
+		    }
     	});
     
     	$('#search-doctor-btn').click(function() {
@@ -208,7 +209,6 @@
     			$('#search-doctor-btn').fadeIn();
     			$('#add-doctor-btn').hide();
     		}
-    		//console.log(fullName + " = " + getInputFullName());
     	});
     
     	function showAddConfirmationMessage(response)
