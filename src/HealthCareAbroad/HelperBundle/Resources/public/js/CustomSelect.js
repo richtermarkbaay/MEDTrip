@@ -69,10 +69,9 @@ $(function(){
 	});
 
     $(document).click(function(e) {
-        if($('.custom-select > .custom-select-list').is(':visible') && e.target.id != $('.custom-select > button.btn').attr('id') && e.target.id != $('.custom-select > .custom-select-list').attr('id')) {
-            if(e.target.className.match(/\bcustom-select-item\b/) == null) {
-            	$('.custom-select > .custom-select-list').hide();
-            }
+    	targetElem = $(e.target);
+        if(!targetElem.parents('.custom-select:first').length) {
+        	$('.custom-select-list').hide();
         }
     });
 });
