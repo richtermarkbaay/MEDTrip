@@ -85,6 +85,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function (response) {
+            	InstitutionMedicalCenter.displayAlert('You have successfully added treatment');
             	$(_divToggle.parents('.specializations-profile-listing')).removeClass('process');
             	_divToggle.prev('#treatment_list').html(response.html);
             	_buttonElement.prev('#specialization-button').show();
@@ -105,7 +106,6 @@ var InstitutionSpecialization = {
      * @param DOMElement button
      */
     submitAddSpecialization: function(domButtonElement) {
-    	InstitutionMedicalCenter.clearCallout();
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html('Processing...').attr('disabled', true);
@@ -117,6 +117,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
+            	InstitutionMedicalCenter.displayAlert('You have successfully added specialization');
             	if($('#specialization_list_block').find('div.alert-block')){
             		$('#specialization_list_block').find('div.alert-block').hide();
             	}

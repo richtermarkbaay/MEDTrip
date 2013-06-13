@@ -811,7 +811,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $em->remove($institutionSpecialization);
                 $em->flush();
                 
-                $responseContent = array('id' => $_id, 'calloutView' => $this->_getEditMedicalCenterCalloutView());
+                $responseContent = array('id' => $_id);
                 $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
             }
             else {

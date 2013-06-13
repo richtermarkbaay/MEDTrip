@@ -28,18 +28,3 @@
     }
     
 })(jQuery);
-
-var CommonJs = {
-		
-    displayAlert: function(response) {
-        if(typeof response.calloutView !== "undefined") {
-            if($('#content').prev().attr('id') == 'featured') {
-            	$('#content').prev().html(response.calloutView);
-            } else {
-                $(response.calloutView).insertBefore($('#content'));
-            }                	
-        }
-
-        $('#featured').hide().fadeIn(2000);
-    },
-}

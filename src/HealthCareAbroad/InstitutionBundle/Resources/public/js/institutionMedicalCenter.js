@@ -425,7 +425,6 @@ var InstitutionMedicalCenter = {
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {
-    	InstitutionMedicalCenter.clearCallout();
         _button = _formElement.find('button.delete-button');
         _currentHtml = _button.html();
         _button.attr('disabled', true)
@@ -438,7 +437,7 @@ var InstitutionMedicalCenter = {
             	$('#specialization_list_block').children('div').removeClass('disabled');
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_'+response.id).remove();
-                InstitutionMedicalCenter.displayCallout(response);
+                InstitutionMedicalCenter.displayAlert('You have successfully remove specialization');
             }
          });
     },
@@ -540,8 +539,15 @@ var InstitutionMedicalCenter = {
         $('#featured').hide().fadeIn(2000);
     },
     
-    clearCallout: function() {
-    	$('#content').prevAll('div.row-fluid').remove();
+    /**
+     * DISPLAY alerts after success submission
+     */
+    displayAlert: function(message) {
+    	_confirmMessageElem = $('#confirmation-message');
+    	_confirmMessageElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
+    	_confirmMessageElem.find('.confirmation-box').html('<div class="alert alert-success"><p><b> Congratulations! </b>' + message + '.</p></div>');
+    	_confirmMessageElem.show();
+    	setTimeout(function() {_confirmMessageElem.fadeOut("slow")}, 5000);
     }
 }
 
