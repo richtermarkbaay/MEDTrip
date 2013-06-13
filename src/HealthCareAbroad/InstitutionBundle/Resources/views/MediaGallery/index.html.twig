@@ -38,7 +38,7 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc" data-toggle="modal" style="color:#FE6500"><i class="icon-edit"></i>edit</a>
+                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(mediaClinics[each.id]) : [] }}"><i class="icon-edit"></i>edit</a>
                                         <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}"><i class="icon-trash"></i>delete</a>
                                     </div>
                                     
@@ -61,11 +61,27 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
 (function($){
+	var editFormElem;
 	var medicalCenterId = "{{ app.request.get('medical-center-id') }}";
     if(window.location.toString().indexOf('#add-media') !== -1 || medicalCenterId) {
     	$('#add-media').modal('show');
         $('input:checkbox[value='+medicalCenterId+']').attr('checked','checked');            
     }
+
+    $('input.medical-center-checkbox').change(function() {
+    	editFormElem = $(this).parents('form.edit-institution-media-form');
+    	newMedicalCenterIds = [], removeMedicalCenterIds = [];
+    	editFormElem.find('.medical-center-checkbox:not(.existing):checked').each(function(){
+        	newMedicalCenterIds.push($(this).val());
+        });
+
+    	editFormElem.find('.medical-center-checkbox.existing:not(:checked)').each(function(){
+        	removeMedicalCenterIds.push($(this).val());
+        });
+
+        editFormElem.find('input[name=new-medical-center-ids]').val(newMedicalCenterIds.join(','));
+        editFormElem.find('input[name=remove-medical-center-ids]').val(removeMedicalCenterIds.join(','));
+    });
 
 })(jQuery);
 </script>

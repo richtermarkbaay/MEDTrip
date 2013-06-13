@@ -26,8 +26,6 @@ class MediaGalleryController extends InstitutionAwareController
             }
         }
 
-        //var_dump($params['mediaClinics']);
-
         return $this->render('InstitutionBundle:MediaGallery:index.html.twig', $params);
     }
     
@@ -61,7 +59,6 @@ class MediaGalleryController extends InstitutionAwareController
                 }
             }
         }
-
         $em->flush();
         
         return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
@@ -69,24 +66,33 @@ class MediaGalleryController extends InstitutionAwareController
 
     public function updateMediaAction(Request $request)
     {
+        $result = false;
         $mediaData = $request->get('media');
+        $newMedicalCenterIds = $request->get('new-medical-center-ids') ? explode(',', $request->get('new-medical-center-ids')) : array();
+        $removeMedicalCenterIds = $request->get('remove-medical-center-ids') ? explode(',', $request->get('remove-medical-center-ids')) : array();
 
-        //var_dump($request->request->all());
-        
-        
         $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
         $media = $em->getRepository('MediaBundle:Media')->find($mediaData['id']);
-        var_dump($media);
-        exit;
+
         if($media) {
+            $result = true;
             $media->setCaption($mediaData['caption']);
-            
+            $em->persist($media);
+
+            foreach($this->institution->getInstitutionMedicalCenters() as $each) {
+                if(in_array($each->getId(), $newMedicalCenterIds)) {
+                    $each->addMedia($media);
+                    $em->persist($each);
+                }
+
+                if(in_array($each->getId(), $removeMedicalCenterIds)) {
+                    $each->removeMedia($media);
+                    $em->persist($each);
+                }
+            }
+            $em->flush();
         }
 
-
-    
-
-    
         return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
     }
 

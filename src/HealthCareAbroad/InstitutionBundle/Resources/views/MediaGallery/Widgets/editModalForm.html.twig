@@ -1,7 +1,6 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-media-' ~ media.id, class: 'hca-file-modal', 'title': 'Edit Media' }} %}
     {% block modalBody %}            
-
-        <form action="{{ path('institution_mediaGallery_update') }}" method="post">
+        <form class="edit-institution-media-form" action="{{ path('institution_mediaGallery_update') }}" method="post">
         
             <div class="row-fluid control-group">
                 <img src="{{ institution_media_src(media) }}" alt="photo" style="width: auto; height: auto; margin: 0 auto;border: 1px solid #EFEFEF"/>
@@ -9,6 +8,8 @@
                 <label>Image Title</label>
                 <input type="text" class="span10" value="{{ media.caption }}" name="media[caption]">
                 <input type="hidden" value="{{ media.id }}" name="media[id]">
+                <input type="hidden" name="new-medical-center-ids">
+                <input type="hidden" name="remove-medical-center-ids">
 
                 <p style="margin: 10px 0 15px">
                     <i class="icon-calendar pull-left" style="margin-top:3px"></i>Uploaded on: <b>{{ media.dateCreated.date }}</b>, &nbsp;
@@ -26,14 +27,5 @@
                 </div>
             </div>
         </form>
-
     {% endblock %}
 {% endembed %}
-
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-    $(function(){
-	
-    });
-</script>
-{% endblock %}
