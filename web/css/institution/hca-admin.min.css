@@ -342,15 +342,17 @@ hr {
 
 #confirmation-message {
   float: left;
-  position: absolute;
+  position: fixed;
   left: 50%;
   z-index: 1000;
-  text-align: center;
-  margin-top: 62px; }
+  text-align: center; }
   #confirmation-message .confirmation-box {
     float: left;
     position: relative;
-    left: -50%; }
+    left: -50%;
+    margin-top: 62px; }
+    #confirmation-message .confirmation-box.fixed {
+      margin-top: 0; }
     #confirmation-message .confirmation-box .alert {
       padding-bottom: 0px;
       padding-right: 14px;
@@ -2079,8 +2081,8 @@ ul.hca-notifications, ul.hca-inquiries {
               border-bottom: none; }
   .hca-hidden-content.specializations-profile-listing, .hca-clinic-content.specializations-profile-listing, .hca-specialization-content.specializations-profile-listing {
     background-color: #aeaeae;
-    padding: 20px 20px 5px 20px;
-    border-bottom: 1px solid #aeaeae;
+    padding: 20px 20px 0px 20px;
+    border-bottom: 1px solid white;
     max-height: 200px;
     overflow: auto; }
     .hca-hidden-content.specializations-profile-listing .specializations-listing, .hca-clinic-content.specializations-profile-listing .specializations-listing, .hca-specialization-content.specializations-profile-listing .specializations-listing {
@@ -2210,7 +2212,7 @@ span.rollover {
     margin: 20px 80px; }
 
 .doctors-new-listing, .specializations-profile-listing {
-  padding-top: 12px;
+  border-bottom: 1px solid white;
   padding-left: 0; }
   .doctors-new-listing .doctor-heading, .doctors-new-listing .specializations-heading, .specializations-profile-listing .doctor-heading, .specializations-profile-listing .specializations-heading {
     background-color: #e1e1e1;
@@ -2561,6 +2563,14 @@ h1, h2, h3, h4, h5 {
       .tab-content.media-tab-content .span12 h2 {
         padding: 0;
         margin: 0; }
+
+.row-field.error ul, .control-group.error ul {
+  color: red;
+  list-style: none;
+  font-weight: bold;
+  margin: -10px 0 7px 0;
+  padding: 0;
+  display: block; }
 
 .tab-content {
   z-index: 0; }
