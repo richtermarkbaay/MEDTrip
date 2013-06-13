@@ -537,7 +537,6 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response('<ul><li>'.\implode('</li><li>', $errors).'</li></ul>',400);
             }
             else {
-                $ajaxOutput['calloutView'] = $this->_getEditMedicalCenterCalloutView();
                 $response = new Response(\json_encode($ajaxOutput),200, array('content-type' => 'application/json'));
             }
         }

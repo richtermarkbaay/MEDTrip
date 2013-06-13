@@ -435,6 +435,7 @@ var InstitutionMedicalCenter = {
             data: _formElement.serialize(),
             type: 'POST',
             success: function(response){
+            	$('#specialization_list_block').children('div').removeClass('disabled');
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_'+response.id).remove();
                 InstitutionMedicalCenter.displayCallout(response);
@@ -454,7 +455,6 @@ var InstitutionMedicalCenter = {
             	_form.parents('div.modal').modal('hide');
             	_button.html("Delete").attr('disabled', false);
             	$('#treatment_id_'+response.id).remove();
-            	InstitutionMedicalCenter.displayCallout(response);
             }
          });
     },

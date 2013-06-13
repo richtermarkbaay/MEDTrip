@@ -80,13 +80,13 @@ break the script.
 */
 $('form[name="specializationsForm"]').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
 	    var target = $(e.target);
-	    var subSpecializationContainerElem = target.parents('div.span6:first');
+	    var subSpecializationContainerElem = target.parents('div.control-group:first');
 	    subSpecializationContainerElem.find('input:checkbox[id^="treatments"]').prop('checked', target.is(':checked'));
 	});
 
 	$('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
 	    var target = $(e.target);
-	    var subSpecializationContainerElem = target.parents('div.span6:first');
+	    var subSpecializationContainerElem = target.parents('div.control-group:first');
 	    var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
 	    var checkedTreatmentElems = subSpecializationContainerElem.find('input:checkbox[id^="treatments"]:checked');
 

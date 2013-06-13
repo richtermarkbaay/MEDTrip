@@ -39,46 +39,59 @@ var InstitutionSpecialization = {
     },
     
     showAddTreatmentsForm: function(_linkElement) {
-        _linkElement = $(_linkElement);
-        _linkElement.hide();
-        _modifiableDiv = _linkElement.attr('href');
-        _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
-        _divToggle.hide();
-        $('#loader_text'+_linkElement.attr('data-target')).show();
-        $.ajax({
-            url: _divToggle.attr('data-href'),
-            type: 'GET',
-            dataType: 'html',
-            success: function(response){
-            	_divToggle.show();
-            	_divToggle.prev('#treatment_list').hide();
-            	_linkElement.next('#treatments-save').show();
-            	$(_modifiableDiv).show();
-            	$(_modifiableDiv).html(response);
-            	$('#loader_text'+_linkElement.attr('data-target')).hide();
-            	InstitutionSpecialization.treatmentsCheckBox();
-            }
-        });
+	   	 _linkElement = $(_linkElement);
+	   	 $('#new_specializationButton').attr("disabled", "disabled"); //set add new button to disabled
+	     _linkElement.hide();
+	     _modifiableDiv = _linkElement.attr('href');
+	     _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
+	     $('#specialization_list_block').children('div').addClass('disabled');
+	     
+		 if($(_modifiableDiv).html() == '' ){
+			 $(_modifiableDiv).hide();
+			 $(_divToggle.parents('.specializations-profile-listing')).addClass('process');
+             $('#loader_text'+_linkElement.attr('data-target')).show();
+          $.ajax({
+	          url: _divToggle.attr('data-href'),
+	          type: 'GET',
+	          dataType: 'html',
+	          success: function(response){
+	        	  $(_divToggle).slideDown('slow', function() {     
+		        	    $(_divToggle.parents('.specializations-profile-listing')).removeClass('disabled process');
+						$(_modifiableDiv).show();
+						$(_modifiableDiv).html(response);
+						InstitutionSpecialization.treatmentsCheckBox();
+						_linkElement.next('#treatments-save').show();
+	        	  });
+	          }
+	      });
+        } else{
+        	 $(_divToggle).slideDown('slow', function() {  
+	        	$(_divToggle.parents('.specializations-profile-listing')).removeClass('disabled');
+	    	    _linkElement.next('#treatments-save').show();
+        	 });
+        }
     },
     
     submitAddTreatmentsForm: function(_buttonElement) {
+    	$('#new_specializationButton').removeAttr('disabled');
     	_buttonElement = $(_buttonElement);
     	_buttonElement.hide();
         _form = _buttonElement.attr('href');
         _divToggle = $(_form).parent('#hca-specialization-content');
-        $('#loader_text'+_buttonElement.attr('data-target')).show();
+        $(_divToggle.parents('.specializations-profile-listing')).addClass('disabled process');
         $.ajax({
             url: $(_form).attr('action'),
             data: $(_form).serialize(),
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-            	_divToggle.hide();
-            	_buttonElement.prev('#specialization-button').show();
-                _divToggle.prev('#treatment_list').show();
+            	$(_divToggle.parents('.specializations-profile-listing')).removeClass('process');
             	_divToggle.prev('#treatment_list').html(response.html);
-//            	 $(_form).hide();
-            	 $('#loader_text'+_buttonElement.attr('data-target')).hide();
+            	_buttonElement.prev('#specialization-button').show();
+        		$(_divToggle).slideUp('slow', function() {
+        		   	$('#specialization_list_block').children('div').removeClass('disabled');
+					_divToggle.prev('#treatment_list').show();
+    			});
             },
             error: function (response) {
             }
@@ -109,11 +122,8 @@ var InstitutionSpecialization = {
             	}
             	  // insert new content after last specialization block
             	 $.each(response.html, function(_k, _v){
-            		 $(_v).insertAfter($('#specialization_list_block'));
+            		 $(_v).insertAfter($('#specialization_list_block div:first'));
             	 });
-              
-            	
-                InstitutionMedicalCenter.displayCallout(response);
                 _form.hide();
                 $('#new_specializationButton').show();
                 _button.html(_buttonHtml).attr('disabled', false);
@@ -152,7 +162,7 @@ var InstitutionSpecialization = {
         if(_target.length >1){
         	
         	  $.each(_target, function(_k, _v){
-              	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.parentNode.children.item('h4').children.item('label').children;
+              	_subSpecializationCheckbox = _v.parentNode.parentNode.parentNode.parentNode.children.item('label').children;
               	_subSpecializationCheckbox.subSpecialization.setAttribute("checked", "checked");
                });
 

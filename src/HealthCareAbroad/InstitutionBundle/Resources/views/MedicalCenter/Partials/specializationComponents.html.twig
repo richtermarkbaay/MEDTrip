@@ -1,13 +1,11 @@
  <div class="row-fluid specialization-edit-listing">
 {% for subSpecialization, treatments in specializationComponents %}
-<div class="span6">
-    <h4>
+<div class="control-group">
         <label > 
             <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
             {{ subSpecialization }}
         </label>
-    </h4>
-    <ul>
+    <ul class="specializations-listing">
         {% for treatment in treatments %}
             <li>
                 <label> 

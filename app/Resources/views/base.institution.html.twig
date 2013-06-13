@@ -37,10 +37,12 @@
                 padding: 0;
             }
         
+            #specialization_list_block > div,
             #doctorsList > div {
                 position: relative;
             }
             
+            #specialization_list_block > div.disabled,
             #doctorsList > div.disabled {
                 opacity: .3;
             }
@@ -49,6 +51,11 @@
                 opacity: 1;
             }
             
+            #specialization_list_block > div.disabled.process {
+                opacity: 1;
+            }
+            
+            #specialization_list_block > div.disabled:before,
             #doctorsList > div.disabled:before {
                 content: "";
                 z-index: 1;
@@ -78,6 +85,14 @@
                 text-align: center;
                 font-weight: bold;
                 content: "processing...";
+            }
+            
+            #specialization_list_block > div.disabled.process:before {
+                color: #FFFFFF;
+                content: "processing...";
+                font-weight: bold;
+                line-height: 135px;
+                text-align: center;            
             }
 
             .thumbnails li.thumbnail.hca-clinic-listing {
