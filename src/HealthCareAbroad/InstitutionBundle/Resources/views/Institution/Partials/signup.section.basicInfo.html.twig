@@ -5,6 +5,7 @@
              <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
                 <label for="institution-name">Name of the {{ label  }} *</label>
                 {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                {{ form_errors(form.name )}} 
                  <div class="tooltip-content2">
                      {% if (isSingleCenter is defined) and isSingleCenter %}
 	                      The full name of your {{ label | lower }}, which will be displayed as the main heading of your listing.

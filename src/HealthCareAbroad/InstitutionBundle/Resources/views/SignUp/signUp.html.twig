@@ -15,29 +15,10 @@
                    <div class="hca-sub-label">
                         The details you provide will be used to create your login credentials.
                     </div>
-                     {% if error %}
+                     {% if error_message %}
                         <div class="alert alert-error">
-                            {% for each in error_list %}
-                            	{{ each }} <br>
-                            {% endfor %}
+                            {{ error_message }}
                         </div>
-                    {% else %}
-                        {% for alert, message in app.session.flashes %}
-                        	{% if alert == 'warning' %}
-                        	    {% set class = '' %}
-                        	{% elseif alert == 'error' %}
-                        	    {% set class = 'alert-error' %}
-                        	{% elseif alert == 'success' %}
-                        	    {% set class = 'alert-success' %}
-                        	{% elseif (alert == 'notice') or alert == 'info' %}
-                        	    {% set class = 'alert-info' %}
-                        	{% else %}
-                        	    {% set class = '' %}
-                        	{% endif %}
-                            <div class="alert {{ class }}">
-                                {{ message | raw}}
-                            </div>
-                        {% endfor %}
                     {% endif %}
                     <div class="row-fluid">
                         <div class="span12">
@@ -45,12 +26,14 @@
                                 <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
                                     <label for="institutionSignUp_firstName">Your First Name *</label>
                                    {{ form_widget(form.firstName, { 'attr': {'class': 'span12'} }) }}
+                                   {{ form_errors(form.firstName) }}
                                 </div>
                             </div>
                             <div class="span6">
                                 <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
                                  <label for="institutionSignUp_lastName">Your Last Name *</label>
                                     {{ form_widget(form.lastName, { 'attr': {'class': 'span12'} }) }}
+                                    {{ form_errors(form.lastName ) }}
                                 </div>
                             </div>
                             <div class="control-group row-field">
@@ -64,6 +47,7 @@
                                     <small> (Your company email address.)  </small>
                                 </label>
                                 {{ form_widget(form.email, { 'attr': {'class': 'span6 tooltip-wrap2', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                                {{ form_errors(form.email) }}
                                     <div class="tooltip-content2 hca-email">
                                                 Your email address will be your username when you log in.
                                             </div>
@@ -73,10 +57,12 @@
                                     Set your password <small>( Must be atleast 6 characters long ) </small>
                                 </label>
                                {{ form_widget(form.password, { 'attr': {'class': 'span6'} }) }}
+                               {{ form_errors(form.password) }}
                             </div>
                              <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_confirmPassword"> Re-type your password </label>
                                    {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
+                                   {{ form_errors(form.confirm_password) }}
                             </div>
                         </div>
                     </div>
@@ -118,6 +104,8 @@
                                    <hr>
                                    {% endif %}
                                 {% endfor %}
+                                <br>
+                               <span class="pull-left"> {{ form_errors(form.type) }} </span> 
                         </div>
                     </div>
                 </section>
@@ -129,6 +117,8 @@
                                 <a href="{{ path('institution_terms_of_use') }}" target="_blank">Terms of Use</a> and 
                                 <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a> *.
                             </label>
+                            <br>
+                            <span class="pull-left">  {{ form_errors(form.agree_to_terms) }} </span>
                         </div>
                     </div>
                 </section>

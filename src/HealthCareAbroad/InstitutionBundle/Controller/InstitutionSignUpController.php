@@ -148,9 +148,8 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function signUpAction(Request $request)
     {
-        $error = false;
+        $error_message = false;
         $success = false;
-        $errorArr = array();
         // checking for security context here does not work since this is not firewalled
         // TODO: find a better approach
 //         if ($this->get('session')->get('institutionId')) {
@@ -214,20 +213,16 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
-            $error = true;
             $form_errors = $this->get('validator')->validate($form);
             if($form_errors){
-                foreach ($form_errors as $_err) {
-                    $errorArr[] = $_err->getMessage();
-                }
+                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
         }
 
         return $this->render('InstitutionBundle:SignUp:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'error' => $error,
-            'error_list' => $errorArr,
+            'error_message' => $error_message,
         ));
     }
 
@@ -372,9 +367,8 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileMultipleCenterAction(Request $request)
     {
-        $error = false;
+        $error_message = false;
         $success = false;
-        $errorArr = array();
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
 
@@ -427,14 +421,10 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 return $this->redirect($redirectUrl);
             }
-            $error = true;
             $form_errors = $this->get('validator')->validate($form);
 
-
             if($form_errors){
-                foreach ($form_errors as $_err) {
-                    $errorArr[] = $_err->getMessage();
-                }
+                   $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
         }
         
@@ -447,8 +437,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
-            'error' => $error,
-            'error_list' => $errorArr,
+            'error_message' => $error_message,
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
         ));
     }

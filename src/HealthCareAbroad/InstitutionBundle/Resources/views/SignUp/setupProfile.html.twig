@@ -2,29 +2,10 @@
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
             <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
-                {% if error %}
+                {% if error_message %}
                     <div class="alert alert-error">
-                        {% for each in error_list %}
-                        	{{ each }} <br>
-                        {% endfor %}
+                        {{ error_message }}
                     </div>
-                {% else %}
-                    {% for alert, message in app.session.flashes %}
-                    	{% if alert == 'warning' %}
-                    	    {% set class = '' %}
-                    	{% elseif alert == 'error' %}
-                    	    {% set class = 'alert-error' %}
-                    	{% elseif alert == 'success' %}
-                    	    {% set class = 'alert-success' %}
-                    	{% elseif (alert == 'notice') or alert == 'info' %}
-                    	    {% set class = 'alert-info' %}
-                    	{% else %}
-                    	    {% set class = '' %}
-                    	{% endif %}
-                        <div class="alert {{ class }}">
-                            {{ message | raw}}
-                        </div>
-                    {% endfor %}
                 {% endif %}
 
                 {% include 'InstitutionBundle:Institution/Partials:signup.section.basicInfo.html.twig' %}
