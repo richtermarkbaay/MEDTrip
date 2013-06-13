@@ -26,15 +26,20 @@ class MediaGalleryController extends InstitutionAwareController
             }
         }
 
+        var_dump($params['mediaClinics']);
+
         return $this->render('InstitutionBundle:MediaGallery:index.html.twig', $params);
     }
     
     public function uploadAction(Request $request)
     {
-        $result = array();
+        $result = array('status' => false);
         if($file = $request->files->get('file')) {
             $media = $this->get('services.institution.media')->uploadToGallery($file, $this->institution, true);
-            $result['mediaId'] = $media->getId();
+            if($media) {
+                $result['status'] = true;
+                $result['mediaId'] = $media->getId();               
+            }
         }
 
         return new Response(json_encode($result), 200, array('Content-Type' => 'application/json'));
@@ -66,25 +71,21 @@ class MediaGalleryController extends InstitutionAwareController
     {
         $mediaData = $request->get('media');
 
+        var_dump($request->request->all());
+        
+        
         $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
-        $media = $em->getRepository('MediaBundle:Media')->getMediaByIds($mediaData['id']);
-
-        var_dump($mediaData);
+        $media = $em->getRepository('MediaBundle:Media')->find($mediaData['id']);
+        var_dump($media);
         exit;
-
-        $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
-        $media = $em->getRepository('MediaBundle:Media')->getMediaByIds($mediaIds);
-    
-        foreach($this->institution->getInstitutionMedicalCenters() as $each) {
-            if(in_array($each->getId(), $medicalCenterIds)) {
-                foreach($media as $medium) {
-                    $each->addMedia($medium);
-                    $em->persist($each);
-                }
-            }
+        if($media) {
+            $media->setCaption($mediaData['caption']);
+            
         }
+
+
     
-        $em->flush();
+
     
         return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
     }

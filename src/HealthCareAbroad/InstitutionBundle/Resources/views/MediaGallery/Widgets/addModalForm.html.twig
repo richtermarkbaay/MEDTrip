@@ -4,30 +4,40 @@
     <div class="tabbable">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#pane1" data-toggle="tab"><i class="icon-upload"></i>Upload Photo</a></li>
-           {# <li><a href="#pane2" data-toggle="tab"><i class="icon-facetime-video"></i>Add Video</a></li> #}
+           <!--<li><a href="#pane2" data-toggle="tab"><i class="icon-facetime-video"></i>Add Video</a></li> -->
         </ul>
         <div class="tab-content">
             <div id="pane1" class="tab-pane active">
-                <form name="institutionMedia" action="{{ path('institution_mediaGallery_linkFileToClinics') }}" enctype="multipart/form-data" method="post">
-                    <div id="custom-dropzone" class="dropzone">
-                            <div id="previews" class="dropzone-previews"></div>
-                            <input name="file" type="file" accept="image/*" style="visibility:hidden"/>
-                            <div class="dropzone-controls">
-                                <label>Drag Photo or if you prefer...</label>
-                                <span id="clickable" class="btn btn-primary">
-                                    Select Photo from your Computer
-                                </span>
-                            </div>
+                <!-- form id="custom-dropzone" class="dropzone" action="{{ path('institution_mediaGallery_upload') }}">
+                    <div class="dropzone-controls">
+                        <label>Drag Photo or if you prefer...</label>
+                        <span class="btn btn-primary" onclick="$('#custom-dropzone').click()">
+                            Select Photo from your Computer
+                        </span>
                     </div>
+                </form -->
+                
+                <div id="custom-dropzone" class="dropzone">
+                    <div id="previews" class="dropzone-previews"></div>
+                    <input name="file" type="file" accept="image/*" style="visibility:hidden"/>
+                    <div class="dropzone-controls">
+                        <label>Drag Photo or if you prefer...</label>
+                        <span class="btn btn-primary" id="clickable">
+                            Select Photo from your Computer
+                        </span>
+                    </div>
+                </div>
+                
+                <form id="addInstitutionMediaForm" action="{{ path('institution_mediaGallery_linkFileToClinics') }}" enctype="multipart/form-data" method="post">
                     <input type="hidden" name="media_ids" id="mediaIds">
-
                     <p><small>Maximum upload file size:</small>2MB</p>
 
                     {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
 
-                    <div class="align-right">
-                        <a href="#" onclick="$('#add-media').modal('hide')" class="btn">Cancel</a> &nbsp;
-                        <button class="btn btn-primary" type="submit"><i class="icon-save"></i>Save Changes</button>
+                    <div class="align-right action-buttons">
+                        <button class="btn cancel" onclick="$('#add-media').modal('hide')" type="button">Cancel</button> &nbsp;
+                        <button class="btn btn-primary save" type="submit" disabled="disabled"><i class="icon-save"></i>Save Changes</button> &nbsp;
+                        <button class="btn btn-success done" onclick="$('#add-media').modal('hide');" disabled="disabled" type="button">Done</button>
                     </div>
                 </form>
             </div>
@@ -73,22 +83,42 @@
 <script type="text/javascript" src="/js/dropzone.js" ></script>
 
 <script type="text/javascript">
-$(function(){
-    $("#custom-dropzone").dropzone({
-        url: "{{ path('institution_mediaGallery_upload') }}", // Set the url
-        method: "post",
-        previewsContainer: "#previews", // Define the container to display the previews
-        clickable: "#clickable", // Define the element that should be used as click trigger to select files.
-        success: function(file, response){
-            console.log(response);
-            if($('#mediaIds').val() != '') {
-            	$('#mediaIds').val($('#mediaIds').val() + ',' + response.mediaId);
-            } else {
-            	$('#mediaIds').val(response.mediaId);
-            }
+    $(function(){
+    
+    	Dropzone.autoDiscover = false;
+    	var addMediaFormElem = $('#addInstitutionMediaForm');
+    
+        $("#custom-dropzone").dropzone({
+            url: "{{ path('institution_mediaGallery_upload') }}",
+            method: "post",
+            clickable: "#clickable",
+            previewsContainer: "#previews",
+            
+            sending: function(file) {
+                addMediaFormElem.find('.action-buttons > button').attr('disabled', 'disabled');
+            },
 
-        }
-    });	
-});
+            success: function(file, response) {
+                if(response.status) {
+                	$(file.previewTemplate).addClass('success');
+                	$('#mediaIds').val($('#mediaIds').val() == '' ? response.mediaId : $('#mediaIds').val() + ',' + response.mediaId);
+                	addMediaFormElem.find('.medical-center-checkbox:first').change();
+                	addMediaFormElem.find('.action-buttons > button.cancel').remove();
+                	addMediaFormElem.find('.action-buttons > button.done').removeAttr('disabled');
+                } else {
+                	$(file.previewTemplate).addClass('error');
+                }
+            }
+        });
+
+        addMediaFormElem.find('.medical-center-checkbox').change(function() {
+            
+            if($('#mediaIds').val() != '' && addMediaFormElem.find('.medical-center-checkbox:checked').length) {
+            	addMediaFormElem.find('.action-buttons > button').removeAttr('disabled');
+            } else {
+            	addMediaFormElem.find('.action-buttons > button.save').attr('disabled', 'disabled');
+            }
+        });
+    });
 </script>
 {% endblock %}

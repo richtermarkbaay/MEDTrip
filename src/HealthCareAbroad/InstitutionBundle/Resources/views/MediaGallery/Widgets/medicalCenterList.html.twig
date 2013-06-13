@@ -10,7 +10,7 @@
         {% for center in medicalCenters %}
         <li>
             <label style="font-weight:normal">
-                <input type="checkbox" class="pull-left" value="{{ center.id }}" name="medical_center_ids[]" {% if center.id in selectedClinics %}checked="checked"{% endif %} style="margin-top: 0">
+                <input type="checkbox" class="pull-left medical-center-checkbox" value="{{ center.id }}" name="medical_center_ids[]" {% if center.id in selectedClinics %}checked="checked"{% endif %} style="margin-top: 0">
                 {{ center.name }}
             </label>
         </li>

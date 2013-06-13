@@ -9,13 +9,20 @@ institution_mediaGallery_upload:
     defaults: { _controller: InstitutionBundle:MediaGallery:upload }
     requirements:
         _method: POST
-        
+
 institution_mediaGallery_linkFileToClinics: 
     pattern: /link-file-to-clinics
     defaults: { _controller: InstitutionBundle:MediaGallery:linkFileToClinics }
     requirements:
         _method: POST
-        
+
+institution_mediaGallery_update: 
+    pattern: /update-media
+    defaults: { _controller: InstitutionBundle:MediaGallery:updateMedia }
+    requirements:
+        _method: POST
+        mediaId: \d+
+
 institution_mediaGallery_delete:
     pattern: /media-gallery/delete
     defaults: { _controller: InstitutionBundle:MediaGallery:delete }

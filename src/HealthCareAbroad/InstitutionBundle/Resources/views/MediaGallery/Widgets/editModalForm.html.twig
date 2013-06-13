@@ -1,14 +1,14 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-media-' ~ media.id, class: 'hca-file-modal', 'title': 'Edit Media' }} %}
     {% block modalBody %}            
 
-        <form action="{{ path('institution_mediaGallery_linkFileToClinics') }}" enctype="multipart/form-data" method="post">
+        <form action="{{ path('institution_mediaGallery_update') }}" method="post">
         
             <div class="row-fluid control-group">
                 <img src="{{ institution_media_src(media) }}" alt="photo" style="width: auto; height: auto; margin: 0 auto;border: 1px solid #EFEFEF"/>
                 <br>
                 <label>Image Title</label>
                 <input type="text" class="span10" value="{{ media.caption }}" name="media[caption]">
-                <input type="hidden" value="{{ media.id }}" name="media[caption]">
+                <input type="hidden" value="{{ media.id }}" name="media[id]">
 
                 <p style="margin: 10px 0 15px">
                     <i class="icon-calendar pull-left" style="margin-top:3px"></i>Uploaded on: <b>{{ media.dateCreated.date }}</b>, &nbsp;
@@ -21,7 +21,7 @@
                 {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' %}
                                 
                 <div class="align-right">
-                    <a onclick="$('#edit-media-{{ media.id }}').modal('hide')" href="javascript:void(0)" class="btn">Cancel</a> &nbsp;
+                    <button class="btn cancel" onclick="$('#edit-media-{{ media.id }}').modal('hide')" type="button">Cancel</button> &nbsp;
                     <button type="submit" class="btn btn-primary"><i class="icon-save"></i>Save Changes</button>
                 </div>
             </div>
