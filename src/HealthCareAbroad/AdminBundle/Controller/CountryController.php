@@ -71,8 +71,14 @@ class CountryController extends Controller
            $form->bind($request);
 
            if ($form->isValid()) {
-               $em->persist($country);
-               $em->flush($country);
+               if(!$id) {
+                    $this->get('services.location')->saveGlobalCountry($request->get('country'));                   
+               }
+               else {
+                   $em->persist($country);
+                   $em->flush($country);
+               }
+               
 
                // dispatch event
                $eventName = $id ? AdminBundleEvents::ON_EDIT_COUNTRY : AdminBundleEvents::ON_ADD_COUNTRY;

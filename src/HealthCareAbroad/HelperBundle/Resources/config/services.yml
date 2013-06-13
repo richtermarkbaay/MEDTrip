@@ -2,6 +2,7 @@ parameters:
     services.chromedia_request_class: HealthCareAbroad\HelperBundle\Services\ChromediaGlobalRequest
     services.create_invitation_class: HealthCareAbroad\HelperBundle\Services\CreateInvitation
     services.location_class: HealthCareAbroad\HelperBundle\Services\LocationService
+    services.contact_detail_class: HealthCareAbroad\HelperBundle\Services\ContactDetailService
     services.invitation_class: HealthCareAbroad\HelperBundle\Services\InvitationService
     services.token_class: HealthCareAbroad\HelperBundle\Services\TokenService
     #services.alert_class: HealthCareAbroad\HelperBundle\Services\AlertService
@@ -65,6 +66,7 @@ services:
             - [setChromediaGlobalRequest, [@services.chromedia_request]]
             - [setChromediaApiUri, [%chromedia_api_uri%]]
             - [setDoctrine, [@doctrine]]
+            - [setChromediaLocationApiUri, [%chromedia_country_api_uri%]]
 
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService

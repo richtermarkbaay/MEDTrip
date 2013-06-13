@@ -22,7 +22,7 @@ class LocationService
 	/**
 	 * @var string
 	 */
-	private $chromediaApiUri;
+	private $chromediaLocationApiUri;
 	
 	/**
 	 * @var LocationService
@@ -37,6 +37,11 @@ class LocationService
 	public function setChromediaApiUri($uri)
 	{
 	    $this->chromediaApiUri = $uri;
+	}
+	
+	public function setChromediaLocationApiUri($uri)
+	{
+	    $this->chromediaLocationApiUri = $uri;
 	}
 	
 	public function setChromediaGlobalRequest(ChromediaGlobalRequest $request)
@@ -60,6 +65,25 @@ class LocationService
         }
         
         return $this->loadedGlobalCountryList[$id];
+	}
+	
+	public function saveGlobalCity(array $data)
+	{
+	    $countryId = $data['country'];
+	    $city = $data['name'];
+	    $cityStatus = $data['status'];
+	    
+	    return $this->request->get($this->chromediaLocationApiUri.'/country/'.$countryId.'/'.$city.'/'.$cityStatus);
+	    
+	}
+	
+	public function saveGlobalCountry(array $data)
+	{
+	    $name = $data['name'];
+	    $status = $data['status'];
+	    
+	    return $this->request->get($this->chromediaLocationApiUri.'/country/'.$name.'/'.$status);
+	    
 	}
 	
 	public function getGlobalCountryList()
