@@ -26,7 +26,7 @@ class MediaGalleryController extends InstitutionAwareController
             }
         }
 
-        var_dump($params['mediaClinics']);
+        //var_dump($params['mediaClinics']);
 
         return $this->render('InstitutionBundle:MediaGallery:index.html.twig', $params);
     }
@@ -71,7 +71,7 @@ class MediaGalleryController extends InstitutionAwareController
     {
         $mediaData = $request->get('media');
 
-        var_dump($request->request->all());
+        //var_dump($request->request->all());
         
         
         $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
