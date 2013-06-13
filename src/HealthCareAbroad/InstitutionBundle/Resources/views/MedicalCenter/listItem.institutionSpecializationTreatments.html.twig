@@ -1,5 +1,6 @@
-<div class="specializations-listing-profile" id="specialization_{{each.id}}">
-    <div class="hca-specialization-details hca-edit">
+
+<div class="specializations-profile-listing" id="specialization_{{each.id}}">
+    <div class="specializations-heading">
     	<a data-target="#deleteSpecialization{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
             <i class="icon-remove-sign pull-right"></i>
         </a>
@@ -10,17 +11,14 @@
         <em id="loader_text{{ each.specialization.id }}" style="display:none;" class="pull-right loading-specializations">Loading please wait...</em>
         <span>
             {% if each.specialization.media %}
-                <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left">
+                <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left img-polaroid">
             {% else %}
-                <img src="" class="pull-left" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
+                <img src="" class="pull-left img-polaroid" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
             {% endif %}
         </span>
-        <b>{{ each.specialization.name }}</b>
+        <h3>{{ each.specialization.name }}</h3>
     </div>
-    <div id="treatment_list">
-     {% include 'InstitutionBundle:MedicalCenter:list.treatments.html.twig'  %}
-     </div>
-    <div id="hca-specialization-content" class="row-fluid terms" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
+    <div id="hca-specialization-content" class="hca-hidden-content specializations-profile-listing" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
        <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post">
         </form>
     </div>

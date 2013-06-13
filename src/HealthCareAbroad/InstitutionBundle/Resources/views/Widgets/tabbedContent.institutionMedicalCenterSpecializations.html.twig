@@ -1,9 +1,8 @@
+{% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-      <section class="section action-info hca-main-profile" id="specialization_list_block">
-      <h3> Specialization </h3>
-        {% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
-                    
+    <h3> Specialization </h3>
+      <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
         {% else %}
@@ -18,6 +17,7 @@
             </div>
         {% endfor %}
     </section>
+    <br>
      <section class="section action-info hca-main-profile">
         <div class="hca-display-specializations">
             <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary btn-edit pull-right">Add New Specializations</button>

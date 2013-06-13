@@ -513,7 +513,7 @@ class MedicalCenterController extends InstitutionAwareController
                     $em->flush();
                     
                     if ($request->isXmlHttpRequest()) {
-                        $ajaxOutput['html'] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
+                        $ajaxOutput['html'][] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
                             'each' => $_institutionSpecialization,
                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
                             'commonDeleteForm' => $commonDeleteForm->createView()

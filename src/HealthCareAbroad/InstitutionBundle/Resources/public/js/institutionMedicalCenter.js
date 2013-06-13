@@ -183,7 +183,7 @@ var InstitutionMedicalCenter = {
     	
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $(_linkElement).parent().find('b').html();
+        _name = $(_linkElement).parent().find('h3').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
         _modal.modal('show');
@@ -425,6 +425,7 @@ var InstitutionMedicalCenter = {
     // this function is closely coupled to element structure in client admin
     //
     submitRemoveSpecializationForm: function(_formElement) {
+    	InstitutionMedicalCenter.clearCallout();
         _button = _formElement.find('button.delete-button');
         _currentHtml = _button.html();
         _button.attr('disabled', true)
@@ -537,6 +538,10 @@ var InstitutionMedicalCenter = {
         }
 
         $('#featured').hide().fadeIn(2000);
+    },
+    
+    clearCallout: function() {
+    	$('#content').prevAll('div.row-fluid').remove();
     }
 }
 

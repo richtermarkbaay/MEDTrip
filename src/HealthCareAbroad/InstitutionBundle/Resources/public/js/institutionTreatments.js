@@ -43,14 +43,14 @@ var InstitutionSpecialization = {
         _linkElement.hide();
         _modifiableDiv = _linkElement.attr('href');
         _divToggle = $(_modifiableDiv).parent('#hca-specialization-content');
-        _divToggle.show();
-        
+        _divToggle.hide();
         $('#loader_text'+_linkElement.attr('data-target')).show();
         $.ajax({
             url: _divToggle.attr('data-href'),
             type: 'GET',
             dataType: 'html',
             success: function(response){
+            	_divToggle.show();
             	_divToggle.prev('#treatment_list').hide();
             	_linkElement.next('#treatments-save').show();
             	$(_modifiableDiv).show();
@@ -66,7 +66,6 @@ var InstitutionSpecialization = {
     	_buttonElement.hide();
         _form = _buttonElement.attr('href');
         _divToggle = $(_form).parent('#hca-specialization-content');
-//        $(_form).find('.specializations-edit-listing').hide();
         $('#loader_text'+_buttonElement.attr('data-target')).show();
         $.ajax({
             url: $(_form).attr('action'),
@@ -74,10 +73,11 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function (response) {
+            	_divToggle.hide();
             	_buttonElement.prev('#specialization-button').show();
                 _divToggle.prev('#treatment_list').show();
             	_divToggle.prev('#treatment_list').html(response.html);
-            	 $(_form).hide();
+//            	 $(_form).hide();
             	 $('#loader_text'+_buttonElement.attr('data-target')).hide();
             },
             error: function (response) {
@@ -92,6 +92,7 @@ var InstitutionSpecialization = {
      * @param DOMElement button
      */
     submitAddSpecialization: function(domButtonElement) {
+    	InstitutionMedicalCenter.clearCallout();
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html('Processing...').attr('disabled', true);
@@ -106,8 +107,12 @@ var InstitutionSpecialization = {
             	if($('#specialization_list_block').find('div.alert-block')){
             		$('#specialization_list_block').find('div.alert-block').hide();
             	}
-                // insert new content after last specialization block
-            	$(response.html).insertAfter($('#specialization_list_block h3'));
+            	  // insert new content after last specialization block
+            	 $.each(response.html, function(_k, _v){
+            		 $(_v).insertAfter($('#specialization_list_block'));
+            	 });
+              
+            	
                 InstitutionMedicalCenter.displayCallout(response);
                 _form.hide();
                 $('#new_specializationButton').show();
