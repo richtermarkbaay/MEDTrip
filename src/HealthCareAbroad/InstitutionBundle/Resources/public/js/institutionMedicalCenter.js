@@ -183,7 +183,7 @@ var InstitutionMedicalCenter = {
     	
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
-        _name = $(_linkElement).parent().find('h3').html();
+        _name = $(_linkElement).parent().find('h4').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
         _modal.modal('show');
