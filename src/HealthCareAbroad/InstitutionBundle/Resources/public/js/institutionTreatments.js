@@ -75,7 +75,6 @@ var InstitutionSpecialization = {
     submitAddTreatmentsForm: function(_buttonElement) {
     	$('#new_specializationButton').removeAttr('disabled');
     	_buttonElement = $(_buttonElement);
-    	_buttonElement.hide();
         _form = _buttonElement.attr('href');
         _divToggle = $(_form).parent('#hca-specialization-content');
         $(_divToggle.parents('.specializations-profile-listing')).addClass('disabled process');
@@ -85,6 +84,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function (response) {
+            	_buttonElement.hide();
             	InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully added treatment' , 'success');
             	$(_divToggle.parents('.specializations-profile-listing')).removeClass('process');
             	_divToggle.prev('#treatment_list').html(response.html);
@@ -95,6 +95,8 @@ var InstitutionSpecialization = {
     			});
             },
             error: function (response) {
+            	$(_divToggle.parents('.specializations-profile-listing')).removeClass('disabled');
+            	InstitutionMedicalCenter.displayAlert(response.responseText, 'error');
             }
         });
     },
@@ -123,7 +125,7 @@ var InstitutionSpecialization = {
             	}
             	  // insert new content after last specialization block
             	 $.each(response.html, function(_k, _v){
-            		 if ($('#specialization_list_block div:first').html() == ''){
+            		 if ($('#specialization_list_block').html() == ''){
             			 $('#specialization_list_block').html(_v);
             		 }else{
             			 $(_v).insertBefore($('#specialization_list_block div:first'));

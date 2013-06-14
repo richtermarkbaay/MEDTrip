@@ -1,6 +1,6 @@
 
-<div class="specializations-profile-listing" id="specialization_{{each.id}}">
-    <div class="specializations-heading">
+<div class="specializations-profile-listing" id="specialization_{{each.id}}" >
+    <div class="specializations-heading" style=" min-height: 35px;padding: 10px;">
     	<a data-target="#deleteSpecialization{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
             <i class="icon-remove-sign pull-right"></i>
         </a>
@@ -10,16 +10,15 @@
             <i class="icon-ok pull-right"></i></a>
         <span>
             {% if each.specialization.media %}
-                <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left img-polaroid">
+                <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left img-polaroid" >
             {% else %}
-                <img src="" class="pull-left img-polaroid" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
+                <img src="" class="pull-left img-polaroid" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 50px;margin: -4px 5px 0 0;">
             {% endif %}
         </span>
         <h4>{{ each.specialization.name }}</h4>
     </div>
     <div id="hca-specialization-content" style="display:none" class="hca-hidden-content specializations-profile-listing" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post">
-        </form>
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post"></form>
     </div>
 
     <div id="deleteSpecialization{{ each.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

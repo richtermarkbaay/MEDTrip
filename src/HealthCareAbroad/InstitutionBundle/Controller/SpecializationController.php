@@ -141,25 +141,27 @@ class SpecializationController extends InstitutionAwareController
                             $default_choices[$_t->getId()] = $_t->getName();
                             $institutionSpecialization->addTreatment($_t);
                         }
-                    }
-                    $form = $this->createForm('institutionSpecialization', $institutionSpecialization, array('default_choices' =>$default_choices ));
-                    $form->bind($_data);
-                    if ($form->isValid()) {
+                        $form = $this->createForm('institutionSpecialization', $institutionSpecialization, array('default_choices' =>$default_choices ));
+                        $form->bind($_data);
+                        if ($form->isValid()) {
                             $em->persist($institutionSpecialization);
                             $em->flush();
-        
+                        
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
                                             'each' => array( 'treatments' => $_treatment_choices) ,
                             ));
-                    }
-                    else {
-                        $errors[] = 'Failed form validation';
+                        }
+                        else {
+                            $errors[] = 'Failed form validation';
+                        }
+                    } else{
+                        $errors = 'Please select at least one treatment';
                     }
                 }
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
             if (\count($errors) > 0) {
-                $response = new Response('Errors: '.implode('\n',$errors), 400);
+                $response = new Response($errors, 400);
             }
         }else{
         
