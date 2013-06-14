@@ -1,7 +1,7 @@
     <div class="row">
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
-            <form name="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
+            <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
                 {% if error_message %}
                     <div class="alert alert-error">
                         {{ error_message }}

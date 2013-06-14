@@ -13,6 +13,7 @@
                             {{ form.children.contactEmail.vars.label }}
                         </label>
                         {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                        {{ form_errors(form.contactEmail )}}
                     </div>
                   <div class="contactDetails control-group span6">
                         {% for _widget in form.contactDetails %}

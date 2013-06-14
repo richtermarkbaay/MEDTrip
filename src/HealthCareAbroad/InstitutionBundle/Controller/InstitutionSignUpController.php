@@ -273,7 +273,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileSingleCenterAction()
     {
-        $error = false;
+        $error_message = false;
         $success = false;
         $errorArr = array();
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
@@ -337,11 +337,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form_errors = $this->get('validator')->validate($form);
 
             if($form_errors){
-
-                foreach ($form_errors as $_err) {
-
-                    $errorArr[] = $_err->getMessage();
-                }
+                $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
         }
 
@@ -354,8 +350,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
             'isSingleCenter' => true,
-            'error' => $error,
-            'error_list' => $errorArr,
+            'error_message' => $error_message,
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
         ));
     }
