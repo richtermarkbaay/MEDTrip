@@ -43,7 +43,7 @@
 
             {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
             {{ form_widget(institutionForm.coordinates) }}
-             <div class="row-fluid terms">
+             <div class="terms">
                 <div class="country control-group span5">
                         <label for="{{ institutionForm.children.country.vars.id }}">
                             {{ institutionForm.children.country.vars.label }}
@@ -58,7 +58,7 @@
                 </div>
                 
             </div>
-            <div class="row-fluid terms">
+            <div class="terms">
                 <div class="state control-group span5">
                         {{ form_label(institutionForm.state) }}
                         {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}

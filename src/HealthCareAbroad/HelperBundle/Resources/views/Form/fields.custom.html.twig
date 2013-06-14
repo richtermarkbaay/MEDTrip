@@ -99,7 +99,7 @@
     {% spaceless %}
 
         {% set elemIdPrefix = form.parent.vars.name ~ '_' ~ form.vars.name %}
-        <div class="row-fluid terms">
+        <div class=" terms">
             <div class="span4">
                 <div class="control-group">
                     <label for="Unit/Room">Unit/Room # <small>(Optional)</small></label>
@@ -116,6 +116,13 @@
         <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
             <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address</label>
             <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
+            {% if errors%}
+            <ul>
+                {% for error in errors %}
+                   <li> {{ error.message }} </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </div>
 
     {% endspaceless %}
@@ -218,15 +225,14 @@
 
 {% block fancy_country_widget %}
     {% spaceless %}
+   
         <div class="fancy-country-wrapper">
             {% set cityField = form.parent.vars.value.city is defined ? form.parent.vars.value.city : false %}
             {% set city = cityField ? form.parent.vars.value.city.id : 0 %}
             {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}            
             {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
-
             <input type="hidden" id="{{ elemId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
             <input required="required" type="text" id="input-{{ elemId }}" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
-
             <button class="btn hca-location-btn show_list_btn" type="button">
                 <span class="icon-chevron-down"></span>
             </button>
@@ -285,7 +291,7 @@
             <button type="button" class="btn" id="btn-{{ elemId }}" data-elem="btn"><span class="icon-chevron-down"></span></button>
             <ul id="select-{{ elemId }}" class="custom-select-list" data-elem="list">
                 {% if choices|length and empty_value %}
-                <li class="custom-select-item" data-value="">{{ empty_value }}</li>
+               {# <li class="custom-select-item" data-value="">{{ empty_value }}</li> #} {# temporary comment out #} 
                 {% endif %}
                 {% for value, label in choices %}
                     <li class="custom-select-item" data-value="{{ value }}">{{ label }}</li>
