@@ -102,7 +102,23 @@ var InstitutionMedicalCenter = {
     	}
     	
     },
-    
+
+    /* Added by: Adelbert Silla toggle edit/view mode */
+    toggleForm: function(elem) {
+    	viewElem = $(elem.attr('data-view-elem'));
+    	editElem = $(elem.attr('data-edit-elem'));
+    	if(viewElem.is(':visible')) {
+        	viewElem.hide();
+        	editElem.slideDown('slow');
+        	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
+    	} else {
+        	editElem.slideUp('slow', function(){
+        		viewElem.fadeIn();
+            	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+        	});
+    	}
+    },
+
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -262,8 +278,7 @@ var InstitutionMedicalCenter = {
         	_form = _button.parents('div#edit-medical-center-name').find('form');
         	_parent = _button.parents('div#edit-medical-center-name');
         }
-        _divToShow = _button.parents('section.hca-main-profile').find('div.show');
-    	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
+        _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         _data = _form.serialize();
         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         _parent.find('.error').removeClass('error');
@@ -327,7 +342,7 @@ var InstitutionMedicalCenter = {
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
                     		$("#alertDiv").attr('class', ' ');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#contactNumber" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#institution-edit-contacts-btn\')); " class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Clinic Website</a>');
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}
 						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
@@ -365,9 +380,7 @@ var InstitutionMedicalCenter = {
                     	break;
                 } 
                 _button.html(_buttonHtml).attr('disabled', false);
-                _divToShow.prev().show();
-                _divToShow.show();
-                _divToHide.hide();
+                _editButton.click();
                 // Display Callout Message
 //                InstitutionMedicalCenter.displayCallout(response);
             },

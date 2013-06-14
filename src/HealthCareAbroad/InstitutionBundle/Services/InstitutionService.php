@@ -136,7 +136,7 @@ class InstitutionService
 
         if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h, i, j')->from('InstitutionBundle:Institution', 'a')
+            $qb->select('a, b, c, d, e, f, g, h, i, j, k, l')->from('InstitutionBundle:Institution', 'a')
             ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
             ->leftJoin('b.institutionSpecializations', 'c')
             ->leftJoin('c.specialization', 'd')
@@ -146,6 +146,8 @@ class InstitutionService
             ->leftJoin('a.logo', 'h')
             ->leftJoin('b.doctors', 'i')
             ->leftJoin('i.specializations', 'j')
+            ->leftJoin('a.contactDetails', 'k')
+            ->leftJoin('a.institutionGroups', 'l')
             ->where('a.slug = :institutionSlug')
             ->andWhere('a.status = :status')
             ->setParameter('institutionSlug', $slug)
@@ -157,6 +159,32 @@ class InstitutionService
             $isLoaded = true;
         }
         
+        return self::$institution;
+    }
+    
+    public function getFullInstitutionById($id = null)
+    {
+        static $isLoaded = false;
+
+        if(!$isLoaded) {
+            $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+            $qb->select('a, b, c, d, e, f, g, h, i')->from('InstitutionBundle:Institution', 'a')
+            ->leftJoin('a.country', 'b')
+            ->leftJoin('a.city', 'c')
+            ->leftJoin('a.logo', 'd')
+            ->leftJoin('a.featuredMedia', 'e')
+            ->leftJoin('a.contactDetails', 'f')
+            ->leftJoin('a.medicalProviderGroups', 'g')
+            ->leftJoin('a.gallery', 'h')
+            ->leftJoin('h.media', 'i')
+            ->where('a.id = :id')
+            ->setParameter('id', $id);
+
+            self::$institution = $qb->getQuery()->getOneOrNullResult();
+    
+            $isLoaded = true;
+        }
+    
         return self::$institution;
     }
     

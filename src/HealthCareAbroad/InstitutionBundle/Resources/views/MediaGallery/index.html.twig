@@ -15,7 +15,11 @@
                 <div class="span12">
                     <table class="table table-hover hca-media">
                         <thead>
-                            <tr><th>file</th><th>Published In</th><th>actions</th></tr>
+                            <tr>
+                                <th>file</th>
+                                <th>{% if not isSingleCenter %}Published In{% endif %}</th>
+                                <th>actions</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {% set thumbnail = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
@@ -28,6 +32,7 @@
                                     <span class="type" style="margin:0">{{ each.contentType }}</span>
                                 </td>
                                 <td>
+                                {% if not isSingleCenter %}
                                     {% if hasClinics %}
                                         {% for center in medicalCenters %}
                                             {% if center.id in mediaClinics[each.id] %}
@@ -35,7 +40,9 @@
                                             {% endif %} 
                                         {% endfor %}
                                     {% endif %}
+                                {% endif %}
                                 </td>
+                                
                                 <td>
                                     <div class="btn-group">
                                         <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(mediaClinics[each.id]) : [] }}"><i class="icon-edit"></i>edit</a>

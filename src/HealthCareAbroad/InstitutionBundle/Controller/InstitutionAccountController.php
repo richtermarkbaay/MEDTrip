@@ -121,7 +121,7 @@ class InstitutionAccountController extends InstitutionAwareController
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
             
             $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-            
+
             if (\is_null($this->institutionMedicalCenter)) {
                 $this->institutionMedicalCenter = new InstitutionMedicalCenter();
             }
@@ -166,6 +166,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
             );
         }
+
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $params);
     }
 

@@ -18,9 +18,11 @@
 
                     Dimensions: <b>{{ media.width }}x{{ media.height }}</b>
                 </p>
+                
+                {% if not isSingleCenter %}
+                    {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' %}
+                {% endif %}
 
-                {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' %}
-                                
                 <div class="align-right">
                     <button class="btn cancel" onclick="$('#edit-media-{{ media.id }}').modal('hide')" type="button">Cancel</button> &nbsp;
                     <button type="submit" class="btn btn-primary"><i class="icon-save"></i>Save Changes</button>

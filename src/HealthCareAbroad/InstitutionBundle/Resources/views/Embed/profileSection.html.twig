@@ -1,0 +1,10 @@
+<section class="section action-info hca-main-profile">
+    <a id="{{ toggleBtnId }}" class="btn btn-misc pull-right btn-default btn-edit" data-edit-elem="#{{ editElemId }}" data-view-elem="#{{ viewElemId }}" onclick="InstitutionProfile.toggleForm($(this))">Edit</a>
+    <h3>{{ title|raw }} {% block headingHelptext %}{% endblock %}</h3>
+    <div id="{{ viewElemId }}">
+        {% block viewContent %}{% endblock %}
+    </div>
+    <div id="{{ editElemId }}" class="row-fluid hca-edit-box" style="display:none;">
+        {% block editContent %}{% endblock %}
+    </div>
+</section>

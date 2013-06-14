@@ -32,6 +32,23 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+            #content section.section.hca-main-profile a:not(.btn-misc) + h3 {
+                background-color: #BBBBBB;
+                color: #7B7B7B;
+                font-size: 160%;
+                font-weight: normal;
+                margin: 0;
+                padding: 10px 10px 5px;
+            }
+
+            #content section.section.hca-main-profile a.btn-misc + h3 > .tooltip-wrap {
+                display: none;
+            }
+            
+            #content section.section.hca-main-profile a:not(.btn-misc) + h3 .icon-info-sign {
+                color: #3D6390;
+                opacity: 0.75;
+            }
         
             .doctors-new-listing p {
                 padding: 0;
