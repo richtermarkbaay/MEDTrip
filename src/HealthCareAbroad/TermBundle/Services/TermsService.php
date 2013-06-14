@@ -140,17 +140,15 @@ class TermsService
         
     }
     
-    public function convertTreatmentToTerm(Treatment $currentTreatment, Treatment $oldTreatment)
+    public function convertTreatmentToTerm($selectedTreatment, Treatment $oldTreatment)
     {
-        //update institutionTreatment by newTreatment
-        $conn = $this->doctrine->getEntityManager()->getConnection();
-        $query = "UPDATE institution_treatments SET treatment_id = ".$currentTreatment->getId() ." WHERE treatment_id = ".$oldTreatment->getId();
-        $result = $conn->executeQuery($query);
+        $currentTreatment = $this->doctrine->getRepository('TreatmentBundle:Treatment')->findOneById($selectedTreatment);
         
-        $this->removeTreatment($oldTreatment);
-        $this->_deleteTermDocumentsExceptForCurrentTerm('', $oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        $this->doctrine->getRepository('TermBundle:Term')->updateInstitutionTreatmentByTreatment($currentTreatment, $oldTreatment);
         
-        return $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatment->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        $this->_deleteTermDocumentsExceptForCurrentTerm(new Term(), $oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatment->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        return $this->removeTreatment($oldTreatment);
     }
     
     private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)

@@ -214,21 +214,17 @@ class TreatmentController extends Controller
     {
         $oldTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($request->get('id'));
         $treatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
+        
         $convertFormType = new ConvertTreatmentToTermFormType();
         $convertFormType->setTreatmentChoices($treatments);
-        
         $form = $this->createForm($convertFormType);
-        $form->bind($request);
-        
+        $form->bind($request);        
         if($form->isValid()) {
-            
-            $currentTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($form->get('treatments')->getData());
-            $term = new Term();
-            $term->setName($currentTreatment->getName());
-            
-            $this->get('services.terms')->convertTreatmentToTerm($currentTreatment, $oldTreatment);
+            $this->get('services.terms')->convertTreatmentToTerm($form->get('treatments')->getData(), $oldTreatment);
+
             return $this->redirect($this->generateUrl('admin_treatment_index'));
         }
+        
         return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 
                         array('form' => $form->createView(),
                               'treatment' => $oldTreatment));
