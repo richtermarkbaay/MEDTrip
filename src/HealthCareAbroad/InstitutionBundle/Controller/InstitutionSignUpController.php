@@ -148,7 +148,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function signUpAction(Request $request)
     {
-        $error_message = false;
+        $error_message = '';
         $success = false;
         // checking for security context here does not work since this is not firewalled
         // TODO: find a better approach
@@ -367,7 +367,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileMultipleCenterAction(Request $request)
     {
-        $error_message = false;
+        $error_message = '';
         $success = false;
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
