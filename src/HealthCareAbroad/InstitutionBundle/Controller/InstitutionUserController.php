@@ -75,8 +75,7 @@ class InstitutionUserController extends Controller
      */
     public function editAccountAction(Request $request)
     {
-        $error = false;
-        $errorArr = array();
+        $error_message = false;
         $accountId = $request->get('accountId', null);
         $session = $request->getSession();
         if (!$accountId ){
@@ -110,12 +109,9 @@ class InstitutionUserController extends Controller
                     $this->get('services.institution_user')->setSessionVariables($institutionUser);
                     $this->get('session')->setFlash('success', 'You have successfuly edit your account.');
             }else{
-                $error = true;
                 $form_errors = $this->get('validator')->validate($form);
                 if($form_errors){
-                    foreach ($form_errors as $_err) {
-                        $errorArr[] = $_err->getMessage();
-                    }
+                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
                 }
             }
         }
@@ -124,8 +120,7 @@ class InstitutionUserController extends Controller
                 'form' => $form->createView(),
                 'institutionUser' => $institutionUser,
                 'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-                'error' => $error,
-                'error_list' => $errorArr
+                'error_message' => $error_message
         ));
     }
     
