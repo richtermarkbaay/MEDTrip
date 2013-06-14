@@ -33,3 +33,10 @@ admin_treatment_updateStatus:
     defaults: { _controller: AdminBundle:Treatment:updateStatus }
     requirements:
          id: \d+
+         
+admin_treatment_convert:
+    pattern:  /admin/specialization/{specializationId}/treatment/{id}/convert-to-term
+    defaults: { _controller: AdminBundle:Treatment:convertToTerm }
+    requirements:
+         id: \d+
+         _method: POST|GET

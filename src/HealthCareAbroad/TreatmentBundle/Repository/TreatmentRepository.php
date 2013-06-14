@@ -64,19 +64,29 @@ class TreatmentRepository extends EntityRepository
      * @param Specialization $medicalCenter
      * @return QueryBuilder
      */
-    public function getQueryBuilderForActiveTreatmentsBySpecialization($medicalCenter)
+    public function getQueryBuilderForActiveTreatmentsBySpecialization(Specialization $specialization)
     {
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('a')
             ->from('TreatmentBundle:Treatment', 'a')
-            ->innerJoin('a.treatment', 'b')
-            ->where('b.medicalCenter = :medicalCenterId')
+            ->innerJoin('a.specialization', 'b')
+            ->where('b.id = :specialization')
             ->andWhere('a.status = :activeStatus')
-            ->orderBy('a.treatment, a.name')
-            ->setParameter('medicalCenterId', $medicalCenter->getId())
+            ->orderBy('a.name')
+            ->setParameter('specialization', $specialization->getId())
             ->setParameter('activeStatus', Treatment::STATUS_ACTIVE);
 
         return $qb;
+    }
+    
+    public function getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment(Specialization $specialization, Treatment $currentTreatment)
+    {
+        $qb = $this->getQueryBuilderForActiveTreatmentsBySpecialization($specialization);
+        
+        // add condition where treatment id is not current treatment
+        
+        return $qb->andWhere('a.id != :treatment')
+                  ->setParameter('treatment', $currentTreatment)->getQuery()->getResult();
     }
 
     //////////////////////////////////////////////////////////////////////////

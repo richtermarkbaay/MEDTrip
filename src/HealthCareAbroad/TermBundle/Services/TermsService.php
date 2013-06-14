@@ -111,12 +111,11 @@ class TermsService
         }
 
         return $qb->getQuery()->getResult();
-
-
     }
 
     public function saveTreatmentTerms(Treatment $treatment, array $termIds=array())
     {
+        
         $repo = $this->doctrine->getRepository('TermBundle:Term');
         $currentTerm = $repo->findOneByName($treatment->getName());
         // delete current term documents except for the one that is pointing to the name of this specialization
@@ -133,6 +132,27 @@ class TermsService
         return true;
     }
 
+    public function removeTreatment(Treatment $treatment)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->remove($treatment);
+        $em->flush();        
+        
+    }
+    
+    public function convertTreatmentToTerm(Treatment $currentTreatment, Treatment $oldTreatment)
+    {
+        //update institutionTreatment by newTreatment
+        $conn = $this->doctrine->getEntityManager()->getConnection();
+        $query = "UPDATE institution_treatments SET treatment_id = ".$currentTreatment->getId() ." WHERE treatment_id = ".$oldTreatment->getId();
+        $result = $conn->executeQuery($query);
+        
+        $this->removeTreatment($oldTreatment);
+        $this->_deleteTermDocumentsExceptForCurrentTerm('', $oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        
+        return $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatment->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
+    }
+    
     private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
