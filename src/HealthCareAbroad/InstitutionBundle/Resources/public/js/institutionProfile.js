@@ -376,18 +376,23 @@ var InstitutionProfile = {
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        var _errorString = "";
+                        var _errorString = "We need you to correct some of your input. Please check the fields in red.";
                         $.each(errors, function(key, item){
-                        	_parent.find('div.'+item.field).addClass('error');
-                        	if(item.field == 'country' || item.field == 'city'){
-                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
-                        	}else{
-                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+                        	if(item.field){
+	                        	_parent.find('div.'+item.field).addClass('error');
+	                        	if(item.field == 'country' || item.field == 'city'){
+	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
+	                        	}else{
+	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+	                        	}
                         	}
                         });
-                        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _parent.find('.alert-box').addClass('alert alert-error').html('We need you to correct some of your input. Please check the fields in red.');
                     }
+                    else{
+                    	var _errorString = errors.error;
+                	}
+                    _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                	_parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
                 }
             }
         });

@@ -296,7 +296,7 @@ class InstitutionAccountController extends InstitutionAwareController
                      * Always expects empty if form submitted are from awards or services
                      */
                     if(empty($output['institution'])){ 
-                        $errors[] = array('error' => 'Please select at least one.');
+                        $errors = array('error' => 'Please select at least one.');
                         return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                     }
                 }
