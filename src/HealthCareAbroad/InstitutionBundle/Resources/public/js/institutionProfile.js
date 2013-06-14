@@ -386,7 +386,7 @@ var InstitutionProfile = {
                         	}
                         });
                         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _parent.find('.alert-box').addClass('alert alert-error').html('We need you to correct some of your input. Please check the fields in red. ');
+                        _parent.find('.alert-box').addClass('alert alert-error').html('We need you to correct some of your input. Please check the fields in red.');
                     }
                 }
             }

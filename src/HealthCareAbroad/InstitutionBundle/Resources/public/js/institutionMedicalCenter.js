@@ -265,6 +265,9 @@ var InstitutionMedicalCenter = {
         _divToShow = _button.parents('section.hca-main-profile').find('div.show');
     	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
         _data = _form.serialize();
+        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+        _parent.find('.error').removeClass('error');
+        $('.errorText').remove();
         $.ajax({
             url: _form.attr('action'),
             data: _data,
@@ -361,8 +364,6 @@ var InstitutionMedicalCenter = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
-            	_parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                _parent.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
                 _divToShow.prev().show();
                 _divToShow.show();
@@ -377,11 +378,15 @@ var InstitutionMedicalCenter = {
                     if (errors.length) {
                         var _errorString = "";
                         $.each(errors, function(key, item){
-                        	_errorString += item.error+"<br>";
                         	_parent.find('div.'+item.field).addClass('error');
+                        	if(item.field == 'country' || item.field == 'city'){
+                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
+                        	}else{
+                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+                        	}
                         });
                         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                        _parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                        _parent.find('.alert-box').addClass('alert alert-error').html('We need you to correct some of your input. Please check the fields in red.');
                     }
                 }
             }
