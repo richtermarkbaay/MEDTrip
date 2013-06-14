@@ -527,7 +527,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error = '';
         //TODO: check institution signupStepStatus
 
-        $specializations = $this->get('services.treatment_bundle')->getAllActiveSpecializations();
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
             

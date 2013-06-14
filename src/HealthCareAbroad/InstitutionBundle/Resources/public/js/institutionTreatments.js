@@ -85,7 +85,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function (response) {
-            	InstitutionMedicalCenter.displayAlert('You have successfully added treatment');
+            	InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully added treatment' , 'success');
             	$(_divToggle.parents('.specializations-profile-listing')).removeClass('process');
             	_divToggle.prev('#treatment_list').html(response.html);
             	_buttonElement.prev('#specialization-button').show();
@@ -117,19 +117,24 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-            	InstitutionMedicalCenter.displayAlert('You have successfully added specialization');
+            	InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully added specialization', 'success');
             	if($('#specialization_list_block').find('div.alert-block')){
             		$('#specialization_list_block').find('div.alert-block').hide();
             	}
             	  // insert new content after last specialization block
             	 $.each(response.html, function(_k, _v){
-            		 $(_v).insertAfter($('#specialization_list_block div:first'));
+            		 if ($('#specialization_list_block div:first').html() == ''){
+            			 $('#specialization_list_block').html(_v);
+            		 }else{
+            			 $(_v).insertBefore($('#specialization_list_block div:first'));
+            		 }
             	 });
                 _form.hide();
                 $('#new_specializationButton').show();
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
+            	InstitutionMedicalCenter.displayAlert(response.responseText, 'error');
                 _button.html(_buttonHtml).attr('disabled', false);
             }
         });
@@ -141,6 +146,7 @@ var InstitutionSpecialization = {
     	_attr = $(_element.attr('data-toggle'));
     	$(_attr).show();
     	$(_attr.selector).html('<center><img src="/images/institution/spinner_large.gif" /></center>');
+    	$(_attr).parents('div.edit-specializations').show();
     	$(_attr).parents('form').show();
     	_element.hide();
     	_element.next().find('.edit-specializations').show();

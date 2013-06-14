@@ -447,7 +447,7 @@ var InstitutionMedicalCenter = {
             	$('#specialization_list_block').children('div').removeClass('disabled');
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_'+response.id).remove();
-                InstitutionMedicalCenter.displayAlert('You have successfully remove specialization');
+                InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully remove specialization' , 'success');
             }
          });
     },
@@ -552,10 +552,10 @@ var InstitutionMedicalCenter = {
     /**
      * DISPLAY alerts after success submission
      */
-    displayAlert: function(message) {
+    displayAlert: function(message, status) {
     	_confirmMessageElem = $('#confirmation-message');
     	_confirmMessageElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
-    	_confirmMessageElem.find('.confirmation-box').html('<div class="alert alert-success"><p><b> Congratulations! </b>' + message + '.</p></div>');
+    	_confirmMessageElem.find('.confirmation-box').html('<div class="alert alert-'+status+'"><p>' + message + '.</p></div>');
     	_confirmMessageElem.show();
     	setTimeout(function() {_confirmMessageElem.fadeOut("slow")}, 5000);
     }

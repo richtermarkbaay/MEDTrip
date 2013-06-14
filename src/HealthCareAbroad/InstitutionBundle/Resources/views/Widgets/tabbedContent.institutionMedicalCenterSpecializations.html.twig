@@ -1,7 +1,9 @@
 {% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <h3> Specialization </h3>
+    <h3> Specialization 
+    <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specializations</button>
+    </h3>
       <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
@@ -20,7 +22,6 @@
     <br>
      <section class="section action-info hca-main-profile">
         <div class="hca-display-specializations">
-            <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary btn-edit pull-right">Add New Specializations</button>
             <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">
                <div class="edit-specializations">
                     <div class="row-fluid terms hca-edit-box">
@@ -48,8 +49,9 @@
 
 <script type="text/javascript">
 $(document).on('show hide', '#accordion', function(e) {
+
     var target = $(e.target);
-    target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-edit icon-ok');
+    target.siblings('.accordion-heading').find('.accordion-toggle i').toggleClass('icon-plus-sign icon-minus-sign');
     treatmentsDiv =  target.parent().find('#treatments_block');
     if(treatmentsDiv){
     	treatmentsDiv.toggle();

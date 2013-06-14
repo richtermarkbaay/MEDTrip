@@ -15,7 +15,7 @@
                 <img src="" class="pull-left img-polaroid" style="border: 1px solid #ccc; display: inline-block; height: 35px; width: 35px;margin: -4px 5px 0 0;">
             {% endif %}
         </span>
-        <h3>{{ each.specialization.name }}</h3>
+        <h4>{{ each.specialization.name }}</h4>
     </div>
     <div id="hca-specialization-content" style="display:none" class="hca-hidden-content specializations-profile-listing" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
        <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post">
