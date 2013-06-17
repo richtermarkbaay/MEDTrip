@@ -353,23 +353,14 @@ var InstitutionProfile = {
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
                         break;
                     case 'socialMediaForm':
-                    	  var websites = response.institution.socialMediaSites, websitesString = ''; 
-	                      	if(websites.twitter){
-		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-		                  	}else{
-		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
-		                  	}
-		                  	if(websites.facebook){
-		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-							}else{
-								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
-							}
-		                  	if(websites.googleplus){
-		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
-							}else{
-								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
-							}
-	                        $('#soclialMediaText').html(websitesString);
+                    	var websites = response.institution.socialMediaSites;
+                    	$.each(websites, function(type) {
+                    		if($.trim(websites[type]) != '') {
+                    			$('#institution-socialMediaSites > p.' + type + '-wrapper').removeClass('alert-block').find('b').html(websites[type]);
+                    		} else {
+                    			$('#institution-socialMediaSites > p.' + type + '-wrapper').addClass('alert-block').find('b').html('no account added. ');
+                    		}
+                    	});
                     	break;
                     case 'serviceForm':
                     	$('#serviesText').html(response.html);

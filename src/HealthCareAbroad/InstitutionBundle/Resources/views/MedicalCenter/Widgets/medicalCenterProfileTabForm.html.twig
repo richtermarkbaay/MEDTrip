@@ -114,27 +114,13 @@
     {% endblock %}
 
     {% block viewContent %}
-        <div id="soclialMediaDiv">
-            {% if institutionMedicalCenter.socialMediaSites %}
-                {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-                    <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                        <b>{{ site ? site : 'no account added'}}</b>
-                    </p>
-                {% endfor %}
-            {% endif %}
-        </div>
-        {% if institutionMedicalCenter.socialMediaSites is empty %} 
-            <div class="alert alert-block" id="alertSocialDiv">
-                <div class="hca-profile-sublevel">
-                    Here you can showcase social media account of your Clinic.
-                </div>
-                <p class="hca-helptext">
-                    You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
-                    Awards and Accreditations for your Clinic.
-                </p>
-                <a class="btn btn-primary" onclick="$('#clinic-edit-mediaSites-btn').click()"> <i class="icon-plus"> </i>  Add Entry  </a>
-            </div> 
-        {% endif %}
+        {% set mediaSites = institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
+        {% for type, site in mediaSites %}
+            <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                <b>{{ site ? site : 'no account added'}}  
+                </b>
+            </p>
+        {% endfor %}
     {% endblock %}
 {% endembed %}
 
@@ -157,7 +143,7 @@
 <!-- InstitutionMedicalCenter Services Section -->
 {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
     with { 
-        title: 'Certifications, Affilations, Awards and Accreditations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'view-awards', editElemId: 'awardsDiv',
+        title: 'Certifications, Affilations, Awards <br>and Accreditations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'view-awards', editElemId: 'awardsDiv',
         formParams: {formId: 'awardsForm', fields: ['awards']} 
     } %}
 

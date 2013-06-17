@@ -350,31 +350,19 @@ var InstitutionMedicalCenter = {
 						
                         break;
                     case 'socicalMediaSitesForm':
-                  	  var websites = response.institutionMedicalCenter.socialMediaSites, websitesString = ''; 
-	                     	if(websites.twitter){
-		                  		websitesString += '<p><i class="icon-twitter"> </i> <b>'+  websites.twitter + "</b></p>";
-		                  	}else{
-		                  		websitesString += '<p class="alert-block"><i class="icon-twitter"> </i> <b> no account added</b></p>';
-		                  	}
-		                  	if(websites.facebook){
-		                  		websitesString += '<p><i class="icon-facebook"> </i><b>'+ websites.facebook + "</b></p>";
-							}else{
-								websitesString += '<p class="alert-block"><i class="icon-facebook"> </i><b> no account added </b></p>';
-							}
-		                  	if(websites.googleplus){
-		                  		websitesString += '<p><i class="icon-google-plus"> </i><b>'+ websites.googleplus + "</b></p>";
-							}else{
-								websitesString += '<p class="alert-block"><i class="icon-google-plus"> </i><b> no account added </b></p>';
-							}
-                  	  		
-	                        $('#soclialMediaDiv').html(websitesString);
-	                        $('#alertSocialDiv').hide();
+                    	var websites = response.institutionMedicalCenter.socialMediaSites;
+                    	$.each(websites, function(type) {
+                    		if($.trim(websites[type]) != '') {
+                    			$('#view-socialMediaSites > p.' + type + '-wrapper').removeClass('alert-block').find('b').html(websites[type]);
+                    		} else {
+                    			$('#view-socialMediaSites > p.' + type + '-wrapper').addClass('alert-block').find('b').html('no account added. ');
+                    		}
+                    	});
                   	break;
                        
                     case 'servicesForm':
                     	$('#serviceTable').html(response.html);
                     	break;
-                    	
                     case 'awardsForm':
                     	$('#awardsText').html(response.html);
                     	break;

@@ -89,19 +89,17 @@
 <!-- Institution Social Media Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
-        title: 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'show-social', editElemId: 'socialMedia',
+        title: 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'institution-socialMediaSites', editElemId: 'socialMedia',
         formParams: {formId: 'socialMediaForm', fields: ['socialMediaSites']}
     } %}
 
     {% block viewContent %}
-        <div id="show-social">
-            <div id="soclialMediaText">
-                {% for type, site in institution_websites_to_array(institution) %}
-                    <p class="{{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                        <b>{{ site ? site : 'no account added'}}</b>
-                    </p>
-                {% endfor %}
-            </div>
+        <div id="institution-socialMediaSites">
+            {% for type, site in institution_websites_to_array(institution) %}
+                <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                    <b>{{ site ? site : 'no account added'}}</b>
+                </p>
+            {% endfor %}
         </div>
     {% endblock %}
 {% endembed %}
