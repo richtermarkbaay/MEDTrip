@@ -82,7 +82,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             message: Center already exists!
     properties:
         name:
-            - NotBlank: {message: 'Center name is required.'}
+            - NotBlank: {message: 'Clinic name is required.'}
        # description:
         #    - NotBlank: {message: 'Center details is required.'}
         address:
