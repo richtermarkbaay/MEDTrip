@@ -79,28 +79,27 @@
                         </div>
                         <div id="newAddress" style="display:none;">
                             {{ form_widget(form.address, { attr: {class: 'addressFields span12'} } )}}
-    
-                            <div class="control-group">
-                                <div class="span6 input-append">
-                                    <label for="Country">Country</label>
-                                        {{ form_widget(form.country, { attr: {class: 'addressFields span12'} } )}}
-                                </div>
-                               <div class="span6">
-                                    <label>City</label>
-                                    {{ form_widget(form.city, { attr: {class: 'addressFields span12'} } )}}
-                                </div>
+                        <div class="row-fluid terms">
+                            <div class="control-group span6">
+                                <label for="Country">Country</label>
+                                {{ form_widget(form.country, { attr: {class: 'addressFields span12'} } )}}
                             </div>
-                            <div class="control-group">
-                                <div class="span6 input-append">
-                                    <label>State / Province</label>
-                                        {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
-                                </div>
-                              
-                                <div class="span6">
-                                    <label for="zip">Zip / Postal Code </label>
-                                    {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
-                                </div>
+                           <div class="control-group span6">
+                                <label>City</label>
+                                {{ form_widget(form.city, { attr: {class: 'addressFields span12'} } )}}
                             </div>
+                        </div>
+                        <div class="row-fluid terms">    
+                            <div class="control-group span6">
+                                <label>State / Province</label>
+                                {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
+                            </div>
+                          
+                            <div class="control-group span6">
+                                <label for="zip">Zip / Postal Code </label>
+                                {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
+                            </div>
+                        </div>
                             <div class="control-group">
                                 <label for="Helpful hint">Helpful hint for getting there?</label>
                                 {{ form_widget(form.addressHint, { attr: {class: 'span12 tooltip-wrap2'} } )}}
