@@ -83,84 +83,59 @@ class InstitutionTwigExtension extends \Twig_Extension
     {
         $suggestions = array();
         $isSingleCenter = $this->institutionService->isSingleCenter($institution);
+        
+        $label = ($isSingleCenter ? 'clinic' : 'hospital');
+        
         if(!$isSingleCenter && !$institution->getInstitutionMedicalCenters()) {
-            $suggestions[] = array('description' => 'You currently have no centers for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently have no centers for your '.$label.' yet.');
         }
 
         if($isSingleCenter && !$this->institutionService->getAllDoctors($institution)) {
-            $suggestions[] = array('description' => 'You currently dont have doctors for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently dont have doctors for your '.$label.' yet.');
         }
         
         if(!$institution->getDescription()) {
-            $suggestions[] = array('description' => 'You currently have no description for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently have no description for your '.$label.' yet.');
         }
         
         if(!$institution->getLogo()) {
-            $suggestions[] = array('description' => 'You currently have no logo for your Hospital yet.');
+            if($institution->getPayingClient()){
+                $suggestions[] = array('description' => 'You have not yet added a logo. Upload it today and help patients make an instant brand connection between your clinic and the treatments you offer.');
+            }else{
+                $suggestions[] = array('description' => 'Upgrade your listing today and have your logo show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. ');
+            }    
         }
         
         if(!$institution->getFeaturedMedia()) {
-            $suggestions[] = array('description' => 'You currently have no banner for your Hospital yet.');
+            if($institution->getPayingClient()){
+                $suggestions[] = array('description' => 'You have not yet uploaded your header image. Make use of this space to add a large image to establish your brand and reputation.');
+            }else{
+                $suggestions[] = array('description' => 'Upgrade your listing today and have a header image show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. Making use of this space to add a large image helps in establishing your brand and reputation.');
+            }
         }
 
         if(!$institution->getGallery()) {
-            $suggestions[] = array('description' => 'You currently have no media gallery/photos for your Hospital yet.');
+             if($institution->getPayingClient()){
+                $suggestions[] = array('description' => 'You have not yet uploaded photos or videos. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
+            }else{
+                $suggestions[] = array('description' => 'Upgrade your listing today to add photos and videos. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
+            }
         }
         
         if(!$institution->getContactDetails()->count()) {
-            $suggestions[] = array('description' => 'You currently have no contact details for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently have no contact details for your '.$label.' yet.');
         }
         
         if(!$institution->getSocialMediaSites()) {
-            $suggestions[] = array('description' => 'You currently have no social media sites for your Hospital yet.');
+            $suggestions[] = array('description' => 'You currently have no social media sites for your '.$label.' yet.');
         }
             
         if(!$this->institutionService->getAllGlobalAwards($institution)) {
-            $suggestions[] = array('description' => 'You currently have no awards, certification, affiliations and accreditations for your Hospital yet.');
+            $suggestions[] = array('description' => 'You have not yet listed any awards, certifications, affiliations or accreditations. List your certifications and accreditations to help show that your clinics adhere to international standards of quality; list your awards and affiliations to show you are recognized by peers in your industry. ');
         }
         
         return $suggestions;
     }
-    
-    public function render_institution_single_center_suggestions(Institution $institution)
-    {
-        $suggestions = array();
-        $medicalCenter = $this->institutionService->getFirstMedicalCenter($institution);
-        
-        if(!$this->institutionService->getAllDoctors($institution)) {
-            $suggestions[] = array('description' => 'You currently dont have doctors for your Clinic yet.');
-        }
-        
-        if(!$institution->getDescription()) {
-            $suggestions[] = array('description' => 'You currently have no description for your Clinic yet.');
-        }
-        
-        if(!$institution->getLogo()) {
-            $suggestions[] = array('description' => 'You currently have no logo for your Clinic yet.');
-        }
-        
-        if(!$institution->getFeaturedMedia()) {
-            $suggestions[] = array('description' => 'You currently have no banner for your Clinic yet.');
-        }
-        
-        if(!$institution->getGallery()) {
-            $suggestions[] = array('description' => 'You currently have no media gallery/photos for your Clinic yet.');
-        }
-        
-        if(!$institution->getContactDetails()->count()) {
-            $suggestions[] = array('description' => 'You currently have no contact details for your Clinic yet.');
-        }
-        
-        if(!$institution->getSocialMediaSites()) {
-            $suggestions[] = array('description' => 'You currently have no social media sites for your Clinic yet.');
-        }
-        
-        if(!$this->institutionService->getAllGlobalAwards($institution)) {
-            $suggestions[] = array('description' => 'You currently have no awards, certification, affiliations and accreditations for your Clinic yet.');
-        }
-        
-        return $suggestions;
-    } 
     
     public function render_incomplete_clinic_profile(Institution $institution)
     {

@@ -460,7 +460,7 @@ var InstitutionMedicalCenter = {
             	$('#specialization_list_block').children('div').removeClass('disabled');
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_'+response.id).remove();
-                InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully remove specialization' , 'success');
+                InstitutionMedicalCenter.displayAlert('You have successfully remove specialization' , 'success');
                 $('#new_specializationButton').removeAttr('disabled');
             }
          });

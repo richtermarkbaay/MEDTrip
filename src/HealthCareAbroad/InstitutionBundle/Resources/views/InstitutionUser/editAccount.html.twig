@@ -3,9 +3,7 @@
 {% block content %}
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
  {% block wrappedContent %}
-    <h1>
-        <i class="icon-user"></i> Manage Account Profile
-    </h1>
+    <h1><i class="icon-user"></i> Manage Account Profile</h1>
 		<div class=span8>
 		     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount', {accountId: institutionUser.getAccountId()}) }}" method="POST" {{ form_enctype(form) }} class="user">
                  <section class="section account-info manage-data">
@@ -76,20 +74,7 @@
             </form>
         </div>
 	     {% include 'InstitutionBundle:InstitutionUser/Widgets:sidebar.manage_account.html.twig' %}
-    		     
     	<!--End of row-->
-            {% include 'InstitutionBundle:Widgets:Modal.alerts.html.twig' %}
         {% endblock %}
     {% endembed %}
 {% endblock %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionUserProfile.js') }}" ></script>
-{% endblock %}
-{#
-	<section class="section institution-info">
-		<h2>Login Information</h2>
-           {% include 'InstitutionBundle:InstitutionUser:form.changePassword.html.twig' %}
-    </section>
-    #}
-
-           

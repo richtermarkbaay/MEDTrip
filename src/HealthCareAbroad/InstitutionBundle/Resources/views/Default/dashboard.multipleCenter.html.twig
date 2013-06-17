@@ -34,7 +34,7 @@
                     <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
                     </i></span>
                     <span>
-                        {{ suggestion.description }}
+                        {{ suggestion.description | raw}}
                     </span>
                 </li>
             {% endfor %}

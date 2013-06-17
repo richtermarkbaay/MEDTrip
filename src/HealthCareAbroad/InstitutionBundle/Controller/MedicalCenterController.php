@@ -518,6 +518,8 @@ class MedicalCenterController extends InstitutionAwareController
                             ));
                         }
                     }
+                }else{
+                    return new Response('Please select at least one treatment.' ,400);
                 }
             }    
         }

@@ -112,7 +112,9 @@ var InstitutionSpecialization = {
         _buttonHtml = _button.html();
         _button.html('Processing...').attr('disabled', true);
         _form = $(_button).parents('form#institutionSpecializationForm');
-        _data = _form.serialize();
+        _formdata = _form.find('div.in :input');
+//        console.log(_formdata);
+        _data = _formdata.serialize();
         $.ajax({
             url: _form.attr('action'),
             data: _data,
