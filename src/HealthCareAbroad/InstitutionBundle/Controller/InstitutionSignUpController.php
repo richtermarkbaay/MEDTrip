@@ -443,7 +443,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
-        $error = false;
+        $error_message = false;
         $errorArr = array();
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
@@ -499,24 +499,20 @@ class InstitutionSignUpController extends InstitutionAwareController
                 
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
-            $error = true;
             $form_errors = $this->get('validator')->validate($form);
             
             if($form_errors){
-                foreach ($form_errors as $_err) {
-                    $errorArr[] = $_err->getMessage();
-                }
+                   $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
         }
-        if(!$error){
+        if(!$form_errors){
             $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
         }
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'error' => $error,
-            'error_list' => $errorArr,
+            'error_message' => $error_message,
         ));
     }
 

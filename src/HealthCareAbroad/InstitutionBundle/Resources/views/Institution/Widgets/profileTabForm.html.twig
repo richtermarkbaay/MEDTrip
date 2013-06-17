@@ -55,7 +55,7 @@
     {% endblock %}
 
     {% block viewContent %}
-        <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
+        <div id="alertDiv" class="{{ institution.websites or institution.contactEmail ? '' :'alert alert-block' }}">
             <p>
                 <i class="icon-globe"> </i>
                 <span id="profileWebsitesText"> 

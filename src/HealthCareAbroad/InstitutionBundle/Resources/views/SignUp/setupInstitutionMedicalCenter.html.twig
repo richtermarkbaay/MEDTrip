@@ -16,11 +16,9 @@
     <div class="span8">
         <form id="clinicForm" action="{{ path('institution_signup_setup_institutionMedicalCenter', {imcId: institutionMedicalCenter.id} ) }}" method="post" novalidate>
     
-           {% if error %}
+           {% if error_message %}
                 <div class="alert alert-error">
-                    {% for each in error_list %}
-                    	{{ each }} <br>
-                    {% endfor %}
+                    {{ error_message }}
                 </div>
             {% endif %}
             
@@ -31,6 +29,7 @@
                         <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
                             <label for="institution-name">Name of the Clinic</label>
                             {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2', placeholder: 'e.g The Cardiology Center at Sacred Heart Hospital'} }) }}
+                            {{ form_errors(form.name)}}
                             <div class="tooltip-content2">
                                 This is the name that will show up in search results. Make sure it's descriptive
                                 enough to set you apart! If your clinic's name is simply the department
@@ -82,11 +81,9 @@
                             {{ form_widget(form.address, { attr: {class: 'addressFields span12'} } )}}
     
                             <div class="control-group">
-                                <div class="span6">
+                                <div class="span6 input-append">
                                     <label for="Country">Country</label>
-                                    <div class="input-append">
                                         {{ form_widget(form.country, { attr: {class: 'addressFields span12'} } )}}
-                                    </div>
                                 </div>
                                <div class="span6">
                                     <label>City</label>
@@ -94,11 +91,9 @@
                                 </div>
                             </div>
                             <div class="control-group">
-                                <div class="span6">
+                                <div class="span6 input-append">
                                     <label>State / Province</label>
-                                    <div class="input-append">
                                         {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
-                                    </div>
                                 </div>
                               
                                 <div class="span6">
@@ -136,6 +131,7 @@
                             <div class="contactEmail control-group span6 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
                                 <label for="Phone Number">Clinic Email Address</label>
                                 {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
+                                {{ form_errors(form.contactEmail) }}
                             </div>
                             <div class="control-group span5">
                                 {#{ form_widget(form.contactDetails, { 'attr': {'class': 'span12'} }) }#}
