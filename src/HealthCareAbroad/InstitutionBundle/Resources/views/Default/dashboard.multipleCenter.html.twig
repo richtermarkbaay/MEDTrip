@@ -15,12 +15,13 @@
         </div>
     </section>
     
+    {% set _suggestions = render_institution_suggestions(institution) %}
+    {% if _suggestions is not empty %}    
     <section class="section row-fluid">
         <h2> Suggestion for your {{ label }}
             <a class="btn btn-primary pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
          </h2>
-        {% set _suggestions = render_institution_suggestions(institution) %}
-        {% if _suggestions is not empty %}
+        
         <ul class="thumbnails hca-alert-inquiry">
             {% for suggestion in _suggestions %}
                 <li class="thumbnail hca-alert-inquiry">
@@ -32,14 +33,16 @@
                 </li>
             {% endfor %}
         </ul>
-        {% endif %}  
     </section>
+    {% endif %} 
+    
+    {% set _centers = render_incomplete_clinic_profile(institution) %}
+    {% if _centers is not empty %}
     <section class="section row-fluid">
         <h2>
             List of Incomplete Clinic Profile
         </h2>
-        {% set _centers = render_incomplete_clinic_profile(institution) %}
-        {% if _centers is not empty %}
+        
         <ul class="thumbnails hca-alert-inquiry">
             {% for center in _centers %}
                 <li class="thumbnail hca-alert-inquiry">
@@ -54,8 +57,9 @@
                 </li>
             {% endfor %}
         </ul>
-        {% endif %} 
     </section>
+    {% endif %}
+    
     <section class="section row-fluid">
         <h2>
             Latest Inquiries
