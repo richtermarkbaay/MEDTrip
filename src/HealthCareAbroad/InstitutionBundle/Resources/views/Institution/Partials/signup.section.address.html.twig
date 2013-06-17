@@ -18,7 +18,7 @@
                     {{ form_errors(form.country)}} 
                 </div>
                    <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span6">
-                        <label for="{{ form.children.city.vars.id }}">  City  </label>
+                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
                         {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
                         {{ form_errors(form.city)}} 
                 </div>
@@ -26,7 +26,7 @@
              <div class="row-fluid terms">
              
                  <div class="state control-group span6 {{ (form.state.vars.valid ? '' : 'error') }}">
-                        <label>State / Province</label>
+                        <label>State / Province *</label>
                         {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
                         {{ form_errors(form.state)}} 
                 </div>

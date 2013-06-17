@@ -282,7 +282,8 @@
     margin: 7px; }
 
 form label {
-  font-weight: bold; }
+  font-weight: bold;
+  margin-top: 2px; }
   form label small {
     font-weight: normal;
     opacity: 0.5; }
@@ -293,6 +294,7 @@ form input[type="text"], form input[type="password"], form input[type="email"], 
   border-radius: 0;
   display: block;
   height: 35px;
+  margin-bottom: 0;
   box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1); }
   form input[type="text"]::-webkit-input-placeholder, form input[type="password"]::-webkit-input-placeholder, form input[type="email"]::-webkit-input-placeholder, form select::-webkit-input-placeholder {
     color: rgba(0, 0, 0, 0.2) !important; }
@@ -2565,12 +2567,22 @@ h1, h2, h3, h4, h5 {
         margin: 0; }
 
 .row-field.error ul, .control-group.error ul {
-  color: red;
+  color: #b94a48;
   list-style: none;
   font-weight: bold;
-  margin: -10px 0 7px 0;
+  margin: 0px 0 7px 0;
   padding: 0;
   display: block; }
+
+.custom-select-list {
+  font-weight: normal !important;
+  color: black !important; }
+
+.control-group.error .checkbox, .control-group.error .radio {
+  color: black !important; }
+
+.control-group.error .checkbox, .control-group.error .radio, .control-group.error input, .control-group.error select, .control-group.error textarea {
+  color: black; }
 
 .tab-content {
   z-index: 0; }
@@ -2732,7 +2744,7 @@ h1, h2, h3, h4, h5 {
     -moz-box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3); }
   .ribbon-approved.ribbon-expired, .ribbon-expired.ribbon-expired, .ribbon-pending.ribbon-expired, .ribbon-draft.ribbon-expired, .ribbon-archived.ribbon-expired {
-    background-color: #ff8080;
+    background-color: #dca5a4;
     -webkit-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
     box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5); }

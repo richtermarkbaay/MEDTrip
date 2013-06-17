@@ -114,7 +114,7 @@
             </div>
         </div>
         <div class="{{form.vars.name}} control-group row-field {{ (form.vars.valid ? '' : 'error') }}">
-            <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address</label>
+            <label for="{{ form.vars.full_name ~ '[street]' }}">Street Address *</label>
             <input class="span12 addressFields" required type="text" value="{{ form.vars.value.street }}" name="{{ form.vars.full_name ~ '[street]' }}" id="{{ elemIdPrefix }}_street">
             {% if errors%}
             <ul>

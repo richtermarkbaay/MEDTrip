@@ -104,8 +104,7 @@
                                    <hr>
                                    {% endif %}
                                 {% endfor %}
-                                <br>
-                               <span class="pull-left"> {{ form_errors(form.type) }} </span> 
+                               <span class="row"> {{ form_errors(form.type) }} </span> 
                         </div>
                     </div>
                 </section>
@@ -117,7 +116,6 @@
                                 <a href="{{ path('institution_terms_of_use') }}" target="_blank">Terms of Use</a> and 
                                 <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a> *.
                             </label>
-                            <br>
                             <span class="pull-left">  {{ form_errors(form.agree_to_terms) }} </span>
                         </div>
                     </div>
