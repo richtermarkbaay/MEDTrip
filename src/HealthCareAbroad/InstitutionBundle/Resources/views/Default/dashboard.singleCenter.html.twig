@@ -15,7 +15,7 @@
         </div>
     </section>
     
-    {% set _suggestions = render_institution_single_center_suggestions(institution) %}
+    {% set _suggestions = render_institution_suggestions(institution) %}
     {% if _suggestions is not empty %}
     <section class="section row-fluid">
         <h2> Suggestion for your {{ label }} 
@@ -28,7 +28,7 @@
                 <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
                 </i></span>
                 <span>
-                    {{ suggestion.description }}
+                    {{ suggestion.description | raw }}
                 </span>
             </li>
         {% endfor %}

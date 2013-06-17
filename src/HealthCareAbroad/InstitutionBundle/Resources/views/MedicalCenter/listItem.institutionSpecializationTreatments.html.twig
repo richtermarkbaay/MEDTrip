@@ -12,7 +12,7 @@
             {% if each.specialization.media %}
                 <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left img-polaroid" >
             {% else %}
-                <img src="{{ asset('images/institution/default-specialization-logo.png') }}" class="pull-left img-polaroid" style="border: 1px solid #ccc; display: inline-block; height: 35px; margin: -4px 5px 0 0;">
+                <img src="{{ asset('images/institution/default-specialization-logo.png') }}" class="pull-left img-polaroid" >
             {% endif %}
         </span>
         <h4>{{ each.specialization.name }}</h4>

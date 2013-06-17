@@ -27,7 +27,7 @@
                 {% endif %}
             {% endfor %}
             </ul>
-             <a href="{{ path('institution_mediaGallery_index' , {medical_center_ids: institutionMedicalCenter.id}) }}" target="_blank" class="btn btn-primary btn-medium">Upload Media Here</a>
+             <a href="{{ path('institution_mediaGallery_index' , {'medical-center-id': institutionMedicalCenter.id}) }}" target="_blank" class="btn btn-primary btn-medium">Upload Media Here</a>
         </div>
         {% else %}
             <h3> Add PHOTOS to boost your Clinic Profile </h3>
@@ -35,7 +35,7 @@
                 <div class="row">
                     <div class="hca-gallery-upload alert alert-block">
                         <p class="hca-helptext"> You haven't yet added any Media File for your clinic.</p>
-                        <a href="{{ path('institution_mediaGallery_index', {medical_center_ids: institutionMedicalCenter.id}) }}" class="btn btn-primary" target="_blank"><i class="icon-picture icon-24x hca-earth"></i>Upload Media Here</a>
+                        <a href="{{ path('institution_mediaGallery_index', {'medical-center-id': institutionMedicalCenter.id}) }}" class="btn btn-primary" target="_blank"><i class="icon-picture icon-24x hca-earth"></i>Upload Media Here</a>
                     </div>
                 </div>
             </div>
