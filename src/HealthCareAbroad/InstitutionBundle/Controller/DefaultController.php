@@ -43,13 +43,11 @@ class DefaultController extends InstitutionAwareController
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $institutionAlerts = array();
-        
+        $signup = false;
         if($request->server->has('HTTP_REFERER')){
             if (\preg_match('/setup-doctors/i', $request->server->get('HTTP_REFERER'))) {
                 $signup = true;
             }
-        }else{
-            $signup = false;
         }
         
         // TODO - Deprecated??

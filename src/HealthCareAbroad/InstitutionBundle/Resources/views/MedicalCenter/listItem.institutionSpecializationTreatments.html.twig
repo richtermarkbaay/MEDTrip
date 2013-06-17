@@ -21,10 +21,10 @@
        <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post"></form>
     </div>
 
-    <div id="deleteSpecialization{{ each.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
-        {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
-        'institutionSpecialization' : each }
-    %}
-    </div>
+</div>   
+<div id="deleteSpecialization{{ each.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+{% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
+    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
+    'institutionSpecialization' : each }
+%}
 </div>
