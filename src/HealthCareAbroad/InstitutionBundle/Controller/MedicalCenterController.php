@@ -1088,10 +1088,18 @@ class MedicalCenterController extends InstitutionAwareController
     {
         if ($request->files->get('logo')) {
             $file = $request->files->get('logo');
-            $this->get('services.institution.media')->medicalCenterUploadLogo($file, $this->institutionMedicalCenter);
+            $media = $this->get('services.institution.media')->medicalCenterUploadLogo($file, $this->institutionMedicalCenter);
+            
+            if($media->getName()) {
+                $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), ImageSizes::MEDIUM);
+                $data['mediaSrc'] = $src;
+            }
+            $data['status'] = true;
+            $data['imgId'] = '#imcLogo';
         }
 
-        return $this->redirect($this->getRequest()->headers->get('referer'));
+        return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
+        //return $this->redirect($this->getRequest()->headers->get('referer'));
     }
 
     private function _getEditMedicalCenterCalloutView()

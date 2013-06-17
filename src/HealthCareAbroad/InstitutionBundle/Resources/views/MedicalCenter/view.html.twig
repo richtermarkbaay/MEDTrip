@@ -90,6 +90,25 @@
         			coordinatesElem.val(HCAGoogleMap.latLngString);
         		}
         	});  
+
+        	$('form.ajaxUploadLogoForm').ajaxForm({
+            /* beforeSend: function(e) {},
+               uploadProgress: function(event, position, total, percentComplete) {},*/
+
+               success: function(response) {
+                   if(response.status) {
+                       var imgId = response.imgId;
+                       $(imgId).attr('src', response.mediaSrc);
+                   } else {
+                       alert('ERROR: Unable to upload Logo!');
+                   }
+               },
+               complete: function(xhr) {
+
+               }
+           }).submit(function(){
+               $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
+           });
         	
         	 $("input:checkbox").click(function() {
                  $(this).parents('li').toggleClass("hca-highlight");

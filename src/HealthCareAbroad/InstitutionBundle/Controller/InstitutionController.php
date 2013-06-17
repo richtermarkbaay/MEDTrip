@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserFormType;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -98,21 +100,36 @@ class InstitutionController extends InstitutionAwareController
 	
 	public function uploadLogoAction()
 	{
+	    $data = array();
 	    if($this->getRequest()->files->get('logo')) {
 	        $file = $this->getRequest()->files->get('logo');
-	        $this->get('services.institution.media')->uploadLogo($file, $this->institution);
+	        $media = $this->get('services.institution.media')->uploadLogo($file, $this->institution);
+	        if($media->getName()) {
+	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), ImageSizes::MEDIUM);
+	            $data['mediaSrc'] = $src;
+	        }
+	        $data['status'] = true;
+	        $data['imgId'] = '#institutionLogo';
 	    }
-
-	    return $this->redirect($this->getRequest()->headers->get('referer'));
+        return new Response(\json_encode($data), 200, array('content-type' => 'application/json')); 
+// 	    return $this->redirect($this->getRequest()->headers->get('referer'));
 	}
 	
 	public function uploadFeaturedImageAction()
 	{
+	    $data = array();
 	    if($this->getRequest()->files->get('featuredImage')) {
 	        $file = $this->getRequest()->files->get('featuredImage');
-	        $this->get('services.institution.media')->uploadFeaturedImage($file, $this->institution);
+	        $media = $this->get('services.institution.media')->uploadFeaturedImage($file, $this->institution);
+	        $data['status'] = true;
+	        $data['imgId'] = '#institutionFeaturedImage';
+	        if($media->getName()) {
+	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), ImageSizes::LARGE_BANNER);
+	            $data['mediaSrc'] = $src;
+	        }
 	    }
 	    
-	    return $this->redirect($this->getRequest()->headers->get('referer'));
+	    return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
+// 	    return $this->redirect($this->getRequest()->headers->get('referer'));
 	}
 }

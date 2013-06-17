@@ -1,23 +1,22 @@
 <div class="hca-banner">
     {% if institution.featuredMedia %}
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
-        <img src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
+        <img id="institutionFeaturedImage" src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
     {% else %}
      <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
     {% endif %} 
 
-
-    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="hidden">
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
         <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
     </form>
-
-    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="hidden">
+                    
+    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         <a class="hca-logo file-browse-btn"  href="javascript:void(0)" onclick="$(this).next().click()">        
             <span class="rollover"></span>
             {% if institution.logo %}
                 {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-                <img src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
+                <img id="institutionLogo" src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
             {% else %}
                 <img src="{{ imageplaceholder.institutionDefaultLogo }}" class="imgborder" alt="">          
             {% endif %} 

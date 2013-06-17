@@ -73,6 +73,11 @@ class InstitutionService
         $this->router = $router;
     }
     
+    function setMediaTwigExtension($mediaTwigExtension)
+    {
+        $this->mediaTwigExtension = $mediaTwigExtension;
+    }
+    
     public function setTimeAgoExtension(\HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension $timeAgoExt)
     {
         $this->timeAgoExt = $timeAgoExt;
