@@ -346,7 +346,7 @@ var InstitutionProfile = {
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
                     		$("#alertDiv").attr('class', ' ');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}
                        	$('#profileEmailText').html(response.institution.contactEmail);

@@ -55,7 +55,7 @@
     {% endblock %}
 
     {% block viewContent %}
-        <div id="alertDiv" class="{{ institution.websites or institution.contactEmail ? '' :'alert alert-block' }}">
+        <div id="alertDiv" class="{{ institution.websites ? '' :'alert alert-block' }}">
             <p>
                 <i class="icon-globe"> </i>
                 <span id="profileWebsitesText"> 
@@ -64,7 +64,7 @@
                         http://www.<b >{{_website}} </b>
                     {% else %}
                         <b> no hospital website </b> added.
-                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Hospital Website</a>
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
                     {% endif %}
                 </span>
             </p>
