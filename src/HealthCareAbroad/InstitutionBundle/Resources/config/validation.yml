@@ -7,7 +7,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     properties:
         name:
             - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
-            - NotBlank: {message: 'Please provide your Institution name.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your hosipital name.', groups: [editInstitutionInformation]}
         country:
             - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation]}
         city:

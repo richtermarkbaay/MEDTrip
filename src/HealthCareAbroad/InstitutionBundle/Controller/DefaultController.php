@@ -39,12 +39,18 @@ class DefaultController extends InstitutionAwareController
     public $institutionMedicalCenter;
     
     
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
         $institutionAlerts = array();
-    
         
+        if($request->server->has('HTTP_REFERER')){
+            if (\preg_match('/setup-doctors/i', $request->server->get('HTTP_REFERER'))) {
+                $signup = true;
+            }
+        }else{
+            $signup = false;
+        }
         
         // TODO - Deprecated??
         //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
@@ -62,7 +68,9 @@ class DefaultController extends InstitutionAwareController
                         'alerts' => $institutionAlerts,
                         'news' => $news,
                         'institution' => $this->institution,
-                        'isDashBoard' => true
+                        'isDashBoard' => true,
+                        'signup' => $signup
+                        
         ));
     }
     

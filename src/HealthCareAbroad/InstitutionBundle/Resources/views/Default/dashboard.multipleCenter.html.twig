@@ -11,7 +11,13 @@
     <section class="alert alert-info">
         <h2>Welcome to HealthcareAbroad.com!</h2>
         <div class="hca-sub-label">
-            Now that patients can find your Medical Institution on HealthcareAbroad, make sure that they find complete and relevant information about everything that you have to offer. <br><br>However it seems there are couple of things need to be done. Just a few more things in order to make your Medical Institution Profile more comprehensive and recognizable to your prospective patients. To finish up, just complete the items listed below:
+            {% if signup %}
+                Now that patients can find {{ institution.name | title }} on HealthcareAbroad, make sure that they find complete and relevant information about what you can offer. 
+               <br>
+                Below are a couple of things that we encourage you to complete:
+            {% else %}
+                We noticed there's information you have not yet provided. Making sure that patients find complete and relevant information about what you can offer is important in establishing your credibility on HealthcareAbroad.
+            {% endif %}
         </div>
     </section>
     
