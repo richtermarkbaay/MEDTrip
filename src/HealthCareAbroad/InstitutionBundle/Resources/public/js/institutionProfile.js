@@ -246,6 +246,22 @@ var InstitutionProfile = {
     	_element.parent().hide();
     },
 
+    /* Added by: Adelbert Silla toggle edit/view mode */
+    toggleForm: function(elem) {
+    	viewElem = $(elem.attr('data-view-elem'));
+    	editElem = $(elem.attr('data-edit-elem'));
+    	if(viewElem.is(':visible')) {
+        	viewElem.hide();
+        	editElem.slideDown('slow');
+        	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
+    	} else {
+        	editElem.slideUp('slow', function(){
+        		viewElem.fadeIn();
+            	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+        	});
+    	}
+    },
+
     submitModalForm: function(_formElement, _successCallback) {
         $.ajax({
            url: _formElement.attr('action'),
@@ -270,9 +286,7 @@ var InstitutionProfile = {
         	_form = _button.parents('div#hca-edit-institution-name').find('form');
         	_parent = _button.parents('div#hca-edit-institution-name');
         }
-        _divToShow = _button.parents('section.hca-main-profile').find('div.show');
-        _editButton = _button.parents('section.hca-main-profile').find('div.show').prev();
-    	_divToHide = _button.parents('section.hca-main-profile').find('div.hca-edit-box');
+        _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         _data = _form.serialize();
         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         _parent.find('.error').removeClass('error');
@@ -332,7 +346,7 @@ var InstitutionProfile = {
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
                     		$("#alertDiv").attr('class', ' ');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Clinic Website</a>');
+                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Clinic Website</a>');
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}
                        	$('#profileEmailText').html(response.institution.contactEmail);
@@ -364,11 +378,12 @@ var InstitutionProfile = {
                     	$('#awardsText').html(response.html);
                     	break;
                 } 
+
                 $('.errorText').remove();
-                _divToShow.show();
-                _divToHide.hide();
-                _editButton.show();
+                _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+                _parent.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
+                _editButton.click();
             },
             error: function(response) {
             	

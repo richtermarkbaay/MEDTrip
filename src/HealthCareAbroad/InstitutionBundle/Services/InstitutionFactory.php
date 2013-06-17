@@ -148,17 +148,6 @@ class InstitutionFactory
         
         return $result;
     }
-
-    /**
-     * Layer for Doctrine find by id
-     *
-     * @param int $id
-     * @return Institution
-     */
-    public function findByIdWithEagerLoadEntities($id, $eagerLoadEntities)
-    {
-
-    }
     
     /**
      * Save institution

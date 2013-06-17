@@ -27,8 +27,8 @@ final class ContactDetailTypes
     static public function _initTypes()
     {
         static::$types = array(
-            self::PHONE => 'Phone',
-            self::MOBILE => 'Mobile',
+            self::PHONE => 'Phone Number',
+            self::MOBILE => 'Mobile Number',
             self::FAX => 'Fax',
         );
         
@@ -37,6 +37,11 @@ final class ContactDetailTypes
             ContactDetailTypes::MOBILE => 'mobile',
             ContactDetailTypes::FAX => 'fax',
         );
+    }
+    
+    static public function getTypeLabel($type)
+    {
+        return isset(self::$typeKeys[$type]) ? self::$typeKeys[$type] : ''; 
     }
 }
 

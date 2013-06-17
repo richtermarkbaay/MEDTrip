@@ -37,7 +37,6 @@
 
 {% block contact_number_widget %}
     {% spaceless %}
-
         <div>
             <div style="display:inline-block;">
                 <label style="font-size: 85%;">Country Code</label>
@@ -53,7 +52,6 @@
             </div>
         </div>
         <div class="clearfix"></div>
-
     {% endspaceless %}
 {% endblock %}
 
@@ -80,7 +78,6 @@
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
         <div class="control-group social-media">
-
             <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
             <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span7 pull-right">
             <i class="icon-facebook icon-2x"></i> <span class="pull-right">https://facebook.com/</span>
@@ -90,7 +87,6 @@
             <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
             <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span7 pull-right">
             <i class="icon-google-plus icon-2x"></i><span class="pull-right">https://plus.google.com/</span>
-            <br><br>
         </div>
     {% endspaceless %}
 {% endblock %}
@@ -211,7 +207,7 @@
                 <ul>
                      {% for choice in typeChoice %}
                         <li class="{{ selected[choice.value] is defined ? 'hca-highlight' : '' }} ">
-                            <label for="{{ form.vars.full_name ~ choice.value }}">
+                            <label >
                                 <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
                                 {{ choice.label | raw }}
                             </label>

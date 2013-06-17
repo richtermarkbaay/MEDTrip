@@ -29,9 +29,10 @@ abstract class InstitutionAwareController extends Controller
     {
         $institutionId = $this->getRequest()->getSession()->get('institutionId', 0);
         if ($institutionId) {
-            
-            if(count($this->eagerLoadEntities)) {
-                $institution = $this->get('services.institution.factory')->findByIdWithEagerLoadEntities($institutionId, $this->eagerLoadEntities);             
+
+            // Temporarily eagerLoad in ProfileView
+            if($this->getRequest()->attributes->get('_route') == 'institution_account_profile') {
+                $institution = $this->get('services.institution')->getFullInstitutionById($institutionId);             
             } else {
                 $institution = $this->get('services.institution.factory')->findById($institutionId);
             }

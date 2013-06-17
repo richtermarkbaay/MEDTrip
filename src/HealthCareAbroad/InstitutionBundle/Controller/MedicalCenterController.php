@@ -182,7 +182,6 @@ class MedicalCenterController extends InstitutionAwareController
             'currentGlobalAwards' => $currentGlobalAwards,
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
 
-            'thumbnailSize' => ImageSizes::DOCTOR_LOGO,
             'doctors' =>  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors()),
             'doctorForm' => $doctorForm->createView(),
             'editForm' => $editForm->createView()

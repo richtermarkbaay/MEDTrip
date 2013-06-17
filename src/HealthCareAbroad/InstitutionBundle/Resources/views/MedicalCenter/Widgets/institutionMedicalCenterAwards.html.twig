@@ -1,65 +1,45 @@
-{% set _awardsByType = {
-        'awards': {
-            'containerId': 'awards',
-            'header': 'Awards',
-            'tableId': 'awards_table',
-            'list': currentGlobalAwards.award
-        },
-        'certifications': {
-            'containerId': 'certifications',
-            'header': 'Certifications',
-            'tableId': 'certificates_table',
-            'list': currentGlobalAwards.certificate
-        },
-        'affiliations': {
-            'containerId': 'affiliations',
-            'header': 'Affilliations',
-            'tableId': 'affiliations_table',
-            'list': currentGlobalAwards.affiliation
-        },
-        'accreditations': {
-            'containerId': 'accreditations',
-            'header': 'Accreditations',
-            'tableId': 'accreditation_table',
-            'list': currentGlobalAwards.accreditation
-        }
-    }
-%}
+{% set clinicAwards = {
+    awards: currentGlobalAwards.award,
+    certifications: currentGlobalAwards.certificate,
+    affiliations: currentGlobalAwards.affiliation,
+    accreditations: currentGlobalAwards.accreditation,
+} %}
+
 {% set _autocompleteWidget = form_widget(editGlobalAwardForm.extraValueAutocomplete ) %}
 {% set _exraValueWidget = form_widget(editGlobalAwardForm.extraValue) %}
 {% set _awardValueWidget = form_widget(editGlobalAwardForm.value) %}
 {% set _globalTokenWidget = form_widget(editGlobalAwardForm._token) %}
 
 {% if currentGlobalAwards.affiliation | length or currentGlobalAwards.accreditation | length or currentGlobalAwards.certificate | length or currentGlobalAwards.award | length %}
-    {% for _awardsListData in _awardsByType %}
-        {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+    {% for type, list in clinicAwards %}
+        {% if list|length %}
+            {% include 'InstitutionBundle:MedicalCenter/Partials:awardsList.base.html.twig' %}
+        {% endif %}
     {% endfor %}
 {% else %}
-    <div class="alert alert-block">
-    <div class="hca-profile-sublevel">
-        Here you can showcase Certifications, Affilations, Awards and Accreditations given to your Clinic.
-    </div>
-    <p class="hca-helptext">
-        You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
-        Awards and Accreditations for your Clinic.
-    </p>
-    <button type="button" class="btn btn-primary" href="#awardsDiv" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;">
-        <i class="icon-plus"> </i>
-        Add Entry
-    </button>
-</div>   
-{% endif %}        
-{% block inlineJavascriptCode %}
-    <script type="text/javascript">
-        $(function() {
+    <div class="alert alertblock">
+        <div class="hcaprofilesublevel">
+            Here you can showcase Certifications, Affilations, Awards and Accreditations given to your Clinic.
+        </div>
+        <p class="hcahelptext">
+            You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+            Awards and Accreditations for your Clinic.
+        </p>
+        <button type="button" class="btn btnprimary" onclick="$('#cliniceditawardsbtn').click()">
+            <i class="iconplus"> </i>
+            Add Entry
+        </button>
+    </div>   
+{% endif %}
 
-            $('span.edit_award_form_container').find('input#institution_global_award_form_extraValueAutocomplete').globalAward('autocompleteYear');
-            $('a.edit_global_award').globalAward('edit', {
-                'modal': $('span.edit_award_form_container'),
-                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete'
-            });
-            
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function() {
+        $('span.edit_award_form_container').find('input#institution_global_award_form_extraValueAutocomplete').globalAward('autocompleteYear');
+        $('a.edit_global_award').globalAward('edit', {
+            'modal': $('span.edit_award_form_container'),
+            'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete'
         });
-        
-    </script>
+    });
+</script>
 {% endblock %}

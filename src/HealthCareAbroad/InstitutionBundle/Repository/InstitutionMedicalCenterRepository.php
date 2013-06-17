@@ -196,9 +196,12 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         }
 
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('i')
+        $qb->select('i, b, c, d')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'i')
             ->where('i.institution = :institutionId')
+            ->leftJoin('i.contactDetails', 'b')
+            ->leftJoin('i.doctors', 'c')
+            ->leftJoin('i.institutionSpecializations', 'd')
             ->orderBy('i.id','asc')
             ->setParameter('institutionId', $institutionId)
             ->setMaxResults(1);

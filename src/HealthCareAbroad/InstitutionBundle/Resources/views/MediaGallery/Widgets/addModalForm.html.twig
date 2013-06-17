@@ -32,12 +32,14 @@
                     <input type="hidden" name="media_ids" id="mediaIds">
                     <p><small>Maximum upload file size:</small>2MB</p>
 
-                    {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                    {% if not isSingleCenter %}
+                        {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                    {% endif %}
 
                     <div class="align-right action-buttons">
                         <button class="btn cancel" onclick="$('#add-media').modal('hide')" type="button">Cancel</button> &nbsp;
-                        <button class="btn btn-primary save" type="submit" disabled="disabled"><i class="icon-save"></i>Save Changes</button> &nbsp;
-                        <button class="btn btn-success done" onclick="$('#add-media').modal('hide');" disabled="disabled" type="button">Done</button>
+                        <button class="btn btn-primary save" type="submit" disabled="disabled" style="display:{{ isSingleCenter  ? 'none' : '' }}"><i class="icon-save"></i>Save Changes</button> &nbsp;
+                        <button class="btn btn-success done" onclick="$('#add-media').modal('hide'); window.location.reload()" disabled="disabled" type="button">Done</button>
                     </div>
                 </form>
             </div>

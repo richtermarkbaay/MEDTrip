@@ -1,29 +1,27 @@
-{% if awardsList.list|length %}
-   <div id="{{ awardsList.containerId }}">
-       <h4>{{ awardsList.header }}</h4>
-       <ul class="single-listing">
-           {% set existingAwards = [] %}
-           {% for property in awardsList.list %}
-               {% if property.value not in existingAwards %}
-                   {% set existingAwards = existingAwards|merge([property.value]) %}
-                   {% set award = property.valueObject %}
-                   {% set _extraValueArr = json_to_array(property.extraValue, true) %}
-                   {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
-                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" >
-                       <span class="pull-right" >
-                           <span id="containerRow">
-                                <span class="yearAcquired" > {{ _yearAcquired }}</span> 
-                                <a class="edit_global_award" href="{{ path('institution_medicalCenter_ajaxEditGlobalAward', {'imcId':institutionMedicalCenter.id} ) }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
-                           </span>
-                           <span class="edit_award_form_container" >
-                               <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
-                               {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
-                           </span>
+<div id="{{ type }}">
+   <h4>{{ type|title }}</h4>
+   <ul class="single-listing">
+       {% set existingAwards = [] %}
+       {% for property in list %}
+           {% if property.value not in existingAwards %}
+               {% set existingAwards = existingAwards|merge([property.value]) %}
+               {% set award = property.valueObject %}
+               {% set _extraValueArr = json_to_array(property.extraValue, true) %}
+               {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
+               <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" >
+                   <span class="pull-right" >
+                       <span id="containerRow">
+                            <span class="yearAcquired" > {{ _yearAcquired }}</span> 
+                            <a class="edit_global_award" href="{{ path('institution_medicalCenter_ajaxEditGlobalAward', {'imcId':institutionMedicalCenter.id} ) }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
                        </span>
-                       {{ award.name }}
-                   </li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-    </div>
-{% endif %}
+                       <span class="edit_award_form_container" >
+                           <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
+                           {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
+                       </span>
+                   </span>
+                   {{ award.name }}
+               </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>

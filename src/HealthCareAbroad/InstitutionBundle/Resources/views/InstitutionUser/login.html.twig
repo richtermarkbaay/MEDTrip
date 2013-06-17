@@ -17,7 +17,7 @@
                     </h2>
                     {% if error %}
                         <div class="alert alert-error">
-                            {{ error.message }}
+                          The email address or password you entered is incorrect.
                         </div>
                     {% endif %}
                     <div class="row-fluid">
@@ -26,13 +26,13 @@
                                 <label for="_username">
                                     Enter your email address
                                 </label>
-                                <input type="text" name="_username" id="username" value="{{ last_username }}" placeholder="i.e you@some-domain.com" class="span12">
+                                <input type="text" name="_username" id="username" value="{{ last_username }}" placeholder="i.e you@some-domain.com" class="span12" required="required">
                             </div>
                             <div class="control-group">
                                 <label for="password">
                                     Enter your password
                                 </label>
-                                <input type="password" name="_password" type="password" id="password" class="span12" />
+                                <input type="password" name="_password" type="password" id="password" class="span12" required="required"/>
                             </div>
                             <button class="btn pull-left btn-primary btn-large">
                                 Login
