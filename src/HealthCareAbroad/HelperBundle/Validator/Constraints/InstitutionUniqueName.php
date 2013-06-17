@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraint;
  */
 class InstitutionUniqueName extends Constraint
 {
- 	public $message = 'Institution name already exists.';
+ 	public $message = 'Hospital name already exists.';
  	
     public $field ;
 
