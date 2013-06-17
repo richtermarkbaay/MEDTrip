@@ -5,6 +5,6 @@
         {% block viewContent %}{% endblock %}
     </div>
     <div id="{{ editElemId }}" class="row-fluid hca-edit-box" style="display:none;">
-        {% block editContent %}{% endblock %}
+        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' with formParams %}
     </div>
 </section>

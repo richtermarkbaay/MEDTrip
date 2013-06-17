@@ -15,7 +15,7 @@
                 <p class="hca-helptext">
                     You haven't yet added any description about your clinic.
                 </p>
-                <a href="#description" type="button" class="btn btn-primary" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;"> <i class="icon-plus">  </i> Add Entry </a>
+                <a type="button" class="btn btn-primary" onclick="$('#clinic-edit-description-btn').click()"> <i class="icon-plus">  </i> Add Entry </a>
             </div>
         {% endif %}
     {% endblock %}
@@ -75,7 +75,7 @@
                        <b >  {{_website}} </b>
                     {% else %}
                         <b> no clinic website </b> added.
-                        <a onclick="InstitutionMedicalCenter.toggleForm($(this)); return false;" class="btn btn-primary btn-small" href="#contactNumber" ><i class="icon-plus"></i> Add Clinic Website</a>
+                        <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Clinic Website</a>
                     {% endif %}
                 </span>
             </p>
@@ -132,7 +132,7 @@
                     You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
                     Awards and Accreditations for your Clinic.
                 </p>
-                <a class="btn btn-primary" href="#socialMediaSites" onclick="InstitutionMedicalCenter.openWebsiteFormButton($(this)); return false;"> <i class="icon-plus"> </i>  Add Entry  </a>
+                <a class="btn btn-primary" onclick="$('#clinic-edit-mediaSites-btn').click()"> <i class="icon-plus"> </i>  Add Entry  </a>
             </div> 
         {% endif %}
     {% endblock %}

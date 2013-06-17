@@ -1,21 +1,21 @@
 <!-- Institution Description Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Description', toggleBtnId: 'institution-edit-description-btn', viewElemId: 'show-about', editElemId: 'description' } %}
+    with {
+        title: 'Description', toggleBtnId: 'institution-edit-description-btn', viewElemId: 'show-about', editElemId: 'description',
+        formParams: {formId: 'descriptionModalForm', fields: ['description']} 
+    } %}
 
     {% block viewContent %}
         <p class="hca-helptext" id="institutionDescriptionText"> {{ institution.description }} </p>
-    {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'descriptionModalForm', fields: ['description']} 
-        %}
     {% endblock %}
 {% endembed %}
 
 <!--  Institution Address -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Address', toggleBtnId: 'institution-edit-address-btn', viewElemId: 'show-address', editElemId: 'address' } %}
+    with { 
+        title: 'Address', toggleBtnId: 'institution-edit-address-btn', viewElemId: 'show-address', editElemId: 'address',
+        formParams: {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
+    } %}
 
     {% block headingHelptext %}
         <span class="tooltip-wrap hca-edit"><i class="icon-info-sign"></i>
@@ -25,7 +25,7 @@
             </span>
         </span>
     {% endblock %}
-    
+
     {% block viewContent %}
         <span class="icon-map-marker"> </span>
         {% set _address = institution_address_to_array(institution) %}
@@ -33,18 +33,15 @@
             <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
         </span>
     {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
-        %}
-    {% endblock %}
 {% endembed %}
 
 
 <!--  Institution Contact Details -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Contact Details', toggleBtnId: 'institution-edit-contacts-btn', viewElemId: 'show-contact', editElemId: 'number' } %}
+    with { 
+        title: 'Contact Details', toggleBtnId: 'institution-edit-contacts-btn', viewElemId: 'show-contact', editElemId: 'number', 
+        formParams: {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'}
+    } %}
 
     {% block headingHelptext %}
         <span class="tooltip-wrap hca-edit">
@@ -67,7 +64,7 @@
                         http://www.<b >{{_website}} </b>
                     {% else %}
                         <b> no hospital website </b> added.
-                        <a onclick="InstitutionProfile.openWebsiteFormButton($(this)); return false;" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Hospital Website</a>
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small" href="#number" ><i class="icon-plus"></i> Add Hospital Website</a>
                     {% endif %}
                 </span>
             </p>
@@ -86,18 +83,15 @@
             {% endfor %}  
         </div>
     {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'} 
-        %}
-    {% endblock %}
 {% endembed %}
 
 
 <!-- Institution Social Media Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'show-social', editElemId: 'socialMedia' } %}
+    with { 
+        title: 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'show-social', editElemId: 'socialMedia',
+        formParams: {formId: 'socialMediaForm', fields: ['socialMediaSites']}
+    } %}
 
     {% block viewContent %}
         <div id="show-social">
@@ -110,18 +104,15 @@
             </div>
         </div>
     {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'socialMediaForm', fields: ['socialMediaSites']}
-        %}
-    {% endblock %}
 {% endembed %}
 
 
 <!-- Institution Services Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Services', toggleBtnId: 'institution-edit-services-btn', viewElemId: 'show-services', editElemId: 'servicesContainerDiv' } %}
+    with {
+        title: 'Services', toggleBtnId: 'institution-edit-services-btn', viewElemId: 'show-services', editElemId: 'servicesContainerDiv',
+        formParams: {formId: 'serviceForm', fields: ['services']}
+    } %}
 
     {% block headingHelptext %}
         <span class="tooltip-wrap hca-edit">
@@ -141,18 +132,15 @@
            {% include 'InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig' %}
         </div>
     {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'serviceForm', fields: ['services']} 
-        %}
-    {% endblock %}
 {% endembed %}
 
 
 <!-- Institution Awards Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 'title': 'Certifications, Affilations, Awards <br> and Accreditations', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv' } %}
+    with { 
+        title: 'Certifications, Affilations, Awards <br> and Accreditations', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', 
+        formParams: {formId: 'awardsForm', fields: ['awards']}
+    } %}
 
     {% block headingHelptext %}
         <span class="tooltip-wrap hca-edit">
@@ -168,11 +156,5 @@
         <div id="awardsText">
             {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' %}
         </div>
-    {% endblock %}
-
-    {% block editContent %}
-        {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' 
-             with {formId: 'awardsForm', fields: ['awards']} 
-        %}
     {% endblock %}
 {% endembed %}
