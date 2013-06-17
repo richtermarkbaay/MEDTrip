@@ -578,6 +578,8 @@ hr {
               color: #888888; }
         #content section.section .row-fluid.hca-edit-box {
           border: none; }
+          #content section.section .row-fluid.hca-edit-box .alert {
+            margin-bottom: 0; }
           #content section.section .row-fluid.hca-edit-box.specializations {
             margin-top: 0px; }
           #content section.section .row-fluid.hca-edit-box .accordion {
@@ -585,7 +587,7 @@ hr {
             #content section.section .row-fluid.hca-edit-box .accordion .accordion-inner {
               padding: 0; }
           #content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
-            margin: 20px; }
+            margin: 10px 20px 15px 20px; }
           #content section.section .row-fluid.hca-edit-box h3 {
             margin: 0;
             background-color: #bbbbbb;
@@ -611,6 +613,10 @@ hr {
                 margin-bottom: 0;
                 display: block;
                 position: absolute; }
+            #content section.section .row-fluid.hca-edit-box .control-group.website {
+              margin-bottom: 10px; }
+              #content section.section .row-fluid.hca-edit-box .control-group.website input {
+                margin-bottom: 15px; }
         #content section.section .row-fluid.terms {
           background-color: transparent;
           border: none; }
@@ -2828,6 +2834,8 @@ h1, h2, h3, h4, h5 {
       padding: 5px 0 !important;
       font-family: 'PT Sans';
       width: 210px; }
+      .thumbnails li.thumbnail .btn a {
+        color: white; }
       .thumbnails li.thumbnail .btn.btn-misc {
         text-transform: none;
         color: #e55b00;
