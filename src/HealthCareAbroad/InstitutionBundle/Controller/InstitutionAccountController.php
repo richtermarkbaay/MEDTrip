@@ -155,7 +155,6 @@ class InstitutionAccountController extends InstitutionAwareController
             $params['editForm'] = $editForm->createView();
 
         } else {
-            echo "asd2";exit;
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $params =  array(
                 'institution' => $this->institution,
