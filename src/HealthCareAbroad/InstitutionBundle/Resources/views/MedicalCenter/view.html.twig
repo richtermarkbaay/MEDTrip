@@ -97,9 +97,7 @@
 
                success: function(response) {
                    if(response.status) {
-                       //var imgId = response.imgId;
                        $(formElem).find('img').attr('src',response.mediaSrc);
-                       //$(imgId).attr('src', response.mediaSrc);
                    } else {
                        alert('ERROR: Unable to upload Logo!');
                    }
