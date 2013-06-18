@@ -64,10 +64,7 @@
                uploadProgress: function(event, position, total, percentComplete) {},*/
                success: function(response) {
                    if(response.status) {
-                       //var imgId = response.imgId;
                        $(formElem).find('img').attr('src',response.mediaSrc);
-                       //$(imgId).attr('src', response.mediaSrc);
-                       //$('#institutionLogo').attr('src','{{ institution_media_src(logo, logoSize) }}'+logo);
                    } else {
                        alert('ERROR: Unable to upload Logo!');
                    }

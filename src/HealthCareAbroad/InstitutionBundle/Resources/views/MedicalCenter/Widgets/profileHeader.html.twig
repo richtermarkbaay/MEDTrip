@@ -3,12 +3,8 @@
         <form class="ajaxUploadLogoForm hidden" enctype="multipart/form-data" action="{{ path('institution_medicalCenter_logo_upload', { imcId: institutionMedicalCenter.id } ) }}" method="POST">
             <a href="javascript:void(0)" class="file-browse-btn" onclick="$(this).next().click()">
                 <span class="rollover hca-profile-photo-rollover"></span>
-                {% if institutionMedicalCenter.logo %}
-                    {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-                    <img id="imcLogo" src="{{ institution_media_src(institutionMedicalCenter.logo, logoSize) }}" alt="" class="imgborder"/>
-                 {% else %}
-                     <img class="imgborder" alt="[Gallery Photo]" src="{{ asset('images/institution/default_clinic.png') }}" /> 
-                 {% endif %}
+                {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+                <img id="imcLogo" src="{{ institutionMedicalCenter.logo ? institution_media_src(institutionMedicalCenter.logo, logoSize) :  imageplaceholder.imcDefaultLogo}}" alt="" class="imgborder"/>
             </a>
             <input type="file" accept="image/*" onchange="$(this).parent().submit()" name="logo">
         </form>

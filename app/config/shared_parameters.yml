@@ -88,6 +88,7 @@ parameters:
         institutionFeaturedImage: /images/default-hospital-featured-image.png 
         institutionDefaultLogo: /images/institution/default-hospital-logo.png
         doctorDefaultImage: /images/institution/default-doctor-icon.png
+        imcDefaultLogo: /images/institution/default_clinic.png
         destinationIcon: ''
 
     amazonS3_key: AKIAIAZVLNMMNLBC6IEA

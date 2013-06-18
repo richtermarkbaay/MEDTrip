@@ -141,7 +141,7 @@ class InstitutionService
 
         if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h, i, j, k, l')->from('InstitutionBundle:Institution', 'a')
+            $qb->select('a, b, c, d, e, f, g, h, i, j, k')->from('InstitutionBundle:Institution', 'a')
             ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
             ->leftJoin('b.institutionSpecializations', 'c')
             ->leftJoin('c.specialization', 'd')
@@ -152,7 +152,7 @@ class InstitutionService
             ->leftJoin('b.doctors', 'i')
             ->leftJoin('i.specializations', 'j')
             ->leftJoin('a.contactDetails', 'k')
-            ->leftJoin('a.institutionGroups', 'l')
+            //->leftJoin('a.institutionGroups', 'l')
             ->where('a.slug = :institutionSlug')
             ->andWhere('a.status = :status')
             ->setParameter('institutionSlug', $slug)
