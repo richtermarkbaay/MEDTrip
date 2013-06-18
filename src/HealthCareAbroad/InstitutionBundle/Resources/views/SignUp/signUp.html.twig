@@ -43,7 +43,7 @@
                                 {{ form_widget(form.jobTitle, { 'attr': {'class': 'span6'} }) }}
                             </div>
                             <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
-                                <label for="institutionSignUp_email">  Your Email address
+                                <label for="institutionSignUp_email">  Your Email address *
                                     <small> (Your company email address.)  </small>
                                 </label>
                                 {{ form_widget(form.email, { 'attr': {'class': 'span6 tooltip-wrap2', 'placeholder': 'i.e you@some-domain.com'} }) }}
@@ -54,13 +54,13 @@
                             </div>
                             <div class="control-group row-field {{ (form.password.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_password">
-                                    Set your password <small>( Must be atleast 6 characters long ) </small>
+                                    Set your password * <small>( Must be atleast 6 characters long ) </small>
                                 </label>
                                {{ form_widget(form.password, { 'attr': {'class': 'span6'} }) }}
                                {{ form_errors(form.password) }}
                             </div>
                              <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
-                                <label for="institutionSignUp_confirmPassword"> Re-type your password </label>
+                                <label for="institutionSignUp_confirmPassword"> Re-type your password * </label>
                                    {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
                                    {{ form_errors(form.confirm_password) }}
                             </div>
@@ -90,8 +90,8 @@
                 
                 
                 <section class="section account-info">
-                    <h2>Type of Institution  <br>
-                        <small>  Please select which best describes the healthcare provider you are adding: </small>
+                    <h2>Type of Institution *<small>  <br>
+                          Please select which best describes the healthcare provider you are adding: </small>
                     </h2>
                     <div class="row-fluid">
                         <div class="span12 control-group row-field {{ (form.type.vars.valid ? '' : 'error') }}">
