@@ -119,7 +119,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
-            echo "asd";exit;
+           
             $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
 
             if (\is_null($this->institutionMedicalCenter)) {
