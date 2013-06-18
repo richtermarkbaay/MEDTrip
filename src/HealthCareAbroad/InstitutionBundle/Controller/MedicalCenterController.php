@@ -1094,7 +1094,6 @@ class MedicalCenterController extends InstitutionAwareController
                 $data['mediaSrc'] = $src;
             }
             $data['status'] = true;
-            $data['imgId'] = '#imcLogo';
         }
 
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));

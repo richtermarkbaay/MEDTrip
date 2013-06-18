@@ -8,41 +8,40 @@
     <h4>
         Having a logo and banner is important, but don't worry if you don't have the images now, you can always add them later.
     </h4>
-    <!-- form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
-        <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
-        <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
-    </form-->
-    
     <div class="row-fluid">
-    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
-        {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
-        <div class="span6">
-            <div class="media">
-                {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://placehold.it/96x96' %}  
-                <img src="{{ logoImage }}" class="pull-left">
-                
-                <div class="media-body">
-                    <p>Your logo should be no smaller than 256 x 256 pixels.</p>
-                    <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Logo</button>
-                    {{ form_widget(form.logo) }}
+        <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+            {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
+            <div class="span6">
+                <div class="media">
+                    {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://placehold.it/96x96' %}  
+                    <img id="institutionLogo" src="{{ logoImage }}" class="pull-left">
                     
+                    <div class="media-body">
+                        <p>Your logo should be no smaller than 256 x 256 pixels.</p>
+                        <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Logo</button>
+                        {#{ form_widget(form.logo) }#}
+                        <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
+                        <input name="logoSize" type="hidden" value="small">
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
-        <div class="span6 divider">
-            <div class="media">
-                {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://placehold.it/96x96' %}  
-                <img src="{{ featuredImage }}" class="pull-left">
-
-                <div class="media-body">
-                    <p>Your banner should be no smaller than 950 pixels wide x 420 pixels high.</p>
-                    <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Banner</button>
-                    {{ form_widget(form.featuredMedia) }}
+        </form>
+        
+        <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+            <div class="span6 divider">
+                <div class="media">
+                    {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://placehold.it/96x96' %}  
+                    <img id="institutionFeaturedImage" src="{{ featuredImage }}" class="pull-left">
+    
+                    <div class="media-body">
+                        <p>Your banner should be no smaller than 950 pixels wide x 420 pixels high.</p>
+                        <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Banner</button>
+                        {#{ form_widget(form.featuredMedia) }#}
+                        <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
+                        <input type="hidden" name="logoSize" value="small">
+                    </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
     </div>
 </section>

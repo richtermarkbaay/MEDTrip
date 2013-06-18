@@ -16,12 +16,20 @@
 
                 {% include 'InstitutionBundle:Institution/Partials:signup.section.socialMedia.html.twig' %}
                 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.mediaUpload.html.twig' %}
-
+                
                 {% include 'InstitutionBundle:Institution/Partials:signup.section.services.html.twig' %}
 
                 {% include 'InstitutionBundle:Institution/Partials:signup.section.awards.html.twig' %}
 
+                {{ form_widget(form.coordinates) }}
+                {{ form_widget(form._token) }}
+
+                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
+
+            </form>
+            
+                {% include 'InstitutionBundle:Institution/Partials:signup.section.mediaUpload.html.twig' %}
+            
                 <section class="section footer">
                     <div class="row-fluid terms">
                         <div class="span12">
@@ -34,13 +42,6 @@
                         </div>
                     </div>
                 </section>
-
-                {{ form_widget(form.coordinates) }}
-                {{ form_widget(form._token) }}
-
-                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
-
-            </form>
         </div>
 
         <aside class="span4">
@@ -61,6 +62,26 @@
 <script type="text/javascript">
 
 $(function(){
+
+	var formElem;
+	$('form.ajaxUploadLogoForm').ajaxForm({
+    /* beforeSend: function(e) {},
+       uploadProgress: function(event, position, total, percentComplete) {},*/
+
+       success: function(response) {
+           if(response.status) {
+        	   $(formElem).find('img').attr('src',response.mediaSrc);
+           } else {
+               alert('ERROR: Unable to upload Logo!');
+           }
+       },
+       complete: function(xhr) {
+
+       }
+   }).submit(function(){
+	   formElem = $(this);
+       $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
+   });
 	var formName = "{{ form.vars.name }}";
 	HCAGoogleMap.initialize({
 		mapOnChangeCallback: function() {

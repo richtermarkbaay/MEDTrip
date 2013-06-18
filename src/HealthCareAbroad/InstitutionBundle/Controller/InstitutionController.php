@@ -100,17 +100,20 @@ class InstitutionController extends InstitutionAwareController
 	
 	public function uploadLogoAction()
 	{
-// 	    var_dump($this->institution);exit;
 	    $data = array();
 	    if($this->getRequest()->files->get('logo')) {
 	        $file = $this->getRequest()->files->get('logo');
 	        $media = $this->get('services.institution.media')->uploadLogo($file, $this->institution);
 	        if($media->getName()) {
-	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), ImageSizes::MEDIUM);
+	            $imageSize = ImageSizes::MEDIUM;
+	            if($this->getRequest()->get('logoSize') == 'small') {
+	                $imageSize = ImageSizes::SMALL;
+	            }
+	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
+	            $data['size'] = $this->getRequest()->get('logoSize');
 	        }
 	        $data['status'] = true;
-	        $data['imgId'] = '#institutionLogo';
 	    }
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json')); 
 // 	    return $this->redirect($this->getRequest()->headers->get('referer'));
@@ -123,9 +126,12 @@ class InstitutionController extends InstitutionAwareController
 	        $file = $this->getRequest()->files->get('featuredImage');
 	        $media = $this->get('services.institution.media')->uploadFeaturedImage($file, $this->institution);
 	        $data['status'] = true;
-	        $data['imgId'] = '#institutionFeaturedImage';
 	        if($media->getName()) {
-	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), ImageSizes::LARGE_BANNER);
+	            $imageSize = ImageSizes::LARGE_BANNER;
+	            if($this->getRequest()->get('logoSize') == 'small') {
+	                $imageSize = ImageSizes::SMALL;
+	            }
+	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
 	        }
 	    }
