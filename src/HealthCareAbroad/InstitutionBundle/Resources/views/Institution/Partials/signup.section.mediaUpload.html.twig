@@ -8,7 +8,13 @@
     <h4>
         Having a logo and banner is important, but don't worry if you don't have the images now, you can always add them later.
     </h4>
+    <!-- form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+        <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
+        <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
+    </form-->
+    
     <div class="row-fluid">
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
         <div class="span6">
             <div class="media">
@@ -23,6 +29,8 @@
                 </div>
             </div>
         </div>
+    </form>
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         <div class="span6 divider">
             <div class="media">
                 {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://placehold.it/96x96' %}  
@@ -35,5 +43,6 @@
                 </div>
             </div>
         </div>
+    </form>
     </div>
 </section>

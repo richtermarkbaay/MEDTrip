@@ -100,6 +100,7 @@ class InstitutionController extends InstitutionAwareController
 	
 	public function uploadLogoAction()
 	{
+// 	    var_dump($this->institution);exit;
 	    $data = array();
 	    if($this->getRequest()->files->get('logo')) {
 	        $file = $this->getRequest()->files->get('logo');
