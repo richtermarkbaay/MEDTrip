@@ -111,7 +111,6 @@ class InstitutionController extends InstitutionAwareController
 	            }
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
-	            $data['size'] = $this->getRequest()->get('logoSize');
 	        }
 	        $data['status'] = true;
 	    }

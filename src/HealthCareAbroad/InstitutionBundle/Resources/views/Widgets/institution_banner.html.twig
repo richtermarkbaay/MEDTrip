@@ -1,25 +1,16 @@
 <div class="hca-banner">
-    {% if institution.featuredMedia %}
-        {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
-        <img id="institutionFeaturedImage" src="{{ institution_media_src(institution.featuredMedia, bannerSize) }}" alt="">
-    {% else %}
-     <img src="{{ asset('images/institution/institution3.png') }}" alt="institution" />
-    {% endif %} 
-
     <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
         <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
+        {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
+        <img id="institutionFeaturedImage" src="{{ institution.featuredMedia ? institution_media_src(institution.featuredMedia, bannerSize) : imageplaceholder.institutionFeaturedImage }}" alt="">
     </form>
                     
     <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
         <a class="hca-logo file-browse-btn"  href="javascript:void(0)" onclick="$(this).next().click()">        
             <span class="rollover"></span>
-            {% if institution.logo %}
-                {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-                <img id="institutionLogo" src="{{ institution_media_src(institution.logo, logoSize) }}" alt="">
-            {% else %}
-                <img src="{{ imageplaceholder.institutionDefaultLogo }}" class="imgborder" alt="">          
-            {% endif %} 
+            {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+            <img id="institutionLogo" src="{{ institution.logo ? institution_media_src(institution.logo, logoSize) : imageplaceholder.institutionDefaultLogo }}" alt="">
         </a>
         <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
     </form>
