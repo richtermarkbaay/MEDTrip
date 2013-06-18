@@ -970,7 +970,6 @@ class MedicalCenterController extends InstitutionAwareController
                         }
                     }
                     else {
-                        var_dump($form->getErrorsAsString()); exit;
                         $errors[] = 'Failed form validation';
                     }
                 }

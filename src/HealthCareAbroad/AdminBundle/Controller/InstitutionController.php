@@ -429,7 +429,6 @@ class InstitutionController extends Controller
    	{
 
    	    if (($fileBag = $request->files) && $fileBag->has('file')) {
-   	        //var_dump($fileBag->get('file')); exit;
    	        $media = $this->get('services.institution.media')->uploadFeaturedImage($fileBag->get('file'), $this->institution);
    	        if(!$media) {
    	            $this->get('session')->setFlash('error', 'Unable to Upload Featured Image');
