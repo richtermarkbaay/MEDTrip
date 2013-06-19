@@ -256,7 +256,7 @@ class InstitutionAccountController extends InstitutionAwareController
                                             'eachAward' => array('list' => $globalAwards[$typeKey]),
                                             'label' => $typeKey.'s'
                             ));
-                            
+                             
                             return new Response(\json_encode(array('html' => $html , 'type' => $typeKey)), 200, array('content-type' => 'application/json'));
                         }
                         elseif($key == 'medicalProviderGroups' ){
