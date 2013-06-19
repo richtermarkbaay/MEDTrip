@@ -1,0 +1,15 @@
+<div id="convert_treatment_to_term_form" class="edit_award_form_container modal hide fade modal-box" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    {% block modalBody %}
+    <div style="border: 1px solid #E5E5E5;padding: 20px;margin-top:1px">
+        Convert {{ treatment.name }}
+        </br>
+        </br>
+        <a aria-hidden="true" data-dismiss="modal" class="btn">Cancel</a>
+        <a data-loader-text="Processing..."  class="btn btn-primary submit-modal">Submit</a>
+        
+    </div>    
+    {% endblock %}
+    {% block footerBody %}
+        
+    {% endblock %}
+</div>
