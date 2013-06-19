@@ -212,6 +212,7 @@ class TreatmentController extends Controller
     
     public function convertToTermAction(Request $request)
     {
+        
         $oldTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($request->get('id'));
         $treatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
         
@@ -220,9 +221,12 @@ class TreatmentController extends Controller
         $form = $this->createForm($convertFormType);
         $form->bind($request);        
         if($form->isValid()) {
-            $this->get('services.terms')->convertTreatmentToTerm($form->get('treatments')->getData(), $oldTreatment);
-
-            return $this->redirect($this->generateUrl('admin_treatment_index'));
+            $currentTreatmentId = $form->get('treatments')->getData();
+            $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
+            $currentTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($currentTreatmentId);
+            $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatment->getName());
+            
+            return $this->redirect($this->generateUrl('admin_treatment_edit',array('id' => $currentTreatmentId)));
         }
         
         return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 

@@ -15,21 +15,40 @@
             }
         %}
             {% block sectionContent %}
-
                 {% include '::notice.admin.html.twig' %}
-                
-                
-                
-                <form id="treatmentForm" novalidate="novalidate" class="basic-form" action="{{ path('admin_treatment_convert', {'specializationId' : treatment.specialization.id, 'id' : treatment.id })}}" method="post" {{ form_enctype(form) }}>
+                <form id="convertTreatmentForm" novalidate="novalidate" class="basic-form" action="{{ path('admin_treatment_convert', {'specializationId' : treatment.specialization.id, 'id' : treatment.id })}}" method="post" {{ form_enctype(form) }}>
 
     				{{ form_rest(form) }}
     				<div class="clear"><br></div>
-    			    <input type="submit" value="Save" class="btn btn-large btn-primary" name="submit"/>
+    			    <a value="Submit" class="btn form-submit btn-large btn-primary" name="submit"/>Submit</a>
     			</form>
 
             {% endblock %}
         {% endembed %}
     </div>
+    <!-- Modal Institution Status -->
+    	{% include 'AdminBundle:Treatment/Modals:modal.confirmConvertTreatmentToTerm.html.twig' 
+    	     with {modalId: 'convert_treatment_to_term_form', modalTitle: 'Edit Status'}
+    	%}
+    <!-- end Modal Institution Status -->
+{% endblock %}
 
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function(){
+
+        $("a.form-submit").click(function() {
+        	$('div#convert_treatment_to_term_form').modal('show');
+
+            return false;
+        });
+
+        $('a.submit-modal').click(function() {
+            $('#convertTreatmentForm').submit();
+            return false;
+        });
+    });
+
+</script>
 {% endblock %}
 
