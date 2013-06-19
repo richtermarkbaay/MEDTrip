@@ -28,7 +28,7 @@
     </div>
     <!-- Modal Institution Status -->
     	{% include 'AdminBundle:Treatment/Modals:modal.confirmConvertTreatmentToTerm.html.twig' 
-    	     with {modalId: 'convert_treatment_to_term_form', modalTitle: 'Edit Status'}
+    	     with {modalId: 'convert_treatment_to_term_form', modalTitle: 'Convert Treatment'}
     	%}
     <!-- end Modal Institution Status -->
 {% endblock %}
@@ -37,8 +37,15 @@
 <script type="text/javascript">
     $(function(){
 
+    	$('div#convert_treatment_to_term_form').on('show', function(){
+    		$('#convert_treatment_to_term_form').find('h5').append($('#{{ form.treatments.vars.id }} option:selected').text());
+    	});
+    	
+    	
         $("a.form-submit").click(function() {
-        	$('div#convert_treatment_to_term_form').modal('show');
+            
+        	$('div#convert_treatment_to_term_form')
+        	    .modal('show');
 
             return false;
         });
