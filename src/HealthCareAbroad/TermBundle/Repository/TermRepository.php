@@ -64,7 +64,7 @@ class TermRepository extends EntityRepository
         INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`)
         SELECT a.institution_specialization_id, ". $currentTreatment->getId() ."
         FROM  `institution_treatments` a
-        LEFT JOIN (SELECT  * FROM `institution_treatments` WHERE `treatment_id` = 1233  ) as _existing
+        LEFT JOIN (SELECT  * FROM `institution_treatments` WHERE `treatment_id` = {$currentTreatment->getId()}  ) as _existing
         ON _existing.`institution_specialization_id` = a.institution_specialization_id
         WHERE a.treatment_id = ". $oldTreatment->getId() ."
         AND _existing.`institution_specialization_id` IS NULL";

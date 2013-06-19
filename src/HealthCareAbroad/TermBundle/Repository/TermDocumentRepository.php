@@ -32,7 +32,6 @@ class TermDocumentRepository extends EntityRepository
             
         }
         $sql = $sql.\implode(', ', $valuesClause);
-        
         $statement = $this->getEntityManager()->getConnection()->prepare($sql);
         $statement->execute($params);    
     }
