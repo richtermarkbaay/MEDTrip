@@ -37,8 +37,8 @@
         <p class="hca-helptext">
             You haven't yet added any {{ label | lower }} for your Hospital. 
         </p>
-        <button type="button" class="btn btn-primary" onclick="InstitutionProfile.toggleForm($('#institution-edit-awards-btn'))">
-            <i class="icon-plus"></i> Add Entry
+         <button type="button" class="btn btn-primary" onclick="$('#show-{{ label }}').parent().find('#institution-edit-awards-btn').click()">
+            <i class="icon-plus"></i>Add Entry
         </button>
     </div>   
 {% endif %}

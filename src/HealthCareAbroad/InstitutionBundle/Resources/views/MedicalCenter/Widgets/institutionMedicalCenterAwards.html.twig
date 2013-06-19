@@ -31,15 +31,16 @@
 {% else %}
     <div class="alert alert-block">
         <div class="hcaprofilesublevel">
-            Here you can showcase Certifications, Affilations, Awards and Accreditations given to your Clinic.
+            Here you can showcase {{ label }} given to your Clinic.
         </div>
         <p class="hcahelptext">
-            You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
+            You haven't yet added any {{ label }} for your Clinic. Explain here the need to add Certifications, Affilations,
             Awards and Accreditations for your Clinic.
         </p>
-        <button type="button" class="btn btn-primary" onclick="$('#clinic-edit-awards-btn').click()">
+        <button type="button" class="btn btn-primary" onclick="$('#show-{{ label }}').parent().find('#clinic-edit-awards-btn').click()">
             <i class="icon-plus"></i>Add Entry
         </button>
+        
     </div>   
 {% endif %}
 
