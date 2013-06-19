@@ -139,25 +139,101 @@
     {% endblock %}
 {% endembed %}
 
-
-<!-- InstitutionMedicalCenter Services Section -->
+{% set awards = { list: currentGlobalAwards.award, editFormListWrapperId: 'listing-award' } %}
+<!-- Institution Awards Section -->
 {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
     with { 
-        title: 'Certifications, Affilations, Awards <br>and Accreditations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'view-awards', editElemId: 'awardsDiv',
-        formParams: {formId: 'awardsForm', fields: ['awards']} 
+        title: 'Awards', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award',
+        formParams: {formId: 'awardsForm', fields: ['awards'] }
     } %}
 
     {% block headingHelptext %}
-        <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"></i>
-            <span class="tooltip-content hca-edit pull-left"> <i class="icon-asterisk icon-2x pull-left"></i>
-                <b>Awards</b>, <b>Certifications</b> and <b>Affiliations</b> are indicators that assure patients and their family that your facility is reliable, reputable and meets acceptable, if not superior, standards.
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Awards </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
             </span>
         </span>
     {% endblock %}
     
     {% block viewContent %}
         <div id="awardsText">
-            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' %}
+            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: awards , label : 'awards' } %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+
+{% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
+<!-- Institution Certifications Section -->
+{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+    with { 
+        title: 'Certifications', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-certificates', editElemId: 'certificatesDiv', awardsFilterList: '#listing-certificate'
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Certifications </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <div id="certificatesText">
+            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: certificates, label : 'certificates' } %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
+<!-- Institution Affiliations Section -->
+    {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+        with { 
+            title: 'Affiliations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-affiliations', editElemId: 'affiliationsDiv', awardsFilterList: '#listing-affiliation'
+        } %}
+    
+        {% block headingHelptext %}
+            <span class="tooltip-wrap hca-edit">
+                <i class="icon-info-sign"> </i>
+                <span class="tooltip-content hca-edit pull-left">
+                
+                    <i class="icon-asterisk icon-2x pull-left"> </i> <b> Affiliations </b> are indicators that assure patients and their family that your facility
+                    is reliable, reputable and meets acceptable, if not superior, standards.
+                </span>
+            </span>
+        {% endblock %}
+        
+        {% block viewContent %}
+            <div id="affiliationsText">
+                {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: affiliations, label : 'affiliations' } %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+{% set accreditations = { list: currentGlobalAwards.accreditation, editFormListWrapperId: 'listing-accreditation' } %}
+<!-- Institution Accreditations Section -->
+{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+    with { 
+        title: 'Accreditations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-accreditations', editElemId: 'accreditationsDiv', awardsFilterList: '#listing-accreditation'
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Accreditations </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <div id="accreditationsText">
+            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: accreditations, label : 'accreditations' } %}
         </div>
     {% endblock %}
 {% endembed %}

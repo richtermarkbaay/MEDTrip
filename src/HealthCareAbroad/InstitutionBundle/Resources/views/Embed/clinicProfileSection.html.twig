@@ -4,7 +4,9 @@
     <div id="{{ viewElemId }}">
         {% block viewContent %}{% endblock %}
     </div>
-    <div id="{{ editElemId }}" class="row-fluid hca-edit-box" style="display:none;">
-        {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' with formParams %}
+    <div id="{{ editElemId }}" class="row-fluid hca-edit-box" style="display:none;" {% if awardsFilterList is defined %} data-filter-list="{{ awardsFilterList }}" {% endif %}>
+        {% if formParams is defined %}
+            {% include 'InstitutionBundle:Widgets:institutionMedicalCenter.editProfileModalForm.html.twig' with formParams %}
+        {% endif %}
     </div>
 </section>

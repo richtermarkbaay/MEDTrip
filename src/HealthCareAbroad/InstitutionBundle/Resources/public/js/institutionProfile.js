@@ -252,24 +252,23 @@ var InstitutionProfile = {
     	editElem = $(elem.attr('data-edit-elem'));
     	
     	if(viewElem.is(':visible')) {
-    		/* TODO: Temporary Fixed */
-        	if(elem.attr('id') == 'institution-edit-awards-btn') {
+    		
+        	if(elem.attr('id') == 'institution-edit-awards-btn') { /* TODO: Temporary Fixed */
         		
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
         		
         		InstitutionProfile.filterAwardsList(elem );
-        	}
-        	/* end of TODO: Temporary Fixed */
-    		
+        	} /* end of TODO: Temporary Fixed */
+        	
         	viewElem.hide();
         	editElem.slideDown('slow');
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {
-    		InstitutionProfile.undoChecked(editElem);
     		
         	editElem.slideUp('slow', function(){
+        		InstitutionProfile.undoChecked(editElem);
         		viewElem.fadeIn();
             	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
         	});
@@ -280,6 +279,7 @@ var InstitutionProfile = {
      * if container is closed without saving undo changes
      */
     undoChecked: function(_editElem) {
+    	
     	if($(_editElem.attr('data-filter-list'))){
 			_list = $(_editElem.attr('data-filter-list'));
 			 _list.find("li.hca-highlight input:checkbox.new").click();
@@ -295,6 +295,7 @@ var InstitutionProfile = {
     	$($('#awardsForm').parent().attr('data-filter-list')).show();
     	$('#awardsForm h3.awards-heading').hide();
     	$.each($('.hca-main-profile').find('#institution-edit-awards-btn'), function(_k, value) {
+    		
         	if(value.text === '') {
         		if( viewElem.attr('id') != value.getAttribute('data-view-elem')){
         			_toHide = value.getAttribute('data-edit-elem');
