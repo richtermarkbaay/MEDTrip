@@ -708,4 +708,32 @@ class Institution
     {
         return $this->medicalProviderGroups;
     }
+    /**
+     * @var integer
+     */
+    private $totalClinicRankingPoints;
+
+
+    /**
+     * Set totalClinicRankingPoints
+     *
+     * @param integer $totalClinicRankingPoints
+     * @return Institution
+     */
+    public function setTotalClinicRankingPoints($totalClinicRankingPoints)
+    {
+        $this->totalClinicRankingPoints = $totalClinicRankingPoints;
+    
+        return $this;
+    }
+
+    /**
+     * Get totalClinicRankingPoints
+     *
+     * @return integer 
+     */
+    public function getTotalClinicRankingPoints()
+    {
+        return $this->totalClinicRankingPoints;
+    }
 }

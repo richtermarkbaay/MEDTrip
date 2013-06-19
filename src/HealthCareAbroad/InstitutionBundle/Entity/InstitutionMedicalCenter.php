@@ -586,4 +586,32 @@ class InstitutionMedicalCenter
     {
         return $this->descriptionHighlight;
     }
+    /**
+     * @var integer
+     */
+    private $rankingPoints;
+
+
+    /**
+     * Set rankingPoints
+     *
+     * @param integer $rankingPoints
+     * @return InstitutionMedicalCenter
+     */
+    public function setRankingPoints($rankingPoints)
+    {
+        $this->rankingPoints = $rankingPoints;
+    
+        return $this;
+    }
+
+    /**
+     * Get rankingPoints
+     *
+     * @return integer 
+     */
+    public function getRankingPoints()
+    {
+        return $this->rankingPoints;
+    }
 }
