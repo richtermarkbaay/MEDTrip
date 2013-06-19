@@ -117,6 +117,7 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
+
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
            
@@ -244,15 +245,19 @@ class InstitutionAccountController extends InstitutionAwareController
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                             
-                        }elseif($key == 'awards'){
+                        }elseif($key == 'awards') {
+                            
+                            $typeKey = $request->get('awardTypeKey');
                             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+                            $globalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
                             $html = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
                                             'institution' => $this->institution,
                                             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                                            'currentGlobalAwards' => $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution),
+                                            'eachAward' => array('list' => $globalAwards[$typeKey]),
+                                            'label' => $typeKey.'s'
                             ));
                             
-                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+                            return new Response(\json_encode(array('html' => $html , 'type' => $typeKey)), 200, array('content-type' => 'application/json'));
                         }
                         elseif($key == 'medicalProviderGroups' ){
                             $value = $this->institution->{'get'.$key}();

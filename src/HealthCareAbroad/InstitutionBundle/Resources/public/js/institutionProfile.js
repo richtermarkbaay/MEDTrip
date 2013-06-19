@@ -250,16 +250,63 @@ var InstitutionProfile = {
     toggleForm: function(elem) {
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
+    	
     	if(viewElem.is(':visible')) {
+    		/* TODO: Temporary Fixed */
+        	if(elem.attr('id') == 'institution-edit-awards-btn') {
+        		
+        		_type = editElem.attr('data-filter-list').replace('#listing-', '');
+        		$('#awardTypeKey').val(_type);
+        		
+        		InstitutionProfile.filterAwardsList(elem );
+        	}
+        	/* end of TODO: Temporary Fixed */
+    		
         	viewElem.hide();
         	editElem.slideDown('slow');
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
+        	
     	} else {
+    		InstitutionProfile.undoChecked(editElem);
+    		
         	editElem.slideUp('slow', function(){
         		viewElem.fadeIn();
             	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
         	});
     	}
+    },
+    
+    /**
+     * if container is closed without saving undo changes
+     */
+    undoChecked: function(_editElem) {
+    	if($(_editElem.attr('data-filter-list'))){
+			_list = $(_editElem.attr('data-filter-list'));
+			 _list.find("li.hca-highlight input:checkbox.new").click();
+			 _list.find("li.hca-highlight input:checkbox.new").attr('class', '');
+			 _list.find("li[class=''] .old").click();
+		}
+    },
+    
+    filterAwardsList: function(elem ) {
+    	
+    	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
+    	$('#awardsForm .control-group > .awards-listing').hide();
+    	$($('#awardsForm').parent().attr('data-filter-list')).show();
+    	$('#awardsForm h3.awards-heading').hide();
+    	$.each($('.hca-main-profile').find('#institution-edit-awards-btn'), function(_k, value) {
+        	if(value.text === '') {
+        		if( viewElem.attr('id') != value.getAttribute('data-view-elem')){
+        			_toHide = value.getAttribute('data-edit-elem');
+        			InstitutionProfile.undoChecked($(_toHide));
+        			$(value.getAttribute('data-view-elem')).fadeIn();
+	    			$(_toHide).slideUp('slow', function(){
+	    				$(value.getAttribute('data-view-elem')).parent().find('#institution-edit-awards-btn').addClass('btn-misc').removeClass('btn-link').html('Edit');
+		        	});
+        		}
+    		}
+    	});
+
     },
 
     submitModalForm: function(_formElement, _successCallback) {
@@ -366,7 +413,9 @@ var InstitutionProfile = {
                     	$('#serviesText').html(response.html);
                     	break;
                     case 'awardsForm':
-                    	$('#awardsText').html(response.html);
+                    		$('#listing-'+response.type).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
+                    		$('#listing-'+response.type).find("li[class=''] .old").attr('class', '');
+	                    	$('#'+response.type+'sText').html(response.html);
                     	break;
                 } 
 

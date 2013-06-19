@@ -1,29 +1,41 @@
-{% set institutionAwards = {
-    'awards': currentGlobalAwards.award,
-    'certifications': currentGlobalAwards.certificate,
-    'affiliations': currentGlobalAwards.affiliation,
-    'accreditations': currentGlobalAwards.accreditation
-} %}
-
 {% set _autocompleteWidget = form_widget(editGlobalAwardForm.extraValueAutocomplete ) %}
 {% set _exraValueWidget = form_widget(editGlobalAwardForm.extraValue) %}
 {% set _awardValueWidget = form_widget(editGlobalAwardForm.value) %}
 {% set _globalTokenWidget = form_widget(editGlobalAwardForm._token) %}
 
-{% if currentGlobalAwards.affiliation | length or currentGlobalAwards.accreditation | length or currentGlobalAwards.certificate | length or currentGlobalAwards.award | length %}
-     {% for type, list in institutionAwards %}
-        {% if list|length %}
-            {% include 'InstitutionBundle:Institution/Partials:awardsList.base.html.twig' %}
-        {% endif %}
-    {% endfor %}
+{% if eachAward.list|length %}
+       <ul class="single-listing">
+           {% set existingAwards = [] %}
+           {% for property in eachAward.list %}
+               {% if property.value not in existingAwards %}
+                   {% set existingAwards = existingAwards|merge([property.value]) %}
+                   
+                   {% set award = property.valueObject %}
+                   {% set _extraValueArr = json_to_array(property.extraValue, true) %}
+                   {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
+                   <li class="hca-highlight" id="globalAwardRow_{{ property.id }}">
+                       {{ award.name }}
+                       <span class="pull-right" >
+                           <span id="containerRow">
+                                <span class="yearAcquired" > {{ _yearAcquired }}</span> 
+                                <a class="edit_global_award" href="{{ path('institution_ajaxEditGlobalAward') }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
+                           </span>
+                           <span class="edit_award_form_container" >
+                               <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
+                               {% include 'InstitutionBundle:Widgets/Modals:modal.editGlobalAward.html.twig' %}
+                           </span>
+                       </span>
+                   </li>
+                {% endif %}
+           {% endfor %}
+       </ul>
 {% else %}
     <div class="alert alert-block">
         <div class="hca-profile-sublevel">
-            Here you can showcase Certifications, Affilations, Awards and Accreditations given to your Clinic.
+            Here you can showcase {{ label | lower }} given to your Hospital.
         </div>
         <p class="hca-helptext">
-            You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
-            Awards and Accreditations for your Clinic.
+            You haven't yet added any {{ label | lower }} for your Hospital. 
         </p>
         <button type="button" class="btn btn-primary" onclick="InstitutionProfile.toggleForm($('#institution-edit-awards-btn'))">
             <i class="icon-plus"></i> Add Entry

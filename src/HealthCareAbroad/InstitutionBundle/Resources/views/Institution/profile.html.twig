@@ -106,9 +106,12 @@
          	       return false;
          	});
 
-            $("input:checkbox").click(function() {
-                $(this).parents('li').toggleClass("hca-highlight");
-            });
+            $("input:checkbox").live("click", function(e){ 
+            	$(this).parents('li').toggleClass("hca-highlight");
+            	if($(this).attr('class') != 'old'){
+            		$(this).attr('class','new');
+            	}
+            });   
 
         	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
         	HCAGoogleMap.initialize({

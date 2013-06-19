@@ -201,21 +201,21 @@
     {% else %}
         {% set selected = get_selected_GlobalAwards(form.parent.vars.value) %}
     {% endif%}
-        <div class="awards-listing">
             {% for key,typeChoice in form.vars.choices %}
-                <h3>{{key | capitalize }}s</h3>
-                <ul>
-                     {% for choice in typeChoice %}
-                        <li class="{{ selected[choice.value] is defined ? 'hca-highlight' : '' }} ">
-                            <label >
-                                <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
-                                {{ choice.label | raw }}
-                            </label>
-                        </li>
-                    {% endfor %}
-                </ul>
+                <h3 class="awards-heading">{{key | capitalize }}s</h3>
+                <div class="awards-listing" id="listing-{{key}}">
+                    <ul>
+                         {% for choice in typeChoice %}
+                            <li class="{{ selected[choice.value] is defined ? 'hca-highlight' : '' }} ">
+                                <label >
+                                    <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}"  {% if selected[choice.value] is defined %} class="old" checked {% endif %}>
+                                    {{ choice.label | raw }}
+                                </label>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                 </div>
             {% endfor %}
-        </div>
     {% endspaceless %}
 {% endblock %}
 
