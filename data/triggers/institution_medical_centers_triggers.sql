@@ -18,6 +18,7 @@ DROP TRIGGER IF EXISTS institution_medical_centers_au $$
 CREATE TRIGGER institution_medical_centers_au AFTER UPDATE on `institution_medical_centers`
 FOR EACH ROW
 BEGIN
+    DECLARE _sum_clinic_ranking_points INT(11);
     SET @ACTIVE_CLINIC_STATUS = 2;
     SET @ACTIVE_SEARCH_TERM_STATUS = 1;
     SET @INACTIVE_SEARCH_TERM_STATUS = 0;
@@ -35,6 +36,18 @@ BEGIN
         UPDATE `search_terms` SET `status` = @INACTIVE_SEARCH_TERM_STATUS 
         WHERE `institution_medical_center_id` = OLD.`id`;
     END IF;  
+    
+    
+    -- clinic ranking point has been changed
+    IF OLD.`ranking_points` != NEW.`ranking_points` THEN
+        
+        SELECT SUM(imc.`ranking_points`) INTO _sum_clinic_ranking_points
+        FROM `institution_medical_centers`  imc
+        WHERE imc.`institution_id` = NEW.`institution_id`;
+        
+        UPDATE `institutions` SET `total_clinic_ranking_points` = _sum_clinic_ranking_points
+        WHERE `id` = NEW.`institution_id`;
+    END IF;
 END; $$
 ### end institution_medical_centers_au trigger definition
 
