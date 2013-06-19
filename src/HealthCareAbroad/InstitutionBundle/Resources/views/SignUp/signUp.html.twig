@@ -11,10 +11,10 @@
         <div class="span8">
             <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
                 <section class="section account-info">
-                   <h2>Personal Information</h2>
-                   <div class="hca-sub-label">
+                   <h2>Personal Information<br><small>
                         The details you provide will be used to create your login credentials.
-                    </div>
+                    </small></h2>
+                   
                      {% if error_message %}
                         <div class="alert alert-error">
                             {{ error_message }}
