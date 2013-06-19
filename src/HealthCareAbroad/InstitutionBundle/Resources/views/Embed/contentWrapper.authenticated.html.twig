@@ -6,8 +6,8 @@
     {% if isNoBreadCrumbs is not defined %}
         <ul class="breadcrumb">
             <li>
-             <a href="{{ path('institution_homepage')}}"><i class="{{ 'dashboard' == mainNavigation.selected ? 'icon-home' : 'icon-h-sign' }}"></i></a>
-                <span class="divider"> / </span>
+             <a href="{{ path('institution_homepage')}}"><i class="{{ 'dashboard' == mainNavigation.selected ? 'icon-h-sign' : 'icon-h-sign' }}"></i></a>
+                {{ 'dashboard' == mainNavigation.selected ? '' : '<span class="divider"> / </span>' }}
             </li>
             <li class="{{ subNavigation is not defined ? 'active' : '' }}">
                 {% if mainNavigation.url is not defined %}
