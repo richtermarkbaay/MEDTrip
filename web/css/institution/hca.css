@@ -4,6 +4,10 @@
     background-color: #6AB0F7;
 }
 
+.btn-dashboard {
+    margin-right: 10px;
+}
+
 .btn {
     -webkit-border-radius: 3px;
     -moz-border-radius: 3px;
@@ -199,6 +203,7 @@
 
 form label {
     font-weight: bold;
+    margin-top: 2px;
 }
 
 form label small {
@@ -214,7 +219,8 @@ form label.radio small,form label.checkbox small {
 form input[type="text"],form input[type="password"],form input[type="email"],form select {
     border-radius: 0;
     display: block;
-    height: 40px;
+    height: 35px;
+    margin-bottom: 0;
     box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
 }
 
@@ -266,10 +272,6 @@ form select:focus {
     box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
 }
 
-form .terms label {
-    font-weight: normal !important;
-}
-
 body {
     background-color: #eef5ed;
 }
@@ -295,17 +297,21 @@ hr {
 
 #confirmation-message {
     float: left;
-    position: absolute;
+    position: fixed;
     left: 50%;
     z-index: 1000;
     text-align: center;
-    margin-top: 62px;
 }
 
 #confirmation-message .confirmation-box {
     float: left;
     position: relative;
     left: -50%;
+    margin-top: 62px;
+}
+
+#confirmation-message .confirmation-box.fixed {
+    margin-top: 0;
 }
 
 #confirmation-message .confirmation-box .alert {
@@ -405,6 +411,25 @@ hr {
     word-wrap: break-word;
 }
 
+#content .confirm-msg {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#content .confirm-msg .alert {
+    padding: 20px 20px 8px 20px;
+    color: #888;
+}
+
+#content .confirm-msg h4 {
+    font-weight: normal;
+    font-size: 130%;
+}
+
+#content .confirm-msg h4 span {
+    font-size: 95%;
+}
+
 #content .span8 .tabbable {
     margin-right: 0;
     margin-left: 0;
@@ -432,81 +457,69 @@ hr {
     margin-bottom: 2em;
 }
 
+#content section.section.media-upload h4 {
+    color: #a2a2a2;
+    font-weight: normal;
+    line-height: 1.40em;
+    font-size: 120%;
+    margin-top: -8px;
+}
+
+#content section.section.inquiries .row {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+#content section.section.inquiries .row input {
+    display: inline-block;
+    margin-left: -8px;
+}
+
 #content section.section.clinic-schedule hr {
     margin: 15px 0;
+}
+
+#content section.section.notifications h5 {
+    color: #959595;
+}
+
+#content section.section.notifications h5 small {
+    font-size: 13px;
 }
 
 #content section.section.section-alert-info {
     margin-bottom: .25em;
 }
 
-#content section.section.hca-clinic-heading {
+#content section.section.hca-clinic-heading,#content section.section.hca-doctor-heading {
     border-bottom: 2px solid #c8c8c8;
     padding-bottom: 30px;
 }
 
-#content section.section.hca-clinic-heading h1 {
-    padding-top: 70px;
-}
-
-#content section.section.hca-clinic-heading img {
+#content section.section.hca-clinic-heading img,#content section.section.hca-doctor-heading img {
     border: 1px solid #bfc3be;
     width: 135px;
 }
 
-#content section.section.hca-clinic-heading h1 {
+#content section.section.hca-clinic-heading h1,#content section.section.hca-doctor-heading h1 {
     border-bottom: none;
     padding-bottom: 0;
     margin-bottom: 0;
+    padding-top: 55px;
 }
 
-#content section.section.hca-clinic-heading p {
-    font-size: 18px;
-    padding: 0;
-    margin: 0;
-    color: #959595;
-}
-
-#content section.section.hca-clinic-heading p small {
-    margin-right: 5px;
-}
-
-#content section.section.hca-clinic-heading p a {
-    font-weight: bold;
-}
-
-#content section.section.hca-doctor-heading {
-    border-bottom: 2px solid #c8c8c8;
-    padding-bottom: 30px;
-}
-
-#content section.section.hca-doctor-heading h1 {
-    padding-top: 50px;
-}
-
-#content section.section.hca-doctor-heading img {
-    border: 1px solid #bfc3be;
-    width: 135px;
-}
-
-#content section.section.hca-doctor-heading h1 {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-
-#content section.section.hca-doctor-heading p {
+#content section.section.hca-clinic-heading p,#content section.section.hca-doctor-heading p {
     font-size: 16px;
     padding: 0;
     margin: 0;
     color: #959595;
 }
 
-#content section.section.hca-doctor-heading p small {
+#content section.section.hca-clinic-heading p small,#content section.section.hca-doctor-heading p small {
     margin-right: 5px;
 }
 
-#content section.section.hca-doctor-heading p a {
+#content section.section.hca-clinic-heading p a,#content section.section.hca-doctor-heading p a {
     font-weight: bold;
 }
 
@@ -514,18 +527,20 @@ hr {
     margin-bottom: 3em;
 }
 
+#content section.section.hca-main-profile .edit-timezone {
+    padding: 15px 20px 2px 20px;
+    background-color: #e1e1e1;
+}
+
 #content section.section.hca-main-profile .edit-timezone .btn {
     display: block;
     position: absolute;
-    margin-left: 450px;
+    margin-left: 420px;
+    margin-top: 5px;
 }
 
 #content section.section.hca-main-profile .control-group .clinictime {
     margin: 0 -20px !important;
-}
-
-#content section.section.hca-main-profile .social-media label {
-    margin-top: 0 !important;
 }
 
 #content section.section.hca-main-profile p {
@@ -601,7 +616,8 @@ hr {
 }
 
 #content section.section .row-fluid .website {
-    margin-bottom: 20px;
+    margin-left: 0px;
+    margin-bottom: 0px;
 }
 
 #content section.section .row-fluid .website span {
@@ -610,12 +626,29 @@ hr {
 }
 
 #content section.section .row-fluid .social-media {
-    margin-top: -15px;
-    padding-bottom: 20px;
+    margin-top: -10px;
+    margin-bottom: 0px;
 }
 
-#content section.section .row-fluid .social-media .span11 {
-    width: 88%;
+#content section.section .row-fluid .social-media .icon-twitter {
+    color: #00a0d1;
+}
+
+#content section.section .row-fluid .social-media .icon-facebook {
+    color: #3b5998;
+}
+
+#content section.section .row-fluid .social-media .icon-google-plus {
+    color: #C63D2D;
+}
+
+#content section.section .row-fluid .social-media span {
+    font-size: 15px;
+    font-family: 'PT Sans';
+    margin-right: 3px;
+    color: #a2a2a2;
+    display: block;
+    margin-top: 10px;
 }
 
 #content section.section .row-fluid .social-media label {
@@ -627,22 +660,28 @@ hr {
 #content section.section .row-fluid .social-media .icon-2x {
     font-size: 1.75em;
     line-height: 1.8em;
-    color: #888;
-    margin-right: 0;
-}
-
-#content section.section .row-fluid .social-media .icon-2x.span2 {
-    width: 50px;
+    font-weight: 500;
+    padding-left: 12px;
 }
 
 #content section.section .row-fluid .social-media .icon-2x span {
-    font-size: 15px;
+    font-size: 14px;
     font-family: 'PT Sans';
     display: inline-block;
+    margin-right: 5px;
+    color: #888;
 }
 
 #content section.section .row-fluid.hca-edit-box {
     border: none;
+}
+
+#content section.section .row-fluid.hca-edit-box .alert {
+    margin-bottom: 0;
+}
+
+#content section.section .row-fluid.hca-edit-box.specializations {
+    margin-top: 0px;
 }
 
 #content section.section .row-fluid.hca-edit-box .accordion {
@@ -650,7 +689,7 @@ hr {
 }
 
 #content section.section .row-fluid.hca-edit-box .control-group,#content section.section .row-fluid.hca-edit-box .row {
-    margin: 20px;
+    margin: 10px 20px 15px 20px;
 }
 
 #content section.section .row-fluid.hca-edit-box h3 {
@@ -690,6 +729,14 @@ hr {
     position: absolute;
 }
 
+#content section.section .row-fluid.hca-edit-box .control-group.website {
+    margin-bottom: 10px;
+}
+
+#content section.section .row-fluid.hca-edit-box .control-group.website input {
+    margin-bottom: 15px;
+}
+
 #content section.section .row-fluid.terms {
     background-color: transparent;
     border: none;
@@ -707,8 +754,35 @@ hr {
     padding: 10px 10px !important;
 }
 
+#content section.section .row-fluid.terms .accordion-inner .span6 li {
+    line-height: 1.35em;
+}
+
+#content section.section .row-fluid.terms .accordion-inner .span6 li:last-child {
+    padding-bottom: 10px;
+}
+
+#content section.section .row-fluid.terms .specialization-edit-listing {
+    background-color: #fff;
+    overflow: auto;
+    max-height: 300px;
+}
+
+#content section.section .row-fluid.terms .specialization-edit-listing input[type="radio"],#content section.section .row-fluid.terms .specialization-edit-listing input[type="checkbox"] {
+    margin-top: -2px;
+}
+
+#content section.section .row-fluid.terms .specialization-edit-listing ul {
+    margin: 0;
+}
+
+#content section.section .row-fluid.terms .specialization-edit-listing ul li {
+    list-style: none;
+    line-height: 2em;
+}
+
 #content section.section .row-fluid>div {
-    padding: 30px;
+    padding: 20px;
 }
 
 #content section.section .row-fluid>div.divider {
@@ -803,7 +877,6 @@ hr {
 }
 
 .aside-box.dashboard-side h2 small {
-    font-size: 17px;
     line-height: .5em;
 }
 
@@ -824,6 +897,14 @@ hr {
 
 .aside-box .row-fluid .hca-gallery-upload {
     padding: 20px;
+}
+
+.aside-box .row-fluid .hca-gallery-upload .alert {
+    font-weight: bold !important;
+}
+
+.aside-box .row-fluid .hca-gallery-upload .alert .icon-picture {
+    color: #fff;
 }
 
 .aside-box .row-fluid .hca-gallery-upload .span6 {
@@ -861,68 +942,6 @@ hr {
 
 .aside-box .row .progress .pull-right {
     margin-right: 5px;
-}
-
-.aside-box .hca-social-link i {
-    color: #fff;
-    margin-right: 5px;
-}
-
-.aside-box .hca-social-link .btn {
-    width: 180px;
-    text-align: center;
-    margin-bottom: 7px;
-    padding-top: 7px;
-    padding-bottom: 5px;
-}
-
-.aside-box .hca-social-link .btn.facebook {
-    font-family: "lucida grande", tahoma, verdana, arial, sans-serif !important;
-    font-size: 14px;
-    background: #4f6aa3;
-    border: 1px solid #29447e;
-    border-bottom-color: #1a356e;
-    box-shadow: 0 1px 0 rgba(0,0,0,0.1);
-    cursor: pointer;
-    display: -moz-inline-box;
-    display: inline-block;
-    line-height: normal !important;
-    text-decoration: none;
-    vertical-align: top;
-    white-space: nowrap;
-    color: #fff;
-    text-shadow: none;
-}
-
-.aside-box .hca-social-link .btn.twitter {
-    position: relative;
-    border-color: #a8eaec;
-    font-family: Tahoma, sans-serif;
-    color: #00aced;
-    background: #daf6f7;
-    -moz-box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    background: -webkit-gradient(linear, left top, left bottom, from(#dbf7f8), to(#88e1e6));
-    background: -moz-linear-gradient(top, #dbf7f8, #88e1e6);
-}
-
-.aside-box .hca-social-link .btn.twitter i {
-    color: #00aced;
-}
-
-.aside-box .hca-social-link .btn.googleplus {
-    position: relative;
-    border-color: #26478d;
-    font-family: Georgia, Times New Roman, Times, serif;
-    color: #fff;
-    background: #1e3c7f;
-    -moz-box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    -webkit-box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    box-shadow: 0 0 4px rgba(0,0,0,0.4);
-    background: -webkit-gradient(linear, left top, left bottom, from(#447aec), to(#1e3c7f));
-    background: -moz-linear-gradient(top, #447aec, #1e3c7f);
-    text-shadow: none;
 }
 
 .aside-box .steps {
@@ -1006,6 +1025,20 @@ hr {
     margin-top: 20px;
 }
 
+.aside-box .features .hca-profile-sublevel {
+    font-weight: bold;
+    color: #414141;
+}
+
+.aside-box .features .hca-helptext {
+    color: #505050;
+}
+
+.aside-box .features .btn i {
+    color: #fff;
+    margin-right: 5px;
+}
+
 .aside-box .features hr {
     color: #fff;
     border-top: 1px solid #fff;
@@ -1022,6 +1055,12 @@ hr {
 
 .aside-box .features ul.thumbnails li {
     margin-left: 18px;
+}
+
+.loading-specializations {
+    display: inline-block;
+    margin-top: 8px;
+    color: #a2a2a2;
 }
 
 .hca-banner {
@@ -1082,7 +1121,6 @@ hr {
 
 .hca-banner .institution-details h3 i {
     margin-right: 7px;
-    font-size: 35px;
 }
 
 .hca-banner .hca-institution-name {
@@ -1090,13 +1128,23 @@ hr {
     position: absolute;
     min-height: 80px;
     top: 90px;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px 10px 5px 10px;
+}
+
+.hca-banner .hca-institution-name .btn-default {
+    display: inline-block;
+    font-family: 'PT Sans';
+    margin-left: 15px;
 }
 
 .hca-banner .hca-institution-name h1 {
     border-bottom: none !important;
-    margin: 0;
-    padding: 20px;
-    background-color: rgba(0,0,0,0.5);
+    margin: 0 !important;
+    padding: 0 5px 5px 5px;
+    color: #fff;
+    padding-bottom: 10px !important;
+    display: inline-block;
 }
 
 .hca-banner .hca-institution-name h1 small {
@@ -1115,151 +1163,276 @@ hr {
     text-decoration: none;
 }
 
+.hca-banner3 {
+    height: 420px;
+    display: block;
+    margin-bottom: 20px;
+    width: 990px;
+}
+
+.hca-banner3 .tooltip-logo {
+    position: absolute;
+    margin-top: 170px;
+    margin-left: 10px;
+    display: block;
+    z-index: 999999;
+    background-color: rgba(0,0,0,0.75);
+    color: #fff;
+    width: 250px;
+    padding: 20px 25px;
+}
+
+.hca-banner3 .tooltip-logo:after {
+    width: 0px;
+    height: 0px;
+    content: "";
+    display: inline-block;
+    left: 10%;
+    bottom: 30%;
+    position: absolute;
+    bottom: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid rgba(0,0,0,0.75);
+}
+
+.hca-banner3 .tooltip-cover {
+    position: absolute;
+    margin-top: 270px;
+    margin-left: 460px;
+    display: block;
+    z-index: 999999;
+    background-color: rgba(0,0,0,0.75);
+    color: #fff;
+    width: 250px;
+    padding: 20px 25px;
+}
+
+.hca-banner3 .tooltip-cover:after {
+    width: 0px;
+    height: 0px;
+    content: "";
+    display: inline-block;
+    top: 10%;
+    right: -10px;
+    position: absolute;
+    bottom: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-left: 10px solid rgba(0,0,0,0.75);
+}
+
+.hca-banner3 .upload-logo {
+    margin-top: -160px;
+    display: block;
+    position: absolute;
+    z-index: 9999;
+}
+
+.hca-banner3 .hca-logo {
+    margin-top: -155px;
+}
+
+.hca-banner3 .btn-logo {
+    display: block;
+    position: absolute;
+    left: 20px;
+    background-color: rgba(0,0,0,0.95);
+    border: none;
+    color: #a6bed9;
+    opacity: 0.75;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
+    margin-top: -61px;
+    z-index: 99999;
+    font-size: 14px;
+}
+
+.hca-banner3 .btn-logo a {
+    text-decoration: none;
+}
+
+.hca-banner3 .btn-logo a:hover {
+    text-decoration: none;
+}
+
+.hca-banner3 .btn-banner {
+    display: block;
+    position: absolute;
+    right: 11px;
+    background-color: rgba(0,0,0,0.9);
+    border: none;
+    color: #a6bed9;
+    opacity: 0.75;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
+    margin-top: -150px;
+}
+
+.hca-banner3 .btn-banner a {
+    text-decoration: none;
+}
+
+.hca-banner3 .btn-banner a:hover {
+    text-decoration: none;
+}
+
+.hca-banner3 .institution-details {
+    display: block;
+    background-color: rgba(0,0,0,0.35);
+    position: relative;
+    min-height: 60px;
+    width: 100%;
+    top: 445px;
+}
+
+.hca-banner3 .institution-details .btn {
+    margin-right: 20px;
+    margin-top: -51px;
+}
+
+.hca-banner3 .institution-details .btn.manage-page {
+    margin-top: 18px;
+}
+
+.hca-banner3 .institution-details h3 {
+    left: 185px;
+    margin-top: 12px;
+    color: #e1e1e1;
+    display: block;
+    position: relative;
+    font-weight: normal;
+}
+
+.hca-banner3 .institution-details h3 i {
+    margin-right: 7px;
+}
+
+.hca-banner3 .hca-institution-name {
+    display: block;
+    position: absolute;
+    min-height: 80px;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px 10px 5px 10px;
+}
+
+.hca-banner3 .hca-institution-name .btn-default {
+    display: inline-block;
+    font-family: 'PT Sans';
+    margin-left: 15px;
+}
+
+.hca-banner3 .hca-institution-name h1 {
+    border-bottom: none !important;
+    margin: 0 !important;
+    padding: 0 5px 5px 5px;
+    color: #fff;
+    padding-bottom: 10px !important;
+    display: inline-block;
+}
+
+.hca-banner3 .hca-institution-name h1 small {
+    display: block;
+    position: relative;
+    font-size: 18px;
+    padding-top: 5px;
+}
+
+.hca-banner3 .hca-institution-name h1 a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.hca-banner3 .hca-institution-name h1 a:hover {
+    text-decoration: none;
+}
+
 .hca-highlight {
     color: #a2a2a2;
 }
 
-.messages {
-    text-align: left;
-    margin: 10px auto;
-}
-
-.messages input[type="checkbox"] {
-    margin: 20px;
-}
-
-.messages li {
+ul.hca-notifications,ul.hca-inquiries {
     list-style: none;
-    padding: 0;
     margin: 0;
+    clear: both;
 }
 
-.messages li.message-actions {
-    background-color: #d4d4d4;
-}
-
-.messages li.message-actions:hover {
-    background-color: #e4e4e4;
-}
-
-.messages li.message {
-    border-bottom: 1px solid #fff;
-    min-height: 97px;
-    background-color: #fbfbfb;
-}
-
-.messages li.message img.img-polaroid {
+ul.hca-notifications input,ul.hca-inquiries input {
+    width: 20px;
+    display: inline-block;
     position: absolute;
-    height: 50px;
-    width: 50px;
-    margin: 15px 0 15px -5px;
 }
 
-.messages li.message.read {
-    background-color: #f3f3f3;
+ul.hca-notifications span,ul.hca-inquiries span {
+    margin-left: 30px;
 }
 
-.messages li.message.reply {
-    margin-top: 20px;
-    padding-left: 20px;
+ul.hca-notifications span.sender-details,ul.hca-inquiries span.sender-details {
+    width: 200px;
+    display: inline-block;
 }
 
-.messages li.message.header {
-    background-color: #fff;
-    min-height: 20px !important;
-    border-bottom: none;
-}
-
-.messages li:hover {
-    background-color: #ebebeb;
-}
-
-.messages li span.messages-actions,.messages li a.messages-actions {
-    margin-left: -10px;
-    width: 600px;
-}
-
-.messages li span.messages-returnbox,.messages li a.messages-returnbox {
-    margin-right: 20px;
-}
-
-.messages li span.pagination-msg,.messages li a.pagination-msg {
-    display: block;
-    margin-top: -40px;
-    color: #888;
-}
-
-.messages li span.pagination-msg a,.messages li a.pagination-msg a {
-    margin-left: 5px;
-}
-
-.messages li span.messagetitle-name,.messages li a.messagetitle-name {
-    font-size: 24px;
-    font-family: 'PT Sans', sans-serif;
-    display: block;
-    font-weight: bold;
-    opacity: 0.9;
-    margin-left: 250px;
-    margin-bottom: 5px;
-    margin-top: -65px;
-}
-
-.messages li span.sender-details,.messages li a.sender-details {
-    display: block;
-    opacity: 0.9;
-    margin-left: 50px;
-    margin-bottom: 5px;
-    margin-top: -35px;
-}
-
-.messages li span.sender-details b,.messages li a.sender-details b {
-    display: block;
-    font-size: 15px;
-}
-
-.messages li span.sender-details a,.messages li a.sender-details a {
+ul.hca-notifications span.sender-details b,ul.hca-notifications span.sender-details small,ul.hca-inquiries span.sender-details b,ul.hca-inquiries span.sender-details small {
     display: block;
 }
 
-.messages li p {
-    margin-left: 250px;
+ul.hca-notifications span.msg-details,ul.hca-inquiries span.msg-details {
+    width: 550px;
+    display: inline-block;
+}
+
+ul.hca-notifications span.msg-details b,ul.hca-inquiries span.msg-details b {
     display: block;
-    font-weight: normal;
-    opacity: 0.9;
-    width: 490px;
-    line-height: 20px;
+    font-size: 18px;
 }
 
-.messages li p:before {
-    content: " ";
+ul.hca-notifications span.msg-details p,ul.hca-inquiries span.msg-details p {
+    color: #7b7b7b;
 }
 
-.messages li ul.actions {
+ul.hca-notifications li,ul.hca-inquiries li {
+    padding: 10px 20px 2px 10px;
+    background-color: #f1f1f1;
+    margin: 2px 0;
+    list-style: none;
+}
+
+ul.hca-notifications li i,ul.hca-inquiries li i {
+    margin-right: 5px;
+}
+
+ul.hca-notifications li .view,ul.hca-inquiries li .view {
     display: none;
-    margin-bottom: 30px;
 }
 
-.messages li:hover ul.actions {
+ul.hca-notifications li:hover ul.actions,ul.hca-inquiries li:hover ul.actions {
     display: block;
     position: absolute;
-    margin-left: 800px;
-    margin-top: -60px;
+    margin-left: 790px;
+    margin-top: -34px;
 }
 
-.messages li:hover ul.actions li {
+ul.hca-notifications li:hover ul.actions.msg,ul.hca-inquiries li:hover ul.actions.msg {
+    margin-top: -50px;
+}
+
+ul.hca-notifications li:hover ul.actions li,ul.hca-inquiries li:hover ul.actions li {
     display: inline;
     margin: 0 1px;
 }
 
-.messages li:hover ul.actions li a {
+ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actions li a {
     color: #fe6500;
     font-family: 'PT Sans', sans-serif;
     font-size: 13px;
     font-weight: bold;
 }
 
-.messages li:hover ul.actions li a:hover {
+ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul.actions li a:hover {
     color: #555;
+    text-decoration: none;
 }
 
 .messages-box {
@@ -1312,7 +1485,7 @@ hr {
 
 .input-append.hca-clinic-status .btn,.popup-box.hca-clinic-status .btn {
     padding: 0 7px;
-    height: 40px;
+    height: 25px;
     border-radius: 0 !important;
 }
 
@@ -1322,7 +1495,7 @@ hr {
 
 .input-append.hca-location input.hca-country,.popup-box.hca-location input.hca-country {
     width: 235px;
-    height: 30px;
+    height: 25px;
     margin-bottom: 10px;
 }
 
@@ -1332,7 +1505,7 @@ hr {
 
 .input-append.hca-location .btn,.popup-box.hca-location .btn {
     padding: 0 7px;
-    height: 40px;
+    height: 35px;
     border-radius: 0 !important;
 }
 
@@ -1481,7 +1654,7 @@ hr {
     outline: none;
     background: #fff;
     box-shadow: none;
-    height: 40px;
+    height: 35px;
     border-radius: 0;
 }
 
@@ -1589,6 +1762,210 @@ hr {
     margin-bottom: 20px;
 }
 
+.specializations-listing-edit {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    top: auto;
+    background-color: #fff;
+    width: 100%;
+}
+
+.specializations-listing-edit a {
+    color: #555;
+}
+
+.specializations-listing-edit a:hover {
+    color: #555;
+    text-decoration: none;
+}
+
+.specializations-listing-edit h3 {
+    color: #7b7b7b;
+}
+
+.specializations-listing-edit ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    clear: both;
+    overflow: hidden;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.specializations-listing-edit li {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    list-style-type: none;
+    padding: 0px 12px;
+    line-height: 1.5em;
+    margin-right: 4%;
+    width: 100%;
+    color: #6e6e6e;
+}
+
+.specializations-listing-edit li.sub-specialization {
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 10px;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.specializations-listing-edit li ul {
+    margin: 2px -12px 0 -12px;
+    padding: 0;
+}
+
+.specializations-listing-edit li ul li {
+    margin: 0;
+    padding: 10px;
+    background-color: #fff !important;
+}
+
+.specializations-listing-edit li ul li:before {
+    content: " -  ";
+}
+
+.specializations-listing-edit li ul li:hover {
+    background-color: #f6f6f6 !important;
+}
+
+.specializations-listing-edit li ul li:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+.specializations-listing-edit li .pull-right {
+    margin-right: 40px;
+}
+
+.specializations-listing-edit li input {
+    margin-top: -4px;
+}
+
+.specializations-listing-edit li:last-child {
+    border-bottom: none;
+}
+
+.specializations-listing-edit li:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+.specializations-listing-edit li:hover {
+    text-decoration: none;
+}
+
+.single-listing {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: inline-block;
+    top: auto;
+    background-color: #fff;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.single-listing a {
+    color: #555;
+}
+
+.single-listing a:hover {
+    color: #555;
+    text-decoration: none;
+}
+
+.single-listing h3 {
+    color: #7b7b7b;
+}
+
+.single-listing ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    clear: both;
+    overflow: hidden;
+}
+
+.single-listing li {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    list-style-type: none;
+    padding: 7px 12px;
+    line-height: 1.5em;
+    display: inline-block;
+    margin-right: 4%;
+    width: 100%;
+    color: #6e6e6e;
+}
+
+.single-listing li form {
+    margin-bottom: 0;
+}
+
+.single-listing li form input[type="text"],.single-listing li form input[type="password"],.single-listing li form input[type="email"],.single-listing li form select {
+    height: 32px;
+    margin: 0;
+    padding: 0;
+}
+
+.single-listing li form .btn {
+    margin-left: 5px;
+    padding: 5px 10px;
+}
+
+.single-listing li.sub-specialization {
+    background-color: #fff;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.single-listing li ul {
+    margin: 0;
+    padding: 0;
+}
+
+.single-listing li ul li {
+    margin: 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    padding: 0;
+    background-color: #fff !important;
+}
+
+.single-listing li ul li a {
+    background-color: #fff;
+}
+
+.single-listing li ul li a:hover {
+    background-color: #fff !important;
+}
+
+.single-listing li ul li:nth-child(odd) {
+    background-color: #fff;
+}
+
+.single-listing li .pull-right {
+    margin-right: 40px;
+}
+
+.single-listing li input {
+    margin-top: -4px;
+}
+
+.single-listing li:last-child {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.single-listing li:nth-child(odd) {
+    background-color: #f6f6f6;
+}
+
+.single-listing li:hover {
+    background-color: #eee;
+    text-decoration: none;
+}
+
 .awards-listing {
     margin: 0;
     padding: 0;
@@ -1616,7 +1993,6 @@ hr {
 }
 
 .awards-listing li {
-    font-size: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     list-style-type: none;
     padding: 7px 0;
@@ -1632,6 +2008,55 @@ hr {
 }
 
 .awards-listing li:last-child {
+    border-bottom: none;
+    margin-bottom: 20px;
+}
+
+.specializations-edit-listing {
+    display: block;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border: 1px solid rgba(0,0,0,0.1);
+    background-color: #f8f8f8 !important;
+    display: inline-block;
+    max-height: 320px;
+    overflow: auto;
+}
+
+.specializations-edit-listing .span6 {
+    padding: 10px 20px !important;
+}
+
+.specializations-edit-listing h3 {
+    color: #7b7b7b;
+}
+
+.specializations-edit-listing ul {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    clear: both;
+    overflow: hidden;
+}
+
+.specializations-edit-listing li {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    list-style-type: none;
+    padding: 7px 0;
+    line-height: 1.5em;
+    display: inline-block;
+    margin-right: 4%;
+    float: left;
+    width: 100%;
+}
+
+.specializations-edit-listing li input {
+    margin-top: -4px;
+}
+
+.specializations-edit-listing li:last-child {
     border-bottom: none;
     margin-bottom: 20px;
 }
@@ -1660,7 +2085,6 @@ hr {
 }
 
 .media-listing li {
-    font-size: 14px;
     border-bottom: 1px solid rgba(0,0,0,0.1);
     list-style-type: none;
     padding: 10px 0;
@@ -1708,7 +2132,6 @@ hr {
 }
 
 .specializations-listing li {
-    font-size: 14px;
     list-style-type: none;
     padding: 5px 0 0 0;
     line-height: 1.5em;
@@ -1736,13 +2159,65 @@ hr {
     margin-bottom: 20px;
 }
 
+.specializations-listing-profile .btn {
+    margin: 10px 0 10px 0;
+}
+
+.specializations-listing-profile .hca-specialization-details {
+    background-color: #fff;
+    padding: 7px 15px 10px 15px;
+    margin-top: 20px;
+}
+
+.specializations-listing-profile .hca-specialization-details img {
+    width: 35px;
+}
+
+.specializations-listing-profile .hca-specialization-details.hca-edit {
+    background-color: #fbfbfb;
+}
+
+.specializations-listing-profile .hca-specialization-details i {
+    margin: 3px 10px;
+    line-height: 30px;
+}
+
+.specializations-listing-profile .hca-specialization-details span {
+    display: block;
+    position: absolute;
+}
+
+.specializations-listing-profile .hca-specialization-details b {
+    display: block;
+    width: 480px;
+    margin-left: 40px;
+    font-size: 18px;
+    line-height: 30px;
+}
+
 .clinictime .btn {
     margin: 10px 0 10px 0;
 }
 
 .clinictime .hca-workingday-details {
     background-color: #fff;
-    padding: 10px 15px;
+    padding: 10px 15px 5px 15px;
+}
+
+.clinictime .hca-workingday-details p {
+    font-size: 12px;
+}
+
+.clinictime .hca-workingday-details p i {
+    margin-left: 0px;
+    font-size: 14px;
+    color: #bfc3be;
+}
+
+.clinictime .hca-workingday-details.hca-edit {
+    background-color: #fff;
+    border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .clinictime .hca-workingday-details i {
@@ -1844,7 +2319,7 @@ hr {
 }
 
 .clinictime .hourbox span {
-    padding: 9px 5px;
+    padding: 7px 5px;
 }
 
 .clinictime .hourbox .span3,.clinictime .hourbox .span2 {
@@ -1975,6 +2450,14 @@ hr {
     color: #bfc3be;
 }
 
+.hca-orange {
+    color: #fe6500;
+}
+
+.hca-blue {
+    color: #35577e;
+}
+
 .tooltip {
     display: none;
     background-color: #000;
@@ -2030,7 +2513,6 @@ hr {
     margin-top: -30px;
     left: 640px;
     border-radius: 0;
-    text-align: justify;
     width: 260px;
     border: 1px solid #a6bed9;
 }
@@ -2135,7 +2617,7 @@ hr {
     display: block;
 }
 
-.tooltip-content2 {
+.tooltip-content2,.tooltip-content3 {
     display: none;
 }
 
@@ -2163,7 +2645,7 @@ hr {
 }
 
 .tooltip-wrap2:focus+.tooltip-content2.hca-textarea {
-    margin-top: -200px;
+    margin-top: -240px;
 }
 
 .tooltip-wrap2:focus+.tooltip-content2.hca-email {
@@ -2176,7 +2658,43 @@ hr {
     content: "";
     display: inline-block;
     left: 50%;
-    top: 13%;
+    top: 23%;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #000;
+}
+
+.tooltip-wrap3:focus+.tooltip-content3 {
+    display: block;
+    width: 240px;
+    height: auto;
+    background-color: #000;
+    position: absolute;
+    left: 610px;
+    z-index: 1000;
+    padding: 10px 20px;
+    margin-top: -60px;
+    color: #fff;
+    font-size: 14px;
+}
+
+.tooltip-wrap3:focus+.tooltip-content3.hca-textarea {
+    margin-top: -240px;
+}
+
+.tooltip-wrap3:focus+.tooltip-content3.hca-email {
+    left: 325px;
+}
+
+.tooltip-wrap3:focus+.tooltip-content3:after {
+    width: 0px;
+    height: 0px;
+    content: "";
+    display: inline-block;
+    left: 50%;
+    top: 16%;
     position: absolute;
     left: -10px;
     border-top: 10px solid transparent;
@@ -2186,7 +2704,6 @@ hr {
 
 .hca-sub-label {
     color: #888;
-    font-family: 'PT Sans';
     font-size: 18px;
     margin-bottom: 12px;
     line-height: 1.75em;
@@ -2268,7 +2785,127 @@ hr {
     z-index: 1000;
 }
 
-#hca-hidden_content,#hca-clinic-content {
+.hca-hidden-content,.hca-clinic-content,.hca-specialization-content {
+    display: none;
+}
+
+.hca-hidden-content.doctors-listing,.hca-clinic-content.doctors-listing,.hca-specialization-content.doctors-listing {
+    background-color: #aeaeae;
+    padding: 20px 20px 5px 20px;
+    max-height: 300px;
+    border-bottom: 1px solid #aeaeae;
+    overflow: auto;
+}
+
+.hca-hidden-content.doctors-listing form,.hca-clinic-content.doctors-listing form,.hca-specialization-content.doctors-listing form {
+    background-color: #fff;
+    padding: 10px 5px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid,.hca-clinic-content.doctors-listing .row-fluid,.hca-specialization-content.doctors-listing .row-fluid {
+    padding: 5px 10px 0 10px;
+    width: 97%;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid textarea,.hca-clinic-content.doctors-listing .row-fluid textarea,.hca-specialization-content.doctors-listing .row-fluid textarea {
+    height: 150px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid.hca-upload-file,.hca-clinic-content.doctors-listing .row-fluid.hca-upload-file,.hca-specialization-content.doctors-listing .row-fluid.hca-upload-file {
+    min-height: 600px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid input.hca-country,.hca-hidden-content.doctors-listing .row-fluid input.hca-city,.hca-clinic-content.doctors-listing .row-fluid input.hca-country,.hca-clinic-content.doctors-listing .row-fluid input.hca-city,.hca-specialization-content.doctors-listing .row-fluid input.hca-country,.hca-specialization-content.doctors-listing .row-fluid input.hca-city {
+    width: 200px !important;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid input.hca-suffix,.hca-clinic-content.doctors-listing .row-fluid input.hca-suffix,.hca-specialization-content.doctors-listing .row-fluid input.hca-suffix {
+    width: 100px;
+    height: 25px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid input.hca-languages,.hca-clinic-content.doctors-listing .row-fluid input.hca-languages,.hca-specialization-content.doctors-listing .row-fluid input.hca-languages {
+    width: 200px;
+    height: 25px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid .dropbox,.hca-clinic-content.doctors-listing .row-fluid .dropbox,.hca-specialization-content.doctors-listing .row-fluid .dropbox {
+    height: 45px;
+    background-color: #c8c8c8;
+    border: 2px dashed #fff;
+    color: #fff;
+    text-align: center;
+    padding: 20px 0 0 0;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.zipcode,.hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.zipcode,.hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
+    max-height: 115px;
+    width: 268px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.location-select,.hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.location-select,.hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.location-select {
+    max-height: 140px;
+    width: 235px;
+    margin-left: -213px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.languages-select,.hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.languages-select,.hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
+    max-height: 140px;
+    width: 234px;
+    margin-left: -212px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.suffix-select,.hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.suffix-select,.hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
+    max-height: 70px;
+    margin-left: -113px;
+    width: 50px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid form,.hca-clinic-content.doctors-listing .row-fluid form,.hca-specialization-content.doctors-listing .row-fluid form {
+    margin-top: 5px;
+    margin-bottom: 8px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid form .row-fluid,.hca-clinic-content.doctors-listing .row-fluid form .row-fluid,.hca-specialization-content.doctors-listing .row-fluid form .row-fluid {
+    padding: 0 20px !important;
+    width: 92.85%;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid form .row-fluid ul,.hca-clinic-content.doctors-listing .row-fluid form .row-fluid ul,.hca-specialization-content.doctors-listing .row-fluid form .row-fluid ul {
+    max-height: 150px;
+    padding-top: 10px;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li,.hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li,.hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
+    padding: 3px 0 !important;
+}
+
+.hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child,.hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child,.hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
+    border-bottom: none;
+}
+
+.hca-hidden-content.specializations-profile-listing,.hca-clinic-content.specializations-profile-listing,.hca-specialization-content.specializations-profile-listing {
+    background-color: #aeaeae;
+    padding: 20px 20px 0px 20px;
+    border-bottom: 1px solid #fff;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.hca-hidden-content.specializations-profile-listing .specializations-listing,.hca-clinic-content.specializations-profile-listing .specializations-listing,.hca-specialization-content.specializations-profile-listing .specializations-listing {
+    max-height: none;
+}
+
+.hca-hidden-content.specializations-profile-listing form,.hca-clinic-content.specializations-profile-listing form,.hca-specialization-content.specializations-profile-listing form {
+    background-color: #fff;
+    padding: 10px 5px;
+}
+
+.hca-display-specializations div.edit-specializations {
+    display: none;
+}
+
+.hca-edit-specializations div.show-specializations {
     display: none;
 }
 
@@ -2413,6 +3050,86 @@ span.rollover:hover {
     display: block;
     line-height: 24px;
     margin: 20px 80px;
+}
+
+.doctors-new-listing,.specializations-profile-listing {
+    border-bottom: 1px solid #fff;
+    padding-left: 0;
+}
+
+.doctors-new-listing .doctor-heading,.doctors-new-listing .specializations-heading,.specializations-profile-listing .doctor-heading,.specializations-profile-listing .specializations-heading {
+    background-color: #e1e1e1;
+    padding: 10px 20px 2px 10px;
+}
+
+.doctors-new-listing .doctor-heading.hca-clinic-specialization-item,.doctors-new-listing .specializations-heading.hca-clinic-specialization-item,.specializations-profile-listing .doctor-heading.hca-clinic-specialization-item,.specializations-profile-listing .specializations-heading.hca-clinic-specialization-item {
+    min-height: 60px;
+    padding: 10px;
+}
+
+.doctors-new-listing .doctor-heading span.rollover,.doctors-new-listing .specializations-heading span.rollover,.specializations-profile-listing .doctor-heading span.rollover,.specializations-profile-listing .specializations-heading span.rollover {
+    margin: 6px;
+    padding: 12px;
+    background-position: 10px;
+    background-size: 55%;
+    width: 25px;
+    height: 25px;
+}
+
+.doctors-new-listing h4,.specializations-profile-listing h4 {
+    padding: 2px 0 0 0;
+    margin: 0;
+}
+
+.doctors-new-listing p,.specializations-profile-listing p {
+    color: #7b7b7b;
+    padding: 0 0 25px 0;
+    margin: 0;
+}
+
+.doctors-new-listing p span,.specializations-profile-listing p span {
+    margin-left: 7px;
+    font-weight: bold;
+}
+
+.doctors-new-listing p i,.specializations-profile-listing p i {
+    margin-right: 5px;
+}
+
+.doctors-new-listing img,.specializations-profile-listing img {
+    margin-right: 10px;
+    width: 50px;
+}
+
+.doctors-new-listing .icon-edit,.doctors-new-listing .icon-ok,.specializations-profile-listing .icon-edit,.specializations-profile-listing .icon-ok {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.doctors-new-listing .icon-remove-sign,.specializations-profile-listing .icon-remove-sign {
+    margin-top: 10px;
+}
+
+.doctors-new-listing .icon-plus-sign,.specializations-profile-listing .icon-plus-sign {
+    color: #888;
+    margin-top: 10px;
+}
+
+.icon-minus-sign {
+    margin-top: 5px;
+}
+
+a {
+    font-weight: bold;
+    color: #000;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+.hca-display-specializations {
+    display: block;
 }
 
 .dropdown-menu li>a:hover,.dropdown-menu li>a:focus,.dropdown-submenu:hover>a {
@@ -2652,56 +3369,24 @@ h1,h2,h3,h4,h5 {
 .accordion .accordion-heading {
     background-color: #eee;
     border-bottom: none;
-    height: 60px;
-}
-
-.accordion .accordion-heading.active {
-    background-color: #dbe5f0;
 }
 
 .accordion .accordion-heading img {
-    width: 55px;
-    margin-top: -6px;
+    width: 45px;
+    margin-right: 5px;
 }
 
 .accordion .accordion-heading .icon-minus-sign {
-    margin-top: 15px;
-}
-
-.accordion .accordion-heading .icon-ok {
-    margin-top: 5px;
+    margin-top: 12px;
 }
 
 .accordion .accordion-heading .icon-plus-sign {
     color: #888;
-    margin-top: 15px;
+    margin-top: 12px;
 }
 
-.accordion .accordion-heading .icon-edit {
-    color: #888;
-    margin-top: 5px;
-}
-
-.accordion .accordion-heading .icon-remove-sign {
-    display: block;
-    color: #888;
-    margin-left: 35px;
-    margin-top: 5px;
-}
-
-.accordion .accordion-heading h4 {
-    margin: 0;
-    color: #585858;
-    padding: 7px 0 0 0;
-}
-
-.accordion .accordion-heading a {
-    font-weight: bold;
-    color: #000;
-}
-
-.accordion .accordion-heading a:hover {
-    text-decoration: none;
+.accordion .accordion-heading .icon-ok {
+    margin-top: 7px;
 }
 
 .accordion .accordion-inner {
@@ -2803,6 +3488,20 @@ h1,h2,h3,h4,h5 {
     overflow-x: hidden;
 }
 
+.modal .modal-body .alert.results {
+    margin-bottom: 0;
+}
+
+.modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing {
+    min-height: 95px;
+}
+
+.modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing .btn {
+    margin-top: 35px;
+    margin-right: 10px;
+    width: 180px;
+}
+
 .modal .modal-body .btn-primary a {
     color: #fff;
 }
@@ -2820,41 +3519,15 @@ h1,h2,h3,h4,h5 {
     min-height: 600px;
 }
 
-.modal .modal-body input.hca-country,.modal .modal-body input.hca-city {
-    width: 287px !important;
-}
-
 .modal .modal-body input.hca-suffix {
-    width: 125px;
-    height: 30px;
-}
-
-.modal .modal-body input.hca-languages {
-    width: 286px;
-    height: 30px;
-}
-
-.modal .modal-body .dropdown-menu.zipcode {
-    max-height: 115px;
-    width: 294px;
-}
-
-.modal .modal-body .dropdown-menu.location-select {
-    max-height: 140px;
-    width: 322px;
-    margin-left: -300px;
-}
-
-.modal .modal-body .dropdown-menu.languages-select {
-    max-height: 140px;
-    width: 321px;
-    margin-left: -299px;
+    width: 100px;
+    height: 25px;
 }
 
 .modal .modal-body .dropdown-menu.suffix-select {
-    max-height: 140px;
-    margin-left: -138px;
-    width: 100px;
+    max-height: 60px;
+    margin-left: -113px;
+    width: 50px;
 }
 
 .modal .modal-body .dropbox {
@@ -2891,39 +3564,6 @@ h1,h2,h3,h4,h5 {
 
 .modal .modal-body.media-edit label {
     margin-top: 20px;
-}
-
-.modal .modal-body .doctors-specializations {
-    border: 1px solid #cccccc;
-    padding: 8px 10px 8px 23px;
-    margin-bottom: 10px;
-    top: auto;
-    max-height: 135px;
-    overflow: auto;
-}
-
-.modal .modal-body .doctors-specializations input {
-    margin-top: -3px;
-}
-
-.modal .modal-body .doctors-specializations .span6 {
-    margin: 0 2px 0 0;
-    padding: 0;
-}
-
-.modal .modal-body .doctors-specializations .span6 ul {
-    list-style: none;
-    margin: 0 0 20px 0;
-}
-
-.modal .modal-body .doctors-specializations .span6 ul li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    margin-right: 8px;
-    padding: 5px 0 5px 15px;
-}
-
-.modal .modal-body .doctors-specializations .span6 ul li input {
-    padding: 0;
 }
 
 .modal .modal-body .tab-content {
@@ -2976,6 +3616,28 @@ h1,h2,h3,h4,h5 {
     margin: 0;
 }
 
+.row-field.error ul,.control-group.error ul {
+    color: #b94a48;
+    list-style: none;
+    font-weight: bold;
+    margin: 0px 0 7px 0;
+    padding: 0;
+    display: block;
+}
+
+.custom-select-list {
+    font-weight: normal !important;
+    color: #000 !important;
+}
+
+.control-group.error .checkbox,.control-group.error .radio {
+    color: #000 !important;
+}
+
+.control-group.error .checkbox,.control-group.error .radio,.control-group.error input,.control-group.error select,.control-group.error textarea {
+    color: #000;
+}
+
 .tab-content {
     z-index: 0;
 }
@@ -3001,6 +3663,14 @@ h1,h2,h3,h4,h5 {
 .tabs-left .nav-tabs {
     position: absolute;
     margin: 0;
+}
+
+.dropzone {
+    min-height: 200px !important;
+}
+
+.dropzone .dropzone-controls {
+    bottom: 70px !important;
 }
 
 .table span {
@@ -3040,10 +3710,25 @@ h1,h2,h3,h4,h5 {
 
 .table.hca-media td:first-child {
     width: 30%;
+    vertical-align: top;
+}
+
+.table.hca-media td:first-child i {
+    position: absolute;
+    display: block;
+    margin: 10px;
+    color: #595959;
+    text-shadow: 0px 2px 2px #222222;
 }
 
 .table.hca-media td:nth-child(2) {
     color: #626262;
+}
+
+.table.hca-media td:nth-child(2) i {
+    margin-right: 10px;
+    float: left;
+    margin-bottom: 10px;
 }
 
 .table.hca-media td:nth-child(3) {
@@ -3058,6 +3743,12 @@ h1,h2,h3,h4,h5 {
 .table.hca-media img {
     width: 55px;
     height: 55px;
+    display: block;
+}
+
+.table.hca-media .media-body {
+    margin-left: 70px;
+    display: block;
 }
 
 .table.hca-media ul {
@@ -3068,10 +3759,6 @@ h1,h2,h3,h4,h5 {
     font-size: 16px;
     color: #626262;
     margin: 0;
-}
-
-.table.hca-media p {
-    color: #888;
 }
 
 .table .btn-link {
@@ -3208,7 +3895,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .ribbon-approved.ribbon-expired,.ribbon-expired.ribbon-expired,.ribbon-pending.ribbon-expired,.ribbon-draft.ribbon-expired,.ribbon-archived.ribbon-expired {
-    background-color: #ff8080;
+    background-color: #dca5a4;
     -webkit-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
     box-shadow: 0px 0px 2px rgba(0,0,0,0.5);
@@ -3327,6 +4014,10 @@ h1,h2,h3,h4,h5 {
     padding: 5px 0 !important;
     font-family: 'PT Sans';
     width: 210px;
+}
+
+.thumbnails li.thumbnail .btn a {
+    color: #fff;
 }
 
 .thumbnails li.thumbnail .btn.btn-misc {
@@ -3720,4 +4411,42 @@ h1,h2,h3,h4,h5 {
     margin-top: 13px;
     margin-bottom: 5px;
     width: 630px;
+}
+
+.accordion .accordion-inner {
+	max-height: 300px;
+}
+
+ul.two-column {
+    margin: 0;
+}
+
+ul.two-column:not(.items-count-1) {
+	-webkit-column-count: 2;
+	-webkit-column-gap: 10px;
+	-moz-column-count: 2;
+	-moz-column-gap: 10px;
+}
+
+ul.two-column:not(.items-count-1) > li {
+	float: left;
+}
+
+ul.two-column > li {
+	margin-bottom: 20px;
+	border: none;
+}
+
+ul.two-column > li input[type=checkbox]{
+    border: none;
+    vertical-align: top;
+}
+
+ul.two-column > li label {
+    max-width: 235px;
+    display: inline-block;
+}
+
+.accordion .row-fluid ul.two-column li:last-child {
+	border: none;
 }

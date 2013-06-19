@@ -85,11 +85,14 @@ parameters:
     cfe_company_name: Chromedia Far East Inc.    
     
     imageplaceholder:
+        specializationDefaultLogo: /images/institution/default-specialization-logo.png
         institutionFeaturedImage: /images/default-hospital-featured-image.png 
         institutionDefaultLogo: /images/institution/default-hospital-logo.png
         doctorDefaultImage: /images/institution/default-doctor-icon.png
         imcDefaultLogo: /images/institution/default_clinic.png
         destinationIcon: ''
+        loading: /images/institution/spinner_large.gif
+
 
     amazonS3_key: AKIAIAZVLNMMNLBC6IEA
     amazonS3_secret: 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

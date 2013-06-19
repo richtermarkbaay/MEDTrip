@@ -1,21 +1,20 @@
- <div class="row-fluid specialization-edit-listing">
-{% for subSpecialization, treatments in specializationComponents %}
-<div class="control-group">
-        <label > 
+<ul class="unstyled two-column items-count-{{ specializationComponents|length }} specialization-wrapper">
+    {% for subSpecialization, treatments in specializationComponents %}
+    {% set key = loop.index %}
+    <li class="sub-specialization-wrapper">
+        <label> 
             <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
-            {{ subSpecialization }}
+            <strong>{{ subSpecialization }}</strong>
         </label>
-    <ul class="specializations-listing">
-        {% for treatment in treatments %}
-            <li>
-                <label> 
-                    <input type="checkbox" id="treatments{{ treatment.id }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
-                   {{ treatment.name }} 
-                </label>
+        <ul class="unstyled" style="margin-left: 20px;">
+            {% for treatment in treatments %}
+            <li style="border: none">
+                <input type="checkbox" id="treatments{{ treatment.id }}-{{ key }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
+                <label style="font-weight: normal" for="treatments{{ treatment.id }}-{{ key }}">{{ treatment.name }}</label>
             </li>
-    </ul>
-    
-</div>
-<input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
-{% endfor %}
-</div>
+            {% endfor %}
+        </ul>
+        <input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+    </li>
+    {% endfor %}
+</ul>

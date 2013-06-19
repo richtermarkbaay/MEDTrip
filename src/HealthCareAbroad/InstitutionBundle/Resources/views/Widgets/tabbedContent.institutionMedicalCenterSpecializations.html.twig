@@ -4,7 +4,7 @@
     <h3> Specialization 
     <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specializations</button>
     </h3>
-      <section class="action-info hca-main-profile" id="specialization_list_block">
+    <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
         {% else %}
@@ -19,28 +19,27 @@
             </div>
         {% endfor %}
     </section>
-    <br>
-     <section class="section action-info hca-main-profile">
-        <div class="hca-display-specializations">
-            <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">
-               <div class="edit-specializations">
-                    <div class="row-fluid terms hca-edit-box">
-                        <h3> Specializations
-                            <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"> </i>
-                                <span class="tooltip-content hca-edit list-specializations pull-left">
-                                    <i class="icon-stethoscope icon-2x pull-left"> </i>
-                                    Indicating all the SPECIALIZATIONS and related treatments of your clinic
-                                    will allow you to be searchable by patients based on those fields.
-                                    <br>
-                                </span>
+    <section id="add-specialization-wrapper" class="section hca-display-specializations">
+
+        <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">
+           <div class="edit-specializations">
+                <div class="row-fluid terms hca-edit-box">
+                    <h3> Specializations
+                        <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"> </i>
+                            <span class="tooltip-content hca-edit list-specializations pull-left">
+                                <i class="icon-stethoscope icon-2x pull-left"> </i>
+                                Indicating all the SPECIALIZATIONS and related treatments of your clinic
+                                will allow you to be searchable by patients based on those fields.
+                                <br>
                             </span>
-                        </h3>     
-                        <section class="section " id="specialization-list">
-                        </section>
-                     </div>
-                </div>
-            </form>
-         </div>
+                        </span>
+                    </h3>     
+                    <section class="section " id="specialization-list">
+                    </section>
+                 </div>
+            </div>
+        </form>
+
      </section>
     {% endblock %}
 {% endembed %}
@@ -73,51 +72,12 @@ $(document).on('show hide', '#accordion', function(e) {
     }
 });
 
-/*
-TODO: are these performant? we want to avoid binding multiple event handlers but
-at the same time we don't want every click event to fire and run these code.
-
-Note: These are heavily reliant on the html markup. Changes to the structure might
-break the script.
-*/
-$('form[name="specializationsForm"]').on('click', 'input:checkbox[name="subSpecialization"]', function(e) {
-	    var target = $(e.target);
-	    var subSpecializationContainerElem = target.parents('div.control-group:first');
-	    subSpecializationContainerElem.find('input:checkbox[id^="treatments"]').prop('checked', target.is(':checked'));
-	});
-
-	$('form[name="specializationsForm"]').on('click', 'input:checkbox[id^="treatments"]', function(e) {
-	    var target = $(e.target);
-	    var subSpecializationContainerElem = target.parents('div.control-group:first');
-	    var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
-	    var checkedTreatmentElems = subSpecializationContainerElem.find('input:checkbox[id^="treatments"]:checked');
-
-	    subSpecializationCheckbox.prop('checked', true);
-	    if(checkedTreatmentElems.length == 0) {
-	        subSpecializationCheckbox.prop('checked', target.is(':checked'));
-	    }
-	});
-
 $('#submitFormLink').click(function(e) {
     //TODO: validation
     document.forms['specializationsForm'].submit();
 
     return false;
 });
-
-/*
-$('.expandcollapse').click(function() {
-    $('.collapse').each(function(index) {
-        $(this).collapse("toggle");
-    });
-    alert('changing icon');
-    if ($(this).html() == "<i class=\"icon-white icon-plus-sign\"></i> Expand All") {
-        $(this).html("<i class=\"icon-white icon-minus-sign\"></i> Collapse All");
-    } else {
-        $(this).html("<i class=\"icon-white icon-plus-sign\"></i> Expand All");
-    };
-});
-*/
 </script>
 
 {% endblock %}

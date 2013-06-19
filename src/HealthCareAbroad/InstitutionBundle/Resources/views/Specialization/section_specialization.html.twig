@@ -1,30 +1,8 @@
+{% include 'InstitutionBundle:MedicalCenter:Partials/accordion.specializations.html.twig' with {specializations : specializations } %}
 
-    <div class="accordion tooltip-wrap" id="accordion" >
-        {% for specialization in specializations %}
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
-                   </i> <i class="icon-plus-sign pull-right icon-edit icon-ok"></i>
-                    {% if specialization.media %}
-                        <img src="{{ specialization_media_src(specialization.media) }}" class="pull-left">
-                    {% else %}
-                        <img src="{{ asset('images/institution/default-specialization-logo.png') }}" class="pull-left img-polaroid" style="display: inline-block; height: 35px;margin: -4px 5px 0 0;">
-                    {% endif %}
-                   <h4>{{ specialization.name }}</h4>
-                </a>
-            </div>
-            <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class="collapse">
-                <div class="accordion-inner">
-                    <div id="{{ 'panel' ~ specialization.id }}" data-loaded="0">
-                        <center><img src="/images/institution/spinner_large.gif" /></center>
-                       
-                    </div>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-          <button type="submit" class="btn pull-right btn-primary btn-large" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
-            Save
-        </button>
-    </div>
-
+<div class="align-right" style="margin-top: 10px">
+    <button type="button" class="btn" onclick="$('#add-specialization-wrapper').hide().prev().slideDown().prev().slideDown()">Cancel</button>
+    <button type="submit" class="btn btn-primary" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
+        Save
+    </button>
+</div>

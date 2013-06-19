@@ -1,19 +1,18 @@
+<ul class="unstyled two-column items-count-{{ specializationComponents|length }} specialization-wrapper">
 {% for subSpecialization, treatments in specializationComponents %}
-<div class="sub-specialization-group">
-    <label style="margin: 10px 5px;">
-        <input type="checkbox" name="subSpecialization" value="subSpecialization" style="margin-top: -2px"/>
-        {{ subSpecialization }}
+<li class="sub-specialization-wrapper">
+    <label> 
+        <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
+        <strong>{{ subSpecialization }}</strong>
     </label>
-
-    <ul>
+    <ul class="unstyled" style="margin-left: 20px;">
         {% for treatment in treatments %}
-            <li>
-                <label style="font-weight: normal">
-                    <input type="checkbox" name="treatments[{{ specializationId }}][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }} class="treatments"/>
-                    {{ treatment.name }}
-                </label>
-            </li>
+        <li style="border: none">
+            <input type="checkbox" id="treatments{{ treatment.id }}" name="treatments[{{ specializationId }}][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }} class="treatments"/> 
+            <label style="font-weight: normal" for="treatments{{ treatment.id }}">{{ treatment.name }}</label>
+        </li>
         {% endfor %}
     </ul>
-</div>
+</li>
 {% endfor %}
+</ul>
