@@ -82,7 +82,6 @@ class TreatmentRepository extends EntityRepository
     public function getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment(Specialization $specialization, Treatment $currentTreatment)
     {
         $qb = $this->getQueryBuilderForActiveTreatmentsBySpecialization($specialization);
-        
         // add condition where treatment id is not current treatment
         
         return $qb->andWhere('a.id != :treatment')
