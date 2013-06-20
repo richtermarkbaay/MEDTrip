@@ -1,0 +1,10 @@
+{% embed 'AdminBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
+    {% block modalBody %}
+        <h5>{{ treatment.name }} as Tag of </h5> 
+        
+    {% endblock %}
+    {% block footerBody %}
+        <a aria-hidden="true" data-dismiss="modal" class="btn">Cancel</a>
+        <a data-loader-text="Processing..."  class="btn btn-primary submit-modal">Submit</a>
+    {% endblock %}
+{% endembed %}

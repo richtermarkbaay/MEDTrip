@@ -65,6 +65,7 @@ class InstitutionController extends ResponseHeadersController
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $institutionService->isSingleCenter($this->institution),
             'institutionDoctors' => $institutionService->getAllDoctors($this->institution),
+                        //'institutionDoctors' => array(),
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'formId' => 'institution_inquiry_form'
 

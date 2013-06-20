@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\TermBundle\Repository;
 
+use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+
 use HealthCareAbroad\TermBundle\Entity\Term;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;
@@ -54,5 +56,24 @@ class TermRepository extends EntityRepository
             ->getQuery();
 
         return $query->getOneOrNullResult();
+    }
+    
+    public function updateInstitutionTreatmentByTreatment(Treatment $currentTreatment, Treatment $oldTreatment)
+    {
+        $query = "
+        INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`)
+        SELECT a.institution_specialization_id, ". $currentTreatment->getId() ."
+        FROM  `institution_treatments` a
+        LEFT JOIN (SELECT  * FROM `institution_treatments` WHERE `treatment_id` = {$currentTreatment->getId()}  ) as _existing
+        ON _existing.`institution_specialization_id` = a.institution_specialization_id
+        WHERE a.treatment_id = ". $oldTreatment->getId() ."
+        AND _existing.`institution_specialization_id` IS NULL";
+        
+        $conn = $this->getEntityManager()->getConnection();
+        $conn->executeQuery($query);
+        
+        $deleteQuery = "DELETE FROM institution_treatments WHERE treatment_id = ".$oldTreatment->getId();
+        return $conn->executeQuery($deleteQuery);
+        
     }
 }

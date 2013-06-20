@@ -149,6 +149,11 @@ class Institution
      * @var \Doctrine\Common\Collections\Collection
      */
     private $contactDetails;
+    
+    /**
+     * @var integer
+     */
+    private $totalClinicRankingPoints;
 
     /**
      * Constructor
@@ -807,9 +812,9 @@ class Institution
     public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
     {
         $this->contactDetails[] = $contactDetails;
-    
+        
         return $this;
-    }
+    }    
 
     /**
      * Remove contactDetails
@@ -829,5 +834,29 @@ class Institution
     public function getContactDetails()
     {
         return $this->contactDetails;
+    }
+     
+    
+    /**
+     * Set totalClinicRankingPoints
+     *
+     * @param integer $totalClinicRankingPoints
+     * @return Institution
+     */
+    public function setTotalClinicRankingPoints($totalClinicRankingPoints)
+    {
+        $this->totalClinicRankingPoints = $totalClinicRankingPoints;
+    
+        return $this;
+    }
+    
+   /**
+    * Get totalClinicRankingPoints
+    *
+    * @return integer
+    */
+    public function getTotalClinicRankingPoints()
+    {
+        return $this->totalClinicRankingPoints;
     }
 }

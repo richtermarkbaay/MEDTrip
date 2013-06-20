@@ -15,6 +15,8 @@ HealthCareAbroad\TermBundle\Entity\Term:
             fixed: false
             unique: true
             nullable: false
+        internal:
+            type: boolean
         slug:
             type: string
             length: 250
