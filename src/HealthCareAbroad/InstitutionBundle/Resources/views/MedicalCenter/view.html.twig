@@ -51,7 +51,7 @@
                  {% include 'InstitutionBundle:MedicalCenter/Widgets:sidebar.institutionMedicalCenter.html.twig' %}
                 {% endblock %}
             {% endembed %}
-                                        		
+                                                
         {% endblock %}
     {% endembed %}
     
@@ -82,22 +82,20 @@
     var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     (function($){
         $(function(){
-        	HCAGoogleMap.initialize({
-        		latLngString: '{{ institutionMedicalCenter.coordinates }}',
-        		address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
-        		defaultAddress: cityElem.val() + ',' + countryElem.val(),
-        		mapOnChangeCallback: function() {
-        			coordinatesElem.val(HCAGoogleMap.latLngString);
-        		}
-        	});  
-            var formElem;
-        	$('form.ajaxUploadLogoForm').ajaxForm({
-            /* beforeSend: function(e) {},
-               uploadProgress: function(event, position, total, percentComplete) {},*/
-
+            HCAGoogleMap.initialize({
+                latLngString: '{{ institutionMedicalCenter.coordinates }}',
+                address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
+                defaultAddress: cityElem.val() + ',' + countryElem.val(),
+                mapOnChangeCallback: function() {
+                    coordinatesElem.val(HCAGoogleMap.latLngString);
+                }
+            });
+            
+            var ajaxFormUploadElem;
+            $('form.ajaxUploadLogoForm').ajaxForm({
                success: function(response) {
                    if(response.status) {
-                       $(formElem).find('img').attr('src',response.mediaSrc);
+                       ajaxFormUploadElem.find('img').attr('src',response.mediaSrc).css('opacity', 1).prev().show();
                    } else {
                        alert('ERROR: Unable to upload Logo!');
                    }
@@ -106,23 +104,23 @@
 
                }
            }).submit(function(){
-               formElem = $(this);
-               $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
+               ajaxFormUploadElem = $(this);
+               $(this).find('img').css('opacity', 0.5).prev().hide();
            });
-        	
+            
             $("input:checkbox").live("click", function(e){ 
                 $(this).parents('li').toggleClass("hca-highlight");
                 if($(this).attr('class') != 'old'){
-                	$(this).attr('class','new');
+                    $(this).attr('class','new');
                 }
             });   
 
             InstitutionMedicalCenter.isEditView = true;
 
             $('#institutionMedicalCenter_contactEmail').bind('keypress', function(e) {
-           	   if( e.which === 13 )
-           	       return false;
-           	});
+                  if( e.which === 13 )
+                      return false;
+               });
             
             Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 
@@ -150,7 +148,7 @@
     })(jQuery);
 
     function getAddress() {
-    	var address = ''; 
+        var address = ''; 
         if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
         if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
         if(cityElem.val() != '') { address += $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}").val() + ', '; }
@@ -160,7 +158,7 @@
     }
     
     function updateInstitutionStaticMap() {
-    	HCAGoogleMap.updateMap(getAddress());
+        HCAGoogleMap.updateMap(getAddress());
     }
 </script>
 {% endblock %}

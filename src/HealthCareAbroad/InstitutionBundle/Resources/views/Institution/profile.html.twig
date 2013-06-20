@@ -20,15 +20,15 @@
             </div>
             <!-- Main Content -->    
             {% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %}       
-			{% if (isSingleCenter is defined) and isSingleCenter %}
-			    {% include 'InstitutionBundle:Institution:profile.singleCenter.html.twig' %}
-			{% else %}
-			    {% include 'InstitutionBundle:Institution:profile.multipleCenter.html.twig' %}
-			{% endif %}
+            {% if (isSingleCenter is defined) and isSingleCenter %}
+                {% include 'InstitutionBundle:Institution:profile.singleCenter.html.twig' %}
+            {% else %}
+                {% include 'InstitutionBundle:Institution:profile.multipleCenter.html.twig' %}
+            {% endif %}
 
             <!-- Sidebar Content -->
-			{% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
-			<!-- end Modal Institution name -->
+            {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
+            <!-- end Modal Institution name -->
         {% endblock %}
         
     {% endembed %}
@@ -56,28 +56,35 @@
     (function($){
         $(function(){
 
-        	{% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
-        	{% set logo = '' %}
-        	var formElem;
-        	$('form.ajaxUploadLogoForm').ajaxForm({
-            /* beforeSend: function(e) {},
-               uploadProgress: function(event, position, total, percentComplete) {},*/
-               success: function(response) {
+            var ajaxFormUploadElem;
+            $('form.ajaxUploadLogoForm').ajaxForm({
+                success: function(response) {
                    if(response.status) {
-                       $(formElem).find('img').attr('src',response.mediaSrc);
+                       ajaxFormUploadElem.find('img').attr('src',response.mediaSrc).css('opacity', 1).prev().show();
                    } else {
                        alert('ERROR: Unable to upload Logo!');
                    }
-               },
-               complete: function(xhr) {
-
                }
-           }).submit(function(){
-        	   formElem = $(this);
-               $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
-           });
-        	
-            $("#back-top").hide();
+            }).submit(function(){
+               ajaxFormUploadElem = $(this);
+               $(this).find('img').css('opacity', 0.5).prev().hide();
+            });
+
+            $("#{{ institutionForm.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
+                appendTo: "#autoDiv",
+                source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
+            });
+
+            var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
+            HCAGoogleMap.initialize({
+                latLngString: '{{ institution.coordinates }}',
+                address: "{{ institution_address_to_array(institution)|join(',') }}",
+                defaultAddress: city + "{{ institution.country.name }}",
+                mapOnChangeCallback: function() {
+                    coordinatesElem.val(HCAGoogleMap.latLngString);
+                }
+            });
+
             $(window).scroll(function() {
                 if ($(this).scrollTop() > 100) {
                     $('#back-top').fadeIn();
@@ -85,49 +92,24 @@
                      $('#back-top').fadeOut();
                 }
             });
-            $('#back-top a').click(function() {
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 800);
-                return false;
-            });
-            
-            var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
 
-            var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
-            
-            instututionGroupInput.autocomplete({
-                appendTo: "#autoDiv",
-                source: availableTags,
+            $('#back-top a').click(function(e) {
+                e.preventDefault();
+                $('html').animate({scrollTop: 0}, 800);
             });
-            
-            emailElem.bind('keypress', function(e) {
-         	   if( e.which === 13 )
-         	       return false;
-         	});
 
             $("input:checkbox").live("click", function(e){ 
-            	$(this).parents('li').toggleClass("hca-highlight");
-            	if($(this).attr('class') != 'old'){
-            		$(this).attr('class','new');
-            	}
-            });   
+                $(this).parents('li').toggleClass("hca-highlight");
+                if($(this).attr('class') != 'old'){
+                    $(this).attr('class','new');
+                }
+            });
 
-        	var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
-        	HCAGoogleMap.initialize({
-        		latLngString: '{{ institution.coordinates }}',
-        		address: "{{ institution_address_to_array(institution)|join(',') }}",
-        		defaultAddress: city + "{{ institution.country.name }}",
-        		mapOnChangeCallback: function() {
-        			coordinatesElem.val(HCAGoogleMap.latLngString);
-        		}
-        	});        
         });
-        
     })(jQuery);
     
     function getAddress() {
-    	var address = ''; 
+        var address = ''; 
         if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
         if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
         if(cityElem.val() != '') { address += $("#input-{{ institutionForm.getChild('city').vars.id }}").val() + ', '; }
@@ -137,7 +119,7 @@
     }
     
     function updateInstitutionStaticMap() {
-    	HCAGoogleMap.updateMap(getAddress());
+        HCAGoogleMap.updateMap(getAddress());
     }
 
 </script>

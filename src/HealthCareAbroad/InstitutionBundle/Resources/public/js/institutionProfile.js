@@ -226,10 +226,6 @@ var InstitutionProfile = {
     	_show = $(_element.attr('data-toggle'));
     	_attr = _element.attr('href');
     	$('#'+_show.selector + ', ' + _attr).toggle();
-
-    	if(_attr == "#address"){
-	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
-    	}
     },
     
     openWebsiteFormButton: function(_element){
@@ -252,9 +248,12 @@ var InstitutionProfile = {
     	editElem = $(elem.attr('data-edit-elem'));
     	
     	if(viewElem.is(':visible')) {
-    		
+    		// Refresh Map for Edit Address
+        	if(elem.attr('data-edit-elem') == "#address") {
+    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+        	}
+
         	if(elem.attr('id') == 'institution-edit-awards-btn') { /* TODO: Temporary Fixed */
-        		
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
         		
@@ -266,7 +265,6 @@ var InstitutionProfile = {
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {
-    		
         	editElem.slideUp('slow', function(){
         		InstitutionProfile.undoChecked(editElem);
         		viewElem.fadeIn();
