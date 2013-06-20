@@ -24,7 +24,7 @@
     {% set _suggestions = render_institution_suggestions(institution) %}
     {% if _suggestions is not empty %}    
     <section class="section row-fluid">
-        <h2> Suggestion for your {{ label }}
+        <h2> Suggestion{{ _suggestions[1] is defined ? 's' : '' }} for your {{ label }}
             <a class="btn btn-primary pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
          </h2>
         
