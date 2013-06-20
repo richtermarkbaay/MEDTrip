@@ -51,10 +51,10 @@
 <script type="text/javascript">
     $(function(){
 
-    	{% set specializationId = '' %}
+    	{% set treatment = treatment.name %}
     	
     	$('div#convert_treatment_to_term_form').on('show', function(){
-    		$('#convert_treatment_to_term_form').find('h5').append($('#convert_treatment_to_term_form_treatments option:selected').text());
+    		$('#convert_treatment_to_term_form').find('h5').html('').append( "{{ treatment }} as Tag of " + $('#convert_treatment_to_term_form_treatments option:selected').text());
     	});
 
         $("a.form-submit").click(function() {
