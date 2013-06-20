@@ -1752,6 +1752,11 @@ ul.hca-notifications, ul.hca-inquiries {
     color: #bbbbbb;
     font-weight: normal;
     margin-bottom: 0; }
+  .error-page h4 {
+    color: #a2a2a2;
+    font-weight: normal;
+    margin-bottom: -20px;
+    margin-left: 50px; }
   .error-page p {
     text-align: center;
     display: inline-block;
