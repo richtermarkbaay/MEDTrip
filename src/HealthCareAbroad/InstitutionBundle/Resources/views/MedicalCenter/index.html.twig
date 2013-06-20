@@ -12,7 +12,7 @@
         {% block wrappedContent %}    
             <h1>
                 <i class="icon-medkit"></i>Your {{ clinicClassLabel.plural | title }}
-                <a href="#add-new-center" data-target="#add-new-center" class="btn btn-primary btn-large pull-right"  onclick="InstitutionMedicalCenter.showCommonModal($(this));">Add {{ clinicClassLabel.singular | title }}</a>
+                <a href="#add-new-center" data-target="#add-new-center" class="btn btn-primary btn-large pull-right"  onclick="InstitutionMedicalCenter.showCommonModal($(this));"><i class="icon-medkit"></i>Add {{ clinicClassLabel.singular | title }}</a>
             </h1>
              <div class="tabbable">
                     <!-- Only required for left/right tabs -->
