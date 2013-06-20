@@ -1,11 +1,11 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'delete-media', class: 'hca-file-modal delete-media', 'title': 'Delete Media' }} %}
     {% block modalBody %}            
 
-        <div class="alert alert -info">
+         <!--<div class="alert alert -info">
             <i class="icon-trash icon-2x"></i>
             <span>Text here - disadvantages in deleting media</span>
-        </div>
-        <h4>Are you sure you want to permanently delete this media file name?</h4>
+        </div>-->
+        <h2><small>Are you sure you want to permanently delete this media file?</small></h2>
         <p>
             This media will be also deleted in following clinics:
         </p>
@@ -13,7 +13,7 @@
         
         <div class="align-right">
             <a href="#" onclick="$('#delete-media').modal('hide')" class="btn">Cancel</a> &nbsp;
-            <button id="confirm-delete-media-btn" class="btn btn-primary" type="button"><i class="icon-trash"></i>Confirm Delete</button>
+            <button id="confirm-delete-media-btn" class="btn btn-danger" type="button"><i class="icon-trash"></i>Confirm Delete</button>
         </div>
     {% endblock %}
 {% endembed %}

@@ -2904,18 +2904,21 @@ h1, h2, h3, h4, h5 {
       border-bottom: 1px solid white;
       background-color: #ffd11a; }
       .thumbnails li.thumbnail.hca-alert-inquiry p {
-        margin: 7px 5px 7px 0;
+        margin: 7px 15px 7px 0;
         color: #5a5a5a; }
       .thumbnails li.thumbnail.hca-alert-inquiry .icon-2x {
         display: block;
-        margin-top: 1px !important; }
+        margin-top: 1px !important;
+        font-size: 2.25em;
+        padding-bottom: 7px; }
       .thumbnails li.thumbnail.hca-alert-inquiry .hca-red {
         margin: 2px 5px 0 10px;
         text-shadow: 0px 2px 0px #e5e5e5,0px 1px 0px #d1d0d0;
         color: #b94a48; }
         .thumbnails li.thumbnail.hca-alert-inquiry .hca-red i {
           margin-bottom: 20px;
-          margin-top: 1px; }
+          margin-top: 1px;
+          padding-bottom: 10px; }
       .thumbnails li.thumbnail.hca-alert-inquiry img {
         background-color: white;
         margin: 5px 10px; }
