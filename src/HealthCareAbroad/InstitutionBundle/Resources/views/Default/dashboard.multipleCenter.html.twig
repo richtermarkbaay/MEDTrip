@@ -50,14 +50,15 @@
         <ul class="thumbnails hca-alert-inquiry">
             {% for center in _centers %}
 
-                <li class="thumbnail hca-alert-inquiry">
-                    <span class="hca-icon pull-left">
+                <li class="thumbnail hca-alert-inquiry logo-clinic">
+                    <span class="pull-left">
                     {% if center.logo is defined and center.logo != '' %}
                     {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
                     <img id="imcLogo" src="{{ center.logo ? institution_media_src(center.logo, logoSize) :  imageplaceholder.imcDefaultLogo}}" alt="" class="imgborder"/> 
                     {% else %}
                         <img id="imcLogo" src="{{ asset('images/institution/default_clinic.png') }}" alt="" class="imgborder"/>
                     {% endif %}
+                    </span>
                     <span class="details-inline">
                         <b>{{ center.name | title }}</b>
                         This clinic doesn't have a 

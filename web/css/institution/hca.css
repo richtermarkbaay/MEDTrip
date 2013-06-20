@@ -2911,6 +2911,9 @@ h1, h2, h3, h4, h5 {
         .thumbnails li.thumbnail.hca-alert-inquiry .hca-red i {
           margin-bottom: 20px;
           margin-top: 1px; }
+      .thumbnails li.thumbnail.hca-alert-inquiry img {
+        background-color: white;
+        margin: 5px 10px; }
       .thumbnails li.thumbnail.hca-alert-inquiry b {
         display: block;
         font-size: 20px;
