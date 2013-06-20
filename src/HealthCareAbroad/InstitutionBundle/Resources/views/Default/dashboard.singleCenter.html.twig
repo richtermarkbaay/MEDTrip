@@ -25,11 +25,10 @@
         <ul class="thumbnails hca-alert-inquiry">
         {% for suggestion in _suggestions %}
             <li class="thumbnail hca-alert-inquiry">
-                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                </i></span>
-                <span>
+                
+                <p>
                     {{ suggestion.description | raw }}
-                </span>
+                </p>
             </li>
         {% endfor %}
         </ul>

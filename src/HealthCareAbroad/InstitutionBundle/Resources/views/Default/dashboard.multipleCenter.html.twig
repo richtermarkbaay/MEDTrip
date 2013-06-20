@@ -31,11 +31,9 @@
         <ul class="thumbnails hca-alert-inquiry">
             {% for suggestion in _suggestions %}
                 <li class="thumbnail hca-alert-inquiry">
-                    <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                    </i></span>
-                    <span>
-                        {{ suggestion.description | raw}}
-                    </span>
+                    <p>
+                        {{ suggestion.description | raw }}
+                    </p>
                 </li>
             {% endfor %}
         </ul>
@@ -51,9 +49,15 @@
         
         <ul class="thumbnails hca-alert-inquiry">
             {% for center in _centers %}
+
                 <li class="thumbnail hca-alert-inquiry">
-                    <span class="hca-icon pull-left"><i class="icon-picture icon-4x hca-earth">
-                    </i></span>
+                    <span class="hca-icon pull-left">
+                    {% if center.logo is defined and center.logo != '' %}
+                    {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
+                    <img id="imcLogo" src="{{ center.logo ? institution_media_src(center.logo, logoSize) :  imageplaceholder.imcDefaultLogo}}" alt="" class="imgborder"/> 
+                    {% else %}
+                        <img id="imcLogo" src="{{ asset('images/institution/default_clinic.png') }}" alt="" class="imgborder"/>
+                    {% endif %}
                     <span class="details-inline">
                         <b>{{ center.name | title }}</b>
                         This clinic doesn't have a 
