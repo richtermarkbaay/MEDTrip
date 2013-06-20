@@ -236,4 +236,9 @@ class DefaultController extends InstitutionAwareController
 	{
 	    
 	}
+	
+	public function error500Action()
+	{
+	    throw new \Exception('Something went wrong!');
+	}
 }

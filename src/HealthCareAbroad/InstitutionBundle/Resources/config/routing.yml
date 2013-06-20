@@ -138,6 +138,12 @@ institution_faq:
     requirements:
         _method: GET
         
+institution_error_500:
+    pattern: /institution/error500.html
+    defaults: { _controller: InstitutionBundle:Default:error500}
+    requirements:
+        _method: GET
+            
 institution_inquiries:
     pattern: /institution/inquiries
     defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
