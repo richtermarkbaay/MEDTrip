@@ -95,43 +95,43 @@ class InstitutionTwigExtension extends \Twig_Extension
         }
         
         if(!$institution->getDescription()) {
-            $suggestions[] = array('description' => '<span class="span1"><i class="icon-file icon-2x hca-red pull-left"></i></span>You currently have no description for your '.$label.' yet.');
+            $suggestions[] = array('description' => '<span class="span1"><i class="icon-file icon-2x hca-red pull-left"></i></span>You currently have no <b>description</b> for your '.$label.' yet.');
         }
         
         if(!$institution->getLogo()) {
             if($institution->getPayingClient()){
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span> You have not yet added a logo. Upload it today and help patients make an instant brand connection between your clinic and the treatments you offer.');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-h-sign icon-2x hca-red pull-left"></i></span> You have not yet added a <b>logo</b>. Upload it today and help patients make an instant brand connection between your clinic and the treatments you offer.');
             }else{
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span>Upgrade your listing today and have your logo show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. ');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-h-sign icon-2x hca-red pull-left"></i></span>Upgrade your listing today and have your <b>logo</b> show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. ');
             }    
         }
         
         if(!$institution->getFeaturedMedia()) {
             if($institution->getPayingClient()){
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span>You have not yet uploaded your cover photo. Make use of this space to add a large image to establish your brand and reputation.');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span>You have not yet uploaded your <b>cover photo</b>. Make use of this space to add a large image to establish your brand and reputation.');
             }else{
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span>Upgrade your listing today and have a cover photo show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. Making use of this space to add a large image helps in establishing your brand and reputation.');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-picture icon-2x hca-red pull-left"></i></span>Upgrade your listing today and have a <b>cover photo</b> show on your '.($isSingleCenter ? 'clinic page' : 'clinic pages').'. Making use of this space to add a large image helps in establishing your brand and reputation.');
             }
         }
 
         if(!$institution->getGallery()) {
              if($institution->getPayingClient()){
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-facetime-video icon-2x hca-red pull-left"></i></span>You have not yet uploaded photos or videos. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-film icon-2x hca-red pull-left"></i></span>You have not yet uploaded <b>photos or videos</b>. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
             }else{
-                $suggestions[] = array('description' => '<span class="span1"><i class="icon-facetime-video icon-2x hca-red pull-left"></i></span>Upgrade your listing today to add photos and videos. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-film icon-2x hca-red pull-left"></i></span>Upgrade your listing today to add <b>photos and videos</b>. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
             }
         }
         
         if(!$institution->getContactDetails()->count()) {
-            $suggestions[] = array('description' => '<span class="span1"><i class="icon-phone icon-2x hca-red pull-left"></i></span>You currently have no contact details for your '.$label.' yet.');
+            $suggestions[] = array('description' => '<span class="span1"><i class="icon-phone icon-2x hca-red pull-left"></i></span>You currently have no <b>contact details</b> for your '.$label.' yet.');
         }
         
         if(!$institution->getSocialMediaSites()) {
-            $suggestions[] = array('description' => '<span class="span1"><i class="icon-group icon-2x hca-red pull-left"></i></span>You currently have no social media sites for your '.$label.' yet.');
+            $suggestions[] = array('description' => '<span class="span1"><i class="icon-group icon-2x hca-red pull-left"></i></span>You currently have no <b>social media sites</b> for your '.$label.' yet.');
         }
             
         if(!$this->institutionService->getAllGlobalAwards($institution)) {
-            $suggestions[] = array('description' => '<span class="span1"><i class="icon-asterisk icon-2x hca-red pull-left"></i></span>You have not yet listed any awards, certifications, affiliations or accreditations. List your certifications and accreditations to help show that your clinics adhere to international standards of quality; list your awards and affiliations to show you are recognized by peers in your industry. ');
+            $suggestions[] = array('description' => '<span class="span1"><i class="icon-asterisk icon-2x hca-red pull-left"></i></span>You have not yet listed any <b>awards, certifications, affiliations or accreditations</b>. List your certifications and accreditations to help show that your clinics adhere to international standards of quality; list your awards and affiliations to show you are recognized by peers in your industry. ');
         }
         
         return $suggestions;
