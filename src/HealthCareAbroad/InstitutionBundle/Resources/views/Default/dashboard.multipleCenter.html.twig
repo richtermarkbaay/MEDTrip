@@ -62,7 +62,7 @@
                     <span class="details-inline">
                         <h3>{{ center.name | title }}</h3>
                         <p>This clinic doesn't have a 
-                       <b> {{ center.fields | join(',') }}<b>.</p>
+                      {{ center.fields | join(', </span><span class="hca-blue">') | raw }}.</p> 
                     </span>
                     <a class="btn btn-primary btn-dashboard pull-right" href="{{ path('institution_medicalCenter_view', {imcId: center.id}) }}">CLICK HERE TO UPDATE</a>
                 </li>
