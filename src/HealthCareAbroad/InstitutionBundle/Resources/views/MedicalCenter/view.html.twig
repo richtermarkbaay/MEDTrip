@@ -62,6 +62,8 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
 <script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
@@ -84,6 +86,10 @@
     var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     (function($){
         $(function(){
+
+            // display businesshours
+            InstitutionMedicalCenter.displayBusinessHoursView();
+            
             HCAGoogleMap.initialize({
                 latLngString: '{{ institutionMedicalCenter.coordinates }}',
                 address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",

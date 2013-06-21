@@ -38,22 +38,7 @@
             {# end javascript code #}
         {% endfor %}
 
-        /**
-        var businessHours = new FancyBusinessHours({
-            valuePrototype: '{{ form_widget(form.vars.prototype) | raw }}'
-        });
-
-        {% for _bh in form.parent.vars.value.businessHours %}
-            {# javascript code below #}
-            businessHours.addData({
-                weekdaysBit: {{ _bh.weekdayBitValue }},
-                weekdays: businessHours._extractDaysFromWeekdayBitValue({{ _bh.weekdayBitValue }}),
-                openingDateTime: new Date('{{ _bh.opening | date("F d, Y H:i")}}'),
-                closingDateTime: new Date('{{ _bh.closing | date("F d, Y H:i")}}')
-            });
-            {# end javascript code #}
-        {% endfor %}
-        **/
+        
     });
 })(jQuery);
 //-->

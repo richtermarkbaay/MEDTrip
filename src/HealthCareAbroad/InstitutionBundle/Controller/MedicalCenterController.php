@@ -218,12 +218,11 @@ class MedicalCenterController extends InstitutionAwareController
                 ));
                 $form->bind($request);
                 if ($form->isValid()) {
-                    var_dump($formVariables); exit;
+                    
                     foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                         
                         $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                     }
-                    exit;
                     
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     

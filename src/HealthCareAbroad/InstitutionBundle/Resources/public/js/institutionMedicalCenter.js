@@ -419,6 +419,10 @@ var InstitutionMedicalCenter = {
                 		$('#listing-'+response.type).find("li[class=''] .old").attr('class', '');
                     	$('#'+response.type+'sText').html(response.html);
                     	break;
+                    	
+                    case 'businessHoursForm':
+                        InstitutionMedicalCenter.displayBusinessHoursView();
+                        break;
                 } 
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
@@ -614,7 +618,20 @@ var InstitutionMedicalCenter = {
     	_confirmMessageElem.show();
     	setTimeout(function() {_confirmMessageElem.fadeOut("slow")}, 5000);
     }
-}
+}; // end InstitutionMedicalCenter
+
+InstitutionMedicalCenter.displayBusinessHoursView = function(){
+    // FIXME: this is just a quick patch
+    var selectedBusinessHourEls = $('#fbh_data_container').find('.hca-workingday-details');
+    $('#businessHoursView').html('');
+    $.each(selectedBusinessHourEls, function(_k, _el){
+        var _li = $('<li></li>');
+        $(_el).clone().appendTo(_li);
+        _li.find('a').remove();
+        $('#businessHoursView').append(_li);
+    });
+    // end busineshour code
+};
 
 var InstitutionSpecialistAutocomplete = {
     _loadHtmlContentUri: '',
