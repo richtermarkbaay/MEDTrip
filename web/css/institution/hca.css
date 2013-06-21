@@ -473,11 +473,11 @@ hr {
             color: #333333; }
             #content section.section.hca-clinic-heading h1 a:hover, #content section.section.hca-doctor-heading h1 a:hover {
               color: #fe6500; }
-        #content section.section.hca-clinic-heading h3 a, #content section.section.hca-doctor-heading h3 a {
+        #content section.section.hca-clinic-heading h4 a, #content section.section.hca-doctor-heading h4 a {
           color: #626262; }
-          #content section.section.hca-clinic-heading h3 a:hover, #content section.section.hca-doctor-heading h3 a:hover {
+          #content section.section.hca-clinic-heading h4 a:hover, #content section.section.hca-doctor-heading h4 a:hover {
             color: #fe6500; }
-        #content section.section.hca-clinic-heading h3 small, #content section.section.hca-doctor-heading h3 small {
+        #content section.section.hca-clinic-heading h4 small, #content section.section.hca-doctor-heading h4 small {
           margin-right: 3px;
           font-size: 70%; }
       #content section.section.hca-main-profile {
@@ -2286,6 +2286,61 @@ ul.two-column > li label {
 
 .accordion .row-fluid ul.two-column li:last-child {
   border: none; }
+
+/*style-guide*/
+/*main*/
+.main-guide p {
+  color: #555555; }
+.main-guide h2 {
+  font-size: 18px;
+  line-height: 1.75em;
+  color: #35577e;
+  margin-bottom: 20px; }
+  .main-guide h2 small {
+    font-size: 16px; }
+
+.maincontentguide .row {
+  margin-left: 15px; }
+.maincontentguide h4.desc {
+  color: #888888;
+  font-weight: normal;
+  line-height: 1.5em; }
+.maincontentguide .bg-gray {
+  background-color: #e1e1e1;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 15px;
+  text-transform: uppercase;
+  color: #888888; }
+.maincontentguide .bg-header {
+  background-color: #f7f7f7;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 15px;
+  text-transform: uppercase;
+  color: #888888;
+  border-bottom: #dedede 1px solid; }
+.maincontentguide .bg-footer {
+  background-color: #eef5ed;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-top: 15px;
+  text-transform: uppercase;
+  color: #888888;
+  border-top: #dedede 1px solid; }
+.maincontentguide .icon-2x {
+  margin-right: 5px; }
+.maincontentguide table {
+  color: #6e6e6e; }
+  .maincontentguide table h3 {
+    color: #333333; }
+  .maincontentguide table td {
+    text-transform: capitalize; }
+  .maincontentguide table i {
+    color: #262626; }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
   background-image: none;
