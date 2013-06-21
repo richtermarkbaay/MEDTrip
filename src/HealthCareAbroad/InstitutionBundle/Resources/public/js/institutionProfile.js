@@ -393,14 +393,26 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
+                    	if(response.institution.websites == null || response.institution.contactEmail == null){
+                    		
+                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}else{
+                    		$("#alertDiv").attr('class', '');
+                    	}
+                    	
                        	if(response.institution.websites){
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
-                    		$("#alertDiv").attr('class', ' ');
+                    		
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
                     	}
-                       	$('#profileEmailText').html(response.institution.contactEmail);
+                       	
+                     	if(response.institution.contactEmail){
+                     		$('#profileEmailText').html(response.institution.contactEmail);
+                    	}else{
+                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    	}
+                       	
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
                         break;
                     case 'socialMediaForm':

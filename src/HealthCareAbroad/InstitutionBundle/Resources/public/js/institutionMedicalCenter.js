@@ -115,7 +115,7 @@ var InstitutionMedicalCenter = {
     	if(viewElem.is(':visible')) {
     		// Refresh Map for Edit Address
         	if(elem.attr('data-edit-elem') == "#address") {
-    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize'); 
         	}
 
         	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
@@ -391,14 +391,24 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                    	if(response.institutionMedicalCenter.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
-                    		$("#alertDiv").attr('class', ' ');
-                    	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#institution-edit-contacts-btn\')); " class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null){
                     		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}else{
+                    		$("#alertDiv").attr('class', '');
                     	}
-						$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                    	
+                       	if(response.institutionMedicalCenter.websites){
+                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
+                    	}else{
+                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                    	}
+                       	
+                     	if(response.institutionMedicalCenter.contactEmail){
+                     		$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                    	}else{
+                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    	}
+                    	
 						$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
 						
                         break;

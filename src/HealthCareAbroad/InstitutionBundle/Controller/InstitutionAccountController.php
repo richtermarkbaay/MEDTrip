@@ -272,6 +272,8 @@ class InstitutionAccountController extends InstitutionAwareController
                             foreach ($value as $keys => $a){
                                 if($a->getType() == ContactDetailTypes::PHONE){
                                      $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
+                                }else{
+                                    $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
                                 }
                             }
                         }
