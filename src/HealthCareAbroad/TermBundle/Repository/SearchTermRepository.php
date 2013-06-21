@@ -165,8 +165,8 @@ class SearchTermRepository extends EntityRepository
             $qb->groupBy('imc.id');
         }
         
-        // temp ordering so that latest items show up first
-        $qb->orderBy('inst.id', 'DESC');
+        // order by clinic ranking points
+        $qb->orderBy('imc.rankingPoints', 'DESC');
 
         return $qb;
     }
@@ -202,8 +202,8 @@ class SearchTermRepository extends EntityRepository
         // we may not need this?
         $qb->groupBy('inst.id');
         
-        // temp ordering so that latest items show up first
-        $qb->orderBy('inst.dateCreated', 'DESC');
+        // order by totalRankingPoints
+        $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
 
         return $qb;
     }
@@ -232,8 +232,8 @@ class SearchTermRepository extends EntityRepository
         ->setParameter('termId', $termId)
         ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
 
-        // temp ordering so that latest items show up first
-        $qb->orderBy('inst.id', 'DESC');
+        // order by clinic ranking points
+        $qb->orderBy('imc.rankingPoints', 'DESC');
         
         return $qb;
     }
@@ -338,8 +338,8 @@ class SearchTermRepository extends EntityRepository
 
         $qb->groupBy('imc.id');
         
-        // temp ordering so that latest items show up first
-        $qb->orderBy('inst.id', 'DESC');
+        // order by clinic ranking points
+        $qb->orderBy('imc.rankingPoints', 'DESC');
 
         return $qb->getQuery()->getResult();
     }
@@ -361,6 +361,7 @@ class SearchTermRepository extends EntityRepository
             ->where('a.status = :searchTermActiveStatus')
             ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
 
+        $clinicSearchResults = false;
         foreach ($filters as $filter) {
             switch (get_class($filter)) {
                 case 'HealthCareAbroad\TreatmentBundle\Entity\Specialization':
@@ -368,6 +369,7 @@ class SearchTermRepository extends EntityRepository
                     ->andWhere('a.type = :type')
                     ->setParameter('documentId', $filter->getId())
                     ->setParameter('type', TermDocument::TYPE_SPECIALIZATION);
+                    $clinicSearchResults = true;
                     break;
 
                 case 'HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization':
@@ -375,6 +377,7 @@ class SearchTermRepository extends EntityRepository
                     ->andWhere('a.type = :type')
                     ->setParameter('documentId', $filter->getId())
                     ->setParameter('type', TermDocument::TYPE_SUBSPECIALIZATION);
+                    $clinicSearchResults = true;
                     break;
 
                 case 'HealthCareAbroad\TreatmentBundle\Entity\Treatment':
@@ -382,6 +385,7 @@ class SearchTermRepository extends EntityRepository
                     ->andWhere('a.type = :type')
                     ->setParameter('documentId', $filter->getId())
                     ->setParameter('type', TermDocument::TYPE_TREATMENT);
+                    $clinicSearchResults = true;
                     break;
 
                 case 'HealthCareAbroad\HelperBundle\Entity\Country':
@@ -401,9 +405,15 @@ class SearchTermRepository extends EntityRepository
         // we may not need this?
         $qb->groupBy('imc.id');
         
-        // temp ordering so that latest items show up first
-        $qb->orderBy('inst.id', 'DESC');
-
+        if ($clinicSearchResults) {
+            // order by clinic ranking points
+            $qb->orderBy('imc.rankingPoints', 'DESC');
+        }
+        else {
+            // order by instititution total ranking points
+            $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
+        }
+        
         return $qb;
     }
 }

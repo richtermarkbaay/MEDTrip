@@ -23,6 +23,11 @@ class Term
      * @var string $slug
      */
     private $slug;
+    
+    /**
+     * @var boolean
+     */
+    private $internal;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection
@@ -118,5 +123,30 @@ class Term
     public function getTermDocuments()
     {
         return $this->termDocuments;
+    }
+    
+
+
+    /**
+     * Set internal
+     *
+     * @param boolean $internal
+     * @return Term
+     */
+    public function setInternal($internal)
+    {
+        $this->internal = $internal;
+    
+        return $this;
+    }
+
+    /**
+     * Get internal
+     *
+     * @return boolean 
+     */
+    public function getInternal()
+    {
+        return $this->internal;
     }
 }

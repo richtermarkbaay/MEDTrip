@@ -27,5 +27,6 @@ class HelperExtension extends Extension
         $loader->load('forms.yml');
         $loader->load('twig_extensions.yml');
         $loader->load('class_labels.yml');
+        $loader->load('error_messages.yml');
     }
 }

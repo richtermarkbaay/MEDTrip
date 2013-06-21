@@ -111,12 +111,11 @@ class TermsService
         }
 
         return $qb->getQuery()->getResult();
-
-
     }
 
     public function saveTreatmentTerms(Treatment $treatment, array $termIds=array())
     {
+        
         $repo = $this->doctrine->getRepository('TermBundle:Term');
         $currentTerm = $repo->findOneByName($treatment->getName());
         // delete current term documents except for the one that is pointing to the name of this specialization
@@ -133,7 +132,57 @@ class TermsService
         return true;
     }
 
-    private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)
+    public function removeTreatment(Treatment $treatment)
+    {
+        $em = $this->doctrine->getEntityManager();
+        $em->remove($treatment);
+        $em->flush();        
+        
+    }
+    
+    public function convertTreatmentToTerm($selectedTreatmentId, Treatment $oldTreatment)
+    {
+        $currentTreatment = $this->doctrine->getRepository('TreatmentBundle:Treatment')->findOneById($selectedTreatmentId);
+        
+        // get the old treatment term
+        $oldTreatmentTerm = $this->getTreatmentInternalTerm($oldTreatment);
+        
+        $this->doctrine->getRepository('TermBundle:Term')->updateInstitutionTreatmentByTreatment($currentTreatment, $oldTreatment);
+        
+        $this->_deleteTermDocumentsExceptForCurrentTerm(null, $oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        
+        // save old treatment term as new term for current treatment
+        $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatmentTerm->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        
+        return $this->removeTreatment($oldTreatment);
+    }
+    
+    /**
+     * Get the internal Term of a Treatment
+     * 
+     * @param Treatment $treatment
+     * @return Term
+     */
+    public function getTreatmentInternalTerm(Treatment $treatment)
+    {
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('t, td')
+            ->from('TermBundle:Term', 't')
+            ->innerJoin('t.termDocuments', 'td')
+            ->where('td.documentId = :treatmentId')
+                ->setParameter('treatmentId', $treatment->getId())
+            ->andWhere('td.type = :documentType')
+                ->setParameter('documentType', TermDocument::TYPE_TREATMENT)
+            ->andWhere('t.name = :treatmentName')
+                ->setParameter('treatmentName', $treatment->getName())
+            ->andWhere('t.internal = 1');
+        
+        $term = $qb->getQuery()->getOneOrNullResult();
+        
+        return $term;
+    }
+    
+    private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm=null, $documentId, $type)
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
             ->delete('TermBundle:TermDocument', 'a')
@@ -144,10 +193,11 @@ class TermsService
 
         // if there is a matched term by name
         if ($currentTerm) {
+            
             $qb->andWhere('a.term != :currentTermId')
             ->setParameter('currentTermId', $currentTerm->getId());
         }
-
+        
         $qb->getQuery()->execute();
 
     }

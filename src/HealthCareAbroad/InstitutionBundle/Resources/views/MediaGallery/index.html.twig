@@ -27,7 +27,8 @@
                             {% set hasClinics = mediaClinics[each.id] is defined %}
                             <tr id="media-item-{{each.id}}">
                                 <td>
-                                    <img src="{{ institution_media_src(each, thumbnail) }}" alt="institution" class="pull-left" style="width:55px;height:55px;border: 1px solid #eee;margin-right: 20px;"/>
+                                    <a class="fancybox large-thumbnail" rel="gallery" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
+                                    <img  class="pull-left thumbnail" style="width:55px;height:55px;border: 1px solid #eee;margin-right: 20px;" src="{{ institution_media_src(each, thumbnail) }}" alt="institution"> </a>
                                     <h4 class="media-heading">{{ each.caption }}</h4>
                                     <span class="type" style="margin:0">{{ each.contentType }}</span>
                                 </td>
@@ -66,7 +67,20 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+<script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
+
 <script type="text/javascript">
+
+$(document).ready(function() {
+    $(".fancybox").fancybox({
+    	'autoDimensions'	: false,
+		'width'         		: 350,
+		'height'        		: 'auto',
+		'transitionIn'		: 'none',
+        });
+});
+
 (function($){
 	var editFormElem;
 	var medicalCenterId = "{{ app.request.get('medical-center-id') }}";

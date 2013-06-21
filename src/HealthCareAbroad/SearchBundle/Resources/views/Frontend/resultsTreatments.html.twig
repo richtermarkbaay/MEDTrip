@@ -23,7 +23,7 @@
                        logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
                        name: center.name,
                        institutionName: center.institution.name,
-                       description: center.descriptionHighlight,
+                       description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
                        mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
                        streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
                    }

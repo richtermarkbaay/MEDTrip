@@ -82,6 +82,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         status:
             type: smallint
             nullabe: false
+        rankingPoints:
+            type: integer
+            nullable: true
+            column: ranking_points
         slug:
             type: string
             length: 100

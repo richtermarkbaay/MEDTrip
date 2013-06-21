@@ -1,8 +1,8 @@
 {% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
-    <h3> Specialization 
-    <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specializations</button>
+    <h3> Specializations
+    <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specialization</button>
     </h3>
     <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
@@ -13,8 +13,7 @@
                     Here you can showcase specializations of your Clinic.
                 </div>
                 <p class="hca-helptext">
-                    You haven't yet added any Certifications, Affilations, Awards and Accreditations for your Clinic. Explain here the need to add Certifications, Affilations,
-                    Awards and Accreditations for your Clinic.
+                    You haven't yet added any Specializations.
                 </p>
             </div>
         {% endfor %}

@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\TermBundle\Form\ConvertTreatmentToTermFormType;
+
 use HealthCareAbroad\TermBundle\Entity\Term;
 
 use HealthCareAbroad\TermBundle\Form\TermFormType;
@@ -206,5 +208,29 @@ class TreatmentController extends Controller
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;
+    }
+    
+    public function convertToTermAction(Request $request)
+    {
+        
+        $oldTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($request->get('id'));
+        $treatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
+        
+        $convertFormType = new ConvertTreatmentToTermFormType();
+        $convertFormType->setTreatmentChoices($treatments);
+        $form = $this->createForm($convertFormType);
+        $form->bind($request);        
+        if($form->isValid()) {
+            $currentTreatmentId = $form->get('treatments')->getData();
+            $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
+            $currentTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($currentTreatmentId);
+            $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatment->getName());
+            
+            return $this->redirect($this->generateUrl('admin_treatment_edit',array('id' => $currentTreatmentId)));
+        }
+        
+        return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 
+                        array('form' => $form->createView(),
+                              'treatment' => $oldTreatment));
     }
 }

@@ -34,29 +34,30 @@ class CustomExceptionController extends ExceptionController
         //TODO: there might be a case in the future that we will use other formats, but right now let's make this simple and always use an html template
         $this->request->setRequestFormat('html');
         $currentContent = $this->getAndCleanOutputBuffering();
-        
+        $errorMessages = $this->container->getParameter('error_messages');
         $templating = $this->container->get('templating');
         $code = $exception->getStatusCode();
-
 		$factory = $this->container->get('form.factory');
 		$form = $factory->create(new ErrorReportFormType());
+
+		$pathInfo = $this->request->server->get('PATH_INFO');
 		
-		$statusTextDescriptions = array(
-            401 => 'Access to this page is forbidden!',
-            403 => 'Access to this page is forbidden!',
-            404 => 'Sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL.',
-            500 => 'Oops! Something is broken'
-        );
+		if (\preg_match('/^\/admin\//', $pathInfo)) {
+		    $statusTextDescriptions = $errorMessages['admin'];
+		}
+		elseif (\preg_match('/^\/institution\//', $pathInfo)){
+		    $statusTextDescriptions = $errorMessages['institution'];
+		}
+		else {
+		    $statusTextDescriptions = $errorMessages['frontend'];
+		}
         if($this->request->server->has('HTTP_REFERER')){
-            
             if (\preg_match('/healthcareabroad/i', $this->request->server->get('HTTP_REFERER'))) {
                 $referer = $this->request->server->get('HTTP_REFERER');
             }
-            
         }else{
             $referer = null;
         }
-		
         return $templating->renderResponse(
             $this->findTemplate($templating, $format, $code, $isDebug, $referer ),
         	array(
@@ -70,6 +71,7 @@ class CustomExceptionController extends ExceptionController
     	        'referer'        => $referer
             )
         );
+        
     }
     
     protected function findTemplate($templating, $format, $code, $debug)
