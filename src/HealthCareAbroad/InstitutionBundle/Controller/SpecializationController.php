@@ -148,13 +148,13 @@ class SpecializationController extends InstitutionAwareController
                             $em->flush();
                         
                             $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
-                                            'each' => array( 'treatments' => $_treatment_choices) ,
+                                'each' => array( 'treatments' => $_treatment_choices) ,
                             ));
                         }
                         else {
                             $errors[] = 'Failed form validation';
                         }
-                    } else{
+                    } else {
                         $errors = 'Please select at least one treatment';
                     }
                 }
@@ -163,8 +163,7 @@ class SpecializationController extends InstitutionAwareController
             if (\count($errors) > 0) {
                 $response = new Response($errors, 400);
             }
-        }else{
-        
+        }else{        
             $specializationTreatments = array();
             $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
             foreach ($institutionSpecializations as $e) {

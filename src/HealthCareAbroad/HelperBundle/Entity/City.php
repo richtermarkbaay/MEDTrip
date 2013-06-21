@@ -152,4 +152,60 @@ class City
     {
         return $this->name;
     }
+    /**
+     * @var integer
+     */
+    private $oldId;
+
+
+    /**
+     * Set oldId
+     *
+     * @param integer $oldId
+     * @return City
+     */
+    public function setOldId($oldId)
+    {
+        $this->oldId = $oldId;
+    
+        return $this;
+    }
+
+    /**
+     * Get oldId
+     *
+     * @return integer 
+     */
+    public function getOldId()
+    {
+        return $this->oldId;
+    }
+    /**
+     * @var integer
+     */
+    private $geoCityId;
+
+
+    /**
+     * Set geoCityId
+     *
+     * @param integer $geoCityId
+     * @return City
+     */
+    public function setGeoCityId($geoCityId)
+    {
+        $this->geoCityId = $geoCityId;
+    
+        return $this;
+    }
+
+    /**
+     * Get geoCityId
+     *
+     * @return integer 
+     */
+    public function getGeoCityId()
+    {
+        return $this->geoCityId;
+    }
 }

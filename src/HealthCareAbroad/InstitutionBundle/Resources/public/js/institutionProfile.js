@@ -256,10 +256,6 @@ var InstitutionProfile = {
         	if(elem.attr('data-edit-elem') == "#address") {
     	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
         	}
-
-        	//if(elem.parents('section.hca-main-profile:first').find('#awardsForm')) {
-
-        	//}
         	
         	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
         		$('section.hca-main-profile .edit-awards').addClass('disabled');
@@ -272,7 +268,12 @@ var InstitutionProfile = {
         	} /* end of TODO: Temporary Fixed */
         	
         	viewElem.hide();
-        	editElem.slideDown('slow');
+        	editElem.slideDown('slow', function(){
+        		// Refresh Map for Edit Address
+            	if(elem.attr('data-edit-elem') == "#address") {
+        	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+            	}
+        	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {

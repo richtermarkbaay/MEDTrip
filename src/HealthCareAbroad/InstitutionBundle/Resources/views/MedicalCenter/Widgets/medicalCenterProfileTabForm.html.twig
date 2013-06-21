@@ -125,6 +125,20 @@
 {% endembed %}
 
 
+<!-- InstitutionMedicalCenter businessHours Section -->
+{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+    with { 
+        title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
+        formParams: {formId: 'businessHoursForm', fields: ['businessHours']} 
+    } %}
+
+    {% block viewContent %}
+        <!-- View Mode here -->
+        <h4>replace with View layout business hours here.</h4>
+    {% endblock %}
+{% endembed %}
+
+
 <!-- InstitutionMedicalCenter Services Section -->
 {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
     with { 

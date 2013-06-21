@@ -53,6 +53,7 @@
                                         <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
                                     </a>
                                 </li>
+                                <li><a href="{{ path('admin_treatment_convert', { 'specializationId' : each.specialization.id,'id' : each.id } ) }}"> <i class="icon-edit"></i> Convert To Term</a></li>
                             </ul>
                         </td>
                     </tr>

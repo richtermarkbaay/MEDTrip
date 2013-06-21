@@ -129,7 +129,11 @@ var InstitutionMedicalCenter = {
         	} /* end of TODO: Temporary Fixed */
         	
         	viewElem.hide();
-        	editElem.slideDown('slow');
+        	editElem.slideDown('slow', function(){
+            	if(elem.attr('data-edit-elem') == "#address") {
+        	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+            	}
+        	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {

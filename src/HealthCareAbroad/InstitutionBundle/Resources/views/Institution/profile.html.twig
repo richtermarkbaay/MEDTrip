@@ -84,27 +84,6 @@
                     coordinatesElem.val(HCAGoogleMap.latLngString);
                 }
             });
-
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $('#back-top').fadeIn();
-                } else {
-                     $('#back-top').fadeOut();
-                }
-            });
-
-            $('#back-top a').click(function(e) {
-                e.preventDefault();
-                $('html').animate({scrollTop: 0}, 800);
-            });
-
-            $("input:checkbox").live("click", function(e){ 
-                $(this).parents('li').toggleClass("hca-highlight");
-                if($(this).attr('class') != 'old'){
-                    $(this).attr('class','new');
-                }
-            });
-
         });
     })(jQuery);
     

@@ -13,12 +13,15 @@
     {% block javascripts %}        
     <script type="text/javascript">
     $(function() {
-
-    	   $(document).ready(function() {
-               $("#menu").sticky({
-                   topSpacing: 0
-               });
+    	$(window).load(function () {
+            $('#parts-images .b-home').click();
+        });
+        
+	   $(document).ready(function() {
+           $("#menu").sticky({
+               topSpacing: 0
            });
+       });
         
         $('body').popover({
             selector: '[data-toggle="popover"]',

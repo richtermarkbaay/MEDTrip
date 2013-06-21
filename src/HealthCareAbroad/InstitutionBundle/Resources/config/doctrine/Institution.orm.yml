@@ -61,6 +61,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: smallint
             nullable: false
             column: paying_client
+        totalClinicRankingPoints:
+            type: integer
+            nullable: true
+            column: total_clinic_ranking_points
         signupStepStatus:
             type: smallint
             nullable: false
