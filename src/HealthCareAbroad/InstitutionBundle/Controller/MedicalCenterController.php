@@ -77,11 +77,13 @@ class MedicalCenterController extends InstitutionAwareController
     public function preExecute()
     {
         parent::preExecute();
+        
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
+        
 
         if ($imcId=$this->getRequest()->get('imcId',0)) {
-            $this->institutionMedicalCenter = $this->service->findById($imcId);
+            $this->institutionMedicalCenter = $this->service->findById($imcId, false);
             
             // non-existent medical center group
             if (!$this->institutionMedicalCenter) {
@@ -216,6 +218,13 @@ class MedicalCenterController extends InstitutionAwareController
                 ));
                 $form->bind($request);
                 if ($form->isValid()) {
+                    var_dump($formVariables); exit;
+                    foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                        
+                        $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                    }
+                    exit;
+                    
                     $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))
