@@ -460,7 +460,7 @@ hr {
         margin-bottom: .25em; }
       #content section.section.hca-clinic-heading, #content section.section.hca-doctor-heading {
         border-bottom: 2px solid #c8c8c8;
-        padding-bottom: 30px; }
+        padding-bottom: 10px; }
         #content section.section.hca-clinic-heading img, #content section.section.hca-doctor-heading img {
           border: 1px solid #bfc3be;
           width: 135px; }
@@ -469,14 +469,17 @@ hr {
           padding-bottom: 0;
           margin-bottom: 0;
           padding-top: 55px; }
-        #content section.section.hca-clinic-heading p, #content section.section.hca-doctor-heading p {
-          padding: 0;
-          margin: 0;
-          color: #959595; }
-          #content section.section.hca-clinic-heading p small, #content section.section.hca-doctor-heading p small {
-            margin-right: 5px; }
-          #content section.section.hca-clinic-heading p a, #content section.section.hca-doctor-heading p a {
-            font-weight: bold; }
+          #content section.section.hca-clinic-heading h1 a, #content section.section.hca-doctor-heading h1 a {
+            color: #333333; }
+            #content section.section.hca-clinic-heading h1 a:hover, #content section.section.hca-doctor-heading h1 a:hover {
+              color: #fe6500; }
+        #content section.section.hca-clinic-heading h3 a, #content section.section.hca-doctor-heading h3 a {
+          color: #626262; }
+          #content section.section.hca-clinic-heading h3 a:hover, #content section.section.hca-doctor-heading h3 a:hover {
+            color: #fe6500; }
+        #content section.section.hca-clinic-heading h3 small, #content section.section.hca-doctor-heading h3 small {
+          margin-right: 3px;
+          font-size: 70%; }
       #content section.section.hca-main-profile {
         margin-bottom: 3em; }
         #content section.section.hca-main-profile .edit-timezone {
@@ -2350,6 +2353,10 @@ h1, h2, h3, h4, h5 {
 .breadcrumb {
   background-color: white;
   margin: 20px 0 20px 10px; }
+  .breadcrumb a {
+    color: #626262; }
+    .breadcrumb a:hover {
+      color: #fe6500; }
 
 .dropdown-menu {
   margin-top: -1px;
