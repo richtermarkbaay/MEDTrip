@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -97,27 +99,14 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     
     public function render_institution_medical_center_contact_details(InstitutionMedicalCenter $center)
     {
-        $contactDetails = $this->institutionMedicalCenterService->getContactDetailsByInstitutionMedicalCenter($center);
-        if (\is_null($contactDetails) || !$contactDetails) {
-            return null;
+        $contactDetails = $center->getContactDetails();        
+        $contactDetailsArray = array();
+
+        foreach($contactDetails as $each) {
+            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
         }
-        else {
-            $contactDetailsArray = array();
-            foreach($contactDetails as $each) {
-                if($each['type'] == 1) {
-                    $contactDetailsArray[$each['type']] = array('type' => 'Phone', 'number' => $each['number']);
-                }
-                else if($each['type'] == 2) {
-                    $contactDetailsArray[$each['type']] = array('type' => 'Mobile', 'number' => $each['number']);
-                }
-                else {
-                    $contactDetailsArray[$each['type']] = array('type' => 'Fax', 'number' => $each['number']);
-                }
-            }
-    
-            return $result = $contactDetailsArray;
-    
-        }
+        
+        return $contactDetailsArray;
     }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
