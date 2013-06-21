@@ -105,8 +105,7 @@ services:
     services.helper.page_meta_configuration:
         class: HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService
         calls:
-            - [setDoctrine, [@doctrine]]
-        
+            - [setDoctrine, [@doctrine]]  
 
     listener.helper.adminBreadcrumbBeforeController:
         class: HealthCareAbroad\HelperBundle\Listener\Breadcrumbs\AdminBreadcrumbBeforeControllerListener

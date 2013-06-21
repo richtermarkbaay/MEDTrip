@@ -18,18 +18,17 @@
     {% set _suggestions = render_institution_suggestions(institution) %}
     {% if _suggestions is not empty %}
     <section class="section row-fluid">
-        <h2> Suggestion for your {{ label }} 
+        <h2> Suggestion{{ _suggestions[1] is defined ? 's' : '' }} for your {{ label }} 
          <a class="btn btn-primary pull-right" href="{{ path('institution_account_profile') }}">CLICK HERE TO UPDATE</a>
         </h2>
         
         <ul class="thumbnails hca-alert-inquiry">
         {% for suggestion in _suggestions %}
             <li class="thumbnail hca-alert-inquiry">
-                <span class="span1 hca-icon pull-left"><i class="icon-warning-sign icon-2x hca-yellow">
-                </i></span>
-                <span>
+                
+                <p>
                     {{ suggestion.description | raw }}
-                </span>
+                </p>
             </li>
         {% endfor %}
         </ul>
