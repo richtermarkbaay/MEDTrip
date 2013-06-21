@@ -32,6 +32,10 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+            form .specialization-wrapper input[type=checkbox]:checked + label {
+                color: #A2A2A2;
+            }
+
             #content section.section.hca-main-profile a:not(.btn-misc) + h3 {
                 background-color: #BBBBBB;
                 color: #7B7B7B;
@@ -368,6 +372,19 @@
                 });
 
                 $('body').append($('.modal.fade'));
+
+                $(window).scroll(function() {
+                    if ($(this).scrollTop() > 100) {
+                        $('#back-top').fadeIn();
+                    } else {
+                         $('#back-top').fadeOut();
+                    }
+                });
+
+                $('#back-top a').click(function(e) {
+                    e.preventDefault();
+                    $('html').animate({scrollTop: 0}, 800);
+                });
             });
         })(jQuery);
         </script>

@@ -3022,8 +3022,8 @@ span.rollover b {
     font-weight: normal;
 }
 
-span.rollover:hover {
-    opacity: .65;
+a:hover span.rollover {
+    opacity: 1;
     box-shadow: 0px 0px 4px #000;
     width: 75px;
     height: 75px;

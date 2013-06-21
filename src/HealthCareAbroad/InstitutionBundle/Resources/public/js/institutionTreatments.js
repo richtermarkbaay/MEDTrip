@@ -56,7 +56,12 @@ var InstitutionSpecialization = {
                 success: function(response){
                 	_modifiableDiv.html(response).slideDown('slow');
                 	parentElem.removeClass('disabled process');
-                    parentElem.find('.sub-specialization-wrapper input[name=subSpecialization]').attr('checked', true);
+                    $.each(parentElem.find('.sub-specialization-wrapper'), function(){
+                        if($(this).find('input[type=checkbox].treatments:checked').length) {
+                        	$(this).find('input[name=subSpecialization]').attr('checked', 'checked');
+                        }                    	
+                    });
+
                     _linkElement.hide().next().show();
                 }
             });

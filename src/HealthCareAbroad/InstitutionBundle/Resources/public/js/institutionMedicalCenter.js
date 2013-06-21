@@ -146,7 +146,7 @@ var InstitutionMedicalCenter = {
 		}
     },
     
-    filterAwardsList: function(elem ) {
+    filterAwardsList: function(elem) {
     	
     	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
     	$('#awardsForm .control-group > .awards-listing').hide();
