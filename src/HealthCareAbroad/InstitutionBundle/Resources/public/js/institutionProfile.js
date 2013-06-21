@@ -248,11 +248,6 @@ var InstitutionProfile = {
     	editElem = $(elem.attr('data-edit-elem'));
     	
     	if(viewElem.is(':visible')) {
-    		// Refresh Map for Edit Address
-        	if(elem.attr('data-edit-elem') == "#address") {
-    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
-        	}
-
         	if(elem.attr('id') == 'institution-edit-awards-btn') { /* TODO: Temporary Fixed */
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
@@ -261,7 +256,12 @@ var InstitutionProfile = {
         	} /* end of TODO: Temporary Fixed */
         	
         	viewElem.hide();
-        	editElem.slideDown('slow');
+        	editElem.slideDown('slow', function(){
+        		// Refresh Map for Edit Address
+            	if(elem.attr('data-edit-elem') == "#address") {
+        	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+            	}
+        	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {

@@ -111,16 +111,19 @@ var InstitutionMedicalCenter = {
     	if(viewElem.is(':visible')) {
     		/* TODO: Temporary Fixed */
         	if(elem.attr('id') == 'clinic-edit-awards-btn') {
-        		
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
-        		
-        		InstitutionMedicalCenter.filterAwardsList(elem );
+
+        		InstitutionMedicalCenter.filterAwardsList(elem);
         	}
         	/* end of TODO: Temporary Fixed */
     		
         	viewElem.hide();
-        	editElem.slideDown('slow');
+        	editElem.slideDown('slow', function(){
+            	if(elem.attr('data-edit-elem') == "#address") {
+        	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+            	}
+        	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {

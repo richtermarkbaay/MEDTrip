@@ -139,7 +139,7 @@ var HCAGoogleMap = {
 	_onMapResize: function() {
     	setTimeout(function(){
     		HCAGoogleMap.map.panTo(HCAGoogleMap.marker.getPosition());
-    	}, 500);
+    	}, 100);
 	},
 	// End of Private Functions
 
