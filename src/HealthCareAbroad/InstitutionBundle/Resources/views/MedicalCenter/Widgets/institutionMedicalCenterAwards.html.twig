@@ -37,7 +37,7 @@
             You haven't yet added any {{ label }} for your Clinic. Explain here the need to add Certifications, Affilations,
             Awards and Accreditations for your Clinic.
         </p>
-        <button type="button" class="btn btn-primary" onclick="$('#show-{{ label }}').parent().find('#clinic-edit-awards-btn').click()">
+        <button type="button" class="btn btn-primary edit-awards" onclick="$('#show-{{ label }}').parent().find('#clinic-edit-{{ label }}-btn').click()">
             <i class="icon-plus"></i>Add Entry
         </button>
         

@@ -1,6 +1,6 @@
 <form class="edit_award_form" action="" style="display:none;">
     {{ _autocompleteWidget | raw }}
-    <button  class="btn btn-misc" type="submit"><i class="icon-ok"></i></button>
+    <a href="#" id="year_submit" onclick="$.globalAward._submitEditForm($(this)); return false;"><i class="icon-ok"></i></a>
     <input type="hidden" name="globalAwardId" value="{{ award.id }}"/>
     <input type="hidden" name="propertyId" value="{{ property.id }}" />
     {{ _exraValueWidget | raw }}

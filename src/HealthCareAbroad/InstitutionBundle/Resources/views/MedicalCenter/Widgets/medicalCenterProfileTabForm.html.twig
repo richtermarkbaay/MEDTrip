@@ -162,7 +162,7 @@
 <!-- Institution Awards Section -->
 {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
     with { 
-        title: 'Awards', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award',
+        title: 'Awards', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award', toggleBtnClass: 'edit-awards',
         formParams: {formId: 'awardsForm', fields: ['awards'] }
     } %}
 
@@ -183,12 +183,15 @@
     {% endblock %}
 {% endembed %}
 
-
 {% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
 <!-- Institution Certifications Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
-    with { 
-        title: 'Certifications', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-certificates', editElemId: 'certificatesDiv', awardsFilterList: '#listing-certificate'
+{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' with { 
+        title: 'Certifications', 
+        toggleBtnId: 'clinic-edit-certificates-btn', 
+        viewElemId: 'show-certificates', 
+        editElemId: 'certificatesDiv', 
+        awardsFilterList: '#listing-certificate', 
+        toggleBtnClass: 'edit-awards'
     } %}
 
     {% block headingHelptext %}
@@ -210,9 +213,13 @@
 
 {% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
 <!-- Institution Affiliations Section -->
-    {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
-        with { 
-            title: 'Affiliations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-affiliations', editElemId: 'affiliationsDiv', awardsFilterList: '#listing-affiliation'
+    {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' with { 
+            title: 'Affiliations', 
+            toggleBtnId: 'clinic-edit-affiliations-btn', 
+            viewElemId: 'show-affiliations', 
+            editElemId: 'affiliationsDiv', 
+            awardsFilterList: '#listing-affiliation', 
+            toggleBtnClass: 'edit-awards'
         } %}
     
         {% block headingHelptext %}
@@ -237,7 +244,12 @@
 <!-- Institution Accreditations Section -->
 {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
     with { 
-        title: 'Accreditations', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-accreditations', editElemId: 'accreditationsDiv', awardsFilterList: '#listing-accreditation'
+        title: 'Accreditations', 
+        toggleBtnId: 'clinic-edit-accreditations-btn', 
+        viewElemId: 'show-accreditations', 
+        editElemId: 'accreditationsDiv', 
+        awardsFilterList: '#listing-accreditation',
+        toggleBtnClass: 'edit-awards'
     } %}
 
     {% block headingHelptext %}

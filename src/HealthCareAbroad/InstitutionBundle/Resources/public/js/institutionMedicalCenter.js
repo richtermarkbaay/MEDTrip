@@ -105,33 +105,43 @@ var InstitutionMedicalCenter = {
 
     /* Added by: Adelbert Silla toggle edit/view mode */
     toggleForm: function(elem) {
+    	if(elem.hasClass('disabled')) {
+    		return false;
+    	}
+    	
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
     	
     	if(viewElem.is(':visible')) {
-    		/* TODO: Temporary Fixed */
-        	if(elem.attr('id') == 'clinic-edit-awards-btn') {
-        		
+    		// Refresh Map for Edit Address
+        	if(elem.attr('data-edit-elem') == "#address") {
+    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+        	}
+
+        	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
+        		$('section.hca-main-profile .edit-awards').addClass('disabled');
+        		elem.removeClass('disabled');
+
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
         		
         		InstitutionMedicalCenter.filterAwardsList(elem );
-        	}
-        	/* end of TODO: Temporary Fixed */
-    		
+        	} /* end of TODO: Temporary Fixed */
+        	
         	viewElem.hide();
         	editElem.slideDown('slow');
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
         	
     	} else {
-    		
         	editElem.slideUp('slow', function(){
         		InstitutionMedicalCenter.undoChecked(editElem);
         		viewElem.fadeIn();
             	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+            	$('section.hca-main-profile .edit-awards').removeClass('disabled');
         	});
     	}
     },
+    
     
     /**
      * if container is closed without saving undo changes
@@ -147,26 +157,11 @@ var InstitutionMedicalCenter = {
     },
     
     filterAwardsList: function(elem ) {
-    	
     	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
     	$('#awardsForm .control-group > .awards-listing').hide();
     	$($('#awardsForm').parent().attr('data-filter-list')).show();
     	$('#awardsForm h3.awards-heading').hide();
-    	$.each($('.hca-main-profile').find('#clinic-edit-awards-btn'), function(_k, value) {
-    		
-        	if(value.text === '') {
-        		if( viewElem.attr('id') != value.getAttribute('data-view-elem')){
-        			_toHide = value.getAttribute('data-edit-elem');
-        			InstitutionMedicalCenter.undoChecked($(_toHide));
-        			$(value.getAttribute('data-view-elem')).fadeIn();
-	    			$(_toHide).slideUp('slow', function(){
-	    				$(value.getAttribute('data-view-elem')).parent().find('#clinic-edit-awards-btn').addClass('btn-misc').removeClass('btn-link').html('Edit');
-		        	});
-        		}
-    		}
-    	});
     },
-
     /**
      * Set the options for tabs, InstitutionMedicalCenter.tabbedContent.tabs 
      */
@@ -326,11 +321,17 @@ var InstitutionMedicalCenter = {
         	_form = _button.parents('div#edit-medical-center-name').find('form');
         	_parent = _button.parents('div#edit-medical-center-name');
         }
-        _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         _data = _form.serialize();
         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         _parent.find('.error').removeClass('error');
         $('.errorText').remove();
+        
+     	if(_form.attr('id') == 'awardsForm'){
+    		$("div[id^='show-']").animate({
+    		    opacity: 0.25,
+    		  });
+    	}
+     	 _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         $.ajax({
             url: _form.attr('action'),
             data: _data,
@@ -412,9 +413,15 @@ var InstitutionMedicalCenter = {
                     	$('#serviceTable').html(response.html);
                     	break;
                     case 'awardsForm':
-                    	$('#listing-'+response.type).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
-                		$('#listing-'+response.type).find("li[class=''] .old").attr('class', '');
-                    	$('#'+response.type+'sText').html(response.html);
+                		$("div[id^='show-']").animate({
+                		    opacity: 1,
+                		 });
+                    	 $.each(response.html, function(_k, _v){
+                        	$('#listing-'+_k).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
+                    		$('#listing-'+_k).find("li[class=''] .old").attr('class', '');
+                        	$('#'+_k+'sText').html(_v);
+                         });
+                    
                     	break;
                 } 
                 _button.html(_buttonHtml).attr('disabled', false);

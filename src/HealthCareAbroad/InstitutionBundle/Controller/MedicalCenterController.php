@@ -251,18 +251,21 @@ class MedicalCenterController extends InstitutionAwareController
                         
                         }if($key == 'awards')
                         {
+                            $html = array();
                             $typeKey = $request->get('awardTypeKey');
                             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-                            $html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
-                                    'institution' => $this->institution,
-                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                    'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                                    'eachAward' => array('list' => $globalAwards[$typeKey]),
-                                    'label' => $typeKey.'s'
-                            ));
-                        
-                            return new Response(\json_encode(array('html' => $html, 'type' => $typeKey)), 200, array('content-type' => 'application/json'));
+                            foreach($globalAwards as $key => $global ) {
+                                $html['html'][$key][] = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
+                                        'institution' => $this->institution,
+                                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                        'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                                        'eachAward' => array('list' => $global),
+                                        'label' => $key.'s'
+                                ));
+                             
+                            }
+                            return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }     
                          if($key == 'contactDetails' ){
                             $value = $this->institutionMedicalCenter->{'get'.$key}();
