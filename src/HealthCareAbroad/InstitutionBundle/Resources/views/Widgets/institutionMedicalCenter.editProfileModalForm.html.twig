@@ -84,8 +84,13 @@
                 </div>
         {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionMedicalCenterForm.socialMediaSites )}}
+
+        {% elseif each == 'businessHours' %}
+             {{ form_widget(institutionMedicalCenterForm.businessHours) }}
+             
         {% elseif each == 'status' %}
             {{ form_widget(institutionMedicalCenterForm[each]) }}
+            
         {% elseif each == 'services' %}
              <div class="control-group">
                  {{ form_widget(institutionMedicalCenterForm.services )}}
