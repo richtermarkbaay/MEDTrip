@@ -85,40 +85,13 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript">
 <!--
+(function($){
+    $(function(){
+        $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
 
-    (function($){
-        
-        $(function(){
-
-            $("#back-top").hide();
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $('#back-top').fadeIn();
-                } else {
-                     $('#back-top').fadeOut();
-                }
-            });
-            $('#back-top a').click(function() {
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 800);
-                return false;
-            });
-            
-            $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
-        });
-        function grow(_el) {
-            _el.css('height', '').css('overflow', '');
-            _el.parents('td').find('a.collapse_toggle').removeClass('collapsed').html('<small>Less</small>');
-        }
-        
-        function shrink(_el) {
-            _el.css('height', 200).css('overflow', 'hidden');
-            _el.parents('td').find('a.collapse_toggle').addClass('collapsed').html('<small>More</small>');
-            _el.parents('td').find('a.collapse_toggle').show();
-        }
         $('#listingTabs a:first').tab('show');
-    })(jQuery);
+    });
+})(jQuery);
 //-->
 </script>
 {% endblock %}

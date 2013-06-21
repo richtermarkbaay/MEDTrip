@@ -1,16 +1,14 @@
 <ul class="unstyled two-column items-count-{{ specializationComponents|length }} specialization-wrapper">
     {% for subSpecialization, treatments in specializationComponents %}
-    {% set key = loop.index %}
+    {% set subSpecializationElemId = specializationId ~ '-' ~ subSpecialization %}
     <li class="sub-specialization-wrapper">
-        <label> 
-            <input type="checkbox" id="{{ subSpecialization }}" name="subSpecialization" value="subSpecialization" />
-            <strong>{{ subSpecialization }}</strong>
-        </label>
+        <input type="checkbox" id="{{ subSpecializationElemId }}" name="subSpecialization" value="subSpecialization"/>
+        <label for="{{ subSpecializationElemId }}"><strong>{{ subSpecialization }}</strong></label>
         <ul class="unstyled" style="margin-left: 20px;">
             {% for treatment in treatments %}
             <li style="border: none">
-                <input type="checkbox" id="treatments{{ treatment.id }}-{{ key }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
-                <label style="font-weight: normal" for="treatments{{ treatment.id }}-{{ key }}">{{ treatment.name }}</label>
+                <input type="checkbox" id="treatments{{ treatment.id }}-{{ subSpecializationElemId }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" class="treatments" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
+                <label style="font-weight: normal" for="treatments{{ treatment.id }}-{{ subSpecializationElemId }}">{{ treatment.name }}</label>
             </li>
             {% endfor %}
         </ul>

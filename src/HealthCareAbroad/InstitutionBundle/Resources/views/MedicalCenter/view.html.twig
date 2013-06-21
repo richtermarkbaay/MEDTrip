@@ -73,6 +73,8 @@
         var div = button.parentNode;
         div.className = div.className == 'hca-display' ? 'hca-edit' : 'hca-display';
     }
+
+    Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     
     var countryElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     var coordinatesElem = $("#{{ institutionMedicalCenterForm.getChild('coordinates').vars.id }}");
@@ -107,42 +109,13 @@
                ajaxFormUploadElem = $(this);
                $(this).find('img').css('opacity', 0.5).prev().hide();
            });
-            
-            $("input:checkbox").live("click", function(e){ 
-                $(this).parents('li').toggleClass("hca-highlight");
-                if($(this).attr('class') != 'old'){
-                    $(this).attr('class','new');
-                }
-            });   
+
 
             InstitutionMedicalCenter.isEditView = true;
-
-            $('#institutionMedicalCenter_contactEmail').bind('keypress', function(e) {
-                  if( e.which === 13 )
-                      return false;
-               });
-            
-            Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 
             $('#clinicDescriptionText').truncateByHeight({
                 'visibleRows': 5
             });
-
-            $("#back-top").hide();
-            $(window).scroll(function() {
-                if ($(this).scrollTop() > 100) {
-                    $('#back-top').fadeIn();
-                } else {
-                     $('#back-top').fadeOut();
-                }
-            });
-            $('#back-top a').click(function() {
-                $('body,html').animate({
-                    scrollTop: 0
-                }, 800);
-                return false;
-            });
-            
         });
 
     })(jQuery);

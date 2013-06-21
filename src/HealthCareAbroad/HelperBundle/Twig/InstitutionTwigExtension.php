@@ -208,13 +208,13 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function render_institution_contact_details(Institution $institution)
     {
         $contactDetails = $institution->getContactDetails();
-
         $contactDetailsArray = array();
+
         foreach($contactDetails as $each) {
-            $contactDetailsArray[$each['type']] = array('type' => ContactDetailTypes::getTypeLabel($each['type']), 'number' => $each['number']);
+            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
         }
 
-        return $result = $contactDetailsArray;
+        return $contactDetailsArray;
     }
     
     public function render_institution_logo(Institution $institution, array $options = array())
