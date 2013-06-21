@@ -67,7 +67,7 @@
 
     {% block viewContent %}
      {% set _website = get_website_from_array(institution.websites)  %}
-        <div id="alertDiv" class="{{ _website != '' or institution.contactEmail != '' ? '' :'alert alert-block' }}">
+        <div id="alertDiv" class="{{ _website != '' and institution.contactEmail != '' ? '' :'alert alert-block' }}">
             <p>
                 <i class="icon-globe"> </i>
                 Website:<span id="profileWebsitesText"> 
@@ -82,7 +82,15 @@
             </p>
             <p>
                 <i class="icon-envelope"></i>
-                Email: <strong><span id="profileEmailText"> {{institution.contactEmail}}</span></strong>
+                Email: <strong><span id="profileEmailText"> 
+                {% if institution.contactEmail %}
+                   institution.contactEmail
+                {% else %}
+                    <b> no contact email </b> added.
+                    <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
+                {% endif %}
+                
+                </span></strong>
             </p>
 
             {% for contactDetail in institution.contactDetails %}
@@ -148,7 +156,7 @@
 <!-- Institution Awards Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
-        title: 'Awards', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award',
+        title: 'Awards', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award', toggleBtnClass: 'edit-awards',
         formParams: {formId: 'awardsForm', fields: ['awards'] }
     } %}
 
@@ -169,12 +177,15 @@
     {% endblock %}
 {% endembed %}
 
-
 {% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
 <!-- Institution Certifications Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
-        title: 'Certifications', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-certificates', editElemId: 'certificatesDiv', awardsFilterList: '#listing-certificate'
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
+        title: 'Certifications', 
+        toggleBtnId: 'institution-edit-certificates-btn', 
+        viewElemId: 'show-certificates', 
+        editElemId: 'certificatesDiv', 
+        awardsFilterList: '#listing-certificate', 
+        toggleBtnClass: 'edit-awards'
     } %}
 
     {% block headingHelptext %}
@@ -196,9 +207,13 @@
 
 {% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
 <!-- Institution Affiliations Section -->
-    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-        with { 
-            title: 'Affiliations', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-affiliations', editElemId: 'affiliationsDiv', awardsFilterList: '#listing-affiliation'
+    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
+            title: 'Affiliations', 
+            toggleBtnId: 'institution-edit-affiliations-btn', 
+            viewElemId: 'show-affiliations', 
+            editElemId: 'affiliationsDiv', 
+            awardsFilterList: '#listing-affiliation', 
+            toggleBtnClass: 'edit-awards'
         } %}
     
         {% block headingHelptext %}
@@ -223,7 +238,12 @@
 <!-- Institution Accreditations Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
-        title: 'Accreditations', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-accreditations', editElemId: 'accreditationsDiv', awardsFilterList: '#listing-accreditation'
+        title: 'Accreditations', 
+        toggleBtnId: 'institution-edit-accreditations-btn', 
+        viewElemId: 'show-accreditations', 
+        editElemId: 'accreditationsDiv', 
+        awardsFilterList: '#listing-accreditation',
+        toggleBtnClass: 'edit-awards'
     } %}
 
     {% block headingHelptext %}

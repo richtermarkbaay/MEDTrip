@@ -144,7 +144,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
             throw $this->createNotFoundException('Invalid global award');
         }
         $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        $imcProperty = $this->imcService->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId());
+        $imcProperty = $this->imcService->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId() , $this->request->get('propertyId', 0));
         $imcProperty->setValueObject($globalAward);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
         if ($this->request->isMethod('POST')) {
@@ -169,7 +169,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 }
             }
             else {
-                $response = new Response('Form error'.$e->getMessage(), 400);
+                $response = new Response('Form error', 400);
             }
         }
         

@@ -244,11 +244,23 @@ var InstitutionProfile = {
 
     /* Added by: Adelbert Silla toggle edit/view mode */
     toggleForm: function(elem) {
+    	if(elem.hasClass('disabled')) {
+    		return false;
+    	}
+    	
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
     	
     	if(viewElem.is(':visible')) {
-        	if(elem.attr('id') == 'institution-edit-awards-btn') { /* TODO: Temporary Fixed */
+    		// Refresh Map for Edit Address
+        	if(elem.attr('data-edit-elem') == "#address") {
+    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
+        	}
+        	
+        	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
+        		$('section.hca-main-profile .edit-awards').addClass('disabled');
+        		elem.removeClass('disabled');
+
         		_type = editElem.attr('data-filter-list').replace('#listing-', '');
         		$('#awardTypeKey').val(_type);
         		
@@ -269,6 +281,7 @@ var InstitutionProfile = {
         		InstitutionProfile.undoChecked(editElem);
         		viewElem.fadeIn();
             	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+            	$('section.hca-main-profile .edit-awards').removeClass('disabled');
         	});
     	}
     },
@@ -287,25 +300,10 @@ var InstitutionProfile = {
     },
     
     filterAwardsList: function(elem ) {
-    	
     	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
     	$('#awardsForm .control-group > .awards-listing').hide();
     	$($('#awardsForm').parent().attr('data-filter-list')).show();
     	$('#awardsForm h3.awards-heading').hide();
-    	$.each($('.hca-main-profile').find('#institution-edit-awards-btn'), function(_k, value) {
-    		
-        	if(value.text === '') {
-        		if( viewElem.attr('id') != value.getAttribute('data-view-elem')){
-        			_toHide = value.getAttribute('data-edit-elem');
-        			InstitutionProfile.undoChecked($(_toHide));
-        			$(value.getAttribute('data-view-elem')).fadeIn();
-	    			$(_toHide).slideUp('slow', function(){
-	    				$(value.getAttribute('data-view-elem')).parent().find('#institution-edit-awards-btn').addClass('btn-misc').removeClass('btn-link').html('Edit');
-		        	});
-        		}
-    		}
-    	});
-
     },
 
     submitModalForm: function(_formElement, _successCallback) {
@@ -332,11 +330,18 @@ var InstitutionProfile = {
         	_form = _button.parents('div#hca-edit-institution-name').find('form');
         	_parent = _button.parents('div#hca-edit-institution-name');
         }
-        _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         _data = _form.serialize();
         _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         _parent.find('.error').removeClass('error');
         $('.errorText').remove();
+        
+        if(_form.attr('id') == 'awardsForm'){
+    		$("div[id^='show-']").animate({
+    		    opacity: 0.25,
+    		  });
+    	}
+        _editButton = _button.parents('section.hca-main-profile').find('.btn-edit');
+        
         $.ajax({
             url: _form.attr('action'),
             data: _data,
@@ -388,14 +393,26 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
+                    	if(response.institution.websites == null || response.institution.contactEmail == null){
+                    		
+                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	}else{
+                    		$("#alertDiv").attr('class', '');
+                    	}
+                    	
                        	if(response.institution.websites){
                     		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
-                    		$("#alertDiv").attr('class', ' ');
+                    		
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no clinic website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
                     	}
-                       	$('#profileEmailText').html(response.institution.contactEmail);
+                       	
+                     	if(response.institution.contactEmail){
+                     		$('#profileEmailText').html(response.institution.contactEmail);
+                    	}else{
+                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    	}
+                       	
                         $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
                         break;
                     case 'socialMediaForm':
@@ -412,9 +429,15 @@ var InstitutionProfile = {
                     	$('#serviesText').html(response.html);
                     	break;
                     case 'awardsForm':
-                    		$('#listing-'+response.type).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
-                    		$('#listing-'+response.type).find("li[class=''] .old").attr('class', '');
-	                    	$('#'+response.type+'sText').html(response.html);
+	                		$("div[id^='show-']").animate({
+	                		    opacity: 1,
+	                		 });
+	                    	 $.each(response.html, function(_k, _v){
+	                        	$('#listing-'+_k).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
+	                    		$('#listing-'+_k).find("li[class=''] .old").attr('class', '');
+	                        	$('#'+_k+'sText').html(_v);
+	                         });
+	                    	
                     	break;
                 } 
 

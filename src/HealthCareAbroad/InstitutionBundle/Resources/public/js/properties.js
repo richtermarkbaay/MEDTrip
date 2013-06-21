@@ -35,7 +35,7 @@
             'modal': null, // jQuery element for the modal container
             'input_extraValueAutocomplete_json': 'input.extraValueAutocomplete_json', // identifier of the hidden input element that will hold the JSON value of the extraValue field
             'input_extraValueAutocomplete': 'input.extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
-            'submit_button': 'button.submit', // identifier of the submit button
+            'submit_button': '#year_submit', // identifier of the submit button
             'year_acquired_column': '.yearAcquired'
         },
         'autocompleteYear': {
@@ -103,7 +103,6 @@
             
          // bind click event
             $(_self).click($.globalAward._clickEdit);
-            
             return _self;
         },
         'autocompleteYear': function (_self) {
@@ -181,6 +180,18 @@
     
     $.globalAward._clickEdit = function(_event) {
         _el = $(this);
+        _form = _el.parents('li').find($.globalAward._editForm);
+        if(_form.find('input#institution_global_award_form_extraValueAutocomplete').length <= 0){
+        	_input = $('div#show-awards').find('form:first').find('#institution_global_award_form_extraValueAutocomplete');
+        	_extraValue = $('div#show-awards').find('form:first').find('input#institution_global_award_form_extraValue');
+        	_form_value = $('div#show-awards').find('form:first').find('input#institution_global_award_form_value');
+    		_token = $('div#show-awards').find('form:first').find('input#institution_global_award_form__token');
+    		
+        	_input.clone().insertBefore(_form.find("#year_submit"));
+        	_extraValue.clone().insertAfter(_form.find("#year_submit"));
+        	_form_value.clone().insertAfter(_form.find("#year_submit"));
+        	_token.clone().insertAfter(_form.find("#year_submit"));
+        }
         $.globalAward._editForm.attr('action', _el.attr('href'));
         _el.parents('li').find('span#containerRow').hide();
         _el.parents('li').find($.globalAward._editForm).show();
@@ -193,7 +204,7 @@
     };
     // submit edit form handler
     $.globalAward._submitEditForm = function(_event) {
-        _form = $(this);
+        _form = _event.parent('form');
         _button = _form.find($.globalAward.options.edit.submit_button);
         _buttonHtml = _button.html();
         _autocomplete = _form.find($.globalAward.options.edit.input_extraValueAutocomplete);
@@ -202,7 +213,6 @@
         _form.prev('img#loader_ajax').show(); //display loading image
         
         _year = _autocomplete.val().replace(/,+/g, ',');
-      
         _year = $.trim(_year);
         _year = $.unique(_year.split(",")).filter(function(e){ return e.length}).join(",");
         _newValYear = _year.replace(/, ,/g,',');

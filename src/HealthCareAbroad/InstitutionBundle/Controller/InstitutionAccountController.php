@@ -245,18 +245,21 @@ class InstitutionAccountController extends InstitutionAwareController
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
                             
                         }elseif($key == 'awards') {
-                            
+                            $html = array();
                             $typeKey = $request->get('awardTypeKey');
                             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $globalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-                            $html = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                                            'eachAward' => array('list' => $globalAwards[$typeKey]),
-                                            'label' => $typeKey.'s'
+
+                            foreach($globalAwards as $key => $global ) {
+                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
+                                    'institution' => $this->institution,
+                                    'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                                    'eachAward' => array('list' => $global),
+                                    'label' => $typeKey.'s'
                             ));
+                          }
                              
-                            return new Response(\json_encode(array('html' => $html , 'type' => $typeKey)), 200, array('content-type' => 'application/json'));
+                            return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }
                         elseif($key == 'medicalProviderGroups' ){
                             $value = $this->institution->{'get'.$key}();
@@ -269,6 +272,8 @@ class InstitutionAccountController extends InstitutionAwareController
                             foreach ($value as $keys => $a){
                                 if($a->getType() == ContactDetailTypes::PHONE){
                                      $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
+                                }else{
+                                    $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
                                 }
                             }
                         }

@@ -1,11 +1,11 @@
 <section class="section action-info hca-main-profile">
-    <a id="{{ toggleBtnId }}" class="btn btn-misc pull-right btn-default btn-edit" data-edit-elem="#{{ editElemId }}" data-view-elem="#{{ viewElemId }}" onclick="InstitutionProfile.toggleForm($(this))">Edit</a>
+    <a id="{{ toggleBtnId }}" class="btn btn-misc pull-right btn-default btn-edit {{ toggleBtnClass is defined ? toggleBtnClass : '' }}" data-edit-elem="#{{ editElemId }}" data-view-elem="#{{ viewElemId }}" onclick="InstitutionProfile.toggleForm($(this))">Edit</a>
     <h3>{{ title|raw }} {% block headingHelptext %}{% endblock %}</h3>
     <div id="{{ viewElemId }}">
         {% block viewContent %}{% endblock %}
     </div>
 
-    <div id="{{ editElemId }}" class="row-fluid hca-edit-box" style="display:none;" {% if awardsFilterList is defined %} data-filter-list="{{ awardsFilterList }}" {% endif %}>
+    <div id="{{ editElemId }}" class="row-fluid hca-edit-box " style="display:none;" {% if awardsFilterList is defined %} data-filter-list="{{ awardsFilterList }}" {% endif %}>
         {% if formParams is defined %}
             {% include 'InstitutionBundle:Widgets:institution.editProfileModalForm.html.twig' with formParams %}
         {% endif %}
