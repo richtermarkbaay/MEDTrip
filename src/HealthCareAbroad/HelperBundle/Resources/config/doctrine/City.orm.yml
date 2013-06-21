@@ -27,7 +27,15 @@ HealthCareAbroad\HelperBundle\Entity\City:
                   - name
         status:
             type: smallint
-            nullable: false            
+            nullable: false
+        geoCityId:
+            type: bigint
+            nullable: true
+            column: geo_city_id
+        oldId:
+            type: integer
+            nullable: true
+            column: old_id     
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
