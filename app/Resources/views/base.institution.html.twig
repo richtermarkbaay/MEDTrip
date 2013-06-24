@@ -32,19 +32,19 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+            form .awards-listing input[type=checkbox] + label,
             form .services-listing input[type=checkbox] + label,
             form .specialization-wrapper input[type=checkbox] + label {
-                display: inline-block;
+                display: inline;
+                font-weight: normal;
             }
-
+            
+            form .awards-listing input[type=checkbox]:checked + label,
             form .services-listing input[type=checkbox]:checked + label,
-            form .specialization-wrapper input[type=checkbox]:checked + label {
+                form .specialization-wrapper input[type=checkbox]:checked + label {
                 color: #A2A2A2;
             }
             
-             form .awards-listing input[type=checkbox]:checked + label ,form .services-listing input[type=checkbox]:checked + label {
-                color: #A2A2A2;
-            }
             #content section.section.hca-main-profile a:not(.btn-misc) + h3 {
                 background-color: #BBBBBB;
                 color: #7B7B7B;
@@ -336,28 +336,9 @@
                 background-color: #DDD;
             }                    
 
-            .no-highlight {
-                -webkit-touch-callout: none;
-                -webkit-user-select: none;
-                -khtml-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                user-select: none;
-            }      
             #autoDiv .ui-menu{
                 background: #F7F7F7 !important;
             }      
-            .awards-listing li label {
-                font-weight:normal ;
-                display: inline;
-            }
-            .specialization-edit-listing li label{
-                 font-weight:normal ;
-            }
-            .services-listing li label {
-                font-weight:normal ;
-                display: inline;
-            }
             /********** End of jQuery Autocomplete Custom CSS ***********/
 
         </style>

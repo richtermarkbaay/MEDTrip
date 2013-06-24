@@ -253,7 +253,29 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($businessHour->getWeekdayBitValue());
         $daysLabel = '';
         if (count($days) > 1 ) {
-            $daysLabel = $days[0]['short'] .' - '.$days[\count($days)-1]['short'];
+            $currentDay = null;
+            $previousDay = null;
+            $leastDay = null;
+            $groupedWeekdaysLabel = array();
+            foreach ($days as $_day_attr) {
+                $currentDay = $_day_attr;
+                if(null == $previousDay) {
+                    $previousDay = $currentDay;
+                    $leastDay = $currentDay;
+                }
+                else {
+                    if ($currentDay['day']-$previousDay['day'] > 1) {
+                        $groupedWeekdaysLabel[] = $this->_concatenateDays($leastDay, $previousDay);
+                        $leastDay = $currentDay;
+                    }
+                    $previousDay = $currentDay;
+                }
+            }
+            
+            if (null != $leastDay) {
+                $groupedWeekdaysLabel[] = $this->_concatenateDays($leastDay, $previousDay);
+            }
+            $daysLabel = \implode("\n", $groupedWeekdaysLabel);
         }
         elseif (count($days) == 1) {
             $daysLabel = $days[0]['short'];
@@ -267,5 +289,14 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         );
         
         return $viewData;
+    }
+    
+    private function _concatenateDays($startDay, $endDay) 
+    {
+        $label = $startDay['day'] != $endDay['day']
+            ? $startDay['short'].' - '.$endDay['short']
+            : $startDay['short'];
+
+        return $label;
     }
 }

@@ -8,7 +8,7 @@
             {% for treatment in treatments %}
             <li style="border: none">
                 <input type="checkbox" id="treatments{{ treatment.id }}-{{ subSpecializationElemId }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" class="treatments" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
-                <label style="font-weight: normal" for="treatments{{ treatment.id }}-{{ subSpecializationElemId }}">{{ treatment.name }}</label>
+                <label for="treatments{{ treatment.id }}-{{ subSpecializationElemId }}">{{ treatment.name }}</label>
             </li>
             {% endfor %}
         </ul>

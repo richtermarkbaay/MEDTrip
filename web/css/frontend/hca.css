@@ -2669,6 +2669,8 @@ table.schedule-wrapper tr > td {
 
 table.schedule-wrapper tr > td:first-child {
     color: #ABADAB;
+    max-width: 70px;
+    text-align: center;
     padding-left: 10px;
     text-transform: uppercase;
 }

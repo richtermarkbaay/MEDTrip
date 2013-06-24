@@ -122,14 +122,6 @@
             $('#clinicDescriptionText').truncateByHeight({
                 'visibleRows': 5
             });
-
-            $(".awards-listing input:checkbox").live("click", function(e){ 
-                if($(this).attr('class') != 'old'){
-                    $(this).toggleClass("new");
-            	}else{
-            		$(this).parents('li').toggleClass("unchecked")
-            	}
-            }); 
         });
 
     })(jQuery);

@@ -251,12 +251,7 @@ var InstitutionProfile = {
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
     	
-    	if(viewElem.is(':visible')) {
-    		// Refresh Map for Edit Address
-        	if(elem.attr('data-edit-elem') == "#address") {
-    	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
-        	}
-        	
+    	if(viewElem.is(':visible')) {        	
         	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
         		$('section.hca-main-profile .edit-awards').addClass('disabled');
         		elem.removeClass('disabled');
@@ -289,14 +284,11 @@ var InstitutionProfile = {
     /**
      * if container is closed without saving undo changes
      */
-    undoChecked: function(_editElem) {
-    	
-    	if($(_editElem.attr('data-filter-list'))){
-			_list = $(_editElem.attr('data-filter-list'));
-			 _list.find("input:checkbox.new").click();
-			 _list.find("li.unchecked .old").click();
-		}
+    undoChecked: function(editElem) {    	
+    	editElem.attr('data-filter-list').find('input[type=checkbox]:checked:not(.old)').removeAttr('checked');
+    	editElem.attr('data-filter-list').find('input[type=checkbox].old:not(:checked)').attr('checked', 'checked');
     },
+
     filterAwardsList: function(elem ) {
     	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
     	$('#awardsForm .control-group > .awards-listing').hide();
@@ -427,15 +419,12 @@ var InstitutionProfile = {
                     	$('#serviesText').html(response.html);
                     	break;
                     case 'awardsForm':
-	                		$("div[id^='show-']").animate({
-	                		    opacity: 1,
-	                		 });
-	                    	 $.each(response.html, function(_k, _v){
-	                    		$('#listing-'+_k).find("input:checkbox.new").attr('class', 'old');
-	                     		$('#listing-'+_k).find(".unchecked input:checkbox.old").attr('class', '');
-	                        	$('#'+_k+'sText').html(_v);
+	                		$("div[id^='show-']").animate({opacity: 1});
+	                    	 $.each(response.html, function(key, htmlContent){
+	                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
+	                    		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
+	                        	$('#'+key+'sText').html(htmlContent);
 	                         });
-	                    	
                     	break;
                 } 
 
