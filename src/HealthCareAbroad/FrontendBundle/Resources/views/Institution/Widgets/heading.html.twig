@@ -1,4 +1,5 @@
-{% set number = render_institution_contact_number(institution) %}
+
+{% set number = render_institution_contact_details(institution, true) %}
 {% set websites = institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}

@@ -202,10 +202,11 @@ class InstitutionTwigExtension extends \Twig_Extension
                     }
             }
         }
+        //var_dump($result); exit;
         
         return $result;
     }
-    public function render_institution_contact_details(Institution $institution)
+    public function render_institution_contact_details(Institution $institution, $asJSON=false)
     {
         $contactDetails = $institution->getContactDetails();
         $contactDetailsArray = array();
@@ -214,7 +215,7 @@ class InstitutionTwigExtension extends \Twig_Extension
             $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
         }
 
-        return $contactDetailsArray;
+        return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray ;
     }
     
     public function render_institution_logo(Institution $institution, array $options = array())
