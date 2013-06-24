@@ -39,6 +39,8 @@
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
 <script type="text/javascript">
 (function($){
     $(function(){
@@ -46,10 +48,13 @@
          $('#clinicDescriptionText').truncateByHeight({
              'visibleRows': 5
          });
-         
-        });
-    
-    })(jQuery);
+
+         // display businesshours
+         InstitutionMedicalCenter.displayBusinessHoursView();
+     
+    });
+
+})(jQuery);
     
 </script>
 {% endblock %}

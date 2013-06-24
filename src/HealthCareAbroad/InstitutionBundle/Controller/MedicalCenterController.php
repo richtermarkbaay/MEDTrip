@@ -203,6 +203,7 @@ class MedicalCenterController extends InstitutionAwareController
             try {
                 $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
                 unset($formVariables['_token']);
+                
                 $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
                 
                 if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
@@ -218,13 +219,15 @@ class MedicalCenterController extends InstitutionAwareController
                 ));
                 $form->bind($request);
                 if ($form->isValid()) {
-                    
-                    foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
-                        
-                        $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                    $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+                    if (isset($formVariables['businessHours'])) {
+                        $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+                        foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                            $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                        }
                     }
                     
-                    $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                    $institutionMedicalCenterService->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))
                     {

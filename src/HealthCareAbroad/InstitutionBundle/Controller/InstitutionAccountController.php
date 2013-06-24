@@ -140,6 +140,9 @@ class InstitutionAccountController extends InstitutionAwareController
             
             $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
             
+            $institutionMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
+            
+            $params['institutionMedicalCenterForm'] = $institutionMedicalCenterForm->createView();
             $params['isSingleCenter'] = true;            
             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
             $params['institution'] = $this->institution;

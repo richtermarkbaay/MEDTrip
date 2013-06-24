@@ -124,6 +124,24 @@
     {% endblock %}
 {% endembed %}
 
+{% if isSingleCenter is defined and isSingleCenter %}
+<!-- InstitutionMedicalCenter businessHours Section -->
+{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+    with { 
+        title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
+        formParams: {formId: 'businessHoursForm', fields: ['businessHours']},
+        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token) 
+    } %}
+
+    {% block viewContent %}
+        <!-- View Mode here -->
+        <ul class="single-listing" id="businessHoursView" ></ul>
+        
+    {% endblock %}
+{% endembed %}
+{% endif %}
+
+
 
 <!-- Institution Services Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
