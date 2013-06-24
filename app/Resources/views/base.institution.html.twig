@@ -32,6 +32,12 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+            form .services-listing input[type=checkbox] + label,
+            form .specialization-wrapper input[type=checkbox] + label {
+                display: inline-block;
+            }
+
+            form .services-listing input[type=checkbox]:checked + label,
             form .specialization-wrapper input[type=checkbox]:checked + label {
                 color: #A2A2A2;
             }

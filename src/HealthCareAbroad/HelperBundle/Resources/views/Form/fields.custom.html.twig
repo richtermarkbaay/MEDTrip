@@ -134,7 +134,7 @@
     <ul class="services-listing">
         {% for choice in form.vars.choices %}
              <li>
-                <input type="checkbox" {% if selected[choice.value] is defined %} checked {% endif %} id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" >
+                <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" {% if selected[choice.value] is defined %} checked {% endif %}>
                 <label for="{{ form.vars.full_name ~ choice.value }}"> {{ choice.label }}</label>
             </li>
         {% endfor %}
