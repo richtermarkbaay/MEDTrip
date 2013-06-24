@@ -11,14 +11,6 @@ institution_medicalCenter_loadMedicalSpecialist:
         _method: GET
         imcId: \d+
 
-#TODO - Check this routing if being use
-institution_medicalCenter_ajaxGetUpdateBusinessHours:
-    pattern: /medical-center/{imcId}/ajax/update-by-business-hours
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxUpdateBusinessHours }
-    requirements:
-        imcId: \d+
-        _method: GET
-
 # institutionId is included in request parameters since this is an unsecured request
 institution_medicalCenter_ajaxGlobalAwardSource:
     pattern: /ns-institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search

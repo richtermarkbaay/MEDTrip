@@ -86,13 +86,7 @@ admin_institution_medicalCenter_ajaxAddBusinessHours:
     defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddBusinessHours }
     requirements:
         _method: GET|POST
-        
-admin_institution_medicalCenter_ajaxUpdateBusinessHours:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxUpdateBusinessHours
-    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxUpdateBusinessHours }
-    requirements:
-        _method: GET|POST
-  
+
 admin_institution_medicalCenter_addSpecialization:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/specialization/add
     defaults: { _controller: AdminBundle:InstitutionSpecialization:addSpecialization }

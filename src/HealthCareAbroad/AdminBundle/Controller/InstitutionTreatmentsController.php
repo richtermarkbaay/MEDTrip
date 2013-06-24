@@ -574,30 +574,6 @@ class InstitutionTreatmentsController extends Controller
     
     }
     
-    public function ajaxUpdateBusinessHoursAction(Request $request)
-    {
-        $defaultDailyData = array('isOpen' => 0, 'notes' => '');
-        $businessHours = $request->get('businessHours', array());
-        foreach ($businessHours as $_day => $data) {
-            $businessHours[$_day] = \array_merge($defaultDailyData, $data);
-        }
-    
-        $jsonEncodedBusinessHours = InstitutionMedicalCenterService::jsonEncodeBusinessHours($businessHours);
-        $this->institutionMedicalCenter->setBusinessHours($jsonEncodedBusinessHours);
-        try {
-            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-            //$html = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:businessHoursTable.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-            $html = $this->renderView('AdminBundle:Widgets:businessHours.html.twig', array('institutionMedicalCenter' => $this->institutionMedicalCenter));
-    
-            $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        }
-        catch (\Exception $e) {
-            $response = new Response($e->getMessage(), 500);
-        }
-    
-        return $response;
-    }
-    
     public function ajaxAddSpecializationTreatmentAction(Request $request)
     {
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')

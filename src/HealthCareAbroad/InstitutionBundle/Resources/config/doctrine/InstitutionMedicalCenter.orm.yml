@@ -71,6 +71,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             type: text
             nullable: true  
             column: social_media_sites
+        isAlwaysOpen:
+            type: smallint
+            nullabe: false
+            column: is_always_open
         dateCreated:
             type: datetime
             nullable: false

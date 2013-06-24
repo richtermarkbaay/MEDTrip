@@ -1,39 +1,16 @@
-{% set decodedBusinessHours = json_decode_business_hours(institutionMedicalCenter) %}
-
-{% if decodedBusinessHours %}
+{% if institutionMedicalCenter.isAlwaysOpen or institutionMedicalCenter.businessHours|length %}
 
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Schedule'} %}    
         {% block asideContent %}
-
-            {% set isOpen24_7 = true %}
-        
-		    {% for _day, _data in decodedBusinessHours %}
-		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
-		        
-		        {% if not _isWholeDayOpen %}
-		            {% set isOpen24_7 = false %}
-		        {% endif %}
-
-		    {% endfor %}
-
     		<table class="schedule-wrapper">
-                
-        		{% if isOpen24_7 %}
+        		{% if institutionMedicalCenter.isAlwaysOpen %}
                     <tr><td class="open247">Open 24/7</td></tr>
         		{% else %}
-        		    {% for _day, _data in decodedBusinessHours %}
-        		        {% set _isWholeDayOpen = _data.isOpen is defined and _data.isOpen %}
-                        {% set _isClosed = _data.from is not defined and _data.to is not defined and not _isWholeDayOpen %}
-                        {% if not _isClosed %}
-                		    <tr>
-                                <td>{{ _day | upper }}</td>
-                                {% if _isWholeDayOpen %}
-                                    <td colspan="3" class="open24hrs">Open 24 Hours</td>
-                                {% else %}
-                                    <td>{{ _data.from }}</td><td>-</td><td>{{ _data.to }}</td>
-                                {% endif %}
-                            </tr>
-                        {% endif %}
+        		    {% for each in institutionMedicalCenter.businessHours %}
+            		    <tr>
+                            <td>{{ business_hours_bit_value_label(each.weekdayBitValue) | upper }}</td>
+                            <td>{{ each.opening.format('h:i A') }}</td><td>-</td><td>{{ each.closing.format('h:i A') }}</td>
+                        </tr>
         			{% endfor %}
         		{% endif %}
     		</table>

@@ -23,6 +23,15 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     const SEARCH_RESULTS_CONTEXT = 3; // Search results
     const ADS_CONTEXT = 4; // Ads results
 
+    private static $businessHoursBitValueLabel = array(
+        1 => 'Monday', 
+        2 => 'Tuesday', 
+        4 => 'Wednesday', 
+        8 => 'Thursday', 
+        16 => 'Friday', 
+        32 => 'Saturday', 
+        64 => 'Sunday'
+    );
     
     /**
      * @var InstitutionMedicalCenterService
@@ -54,7 +63,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'json_decode_business_hours' => new \Twig_Function_Method($this, 'jsonDecodeBusinessHours'),
+            'business_hours_bit_value_label' => new \Twig_Function_Method($this, 'getBusinessHoursBitValueLabel'),
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
             'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
@@ -214,12 +223,12 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         
         return array_merge(array_flip($keysWithValues), $returnVal);
     }
-    
-    public function jsonDecodeBusinessHours(InstitutionMedicalCenter $institutionMedicalCenter)
+
+    function getBusinessHoursBitValueLabel($bitValue)
     {
-        return InstitutionMedicalCenterService::jsonDecodeBusinessHours($institutionMedicalCenter->getBusinessHours());
+        return isset(self::$businessHoursBitValueLabel[$bitValue]) ? self::$businessHoursBitValueLabel[$bitValue] : null;
     }
-    
+
     public function getName()
     {
         return 'institutionMedicalCenterExtension';

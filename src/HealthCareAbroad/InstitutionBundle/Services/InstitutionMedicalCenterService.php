@@ -483,51 +483,6 @@ class InstitutionMedicalCenterService
         'notes' => '',
     );
 
-    /**
-     * @deprecated
-     */
-    static public function jsonDecodeBusinessHours($businessHours)
-    {
-        $defaultWeekValue = array(
-            'Sunday' => static::$defaultDailyValues,
-            'Monday' => static::$defaultDailyValues,
-            'Tuesday' => static::$defaultDailyValues,
-            'Wednesday' => static::$defaultDailyValues,
-            'Thursday' => static::$defaultDailyValues,
-            'Friday' => static::$defaultDailyValues,
-            'Saturday' => static::$defaultDailyValues,
-        );
-
-        //$businessHours = \json_decode($businessHours, true);
-        if (!$businessHours) {
-            $businessHours = $defaultWeekValue;
-        }
-        foreach ($businessHours as $day => $data) {
-            $businessHours[$day] = \array_merge(static::$defaultDailyValues, $data);
-        }
-
-        return $businessHours;
-    }
-
-    /**
-     * @deprecated
-     */
-    static public function jsonEncodeBusinessHours(array $businessHours=array())
-    {
-        $defaultWeekValue = array(
-            'Sunday' => static::$defaultDailyValues,
-            'Monday' => static::$defaultDailyValues,
-            'Tuesday' => static::$defaultDailyValues,
-            'Wednesday' => static::$defaultDailyValues,
-            'Thursday' => static::$defaultDailyValues,
-            'Friday' => static::$defaultDailyValues,
-            'Saturday' => static::$defaultDailyValues,
-        );
-
-        $businessHours = \array_merge($defaultWeekValue, $businessHours);
-
-        return \json_encode($businessHours);
-    }
 
     /**
      * Note: This doesn't add the media to institution gallery.

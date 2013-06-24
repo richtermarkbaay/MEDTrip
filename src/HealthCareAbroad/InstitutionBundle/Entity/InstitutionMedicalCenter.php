@@ -10,23 +10,29 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenter
 {
+
     /**
-     * @var bigint $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      */
     private $name;
 
     /**
-     * @var string $businessHours
+     * @var string
+     */
+    private $oldBusinessHours;
+
+    /**
+     * @var string
      */
     private $descriptionHighlight;
 
     /**
-     * @var text $description
+     * @var string
      */
     private $description;
 
@@ -36,59 +42,74 @@ class InstitutionMedicalCenter
     private $address;
 
     /**
-     * @var string $address
+     * @var string
      */
     private $addressHint;
 
     /**
-     * @var string $coordinates
+     * @var string
      */
     private $coordinates;
 
     /**
-     * @var string $contactNumber
+     * @var string
      */
     private $contactNumber;
 
     /**
-     * @var string $contactEmail
+     * @var string
      */
     private $contactEmail;
 
     /**
-     * @var string $websites
+     * @var string
      */
     private $websites;
 
     /**
-     * @var text $socialMediaSites
+     * @var string
      */
     private $socialMediaSites;
-    
+
     /**
-     * @var datetime $dateCreated
+     * @var integer
+     */
+    private $isAlwaysOpen;
+
+    /**
+     * @var \DateTime
      */
     private $dateCreated;
 
     /**
-     * @var datetime $dateUpdated
+     * @var \DateTime
      */
     private $dateUpdated;
 
     /**
-     * @var smallint $status
+     * @var integer
      */
     private $status;
 
     /**
-     * @var string $slug
+     * @var integer
+     */
+    private $rankingPoints;
+
+    /**
+     * @var string
      */
     private $slug;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $institutionSpecializations;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $institutionMedicalCenterProperties;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -101,36 +122,32 @@ class InstitutionMedicalCenter
     private $logo;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $media;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $doctors;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    private $institutionGlobalAwards;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $contactDetails;
-        
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->institutionSpecializations = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->institutionMedicalCenterProperties = new \Doctrine\Common\Collections\ArrayCollection();
         $this->businessHours = new \Doctrine\Common\Collections\ArrayCollection();
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
         $this->doctors = new \Doctrine\Common\Collections\ArrayCollection();
@@ -140,7 +157,7 @@ class InstitutionMedicalCenter
     /**
      * Get id
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getId()
     {
@@ -171,9 +188,32 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set oldBusinessHours
+     *
+     * @param string $oldBusinessHours
+     * @return InstitutionMedicalCenter
+     */
+    public function setOldBusinessHours($oldBusinessHours)
+    {
+        $this->oldBusinessHours = $oldBusinessHours;
+    
+        return $this;
+    }
+
+    /**
+     * Get oldBusinessHours
+     *
+     * @return string 
+     */
+    public function getOldBusinessHours()
+    {
+        return $this->oldBusinessHours;
+    }
+
+    /**
      * Set descriptionHighlight
      *
-     * @param text $descriptionHighlight
+     * @param string $descriptionHighlight
      * @return InstitutionMedicalCenter
      */
     public function setDescriptionHighlight($descriptionHighlight)
@@ -378,6 +418,29 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set isAlwaysOpen
+     *
+     * @param integer $isAlwaysOpen
+     * @return InstitutionMedicalCenter
+     */
+    public function setIsAlwaysOpen($isAlwaysOpen)
+    {
+        $this->isAlwaysOpen = $isAlwaysOpen;
+    
+        return $this;
+    }
+
+    /**
+     * Get isAlwaysOpen
+     *
+     * @return integer 
+     */
+    public function getIsAlwaysOpen()
+    {
+        return $this->isAlwaysOpen;
+    }
+
+    /**
      * Set dateCreated
      *
      * @param \DateTime $dateCreated
@@ -447,6 +510,29 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set rankingPoints
+     *
+     * @param integer $rankingPoints
+     * @return InstitutionMedicalCenter
+     */
+    public function setRankingPoints($rankingPoints)
+    {
+        $this->rankingPoints = $rankingPoints;
+    
+        return $this;
+    }
+
+    /**
+     * Get rankingPoints
+     *
+     * @return integer 
+     */
+    public function getRankingPoints()
+    {
+        return $this->rankingPoints;
+    }
+
+    /**
      * Set slug
      *
      * @param string $slug
@@ -500,6 +586,39 @@ class InstitutionMedicalCenter
     public function getInstitutionSpecializations()
     {
         return $this->institutionSpecializations;
+    }
+
+    /**
+     * Add institutionMedicalCenterProperties
+     *
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
+     * @return InstitutionMedicalCenter
+     */
+    public function addInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
+    {
+        $this->institutionMedicalCenterProperties[] = $institutionMedicalCenterProperties;
+    
+        return $this;
+    }
+
+    /**
+     * Remove institutionMedicalCenterProperties
+     *
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
+     */
+    public function removeInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
+    {
+        $this->institutionMedicalCenterProperties->removeElement($institutionMedicalCenterProperties);
+    }
+
+    /**
+     * Get institutionMedicalCenterProperties
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getInstitutionMedicalCenterProperties()
+    {
+        return $this->institutionMedicalCenterProperties;
     }
 
     /**
@@ -678,99 +797,5 @@ class InstitutionMedicalCenter
     public function getContactDetails()
     {
         return $this->contactDetails;
-    }
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     */
-    private $institutionMedicalCenterProperties;
-
-
-    /**
-     * Add institutionMedicalCenterProperties
-     *
-     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
-     * @return InstitutionMedicalCenter
-     */
-    public function addInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
-    {
-        $this->institutionMedicalCenterProperties[] = $institutionMedicalCenterProperties;
-    
-        return $this;
-    }
-
-    /**
-     * Remove institutionMedicalCenterProperties
-     *
-     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties
-     */
-    public function removeInstitutionMedicalCenterPropertie(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty $institutionMedicalCenterProperties)
-    {
-        $this->institutionMedicalCenterProperties->removeElement($institutionMedicalCenterProperties);
-    }
-
-    /**
-     * Get institutionMedicalCenterProperties
-     *
-     * @return \Doctrine\Common\Collections\Collection 
-     */
-    public function getInstitutionMedicalCenterProperties()
-    {
-        return $this->institutionMedicalCenterProperties;
-    }
-    /**
-     * @var integer
-     */
-    private $rankingPoints;
-
-
-    /**
-     * Set rankingPoints
-     *
-     * @param integer $rankingPoints
-     * @return InstitutionMedicalCenter
-     */
-    public function setRankingPoints($rankingPoints)
-    {
-        $this->rankingPoints = $rankingPoints;
-    
-        return $this;
-    }
-
-    /**
-     * Get rankingPoints
-     *
-     * @return integer 
-     */
-    public function getRankingPoints()
-    {
-        return $this->rankingPoints;
-    }
-    /**
-     * @var string
-     */
-    private $oldBusinessHours;
-
-
-    /**
-     * Set oldBusinessHours
-     *
-     * @param string $oldBusinessHours
-     * @return InstitutionMedicalCenter
-     */
-    public function setOldBusinessHours($oldBusinessHours)
-    {
-        $this->oldBusinessHours = $oldBusinessHours;
-    
-        return $this;
-    }
-
-    /**
-     * Get oldBusinessHours
-     *
-     * @return string 
-     */
-    public function getOldBusinessHours()
-    {
-        return $this->oldBusinessHours;
     }
 }
