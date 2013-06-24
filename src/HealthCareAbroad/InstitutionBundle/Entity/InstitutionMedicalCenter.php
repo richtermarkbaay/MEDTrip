@@ -745,4 +745,32 @@ class InstitutionMedicalCenter
     {
         return $this->rankingPoints;
     }
+    /**
+     * @var string
+     */
+    private $oldBusinessHours;
+
+
+    /**
+     * Set oldBusinessHours
+     *
+     * @param string $oldBusinessHours
+     * @return InstitutionMedicalCenter
+     */
+    public function setOldBusinessHours($oldBusinessHours)
+    {
+        $this->oldBusinessHours = $oldBusinessHours;
+    
+        return $this;
+    }
+
+    /**
+     * Get oldBusinessHours
+     *
+     * @return string 
+     */
+    public function getOldBusinessHours()
+    {
+        return $this->oldBusinessHours;
+    }
 }
