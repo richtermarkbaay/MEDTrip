@@ -25,7 +25,7 @@ WHERE institution_medical_centers.id IS NULL
 # update ranking by institution
 UPDATE `institution_medical_centers` imc
 SET imc.`ranking_points` = 1
-WHERE imc.`institution_id` IN (48)
+WHERE imc.`institution_id` IN (65)
 
 SELECT t.id, t.name, count(it.`treatment_id`) as cnt_link
 FROM `treatments` t
@@ -42,5 +42,3 @@ WHERE t.id = 777
 GROUP BY t.id
 ORDER BY cnt_link DESC
 LIMIT 2
-
-
