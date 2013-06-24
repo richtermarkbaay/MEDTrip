@@ -19,7 +19,13 @@
     		        link: { url: institutionUrl, html: highlight.institution.name }
 			} %}
         </h3>
-        <h5>{{ highlight.institution.city.name }}, {{ highlight.institution.country.name }}</h5>
+        <h5>
+            {% if highlight.institution.city %}
+                {{ highlight.institution.city.name }},
+            {% endif %} 
+            {{ highlight.institution.country.name }}
+        
+        </h5>
         
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,

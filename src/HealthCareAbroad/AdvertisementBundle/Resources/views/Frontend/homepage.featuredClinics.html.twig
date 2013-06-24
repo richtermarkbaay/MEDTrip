@@ -22,7 +22,12 @@
     					<!-- User Ratings Temporarily Commented -->
                         {# include 'FrontendBundle:Widgets:ratings.html.twig' #}
     
-                        <strong>, {{ each.institution.country.name }}</strong>
+                        <strong>
+                            {% if each.institution.city %}
+                                {{ each.institution.city.name }},
+                            {% endif %}
+                            {{ each.institution.country.name }}
+                        </strong>
     				</div>
     				<div class="description-box">
     				    
