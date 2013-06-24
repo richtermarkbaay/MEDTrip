@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -93,7 +95,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         }
         $this->_add($builder, 'websites', 'text', array('label' => 'Clinic Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
-        $this->_add($builder, 'address', 'detailed_street_address');
+        $this->_add($builder, 'address', 'detailed_street_address', array('constraints' => array(new NotBlank(array('message' => 'Please provide a valid address.')))));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => true));
