@@ -732,6 +732,7 @@ class MedicalCenterController extends InstitutionAwareController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * Adding of Insitution GlobalAwards
+     * @deprecated
      */
     public function addGlobalAwardsAction(Request $request)
     {

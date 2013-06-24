@@ -304,6 +304,11 @@ class InstitutionMedicalCenterService
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter);
     }
 
+    
+    /**
+     * @deprecated ?
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     */
     public function getGroupedMedicalCenterGlobalAwards(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $awardTypes = GlobalAwardTypes::getTypes();
@@ -315,10 +320,15 @@ class InstitutionMedicalCenterService
         }
 
         $imcProperties = $this->institutionMedicalCenterPropertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($institutionMedicalCenter);
-        foreach ($imcProperties as $imcp) {
-            if($imcp) {
-                $_globalAward = $imcp->getValueObject();
-                $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $imcp;
+        
+        foreach ($imcProperties as $imcp_arr) {
+            
+            if(!empty($imcp_arr)) {
+                foreach ($imcp_arr as $imcp ) {
+                    $_globalAward = $imcp->getValueObject();
+                    $globalAwards[\strtolower($awardTypes[$_globalAward->getType()])][] = $imcp;
+                }
+                
             }                        
             
         }
