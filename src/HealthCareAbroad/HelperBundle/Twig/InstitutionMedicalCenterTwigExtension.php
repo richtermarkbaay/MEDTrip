@@ -109,7 +109,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return $result;
     }
     
-    public function render_institution_medical_center_contact_details(InstitutionMedicalCenter $center)
+    public function render_institution_medical_center_contact_details(InstitutionMedicalCenter $center, $asJSON=false)
     {
         $contactDetails = $center->getContactDetails();        
         $contactDetailsArray = array();
@@ -118,7 +118,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
         }
         
-        return $contactDetailsArray;
+        return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray;
     }
     
     public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())

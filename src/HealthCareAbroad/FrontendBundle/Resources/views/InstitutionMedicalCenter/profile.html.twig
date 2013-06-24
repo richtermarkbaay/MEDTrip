@@ -79,7 +79,12 @@
         
         $('#clinicCallUs').tooltip({
             title: function(){
-                return '<h5><small>Landline: </small>'+$(this).attr('data-contact-number')+'</h5>';
+                var _titleContainer = $('<h5></h5>');
+                var _contactDetails = window.JSON.parse($(this).attr('data-contact-number')); 
+                $.each(_contactDetails, function(_key, _item){
+                    _titleContainer.append('<small>'+_item.type.toUpperCase()+': </small>'+_item.number);
+                });
+                return _titleContainer;
             },
             html: true,
             delay: 0,

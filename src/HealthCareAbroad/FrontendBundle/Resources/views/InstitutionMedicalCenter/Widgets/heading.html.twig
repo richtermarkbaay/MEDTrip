@@ -1,3 +1,5 @@
+{% set number = render_institution_medical_center_contact_details(institutionMedicalCenter, true) %}
+
 <div class="clinic-header-wrapper">
     <div class="logo-wrapper pull-left">
         {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo default', alt: 'clinic logo'}, 'context' : 1}) | raw }}
