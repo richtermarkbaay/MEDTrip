@@ -285,8 +285,8 @@ var InstitutionProfile = {
      * if container is closed without saving undo changes
      */
     undoChecked: function(editElem) {    	
-    	editElem.attr('data-filter-list').find('input[type=checkbox]:checked:not(.old)').removeAttr('checked');
-    	editElem.attr('data-filter-list').find('input[type=checkbox].old:not(:checked)').attr('checked', 'checked');
+    	$(editElem.attr('data-filter-list')).find('input[type=checkbox]:checked:not(.old)').removeAttr('checked');
+    	$(editElem.attr('data-filter-list')).find('input[type=checkbox].old:not(:checked)').attr('checked', 'checked');
     },
 
     filterAwardsList: function(elem ) {
