@@ -84,7 +84,7 @@
                 <i class="icon-envelope"></i>
                 Email: <strong><span id="profileEmailText"> 
                 {% if institution.contactEmail %}
-                   institution.contactEmail
+                   {{ institution.contactEmail }}
                 {% else %}
                     <b> no contact email </b> added.
                     <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>

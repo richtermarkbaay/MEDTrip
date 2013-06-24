@@ -210,7 +210,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
-
+    
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
             $form_errors = $this->get('validator')->validate($form);
@@ -239,7 +239,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
-
+                $request->getSession()->setFlash('success', "<b>Your personal account was successfully created!</b><br> Next, please add details about the clinic that you wish to add to HealthcareAbroad.com"); //set flash message
+                
                 // get the current step by this route
                 $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
@@ -250,6 +251,8 @@ class InstitutionSignUpController extends InstitutionAwareController
             case InstitutionTypes::MULTIPLE_CENTER:
             //case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
             default:
+                
+                $request->getSession()->setFlash('success', "<b>Your personal account was successfully created!</b><br> Next, please add details about the hospital that you wish to add to HealthcareAbroad.com"); //set flash message
                 // get the current step by this route
                 $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
