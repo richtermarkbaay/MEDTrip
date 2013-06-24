@@ -249,7 +249,7 @@ var InstitutionMedicalCenter = {
         _name = $(_linkElement).parent().find('h4').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
-        _modal.modal('show');
+        _modal.modal('show').appendTo('body');
         
         return false;
     },

@@ -72,7 +72,11 @@
             </div>
             <div class="control-group">
                 {{ form_label(institutionForm.addressHint)}}
-                {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12'} } )}}
+                {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12 tooltip-wrap2'} } )}}
+                <div class="tooltip-content2">
+                   If there are any instructions that will help someone find you that aren't included in the address put them here. 
+                   This could be something like, 'On the 2nd floor', or 'Next door to the gas station', whatever will make it easy for patients to find you! 
+                </div>
             </div> 
         {% elseif each == 'contactDetails' or each == 'websites' %}
             <div class="row-fluid terms">
