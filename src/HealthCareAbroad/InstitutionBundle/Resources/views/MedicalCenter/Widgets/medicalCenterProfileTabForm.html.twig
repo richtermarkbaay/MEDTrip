@@ -122,12 +122,14 @@
 
     {% block viewContent %}
         {% set mediaSites = institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
+        <div id="view-socialMediaSites">
         {% for type, site in mediaSites %}
             <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
                 <b>{{ site ? site : 'no account added'}}  
                 </b>
             </p>
         {% endfor %}
+        </div>
     {% endblock %}
 {% endembed %}
 
