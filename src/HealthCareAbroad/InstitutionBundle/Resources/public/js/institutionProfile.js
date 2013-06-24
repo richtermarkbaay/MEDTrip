@@ -293,12 +293,10 @@ var InstitutionProfile = {
     	
     	if($(_editElem.attr('data-filter-list'))){
 			_list = $(_editElem.attr('data-filter-list'));
-			 _list.find("li.hca-highlight input:checkbox.new").click();
-			 _list.find("li.hca-highlight input:checkbox.new").attr('class', '');
-			 _list.find("li[class=''] .old").click();
+			 _list.find("input:checkbox.new").click();
+			 _list.find("li.unchecked .old").click();
 		}
     },
-    
     filterAwardsList: function(elem ) {
     	elem.parent().find('.hca-edit-box:first').html($('#awardsForm'));
     	$('#awardsForm .control-group > .awards-listing').hide();
@@ -433,8 +431,8 @@ var InstitutionProfile = {
 	                		    opacity: 1,
 	                		 });
 	                    	 $.each(response.html, function(_k, _v){
-	                        	$('#listing-'+_k).find("li.hca-highlight input:checkbox.new").attr('class', 'old');
-	                    		$('#listing-'+_k).find("li[class=''] .old").attr('class', '');
+	                    		$('#listing-'+_k).find("input:checkbox.new").attr('class', 'old');
+	                     		$('#listing-'+_k).find(".unchecked input:checkbox.old").attr('class', '');
 	                        	$('#'+_k+'sText').html(_v);
 	                         });
 	                    	
