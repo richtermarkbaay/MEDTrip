@@ -8,8 +8,9 @@
         		{% else %}
         		    {% for each in institutionMedicalCenter.businessHours %}
             		    <tr>
-                            <td>{{ business_hours_bit_value_label(each.weekdayBitValue) | upper }}</td>
-                            <td>{{ each.opening.format('h:i A') }}</td><td>-</td><td>{{ each.closing.format('h:i A') }}</td>
+            		        {% set _bhData =  business_hours_to_view_data(each) %}
+                            <td>{{ _bhData.daysLabel | upper }}</td>
+                            <td>{{ _bhData.startTime }}</td><td>-</td><td>{{ _bhData.endTime }}</td>
                         </tr>
         			{% endfor %}
         		{% endif %}

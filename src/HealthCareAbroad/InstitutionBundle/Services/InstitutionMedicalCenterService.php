@@ -539,4 +539,33 @@ class InstitutionMedicalCenterService
         $conn->close();
     }
     
+    
+    public function extractDaysFromWeekdayBitValue($bitValue)
+    {
+        $weekdays = array(
+            array('short' => 'Sun', 'long' => 'Sunday', 'day' => 0),
+            array('short' => 'Mon', 'long' => 'Monday', 'day' => 1),
+            array('short' => 'Tue', 'long' => 'Tuesday', 'day' => 2),
+            array('short' => 'Wed', 'long' => 'Wednesday', 'day' => 3),
+            array('short' => 'Thu', 'long' => 'Thursday', 'day' => 4),
+            array('short' => 'Fri', 'long' => 'Friday', 'day' => 5),
+            array('short' => 'Sat', 'long' => 'Saturday', 'day' => 6),
+        );
+        $days = array();
+        foreach ($weekdays as $_dayAttr) {
+            $dayBitValue = $this->getBitValueOfDay($_dayAttr['day']);
+            // bit compare
+            if ($dayBitValue & $bitValue) {
+                $days[] = $_dayAttr;
+            }
+        }
+        
+        return $days;
+    }
+    
+    public function getBitValueOfDay($day)
+    {
+        return \pow(2, $day);
+    }
+    
 }

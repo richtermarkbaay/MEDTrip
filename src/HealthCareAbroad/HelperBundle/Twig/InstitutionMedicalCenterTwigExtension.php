@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\BusinessHour;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -69,6 +71,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
             'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
             'render_institution_medical_center_contact_details' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_details'),
+            'business_hours_to_view_data' => new \Twig_Function_Method($this, 'businessHoursToViewData'),
         );
     }
     
@@ -243,5 +246,26 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
         
         return $array;
+    }
+    
+    public function businessHoursToViewData(BusinessHour $businessHour)
+    {
+        $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($businessHour->getWeekdayBitValue());
+        $daysLabel = '';
+        if (count($days) > 1 ) {
+            $daysLabel = $days[0]['short'] .' - '.$days[\count($days)-1]['short'];
+        }
+        elseif (count($days) == 1) {
+            $daysLabel = $days[0]['short'];
+        }
+        
+        $viewData = array(
+            'daysLabel' => $daysLabel,
+            'startTime' => $businessHour->getOpening()->format('h:i A'),
+            'endTime' => $businessHour->getClosing()->format('h:i A'),
+            'notes' => $businessHour->getNotes()
+        );
+        
+        return $viewData;
     }
 }
