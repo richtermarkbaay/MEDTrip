@@ -52,7 +52,6 @@ class ScriptImportOldContactCommand extends ContainerAwareCommand
         if (\is_array($contactNumberArray)){
             foreach($contactNumberArray as $each){
                 if($each['number']) {
-                    $type = $this->getContactDetailType($each['type']);
                     $contactDetail = new ContactDetail();
                     $contactDetail->setNumber($each['number']);
                     $contactDetail->setType($this->getContactDetailType($each['type']));

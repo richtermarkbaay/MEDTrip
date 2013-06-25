@@ -53,8 +53,8 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
     {
         $contactIdsArray = array();
         $contactNumber = $institution->getContactNumber();
-       // $contactNumberArray =  \json_decode($institution->getContactNumber(), true);
-        //if (\is_array($contactNumberArray)){
+        $contactNumber =  \json_decode($institution->getContactNumber(), true);
+        if (\is_array($contactNumber)){
             if($contactNumber) {
                 $contactDetail = new ContactDetail();
                 $contactDetail->setNumber($contactNumber['country_code']);
@@ -63,7 +63,7 @@ class ScriptImportOldInstitutionContactCommand extends ContainerAwareCommand
                 $contactDetail->setType(ContactDetailTypes::PHONE);
                 $institution->addContactDetail($contactDetail);
             }
-        //}
+        }
         
         return $institution;
     }
