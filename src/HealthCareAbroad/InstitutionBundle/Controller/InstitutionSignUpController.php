@@ -210,7 +210,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
-    
+                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have successfully setup your personal account."); //set flash message
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
             $form_errors = $this->get('validator')->validate($form);
@@ -239,7 +239,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
-                $request->getSession()->setFlash('success', "<b>Your personal account was successfully created!</b><br> Next, please add details about the clinic that you wish to add to HealthcareAbroad.com"); //set flash message
                 
                 // get the current step by this route
                 $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
@@ -252,7 +251,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             //case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
             default:
                 
-                $request->getSession()->setFlash('success', "<b>Your personal account was successfully created!</b><br> Next, please add details about the hospital that you wish to add to HealthcareAbroad.com"); //set flash message
                 // get the current step by this route
                 $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
@@ -414,7 +412,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-
+                
+                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
 
                 return $this->redirect($redirectUrl);
@@ -499,6 +498,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
                 
+                $request->getSession()->setFlash('success', "<b>Congratulations! </b> You have setup your clinic profile."); //set flash message
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             $form_errors = $this->get('validator')->validate($form);
@@ -506,9 +506,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             if($form_errors){
                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
-        }
-        if(!$error_message){
-            $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
         }
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),

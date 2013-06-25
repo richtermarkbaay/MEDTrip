@@ -5,6 +5,14 @@
 {% block content %}
 
 <div class="row">
+    <div class="span12 confirm-msg">
+        <div class="alert alert-info"><h4>Congratulations,
+            <b> {{ institutionMedicalCenter.name | title }} </b>
+            <span>has been added to</span> HealthcareAbroad.com.</h4> 
+            <p>Next, please add your Specializations, to help give patients a good idea of your clinic's expertise. </p>
+        </div>
+    </div>
+    
     <h1>{{ institutionMedicalCenter.name | title }}</h1>
     <div class="span8">
         <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>

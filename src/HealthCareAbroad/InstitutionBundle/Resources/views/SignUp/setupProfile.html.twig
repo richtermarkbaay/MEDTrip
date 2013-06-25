@@ -1,4 +1,10 @@
     <div class="row">
+        <div class="span12 confirm-msg">
+            <div class="alert alert-info"><h4>Congratulations,
+                <b> Your personal account was successfully created!</b></h4> 
+                <p>Next, please add details about the {{ label }} that you wish to add to HealthcareAbroad.com</p>
+            </div>
+        </div>
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
             <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>

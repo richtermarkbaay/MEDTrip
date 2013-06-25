@@ -1,4 +1,9 @@
 <script type="text/javascript">
+function ucwords (str) {
+	  return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+	    return $1.toUpperCase();
+	  });
+	}
 (function($){
     $(function(){
 
@@ -151,6 +156,7 @@
     
         $('#search-doctor-btn').click(function() {
             $(this).attr('disabled', 'disabled').find('span').text('Searching...');
+            $('span#doctor_criteria_name').html(ucwords(firstNameElem.val()) +' '+ ucwords(lastNameElem.val()));
             $('#doctor-search-results').fadeIn();
             $('#matchedDoctorList').html('<div style="text-align:center">searching doctors...</div>');
             var params = {
@@ -188,6 +194,8 @@
                 });
     
                 if(matchedString) {
+                	$('#doctor-search-results .notEmpty').show();
+                	$('#doctor-search-results .empty').hide();
                     $('#matchedDoctorList').html(matchedString);
     
                     $('.add-existsing-doctor').click(function() {
@@ -205,14 +213,15 @@
                         return false;
                     });
                 } else {
-                    $('#matchedDoctorList').html('<div style="text-align:center">No matched Doctors!.</div>');
+                    $('#doctor-search-results .notEmpty').hide();
+                    $('#matchedDoctorList').html("<div class='alert results empty'>We don't have Dr. "+ ucwords(firstNameElem.val()) +" "+ ucwords(lastNameElem.val())+ " listed on HealthcareAbroad.com yet.<br>Please double-check the name spelling before clicking on ADD DOCTOR.</div>");
                     $('#search-doctor-btn').hide();
                     $('#add-doctor-btn').fadeIn();
                 }
             });
             
         });
-    
+        
         $(lastNameElem.add(firstNameElem.add(middleNameElem.add(suffixElem)))).keyup(function(){
             if(fullName != getInputFullName()) {
                 $('#search-doctor-btn').fadeIn();
