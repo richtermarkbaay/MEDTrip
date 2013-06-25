@@ -78,6 +78,7 @@ class InstitutionMedicalCenterService
             ->leftJoin('k.specializations', 'l')
             ->where('a.slug = :centerSlug')
             ->andWhere('a.status = :status')
+            ->orderBy('f.id', 'ASC')
             ->setParameter('centerSlug', $slug)
             ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
 
