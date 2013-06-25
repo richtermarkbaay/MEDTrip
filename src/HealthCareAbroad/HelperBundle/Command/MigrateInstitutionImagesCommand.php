@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Command;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use Gaufrette\Filesystem;
 
 use HealthCareAbroad\MediaBundle\Entity\Media;
@@ -93,9 +95,38 @@ class MigrateInstitutionImagesCommand extends ContainerAwareCommand
             $this->migrateGallery($_institution);
             $this->output->write("    ");
             
+            // migrate clinic logos
+            foreach ($_institution->getInstitutionMedicalCenters() as $imc) {
+                $this->migrateClinicLogo($imc);
+                $this->output->write("    ");
+            }
+            
+            
             $this->output->writeln('All Done.');
         }
         $this->output->writeln('END OF SCRIPT');
+    }
+    
+    private function migrateClinicLogo(InstitutionMedicalCenter $imc)
+    {
+        $this->output->write("LOGO of clinic {$imc->getId()}: ");
+        $oldDirectory = $this->getWebRootDirectory().'/'.$imc->getInstitution()->getId();
+        if ($media = $imc->getLogo()) {
+            
+            $mediaFile = $oldDirectory.'/'.$media->getName();
+            if (\file_exists($mediaFile)){
+                $this->doMove($imc->getInstitution(), $media, $this->logoSizes);
+                $this->output->write('[OK]');
+            }
+            else {
+                $this->output->write('[NOT FOUND]');
+            }
+            $this->output->writeln("");
+        }
+        else {
+            $this->output->writeln("NO LOGO");
+        }
+        
     }
     
     private function migrateLogo(Institution $institution)
