@@ -130,7 +130,8 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
         ->andWhere('a.status = :status')
         ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
-        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE);
+        ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE)
+        ->orderBy('b.name','ASC');
         
         $result = $qb->getQuery()->getResult();
         

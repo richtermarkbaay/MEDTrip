@@ -147,7 +147,7 @@ class InstitutionAccountController extends InstitutionAwareController
             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
             $params['institution'] = $this->institution;
             $params['institutionForm'] = $form->createView();
-            $params['specializations'] = $this->institutionMedicalCenter->getInstitutionSpecializations();
+            $params['specializations'] = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter);
             $params['medicalProvidersJSON'] = \json_encode($medicalProviderGroupArr);
             $params['currentGlobalAwards'] = $currentGlobalAwards;
             $params['editGlobalAwardForm'] = $editGlobalAwardForm->createView();

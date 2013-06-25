@@ -178,7 +178,7 @@ class MedicalCenterController extends InstitutionAwareController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institutionMedicalCenterForm' => $form->createView(),
 
-            'specializations' => $this->institutionMedicalCenter->getInstitutionSpecializations(),
+            'specializations' => $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter),
             'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards,

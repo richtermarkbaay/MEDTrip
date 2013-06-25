@@ -126,7 +126,7 @@ class SpecializationRepository extends EntityRepository
 
         $idsNotIn = "'".\implode("', '",$ids)."'";
 
-        $dql = "SELECT a,t FROM TreatmentBundle:Specialization a INNER JOIN a.treatments t WHERE a.status = :active AND a.id NOT IN ({$idsNotIn})";
+        $dql = "SELECT a,t FROM TreatmentBundle:Specialization a INNER JOIN a.treatments t WHERE a.status = :active AND a.id NOT IN ({$idsNotIn}) ORDER BY a.name ASC";
         $query = $this->getEntityManager()->createQuery($dql)
         ->setParameter('active', Specialization::STATUS_ACTIVE);
         return $query->getResult();

@@ -97,7 +97,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->request = $this->getRequest();
         
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($imcId);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($imcId,false);
         }
         
         parent::preExecute();
