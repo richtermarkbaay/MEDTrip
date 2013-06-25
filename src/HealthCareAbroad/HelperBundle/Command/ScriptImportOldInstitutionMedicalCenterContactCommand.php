@@ -56,10 +56,10 @@ class ScriptImportOldInstitutionMedicalCenterContactCommand extends ContainerAwa
         $contactNumber = $center->getContactNumber();
         $contactNumber =  \json_decode($center->getContactNumber(), true);
         if (\is_array($contactNumber)){
-            if($contactNumber) {
+            if(isset($contactNumber['number'])) {
                 $contactDetail = new ContactDetail();
-                $contactDetail->setNumber($contactNumber['country_code']);
-                $contactDetail->setAreaCode($contactNumber['area_code']);
+                $contactDetail->setNumber(isset($contactNumber['country_code']) ? $contactNumber['country_code'] : '' );
+                $contactDetail->setAreaCode(isset($contactNumber['area_code']) ? $contactNumber['area_code'] : '');
                 $contactDetail->setNumber($contactNumber['number']);
                 $contactDetail->setType(ContactDetailTypes::PHONE);
                 $center->addContactDetail($contactDetail);

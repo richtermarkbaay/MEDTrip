@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Command;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 use Doctrine\Tests\ORM\Proxy\SleepClass;
 use Assetic\Exception\Exception;
@@ -49,15 +51,25 @@ class ScriptImportOldContactCommand extends ContainerAwareCommand
     {
         $contactIdsArray = array();
         $contactNumberArray =  \json_decode($doctor->getContactNumber(), true);
+        
         if (\is_array($contactNumberArray)){
-            foreach($contactNumberArray as $each){
-                if($each['number']) {
-                    $contactDetail = new ContactDetail();
-                    $contactDetail->setNumber($each['number']);
-                    $contactDetail->setType($this->getContactDetailType($each['type']));
-                    $doctor->addContactDetail($contactDetail);
-                }
-            }    
+            if(isset($contactNumberArray['country_code'])) {
+                $contactDetail = new ContactDetail();
+                $contactDetail->setCountryCode(isset($contactNumberArray['country_code']) ? $contactNumberArray['country_code'] : NULL );
+                $contactDetail->setAreaCode(isset($contactNumberArray['area_code']) ? $contactNumberArray['area_code'] : NULL );
+                $contactDetail->setNumber($contactNumberArray['number']);
+                $contactDetail->setType(ContactDetailTypes::PHONE);
+                $doctor->addContactDetail($contactDetail);
+            } else {
+                foreach($contactNumberArray as $each){
+                    if($each['number']) {
+                        $contactDetail = new ContactDetail();
+                        $contactDetail->setNumber($each['number']);
+                        $contactDetail->setType($this->getContactDetailType($each['type']));
+                        $doctor->addContactDetail($contactDetail);
+                    }
+                }    
+            }
         }
         
         return $doctor;
@@ -75,13 +87,13 @@ class ScriptImportOldContactCommand extends ContainerAwareCommand
     public function getContactDetailType($contactType)
     {
         if($contactType == 'phone') {
-            $contactType = ContactDetail::TYPE_PHONE;
+            $contactType = ContactDetailTypes::PHONE;
         }
         else if($contactType == 'mobile') {
-            $contactType = ContactDetail::TYPE_MOBILE;
+            $contactType = ContactDetailTypes::MOBILE;
         }
         else {
-            $contactType = ContactDetail::TYPE_FAX;
+            $contactType = ContactDetailTypes::FAX;
         }
         
         return $contactType;
