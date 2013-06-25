@@ -28,6 +28,14 @@ class DoctorMediaService extends MediaService
     {
         $this->filesystem = $filesystem;
     }
+    
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
 
     function setEntityManager(EntityManager $entityManager)
     {
@@ -79,7 +87,7 @@ class DoctorMediaService extends MediaService
         parent::deleteMediaAndFiles($media, $sizes);
     }
     
-    private function getSizesByType($imageType)
+    public function getSizesByType($imageType)
     {
         return isset($this->imageSizes[$imageType]) ? $this->imageSizes[$imageType] : array();
     }
