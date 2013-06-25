@@ -12,8 +12,8 @@ final class InstitutionTypes
     public static function getLabelList()
     {
         return array(
-            self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
-            self::SINGLE_CENTER => 'A single clinic or an Independent healthcare provider',
+            self::MULTIPLE_CENTER => 'A hospital with many clinics, centers or units',
+            self::SINGLE_CENTER => 'A single clinic or an independent healthcare provider',
             //self::MEDICAL_TOURISM_FACILITATOR => 'A Medical Tourism Facilitator / Agent',
         );
     }
@@ -21,8 +21,8 @@ final class InstitutionTypes
     static public function getFormChoices()
     {
         return array(
-            self::MULTIPLE_CENTER => 'A Hospital with many clinics, centers or units',
-            self::SINGLE_CENTER => 'A single clinic or an Independent healthcare provider',
+            self::MULTIPLE_CENTER => 'A hospital with many clinics, centers or units',
+            self::SINGLE_CENTER => 'A single clinic or an independent healthcare provider',
             //self::MEDICAL_TOURISM_FACILITATOR => 'I\'m a Medical Tourism Facilitator / Agent',
         );
     }
