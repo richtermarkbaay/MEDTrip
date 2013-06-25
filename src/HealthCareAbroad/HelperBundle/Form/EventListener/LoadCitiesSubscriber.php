@@ -51,8 +51,6 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
     	$data = $event->getData();
         $form = $event->getForm();
         
-        
-        
         $locationService = LocationService::getCurrentInstance();
         $countryId = !empty($data) && $data['country'] ? $data['country'] : 0;
         $choices = array(0 => null);

@@ -16,6 +16,7 @@ class ConvertTreatmentToTermFormType extends AbstractType
 {
 
     protected $treatmentChoices = array();
+    protected $specializationChoices = array();
     
     public function setTreatmentChoices(array $treatments)
     {
@@ -26,6 +27,7 @@ class ConvertTreatmentToTermFormType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $builder->add($builder->create('specializations', 'specialization_list'));
         $builder->add($builder->create('treatments', 'choice', array('label'=> 'Convert as Tag of Treatment', 'choices' => $this->treatmentChoices)));
     }
     

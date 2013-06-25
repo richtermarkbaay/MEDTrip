@@ -16,18 +16,32 @@
         %}
             {% block sectionContent %}
                 {% include '::notice.admin.html.twig' %}
-                <form id="convertTreatmentForm" novalidate="novalidate" class="basic-form" action="{{ path('admin_treatment_convert', {'specializationId' : treatment.specialization.id, 'id' : treatment.id })}}" method="post" {{ form_enctype(form) }}>
-
-    				{{ form_rest(form) }}
-    				<div class="clear"><br></div>
-    			    <a value="Submit" class="btn form-submit btn-large btn-primary" name="submit"/>Submit</a>
-    			</form>
+                <form id="convertTreatmentForm" class="basic-form" method="post" action="{{ path('admin_treatment_convert', {'id' : treatment.id, 'specializationId' : treatment.specialization.id}) }}" novalidate="novalidate">
+                    <div>
+                        <label class="required" for="convert_treatment_to_term_form_specializations">Specialization</label>
+                        <select id="convert_treatment_to_term_form_specializations" required="required" name="convert_treatment_to_term_form[specializations]">
+                        {% for specialization in specializations %}
+                            <option value="{{ specialization.id }}">{{ specialization.name }}</option>
+                        {% endfor %}
+                        </select>   
+                    </div>
+                    <div>
+                        <label class="required" for="convert_treatment_to_term_form_treatments">Convert as Tag of Treatment</label>
+                        <select id="convert_treatment_to_term_form_treatments" required="required" name="convert_treatment_to_term_form[treatments]">
+                        {% for each in treatments %}
+                            <option value="{{ each.id }}">{{ each.name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>       
+                    <a  value="Submit" class="btn form-submit btn-large btn-primary" name="submit"/>Submit</a>
+                    <input type="hidden" id="oldTreatmentId" value="{{ treatment.id }}"/> 
+                </form>
 
             {% endblock %}
         {% endembed %}
     </div>
     <!-- Modal Institution Status -->
-    	{% include 'AdminBundle:Treatment/Modals:modal.confirmConvertTreatmentToTerm.html.twig' 
+    	{% include 'AdminBundle:Treatment/Modals:modal.confirmConvertTreatmentToTerm.html.twig'
     	     with {modalId: 'convert_treatment_to_term_form', modalTitle: 'Convert Treatment'}
     	%}
     <!-- end Modal Institution Status -->
@@ -37,11 +51,12 @@
 <script type="text/javascript">
     $(function(){
 
+    	{% set treatment = treatment.name %}
+    	
     	$('div#convert_treatment_to_term_form').on('show', function(){
-    		$('#convert_treatment_to_term_form').find('h5').append($('#{{ form.treatments.vars.id }} option:selected').text());
+    		$('#convert_treatment_to_term_form').find('h5').html('').append( "{{ treatment }} as Tag of " + $('#convert_treatment_to_term_form_treatments option:selected').text());
     	});
-    	
-    	
+
         $("a.form-submit").click(function() {
             
         	$('div#convert_treatment_to_term_form')
@@ -50,8 +65,31 @@
             return false;
         });
 
+        $('#convert_treatment_to_term_form_specializations').change(function() {
+            treatmentElem = $('#convert_treatment_to_term_form_treatments');
+        	treatmentElem.attr("disabled", true).html('').html('<option value="0">Loading...</option>');
+            var oldTreatmentId = $('#oldTreatmentId').val();
+            specializationId = $('#convert_treatment_to_term_form_specializations option:selected').val();
+            var _href = "{{ path ('admin_treatment_getTreatments') }}";
+            $.ajax({
+     		   url:  _href,
+     		   data: {'oldTreatmentId': oldTreatmentId, 'specializationId': specializationId },
+     		   type: 'GET',
+     		   success: function(response){
+         		    treatmentElem.html('');
+         		    i = 0;
+         		    $.each(response.treatments, function(e){
+             		    i++;
+          			   treatmentElem.append('<option value="'+ this.id + '" '+(i == 1 ? 'selected="selected"': '') +'>' + this.name + '</option>');
+    	            });
+         		   treatmentElem.removeAttr('disabled');
+     		   }
+     		});
+            return false;
+        });
+
         $('a.submit-modal').click(function() {
-            $('#convertTreatmentForm').submit();
+        	$('#convertTreatmentForm').submit();
             return false;
         });
     });

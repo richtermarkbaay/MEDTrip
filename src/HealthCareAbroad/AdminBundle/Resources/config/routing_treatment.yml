@@ -40,3 +40,10 @@ admin_treatment_convert:
     requirements:
          id: \d+
          _method: POST|GET
+         
+admin_treatment_getTreatments:
+    pattern:  /admin/specialization/ajaxGetAllTreatments
+    defaults: { _controller: AdminBundle:Treatment:ajaxGetAllTreatments }
+    requirements:
+         id: \d+
+         _method: POST|GET

@@ -136,7 +136,9 @@ class TermsService
     {
         $em = $this->doctrine->getEntityManager();
         $em->remove($treatment);
-        $em->flush();        
+        $em->flush();      
+
+        return true;
         
     }
     
@@ -154,7 +156,9 @@ class TermsService
         // save old treatment term as new term for current treatment
         $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatmentTerm->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
         
-        return $this->removeTreatment($oldTreatment);
+        $this->removeTreatment($oldTreatment);
+        
+        return $currentTreatment->getName();
     }
     
     /**

@@ -210,27 +210,43 @@ class TreatmentController extends Controller
         return $response;
     }
     
+    public function ajaxGetAllTreatmentsAction(Request $request)
+    {
+        $treatmentRepo = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment');
+        $oldTreatment = $treatmentRepo->findOneById($request->get('oldTreatmentId'));
+        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneById($request->get('specializationId'));
+        
+        $treatments =  $treatmentRepo->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($specialization, $oldTreatment);
+        
+        $treatmentsArray = array();
+        foreach( $treatments as $each ) {
+            $treatmentsArray[] = array('id' => $each->getId(), 'name' => $each->getName()); 
+        }
+        $output['treatments'] = $treatmentsArray;
+        
+        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+    }
+    
+    
     public function convertToTermAction(Request $request)
     {
-        
-        $oldTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($request->get('id'));
-        $treatments = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
-        
-        $convertFormType = new ConvertTreatmentToTermFormType();
-        $convertFormType->setTreatmentChoices($treatments);
-        $form = $this->createForm($convertFormType);
-        $form->bind($request);        
-        if($form->isValid()) {
-            $currentTreatmentId = $form->get('treatments')->getData();
-            $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
-            $currentTreatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->findOneById($currentTreatmentId);
-            $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatment->getName());
+        $treatmentRepo = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment');
+        $oldTreatment = $treatmentRepo->findOneById($request->get('id'));
+        $treatments = $treatmentRepo->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
+
+        if($currentTreatment = $request->get('convert_treatment_to_term_form')) {
+            $currentTreatmentId = $currentTreatment['treatments'];
+            $currentTreatmentName = $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
+            $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatmentName);
             
             return $this->redirect($this->generateUrl('admin_treatment_edit',array('id' => $currentTreatmentId)));
         }
         
         return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 
-                        array('form' => $form->createView(),
-                              'treatment' => $oldTreatment));
+                        array('specializations' => $specializations,
+                              'treatments' => $treatments,
+                              'treatment' => $oldTreatment,
+                              ));
     }
 }
