@@ -30,6 +30,14 @@ class SpecializationMediaService extends MediaService
     {
         $this->filesystem = $filesystem;
     }
+    
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
 
     function setEntityManager(EntityManager $entityManager)
     {
