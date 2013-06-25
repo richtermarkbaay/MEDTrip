@@ -2664,13 +2664,12 @@ table.schedule-wrapper {
 
 table.schedule-wrapper tr > td {
     padding: 10px 5px;
-
+    text-align: center;
 }
 
 table.schedule-wrapper tr > td:first-child {
     color: #ABADAB;
     max-width: 70px;
-    text-align: center;
     padding-left: 10px;
     text-transform: uppercase;
 }
