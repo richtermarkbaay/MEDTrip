@@ -3,15 +3,15 @@ parameters:
         institution:
             401: "We are unable to verify that you are authorized to access this page. If you have forgotten your credentials, please inform the HealthcareAbroad webmaster"
             403: "You are trying to access a restricted page. If you have forgotten your credentials, please inform the HealthcareAbroad webmaster"
-            404: "We're sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed it from an incorrect URL"
+            404: "We're sorry, we can't seem to find that page. It may be expired, has been moved, or you might have accessed it from an incorrect URL"
             500: "We've encountered an error. We're sorry for the inconvenience"
         frontend:
             401: "Access to this page is forbidden!"
             403: "Access to this page is forbidden!"
-            404: "Sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL."
+            404: "Sorry, we can't seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL."
             500: "We've encountered an error. We're sorry for the inconvenience"
         admin:
             401: "Access to this page is forbidden!"
             403: "Access to this page is forbidden!"
-            404: "Sorry, we can\'t seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL."
+            404: "Sorry, we can't seem to find that page. It may be expired, has been moved, or you might have accessed from an incorrect URL."
             500: "Oops! Something is broken"
