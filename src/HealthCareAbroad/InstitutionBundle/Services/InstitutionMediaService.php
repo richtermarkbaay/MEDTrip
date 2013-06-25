@@ -40,6 +40,14 @@ class InstitutionMediaService extends MediaService
     {
         $this->filesystem = $filesystem;
     }
+    
+    /**
+     * @return Filesystem
+     */
+    public function getFilesystem()
+    {
+        return $this->filesystem;
+    }
 
     function setEntityManager(EntityManager $entityManager)
     {
@@ -217,11 +225,17 @@ class InstitutionMediaService extends MediaService
         parent::deleteMediaAndFiles($media, $sizes);
     }
 
-    private function getSizesByType($imageType)
+    public function getSizesByType($imageType)
     {
         return isset($this->imageSizes[$imageType]) ? $this->imageSizes[$imageType] : array();
     }
     
+    /**
+     * @deprecated
+     * 
+     * @param InstitutionMedicalCenter $center
+     * @param unknown_type $businessHours
+     */
     public function saveBusinessHours(InstitutionMedicalCenter $center, $businessHours)
     {
         $em = $this->getDoctrine()->getEntityManager();
