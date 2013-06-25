@@ -165,9 +165,8 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                         $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
                     }
                     break;
-
-                $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
             }
+            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
         }
 
         return $html;
