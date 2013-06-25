@@ -3,7 +3,7 @@
     {% set subSpecializationElemId = specializationId ~ '-' ~ subSpecialization %}
     <li class="sub-specialization-wrapper">
         <input type="checkbox" id="{{ subSpecializationElemId }}" name="subSpecialization" value="subSpecialization" />
-        <label for="{{ subSpecializationElemId }}">{{ subSpecialization }}</label>
+        <label for="{{ subSpecializationElemId }}"><b>{{ subSpecialization }}</b></label>
         <ul class="unstyled" style="margin-left: 20px;">
             {% for treatment in treatments %}
             <li style="border: none">
