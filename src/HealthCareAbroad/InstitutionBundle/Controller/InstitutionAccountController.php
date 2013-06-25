@@ -258,7 +258,7 @@ class InstitutionAccountController extends InstitutionAwareController
                                     'institution' => $this->institution,
                                     'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                     'eachAward' => array('list' => $global),
-                                    'label' => $typeKey.'s'
+                                    'label' => $key.'s'
                             ));
                           }
                              
