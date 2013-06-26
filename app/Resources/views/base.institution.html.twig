@@ -343,9 +343,44 @@
             /********** End of jQuery Autocomplete Custom CSS ***********/
 
         </style>
+        
+        {% if include_zopim is defined and include_zopim %}
+        <!--Start of Zopim Live Chat Script-->
+        <script type="text/javascript">
+        window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
+        d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set.
+        _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8');
+        $.src='//v2.zopim.com/?1KA08bX3bcKTQHs0eGLS6u4M9CqGyDSD';z.t=+new Date;$.
+        type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
+        </script>
+        <!--End of Zopim Live Chat Script-->
+        {% endif %}
+        
     </head>
     
     <body>
+    
+        {% if include_zendesk is defined and include_zendesk %}
+        <!--Start of ZenDesk Feedback Tab Script-->
+        <script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
+        <style type="text/css" media="screen, projection">
+          @import url(//assets.zendesk.com/external/zenbox/v2.6/zenbox.css);
+        </style>
+        <script type="text/javascript">
+          if (typeof(Zenbox) !== "undefined") {
+            Zenbox.init({
+              dropboxID:   "20196828",
+              url:         "https://healthcareabroad.zendesk.com",
+              tabTooltip:  "Feedback",
+              tabImageURL: "https://assets.zendesk.com/external/zenbox/images/tab_feedback.png",
+              tabColor:    "black",
+              tabPosition: "Left"
+            });
+          }
+        </script>
+        <!--End of ZenDesk Feedback Tab Script-->
+        {% endif %}
+    
         {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
 
         {% block body %}{% endblock %}
