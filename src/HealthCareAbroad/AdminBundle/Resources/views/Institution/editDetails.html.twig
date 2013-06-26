@@ -17,7 +17,7 @@
 		            {{ form_row( form.name ) }}
                     {{ form_row( form.description, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
                      <div class="control-group">
-                        <label for="network-group">  Medical group/network  </label>
+                        <label for="network-group">  Medical Provider Group/Network </label>
                             {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
                          <div id="autoDiv">
                          </div>

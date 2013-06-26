@@ -26,27 +26,63 @@
 									<div id="tabs1-pane1" class="tab-pane active">
 									      {% include '::notice.admin.html.twig' %}
 									      
-									      <h5 >{{ institution.name }} Information</h5>
-									      
 									      <form novalidate="novalidate" action="{{ path('admin_institution_add_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
                                                 {{ form_errors(form) }}
+                                                 {{ form_row( form.name ) }}
                                                 {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
-                                                {{ form_row( form.contactEmail ) }}
+                                                <div class="control-group">
+                                                     <label for="institution">Email  </label>
+        					                         <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: 4px;">
+        						                      	{{ form_widget(form.contactEmail) }}
+    					                        </div>
                                                 {#{ form_row( form.contactNumber) }#}
                                                 {% for _widget in form.contactDetails %}
                                                     {{ form_widget(_widget) }}
                                                 {% endfor %}
-                                                {{ form_widget( form.websites) }}
+                                                <div class="control-group">
+                                                    <label for="network-group">  Medical Provider Group/Network  </label>
+                                                        {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
+                                                     <div id="autoDiv">
+                                                     </div>
+                                                </div>
+                                                {{ form_row( form.websites) }}
                                                 <hr />
-                                                <h4 style="margin-bottom: 10px;"> Institution Address </h4>
-                                                
-                                                {{ form_widget( form.address1 ) }}
-                                                {{ form_row( form.country ) }}
-                                                {{ form_row( form.city) }}
-                                                {{ form_row( form.state ) }}               
-                                                {{ form_row( form.zipCode ) }}
-									  			    
-									  			{{ form_rest(form) }}    
+                                                 <div class="row-fluid">
+                                                     <div class="span7">
+                                                     <h4 style="margin-bottom: 10px;">Social Media Sites</h4>
+                                                        {{ form_widget(form.socialMediaSites) }}
+                                                    </div>
+                                                </div>
+                                                <hr />
+                                                    <h4 style="margin-bottom: 10px;"> Institution Address </h4>
+                                                    {{ form_widget( form.address1 ) }}
+                                                 <div class="span12">
+                                                    <div class="span4 control-group {{ (form.address1.vars.valid ? '' : 'error') }}">
+                                                         <label for="{{ form.children.country.vars.id }}">
+                                                            {{ form.children.country.vars.label }} *
+                                                        </label>
+                                                          {{ form_widget( form.country ) }}
+                                                    </div>
+                                                    <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span4">
+                                                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                                                    {{ form_widget( form.city ) }}
+                                                    </div>
+                                                </div> 
+                                                <div class="state control-group  {{ (form.state.vars.valid ? '' : 'error') }}">
+                                                    <label>State / Province *</label>
+                                                    {{ form_widget( form.state ) }}         
+                                                </div>     
+                                              
+                                                <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">
+                                                    <label for="{{ form.children.zipCode.vars.id }}">
+                                                     {{ form.children.zipCode.vars.label }} *</label>
+                                                     {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
+                            		  			 </div>   
+                            		  			 <div class="control-group">
+                                                    {{ form_label(form.addressHint )}}
+                                                    {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}
+                                                </div>
+									  			{{ form_widget(form._token) }} 
 									  			<input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>
 									  		</form>	
 							  			</div>
@@ -70,7 +106,27 @@
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     $(function(){
         $('#institution_profile_form_country').change();
+
+        $("#{{ form.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
+            appendTo: "#autoDiv",
+            source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
+        });
+        
     });
+
+	function randomString() {
+		var chars = "abcdefghiklmnopqrstuvwxyz";
+		var string_length = 8;
+		//var inputVal = document.getElementById('institutionSignUp_email');
+		var institutionSignUp = '';
+		for (var i=0; i<string_length; i++) {
+			var rnum = Math.floor(Math.random() * chars.length);
+			institutionSignUp += chars.substring(rnum,rnum+1) ;
+		}
+		//document.account.inputVal.value = institutionSignUp[email];
+		
+	 document.getElementById("institution_profile_form_contactEmail").value = institutionSignUp + "@healthcareabroad.com" ;
+	}
 //-->
 </script>
 {% endblock %}

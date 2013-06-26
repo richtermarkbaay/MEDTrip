@@ -206,14 +206,19 @@ class InstitutionController extends Controller
      */
     public function addDetailsAction(Request $request)
     {
-
+        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+        $medicalProviderGroupArr = array();
+        
+        foreach ($medicalProviderGroup as $e) {
+            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
+        }
+        
         if(!$this->institution->getContactDetails()->count()) {
             $contactDetails = new ContactDetail();
             $contactDetails->setType(ContactDetailTypes::PHONE);
             $this->institution->addContactDetail($contactDetails);
         }
-	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('name')));
-
+        $this->institution->setName(''); //set institution name to empty
 	    // redirect to edit institution if status is already active
 	    
 	    if($this->get('services.institution')->isActive($this->institution)){
@@ -223,7 +228,21 @@ class InstitutionController extends Controller
 	    
 	    if ($request->isMethod('POST')) {
 	        
-	        $form->bindRequest($request);
+	        $formVariables = $request->get(InstitutionProfileFormType::NAME);
+	        unset($formVariables['_token']);
+	        $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
+	        
+	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+	        $formRequestData = $request->get($form->getName());
+	        if (isset($formRequestData['medicalProviderGroups']) ) {
+	            // we always expect 1 medical provider group
+	            // if it is empty remove it from the array
+	            if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+	                unset($formRequestData['medicalProviderGroups'][0]);
+	            }
+	        }
+	        
+	        $form->bind($formRequestData);
 	        
 	        if ($form->isValid()) {
 	            $institution = $form->getData();
@@ -240,10 +259,14 @@ class InstitutionController extends Controller
 	    	}
 	    }
 	    
+	    
+	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+	     
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
 				'institution' => $this->institution,
-	    		'id' => $this->institution->getId()
+	    		'id' => $this->institution->getId(),
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
 	    ));
     }
     

@@ -1365,7 +1365,12 @@ background-color: #cccccc;
         height: 35px;
         postition: relative;
     }
-
+    .basic-form .span12{
+        margin-left: 0;
+    }
+    .address1{
+        width:400px;
+    }
     .fancy-country-wrapper > input[type=text] {
         display:inline-block;
         margin: 0;
