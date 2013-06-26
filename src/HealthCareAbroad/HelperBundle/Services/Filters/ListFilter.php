@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
+
 use HealthCareAbroad\HelperBundle\Exception\ListFilterException;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -36,6 +38,12 @@ abstract class ListFilter
     protected $filterOptions = array();
 
     protected $filteredResult = array();
+    
+    
+    /**
+     * TODO: Temporary fix for array result data type
+     */
+    protected $dataType = 'queryBuilder';
 
     /**
      * @var QueryBuilder
@@ -72,6 +80,7 @@ abstract class ListFilter
 
     abstract function buildQueryBuilder();
     
+    
     final public function getServiceDependencies()
     {
         return $this->serviceDependencies;
@@ -84,6 +93,7 @@ abstract class ListFilter
     
     final public function getInjectedDependcy($serviceId)
     {
+
         if (!\array_key_exists($serviceId, $this->injectedDependencies)){
             throw ListFilterException::unregisteredServiceDependency($serviceId);
         }
@@ -143,7 +153,7 @@ abstract class ListFilter
     {
         if(count($statusFilterOptions))
             $this->statusFilterOptions = $statusFilterOptions;
-
+    
         $this->filterOptions['status'] = array(
             'label' => 'Status',
             'selected' => $this->queryParams['status'],
@@ -170,12 +180,21 @@ abstract class ListFilter
 
     function setPager()
     {
-        $adapter = new DoctrineOrmAdapter($this->queryBuilder);
+        
+        // TODO: must change implementation
+        if($this->dataType == 'queryBuilder') {
+            $adapter = new DoctrineOrmAdapter($this->queryBuilder);            
+        } else if($this->dataType == 'array') {
+            // TODO: temporary fix
+            $adapter = new ArrayAdapter($this->queryBuilder);
+        }
+        
         
         $params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
         $params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
-
+        
         $this->pager = new Pager($adapter, $params);
+        $this->pager->setAdapter($adapter);
     }
 
     function setFilteredResult()

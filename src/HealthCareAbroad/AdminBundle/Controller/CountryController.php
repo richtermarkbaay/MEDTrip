@@ -40,9 +40,10 @@ class CountryController extends Controller
      */
     public function editAction($id)
     {
-        $country = $this->getDoctrine()->getEntityManager()
-                ->getRepository('HelperBundle:Country')->find($id);
-
+        $locationService = $this->get('services.location'); 
+        $country = $locationService->getGlobalCountryById($id);
+        $country = $locationService->createCountryFromArray($country);
+        
         $form = $this->createForm(New CountryFormType(), $country);
 
         return $this->render('AdminBundle:Country:form.html.twig', array(
@@ -62,33 +63,42 @@ class CountryController extends Controller
             return new Response("Save requires POST method!", 405);
         }
 
-        $id = $request->get('id', null);
-        $em = $this->getDoctrine()->getEntityManager();
-
-        $country = $id ? $em->getRepository('HelperBundle:Country')->find($id) : new Country();
-
-        $form = $this->createForm(New CountryFormType(), $country);
-           $form->bind($request);
-
-           if ($form->isValid()) {
-               if(!$id) {
-                    $this->get('services.location')->saveGlobalCountry($request->get('country'));                   
-               }
-               else {
-                   $em->persist($country);
-                   $em->flush($country);
-               }
-               
-
-               // dispatch event
-               $eventName = $id ? AdminBundleEvents::ON_EDIT_COUNTRY : AdminBundleEvents::ON_ADD_COUNTRY;
-               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $country));
-               
-               $request->getSession()->setFlash('success', 'Country has been saved!');
-
-               return $this->redirect($this->generateUrl('admin_country_index'));
+        $locationService = $this->get('services.location');
+        
+        if($id = $request->get('id', null)) {
+            $country = $locationService->getGlobalCountryById($id);
+            $country = $locationService->createCountryFromArray($country);
+        } else {
+            $country = new Country();
         }
-
+        
+        $form = $this->createForm(New CountryFormType(), $country);
+        $form->bind($request);
+        if ($form->isValid()) {
+            if(!$id) {
+                $data = $request->get('country');
+            }
+            else {
+                $data = array(
+                        'id' => $country->getId(),
+                        'name' => $country->getName(),
+                        'abbr' => $country->getAbbr(),
+                        'code' =>  $country->getCode(),
+                        'status' => $country->getStatus()
+                );
+            }
+            
+            $country = $locationService->saveGlobalCountry($data);
+            
+            // dispatch event
+            $eventName = $id ? AdminBundleEvents::ON_EDIT_COUNTRY : AdminBundleEvents::ON_ADD_COUNTRY;
+            // $eventName;exit;
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $country));
+            
+            $request->getSession()->setFlash('success', 'Country has been saved!');
+            
+            return $this->redirect($this->generateUrl('admin_country_index'));
+        }
         $formAction = $id ? $this->generateUrl('admin_country_update', array('id' => $id)) : $this->generateUrl('admin_country_create');
 
         return $this->render('AdminBundle:Country:form.html.twig', array(
@@ -103,15 +113,10 @@ class CountryController extends Controller
      */
     public function updateStatusAction($id)
     {
-        $result = false;
-        $em = $this->getDoctrine()->getEntityManager();
-        $country = $em->getRepository('HelperBundle:Country')->find($id);
-
+        $country = $this->get('services.location')->updateStatusGlobalCountry($id);
+        
         if ($country) {
-            $country->setStatus($country->getStatus() ? $country::STATUS_INACTIVE : $country::STATUS_ACTIVE);
-            $em->persist($country);
-            $em->flush($country);
-
+            
             // dispatch event
             $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_COUNTRY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_COUNTRY, $country));
 

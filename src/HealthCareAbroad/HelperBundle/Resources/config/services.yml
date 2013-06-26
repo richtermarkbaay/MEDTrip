@@ -112,6 +112,7 @@ services:
             - [setTwig, [@twig]]
             - [setDoctrine, [@doctrine]]
             - [setRouter, [@router]]
+            - [setChromediaLocationApiUri, [%chromedia_country_api_uri%]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 

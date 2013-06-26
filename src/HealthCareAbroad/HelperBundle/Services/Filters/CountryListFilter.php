@@ -28,7 +28,7 @@ class CountryListFilter extends ListFilter
 
     function buildQueryBuilder()
     {
-        $this->queryBuilder->select('c')->from('HelperBundle:Country', 'c');
+        $this->queryBuilder->select('c')->from('HelperBundle:Country', 'c');    
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->where('c.status = :status');
@@ -42,7 +42,6 @@ class CountryListFilter extends ListFilter
         	$sortBy = $this->sortBy ? $this->sortBy : 'name';
         	$sort = "c.$sortBy " . $this->sortOrder;
         }         
-
         $this->queryBuilder->add('orderBy', $sort);
     }
 }

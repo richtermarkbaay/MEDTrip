@@ -18,6 +18,7 @@ class ListFilterBeforeController
 
     private $doctrine;
 
+    private $chromediaLocationApiUri;
     public function setTwig(\Twig_Environment $twig)
     {
         $this->twig = $twig;
@@ -33,6 +34,11 @@ class ListFilterBeforeController
         $this->doctrine = $doctrine;
     }
 
+    public function setChromediaLocationApiUri($uri)
+    {
+        $this->chromediaLocationApiUri = $uri;
+    }
+    
     /**
      * kernel.controller listener method
      *
@@ -50,9 +56,12 @@ class ListFilterBeforeController
         $controller[0]->filteredResult = array();
 
         $listFilter = ListFilterFactory::create($routeName, $this->doctrine);
+        
         foreach ($listFilter->getServiceDependencies() as $serviceId) {
+            
             $listFilter->injectDependency($serviceId, $controller[0]->get($serviceId));
         }
+        //var_dump($listFilter->getInjectedDependcy($serviceId)); exit;
         //$listFilter->setServiceContainer($controller[0])
         $params = array_merge($request->get('_route_params'), $request->query->all());
 
