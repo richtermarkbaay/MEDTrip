@@ -54,7 +54,7 @@ class MedicalProviderGroupController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_PROVIDER_GROUP')")
      */
     public function saveAction(Request $request)
     {
@@ -93,7 +93,7 @@ class MedicalProviderGroupController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_COUNTRY')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_MEDICAL_PROVIDER_GROUP')")
      */
     public function updateStatusAction($id)
     {
