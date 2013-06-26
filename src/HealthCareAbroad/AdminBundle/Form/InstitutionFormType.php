@@ -62,7 +62,7 @@ class InstitutionFormType extends AbstractType
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short description of the clinic', 'attr' => array('rows' => 5)));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
-        $this->_add($builder, 'websites', 'websites_custom_field');
+        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
     }
     
