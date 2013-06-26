@@ -2161,7 +2161,7 @@ ul.hca-notifications, ul.hca-inquiries {
 
 span.rollover {
   opacity: 1;
-  background: url(../../images/institution/upload-logo.png) center center no-repeat black;
+  background: url(/images/institution/upload-logo.png) center center no-repeat black;
   cursor: pointer;
   height: 85px;
   width: 85px;
