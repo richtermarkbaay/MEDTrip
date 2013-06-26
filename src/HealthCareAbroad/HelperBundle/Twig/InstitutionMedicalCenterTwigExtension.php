@@ -154,7 +154,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                     if ($institutionSpecialization && $institutionSpecialization->getSpecialization()->getMedia()) {
                         $specialization = $institutionSpecialization->getSpecialization();
-                        $mediaSrc = $this->mediaExtension->getSpecializationMediaSrc($specialization->getMedia(), ImageSizes::SMALL);
+                        $mediaSrc = $this->mediaExtension->getSpecializationMediaSrc($specialization->getMedia(), ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
                     }
                     break;
 
@@ -165,9 +165,8 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                         $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
                     }
                     break;
-
-                $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
             }
+            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
         }
 
         return $html;
