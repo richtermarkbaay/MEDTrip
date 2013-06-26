@@ -18,15 +18,17 @@
                     {{ form_row( form.description, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
                      <div class="control-group">
                         <label for="network-group">  Medical group/network  </label>
-                            {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span12'} }) | replace({'__name__': '0'}) | raw}}
+                            {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
                          <div id="autoDiv">
                          </div>
                     </div>
                     {{ form_row( form.type ) }}
                     {{ form_row( form.contactEmail ) }}
+                    <div class="row-fluid">
                         {% for _widget in form.contactDetails %}
                             {{ form_widget(_widget) }}
                         {% endfor %}
+                    </div>
                     {{ form_row( form.websites) }}
                      <hr />
                      <div class="row-fluid">
@@ -62,7 +64,7 @@
 		  			 </div>   
 		  			 <div class="control-group">
                         {{ form_label(form.addressHint )}}
-                        {{ form_widget(form.addressHint, { attr: {class: 'span4'} } )}}
+                        {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}
                     </div>
 		  			{{ form_widget(form._token) }}
 	  			    <input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>

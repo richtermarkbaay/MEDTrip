@@ -137,29 +137,34 @@ class InstitutionController extends Controller
      * @author Chaztine Blance
      */
     public function addAction(Request $request){
-        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
     	$factory = $this->get('services.institution.factory');
     	$institution = $factory->createInstance();  	
     	$institutionUser = new InstitutionUser();
+    	
     	$phoneNumber = new ContactDetail();
     	$phoneNumber->setType(ContactDetailTypes::PHONE);
-    	$institutionUser->addContactDetail($phoneNumber);
     	
-    	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
+    	$institutionUser->addContactDetail($phoneNumber);
+    	$mobileNumber = new ContactDetail();
+    	$mobileNumber->setType(ContactDetailTypes::MOBILE);
+    	$institutionUser->addContactDetail($mobileNumber);
+    	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
     
 	    	if ($request->isMethod('POST')) {
 	    		$form->bind($request);
 	    		 
 	    		if ($form->isValid()) {
-
-	    		    $institution = $form->getData();
+	    		    $postData = $request->get('institutionUserSignUp');
+	    		    $institutionUser = $form->getData();
 	    			// initialize required database fields
+	    		    $institution->setName(uniqid());
 	    			$institution->setAddress1('');
 	    			$institution->setContactEmail('');
 	    			$institution->setContactNumber('');
 	    			$institution->setDescription('');
 	    			$institution->setLogo(null);
 	    			$institution->setCoordinates('');
+	    			$institution->setType(trim($postData['type'])); /* FIX ME! */
 	    			$institution->setState('');
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
@@ -186,17 +191,9 @@ class InstitutionController extends Controller
 	    		}
 	    	}
 	    	
-	    	$medicalProviderGroupArr = array();
-	    	
-	    	foreach ($medicalProviderGroup as $e) {
-	    	    $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-	    	}
-
-	    	
     	return $this->render('AdminBundle:Institution:add.html.twig', array(
     					'form' => $form->createView(),
     					'institutionTypes' => InstitutionTypes::getFormChoices(),
-    	                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
     	));
     }
     
