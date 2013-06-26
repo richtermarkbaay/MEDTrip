@@ -143,6 +143,18 @@ institution_error_500:
     defaults: { _controller: InstitutionBundle:Default:error500}
     requirements:
         _method: GET
+                
+institution_error_401:
+    pattern: /institution/401
+    defaults: { _controller: InstitutionBundle:Default:error401}
+    requirements:
+        _method: GET
+        
+institution_error_403:
+    pattern: /institution/403
+    defaults: { _controller: InstitutionBundle:Default:error403}
+    requirements:
+        _method: GET
             
 institution_inquiries:
     pattern: /institution/inquiries

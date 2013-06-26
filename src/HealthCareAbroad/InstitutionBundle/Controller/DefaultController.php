@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -151,7 +157,12 @@ class DefaultController extends InstitutionAwareController
     }
     public function error403Action()
     {
-        return $this->render('InstitutionBundle:Exception:error403.html.twig');
+        throw new AccessDeniedHttpException();
+    }
+    
+    public function error401Action()
+    {
+        throw new HttpException(401);
     }
     
     /**
