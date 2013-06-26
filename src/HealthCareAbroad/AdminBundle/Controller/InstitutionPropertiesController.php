@@ -85,8 +85,6 @@ class InstitutionPropertiesController extends Controller
         $currentGlobalAwards =$this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        // get the current property values
-        $currentAwardPropertyValues = $this->get('services.institution')->getPropertyValues($this->institution, $propertyType);
         
         return $this->render('AdminBundle:InstitutionGlobalAwards:index.html.twig', array(
                         'form' => $form->createView(),
