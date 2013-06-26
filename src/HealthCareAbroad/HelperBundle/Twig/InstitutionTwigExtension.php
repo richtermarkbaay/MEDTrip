@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
@@ -31,6 +33,16 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function setInstitutionService(InstitutionService $s)
     {
         $this->institutionService = $s;
+    }
+    
+    /*
+     * @var InstitutionMedicalCenterService
+     */
+    private $institutionMedicalCenterService;
+    
+    public function setInstitutionMedicalCenterService(InstitutionMedicalCenterService $imcService)
+    {
+        $this->institutionMedicalCenterService = $imcService;
     }
     
     public function setMediaExtension(MediaExtension $media)
@@ -142,7 +154,7 @@ class InstitutionTwigExtension extends \Twig_Extension
         $incompleteClinics = array();
         $centers = $this->institutionService->getAllNotExpiredArchivedAndInactiveMedicalCenters($institution);
         foreach($centers as $each) {
-            $emptyFields = $this->institutionService->getListOfEmptyFieldsOnInstitution($each);
+            $emptyFields = $this->institutionMedicalCenterService->getListOfEmptyFieldsOnInstitutionMedicalCenter($each);
             if(!empty($emptyFields)) {
                 $incompleteClinics[] = array('id' => $each->getId(), 'name'=> $each->getName(), 'fields' => $emptyFields,'logo' => $each->getLogo() );
             }

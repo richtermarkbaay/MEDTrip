@@ -7,6 +7,8 @@
         <div id="page-heading"><h3>List of Institutions Contact Details</h3></div>
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
+            
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
                 <div>
                     <table class="table table-bordered sortable-list">
                     <tr>
@@ -25,15 +27,23 @@
                             <td><a href="{{ path('admin_institution_view', {institutionId: each.id}) }}" target="_blank">{{ each.name }}</a></td>
                             <td>
                                 {{ each.contactEmail }}
+                                {% if user %}
                                 <a class="pull-right view-contact-info" href="{{ path('admin_institution_getAjaxAccountData', {institutionId: each.id, accountId: user.accountId}) }}">view contact person</a>
                                 <div style="display:none;margin-top: 10px;color: #333;border-top: 1px dashed #DDDDDD;padding-top: 5px;clear:both">
                                     <div><b>Name:</b> &nbsp;<span class="contact-name"></span></div>
                                     <div><b>Email:</b> &nbsp;<span class="contact-email"></span></div>
                                 </div>
+                                {% endif %}
                             </td>
-                            <td>{{ json_decode(each.contactNumber)|join('') }}</td>
+                            {# json_decode(each.contactNumber)|join('') #}
+                            {% set _contactDetails = each.contactDetails %}
+                            <td>
+                            {% for contactDetail in _contactDetails %}
+                                {{ contactDetail.number }}
+                            {% endfor %}
+                            </td>
                             <td>{{ each.payingClient ? 'Yes' : 'No' }}</td>
-                            <td>{{ statuses[each.status] }}</td>
+                            <td>{{ statuses[each.status] is defined ? statuses[each.status] : 'unknown' }}</td>
                             <td><a href="{{ path('admin_institution_edit_details', {institutionId: each.id}) }}" target="_blank">Edit</a></td>
                         </tr>
                     {% else  %}

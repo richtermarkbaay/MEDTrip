@@ -94,10 +94,9 @@ class InstitutionController extends Controller
      */
     public function institutionsContactInfoAction()
     {
-        $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getAllInstitutions();
+        //$institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getAllInstitutions();
 
-        $params = array('institutions' => $institutions, 'statuses' => InstitutionStatus::getBitValueLabels());
-        
+        $params = array('institutions' => $this->filteredResult, 'statuses' => InstitutionStatus::getBitValueLabels());
         return $this->render('AdminBundle:Institution:institutionsContactInfo.html.twig', $params);
     }
 

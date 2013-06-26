@@ -579,4 +579,29 @@ class InstitutionMedicalCenterService
         return \pow(2, $day);
     }
     
+    public function getListOfEmptyFieldsOnInstitutionMedicalCenter(InstitutionMedicalCenter $center)
+    {
+        $emptyFields = array();
+        if(!$center->getDescription()) {
+            $emptyFields[] = 'description';
+        }
+    
+        if(!$center->getLogo()) {
+            $emptyFields[] = 'logo';
+        }
+    
+        if(!$center->getContactDetails()->count()) {
+            $emptyFields[] = 'contact details';
+        }
+    
+        if(!$center->getSocialMediaSites()) {
+            $emptyFields[] = 'social media sites';
+        }
+    
+        if(!$center->getDoctors()) {
+            $emptyFields[] = 'doctors';
+        }
+    
+        return $emptyFields;
+    }
 }

@@ -71,6 +71,7 @@ services:
         public: false
         calls:
             - [setInstitutionService, [@services.institution]]
+            - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
             - [setMediaExtension, [@services.media.twig.extension]]
             - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:

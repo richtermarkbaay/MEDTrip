@@ -460,32 +460,6 @@ class InstitutionService
 //         }
     }
     
-    public function getListOfEmptyFieldsOnInstitution(InstitutionMedicalCenter $center)
-    {
-        $emptyFields = array();
-        if(!$center->getDescription()) {
-            $emptyFields[] = 'description';
-        }
-        
-        if(!$center->getLogo()) {
-            $emptyFields[] = 'logo';
-        }
-        
-        if(!$center->getContactDetails()->count()) {
-            $emptyFields[] = 'contact details';
-        }
-        
-        if(!$center->getSocialMediaSites()) {
-            $emptyFields[] = 'social media sites';
-        }
-        
-        if($center->getDoctors()) {
-            $emptyFields[] = 'doctors';
-        }
-        
-        return $emptyFields;
-    }
-    
     public function getInstitutionInquiries(Institution $institution)
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
