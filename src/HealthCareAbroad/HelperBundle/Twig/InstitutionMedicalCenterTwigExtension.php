@@ -144,7 +144,6 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
         if($institutionMedicalCenter->getLogo() && ($institution->getPayingClient() || $isAdsContext)) {
             $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institutionMedicalCenter->getLogo(), $options['size']);
-            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
         } else {
             switch($options['context']) {
 
@@ -160,12 +159,14 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
 
                 case self::SEARCH_RESULTS_CONTEXT:
                 case self::ADS_CONTEXT:
-
                     if (($institutionLogo = $institution->getLogo()) && $institution->getPayingClient()) {
                         $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
                     }
                     break;
             }
+        }
+
+        if(isset($mediaSrc)) {
             $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
         }
 
