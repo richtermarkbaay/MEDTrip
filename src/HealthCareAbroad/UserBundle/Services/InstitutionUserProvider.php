@@ -8,11 +8,23 @@ use HealthCareAbroad\UserBundle\Services\ChromediaAccountsUserProvider;
 class InstitutionUserProvider extends ChromediaAccountsUserProvider
 {
     /**
+     * @var AdminUserService
+     */
+    private $adminUserService;
+    
+    public function setAdminUserService(AdminUserService $v)
+    {
+        $this->adminUserService = $v;
+    }
+    
+    
+    /**
      * @param array $accountData
      */
     public function getApplicationUser(array $accountData)
     {
         $user = $this->userService->findById($accountData['id']);
+        
         if ($user) {
             // populate account data to SiteUser
             $user = $this->userService->hydrateAccountData($user, $accountData);
@@ -25,6 +37,12 @@ class InstitutionUserProvider extends ChromediaAccountsUserProvider
             $this->userService->setSessionVariables($user);
 
             return $user;
+        }
+        else {
+            // check in the admin user if these credentials belong to internal admin
+            $adminUser = $this->adminUserService->findById($accountData['id']);
+            
+            return $adminUser;
         }
 
         return null;

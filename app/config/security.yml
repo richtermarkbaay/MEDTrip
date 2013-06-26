@@ -71,6 +71,9 @@ security:
                 path:   /admin/logout
                 target: /admin/login
 
+        institution.internalAdminLogin:
+            pattern: ^/institution/internal-admin-login$
+            security: false
         institution.reset.password:
             pattern:  ^/institution/reset.html$
             security: false
@@ -109,7 +112,7 @@ security:
                 default_target_path: /institution/dashboard
                 remember_me: false
                 failure_path: /institution/login
-                success_handler: institution_authentication_handler
+                #success_handler: institution_authentication_handler
                 #failure_handler: institution_authentication_handler
 
             #remember_me:

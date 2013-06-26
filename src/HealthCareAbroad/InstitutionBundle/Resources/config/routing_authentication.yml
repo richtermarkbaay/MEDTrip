@@ -1,0 +1,7 @@
+institution_internalAdmin_afterLogin:
+    pattern:  /internal-admin-after-login/{institutionId}
+    defaults: { _controller: InstitutionBundle:Authentication:internalAdminLoginBypass }
+    requirements:
+        _method: GET
+        institutionId: \d+
+    

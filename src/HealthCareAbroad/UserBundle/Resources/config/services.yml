@@ -65,3 +65,4 @@ services:
         parent: services.user_provider
         calls:
             - [setUserService, [@services.institution_user]]
+            - [setAdminUserService, [@services.admin_user]]

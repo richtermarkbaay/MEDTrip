@@ -47,6 +47,8 @@ class InstitutionUserController extends Controller
         if ($this->institution->getId() != $user->getInstitution()->getId() ) {
             return new Response(\sprintf('User %s does not belong to institution %s', $user->getAccountId(), $this->institution->getId()), 401);
         }
-        return $this->render('AdminBundle:InstitutionUser:bypassClientAdminLogin.html.twig', array('user' => $user));
+        return $this->render('AdminBundle:InstitutionUser:bypassClientAdminLogin.html.twig', array(
+            'user' => $user,
+            'institution' => $this->institution));
     }
 }

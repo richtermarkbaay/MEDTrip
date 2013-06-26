@@ -1,3 +1,7 @@
+InstitutionBundle_authentication:
+    resource: "@InstitutionBundle/Resources/config/routing_authentication.yml"
+    prefix:   /institution
+
 # Routes for unsecured actions #
 InstitutionBundle_unsecuredRoutes:
     resource: "@InstitutionBundle/Resources/config/routing_unsecured.yml"

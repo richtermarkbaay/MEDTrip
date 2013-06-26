@@ -37,16 +37,16 @@ class InstitutionAuthenticationHandler implements AuthenticationSuccessHandlerIn
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     { 
-        $routeParams = array();
-        $routeName = 'institution_homepage';
+//         $routeParams = array();
+//         $routeName = 'institution_homepage';
 
-//         $session = $request->getSession();
-//         $calloutMessage = $this->callouts['login_complete_profile'];
-//         $calloutMessage['highlight'] = str_replace('{FIRST_NAME}', $session->get('userFirstName'), $calloutMessage['highlight']);        
-//         $session->getFlashBag()->add('callout_message', $calloutMessage);
-        $responseUrl = $this->router->generate($routeName, $routeParams);
+// //         $session = $request->getSession();
+// //         $calloutMessage = $this->callouts['login_complete_profile'];
+// //         $calloutMessage['highlight'] = str_replace('{FIRST_NAME}', $session->get('userFirstName'), $calloutMessage['highlight']);        
+// //         $session->getFlashBag()->add('callout_message', $calloutMessage);
+//         $responseUrl = $this->router->generate($routeName, $routeParams);
 
-        return new RedirectResponse($responseUrl);
+//         return new RedirectResponse($responseUrl);
 
     }
 

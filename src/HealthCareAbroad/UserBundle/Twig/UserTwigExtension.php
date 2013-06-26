@@ -1,5 +1,9 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Twig;
+use HealthCareAbroad\UserBundle\Entity\AdminUser;
+
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+
 use HealthCareAbroad\UserBundle\Services\UserService;
 
 class UserTwigExtension extends \Twig_Extension
@@ -21,7 +25,15 @@ class UserTwigExtension extends \Twig_Extension
     
     public function getFunctions()
     {
-        return array('getAccountDataById' => new \Twig_Function_Method($this, 'getAccountDataById'));
+        return array(
+            'getAccountDataById' => new \Twig_Function_Method($this, 'getAccountDataById'),
+            'is_internal_admin_user' => new \Twig_Function_Method($this, 'is_admin_user')
+        );
+    }
+    
+    public function is_admin_user(SiteUser $user)
+    {
+        return $user instanceof AdminUser;
     }
     
     public function getAccountDataById($id)

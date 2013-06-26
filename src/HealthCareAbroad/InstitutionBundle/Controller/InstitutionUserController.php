@@ -42,6 +42,10 @@ class InstitutionUserController extends Controller
 {
     protected $institution;
 
+    /**
+     * TODO: Move to authentication controller
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function loginAction()
     {
         // checking for security context here does not work since this is not firewalled

@@ -1,15 +1,29 @@
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 {% block body %}
-<form id ="bypassloginform" action="{{ path('institution_login_check') }}" method="post">
-    <input style="display:none;" type="text" name="_username" value="{{ user.email }}" />
-    <input style="display:none;" type="password" name="_password" value="1234567" />
+<form id ="bypassloginform" action="{{ path('institution_login_check') }}" method="post" class="form-horizontal">
+    <div class="control-group">
+        <label for="username" class="control-label">Email</label>
+        <div class="controls">
+            <input type="text" id="username" name="_username" value="" placeholder="Re-enter your admin credentials" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        <label for="password" class="control-label">Password</label>
+        <div class="controls">
+            <input type="password" id="password" name="_password" value="" placeholder="Your own password" />
+        </div>
+    </div>
+    
+    <div class="control-group">
+        
+        <div class="controls">
+            <button type="submit" class="btn btn-primary"> Go</button>
+        </div>
+    </div>
+    
+    <input type="hidden" name="_target_path" value="{{ url('institution_internalAdmin_afterLogin', {institutionId: institution.id}) }}" />
 </form>
 
-<script type="text/javascript">
-(function($){
-    $(function(){
-        $('#bypassloginform').submit();
-    })
-})(jQuery);
-</script>
+
 {% endblock %}
