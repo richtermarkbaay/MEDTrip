@@ -344,7 +344,7 @@
 
         </style>
         
-        {# if include_zopim is defined and include_zopim %}
+        {% if include_zopim is defined and include_zopim %}
         <!--Start of Zopim Live Chat Script-->
         <script type="text/javascript">
         window.$zopim||(function(d,s){var z=$zopim=function(c){z._.push(c)},$=z.s=
@@ -354,13 +354,13 @@
         type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script');
         </script>
         <!--End of Zopim Live Chat Script-->
-        {% endif #}
+        {% endif %}
         
     </head>
     
     <body>
     
-        {# if include_zendesk is defined and include_zendesk %}
+        {% if include_zendesk is defined and include_zendesk %}
         <!--Start of ZenDesk Feedback Tab Script-->
         <script type="text/javascript" src="//assets.zendesk.com/external/zenbox/v2.6/zenbox.js"></script>
         <style type="text/css" media="screen, projection">
@@ -379,7 +379,7 @@
           }
         </script>
         <!--End of ZenDesk Feedback Tab Script-->
-        {% endif #}
+        {% endif %}
     
         {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
 
