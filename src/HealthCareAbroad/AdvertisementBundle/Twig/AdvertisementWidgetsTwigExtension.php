@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Twig;
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 use HealthCareAbroad\AdvertisementBundle\Services\Retriever;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementHighlightType;
@@ -12,10 +14,20 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     protected $retrieverService;
     
+    /**
+     * @var Session
+     */
+    protected $session;
+    
     public function __construct(\Twig_Environment $twig, Retriever $retriever)
     {
         $this->twig = $twig;
         $this->retrieverService = $retriever;
+    }
+    
+    public function setSessionService(Session $v)
+    {
+        $this->session = $v;
     }
 
     public function getFunctions()
@@ -31,6 +43,10 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_institution_ad'),
             'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad'),
             'render_search_results_image_ad' => new \Twig_Function_Method($this, 'render_search_results_image_ad'),
+            'generate_ads_search_results_parameters_session_key' => new \Twig_Function_Method($this, 'generateSearchResultsParametersSessionKey'),
+            'get_featured_institutions_by_search_parameters' => new \Twig_Function_Method($this, 'getFeaturedInstitutionsBySearchParameters'),
+            'get_featured_clinics_by_search_parameters' => new \Twig_Function_Method($this, 'getFeaturedClinicsBySearchParameters'),
+            'get_featured_institutions_session_key' => new \Twig_Function_Method($this, 'getFeaturedInstitutionsSessionKey'),
         );
     }
 
@@ -86,7 +102,18 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     {
         $ads = $this->retrieverService->getSearchResultsFeaturedInstitutionByCriteria($params);
         $this->twig->addGlobal('featuredAds', $ads);
-
+        
+        // added quick patch for filtering out displayed results items to exclude those institutions that are in featured ad
+        $featuredInstitutionIds = array();
+        foreach ($ads as $_ad) {
+            $featuredInstitutionIds[] = $_ad->getInstitution()->getId();
+        }
+        // add the ids in current session. adding as global here won't work on already loaded twig templates
+        // https://github.com/chromedia/healthcareabroad/issues/510
+        $inSessionFeaturedInstitutions = $this->session->get($this->getFeaturedInstitutionsSessionKey());
+        $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)] = $featuredInstitutionIds;
+        $this->session->set($this->getFeaturedInstitutionsSessionKey(), $inSessionFeaturedInstitutions);
+        
         return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
     }
 
@@ -94,6 +121,15 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     {
         $ads = $this->retrieverService->getSearchResultsFeaturedClinicByCriteria($params);
         $this->twig->addGlobal('featuredAds', $ads);
+        
+        // https://github.com/chromedia/healthcareabroad/issues/510
+        $featuredClinicIds = array();
+        foreach ($ads as $_ad) {
+            $featuredClinicIds[] = $_ad->getInstitutionMedicalCenter()->getId();
+        }
+        $inSession = $this->session->get($this->getFeaturedClinicsSessionKey());
+        $inSession[$this->generateSearchResultsParametersSessionKey($params)] = $featuredClinicIds;
+        $this->session->set($this->getFeaturedClinicsSessionKey(), $inSession);
 
         return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
     }
@@ -110,5 +146,34 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     public function getName()
     {
         return 'advertisement_widgets_twig_extension';
+    }
+    
+    public function getFeaturedInstitutionsBySearchParameters($params)
+    {
+        $inSessionFeaturedInstitutions =  $this->session->get($this->getFeaturedInstitutionsSessionKey());
+        
+        return $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)];
+    }
+    
+    public function getFeaturedInstitutionsSessionKey()
+    {
+        return 'searchResultsFeaturedInstitutions';
+    }
+    
+    public function getFeaturedClinicsBySearchParameters($params)
+    {
+        $inSession = $this->session->get($this->getFeaturedClinicsSessionKey());
+        
+        return $inSession[$this->generateSearchResultsParametersSessionKey($params)];
+    }
+    
+    public function getFeaturedClinicsSessionKey()
+    {
+        return 'searchResultsFeaturedClinics';
+    }
+    
+    public function generateSearchResultsParametersSessionKey($params)
+    {
+        return \base64_encode(\serialize($params));
     }
 }

@@ -9,26 +9,29 @@
         <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
 
         {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
+        {% set _featuredClinicIds = get_featured_clinics_by_search_parameters(featuredClinicParams) %}
         
         {% for searchResultVo in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
-            {# do this to save query #}
-
-            {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
-                   'statisticsDataObject': searchResultVo.institutionMedicalCenter,
-                   'searchResultItem' : {
-                       institutionUrl: get_institution_frontend_url(center.institution),
-                       url: get_institution_medical_center_frontend_url(center),
-                       logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
-                       name: center.name,
-                       institutionName: center.institution.name,
-                       description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
-                       mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
-                       streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+            
+            {# https://github.com/chromedia/healthcareabroad/issues/510 #}
+            {% if searchResultVo.institutionMedicalCenter.id not in _featuredClinicIds %}
+                {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
+                       'statisticsDataObject': searchResultVo.institutionMedicalCenter,
+                       'searchResultItem' : {
+                           institutionUrl: get_institution_frontend_url(center.institution),
+                           url: get_institution_medical_center_frontend_url(center),
+                           logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
+                           name: center.name,
+                           institutionName: center.institution.name,
+                           description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
+                           mainAddress: medical_center_complete_address_to_array(center, ['city', 'state', 'country']) | join(', '),
+                           streetAddress: medical_center_complete_address_to_array(center, ['address', 'zipCode']) | join(', ')
+                       }
                    }
-               }
-           %}
+               %}
+           {% endif %}
         {% endfor %}
 
         {% if searchResults.isPaginable %}

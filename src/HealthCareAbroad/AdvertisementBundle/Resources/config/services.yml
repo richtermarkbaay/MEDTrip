@@ -42,6 +42,8 @@ services:
     twig.advertisement_widgets:
         class: HealthCareAbroad\AdvertisementBundle\Twig\AdvertisementWidgetsTwigExtension
         arguments: [@twig, @services.advertisement.retriever]
+        calls:
+            - [setSessionService, [@session]]
         tags:
             - name: twig.extension
             
