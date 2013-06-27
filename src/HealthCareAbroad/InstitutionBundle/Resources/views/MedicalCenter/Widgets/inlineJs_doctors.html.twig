@@ -36,28 +36,39 @@ function ucwords (str) {
         });
 
         $('.remove-doctor-btn').live('click', function(e) {
-            doctorItem = $(this).parent().parent().addClass('disabled process');
-            doctorItem.find('.edit-doctor-wrapper:first').scrollTop(0);
+        	$('#remove-doctor-modal').modal('show');
+        	$('#confirm-remove-doctor-btn').data('remove-url', $(this).attr('href'));
+        	$('#confirm-remove-doctor-btn').data('doctor-id', $(this).data('doctor-id'));
+            e.preventDefault();
+            return false;
+        });
 
-            $.post($(this).attr('href'), function(response) {
-                $('#confirmation-message').find('p:first').html(response.message);
+        $('#confirm-remove-doctor-btn').click(function() {
+            confirmBtn = $(this); 
+            if(confirmBtn.hasClass('disabled')) {
+                return false;
+            }
+
+            doctorItem = $('#doctor-item-' + confirmBtn.data('doctor-id'));
+            confirmBtn.toggleClass('btn-danger disabled').html('processing...');
+
+            $.post(confirmBtn.data('remove-url'), function(response) {
                 if(response.status) {
                     doctorItem.slideUp(500,function(){
                         $('#doctorsList').after($('#edit-doctor-form').hide());
-                        doctorItem.remove(); 
-                        $('#confirmation-message').show(); 
+                        doctorItem.remove();
+                    	displayConfirmation(response);
                     });
-                    $('#confirmation-message').find('.alert').prop('class', 'alert alert-success');
+
+                    $('#remove-doctor-modal').modal('hide');
+                    confirmBtn.toggleClass('btn-danger disabled').html('Delete');
+
                 } else {
-                    $('#confirmation-message').find('.alert').prop('class', 'alert alert-error');
-                    $('#confirmation-message').show();
+                	displayConfirmation(response);
                 }
 
-                $('#doctorsList').children('div').removeClass('disabled');
-                setTimeout(function() {$('#confirmation-message').fadeOut('slow')}, 5000); 
+                $('#doctorsList').children('div').removeClass('disabled'); 
             });
-
-            return false;
         });
         
         $(".edit-doctor-btn").live('click', function(e) {
@@ -109,8 +120,12 @@ function ucwords (str) {
                             editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString.substr(1));
                             btnIcon.parent().attr('data-doctor', JSON.stringify(response.doctor));
                             btnIcon.removeClass('icon-ok').addClass('icon-edit');
+
+                            displayConfirmation(response);
                         });
                     },
+
+                    error: function(response) { displayConfirmation(response); },
 
                     beforeSend: function() {
                         editFormWrapper.scrollTop(0);
@@ -136,7 +151,6 @@ function ucwords (str) {
         });
 
         /** modal Js**/
-        var confirmMessageElem = $('#confirmation-message');
         var lastNameElem = $("#{{ doctorForm.getChild('lastName').vars.id }}");
         var firstNameElem = $("#{{ doctorForm.getChild('firstName').vars.id }}");
         var middleNameElem = $("#{{ doctorForm.getChild('middleName').vars.id }}");
@@ -232,9 +246,7 @@ function ucwords (str) {
         function showAddConfirmationMessage(response)
         {
             if(response.status) {
-                $('#doctorsList').find('.alert').remove();
-                confirmMessageElem.find('p:first').html('Doctor has been added to your clinic!');
-                confirmMessageElem.find('.alert').attr('class', 'alert alert-success');
+            	response.message = 'Doctor has been added to your clinic!';
 
                 var specializationString = '';
                 $.each(response.doctor.specializations, function(key) {
@@ -249,7 +261,7 @@ function ucwords (str) {
 
                 doctorItemElem.attr('id', 'doctor-item-'+response.doctor.id);
                 doctorItemElem.find('.edit-doctor-btn').attr('href', response.editDoctorUrl).attr('data-doctor', JSON.stringify(response.doctor));
-                doctorItemElem.find('.remove-doctor-btn').attr('href', response.removeDoctorUrl);
+                doctorItemElem.find('.remove-doctor-btn').attr('href', response.removeDoctorUrl).data('doctor-id', response.doctor.id);
                 doctorItemElem.find('.full-name').text(response.doctor.fullName);
                 doctorItemElem.find('.edit-doctor-wrapper').attr('data-doctor-id', response.doctor.id);
                 doctorItemElem.find('.doctor-thumbnail').attr('id', 'doctor-thumbnail-' +response.doctor.id).attr('src', response.doctor.mediaSrc ? response.doctor.mediaSrc : '{{ imageplaceholder.doctorDefaultImage }}');
@@ -258,7 +270,7 @@ function ucwords (str) {
                         if(res.status) {
                             $('#doctor-thumbnail-'+response.doctor.id).attr('src', res.doctor.mediaSrc).css('opacity', 1).next().show();
                         } else {
-                            alert('ERROR: Unable to upload Logo!');
+                        	displayConfirmation({status: 'success', message: 'Unable to upload logo!'});
                         }
                     }
                 }).submit(function(){
@@ -267,23 +279,18 @@ function ucwords (str) {
 
                 $('#doctorsList').prepend(doctorItemElem.show());
                 $('#empty-doctors-msg').remove();
-
                 $('#doneSection').show();
-    
             } else {
-                confirmMessageElem.find('p:first').html('Unable to add doctor to your clinic.');
-                confirmMessageElem.find('.alert').prop('class', 'alert alert-error');
+            	response.message = 'Unable to add doctor to your clinic.';
             }
     
             if($('#matchedDoctorList').find('li a.add-existsing-doctor').length > 1 && response.status) {
                 $('.add-existsing-doctor[data-doctor-id='+response.doctor.id+']').replaceWith('<span style="color: #AAA; vertical-align: middle; display: inline-block; margin: 35px 10px;" class="pull-right">Added to your clinic</span>');
             } else {
-                confirmMessageElem.show();
                 $('#add-doctor').modal('hide');
-                setTimeout(function() {confirmMessageElem.fadeOut("slow")}, 5000);
             }
 
-
+            displayConfirmation(response);
         }
     
         function getCleanVal(elem)
@@ -294,6 +301,15 @@ function ucwords (str) {
         function getInputFullName()
         {
             return getCleanVal(lastNameElem) + getCleanVal(firstNameElem) + getCleanVal(middleNameElem) + getCleanVal(suffixElem);
+        }
+
+        function displayConfirmation(response) {
+        	$('#confirmation-message').show()
+        	    .find('div.confirmation-box')
+                    .attr('class', 'confirmation-box fixed')
+                    .html('<div class="alert alert-'+ (response.status ? 'success' : 'error') +'"><p>' + response.message + '.</p></div>')                    
+
+        	setTimeout(function() {$('#confirmation-message').fadeOut("slow")}, 5000);
         }
     });
     

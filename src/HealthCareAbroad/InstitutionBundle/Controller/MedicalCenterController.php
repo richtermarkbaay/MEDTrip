@@ -634,7 +634,7 @@ class MedicalCenterController extends InstitutionAwareController
 
         return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
-    
+
     /**
      * Ajax handler for update doctor to an InstitutionMedicalCenter
      * Expected parameters:
@@ -652,14 +652,14 @@ class MedicalCenterController extends InstitutionAwareController
             $number = new ContactDetail();
             $doctor->addContactDetail($number);
         }
-         
+
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
         $form->bind($request);
 
         if(!$doctor->getContactDetails()->first()->getNumber()) {
             $doctor->getContactDetails()->remove(0);
         }
-        
+
         if ($form->isValid()) {
             $fileBag = $request->files->get($form->getName()); 
 
@@ -673,7 +673,7 @@ class MedicalCenterController extends InstitutionAwareController
 
             $data = array(
                 'status' => true,
-                'message' => 'Doctor has been added to your clinic!',
+                'message' => 'Doctor info has been updated!',
                 'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
             );
         } else {
