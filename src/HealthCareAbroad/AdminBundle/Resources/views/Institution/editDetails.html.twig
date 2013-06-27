@@ -30,14 +30,8 @@
                         {% endfor %}
                     </div>
                     {{ form_row( form.websites) }}
-                     <hr />
-                     <div class="row-fluid">
-                         <div class="span7">
-                         <h5 style="margin-bottom: 10px;">Social Media Sites</h5>
-                            {{ form_widget(form.socialMediaSites) }}
-                        </div>
-                    </div>
                     <hr />
+                    
                     <h5 style="margin-bottom: 10px;"> Institution Address </h5>
                     {{ form_widget( form.address1 ) }}
                      <div class="span12">
@@ -51,20 +45,28 @@
                             <label for="{{ form.children.city.vars.id }}">  City *  </label>
                         {{ form_widget( form.city ) }}
                         </div>
-                   </div> 
+                    </div> 
                     <div class="state control-group  {{ (form.state.vars.valid ? '' : 'error') }}">
                         <label>State / Province *</label>
                         {{ form_widget( form.state ) }}         
                     </div>     
-                  
+                    
                     <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">
                         <label for="{{ form.children.zipCode.vars.id }}">
                          {{ form.children.zipCode.vars.label }} *</label>
                          {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
-		  			 </div>   
-		  			 <div class="control-group">
+                     </div>   
+                     <div class="control-group">
                         {{ form_label(form.addressHint )}}
                         {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}
+                    </div>
+                    
+                     <hr />
+                     <div class="row-fluid">
+                         <div class="span7">
+                         <h5 style="margin-bottom: 10px;">Social Media Sites</h5>
+                            {{ form_widget(form.socialMediaSites) }}
+                        </div>
                     </div>
 		  			{{ form_widget(form._token) }}
 	  			    <input type="submit" name="submit" value="Submit" class="btn-large btn-primary"/>

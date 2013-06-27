@@ -1336,10 +1336,10 @@ background-color: #cccccc;
     .span5 .control-group input.span12{
         width: 40.4255%;
     }
-     form .span12 {
+   /*   form .span12 {
         width: 700px;
         margin-left:0;
-    }
+    } */
     .fancy-country-wrapper > button.btn,
     .custom-select > button.btn {
         border-radius: 0;
@@ -1471,6 +1471,54 @@ background-color: #cccccc;
 			    float: left;
 			    width: 940px;
             }
+            .clinictime .hourbox{
+                background-color: #F7F7F7;
+	            display: block;
+			    height: 100%;
+			    padding: 11px 40px;
+            }
+            .clinictime table {
+			    margin-bottom: 0 !important;
+			}
+			.clinictime .hourbox .span3, .clinictime .hourbox .span2 {
+			    padding-right: 8px;
+			    padding-top: 10px;
+			    text-align: right;
+			}
+			.row-fluid .span6 {
+			    width: 48.9362%;
+			}   
+			.clinictime textarea {
+			    display: block;
+			    height: 40px !important;
+			    width: 567px;
+			}
+			#content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
+			    margin: 10px 20px 15px;
+			}
+			.clinictime .hca-workingday-details {
+			    background-color: white;
+			    padding: 10px 15px 5px;
+			}
+			.clinictime .hca-workingday-details span {
+			    display: block;
+			    position: absolute;
+			    width: 300px;
+			}
+			.clinictime .hca-workingday-details b {
+			    display: block;
+			    margin-left: 220px;
+			    width: 200px;
+			}
+			.clinictime .hca-workingday-details i {
+			    margin: 3px 10px;
+			}
+			#fancy_businessHours_form h4 {
+				border: 1px solid #EEEEEE;
+				padding: 10px;
+				background-color: #F2F2F2;
+				color:#002A5C;
+			}
 /*
 ================== End of Custom CSS fixed ======================
 */
