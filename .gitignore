@@ -21,3 +21,5 @@ bin/
 cache/
 .metadata/
 app/config/parameters_test.yml
+web/robots.txt
+web/sitemap.xml
