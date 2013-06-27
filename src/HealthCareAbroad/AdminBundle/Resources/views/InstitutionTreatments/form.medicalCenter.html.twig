@@ -15,25 +15,33 @@
 
                 <h3>{{ centerLabel }} Information</h3>
     
-                <form novalidate="novalidate" action="{{ formAction }}" method="POST" {{ form_enctype(form) }} class="basic-form">        
+                <form novalidate="novalidate" action="{{ formAction }}" method="POST" {{ form_enctype(form) }} class="basic-form row-fluid">        
                     {{ form_errors(form) }}   
         
                     {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
                     {{ form_row(form.description, { 'attr': {style: "width: 70%", class: "tinymce"} } ) }}
+                     <hr />
+                     <div class="address-fields">
+                        {{ form_widget( form.address ) }}
+                    </div>
+                    {{ form_row(form.addressHint) }}
                     {{ form_row(form.contactEmail) }}
+                    <div class="control-group">
+                        <label>Website</label>
+                        {{ form_widget(form.websites) }}
+                    </div>    
                     {% for _widget in form.contactDetails %}
                         {{ form_widget(_widget) }}
                     {% endfor %}
-                    {{ form_widget(form.address, { 'attr': {'class': 'span9'} }) }}
-                    <hr>
-                    {{ form_widget(form.websites) }}
-                    </br>
-                    {{ form_widget(form.socialMediaSites) }}
-                    
+                    <hr />
+                         <div class="row-fluid">
+                             <div class="span7">
+                             <h5 style="margin-bottom: 10px;">Social Media Sites</h5>
+                                {{ form_widget(form.socialMediaSites) }}
+                            </div>
+                        </div>
                     {{ form_widget(form._token)}}
                                         	                        	
-                	<span class="btn-medium"><i class="icon-picture"></i> Add Media File Here</span>
-                	<div class="clear"><br></div>
                 	<input type="submit" name="submit" value="Submit" class="btn btn-large btn-primary" />
                 </form>
             {% endblock %} 

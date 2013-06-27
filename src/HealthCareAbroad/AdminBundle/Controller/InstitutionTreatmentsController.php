@@ -381,9 +381,27 @@ class InstitutionTreatmentsController extends Controller
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);
         }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
+       
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {
+            
+            $formVariables = $this->request->get(InstitutionMedicalCenterFormType::NAME);
+            unset($formVariables['_token']);
+            
+            $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
+            
+            if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+                $phoneNumber = new ContactDetail();
+                $phoneNumber->setType(ContactDetailTypes::PHONE);
+                $phoneNumber->setNumber('');
+                $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+            }
+            
+            $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
+                            InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
+                            InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
+            ));
+            
             $form->bind($this->request);
         
             if ($form->isValid()) {
@@ -391,7 +409,7 @@ class InstitutionTreatmentsController extends Controller
                 $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
             }
         }
-        
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
         return $this->render($template, array(
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,
