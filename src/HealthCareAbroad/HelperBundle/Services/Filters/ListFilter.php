@@ -84,14 +84,14 @@ abstract class ListFilter
      */
     function prepare($queryParams = array())
     {
-        $this->setPager();
-        
         $this->setQueryParamsAndCriteria($queryParams);
 
         $this->setFilterOptions();
 
         //$this->buildQueryBuilder();
 
+        $this->setPager();
+        
         $this->setFilteredResults();
     }
 
