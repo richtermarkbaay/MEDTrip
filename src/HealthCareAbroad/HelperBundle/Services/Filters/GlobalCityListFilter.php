@@ -51,11 +51,10 @@ class GlobalCityListFilter extends ArrayListFilter
     
     function setFilterResults()
     {   
-        //$cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList($this->queryParams);
         $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList();
 
         $this->pager->getAdapter()->setArray($cityList);
-        
+
         $this->filteredResult = $this->pager->getResults();
     }
 }

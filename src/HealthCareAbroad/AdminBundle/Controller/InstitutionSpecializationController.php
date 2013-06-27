@@ -188,7 +188,6 @@ class InstitutionSpecializationController extends Controller
      */
     public function addSpecializationAction(Request $request)
     {
-        //echo "test";exit;
         $service = $this->get('services.institution_medical_center');
     
         if (!$this->institutionMedicalCenter) {

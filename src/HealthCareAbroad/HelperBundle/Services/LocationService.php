@@ -22,11 +22,6 @@ class LocationService
 	private $loadedGlobalCityList = array();
 	
 	/**
-	 * @var string
-	 */
-	private $chromediaLocationApiUri;
-	
-	/**
 	 * @var LocationService
 	 */
 	private static $instance = null;
@@ -39,11 +34,6 @@ class LocationService
 	public function setChromediaApiUri($uri)
 	{
 	    $this->chromediaApiUri = $uri;
-	}
-	
-	public function setChromediaLocationApiUri($uri)
-	{
-	    $this->chromediaLocationApiUri = $uri;
 	}
 	
 	public function setChromediaGlobalRequest(ChromediaGlobalRequest $request)
@@ -59,7 +49,7 @@ class LocationService
 	public function getGlobalCountryById($id)
 	{
 	    if (!\array_key_exists($id, $this->loadedGlobalCountryList)) {
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$id);
+	        $response = $this->request->get($this->chromediaApiUri.'/country/'.$id);
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -72,7 +62,7 @@ class LocationService
 	public function saveGlobalCity(array $data)
 	{
 	    $city['data'] = $data; 
-	    $response = $this->request->post($this->chromediaLocationApiUri.'/city/add', $city);
+	    $response = $this->request->post($this->chromediaApiUri.'/city/add', $city);
 	    $city = $this->createCityFromArray(\json_decode($response->getBody(true), true));
 	    
 	    return $city;
@@ -82,7 +72,7 @@ class LocationService
 	{
         
 	    $country['data'] = $data;
-	    $response = $this->request->post($this->chromediaLocationApiUri.'/country/add', $country);
+	    $response = $this->request->post($this->chromediaApiUri.'/country/add', $country);
 	    $country = $this->createCountryFromArray(\json_decode($response->getBody(true), true));
 	    
 	    return $country;
@@ -90,7 +80,7 @@ class LocationService
 	
 	public function updateStatusGlobalCountry($id)
 	{
-	    $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$id.'/update-status');
+	    $response = $this->request->get($this->chromediaApiUri.'/country/'.$id.'/update-status');
 	    
 	    return $this->createCountryFromArray(\json_decode($response->getBody(true), true));
 	}
@@ -101,7 +91,7 @@ class LocationService
 	    static $hasLoaded = false;
 	    
 	    if (!$hasLoaded) {
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/countries');
+	        $response = $this->request->get($this->chromediaApiUri.'/countries');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -119,7 +109,7 @@ class LocationService
 	
 	    if (!$hasLoaded) {
 	
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/countries/'.$status);
+	        $response = $this->request->get($this->chromediaApiUri.'/countries/'.$status);
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -136,7 +126,7 @@ class LocationService
 	     
 	    if (!$hasLoaded) {
 	         
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/cities');
+	        $response = $this->request->get($this->chromediaApiUri.'/cities');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -153,7 +143,7 @@ class LocationService
 	    
 	    if (!$hasLoaded) {
 	    
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/cities/'.$status);
+	        $response = $this->request->get($this->chromediaApiUri.'/cities/'.$status);
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -170,7 +160,7 @@ class LocationService
 	    
 	    if (!$hasLoaded) {
 	    
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$countryId.'/cities');
+	        $response = $this->request->get($this->chromediaApiUri.'/country/'.$countryId.'/cities');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -188,7 +178,7 @@ class LocationService
 	     
 	    if (!$hasLoaded) {
 	         
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$countryId.'/cities');
+	        $response = $this->request->get($this->chromediaApiUri.'/country/'.$countryId.'/cities');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
@@ -283,7 +273,7 @@ class LocationService
 	
 	public function getGlobalCityById($id)
 	{
-	    $response = $this->request->get($this->chromediaLocationApiUri.'/city/'.$id);
+	    $response = $this->request->get($this->chromediaApiUri.'/city/'.$id);
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	    }
