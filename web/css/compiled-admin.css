@@ -1519,6 +1519,9 @@ background-color: #cccccc;
 				background-color: #F2F2F2;
 				color:#002A5C;
 			}
+			.table .pull-right{
+			 margin-left: 0;
+			}
 /*
 ================== End of Custom CSS fixed ======================
 */
