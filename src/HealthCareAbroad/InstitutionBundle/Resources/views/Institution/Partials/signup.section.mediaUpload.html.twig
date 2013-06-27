@@ -14,7 +14,7 @@
                 {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
                 <div class="span6">
                     <div class="media">
-                        {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://placehold.it/96x96' %}  
+                        {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://dummyimage.com/96x96/cccccc/fff.png&text=Image+Logo' %}  
                         <img id="institutionLogo" src="{{ logoImage }}" class="pull-left">
                         
                         <div class="media-body">
@@ -31,7 +31,7 @@
             <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
                 <div class="span6 divider">
                     <div class="media">
-                        {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://placehold.it/96x96' %}  
+                        {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://dummyimage.com/96x96/cccccc/fff.png&text=Image+Banner' %}  
                         <img id="institutionFeaturedImage" src="{{ featuredImage }}" class="pull-left">
         
                         <div class="media-body">
