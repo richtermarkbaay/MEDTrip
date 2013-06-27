@@ -11,7 +11,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use Doctrine\ORM\QueryBuilder;
 
-class GlobalCityListFilter extends ListFilter
+class GlobalCityListFilter extends ArrayListFilter
 {
 	function __construct($doctrine)
 	{
@@ -49,23 +49,13 @@ class GlobalCityListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilterResults()
     {   
-        
-//         if($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL && $this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-//             $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityListByStatusAndCountry($this->queryParams['status']);
-//         }
-//         elseif($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-//             $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityListByStatus($this->queryParams['status']);
-//         }
-//         elseif($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
-//             $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityListByCountry($this->queryParams['country']);
-//         }
-//         else {
-//             $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList();
-//         }
+        //$cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList($this->queryParams);
         $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList();
-        // TODO: Temparary fix for pager array adapter type.
-        $this->queryBuilder = $cityList;        
+
+        $this->pager->getAdapter()->setArray($cityList);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }
