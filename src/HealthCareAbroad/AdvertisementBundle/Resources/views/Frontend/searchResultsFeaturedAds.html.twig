@@ -13,7 +13,7 @@
 	        <div class="featured-item {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
     		    
     		    {% if each.institutionMedicalCenter and each.institutionMedicalCenter.id > 0 %}
-                    {% set primaryUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
+                    {% set primaryUrl = get_institution_medical_center_frontend_url(each.institutionMedicalCenter) %}
                     {% set primaryLogo = render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'small', alt: 'clinic logo'}}) %}
                     {% set secondaryUrl = get_institution_frontend_url(each.institution) %}
                 {% else %}

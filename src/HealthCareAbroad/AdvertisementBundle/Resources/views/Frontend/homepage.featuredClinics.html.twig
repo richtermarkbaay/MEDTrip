@@ -12,7 +12,7 @@
 	        
 	        {#-- BE CAREFUL WHEN MODIFYING ELEMENTS WITH STATS TRACKERS --#}
 	        <div class="featured-item box-shadow {{ get_impression_tracker_class() }}"  {{ _impressionStatisticParametersAttribute }} >
-    		    {% set clinicUrl = path('frontend_institutionMedicaCenter_profile', {institutionSlug: each.institution.slug, imcSlug: each.institutionMedicalCenter.slug}) %}
+    		    {% set clinicUrl = get_institution_medical_center_frontend_url(each.institutionMedicalCenter) %}
     			<div class="content row">
     				<div class="clinic-box">
     					<a href="{{ clinicUrl }}" class="small-logo-wrapper {{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
