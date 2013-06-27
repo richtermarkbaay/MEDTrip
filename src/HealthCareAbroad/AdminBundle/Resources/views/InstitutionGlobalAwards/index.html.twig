@@ -99,13 +99,13 @@
     <script type="text/javascript">
         $(function() {
 
-            $('div.edit_award_form_container').find('input.globalAward_autocompleteYear').globalAward('autocompleteYear');
             
             $('a.edit_global_award').globalAward('edit', {
                 'modal': $('div.edit_award_form_container'),
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
-                'input_extraValueAutocomplete': 'input.globalAward_autocompleteYear' 
+                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete' 
             });
+
 
             $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}');
 

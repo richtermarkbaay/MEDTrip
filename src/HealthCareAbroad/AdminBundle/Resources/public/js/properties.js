@@ -34,7 +34,7 @@
             'input_property_id': 'input.propertyId', // identifier of the hidden input element that will hold the value of the property id
             'input_award_id': 'input.globalAwardId', // identifier of the hidden input element that will hold the value of the award id 
             'input_extraValueAutocomplete_json': 'input.extraValueAutocomplete_json', // identifier of the hidden input element that will hold the JSON value of the extraValue field
-            'input_extraValueAutocomplete': 'input.extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
+            'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
             'submit_button': 'button.submit', // identifier of the submit button
             'year_acquired_column': '.yearAcquired'
         },
@@ -216,8 +216,13 @@
         _autocomplete = _form.find($.globalAward.options.edit.input_extraValueAutocomplete);
         // convert autocomplete value to JSON
         
+        _year = _autocomplete.val().replace(/,+/g, ',');
+        _year = $.trim(_year);
+        _year = $.unique(_year.split(",")).filter(function(e){ return e.length}).join(",");
+        _newValYear = _year.replace(/, ,/g,',');
+  
         var _b = {
-            'year_acquired': _autocomplete ? split(_autocomplete.val()) : []
+            'year_acquired': _autocomplete ? split(_newValYear) : []
         };
         // NOTE: JSON is only available in modern browsers, IE8, FF, Chrome
         _extraValueJSON = window.JSON.stringify(_b);
