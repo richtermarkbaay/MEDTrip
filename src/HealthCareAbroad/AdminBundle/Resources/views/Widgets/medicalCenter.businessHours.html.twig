@@ -1,6 +1,6 @@
-<section class="section clinic-schedule">
+<div id="businessHours" class="treatmentbox">
+ <h5 style="padding: 10px; border: 1px solid #EEEEEE"> Clinic Schedule</h5>
     <form action="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', { 'institutionId': institution.id,'imcId':institutionMedicalCenter.id}) }}" method="POST" id="fancy_businessHours_form" >
-        <h5 style="padding: 10px; border: 1px solid #EEEEEE"> Clinic Schedule</h5>
         {{ form_widget(institutionMedicalCenterForm.businessHours) }}
        <div class="modal-footer">
             <a href="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', {institutionId : institution.id, imcId: institutionMedicalCenter.id } ) }}" data-formId="#fancy_businessHours_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.submitFancyBusinessHoursForm($(this)); return false;" id="save_fancyBusinessHours" class="btn btn-primary submit-button">Submit</a>
@@ -9,4 +9,4 @@
             {{ institutionMedicalCenter_token |raw }}
         </div>
     </form>
-</section>
+</div>

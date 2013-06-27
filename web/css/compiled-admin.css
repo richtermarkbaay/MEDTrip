@@ -1128,7 +1128,7 @@ background-color: #cccccc;
 }
 #filter-wrapper label {
     text-align: left;
-    display: inline-block;
+   /*  display: inline-block; */
 }
 
 #filter-wrapper select {

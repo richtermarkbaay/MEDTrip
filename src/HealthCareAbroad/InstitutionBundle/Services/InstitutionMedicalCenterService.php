@@ -170,15 +170,14 @@ class InstitutionMedicalCenterService
      * @param mixed $value
      * @return InstitutionMedicalCenterProperty
      */
-    public function getPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value , $propertyId)
+    public function getPropertyValue(InstitutionMedicalCenter $institutionMedicalCenter, InstitutionPropertyType $propertyType, $value )
     {
-        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value AND a.id = :id";
+        $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenterProperty a WHERE a.institutionMedicalCenter = :institutionMedicalCenterId AND a.institutionPropertyType = :institutionPropertyTypeId AND a.value = :value";
         $result = $this->doctrine->getEntityManager()
             ->createQuery($dql)
             ->setParameter('institutionMedicalCenterId', $institutionMedicalCenter->getId())
             ->setParameter('institutionPropertyTypeId', $propertyType->getId())
             ->setParameter('value', $value)
-            ->setParameter('id', $propertyId)
             ->getOneOrNullResult();
 
         return $result;
