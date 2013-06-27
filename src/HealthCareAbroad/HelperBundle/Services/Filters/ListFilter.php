@@ -92,7 +92,7 @@ abstract class ListFilter
 
         //$this->buildQueryBuilder();
 
-        $this->setFilterResults();
+        $this->setFilteredResults();
     }
 
     /**

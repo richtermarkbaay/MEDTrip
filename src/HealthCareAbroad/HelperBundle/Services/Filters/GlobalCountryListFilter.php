@@ -27,7 +27,7 @@ class GlobalCountryListFilter extends ArrayListFilter
         $this->setStatusFilterOption();
     }
 
-    function setFilterResults()
+    function setFilteredResults()
     {
         $countryList = $this->getInjectedDependcy('services.location')->getGlobalCountryListByStatus($this->queryParams['status']);
 
