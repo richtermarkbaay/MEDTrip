@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\HelperBundle\Entity\AwardingBody;
+
 class GlobalAwardListFilter extends ListFilter
 {
 
@@ -27,7 +29,7 @@ class GlobalAwardListFilter extends ListFilter
     function setAwardingBodiesFilterOption()
     {
         // Set The Filter Option
-        $awardingBodies = $this->doctrine->getEntityManager()->getRepository('HelperBundle:AwardingBody')->findByStatus(1);
+        $awardingBodies = $this->doctrine->getEntityManager()->getRepository('HelperBundle:AwardingBody')->findBy(array('status'=> AwardingBody::STATUS_ACTIVE),array('name' => 'ASC'));
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
         
  
