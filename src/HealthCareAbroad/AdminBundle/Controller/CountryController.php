@@ -15,7 +15,6 @@ class CountryController extends Controller
      */
     public function indexAction()
     {
-        echo $this->get('page');exit;
         return $this->render('AdminBundle:Country:index.html.twig', array(
             'countries' => $this->filteredResult,
             'pager' => $this->pager

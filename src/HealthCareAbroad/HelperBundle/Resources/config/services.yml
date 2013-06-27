@@ -66,7 +66,6 @@ services:
             - [setChromediaGlobalRequest, [@services.chromedia_request]]
             - [setChromediaApiUri, [%chromedia_api_uri%]]
             - [setDoctrine, [@doctrine]]
-            - [setChromediaLocationApiUri, [%chromedia_country_api_uri%]]
 
     services.breadcrumb_tree:
         class: HealthCareAbroad\HelperBundle\Services\BreadcrumbTreeService
@@ -112,7 +111,6 @@ services:
             - [setTwig, [@twig]]
             - [setDoctrine, [@doctrine]]
             - [setRouter, [@router]]
-            - [setChromediaLocationApiUri, [%chromedia_country_api_uri%]]
         tags:
             - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
 

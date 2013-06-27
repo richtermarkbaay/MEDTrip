@@ -51,7 +51,9 @@ class GlobalCityListFilter extends ListFilter
     
     function buildQueryBuilder()
     {   
-        
+        $this->queryParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : 1;
+//         $this->queryParams['limit'];exit;
+       echo $this->queryParams['limit'];exit;
 //         if($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL && $this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
 //             $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityListByStatusAndCountry($this->queryParams['status']);
 //         }

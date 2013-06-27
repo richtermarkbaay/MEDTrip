@@ -18,7 +18,6 @@ class ListFilterBeforeController
 
     private $doctrine;
 
-    private $chromediaLocationApiUri;
     public function setTwig(\Twig_Environment $twig)
     {
         $this->twig = $twig;
@@ -34,11 +33,6 @@ class ListFilterBeforeController
         $this->doctrine = $doctrine;
     }
 
-    public function setChromediaLocationApiUri($uri)
-    {
-        $this->chromediaLocationApiUri = $uri;
-    }
-    
     /**
      * kernel.controller listener method
      *
