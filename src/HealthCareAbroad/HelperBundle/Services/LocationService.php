@@ -103,7 +103,6 @@ class LocationService
 	    if (!$hasLoaded) {
 	        $response = $this->request->get($this->chromediaLocationApiUri.'/countries');
 	        if (200 != $response->getStatusCode()) {
-	            echo $response->getBody(true); exit;
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
 	        
@@ -112,6 +111,41 @@ class LocationService
 	    }
 	
 	    return $this->loadedGlobalCountryList;
+	}
+	
+	public function getGlobalCountryListByStatus($status)
+	{
+	    static $hasLoaded = false;
+	
+	    if (!$hasLoaded) {
+	
+	        $response = $this->request->get($this->chromediaLocationApiUri.'/countries/'.$status);
+	        if (200 != $response->getStatusCode()) {
+	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
+	        }
+	
+	        $this->loadedGlobalCountryList = \json_decode($response->getBody(true), true);
+	        $hasLoaded = true;
+	    }
+	
+	    return $this->loadedGlobalCountryList;
+	}
+	public function getGlobalCityList()
+	{
+	    static $hasLoaded = false;
+	     
+	    if (!$hasLoaded) {
+	         
+	        $response = $this->request->get($this->chromediaLocationApiUri.'/cities');
+	        if (200 != $response->getStatusCode()) {
+	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
+	        }
+	         
+	        $this->loadedGlobalCityList = \json_decode($response->getBody(true), true);
+	        $hasLoaded = true;
+	    }
+	     
+	    return $this->loadedGlobalCityList;
 	}
 	public function getGlobalCityListByStatus($status)
 	{
@@ -128,24 +162,42 @@ class LocationService
 	        $hasLoaded = true;
 	    }
 	    
-	    return $this->loadedGlobalCountryList;
+	    return $this->loadedGlobalCityList;
 	}
-	public function getGlobalCountryListByStatus($status)
+	public function getGlobalCityListByCountry($countryId)
+	{
+	    static $hasLoaded = false;
+	    
+	    if (!$hasLoaded) {
+	    
+	        $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$countryId.'/cities');
+	        if (200 != $response->getStatusCode()) {
+	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
+	        }
+	    
+	        $this->loadedGlobalCityList = \json_decode($response->getBody(true), true);
+	        $hasLoaded = true;
+	    }
+	    
+	    return $this->loadedGlobalCityList;
+	}
+	
+	public function getGlobalCityListByStatusAndCountry($status, $countryId)
 	{
 	    static $hasLoaded = false;
 	     
 	    if (!$hasLoaded) {
 	         
-	        $response = $this->request->get($this->chromediaLocationApiUri.'/countries/'.$status);
+	        $response = $this->request->get($this->chromediaLocationApiUri.'/country/'.$countryId.'/cities');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
 	         
-	        $this->loadedGlobalCountryList = \json_decode($response->getBody(true), true);
+	        $this->loadedGlobalCityList = \json_decode($response->getBody(true), true);
 	        $hasLoaded = true;
 	    }
-	
-	    return $this->loadedGlobalCountryList;
+	     
+	    return $this->loadedGlobalCityList;
 	}
 	
 	public function getGlobalCitiesListByContry($countryId)

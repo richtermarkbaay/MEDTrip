@@ -78,21 +78,29 @@ class CityController extends Controller
         
         if ($form->isValid()) {
             
-            if(!$city->getId()) {
+            if(!$id) {
+                $data = $request->get('city');
                 
-                $city = $this->get('services.location')->saveGlobalCity($request->get('city'));
-                echo $city;exit;
             }
             else {
-               $em->persist($city);
-               $em->flush($city);
+                $data = array(
+                        'id' => $city->getId(),
+                        'name' => $city->getName(),
+                        'countryId' =>  $city->getCountry()->getId(),
+                        'status' => $city->getStatus()
+                );
             }
-               // dispatch event
-               $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
-               $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
+            $city = $this->get('services.location')->saveGlobalCity($data);
+            $em->persist($city);
+            $em->flush($city);
+            
+            // dispatch event
+            $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
 
-               $request->getSession()->setFlash('success', 'City has been saved!');
-               return $this->redirect($this->generateUrl('admin_city_index'));
+            $request->getSession()->setFlash('success', 'City has been saved!');
+            
+            return $this->redirect($this->generateUrl('admin_city_index'));
         }
         $formAction = $id
             ? $this->generateUrl('admin_city_update', array('id' => $id))

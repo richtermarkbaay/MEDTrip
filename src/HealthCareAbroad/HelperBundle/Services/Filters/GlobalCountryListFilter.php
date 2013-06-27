@@ -31,7 +31,7 @@ class GlobalCountryListFilter extends ListFilter
     }
 
     function buildQueryBuilder()
-    {   
+    {
         $countryList = $this->getInjectedDependcy('services.location')->getGlobalCountryListByStatus($this->queryParams['status']);
         // TODO: Temparary fix for pager array adapter type.
         $this->queryBuilder = $countryList;        

@@ -189,7 +189,6 @@ abstract class ListFilter
             $adapter = new ArrayAdapter($this->queryBuilder);
         }
         
-        
         $params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
         $params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
         

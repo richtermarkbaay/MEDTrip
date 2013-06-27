@@ -446,4 +446,79 @@ class InstitutionService
             $em->flush($institution);
         }
     }
+    
+    public function getInstitutionInquiries(Institution $institution)
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('a')
+        ->from('InstitutionBundle:InstitutionInquiry', 'a')
+        ->add('where', 'a.status != :status')
+        ->andWhere('a.institution = :institution')
+        ->setParameter('status', InstitutionInquiry::STATUS_DELETED)
+        ->setParameter('institution', $institution);
+        
+		return $qb->getQuery()
+		->getResult();
+    }
+    
+    public function getInstitutionInquiriesBySelectedTab(Institution $institution, $tab)
+    {
+        if($tab == "all") {
+            $inquiries = $this->getInstitutionInquiries($institution);
+        }
+        elseif ($tab == "read") {
+            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ); 
+        }
+        else {
+            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD); 
+        }
+        $inquiryArr = array();
+        if(count($inquiries) != 0  ) {
+            foreach ($inquiries as $each) {
+                if($each->getStatus() == '1') {
+                    $status = 'unread';
+                }
+                else {
+                    $status = 'read';
+                }
+                $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
+                                'id' => $each->getId(),
+                                'message' => $each->getMessage(),
+                                'status' => $status,         
+                                'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
+                                'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
+                                'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
+            
+            }
+        }
+        
+        return $inquiryArr;
+    }
+    
+    public function setInstitutionInquiryStatus(InstitutionInquiry $inquiry, $status)
+    {
+        $inquiry->setStatus($status);
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($inquiry);
+        
+        return $em->flush();
+    }
+
+    public function setInstitutionInquiryListStatus($inquiryList, $status)
+    {
+        $inquiryResultsList = $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findById($inquiryList);
+        $em = $this->doctrine->getEntityManager();
+        
+        foreach($inquiryResultsList as $inquiry) {
+            $inquiry->setStatus($status);
+            $em->persist($inquiry);
+        }
+        
+        return $em->flush();
+    }
+    
+    public function getInstitutionInquiriesByStatus(Institution $institution, $status)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findBy(array('institution' => $institution, 'status' => $status));
+    }
 }
