@@ -28,6 +28,8 @@ SearchBundle:
 InstitutionBundle:
     resource: "@InstitutionBundle/Resources/config/routing.yml"
     prefix:   /
+    requirements:
+        _scheme: https
 
 MediaBundle:
     resource: "@MediaBundle/Resources/config/routing.yml"
@@ -52,7 +54,8 @@ UserBundle:
 AdminBundle:
     resource: "@AdminBundle/Resources/config/routing.yml"
     prefix:   /
-
+    requirements:
+        _scheme: https
 
 # Internal routing configuration to handle ESI
 #_internal:
@@ -64,3 +67,5 @@ AdminBundle:
 FrontendBundle:
     resource: "@FrontendBundle/Resources/config/routing.yml"
     prefix:   /
+    requirements:
+        _scheme: http
