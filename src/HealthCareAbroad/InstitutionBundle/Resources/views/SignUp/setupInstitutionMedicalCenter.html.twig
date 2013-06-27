@@ -5,11 +5,13 @@
 {% block content %}
 <div class="row">
     <div class="span12 confirm-msg">
-        <div class="alert alert-info"><h4>Congratulations,
-            <b> {{ institution.name | title }} </b>
-            <span>has been added to</span> HealthcareAbroad.com.</h4> 
-            <p>Next, please add your first clinic profile. You will be able to add all of your clinics at your convenience in future steps.</p>
-        </div>
+         {% if app.session.flashbag.get('callout') %}
+            <div class="alert alert-info"><h4>Congratulations,
+                <b> {{ institution.name | title }} </b>
+                <span>has been added to</span> HealthcareAbroad.com.</h4> 
+                <p>Next, please add your first clinic profile. You will be able to add all of your clinics at your convenience in future steps.</p>
+            </div>
+        {% endif %}
     </div>
     <h1>Add New Clinic</h1>
 
