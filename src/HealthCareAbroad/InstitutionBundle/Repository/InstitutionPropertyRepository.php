@@ -95,7 +95,8 @@ class InstitutionPropertyRepository extends EntityRepository
             ->from('HelperBundle:GlobalAward', 'a')
             ->innerJoin('a.awardingBody', 'b')
             ->where('a.status = :globalAwardActiveStatus' )
-            ->setParameter('globalAwardActiveStatus',GlobalAward::STATUS_ACTIVE);
+            ->setParameter('globalAwardActiveStatus',GlobalAward::STATUS_ACTIVE)
+            ->orderBy('a.name', 'ASC');
         
         if ($options->has('globalAward.name')) {
             $qb->andWhere('a.name LIKE :globalAwardName')
