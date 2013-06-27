@@ -10,7 +10,7 @@ use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
 
-class AdvertisementListFilter extends ListFilter
+class AdvertisementListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -46,7 +46,7 @@ class AdvertisementListFilter extends ListFilter
         );
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('AdvertisementBundle:Advertisement', 'a');
 
@@ -69,5 +69,6 @@ class AdvertisementListFilter extends ListFilter
     	
     	$this->queryBuilder->add('orderBy', $sort);
     	
+    	$this->filteredResult = $this->pager->getResults();
     }
 }

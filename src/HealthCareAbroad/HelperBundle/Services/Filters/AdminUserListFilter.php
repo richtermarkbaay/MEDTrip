@@ -9,7 +9,7 @@ use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
 
-class AdminUserListFilter extends ListFilter
+class AdminUserListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -25,20 +25,22 @@ class AdminUserListFilter extends ListFilter
         //$this->setAdvertisementTypeFilterOption();
 
         //$this->setStatusFilterOption();
-        
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
-        $this->queryBuilder->select('a, b')->from('UserBundle:AdminUser', 'a');
-        $this->queryBuilder->leftJoin('a.adminUserType', 'b');
-        $this->queryBuilder->where('a.status != :status');
-        $this->queryBuilder->setParameter('status', SiteUser::STATUS_INACTIVE);
+        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        
+        $queryBuilder->select('a, b')->from('UserBundle:AdminUser', 'a');
+        $queryBuilder->leftJoin('a.adminUserType', 'b');
+        $queryBuilder->where('a.status != :status');
+        $queryBuilder->setParameter('status', SiteUser::STATUS_INACTIVE);
 
         $sortBy = $this->sortBy ? $this->sortBy : 'status';
         $sort = "a.$sortBy " . $this->sortOrder;
 
-    	$this->queryBuilder->add('orderBy', $sort);
-    	
+    	$queryBuilder->add('orderBy', $sort);
+
+    	$this->filteredResult = $this->pager->getResults();
     }
 }

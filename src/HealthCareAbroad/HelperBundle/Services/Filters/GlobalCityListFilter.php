@@ -49,7 +49,7 @@ class GlobalCityListFilter extends ArrayListFilter
         );
     }
     
-    function setFilterResults()
+    function setFilteredResults()
     {   
         $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList();
 

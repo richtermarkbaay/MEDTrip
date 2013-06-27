@@ -9,15 +9,12 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use Doctrine\ORM\QueryBuilder;
 
-class GlobalCountryListFilter extends ListFilter
+class GlobalCountryListFilter extends ArrayListFilter
 {
 	function __construct($doctrine)
 	{
 		parent::__construct($doctrine);
-		
-		// TODO: Temparary fix for pager array adapter type.
-		$this->dataType = 'array';
-	
+
 		// set default status filter to active
 		$this->defaultParams = array('status' => Country::STATUS_ACTIVE);
 	
@@ -30,10 +27,12 @@ class GlobalCountryListFilter extends ListFilter
         $this->setStatusFilterOption();
     }
 
-    function buildQueryBuilder()
+    function setFilterResults()
     {
         $countryList = $this->getInjectedDependcy('services.location')->getGlobalCountryListByStatus($this->queryParams['status']);
-        // TODO: Temparary fix for pager array adapter type.
-        $this->queryBuilder = $countryList;        
+
+        $this->pager->getAdapter()->setArray($countryList);
+
+        $this->filteredResult = $this->pager->getResults();
     }
 }

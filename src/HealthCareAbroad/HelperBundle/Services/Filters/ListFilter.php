@@ -6,15 +6,12 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
-
 use HealthCareAbroad\HelperBundle\Exception\ListFilterException;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\ORM\QueryBuilder;
 use HealthCareAbroad\PagerBundle\Pager;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 
 abstract class ListFilter
 {
@@ -177,30 +174,5 @@ abstract class ListFilter
     function getPager()
     {
         return $this->pager;
-    }
-}
-
-
-abstract class DoctrineOrmListFilter extends ListFilter {
-
-    abstract function setFilterOptions();
-    
-    public function __construct($doctrine)
-    {
-        $this->doctrine = $doctrine;
-
-        $queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
-
-        $this->pagerAdapter = new DoctrineOrmAdapter($queryBuilder);
-    }
-}
-
-abstract class ArrayListFilter extends ListFilter {
-    
-    abstract function setFilterOptions();
-    
-    public function __construct()
-    {
-        $this->pagerAdapter = new ArrayAdapter();
     }
 }

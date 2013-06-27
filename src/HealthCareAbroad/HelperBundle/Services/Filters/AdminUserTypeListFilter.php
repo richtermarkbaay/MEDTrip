@@ -9,7 +9,7 @@ use HealthCareAbroad\UserBundle\Entity\AdminUserType;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementTypes;
 
-class AdminUserTypeListFilter extends ListFilter
+class AdminUserTypeListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -28,7 +28,7 @@ class AdminUserTypeListFilter extends ListFilter
         
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('UserBundle:AdminUserType', 'a');
         $this->queryBuilder->where('a.status = :active OR a.status = :inactive');
@@ -40,5 +40,6 @@ class AdminUserTypeListFilter extends ListFilter
 
     	$this->queryBuilder->add('orderBy', $sort);
     	
+    	$this->filteredResult = $this->pager->getResults();
     }
 }

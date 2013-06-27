@@ -109,7 +109,7 @@ class LocationService
 	
 	    if (!$hasLoaded) {
 	
-	        $response = $this->request->get($this->chromediaApiUri.'/countries/'.$status);
+	        $response = $this->request->get($this->chromediaApiUri.'/countries');
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }

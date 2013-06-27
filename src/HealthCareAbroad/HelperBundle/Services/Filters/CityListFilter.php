@@ -39,7 +39,7 @@ class CityListFilter extends ListFilter
         );
     }
 
-    function buildQueryBuilder()
+    function filterResults()
     {   
         $this->queryBuilder->select('a')->from('HelperBundle:City', 'a');
 
@@ -62,5 +62,7 @@ class CityListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+
+        $this->filteredResult = $this->pager->getResults();
     }
 }
