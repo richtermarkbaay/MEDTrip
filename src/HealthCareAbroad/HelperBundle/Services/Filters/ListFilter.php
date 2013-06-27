@@ -38,19 +38,10 @@ abstract class ListFilter
     protected $filterOptions = array();
 
     protected $filteredResult = array();
-    
-    
-    /**
-     * TODO: Temporary fix for array result data type
-     */
-    protected $dataType = 'queryBuilder';
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
 
     protected $pager;
+    
+    protected $pagerAdapter;
 
     protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
     
@@ -69,17 +60,6 @@ abstract class ListFilter
      * @var array
      */
     protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL);
-
-    public function __construct($doctrine)
-    {
-        $this->doctrine = $doctrine;
-        $this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
-    }
-
-    abstract function setFilterOptions();
-
-    abstract function buildQueryBuilder();
-    
     
     final public function getServiceDependencies()
     {
@@ -107,15 +87,15 @@ abstract class ListFilter
      */
     function prepare($queryParams = array())
     {
+        $this->setPager();
+        
         $this->setQueryParamsAndCriteria($queryParams);
 
         $this->setFilterOptions();
 
-        $this->buildQueryBuilder();
+        //$this->buildQueryBuilder();
 
-        $this->setPager();
-
-        $this->setFilteredResult();
+        $this->setFilterResults();
     }
 
     /**
@@ -180,25 +160,10 @@ abstract class ListFilter
 
     function setPager()
     {
-        
-        // TODO: must change implementation
-        if($this->dataType == 'queryBuilder') {
-            $adapter = new DoctrineOrmAdapter($this->queryBuilder);            
-        } else if($this->dataType == 'array') {
-            // TODO: temporary fix
-            $adapter = new ArrayAdapter($this->queryBuilder);
-        }
-        
         $params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
         $params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
-        
-        $this->pager = new Pager($adapter, $params);
-        $this->pager->setAdapter($adapter);
-    }
 
-    function setFilteredResult()
-    {
-        $this->filteredResult = $this->pager->getResults();
+        $this->pager = new Pager($this->pagerAdapter, $params);
     }
 
     /**
@@ -212,5 +177,30 @@ abstract class ListFilter
     function getPager()
     {
         return $this->pager;
+    }
+}
+
+
+abstract class DoctrineOrmListFilter extends ListFilter {
+
+    abstract function setFilterOptions();
+    
+    public function __construct($doctrine)
+    {
+        $this->doctrine = $doctrine;
+
+        $queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
+
+        $this->pagerAdapter = new DoctrineOrmAdapter($queryBuilder);
+    }
+}
+
+abstract class ArrayListFilter extends ListFilter {
+    
+    abstract function setFilterOptions();
+    
+    public function __construct()
+    {
+        $this->pagerAdapter = new ArrayAdapter();
     }
 }
