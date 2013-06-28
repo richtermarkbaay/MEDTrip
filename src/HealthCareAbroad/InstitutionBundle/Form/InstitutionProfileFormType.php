@@ -119,11 +119,11 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
-        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Hospital Email Address ', 'required' => false));
+        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'contact_number_with_flag', 'constraints'=>array(new NotBlank())));
-        $this->_add($builder, 'websites', 'text', array('label' => 'Hospital Website ' , 'required' => false));
+        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false));
