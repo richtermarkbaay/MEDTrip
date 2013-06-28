@@ -13,17 +13,31 @@
         	{% block sectionContent %}
 			      {% include '::notice.admin.html.twig' %}
 				<form novalidate="novalidate" action="{{ path('admin_institution_edit_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
-				    {{ form_errors(form) }}
-		            {{ form_row( form.name ) }}
+    				 {% if error %}
+                        <div class="alert alert-error">
+                            {% for each in error_list %}
+                              {{ each }} <br>
+                           {% endfor %}
+                        </div>
+                     {% endif %}
+		            <div class="name control-group {{ (form.name.vars.valid ? '' : 'error') }}">
+                        <label for="name"> Medical Institution Name  </label>
+                        {{ form_widget(form.name, {'attr': {class: 'span6'} })  }}
+                    </div>
                     {{ form_row( form.description, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
-                     <div class="control-group">
+                    <div class="control-group">
                         <label for="network-group">  Medical Provider Group/Network </label>
                             {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
                          <div id="autoDiv">
                          </div>
                     </div>
                     {{ form_row( form.type ) }}
-                    {{ form_row( form.contactEmail ) }}
+                    <div class="contactEmail control-group {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                        <label for="{{ form.children.contactEmail.vars.id }}">
+                            {{ form.children.contactEmail.vars.label }}
+                        </label>
+                        {{ form_widget( form.contactEmail ) }}
+                    </div>
                     <div class="row-fluid">
                         {% for _widget in form.contactDetails %}
                             {{ form_widget(_widget) }}
@@ -35,7 +49,7 @@
                     <h5 style="margin-bottom: 10px;"> Institution Address </h5>
                     {{ form_widget( form.address1 ) }}
                      <div class="span12">
-                        <div class="span4 control-group {{ (form.address1.vars.valid ? '' : 'error') }}">
+                        <div class="span4 control-group {{ (form.country.vars.valid ? '' : 'error') }}">
                              <label for="{{ form.children.country.vars.id }}">
                                 {{ form.children.country.vars.label }} *
                             </label>

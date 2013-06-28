@@ -231,7 +231,7 @@ class InstitutionController extends Controller
 	        unset($formVariables['_token']);
 	        $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
 	        
-	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
 	        $formRequestData = $request->get($form->getName());
 	        if (isset($formRequestData['medicalProviderGroups']) ) {
 	            // we always expect 1 medical provider group
@@ -274,6 +274,8 @@ class InstitutionController extends Controller
      */
     public function editDetailsAction(Request $request)
     {
+        $error = false;
+        $errorArr = array();
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $medicalProviderGroupArr = array();
         
@@ -286,14 +288,16 @@ class InstitutionController extends Controller
             $contactDetails->setType(ContactDetailTypes::PHONE);
             $this->institution->addContactDetail($contactDetails);
         }
-        
+        if ($request->isMethod('GET')) {
+            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false , 'validation_groups' => false));
+        }
     	if ($request->isMethod('POST')) {
     	    
     	    $formVariables = $request->get(InstitutionProfileFormType::NAME);
     	    unset($formVariables['_token']);
     	    $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
     	   
-    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields,'validation_groups' => false));
     	    $formRequestData = $request->get($form->getName());
     	    if (isset($formRequestData['medicalProviderGroups']) ) {
     	        // we always expect 1 medical provider group
@@ -311,13 +315,22 @@ class InstitutionController extends Controller
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
+    		}else{
+        	    $error = true;
+                $form_errors = $this->get('validator')->validate($form);
+                if($form_errors){
+                    foreach ($form_errors as $_err) {
+                        $errorArr[] = $_err->getMessage();
+                    }
+                }
     		}
     	}
-    	$form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')));
     	return $this->render('AdminBundle:Institution:editDetails.html.twig', array(
 			'form' => $form->createView(),
 			'institution' => $this->institution,
-            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+            'error' => $error,
+            'error_list' => $errorArr,
     	));
     }
     
