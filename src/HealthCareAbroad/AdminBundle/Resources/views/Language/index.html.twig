@@ -34,7 +34,7 @@
                             <td>{{ each.name }}</td>
                             <td>{{ each.isoCode }}</td>
                             <td>
-                                <ul style="list-style: none;">
+                                <ul class="table-action">
                                     <li><a href="{{ path('admin_language_edit', { id:each.id } ) }}" class="add-edit-language"> <i class="icon-edit"></i> Edit</a></li>
                                     <li>
                                         {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}

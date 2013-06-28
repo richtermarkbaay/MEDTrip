@@ -32,7 +32,7 @@
                         <td>{{ each.name }}</td>
                         <td>{{ each.description | raw }}</td>
                         <td>
-                            <ul style="list-style: none;">
+                            <ul class="table-action">
                                 <li><a href="{{ path('admin_specialization_edit', {id: each.id} ) }}"> <i class="icon-edit"></i> Edit</a></li>
                                 <li>
                                     {% set status = each.status == activeStatus ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
