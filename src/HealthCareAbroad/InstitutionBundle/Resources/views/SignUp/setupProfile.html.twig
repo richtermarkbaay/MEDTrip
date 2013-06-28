@@ -2,7 +2,7 @@
          {% if app.session.flashbag.get('callout') %}
             <div class="span12 confirm-msg">
                 <div class="alert alert-info">
-                    {{  app.session.flash('callout') | raw }}
+                    {{  app.session.flashbag.get('callout') | raw }}
                     <p>Next, please add details about the {{ label }} that you wish to add to HealthcareAbroad.com</p>
                 </div>
             </div>
