@@ -210,7 +210,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
                 $this->get('security.context')->setToken($securityToken);
                 $institutionUserService->setSessionVariables($institutionUser);
-                $request->getSession()->setFlash('callout', "<h4>Congratulations, <b> Your personal account was successfully created!</b></h4>");
+                $request->getSession()->setFlash('callout', "");
                 $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have successfully setup your personal account."); //set flash message
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
