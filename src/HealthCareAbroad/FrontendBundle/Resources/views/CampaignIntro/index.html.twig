@@ -1,8 +1,8 @@
   {% extends 'FrontendBundle::layout.campaign.html.twig' %}
   {% block content %}
- <!-- Home starts -->
+ <!-- Home starts 
     <div id="home_superslide">
-        <!-- Container starts -->
+
         <div class="container">
             <a href="http://www.healthcareabroad.com/" targe="_blank"><img src="{{ asset('images/frontend/campaign/healthcareabroad-logo-big.png') }}" alt="client_1" /></a>
             <h1>
@@ -18,11 +18,10 @@
                 directory
             </h1>
         </div>
-        <!-- // Container -->
         <div class="clr">
         </div>
     </div>
-    <!-- Home end -->
+    Home end -->
     <!-- Menu starts -->
     <div id="menu" class="row-fluid">
         <!-- Content wrapper starts -->
@@ -395,10 +394,10 @@
                         class="circle a-home">A</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-search'></i>Modern, clear, search function</h2>Predictive text and drop boxes provide fast, easy, and accurate access to HealthcareAbroad.com directories. Multiple input methods allow users to search in whatever manner is most natural and intuitive to them."
                         class="circle b-home">B</a>
-                        <a data-toggle="popover" data-content="<h2><i class='icon-asterisk'></i>The Showcase Feature</h2>This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features. <!--<b>$3,000/year</b> <span class='seal'>&nbsp;</span>--><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle c-home">C</a>
+                        <a data-toggle="popover" data-content="<h2><i class='icon-asterisk'></i>The Showcase Feature</h2>This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features. <em>Great value and high traffic. Not many spots left.</em><!--<b>$3,000/year</b>--> <span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle c-home">C</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Instant Access to high quality content</h2>Links to guides, news, travel information, and educational pieces add value for site visitors, and help educate and encourage further exploration."
                         class="circle d-home">D</a>
-                        <a data-toggle="popover" data-content="<h2><i class='icon-medkit'></i>Homepage Featured Clinic</h2>A listing with text, a photo, logo, and 2 key points. An excellent way to drive awareness and traffic. Limited to 6 features. Subscription is based on a calendar month. <!--<b>$1,000/year</b> <span class='seal'>&nbsp;</span>--><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle e-home">E</a>
+                        <a data-toggle="popover" data-content="<h2><i class='icon-medkit'></i>Homepage Featured Clinic</h2>A listing with text, a photo, logo, and 2 key points. An excellent way to drive awareness and traffic. Limited to 6 features. Subscription is based on a calendar month. <em>First come first served. Months are already filling up through the next year.</em><!--<b>$1,000/year</b>--> <span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle e-home">E</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-beaker'></i>Common Treatments</h2>Picked by editors based on search volume and trends, this list of Common Treatments with description gives site visitors another way to find services they may be interested in."
                         class="circle f-home">F</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-picture'></i>Side Column Media Feature</h2>Either a high quality photo advertisement, or a short promotional video can be embedded here. Helps reinforce brand recognition and presence.<!--<b>$500/month</b>--><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle g-home">G</a>
@@ -521,38 +520,62 @@
                 <h3>Advertising Opportunities:</h3>
                     <div class="media">
                         <span class="circle pull-left">C</span>
-                        <div class="media-body">
-                           
-                                <h4>The Showcase Feature<br>
-                                    <small>
-                                    This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features.<!-- <span><a href="http://www.healthcareabroad.com/advertising-inquiry.html">Great value and high traffic. Not many spots left.</a></span> -->
+                            <div class="media-body">
+                                <div class="media-content">
+                                    <h4>
+                                        The Showcase Feature
+                                        <br>
+                                        <small>
+                                            This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features.
+
+                                            <span class="alert alert-block span7">
+                                               <i class="icon-info-sign icon-2x"></i><em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Great value and high traffic. Not many spots left.</a>
+                                            </em></span>
+                                  
                                     </small>
                                     <!--<b>$3,000/year</b>-->
-                                </h4>
-                           
-                            <!--<div class="media-image pull-right">
-                                <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
-                            </div>-->
+                                        </small>
+                                    </h4>
+                                </div>
+                                <div class="media-image pull-right">
+                                    <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="clr">&nbsp;</div>
-                    <div class="media">
+                        <div class="clr">
+                            &nbsp;
+                        </div>
+
+                             <div class="media">
                         <span class="circle pull-left">E</span>
-                        <div class="media-body">
-                            
-                                <h4>Homepage Featured Clinic<br>
-                                    <small>
-                                        A listing with text, a photo, logo, and 2 key points. An excellent way to drive awareness and traffic. Limited to 6 features.Subscription is based on a calendar month.<!-- <span><a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a></span> -->
+                            <div class="media-body">
+                                <div class="media-content">
+                                    <h4>
+                                        Homepage Featured Clinic
+                                        <br>
+                                        <small>
+                                        A listing with text, a photo, logo, and 2 key points. An excellent way to drive awareness and traffic. Limited to 6 features.Subscription is based on a calendar month.
+
+                                  
+
+                                         <span class="alert alert-block span7">
+                                               <i class="icon-info-sign icon-2x"></i><em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a>
+                                            </em></span>
                                     </small>
                                     <!--<b>$1,000/year</b>-->
-                                </h4>
-                           
-                            <!--<div class="media-image pull-right">
-                            <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
-
-                            </div>-->
+                                    </h4>
+                                </div>
+                                <div class="media-image pull-right">
+                                    <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="clr">
+                            &nbsp;
+                        </div>
+
+
+
                             <div class="media">
                                 <span class="circle pull-left">
                                     G
@@ -624,18 +647,21 @@
             <div class="image-map-homepage">
                 <img src="{{ asset('images/frontend/campaign/healthcareabroad-results.jpg') }}" alt="client_1" />
                 <div id="parts-images">
-                    <a data-toggle="popover" data-content="<h2><i class='icon-medkit'></i>Results Page Featured Clinic </h2> A targeted highly visible option for a month-long burst of traffic on a specific speciality, country, city or combination search results page. This feature is at the top of the page and includes a description, logo, photo and 2 highlights with thumbnail images.<!--<span class='seal'>&nbsp;</span>--><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle a-results">A</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-picture'></i>Logo and Photo Package (Top Tier)</h2>A Logo and Photo Package includes all of the same features as a Logo Package with the addition of a photo embedded into your results page listing. This package gets your listing in the top tier of the results page insuring your clinic gets high traffic all year long. On our results page, the addition of a photo side-by-side with your Listing and Logo, improves interest and reinforces brand awareness to entice potential patients. These benefits are global, meaning they are seen everywhere your listing shows up in our results pages.<br><b>$1,000/year, less than $3 per day</b>. <br>Discounts apply for multiple clinic listings. Inquire for details.<span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>"
-                    class="circle c-results">C</a>
+                    <a data-toggle="popover" data-content="<h2><i class='icon-medkit'></i>Results Page Featured Clinic </h2> A targeted highly visible option for a month-long burst of traffic on a specific speciality, country, city or combination search results page. This feature is at the top of the page and includes a description, logo, photo and 2 highlights with thumbnail images.<em>Waitlists for some areas. Contact us for availability.</em><span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle a-results">A</a>
+
+                    <a data-toggle="popover" data-content="<h2><i class='icon-picture'></i>Logo and Photo Package (Top Tier)</h2>A Logo and Photo Package includes all of the same features as a Logo Package with the addition of a photo embedded into your results page listing. This package gets your listing in the top tier of the results page insuring your clinic gets high traffic all year long. On our results page, the addition of a photo side-by-side with your Listing and Logo, improves interest and reinforces brand awareness to entice potential patients. These benefits are global, meaning they are seen everywhere your listing shows up in our results pages.<br><b>$1,000/year, less than $3 per day</b>.<em>Discounts apply for multiple clinic listings. First come first served. Months are already filling up through the next year.</em><span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>" class="circle c-results">C</a>
+
                     <a data-toggle="popover" data-content="<h2><i class='icon-search'></i>Filter Search -</h2>Allows site visitors to easily zero in on a clinic by selecting the treatment, country, or the city that they are interested in."
                     class="circle b-results">B</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-cog'></i>Results Global Media Ad</h2>The Results Global Media Ad appears sitewide for all searches, regardless of specialization or destination. It is not result specific. It is also the only advertising space available to non-clinics. Due to its wide reaching exposure this ad is limited to a rotation of 5 and those advertisers may only buy 2 months out of 12. Finally, priority for this ad space is given to non-clinic or non-hospital advertisers.<a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>"
-                    class="circle d-results">D</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Logo Package (Middle Tier)</h2>A Logo Package includes all of the same features as a Linked Clinic Listing with the important brand building element of your logo on the results page. The addition of a logo side-by-side with your Listing helps boost attention, retention, and recognition. <b>Additionally, this package gets your listing in the 2nd tier of the results page.</b> These benefits are global, meaning they are seen everywhere your listing shows up in our results pages. <br>$700/year, <b>less than $2 per day</b>. <br>Discounts apply for multiple clinic listings. Inquire for details.<span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>"
+
+                    <a data-toggle="popover" data-content="<h2><i class='icon-cog'></i>Results Global Media Ad</h2>The Results Global Media Ad appears sitewide for all searches, regardless of specialization or destination. It is not result specific. It is also the only advertising space available to non-clinics. Due to its wide reaching exposure this ad is limited to a rotation of 5 and those advertisers may only buy 2 months out of 12. Finally, priority for this ad space is given to non-clinic or non-hospital advertisers.<em>First come first served. Months are already filling up through the next year.</em><span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>" class="circle d-results">D</a>
+
+                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Logo Package (Middle Tier)</h2>A Logo Package includes all of the same features as a Linked Clinic Listing with the important brand building element of your logo on the results page. The addition of a logo side-by-side with your Listing helps boost attention, retention, and recognition. <u>Additionally, this package gets your listing in the 2nd tier of the results page.</u> These benefits are global, meaning they are seen everywhere your listing shows up in our results pages. <br><b>$700/year, less than $2 per day</b>. <em>Discounts apply for multiple clinic listings. First come first served. Months are already filling up through the next year.</em><span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>"
                     class="circle e-results">E</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Listing Upgrade - Linked Clinic (Base Tier)</h2>A Linked Listing includes all of the same features as a Forever Free Clinic Listing with many additional benefits to build your brand and make it much easier for you to directly reach your patients. On the Clinic Profile page, patients can connect to your clinic through social media, web links, and have access to your phone number. Strengthen your clinic’s brand by including a cover photo, logo, photo gallery, and videos on your Clinic Profile page. On the Results Page, this ad option boosts a listing’s ranking into the 3rd tier on the page, above all the free listings. The best part is that these benefits are global, meaning they are seen everywhere your listing shows up in our results pages. <br><b>ONLY $300/year, less than $1 per day</b>. <br>Discounts apply for multiple clinic listings. Inquire for details.<span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>"
+
+                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Listing Upgrade - Linked Clinic (Base Tier)</h2>A Linked Listing includes all of the same features as a Forever Free Clinic Listing with many additional benefits to build your brand and make it much easier for you to directly reach your patients. On the Clinic Profile page, patients can connect to your clinic through social media, web links, and have access to your phone number. Strengthen your clinic’s brand by including a cover photo, logo, photo gallery, and videos on your Clinic Profile page. On the Results Page, this ad option boosts a listing’s ranking into the 3rd tier on the page, above all the free listings. The best part is that these benefits are global, meaning they are seen everywhere your listing shows up in our results pages. <br><b>ONLY $300/year, less than $1 per day</b>. <em>Discounts apply for multiple clinic listings.</em><span class='seal'>&nbsp;</span><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>Inquire for details.</a>"
                     class="circle f-results">F</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Basic Forever Free Listing (Bottom Tier)</h2>Your clinic will be displayed with an abbreviated description with a link to view the full details on your clinic page. This page will show the services, certifications, treatments, address and location of your clinic. Doctors can be added to your listing along with their training, specializations, and awards. All of these details can be controlled through a easy-to-use, intelligent client interface. <b>Prospective Patients are able to contact your clinic for free through our Email contact form.</b><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>"class="circle g-results">G</a>
+                    <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Basic Forever Free Listing (Bottom Tier)</h2>Your clinic will be displayed with an abbreviated description with a link to view the full details on your clinic page. This page will show the services, certifications, treatments, address and location of your clinic. Doctors can be added to your listing along with their training, specializations, and awards. All of these details can be controlled through a easy-to-use, intelligent client interface. <em>Prospective Patients are able to contact your clinic for free through our Email contact form.</em><a href='http://www.healthcareabroad.com/advertising-inquiry.html' class='btn btn-large btn-hca-inquire'>INQUIRE FOR PRICING <br>and Availability</a>"class="circle g-results">G</a>
                 </div>
             </div>
             <h1>
@@ -665,22 +691,26 @@
                         <h3>
                             Advertising Opportunities:
                         </h3>
-                        <div class="media">
-                            <span class="circle pull-left">
-                                A
-                            </span>
+
+                                                     <div class="media">
+                        <span class="circle pull-left">A</span>
                             <div class="media-body">
-                                <h4>
-                                    Results Page Featured Clinic
-                                    <br>
-                                    <small>
-                                        A targeted highly visible option for a month-long burst of traffic on a specific
+                                <div class="media-content">
+                                    <h4>
+                                        Results Page Featured Clinic
+                                        <br>
+                                        <small>
+                                        <small>
+                                            A targeted highly visible option for a month-long burst of traffic on a specific
                                         speciality, country, city or combination search results page. This feature is at
                                         the top of the page and includes a description, logo, photo and 2 highlights with
                                         thumbnail images.
                                         <!-- <span>
                                             <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Waitlists for some areas. Contact us for availability.</a>
                                         </span> -->
+                                               <span class="alert alert-block span7">
+                                               <i class="icon-info-sign icon-2x"></i><em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Waitlists for some areas. Contact us for availability.</a>
+                                            </em></span>
                                         <span>
                                             <!--Packages start at
                                             <b>
@@ -688,14 +718,18 @@
                                             </b> -->
                                         </span>
                                     </small>
-                                </h4>
-                                <p>
-                                </p>
+                                    <!--<b>$500/month.</b>-->
+                                    </h4>
+                                </div>
+                                <div class="media-image pull-right">
+                                    <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
+                                </div>
                             </div>
                         </div>
                         <div class="clr">
                             &nbsp;
                         </div>
+
                         <div class="media">
                             <span class="circle pull-left">
                                 C
@@ -703,7 +737,7 @@
                             <div class="media-body">
                                 <div class="media-content">
                                     <h4>
-                                        Logo and Photo Package (Top Tier)
+                                        Listing Upgrade - Logo and Photo Package (Top Tier)
                                         <br>
                                         <small>
                                             A Logo and Photo Package includes all of the same features as a Logo Package with
@@ -716,17 +750,15 @@
                                             brand awareness to entice potential patients. These benefits are global, meaning
                                             they are seen everywhere your listing shows up in our results pages.
                                             <b>
-                                                $1,000/year,
-                                            </b>
-                                            <span>
-                                                <b>
-                                                    less than $3 per day
-                                                </b>
-                                                . Discounts apply for multiple clinic listings. Inquire for details.
-                                            </span>
-                                            <!-- <span>
-                                                <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a>
-                                            </span> -->
+                                                $1,000/year, less than $3 per day
+                                            </b>. <br>
+                                            <span class="alert alert-block span7">
+                                               <i class="icon-info-sign icon-2x"></i><em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Discounts apply for multiple clinic listings. Inquire for details.
+                                            <br>
+                                             
+                                            First come first served. Months are already filling up through the next year.</a>
+                                            </em></span>
+
                                         </small>
                                     </h4>
                                 </div>
@@ -745,7 +777,7 @@
                             <div class="media-body">
                                 <div class="media-content">
                                     <h4>
-                                        Logo Package (Middle Tier)
+                                        Listing Upgrade - Logo Package (Middle Tier)
                                         <br>
                                         <small>
                                             A Logo Package includes all of the same features as a Linked Clinic Listing with
@@ -755,14 +787,17 @@
                                                 Additionally, this package gets your listing in the 2nd tier of the results page.
                                             </b>
                                             These benefits are global, meaning they are seen everywhere your listing shows up
-                                            in our results pages. $700/year,
+                                            in our results pages. 
                                             <b>
-                                                less than $2 per day
+                                               $700/year, less than $2 per day
                                             </b>
-                                            . Discounts apply for multiple clinic listings. Inquire for details.
-                                            <!-- <span>
-                                                <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a>
-                                            </span> -->
+                                            . 
+                                            <span class="alert alert-block span7">
+                                              <i class="icon-info-sign icon-2x"></i> <em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Discounts apply for multiple clinic listings. Inquire for details.
+                                            <br>
+                                             
+                                            First come first served. Months are already filling up through the next year.</a>
+                                            </em></span>
                                         </small>
                                     </h4>
                                 </div>
@@ -795,16 +830,56 @@
                                             listing shows up in our results pages.
                                             <b>
                                                 ONLY
-                                            </b>
+                                         
                                             $300/year,
-                                            <b>
+                                           
                                                 less than $1 per day
                                             </b>
-                                            . Discounts apply for multiple clinic listings. Inquire for details.
-                                            <!-- <span>
-                                                <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a>
-                                            </span> -->
+                                            . 
+                                        
+                                                 <span class="alert alert-block span7">
+                                               <i class="icon-info-sign icon-2x"></i><em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">Discounts apply for multiple clinic listings. Inquire for details.
+                                           </a>
+                                            </em></span>
+                                            
+                                            
+
                                         </small>
+                                    </h4>
+                                </div>
+                                <div class="media-image pull-right">
+                                    <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="clr">
+                            &nbsp;
+                        </div>
+
+
+                        <div class="media">
+                        <span class="circle pull-left">D</span>
+                            <div class="media-body">
+                                <div class="media-content">
+                                    <h4>
+                                        Results Global Media Ad
+                                        <br>
+                                    
+                                        <small>
+                                            The Results Global Media Ad appears sitewide for all searches, regardless of specialization
+                                            or destination. It is not result specific. It is also the only advertising space
+                                            available to non-clinics. Due to its wide reaching exposure this ad is limited to
+                                            a rotation of 5 and those advertisers may only buy 2 months out of 12. Finally, priority
+                                            for this ad space is given to non-clinic or non-hospital advertisers.
+                                             <span class="alert alert-block span7">
+                                             <i class="icon-info-sign icon-2x"></i>
+                                               <em> <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.
+                                           </a>
+                                            </em></span>
+                                    </small>
+                                    <!--<b>$500/month.</b>-->
                                     </h4>
                                 </div>
                                 <div class="media-image pull-right">
@@ -815,35 +890,9 @@
                         <div class="clr">
                             &nbsp;
                         </div>
-                        <div class="media">
-                            <span class="circle pull-left">
-                                D
-                            </span>
-                            <div class="media-body">
-                             
-                                    <h4>
-                                        Results Global Media Ad
-                                        <br>
-                                        <small>
-                                            The Results Global Media Ad appears sitewide for all searches, regardless of specialization
-                                            or destination. It is not result specific. It is also the only advertising space
-                                            available to non-clinics. Due to its wide reaching exposure this ad is limited to
-                                            a rotation of 5 and those advertisers may only buy 2 months out of 12. Finally, priority
-                                            for this ad space is given to non-clinic or non-hospital advertisers.
-                                            <!-- <span>
-                                                <a href="http://www.healthcareabroad.com/advertising-inquiry.html">First come first served. Months are already filling up through the next year.</a>
-                                            </span> -->
-                                        </small>
-                                         <!--<b>
-                                            $2000/month
-                                        </b> -->
-                                    </h4>
-                             
-                                 <!--<div class="media-image pull-right">
-                                    <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" />
-                                </div>-->
-                            </div>
-                        </div>
+
+
+                        
                         <div class="media">
                             <span class="circle pull-left">
                                 G
@@ -861,22 +910,21 @@
                                         the full details on your clinic page. This page will show the services, certifications,
                                         treatments, address and location of your clinic. Doctors can be added to your listing
                                         along with their training, specializations, and awards. All of these details can
-                                        be controlled through a easy-to-use, intelligent client interface.
-                                    </small>
-                                    <b>
+                                        be controlled through a easy-to-use, intelligent client interface.    <b>
                                         Prospective Patients are able to contact your clinic for free through our Email
                                         contact form.
                                     </b>
+                                    </small>
+                                
                                 </h4>
-                                <p>
-                                </p>
+                                
                             </div>
                         </div>
                         <br>
                         <br>
                         <section id="content">
                             <div class="container" style="padding-left:0; padding-right:0">
-                            <h3>Compare The Benefits Of Upgrading Your Clinic Listing</h3>
+                            <h3>Compare The Benefits Of Upgrading Your Clinic Listing On the Results Page</h3>
                             <hr>
                                 <div class="row-fluid">
                                     <div class="span12">
@@ -885,14 +933,13 @@
                                                 <div class="pricing-heading alert alert-block">
                                                     <h4>
                                                         Forever Free Listing
-                                                        <small>
-                                                            (Bottom Tier)
-                                                        </small>
+                                     
                                                     </h4>
                                                 </div>
+                                                
                                                 <div class="pricing-terms">
                                                     <h4>
-                                                        On the Results Page
+                                                        Bottom Tier
                                                     </h4>
                                                 </div>
                                                 <div class="pricing-content">
@@ -919,14 +966,13 @@
                                                 <div class="pricing-heading alert alert-success">
                                                     <h4>
                                                         Linked Clinic Listing
-                                                        <small>
-                                                            (Base Tier)
-                                                        </small>
+                                          
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
+                                                
+                                                 <div class="pricing-terms">
                                                     <h4>
-                                                        On the Results Page
+                                                        Base Tier
                                                     </h4>
                                                 </div>
                                                 <div class="pricing-content">
@@ -953,15 +999,13 @@
                                                 <div class="pricing-heading alert alert-info">
                                                     <h4>
                                                         Logo Package
-                                                        <br>
-                                                        <small>
-                                                            (Middle Tier)
-                                                        </small>
+                                                
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
+                                                
+                                                 <div class="pricing-terms">
                                                     <h4>
-                                                        On the Results Page
+                                                        Middle Tier
                                                     </h4>
                                                 </div>
                                                 <div class="pricing-content">
@@ -992,15 +1036,14 @@
                                             <div class="pricing-box-alt">
                                                 <div class="pricing-heading alert alert-danger">
                                                     <h4>
-                                                        Logo and Photo Package
-                                                        <small>
-                                                            (Top Tier)
-                                                        </small>
+                                                        Logo &amp; Photo Package
+                                                  
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
+                                                
+                                                 <div class="pricing-terms">
                                                     <h4>
-                                                        On the Results Page
+                                                       Top Tier
                                                     </h4>
                                                 </div>
                                                 <div class="pricing-content">
@@ -1168,9 +1211,7 @@
                                         Long-form Description
                                         <br>
                                         <small>
-                                            All the information about your clinic that a visitor may
-want to know. The history, the capacity, the capabilities and technologies.
-This is your chance to set your clinic apart.
+                                            All the information about your clinic that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your chance to set your clinic apart.
                                         </small>
                                     </h4>
                                     <p>
@@ -1247,10 +1288,18 @@ This is your chance to set your clinic apart.
                                 </div>
                             </div>
                             <br>
-                            <h3>
-                                Advertising Opportunities (All Included with a Linked Listing on Results
-                                page):
-                            </h3>
+                            <div class="row-fluid">
+                                <div class="span9">
+                                    <h1 style="padding-top:60px;">
+                                        Advertising Opportunities <br><small>(Included with a Listing Upgrade Package):</small>
+                                    </h1>
+                                </div>
+                                <div class="span3">
+                                    <div class="media-image pull-right">
+                                        <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" class="guarantee-title"/>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="media">
                                 <span class="circle pull-left">
                                     B
@@ -1326,7 +1375,7 @@ This is your chance to set your clinic apart.
                         <section id="content">
 
                             <div class="container" style="padding-left:0; padding-right:0">
-                            <h3>Benefits of upgrading your Clinic Listing</h3>
+                            <h3>Benefits of upgrading your Clinic Listing On the Clinic Profile Page</h3>
                             <hr>
                                 <div class="row-fluid">
                                     <div class="span12">
@@ -1337,11 +1386,7 @@ This is your chance to set your clinic apart.
                                                         Forever Free Listing
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Clinic <br>Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -1407,11 +1452,7 @@ This is your chance to set your clinic apart.
                                                         Linked Clinic Listing
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Clinic <br>Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -1511,11 +1552,7 @@ This is your chance to set your clinic apart.
                                                         Logo Package
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Clinic <br>Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -1615,11 +1652,7 @@ This is your chance to set your clinic apart.
                                                         Logo &#38; Photo Package
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Clinic <br>Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -1889,27 +1922,33 @@ This is your chance to set your clinic apart.
                     </p>
                 </div>
             </div>
-                                        <div class="media">
-                    <span class="circle pull-left">
-                        F
-                    </span>
-                    <div class="media-body">
-                        <h4>
-                            Map Location of Hospital
-                            <br>
-                            <small>
-                                Using Google Maps we mark the location of your hospital to build validity and credibility.
-                            </small>
-                        </h4>
-                        <p>
-                        </p>
+            <div class="media">
+                <span class="circle pull-left">
+                    F
+                </span>
+                <div class="media-body">
+                    <h4>
+                        Map Location of Hospital
+                        <br>
+                        <small>
+                            Using Google Maps we mark the location of your hospital to build validity and credibility.
+                        </small>
+                    </h4>
+                </div>
+            </div>
+            <div class="row-fluid">
+                <div class="span9">
+                    <h1 style="padding-top:60px;">
+                        Advertising Opportunities <br><small>(Included with a Listing Upgrade Package):</small>
+                    </h1>
+                </div>
+                <div class="span3">
+                    <div class="media-image pull-right">
+                        <img src="{{ asset('images/frontend/campaign/seal-guarantee-small.png') }}" alt="Guarantee" class="guarantee-title"/>
                     </div>
                 </div>
-            <br>
-            <h3>
-                Advertising Opportunities (All Included with a Linked Listing and above
-                on Results page):
-            </h3>
+            </div>
+
             <div class="media">
                 <span class="circle pull-left">
                     H
@@ -1949,7 +1988,7 @@ This is your chance to set your clinic apart.
                         <br>
                         <section id="content">
                             <div class="container" style="padding-left:0; padding-right:0">
-                            <h3>Benefits of upgrading your Clinic Listing &nbsp;&nbsp;<small>(If Applicable)</small></h3>
+                            <h3>Benefits of upgrading your Clinic Listing On the Hospital Profile Page&nbsp;&nbsp;<small>(If Applicable)</small></h3>
                             <hr>
                                 <div class="row-fluid">
                                     <div class="span12">
@@ -1960,11 +1999,7 @@ This is your chance to set your clinic apart.
                                                         Forever Free Listing
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Hospital <br> Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -2030,11 +2065,7 @@ This is your chance to set your clinic apart.
                                                         Linked Clinic Listing
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Hospital <br> Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -2114,11 +2145,7 @@ This is your chance to set your clinic apart.
                                                         Logo Package
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Hospital <br> Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>
@@ -2199,11 +2226,7 @@ This is your chance to set your clinic apart.
 
                                                     </h4>
                                                 </div>
-                                                <div class="pricing-terms">
-                                                    <h4>
-                                                        On the Hospital <br> Profile Page
-                                                    </h4>
-                                                </div>
+                                                
                                                 <div class="pricing-content">
                                                     <ul>
                                                         <li>

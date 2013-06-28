@@ -29,7 +29,9 @@ a:hover {
 .media {
   clear: both;
 }
-
+.guarantee-title img {
+  width: 100px;
+}
 .media .pull-left{margin-right:15px;width:35px;}
 .media i{color:#fe6500;opacity:.75}
 .media small{color:#656464;font-weight:400;font-size:16px;}
@@ -37,7 +39,7 @@ a:hover {
 .media .circle{border-radius:200px;width:45px;height:30px;background-color:#7ea840;border:1px solid #ced4cd;color:#FFF;font-size:24px;font-weight:700;padding:15px 0 0 0}
 .media-body .media-content {
   display: inline-block;
-  width: 85%;
+  width: 84%;
   margin-left: -10px;
 }
 .media-body .media-image {
@@ -46,9 +48,47 @@ a:hover {
 }
 .media-body .media-image img {
   display: inline-block;
-  width: 120px;
+  width: 130px;
 }
-.media-body span a{color:#fe6500;}
+.media-body a:hover {
+  color: #222222 !important;
+}
+.media-body b {
+  font-size: 17px;
+}
+.media-body .icon-2x {
+  font-size: 1.5em;
+  margin-bottom: 0px;
+  display: inline-block;
+  float: left;
+  width: 30px;
+}
+.media-body h4 {
+  font-size: 22px;
+  margin-bottom: 5px;
+}
+.media-body h4 small {
+  line-height: 1.5em;
+  margin-top: 7px;
+  display: block;
+}
+.media-body .alert {
+  margin: 10px 0;
+  padding: 20px;
+  -moz-box-shadow: 5px 5px rgb(175,175,175);
+-webkit-box-shadow: 5px 5px rgb(175,175,175);
+box-shadow: 5px 5px rgb(175,175,175);
+line-height: 1.35em;
+}
+.media-body .alert a {
+  color: #444444;
+}
+.row-fluid .span3 img {
+  width: 210px;
+}
+.row-fluid h1 {
+  color: #7f8d83;
+}
 .circle_arrows{clear:both;height:auto;margin:-20px auto 0 50%;}
 .circle_uparrow{margin-top:-20px}
 .circle_downarrow{margin-left:20px;margin-bottom:-20px;}
@@ -196,7 +236,21 @@ input[type=submit]{background-color:#fe6100;background-repeat:repeat;background-
   bottom:20px;
   width: 300px;
 }
-.container p span,.media-body span{display:inline-block; background-color:#e4e4e4;color:#fe6100;opacity:.75;padding:0 5px}
+.popover-content em {
+  color: #fe6500;
+  display: block;
+  font-size: 16px;
+  padding: 15px 0 0 0;
+}
+.popover-content b {
+  color: #fcf8e3;
+  font-size: 17px;
+  padding: 5px 0;
+  font-weight: normal;
+  margin-top: 5px;
+  display:inline-block;
+}
+.container p span,.media-body span{display:inline-block; opacity:.75;padding:0 5px}
 .container h1,h3,h4,h5,h6,#pricing h2{text-align:left}
 #right_nav li a:link,#right_nav li a:visited,#right_nav li a:active,ul.arrowunderline li a:link,ul.arrowunderline li a:visited,ul.arrowunderline li a:active{color:#7f7f7f;text-decoration:none}
 #right_nav li a:hover,ul.arrowunderline li a:hover{color:#fe6100;text-decoration:none}
@@ -289,7 +343,6 @@ color:#353535;
 
 .pricing-action{
   margin:0;
-  background: #fcfcfc;
   text-align:center;
   padding:20px 0 30px 0;
 }
@@ -305,7 +358,8 @@ color:#353535;
 }
 .pricing-terms h4 {
   text-align: center;
-  font-size: 16px;
+  font-size: 20px;
+  text-transform: uppercase;
 }
 /* --- pricing box alt 1 --- */
 .pricing-box-alt {
@@ -356,7 +410,7 @@ border: 1px solid #e6e6e6;
 
 .pricing-box-alt .pricing-terms {
   text-align: center !important;
-  background:#ccc;
+  background:#ddd;
   display:block;
   overflow:hidden;
   border-top:3px solid #EDECEC;  
