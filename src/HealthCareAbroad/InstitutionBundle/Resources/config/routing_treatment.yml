@@ -29,11 +29,4 @@ institution_specialization_editTreatment_save:
         _method: POST
         isId: \d+
         issId: \d+
-
-institution_specialization_treatments:
-    pattern: /specialization/edit/{isId}/treatments/
-    defaults: { _controller: InstitutionBundle:Treatment:index }
-    requirements:
-        _method: GET
-        isId: \d+
 ## --- end

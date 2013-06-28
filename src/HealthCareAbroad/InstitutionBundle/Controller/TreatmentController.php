@@ -45,15 +45,4 @@ class TreatmentController extends InstitutionAwareController
             }    
         }
     }
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_TREATMENTS')")
-     */
-    public function indexAction(Request $request)
-    {
-        $institutionSubSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSubSpecialization')->findByInstitutionSpecialization(array($this->institutionSpecialization->getId()));
-        $params = array(
-            'institutionSubSpecialization' => $institutionSubSpecialization
-        );
-        return $this->render('InstitutionBundle:Treatment:index.html.twig', $params);
-    }
 }
