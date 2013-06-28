@@ -40,7 +40,12 @@ class CustomExceptionController extends ExceptionController
 		$factory = $this->container->get('form.factory');
 		$form = $factory->create(new ErrorReportFormType());
 
-		$pathInfo = $this->request->server->get('PATH_INFO');
+		if ($this->request->server->has('PATH_INFO')) {
+		    $pathInfo = $this->request->server->get('PATH_INFO');
+		}
+		else {
+		    $pathInfo = $this->request->server->get('REQUEST_URI');
+		}
 		
 		if (\preg_match('/^\/admin\//', $pathInfo)) {
 		    $statusTextDescriptions = $errorMessages['admin'];
