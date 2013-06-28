@@ -22,17 +22,9 @@
                         {{ form_row(form.firstName) }}
                         {{ form_row(form.middleName) }}
                         {{ form_row(form.lastName) }}
-                        {{ form_row(form.media, {label: 'Logo', imageType: imageType, imageSize: imageSize}) }}
-                        {{ form_row(form.suffix) }}
+                         {{ form_row(form.suffix) }}
                         {{ form_row(form.gender) }}
                         {{ form_row(form.details, {attr: {class: 'tinymce'} }) }}
-                        {{ form_row(form.country) }}
-
-                        <br>
-
-                        {{ form_label(form.specializations) }}
-                        {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
-                        <div class="clearfix"></div>
                         {{ form_row(form.contactEmail) }}
                         <div class="row-fluid">
                             <div class="span12">
@@ -42,7 +34,14 @@
                                 {% endfor %}
                             </div>
                         </div>
+                        {{ form_row(form.media, { imageType: imageType, imageSize: imageSize}) }}
+                        {{ form_row(form.country) }}
 
+                        <br>
+
+                        {{ form_label(form.specializations) }}
+                        {{ form_widget(form.specializations, { 'attr': {'class': 'doctors-specialiations'} }) }}
+                        <div class="clearfix"></div>
 
                         {{ form_rest(form) }}
                          <input type="reset" value="Reset" class="btn btn-large" value="Submit"/>

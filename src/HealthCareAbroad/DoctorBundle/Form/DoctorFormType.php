@@ -38,7 +38,7 @@ class DoctorFormType extends AbstractType
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
     	    //->add('contactDetail', 'contact_detail', array('property_path' => false,'label' => 'Contact Number'));
     	    //->add('contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_details'));
-    	    ->add('contactDetails', 'collection',array('error_bubbling' => true, 'type' => 'contact_detail'));
+    	    ->add('contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'contact_number_with_flag', 'constraints'=>array(new NotBlank())));
     }
     
     public function getName()
