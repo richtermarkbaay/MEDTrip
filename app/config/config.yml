@@ -131,9 +131,9 @@ swiftmailer:
     host: %mailer_host%
     username: %mailer_user%
     password: %mailer_password%
-    spool:
-        type: file
-        path: %kernel.root_dir%/../spool
+    #spool:
+    #    type: file
+    #    path: %kernel.root_dir%/../spool
 
 # TinyMCE Configuration
 stfalcon_tinymce:
