@@ -8,5 +8,5 @@ Name: {{ inquiry.firstName ~ ' ' ~ inquiry.lastName }}
 Email: {{ inquiry.email }}
 Contact Number: {{ inquiry.contactNumber }}
 Clinic name: {{ inquiry.clinicName }}
-Location: {{ (inquiry.city ? inquiry.city.name ~', ': '') ~ inquiry.country.name }}
+Location: {{ inquiry.country ?  ((inquiry.city ? inquiry.city.name ~', ': '') ~ inquiry.country.name  ) : ''}}
 Message: {{ inquiry.message }}
