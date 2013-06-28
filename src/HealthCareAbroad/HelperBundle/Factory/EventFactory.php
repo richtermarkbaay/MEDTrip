@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Factory;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use HealthCareAbroad\HelperBundle\Event\BaseEvent;
 
 use Symfony\Component\EventDispatcher\Event;

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\FrontendBundleEvents;
+
 use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
@@ -20,6 +22,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 class InquiryController extends Controller
 {
+    /**
+     * TODO: is this used or is this deprecated already?
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
     	$form = $this->createForm(new InquiryType());
@@ -57,6 +64,12 @@ class InquiryController extends Controller
         ));
     }
     
+    /**
+     * TODO: rename function since this is misleading
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function ajaxSaveInquiryAction(Request $request)
     {
         $institutionInquiry = new InstitutionInquiry();

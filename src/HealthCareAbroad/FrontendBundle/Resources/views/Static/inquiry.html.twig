@@ -11,6 +11,8 @@
             <div class="alert alert-error">
                 {% for each in error_list %}
                 	{{ each }} <br>
+            	{% else %}
+            	    Please correct fields with red mark.
                 {% endfor %}
             </div>
         {% else %}

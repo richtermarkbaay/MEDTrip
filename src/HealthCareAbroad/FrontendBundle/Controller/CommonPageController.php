@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\FrontendBundleEvents;
+
 use HealthCareAbroad\AdminBundle\Entity\Inquiry;
 
 use HealthCareAbroad\FrontendBundle\Form\InquiryType;
@@ -30,26 +32,31 @@ class CommonPageController extends ResponseHeadersController
 
     public function saveInquiryAction(Request $request)
     {
+        
         $inquiry = new Inquiry();
         $form = $this->createForm(new InquiryType(), $inquiry);
         $inquirySubjects = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findAll();
         $error = false;
         $success = false;
         $errorArr = array();
+        
         if($request->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
 
-                $inquirySubject = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findOneByName($request->get('inquirySubject'));
-                $inquiry->setInquirySubject($inquirySubject);
                 $inquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
                 $inquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
                 $inquiry->setStatus(Inquiry::STATUS_ACTIVE);
 
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
-                $em->flush();
+                //$em->flush();
                 $request->getSession()->setFlash('success', 'Your message has been sent! Thank you.');
+                
+                // dispatch event
+                $event = $this->get('events.factory')->create(FrontendBundleEvents::ADD_INQUIRY, $inquiry);
+                $this->get('event_dispatcher')->dispatch(FrontendBundleEvents::ADD_INQUIRY, $event);
+                
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
             }else {
                 $error = true;

@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\DependencyInjection;
 
+use HealthCareAbroad\FrontendBundle\FrontendBundleEvents;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -24,6 +26,12 @@ class FrontendExtension extends Extension
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
+        $loader->load('listeners.yml');
         $loader->load('twig.extensions.yml');
+        
+        // add as parameter the list of events that are declared in this bundle
+        foreach (FrontendBundleEvents::getClassMap() as $eventName => $class) {
+            $container->setParameter($eventName, $class);
+        }
     }
 }
