@@ -50,7 +50,7 @@ class CommonPageController extends ResponseHeadersController
 
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($inquiry);
-                //$em->flush();
+                $em->flush();
                 $request->getSession()->setFlash('success', 'Your message has been sent! Thank you.');
                 
                 // dispatch event
