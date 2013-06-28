@@ -88,7 +88,7 @@ class InquiryController extends Controller
             $institutionInquiry->setInstitution($institution);
             $institutionInquiry->setRemoteAddress($request->server->get('REMOTE_ADDR'));
             $institutionInquiry->setHttpUseAgent($request->server->get('HTTP_USER_AGENT'));
-            $institutionInquiry->setStatus(InstitutionInquiry::STATUS_SAVE);
+            $institutionInquiry->setStatus(InstitutionInquiry::STATUS_UNREAD);
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionInquiry);
             $em->flush();

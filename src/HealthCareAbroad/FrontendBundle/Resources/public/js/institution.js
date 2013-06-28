@@ -54,8 +54,9 @@ var InstitutionInquiry = {
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false)
                 .hide();
-                InstitutionInquiry.institutionInquiryComponents.form.hide();
                 InstitutionInquiry.showAlertSuccess();
+                InstitutionInquiry.institutionInquiryComponents.form.hide();
+                
             },
             error: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton
