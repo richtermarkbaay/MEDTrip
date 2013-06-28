@@ -15,7 +15,7 @@
                     {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
                     <img alt="" src="{{ institution_media_src(institution.featuredMedia, imageSize) }}" style="width: 950px"/>
                 {% else %}
-                    <img alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                    <img alt="institution logo" src="{{ asset('images/default-hospital-featured-image.png') }}" />
                 {% endif %}
             </div>
         </div> 
@@ -36,7 +36,7 @@
                                 {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
                                 <img alt="" src="{{ institution_media_src(institution.logo, imageSize) }}"/>                                
                             {% else %}
-                                <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/institution-logo.gif') }}" />
+                                <img id="institution-logo-image" alt="institution logo" src="{{ asset('images/institution/default-hospital-logo.png') }}" />
                             {% endif %}
                         </div>
                     </div>
