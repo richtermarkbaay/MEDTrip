@@ -26,6 +26,11 @@
                         themeAdvanced: $.parseJSON('{{ tinymce.theme.advanced|json_encode|raw }}')
                     }
                 });
+
+            	$('.dropdown-toggle').click(function(){ /* temporary added */
+            		$('ul.dropdown-menu').hide();
+            		$(this).next('ul.dropdown-menu').toggle();
+        	    });
             })
 
             </script>
