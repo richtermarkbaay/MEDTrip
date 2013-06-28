@@ -37,6 +37,7 @@ class AdvertisingInquiryMailListener
         
         $subject = 'New HCA Advertising Inquiry';
         $message = $this->twig->render('FrontendBundle:Mail:addInquiryMessage.txt.twig', array('inquiry' => $inquiry));
+        //echo "<textarea rows='15' cols='30'>{$message}</textarea>"; exit;
         
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
