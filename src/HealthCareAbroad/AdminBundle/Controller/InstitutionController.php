@@ -514,7 +514,7 @@ class InstitutionController extends Controller
    	    $pagerAdapter = new DoctrineOrmAdapter($this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getAllDoctorsByInstitution($this->institution));
    	    $pagerParams = array(
    	                    'page' => $request->get('page', 1),
-   	                    'limit' => 10
+   	                    'limit' => 20
    	    );
    	    $pager = new Pager($pagerAdapter, $pagerParams);
    	    
