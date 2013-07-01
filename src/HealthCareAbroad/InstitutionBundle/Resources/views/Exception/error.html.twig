@@ -16,7 +16,7 @@
         </div>
         <div class="row-fluid span12">
             <div class="row">
-             <h3 class="offset4">Please help us fix this for you.</h3>
+             {% if status_code == 500 %} <h3 class="offset4">Please help us fix this for you.</h3> {% endif %}
              {% if referer is not empty %}
                  <div class="row-fluid">
                             <div class="span6">

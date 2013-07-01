@@ -47,10 +47,10 @@ class CustomExceptionController extends ExceptionController
 		    $pathInfo = $this->request->server->get('REQUEST_URI');
 		}
 		
-		if (\preg_match('/^\/admin\//', $pathInfo)) {
+		if (\preg_match('/admin/i', $pathInfo)) {
 		    $statusTextDescriptions = $errorMessages['admin'];
 		}
-		elseif (\preg_match('/^\/institution\//', $pathInfo)){
+		elseif (\preg_match('/institution/i', $pathInfo)){
 		    $statusTextDescriptions = $errorMessages['institution'];
 		}
 		else {
@@ -81,10 +81,10 @@ class CustomExceptionController extends ExceptionController
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
-        if ($debug) {
-            // debug 
-            return parent::findTemplate($templating, $format, $code, $debug);
-        }
+//         if ($debug) {
+//             // debug 
+//             return parent::findTemplate($templating, $format, $code, $debug);
+//         }
         
         if ($this->request->server->has('PATH_INFO')) {
             $pathInfo = $this->request->server->get('PATH_INFO');

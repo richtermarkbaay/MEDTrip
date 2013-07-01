@@ -39,6 +39,11 @@ class Institution
      * @var string
      */
     private $websites;
+    
+    /**
+     * @var string
+     */
+    private $websiteBackUp;
 
     /**
      * @var string
@@ -289,6 +294,29 @@ class Institution
     public function getWebsites()
     {
         return $this->websites;
+    }
+    
+    /**
+     * Set websiteBackUp
+     *
+     * @param string $websiteBackUp
+     * @return Institution
+     */
+    public function setWebsiteBackUp($websiteBackUp)
+    {
+        $this->websiteBackUp = $websiteBackUp;
+    
+        return $this;
+    }
+    
+    /**
+     * Get websiteBackUp
+     *
+     * @return string
+     */
+    public function getWebsiteBackUp()
+    {
+        return $this->websiteBackUp;
     }
 
     /**
