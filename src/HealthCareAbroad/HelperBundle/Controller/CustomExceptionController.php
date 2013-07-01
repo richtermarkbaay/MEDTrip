@@ -81,10 +81,10 @@ class CustomExceptionController extends ExceptionController
     
     protected function findTemplate($templating, $format, $code, $debug)
     {
-//         if ($debug) {
-//             // debug 
-//             return parent::findTemplate($templating, $format, $code, $debug);
-//         }
+        if ($debug) {
+            // debug 
+            return parent::findTemplate($templating, $format, $code, $debug);
+        }
         
         if ($this->request->server->has('PATH_INFO')) {
             $pathInfo = $this->request->server->get('PATH_INFO');
