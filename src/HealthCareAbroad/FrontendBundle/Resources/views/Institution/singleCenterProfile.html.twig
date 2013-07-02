@@ -41,4 +41,23 @@
 	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
 
 	</aside> <!--End of aside_content-->
+	
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{asset('bundles/frontend/js/institution.js')}}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('#modal_single_institution_inquiry_form').institutionInquiryModalForm({
+            submitButton: $('#modal_institution_inquiry_submitButton'),
+            form: $('form#{{ formId }}') 
+        });
+        
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}
+	
 

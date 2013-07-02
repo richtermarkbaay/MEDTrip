@@ -6,7 +6,7 @@
     <ul class="dropdown-menu zipcode flag-list" style="display:none">
         {% for _list in countryList %}
             <li data-abbr="{{ _list.abbr is defined ? _list.abbr | lower : ''  }}" data-code="{{ _list.code is defined ? _list.code : ''  }}">
-                <span class="flag16 {{ _list.abbr is defined ? _list.abbr | lower : '' }}"></span><span class="code">{{ _list.name }} (+{{ _list.code is defined ? _list.code : '' }})</span>
+                <span class="flag16 {{ _list.abbr is defined ? _list.abbr | lower : '' }}"></span><span class="code">{{ _list.name is defined ? _list.name : '' }} (+{{ _list.code is defined ? _list.code : '' }})</span>
             </li>
         {% endfor %}
     </ul>
