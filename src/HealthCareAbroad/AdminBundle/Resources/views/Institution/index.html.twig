@@ -47,13 +47,13 @@
                        {# <td class="status">{{ statusList[institution.status] }}</td> #}
 
                         <td>
-                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}"><i class="icon-list"></i> View centers</a> 
+                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 
                             <br/>
                             <a id="status-{{institution.id}}" href="{{ path('admin_institution_editStatus', {institutionId: institution.id}) }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status
                             </a>
                             <br/>
-                            <a href="{{ path('admin_institution_edit_details', {institutionId:institution.id} ) }}" ><i class="icon-pencil"></i> Edit institution</a>
+                            <a href="{{ path('admin_institution_edit_details', {institutionId:institution.id} ) }}" target="_blank"><i class="icon-pencil"></i> Edit institution</a>
                         </td>
                     </tr>
                 {% else  %}

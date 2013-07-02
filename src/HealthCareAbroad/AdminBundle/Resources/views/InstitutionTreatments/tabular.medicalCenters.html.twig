@@ -32,10 +32,10 @@
                         <td>{{ center.name }}</td>
                         <td style="width: 425px";>{{ center.description  | raw  }}</td>
                         <td>{{ get_medical_center_status_label(center) }}</td>
-                        <td><a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
+                        <td><a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" target="_blank" class="pull-right view-center" style="font-size:13px;font-weight:normal;margin-left:5px;">
                                 <i class="icon-share"></i><span>view</span>
                             </a>
-                            <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: center.id, institutionId: institution.id}) }}" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
+                            <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: center.id, institutionId: institution.id}) }}" target="_blank" class="pull-right edit-center-description" style="font-size:13px;font-weight:normal">
                                 <i class="icon-edit"></i> <span>edit</span>
                             </a>
                         </td>
@@ -62,10 +62,10 @@
     $(function(){
         $(".collapse").collapse();
         
-        $('.view-center').click(function(){
-            window.location = $(this).attr('href');
-            return false;
-        });
+       // $('.view-center').click(function(){
+         //   window.location = $(this).attr('href');
+          //  return false;
+       // });
 
 
         $('.edit-center-name').click(function(){
