@@ -1342,6 +1342,9 @@ background-color: #cccccc;
 				margin: 0 0 5px 5px;
 				list-style: none outside none;
 			}
+			.social-media span{
+			     margin: 10px;
+			}
 /*
 ================== End of Custom CSS fixed ======================
 */
