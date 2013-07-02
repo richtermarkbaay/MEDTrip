@@ -80,18 +80,19 @@
             </div> 
         {% elseif each == 'contactDetails' or each == 'websites' %}
             <div class="row-fluid terms">
-                <div class="contactEmail control-group span5">
+                <div class="contactEmail control-group">
                         <label for="{{ institutionForm.children.contactEmail.vars.id }}">
                             {{ institutionForm.children.contactEmail.vars.label }}
                         </label>
                         {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
                 </div>
-                 <div class="contactDetails span6">
-                        {% for _widget in institutionForm.contactDetails %}
-                            {{ form_widget(_widget) }}
-                        {% endfor %}
-                </div>
+                 
             </div>
+            
+            {% for _widget in institutionForm.contactDetails %}
+                {{ form_widget(_widget) }}
+            {% endfor %}
+            
             <div class="control-group website">
                 {{ form_label(institutionForm.websites) }}
                 <span class="pull-left"> http:// </span>

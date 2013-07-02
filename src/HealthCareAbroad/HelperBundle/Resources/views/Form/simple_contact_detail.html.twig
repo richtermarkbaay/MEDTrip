@@ -1,0 +1,43 @@
+{% block simple_contact_detail_widget %}
+    {% set _label = form.vars.value.type ? contact_label_type(form.vars.value.type) : null%}
+    
+    <div class="control-group">
+        {% if _label %}
+            {{ form_label(form, _label, {label_attr: {class: 'control-label'}}) }}
+        {% endif %}
+        
+        <div class="hca-countrycodes">
+            <div class="span3">
+                <small>Country Code</small>
+                {{ form_widget(form.country_code, {attr: {class: 'span12'}}) }}
+            </div>
+            <div class="span2">
+                <small>Area Code</small>
+                {{ form_widget(form.area_code, {attr: {class: 'span12'}}) }}
+            </div>
+            <div class="span5">
+                <small>Phone Number</small>
+                {{ form_widget(form.number, {attr: {class: 'span12'}})}}
+            </div>
+            <div class="span1">
+                <small class="hca-extension">Ext.</small>
+                <input type="text" class="span12">
+            </div>
+        </div>
+        
+        
+    </div>
+{% endblock %}
+
+{% block country_code_list_widget %}
+    {% spaceless %}
+    <select {{ block('widget_attributes') }}>
+        {% for group_label, choice in choices %}
+            <option value="{{ choice.value }}"{% if choice is selectedchoice(value) %} selected="selected"{% endif %}>
+            {{ choice.label|trans({}, translation_domain) }}
+            </option>
+        {% endfor %}
+    </select>
+    
+    {% endspaceless %}
+{% endblock %}

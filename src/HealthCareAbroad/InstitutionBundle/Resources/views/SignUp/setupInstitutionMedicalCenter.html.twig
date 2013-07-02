@@ -133,12 +133,17 @@
                                 {{ form_errors(form.contactEmail) }}
                             </div>
                             <div class="control-group span5">
-                                {#{ form_widget(form.contactDetails, { 'attr': {'class': 'span12'} }) }#}
-                                {% for _widget in form.contactDetails %}
-                                    {{ form_widget(_widget) }}
-                                {% endfor %}
                             </div>
                         </div>
+                        
+                        <div class="row-fluid hca-contact-number">
+                            {% for _widget in form.contactDetails %}
+                                {{ form_widget(_widget) }}
+                            {% endfor %}
+                        </div>
+                        
+                        <br />
+                        
                          <div class="control-group website">
                             <label for="website">Clinic Website</label>
                             <span class="pull-left">http://</span>

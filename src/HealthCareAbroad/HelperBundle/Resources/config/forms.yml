@@ -1,9 +1,21 @@
 services:
     
+    form.country_code_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\CountryCodeListType
+        calls:
+            - [setLocationService, [@services.location]]
+        tags:
+            - { name: form.type, alias: country_code_list }
+    
     form.fancy_business_hours_widget:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType
         tags:
             - { name: form.type, alias: fancy_business_hours }
+    
+    form.simple_contact_detail:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\SimpleContactDetailFieldType
+        tags:
+            - { name: form.type, alias: simple_contact_detail }
     
     form.detailed_street_address:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\DetailedStreetAddressFieldType
