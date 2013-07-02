@@ -43,7 +43,7 @@
     
     {% endblock %}
     {% block footerBody %}
-        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        <button data-loader-text="Processing..." id="modal_institution_inquiry_submitButton" class="btn btn-primary orange">Send Message</button>
+        <button id="inquiry_cancelBtn" aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-loader-text="Processing..." data-cancelBtn="#inquiry_cancelBtn" id="modal_institution_inquiry_submitButton" class="btn btn-primary orange">Send Message</button>
     {% endblock %}
 {% endembed %}
