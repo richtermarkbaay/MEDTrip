@@ -501,7 +501,7 @@ class InstitutionTreatmentsController extends Controller
     
     public function ajaxAddBusinessHoursAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','status','description','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
         $result = '';
         if ($request->isMethod('POST')) {
             $form->bind($request);
