@@ -49,6 +49,7 @@ var Feedback = {
             type: 'POST',
             dataType: 'json',
             success: function(response){
+            	window.location =  Feedback.feedbackComponents.form.find('a.captcha_reload').attr('href');
                 Feedback.feedbackComponents.submitButton
                 .html(Feedback.feedbackComponents.submitButton.attr('data-html'))
                 .attr('disabled', false)
