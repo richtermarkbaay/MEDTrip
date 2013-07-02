@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class GlobalAwardListFilter extends ListFilter
+class GlobalAwardListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -58,7 +58,7 @@ class GlobalAwardListFilter extends ListFilter
     	);
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {   
         $this->queryBuilder->select('a')->from('HelperBundle:GlobalAward', 'a');
 
@@ -91,5 +91,7 @@ class GlobalAwardListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

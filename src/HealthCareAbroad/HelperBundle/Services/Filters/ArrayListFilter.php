@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use HealthCareAbroad\PagerBundle\Adapter\CustomArrayAdapter;
+
 use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
 
 
@@ -15,6 +17,6 @@ abstract class ArrayListFilter extends ListFilter {
     
     public function __construct()
     {
-        $this->pagerAdapter = new ArrayAdapter();
+        $this->pagerAdapter = new CustomArrayAdapter();
     }
 }

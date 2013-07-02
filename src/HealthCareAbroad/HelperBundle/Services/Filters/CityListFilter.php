@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class CityListFilter extends ListFilter
+class CityListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -39,7 +39,7 @@ class CityListFilter extends ListFilter
         );
     }
 
-    function filterResults()
+    function setFilteredResults()
     {   
         $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
         

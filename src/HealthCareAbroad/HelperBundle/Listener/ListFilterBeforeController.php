@@ -55,8 +55,7 @@ class ListFilterBeforeController
             
             $listFilter->injectDependency($serviceId, $controller[0]->get($serviceId));
         }
-        //var_dump($listFilter->getInjectedDependcy($serviceId)); exit;
-        //$listFilter->setServiceContainer($controller[0])
+        
         $params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {

@@ -17,8 +17,6 @@ class GlobalCityListFilter extends ArrayListFilter
 	{
 		parent::__construct($doctrine);
 		
-		// TODO: Temparary fix for pager array adapter type.
-		$this->dataType = 'array';
 		$this->addValidCriteria('country');
 		// set default status filter to active
 		$this->defaultParams = array('status' => City::STATUS_ACTIVE);
@@ -30,16 +28,15 @@ class GlobalCityListFilter extends ArrayListFilter
     function setFilterOptions()
     {
         $this->setStatusFilterOption();
-        //$this->setCountryFilterOption();
+        $this->setCountryFilterOption();
     }
 
     function setCountryFilterOption()
     {
         // Set The Filter Option
-        $countries = $this->doctrine->getEntityManager()->getRepository('HelperBundle:Country')->findAll();
-        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        $countries = $this->getInjectedDependcy('services.location')->getAllGlobalCountries();
         foreach($countries as $each) {
-            $options[$each->getId()] = $each->getName();
+            $options[$each['id']] = $each['name'];
         }
     
         $this->filterOptions['country'] = array(
@@ -51,10 +48,12 @@ class GlobalCityListFilter extends ArrayListFilter
     
     function setFilteredResults()
     {   
-        $cityList = $this->getInjectedDependcy('services.location')->getGlobalCityList();
+        $this->queryParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
+        
+        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCities($this->queryParams);
 
-        $this->pager->getAdapter()->setArray($cityList);
-
+        $this->pager->getAdapter()->setData($dataFromAPi);
+        
         $this->filteredResult = $this->pager->getResults();
     }
 }

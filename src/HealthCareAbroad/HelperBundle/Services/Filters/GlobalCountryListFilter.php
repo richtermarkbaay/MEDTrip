@@ -29,10 +29,11 @@ class GlobalCountryListFilter extends ArrayListFilter
 
     function setFilteredResults()
     {
-        $countryList = $this->getInjectedDependcy('services.location')->getGlobalCountryListByStatus($this->queryParams['status']);
-
-        $this->pager->getAdapter()->setArray($countryList);
-
+        $this->queryParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
+        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCountries($this->queryParams);
+        
+        $this->pager->getAdapter()->setData($dataFromAPi);
+        
         $this->filteredResult = $this->pager->getResults();
     }
 }

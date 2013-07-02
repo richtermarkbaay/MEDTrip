@@ -7,7 +7,7 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 
-class DoctorListFilter extends ListFilter
+class DoctorListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
@@ -37,7 +37,7 @@ class DoctorListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('DoctorBundle:Doctor', 'a');
@@ -51,5 +51,7 @@ class DoctorListFilter extends ListFilter
         $sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

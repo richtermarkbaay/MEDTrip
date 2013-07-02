@@ -146,7 +146,6 @@ class DoctrineOrmAdapter implements PagerAdapterInterface, \Countable
         $this->queryBuilder = $queryBuilder;
         $this->countCache = array();
         $this->totalResults = null;
-
         return $this;
     }
 

@@ -9,7 +9,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use Doctrine\ORM\QueryBuilder;
 
-class CountryListFilter extends ListFilter
+class CountryListFilter extends DoctrineOrmListFilter
 {
 	function __construct($doctrine)
 	{
@@ -43,5 +43,7 @@ class CountryListFilter extends ListFilter
         	$sort = "c.$sortBy " . $this->sortOrder;
         }         
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

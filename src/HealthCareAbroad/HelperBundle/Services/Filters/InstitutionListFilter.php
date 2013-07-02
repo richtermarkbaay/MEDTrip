@@ -13,7 +13,7 @@ use Doctrine\DBAL\Query\QueryBuilder;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 
-class InstitutionListFilter extends ListFilter
+class InstitutionListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
@@ -75,7 +75,7 @@ class InstitutionListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
@@ -103,5 +103,7 @@ class InstitutionListFilter extends ListFilter
         $sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }
