@@ -90,7 +90,7 @@ class InstitutionProfileFormType extends AbstractType
             self::OPTION_HIDDEN_FIELDS => array('type'),
             self::OPTION_REMOVED_FIELDS => array(),
             self::OPTION_BUBBLE_ALL_ERRORS => false,
-            'validation_groups' => array('editInstitutionInformation', 'Default')
+            'validation_groups' => array('editInstitutionInformation', 'Default' , 'adminValidation')
         ));
     }
 

@@ -224,14 +224,16 @@ class InstitutionController extends Controller
 	        
 	        return $this->redirect($this->generateUrl('admin_institution_edit_details', array('institutionId' => $this->institution->getId())));
 	    }
-	    
+	    if ($request->isMethod('GET')) {
+	           $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
+	    }
 	    if ($request->isMethod('POST')) {
 	        
 	        $formVariables = $request->get(InstitutionProfileFormType::NAME);
 	        unset($formVariables['_token']);
 	        $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
 	        
-	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array(''),'validation_groups' => 'adminValidation' , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
 	        $formRequestData = $request->get($form->getName());
 	        if (isset($formRequestData['medicalProviderGroups']) ) {
 	            // we always expect 1 medical provider group
@@ -258,9 +260,6 @@ class InstitutionController extends Controller
 	    	}
 	    }
 	    
-	    
-	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
-	     
 	    return $this->render('AdminBundle:Institution:addDetails.html.twig', array(
 				'form' => $form->createView(),
 				'institution' => $this->institution,
@@ -289,7 +288,7 @@ class InstitutionController extends Controller
             $this->institution->addContactDetail($contactDetails);
         }
         if ($request->isMethod('GET')) {
-            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false , 'validation_groups' => false));
+            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false ));
         }
     	if ($request->isMethod('POST')) {
     	    
@@ -297,7 +296,7 @@ class InstitutionController extends Controller
     	    unset($formVariables['_token']);
     	    $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
     	   
-    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields,'validation_groups' => false));
+    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') ,'validation_groups' => 'adminValidation'), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
     	    $formRequestData = $request->get($form->getName());
     	    if (isset($formRequestData['medicalProviderGroups']) ) {
     	        // we always expect 1 medical provider group

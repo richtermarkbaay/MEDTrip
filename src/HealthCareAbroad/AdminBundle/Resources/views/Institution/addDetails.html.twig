@@ -27,23 +27,24 @@
 									      {% include '::notice.admin.html.twig' %}
 									      
 									      <form novalidate="novalidate" action="{{ path('admin_institution_add_details', {institutionId: institution.id }) }}" method="POST"  class="basic-form">
-                                                {{ form_errors(form) }}
-                                                 {{ form_row( form.name ) }}
+								                 <div class="name control-group {{ (form.name.vars.valid ? '' : 'error') }}">
+								                   <label for="name"> Medical Institution Name  </label>
+                                                     {{ form_widget( form.name ) }}
+                                                     {{ form_errors(form.name) }}
+                                                 </div>
                                                 {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
-                                                <div class="control-group">
-                                                     <label for="institution">Email  </label>
+                                                <div class="control-group  {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                                                     <label for="email">Email </label>
         					                         <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: 4px;">
         						                      	{{ form_widget(form.contactEmail) }}
+        						                      	{{ form_errors(form.contactEmail) }}
     					                        </div>
-                                                {#{ form_row( form.contactNumber) }#}
                                                 {% for _widget in form.contactDetails %}
                                                     {{ form_widget(_widget) }}
                                                 {% endfor %}
                                                 <div class="control-group">
                                                     <label for="network-group">  Medical Provider Group/Network  </label>
                                                         {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
-                                                     <div id="autoDiv">
-                                                     </div>
                                                 </div>
                                                 {{ form_row( form.websites) }}
                                                  <hr />
@@ -55,21 +56,25 @@
                                                             {{ form.children.country.vars.label }} *
                                                         </label>
                                                           {{ form_widget( form.country ) }}
+                                                          {{ form_errors(form.country) }}
                                                     </div>
                                                     <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span4">
                                                         <label for="{{ form.children.city.vars.id }}">  City *  </label>
                                                     {{ form_widget( form.city ) }}
+                                                     {{ form_errors(form.city) }}
                                                     </div>
                                                 </div> 
-                                                <div class="state control-group  {{ (form.state.vars.valid ? '' : 'error') }}">
-                                                    <label>State / Province *</label>
-                                                    {{ form_widget( form.state ) }}         
+                                                <div class="state control-group">
+                                                    <label>State / Province </label>
+                                                    {{ form_widget( form.state ) }}   
+                                                     {{ form_errors(form.state) }}      
                                                 </div>     
                                               
                                                 <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">
                                                     <label for="{{ form.children.zipCode.vars.id }}">
                                                      {{ form.children.zipCode.vars.label }} *</label>
                                                      {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
+                                                     {{ form_errors(form.zipCode) }}
                             		  			 </div>   
                             		  			 <div class="control-group">
                                                     {{ form_label(form.addressHint )}}

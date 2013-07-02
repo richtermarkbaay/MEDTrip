@@ -7,17 +7,17 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     properties:
         name:
             - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
-            - NotBlank: {message: 'Please provide your hosipital name.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your hosipital name.', groups: [editInstitutionInformation, adminValidation]}
         country:
-            - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation, adminValidation]}
         city:
-            - NotBlank: {message: 'Please provide your city.', groups: [editInstitutionInformation]}
+            - NotBlank: {message: 'Please provide your city.', groups: [editInstitutionInformation, adminValidation]}
         address1:
-            - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation] }
+            - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation, adminValidation] }
         contactEmail:
-            - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation] }
+            - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation, adminValidation] }
         zipCode:
-            - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation] }
+            - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation, adminValidation] }
             - MinLength: { limit: 3, message: 'Postal Code must be atleast 3 digits.' }
             - MaxLength: { limit: 15, message: 'Maximum digits must be 15 only.' }
         state:
