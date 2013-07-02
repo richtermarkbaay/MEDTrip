@@ -144,6 +144,9 @@ class InstitutionController extends Controller
     	$phoneNumber->setType(ContactDetailTypes::PHONE);
     	
     	$institutionUser->addContactDetail($phoneNumber);
+    	$mobileNumber = new ContactDetail();
+    	$mobileNumber->setType(ContactDetailTypes::MOBILE);
+    	$institutionUser->addContactDetail($mobileNumber);
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
     
 	    	if ($request->isMethod('POST')) {
