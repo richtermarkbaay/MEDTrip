@@ -37,7 +37,7 @@
                             <div style="display:none">updating...</div>
                         </td>
                         <td>
-                            <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" title="View {{ institution.name }}">{{ institution.name }}</a> 
+                            <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" target="_blank" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
                         <td>{{ substr(institution.description, 0, 100) }}</td>
 
