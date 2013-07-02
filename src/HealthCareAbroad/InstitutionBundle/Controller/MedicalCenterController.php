@@ -80,9 +80,9 @@ class MedicalCenterController extends InstitutionAwareController
         
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
-        
 
-        if ($imcId=$this->getRequest()->get('imcId',0)) {
+        // Temporary condition for eagerLoad
+        if ($imcId=$this->getRequest()->get('imcId',0) || $this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view' ) {
             $this->institutionMedicalCenter = $this->service->findById($imcId, false);
             
             // non-existent medical center group

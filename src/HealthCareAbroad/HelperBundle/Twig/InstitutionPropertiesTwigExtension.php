@@ -13,6 +13,11 @@ use HealthCareAbroad\InstitutionBundle\Services\InstitutionPropertyService;
 
 class InstitutionPropertiesTwigExtension extends \Twig_Extension
 {
+
+    static $anciliaryServices = array();
+
+    static $globalAwards = array();
+    
     
     /**
      * @var \Twig_Environment
@@ -39,25 +44,34 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
 
     public function getselected_AnciliaryServices(Institution $institution)
     {
-        $services = array();
-        $ancillaryServices = $this->service->getInstitutionByPropertyType($institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+        if(empty(static::$anciliaryServices)) {
+            $ancillaryServices = $this->service->getInstitutionByPropertyType($institution, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
 
-        foreach ($ancillaryServices as $each) {
-            $services[$each->getValue()] = $each->getId();
-        }
-
-        return $services;
-    }
-
-    public function getselected_GlobalAwards(Institution $institution){
-        
-        $currentGlobalAwards = array( );
-        foreach ($this->service->getGlobalAwardPropertiesByInstitution($institution) as $_selected) {
-            foreach ($_selected as $data) {
-                $currentGlobalAwards[$data->getValue()] = $data->getExtraValue();
+            foreach ($ancillaryServices as $each) {
+                static::$anciliaryServices[$each->getValue()] = $each->getId();
             }
         }
-        return $currentGlobalAwards;
+
+        return static::$anciliaryServices; 
+    }
+
+    /**
+     * TODO: Not tested and not being use.
+     * @param Institution $institution
+     * @return multitype:
+     */
+    public function getselected_GlobalAwards(Institution $institution){
+        
+        if(empty(static::$globalAwards)) {
+            $awards = $this->service->getGlobalAwardPropertiesByInstitution($institution);
+            foreach ($awards as $each) {
+                foreach ($each as $data) {
+                    static::$globalAwards[$data->getValue()] = $data->getExtraValue();
+                }
+            }            
+        }
+
+        return static::$globalAwards;
     }
     
      public function getName()

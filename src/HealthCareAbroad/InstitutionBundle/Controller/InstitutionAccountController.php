@@ -117,7 +117,7 @@ class InstitutionAccountController extends InstitutionAwareController
         }
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-
+        
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
             $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
@@ -273,10 +273,9 @@ class InstitutionAccountController extends InstitutionAwareController
                         elseif($key == 'contactDetails' ){
                             $value = $this->institution->{'get'.$key}();
                             foreach ($value as $keys => $a){
-                                if($a->getType() == ContactDetailTypes::PHONE){
-                                     $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
-                                }else{
-                                    $output['institution'][$key]['phoneNumber'] =  $a->getNumber();
+                                if($a->getType() == ContactDetailTypes::PHONE) {
+                                     $output['institution'][$key]['phoneNumber'] = $a->getNumber();
+                                     break;
                                 }
                             }
                         }

@@ -19,7 +19,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         zipCode:
             - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation] }
             - MinLength: { limit: 3, message: 'Postal Code must be atleast 3 digits.' }
-            - MaxLength: { limit: 6, message: 'Maximum digits must be 6 only.' }
+            - MaxLength: { limit: 15, message: 'Maximum digits must be 15 only.' }
         state:
             - NotBlank: {message: 'Please provide your state.', groups: [editInstitutionInformation] }
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:

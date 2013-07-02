@@ -247,6 +247,9 @@ var FancyBusinessHours = function(_options){
                     _processedData.weekdays[_day] = _day;
                     _processedData.weekdaysBit += getBitValueOfDay(_day);
                 }
+                else {
+                	console.log(WEEKDAYS[_day].long + ' '+toTimepickerString(_processedData.openingDateTime) + ' '+toTimepickerString(_processedData.closingDateTime)+' is invalid');
+                }
             });
             return _processedData;
         }
