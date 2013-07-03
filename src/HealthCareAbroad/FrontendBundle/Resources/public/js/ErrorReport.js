@@ -54,6 +54,7 @@ var ErrorReport = {
 	                .html(ErrorReport.errorReportComponents.submitButton.attr('data-html'))
 	                .attr('disabled', false)
 	                .hide();
+	            	window.location =  ErrorReport.errorReportComponents.form.find('a.captcha_reload').attr('href');
 	            	ErrorReport.errorReportComponents.form.hide();
 	            	ErrorReport.showAlertSuccess();
 	            },
@@ -61,6 +62,7 @@ var ErrorReport = {
 	            	ErrorReport.errorReportComponents.submitButton
 	                .html(ErrorReport.errorReportComponents.submitButton.attr('data-html'))
 	                .attr('disabled', false);
+	            	window.location =  ErrorReport.errorReportComponents.form.find('a.captcha_reload').attr('href');
 	                if (response.status==400) {
 	                    var errors = $.parseJSON(response.responseText).html;
 	                    if (errors.length) {

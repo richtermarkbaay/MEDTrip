@@ -1,7 +1,7 @@
 {% embed 'FrontendBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'report', 'title': 'Submit Report', 'formId': 'errorReport'}} %}
     {% block modalBody %}
+    <div class="alert-box"></div>   
     <form action="{{ path('frontend_page_exception_report_send') }}" method="POST" {{ form_enctype(form) }} class="basic-form row-fluid" id="errorReportForm">
-    	<div class="alert-box"></div>   
         <div class="details control-group">
             <label for="{{ form.children.details.vars.id }}" class="span3">
                 <strong>{{ form.children.details.vars.label }}</strong>
