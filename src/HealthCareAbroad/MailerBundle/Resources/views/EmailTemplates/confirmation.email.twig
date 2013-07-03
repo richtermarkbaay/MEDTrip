@@ -1,0 +1,22 @@
+{% block subject %}
+    Please confirm
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+
+Hello {{ user.username }} !
+
+You can confirm your registration by accessing {{ confirmationUrl }}
+
+Greetings,
+the HCA team
+
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+    {% include 'MailerBundle:EmailTemplates:confirmation_email.html.twig' %}
+
+{% endblock %}

@@ -1,11 +1,48 @@
 parameters:
-#    mailer.example.class: HealthCareAbroad\MailerBundle\Example
+    # used by listeners if they should proceed with the sending of emails
+    notifications.enabled: true
+
+    # Temporary or could be made defaults; we may want the users to set these values himself
+    mailer.templates:
+        -
+            notification.inquiries:
+                template: ""
+                from_email: "inquiry@healthcareabroad.com"
+                subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
+            notification.support:
+                template: ""
+                from_email: "support@healthcareabroad.com"
+                subject: ""
 
 services:
     services.mailer.message:
         class: HealthCareAbroad\MailerBundle\Services\MessageService
         arguments: [@service_container]
-        
+
     services.mailer.queue:
         class: HealthCareAbroad\MailerBundle\Services\MailerQueue
         arguments: [@service_container]
+
+    # this is a mailer that will always use memory spool regardless of the
+    # swiftmail spool configuration
+    services.mailer.instant:
+        class: %swiftmailer.class%
+        arguments: [@?swiftmailer.transport.real]
+
+    # TODO: create an abstract service to extend from
+    services.mailer.notifications.twig:
+        class: HealthCareAbroad\MailerBundle\Services\TwigMailer
+        arguments:
+            - @services.mailer.instant
+            - @router
+            - @twig
+            - %mailer.templates%
+
+    # UNTESTED/UNUSED
+#    services.mailer.notifications.plain_text:
+#        class: HealthCareAbroad\MailerBundle\Services\PlainTextMailer
+#        arguments:
+#            - @services.mailer.instant
+#            - @router
+#            - @templating
+#            - %mailer.templates%
