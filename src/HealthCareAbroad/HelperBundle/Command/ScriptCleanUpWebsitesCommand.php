@@ -41,10 +41,12 @@ class ScriptCleanUpWebsitesCommand extends ContainerAwareCommand
                         
                         echo "SocialMediaSites" .$institution->getSocialMediaSites()."\n";
                     }
+                    
+                    $em->persist($institution);
                     echo "new:" .$institution->getWebsites(). "\n";
                 }
             }
-            $em->persist($institution);
+            
         }
         $em->flush();
         
