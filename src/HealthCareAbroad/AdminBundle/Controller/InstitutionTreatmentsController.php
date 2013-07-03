@@ -456,7 +456,7 @@ class InstitutionTreatmentsController extends Controller
      */
     public function editMedicalCenterStatusAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactDetails','address','timeZone','websites','socialMediaSites','addressHint')));
         $template = 'AdminBundle:InstitutionTreatments:edit.medicalCenter.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
@@ -501,7 +501,7 @@ class InstitutionTreatmentsController extends Controller
     
     public function ajaxAddBusinessHoursAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','status','description','city','country','zipCode','state','contactEmail','contactNumber','address','timeZone','websites')));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','status','description','city','country','zipCode','state','addressHint','contactEmail','contactDetails','address','timeZone','websites','socialMediaSites')));
         $result = '';
         if ($request->isMethod('POST')) {
             $form->bind($request);
