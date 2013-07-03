@@ -1,4 +1,4 @@
-var InstitutionInquiry = {  
+var InstitutionInquiry = {
     institutionInquiryComponents: {},
     
     institutionInquiryFormInputIdPrefix: 'institutionInquiry',
@@ -54,9 +54,12 @@ var InstitutionInquiry = {
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false)
                 .hide();
-                $(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-cancelBtn')).html('close');
                 InstitutionInquiry.showAlertSuccess();
                 InstitutionInquiry.institutionInquiryComponents.form.hide();
+                setTimeout(function() {
+                	InstitutionInquiry.institutionInquiryComponents.modal.modal('hide');
+                }, 2000);
+                
                 
             },
             error: function(response){
