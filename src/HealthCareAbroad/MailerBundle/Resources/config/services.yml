@@ -2,17 +2,17 @@ parameters:
     # used by listeners if they should proceed with the sending of emails
     notifications.enabled: true
 
-    # Temporary or could be made defaults; we may want the users to set these values himself
+    # Temporary or could be made defaults; we may want the users to set these values himself, for example
     mailer.templates:
         -
             notification.inquiries:
-                template: ""
+                template: "MailerBundle/EmailTemplates::notification.inquiries.html.twig"
                 from_email: "inquiry@healthcareabroad.com"
                 subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
             notification.support:
-                template: ""
+                template: "MailerBundle/EmailTemplates::notification.support.html.twig"
                 from_email: "support@healthcareabroad.com"
-                subject: ""
+                subject: ~
 
 services:
     services.mailer.message:
