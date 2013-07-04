@@ -43,7 +43,7 @@ class ContactDetail
     
     public function __toString()
     {
-        return ($this->countryCode ? '+'.$this->countryCode:'').'-'.$this->areaCode.'-'.$this->number;
+        return ($this->countryCode && '' != $this->countryCode? '+'.$this->countryCode:'').$this->areaCode.$this->number;
     }
 
 

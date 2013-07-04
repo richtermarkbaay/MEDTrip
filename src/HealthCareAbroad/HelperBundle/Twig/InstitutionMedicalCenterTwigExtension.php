@@ -115,7 +115,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         $contactDetailsArray = array();
 
         foreach($contactDetails as $each) {
-            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
+            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->__toString());
         }
         
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray;

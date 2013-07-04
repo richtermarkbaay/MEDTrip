@@ -93,7 +93,7 @@
             <p>
                 {% for contactDetail in institutionMedicalCenter.contactDetails %}
                      <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}
-                    <strong><span id="PhoneNumberText"> {{ contactDetail.number}}  </span> </strong>
+                    <strong><span id="PhoneNumberText"> {{ contactDetail}}  </span> </strong>
                 {% else %}
                     <i class="icon-phone"> </i>Phone
                     <strong><span id="profileNumberText"></span></strong>
