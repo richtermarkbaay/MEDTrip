@@ -12,5 +12,5 @@ interface MailerInterface
 //     function sendConfirmationEmailMessage(array $context = array());
 //     function sendResettingEmailMessage(array $context = array());
 //     function sendGenericEmailMessage(array $context = array());
-    function normalizeContext(array $context = array());
+//     function normalizeContext(array $context = array());
 }

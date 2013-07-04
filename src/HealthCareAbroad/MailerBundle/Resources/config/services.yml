@@ -3,18 +3,32 @@ parameters:
     notifications.enabled: true
 
     # Temporary or could be made defaults; we may want the users to set these values himself, for example
+    # TODO: Refactor - this doesn't feel ideal.
     mailer.templates:
-        -
-            notification.inquiries:
-                template: "MailerBundle/EmailTemplates::notification.inquiries.html.twig"
-                from_email: "inquiry@healthcareabroad.com"
-                subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
-            notification.support:
-                template: "MailerBundle/EmailTemplates::notification.support.html.twig"
-                from_email: "support@healthcareabroad.com"
-                subject: ~
+        notification.inquiries:
+            template: "MailerBundle:EmailTemplates:notification.inquiries.html.twig"
+            user: "inquiry@healthcareabroad.com"
+            password: "esV01f#CS9"
+            subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
+        notification.new_account_created:
+            template: "MailerBundle:EmailTemplates:notification.new_account_created.html.twig"
+            user: "harold.modesto@chromedia.com"
+            password: "arteche040973"
+            subject: "Welcome to HealthcareAbroad.com!"
+        notification.support:
+            template: "MailerBundle:EmailTemplates:notification.support.html.twig"
+            user: "support@healthcareabroad.com"
+            password: "HCA#602_h3lp"
+            subject: ~
 
 services:
+    listener.new_account_created:
+        class: HealthCareAbroad\MailerBundle\Listener\NewAccountCreatedListener
+        #arguments: @services.mailer.notifications.twig
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: mailer_bundle.notification.test, method: onNotificationTest }
+
     services.mailer.message:
         class: HealthCareAbroad\MailerBundle\Services\MessageService
         arguments: [@service_container]
@@ -28,15 +42,17 @@ services:
     services.mailer.instant:
         class: %swiftmailer.class%
         arguments: [@?swiftmailer.transport.real]
+        #arguments: [@swiftmailer.transport.real]
 
     # TODO: create an abstract service to extend from
     services.mailer.notifications.twig:
         class: HealthCareAbroad\MailerBundle\Services\TwigMailer
         arguments:
             - @services.mailer.instant
-            - @router
+            #- @router
             - @twig
             - %mailer.templates%
+            - @logger
 
     # UNTESTED/UNUSED
 #    services.mailer.notifications.plain_text:

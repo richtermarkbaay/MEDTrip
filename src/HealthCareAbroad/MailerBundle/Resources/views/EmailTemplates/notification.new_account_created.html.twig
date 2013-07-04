@@ -1,0 +1,64 @@
+{% block subject %}
+    {{ subject }}
+{% endblock %}
+
+{#
+Email specification RFCxxxx recommends that a plain text version of the email
+content is sent along with the html one
+#}
+{% block body_text %}
+    {% autoescape false %}
+Welcome to HealthcareAbroad.com!
+
+Your account has successfully been created. The email address you entered for future logins is: {{ to }}
+
+Soon patients will be able to find your hospital or clinic on HealthcareAbroad.com, make sure that they find complete and relevant information about everything that you have to offer.
+
+Complete your profile >>
+Add all your units or departments >>
+Post photos of your facilities >>
+List the treatments you offer >>
+Feature your doctors >>
+
+IMPORTANT TIP: To make sure you don't miss any inquiries, list and double check your contact information >>
+
+You will also find these guided steps anytime you log in to your account.
+
+Need help?  Contact Support at support@healthcareabroad.com or visit support.healthcareabroad.com.
+
+
+All the best,
+
+The Healthcare Abroad Team
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+    {#% include 'MailerBundle:EmailTemplates:confirmation_email.html.twig' %#}
+    {# We can also include a twig template here as shown above #}
+
+<h4>Welcome to HealthcareAbroad.com!</h4>
+
+Your account has successfully been created. The email address you entered for future logins is: {{ to }}
+
+Soon patients will be able to find your hospital or clinic on <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a>, make sure that they find complete and relevant information about everything that you have to offer.
+
+Complete your profile >>
+Add all your units or departments >>
+Post photos of your facilities >>
+List the treatments you offer >>
+Feature your doctors >>
+
+IMPORTANT TIP: To make sure you don't miss any inquiries, list and double check your contact information >>
+
+You will also find these guided steps anytime you log in to your account.
+
+Need help?  Contact Support at support@healthcareabroad.com or visit <a href="http://support.healthcareabroad.com">support.healthcareabroad.com</a>.
+
+
+All the best,
+
+The Healthcare Abroad Team
+
+{% endblock %}

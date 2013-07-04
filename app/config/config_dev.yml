@@ -24,7 +24,7 @@ assetic:
 
 swiftmailer:
     #delivery_address: adelbert.silla@chromedia.com
-    #disable_delivery:  true
+    #disable_delivery:  false
 
 #jms_debugging:
     # You can set this to true if you want to automatically retrieve help
