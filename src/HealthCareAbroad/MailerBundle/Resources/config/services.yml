@@ -12,8 +12,8 @@ parameters:
             subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
         notification.new_account_created:
             template: "MailerBundle:EmailTemplates:notification.new_account_created.html.twig"
-            user: "harold.modesto@chromedia.com"
-            password: "arteche040973"
+            user: "support@healthcareabroad.com"
+            password: "HCA#602_h3lp"
             subject: "Welcome to HealthcareAbroad.com!"
         notification.support:
             template: "MailerBundle:EmailTemplates:notification.support.html.twig"
@@ -38,7 +38,8 @@ services:
         arguments: [@service_container]
 
     # this is a mailer that will always use memory spool regardless of the
-    # swiftmail spool configuration
+    # swiftmail spool configuration (? looks like this behavior has changed -
+    # we need to enable spool to get a reference to swiftmailer.transport.real)
     services.mailer.instant:
         class: %swiftmailer.class%
         arguments: [@?swiftmailer.transport.real]
@@ -49,6 +50,7 @@ services:
         class: HealthCareAbroad\MailerBundle\Services\TwigMailer
         arguments:
             - @services.mailer.instant
+            #- @mailer
             #- @router
             - @twig
             - %mailer.templates%

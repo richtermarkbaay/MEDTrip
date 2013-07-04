@@ -29,7 +29,7 @@ class MailerController extends Controller
         $event = new GenericEvent(array('to' => 'haroldmodesto@gmail.com', 'templateConfig' => 'notification.new_account_created'));
         $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_TEST, $event);
 
-        return new Response('Check the profiler!' , 200);
+        return new Response('Test' , 200);
     }
 
 

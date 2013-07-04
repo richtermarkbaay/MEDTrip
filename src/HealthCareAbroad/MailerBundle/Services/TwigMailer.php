@@ -34,19 +34,20 @@ class TwigMailer implements MailerInterface
     public function sendMessage($context)
     {
         $context = $this->normalizeContext($context);
-        //$this->setupTransport($context);
+        $this->setupTransport($context);
 
         $template = $this->twig->loadTemplate($context['template']);
         $subject = $template->renderBlock('subject', $context);
         $textBody = $template->renderBlock('body_text', $context);
         $htmlBody = $template->renderBlock('body_html', $context);
 
-        $this->logger->addInfo($htmlBody); exit;
+        //$this->logger->addInfo($htmlBody);
 
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
-            ->setTo($context['to']);
-            //->setFrom($fromEmail)
+            ->setTo($context['to'])
+            ->setFrom($context['user']);
+
 
         if (!empty($htmlBody)) {
             $message
@@ -56,7 +57,9 @@ class TwigMailer implements MailerInterface
             $message->setBody($textBody);
         }
 
-         var_dump($this->mailer->send($message)); exit;
+        $status = $this->mailer->send($message);
+
+        $this->logger->addInfo('Mails sent: '.$status);
     }
 
     /**
@@ -70,7 +73,7 @@ class TwigMailer implements MailerInterface
             throw new \Exception('Please provide either a template configuration or directly reference a twig template.');
         }
 
-        if (isset($context['from'])) {
+        if (isset($context['user']) && isset($context['password'])) {
             // TODO: we have to modify mail transport to use this; gmail will
             // overwrite whatever we set the from field to with the email
             // address of gmail user account used
@@ -92,7 +95,7 @@ class TwigMailer implements MailerInterface
         $transport = $this->mailer->getTransport();
         $ext = $transport->getExtensionHandlers();
         $auth_handler = $ext[0];
-        $auth_handler->setUserName($context['from']);
+        $auth_handler->setUserName($context['user']);
         $auth_handler->setPassword($context['password']);
     }
 
