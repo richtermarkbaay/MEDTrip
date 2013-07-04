@@ -51,7 +51,7 @@
                               {{ form_widget( form.country ) }}
                               {{ form_errors(form.country) }}
                         </div>
-                        <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span3>
+                        <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
                             <label for="{{ form.children.city.vars.id }}">  City *  </label>
                             {{ form_widget( form.city ) }}
                             {{ form_errors(form.city) }}
@@ -69,7 +69,7 @@
                          {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
                          {{ form_errors(form.zipCode) }}
                      </div>   
-                     <div class="control-group">
+                     <div class="control-group row-fluid">
                         {{ form_label(form.addressHint )}}
                         {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}
                     </div>

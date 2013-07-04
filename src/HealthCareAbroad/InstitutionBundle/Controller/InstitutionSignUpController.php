@@ -98,6 +98,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         
         if ($imcId = $this->getRequest()->get('imcId', 0)) {
             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($imcId,false);
+
         }
         
         parent::preExecute();
@@ -167,11 +168,11 @@ class InstitutionSignUpController extends InstitutionAwareController
         $mobileNumber->setType(ContactDetailTypes::MOBILE);
         $institutionUser->addContactDetail($mobileNumber);
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
+  
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
                 $postData = $request->get('institutionUserSignUp');
-                
                 $institutionUser = $form->getData();
                 // initialize required database fields
                 $institution->setName(uniqid());
@@ -197,7 +198,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUser->setJobTitle($form->get('jobTitle')->getData());
                 $institutionUser->setInstitution($institution);
                 $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
-
+                $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
@@ -315,17 +316,15 @@ class InstitutionSignUpController extends InstitutionAwareController
             
             $form->bind($formRequestData);
             if ($form->isValid()) {
-
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                 // set the sign up status of this single center institution
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
                 
-
                 // Upload Logo
                 if(($fileBag = $this->request->files->get('institution_profile_form')) && $fileBag['logo']) {
                     $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
                 }
-
                 // save institution and create an institution medical center
                 $this->signUpService->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
 
@@ -393,6 +392,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             
             $form->bind($formRequestData); 
             if ($form->isValid()) { 
+                $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
                 
@@ -488,7 +488,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
                 
                 $this->institutionMedicalCenter = $form->getData();
-                
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                     $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                 }
@@ -585,7 +585,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
             return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
         }
-
+        
         $params = array(
             'doctorForm' => $form->createView(),
             'institution' => $this->institution,

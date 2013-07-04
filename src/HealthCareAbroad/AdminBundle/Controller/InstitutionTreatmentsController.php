@@ -336,12 +336,13 @@ class InstitutionTreatmentsController extends Controller
                 }
             }
             $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
-            $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false));
+            $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false,InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
      
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
                 
                 if ($form->isValid()) {
+                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                     $form->getData()->setAddress('');
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
     
@@ -376,26 +377,18 @@ class InstitutionTreatmentsController extends Controller
     public function editMedicalCenterAction(Request $request)
     {
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+        $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
+        
         if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
             $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institutionMedicalCenter->addContactDetail($phoneNumber);
         }
-       
-        $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         if ($request->isMethod('POST')) {
             
             $formVariables = $this->request->get(InstitutionMedicalCenterFormType::NAME);
             unset($formVariables['_token']);
-            
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
-            
-            if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-                $phoneNumber = new ContactDetail();
-                $phoneNumber->setType(ContactDetailTypes::PHONE);
-                $phoneNumber->setNumber('');
-                $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-            }
             
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                             InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
@@ -405,11 +398,19 @@ class InstitutionTreatmentsController extends Controller
             $form->bind($this->request);
         
             if ($form->isValid()) {
-                $this->get('services.institution_medical_center')->save($form->getData());
+                $this->institutionMedicalCenter = $form->getData();
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
+                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
+                
+                if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
+                    $phoneNumber = new ContactDetail();
+                    $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $this->institutionMedicalCenter->addContactDetail($phoneNumber);
+                }
             }
         }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status')));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status'),InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         return $this->render($template, array(
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,

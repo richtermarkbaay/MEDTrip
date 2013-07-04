@@ -443,11 +443,12 @@ var InstitutionProfile = {
                         var _errorString = "We need you to correct some of your input. Please check the fields in red.";
                         $.each(errors, function(key, item){
                         	if(item.field){
-	                        	_parent.find('div.'+item.field).addClass('error');
+                        		
+	                        	_parent.find('div[class*="'+item.field+'"]').addClass('error');
 	                        	if(item.field == 'country' || item.field == 'city'){
-	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
+	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div[class*="'+item.field+'"] > div'));
 	                        	}else{
-	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div[class*="'+item.field+'"] > input'));
 	                        	}
                         	}
                         });

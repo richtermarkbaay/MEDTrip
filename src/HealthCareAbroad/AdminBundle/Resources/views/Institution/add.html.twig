@@ -40,8 +40,11 @@
 						                      	{{ form_widget(form.email) }}
 						                  
 					                        </div>
-			                               {% for _widget in form.contactDetails %}
-                                                    {{ form_widget(_widget) }}
+					                       
+			                                {% for _widget in form.contactDetails %}
+			                                     <div class="span12 contact-add">
+                                                {{ form_widget(_widget) }}
+                                                </div>
                                             {% endfor %}
                                             {{ form_row(form.jobTitle) }}
 				                            {{ form_row(form.password) }}

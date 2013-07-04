@@ -79,8 +79,10 @@
                      <div class="row-fluid hca-contact-number">
                         {% for _widget in form.contactDetails %}
                             {{ form_widget(_widget) }}
+                             {{ form_errors(_widget) }}
                             <hr />
                         {% endfor %}
+                        
                     </div>
                 </section>
                 
