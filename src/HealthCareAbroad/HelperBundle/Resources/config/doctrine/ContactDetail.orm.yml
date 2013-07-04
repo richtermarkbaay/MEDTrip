@@ -33,4 +33,12 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
             type: string
             length: 25
             nullable: false
-            column: abbr            
+            column: abbr
+        fromNewWidget:
+            type: boolean
+            nullable: true
+            column: from_new_widget
+        isInvalid:
+            type: boolean
+            nullable: true
+            column: is_invalid            
