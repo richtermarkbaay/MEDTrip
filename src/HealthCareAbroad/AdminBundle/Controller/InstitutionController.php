@@ -119,7 +119,7 @@ class InstitutionController extends Controller
      */
     public function indexAction()
     {
-        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactDetails','websites')));
+        $institutionStatusForm = $this->createForm(new InstitutionProfileFormType(), new Institution());
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
@@ -358,7 +358,6 @@ class InstitutionController extends Controller
     public function updateStatusAction()
     {
         $request = $this->getRequest();
-
         if(!InstitutionStatus::isValid($request->get('status'))) {
             $request->getSession()->setFlash('error', 'Unable to update status. ' . $request->get('status') . ' is invalid status value!');
 
@@ -432,23 +431,33 @@ class InstitutionController extends Controller
     
     public function editStatusAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','address1','websites','medicalProviderGroups','city','country','zipCode','state','contactDetails','socialMediaSites','coordinates','type')));
         $template = 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $formVariables = $request->get(InstitutionProfileFormType::NAME);
+            unset($formVariables['_token']);
+            $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
+            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+            $formRequestData = $request->get($form->getName());
+            $form->bind($formRequestData);
+    
             if ($form->isValid()) {
-                $this->get('services.institution')->save($form->getData());
+                $this->institution = $form->getData();
+                $this->get('services.institution.factory')->save($this->institution);
                 $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" status has been updated!');
+                $response = new Response(\json_encode(array('html' => 'Successfuly updated status', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
+                return $response;
             }
         }
         else {
+            
+            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
             $output['html'] =  $this->renderView($template, array(
                             'institution' => $this->institution,
                             'institutionStatusForm' => $form->createView()
             ));
+            $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
         }
-        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
         
         return $response;
     }
