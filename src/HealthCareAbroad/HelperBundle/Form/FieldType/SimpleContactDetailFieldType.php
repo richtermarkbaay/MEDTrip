@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -14,7 +16,7 @@ class SimpleContactDetailFieldType extends AbstractType
     {
         $builder->add('country_code', 'country_code_list');
         $builder->add('area_code', 'text', array('attr' => array('placeholder' => 'Area Code')));
-        $builder->add('number', 'text', array('attr' => array('placeholder' => 'Phone Number')));
+        $builder->add('number', 'text', array('attr' => array( 'placeholder' => 'Phone Number')));
     }
     
     public function getName()

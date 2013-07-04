@@ -67,6 +67,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             length: 200
             fixed: false
             nullable: false
+        websiteBackUp:
+            type: text
+            nullable: true
+            column: website_back_up
         socialMediaSites:
             type: text
             nullable: true  

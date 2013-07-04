@@ -90,7 +90,7 @@ class InstitutionProfileFormType extends AbstractType
             self::OPTION_HIDDEN_FIELDS => array('type'),
             self::OPTION_REMOVED_FIELDS => array(),
             self::OPTION_BUBBLE_ALL_ERRORS => false,
-            'validation_groups' => array('editInstitutionInformation', 'Default' , 'adminValidation')
+            'validation_groups' => array('editInstitutionInformation', 'Default')
         ));
     }
 
@@ -118,11 +118,11 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
         $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
-        $this->_add($builder, 'state', 'text', array('label' => 'State / Province'));
+        $this->_add($builder, 'state', 'text', array( 'error_bubbling' => false , 'constraints'=> array(new NotBlank(array('message' => 'Please provide your state.'))),'label' => 'State / Province' ));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
-        $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'simple_contact_detail', 'constraints'=>array(new NotBlank())));
+        $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
         $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));

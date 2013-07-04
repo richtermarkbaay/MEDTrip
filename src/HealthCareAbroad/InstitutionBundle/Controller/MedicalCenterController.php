@@ -77,30 +77,30 @@ class MedicalCenterController extends InstitutionAwareController
     public function preExecute()
     {
         parent::preExecute();
-        
+
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
         $this->service = $this->get('services.institution_medical_center');
 
         // Temporary condition for eagerLoad
-        if ($imcId=$this->getRequest()->get('imcId',0) || $this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view' ) {
-            $this->institutionMedicalCenter = $this->service->findById($imcId, false);
+        if ($imcId = $this->getRequest()->get('imcId',0)){
+            if($this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view') {
+                $this->institutionMedicalCenter = $this->service->findById($imcId, false);
             
-            // non-existent medical center group
-            if (!$this->institutionMedicalCenter) {
-                if ($this->getRequest()->isXmlHttpRequest()) {
-                    throw $this->createNotFoundException('Invalid medical center.');
-                }
-                else {
+                // medical center group does not belong to this institution
+                if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
                     return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
                 }
+            } else {
+                $this->institutionMedicalCenter  = $this->repository->find($imcId);
             }
-            
-//             $this->institution = $this->institutionMedicalCenter->getInstitution();
-//             $this->get('twig')->addGlobal('institution', $this->institution);
-//             $this->get('twig')->addGlobal('isSingleCenter', $this->get('services.institution')->isSingleCenter($this->institution));
+        }
 
-            // medical center group does not belong to this institution
-            if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
+        // non-existent medical center group
+        if (!$this->institutionMedicalCenter) {
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                throw $this->createNotFoundException('Invalid medical center.');
+            }
+            else {
                 return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
             }
         }
@@ -172,7 +172,6 @@ class MedicalCenterController extends InstitutionAwareController
             $contactDetail = new ContactDetail();
             $editDoctor->addContactDetail($contactDetail);
         }
-        
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -226,7 +225,10 @@ class MedicalCenterController extends InstitutionAwareController
                             $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                         }
                     }
-                    
+                    if(!empty($form['contactDetails']))
+                    {
+                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
+                    }
                     $institutionMedicalCenterService->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))
@@ -280,15 +282,14 @@ class MedicalCenterController extends InstitutionAwareController
                         }     
                          if($key == 'contactDetails' ){
                             $value = $this->institutionMedicalCenter->{'get'.$key}();
-                            $returnVal = array();
+                            $returnVal = array('phoneNumber' => '');
+                            if($value){
                                 foreach ($value as $keys => $a){
-                                   if($a->getType() == ContactDetailTypes::MOBILE){
-                                       $returnVal['mobileNumber'] = $a->getNumber();
-                                   }else{
+                                   if($a->getType() == ContactDetailTypes::PHONE){
                                        $returnVal['phoneNumber'] =  $a->getNumber();
                                    }
                                 }    
-                               
+                            }
                             $output['institutionMedicalCenter'][$key] = $returnVal;
                         }
                         else{
@@ -618,10 +619,12 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $result = array('status' => false);
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+
         if (!$doctor) {
             $result['message'] = 'Invalid doctor.';
         }
-        try{
+        
+        try {
             $this->institutionMedicalCenter->addDoctor($doctor);
             $this->service->save($this->institutionMedicalCenter);
             $result['status'] = true;
@@ -629,9 +632,11 @@ class MedicalCenterController extends InstitutionAwareController
             $result['editDoctorUrl'] = $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
             $result['removeDoctorUrl'] = $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
             $result['uploadLogoUrl'] = $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
-        }
-        catch (\Exception $e) {}
+            
+        } catch (\Exception $e) {}
 
+        
+        
         return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
 

@@ -27,7 +27,7 @@ class ContactDetail
     private $number;
 
     /**
-     * @var string
+     * @var integer
      */
     private $countryCode;
 
@@ -40,6 +40,11 @@ class ContactDetail
      * @var string
      */
     private $abbr;
+    
+    public function __toString()
+    {
+        return ($this->countryCode && '' != $this->countryCode? '+'.$this->countryCode:'').$this->areaCode.$this->number;
+    }
 
 
     /**
@@ -165,5 +170,61 @@ class ContactDetail
     public function getAbbr()
     {
         return $this->abbr;
+    }
+    /**
+     * @var boolean
+     */
+    private $fromNewWidget;
+
+
+    /**
+     * Set fromNewWidget
+     *
+     * @param boolean $fromNewWidget
+     * @return ContactDetail
+     */
+    public function setFromNewWidget($fromNewWidget)
+    {
+        $this->fromNewWidget = $fromNewWidget;
+    
+        return $this;
+    }
+
+    /**
+     * Get fromNewWidget
+     *
+     * @return boolean 
+     */
+    public function getFromNewWidget()
+    {
+        return $this->fromNewWidget;
+    }
+    /**
+     * @var boolean
+     */
+    private $isInvalid;
+
+
+    /**
+     * Set isInvalid
+     *
+     * @param boolean $isInvalid
+     * @return ContactDetail
+     */
+    public function setIsInvalid($isInvalid)
+    {
+        $this->isInvalid = $isInvalid;
+    
+        return $this;
+    }
+
+    /**
+     * Get isInvalid
+     *
+     * @return boolean 
+     */
+    public function getIsInvalid()
+    {
+        return $this->isInvalid;
     }
 }

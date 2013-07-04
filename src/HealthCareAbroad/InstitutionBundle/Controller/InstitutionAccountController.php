@@ -80,12 +80,21 @@ class InstitutionAccountController extends InstitutionAwareController
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
 
         if ($imcId=$this->getRequest()->get('imcId',0)) {
-            $this->institutionMedicalCenter = $this->repository->find($imcId);
+            //$this->institutionMedicalCenter = $this->repository->find($imcId);
+            $this->institutionMedicalCenter = $this->service->findById($imcId, false);
         }
 
         $this->institutionService = $this->get('services.institution');
         if ($this->institutionService->isSingleCenter($this->institution)) {
-            $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+            //$this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById(895, false);
+//             var_dump($this->institutionMedicalCenter->getId());
+//             var_dump(get_class($this->institutionMedicalCenter->getDoctors()));
+//             var_dump($this->institutionMedicalCenter->getDoctors()->count());
+//             foreach ($this->institutionMedicalCenter->getDoctors() as $e){
+//                 var_dump($e->getId());
+//             }
+//             exit;
         }
         $this->request = $this->getRequest();
     }
@@ -121,7 +130,6 @@ class InstitutionAccountController extends InstitutionAwareController
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
             $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-
             if (\is_null($this->institutionMedicalCenter)) {
                 $this->institutionMedicalCenter = new InstitutionMedicalCenter();
             }
@@ -214,6 +222,11 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     
+                    if(!empty($form['contactDetails']))
+                    {
+                       $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+                    }
+                    
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
@@ -272,10 +285,13 @@ class InstitutionAccountController extends InstitutionAwareController
                         }
                         elseif($key == 'contactDetails' ){
                             $value = $this->institution->{'get'.$key}();
-                            foreach ($value as $keys => $a){
-                                if($a->getType() == ContactDetailTypes::PHONE) {
-                                     $output['institution'][$key]['phoneNumber'] = $a->getNumber();
-                                     break;
+                            $output['institution'][$key]['phoneNumber'] ='';
+                            if($value){
+                                foreach ($value as $keys => $a){
+                                    if($a->getType() == ContactDetailTypes::PHONE) {
+                                         $output['institution'][$key]['phoneNumber'] = $a->getNumber();
+                                         break;
+                                    }
                                 }
                             }
                         }

@@ -1255,7 +1255,8 @@ background-color: #cccccc;
 */
 .hca-countrycodes {
   margin: 0;
-  z-index: 1000; }
+  z-index: 1000;
+  }
   .hca-countrycodes .open .btn {
     background-color: rgba(0, 0, 0, 0.1); }
   .hca-countrycodes .btn-group, .hca-countrycodes .btn {
@@ -1274,7 +1275,9 @@ background-color: #cccccc;
     position: relative; }
    .control-group .hca-countrycodes input.span12{
     height: 35px; 
-        width: 200px;
+   }
+      .address1 .span12{
+   width: 100%;
    }
 .dropdown-menu {
   margin-top: -1px;
@@ -1330,9 +1333,9 @@ background-color: #cccccc;
     .span8 .control-group input.span12{
         width: 70.9149%;
     }
-    .control-group input.span12{
+/*     .control-group input.span12{
          width: 535px;
-    }
+     */}
     .span5 .control-group input.span12{
         width: 40.4255%;
     }
@@ -1361,8 +1364,9 @@ background-color: #cccccc;
     .basic-form .span12{
         margin-left: 0;
     }
-    .address1{
-        width:400px;
+    .address1 , .address
+    {
+        width:500px;
     }
     .fancy-country-wrapper > input[type=text] {
         display:inline-block;
@@ -1451,6 +1455,7 @@ background-color: #cccccc;
                 border: 1px solid #CCCCCC;
                 background-color: #FFFFFF;
                 border-top: 0;
+                width:210px;
             }
             
             .custom-select > ul > li {
@@ -1529,6 +1534,9 @@ background-color: #cccccc;
 			.social-media span{
 			     margin: 10px;
 			}
+		   .contact-add {
+             margin-left:0 !important;
+             }
 /*
 ================== End of Custom CSS fixed ======================
 */

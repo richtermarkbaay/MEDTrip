@@ -2,6 +2,14 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Form\FieldType\ContactDetailFieldType;
+
 use Doctrine\Common\Collections\ArrayCollection;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
@@ -86,4 +94,22 @@ class ContactDetailService
 	    return $contactDetail;
 	}
 	
+    public function removeInvalidContactDetails($objectEntity)
+    {
+        foreach ($objectEntity->getContactDetails() as $contactDetail){
+            if($contactDetail->getNumber() == NULL){
+                $objectEntity->removeContactDetail($contactDetail);
+            }
+        }
+        return $objectEntity;
+    }
+    public function removeInvalidInstitutionContactDetails(Institution $institution)
+    {
+        foreach ($institution->getContactDetails() as $contactDetail){
+            if($contactDetail->getNumber() == ''){
+                $institution->removeContactDetail($contactDetail);
+            }
+        }
+        return $institution;
+    }
 }

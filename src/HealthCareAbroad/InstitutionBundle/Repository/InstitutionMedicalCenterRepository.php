@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -203,10 +205,20 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->leftJoin('i.doctors', 'c')
             ->leftJoin('i.institutionSpecializations', 'd')
             ->orderBy('i.id','asc')
-            ->setParameter('institutionId', $institutionId)
-            ->setMaxResults(1);
+        ;
+        $query = $this->getEntityManager()->createQuery($qb->getDQL());
+        $query->setParameter('institutionId', $institutionId);
+        $query->setMaxResults(1);
+        $query->setFirstResult(0);
+        
+        $results = new Paginator($query, $fetchJoin = true);
+        $imc = null;
+        foreach ($results as $e) {
+            $imc = $e;
+            break;
+        }
 
-        return $qb->getQuery()->getOneOrNullResult(); 
+        return $imc;
     }
 
     /**

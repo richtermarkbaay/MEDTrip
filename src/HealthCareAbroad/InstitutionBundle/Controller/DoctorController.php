@@ -142,6 +142,7 @@ class DoctorController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
     
             try {
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionDoctor);
                 $em->persist($this->institutionDoctor);
                 $em->flush();
             }

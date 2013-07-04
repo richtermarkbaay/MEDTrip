@@ -26,13 +26,15 @@
                     </div>
                     {{ form_row(form.addressHint) }}
                     {{ form_row(form.contactEmail) }}
+                    {% for _widget in form.contactDetails %}
+                        <div class="span12">
+                            {{ form_widget(_widget) }}
+                        </div>
+                    {% endfor %}
                     <div class="control-group">
                         <label>Website</label>
                         {{ form_widget(form.websites) }}
                     </div>    
-                    {% for _widget in form.contactDetails %}
-                        {{ form_widget(_widget) }}
-                    {% endfor %}
                     <hr />
                          <div class="row-fluid">
                              <div class="span7">

@@ -7,21 +7,21 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     properties:
         name:
             - HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueName: {groups: [institutionRegistration]}
-            - NotBlank: {message: 'Please provide your hosipital name.', groups: [editInstitutionInformation, adminValidation]}
+            - NotBlank: {message: 'Please provide your hosipital name.', groups: [editInstitutionInformation]}
         country:
-            - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation, adminValidation]}
+            - NotBlank: {message: 'Please provide your country.', groups: [editInstitutionInformation]}
         city:
-            - NotBlank: {message: 'Please provide your city.', groups: [editInstitutionInformation, adminValidation]}
+            - NotBlank: {message: 'Please provide your city.', groups: [editInstitutionInformation]}
         address1:
-            - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation, adminValidation] }
+            - NotBlank: {message: 'Please provide a valid address.', groups: [editInstitutionInformation] }
         contactEmail:
-            - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation, adminValidation] }
+            - Email: {message: 'Please supply a valid contact email.', groups: [editInstitutionInformation] }
         zipCode:
-            - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation, adminValidation] }
+            - NotBlank: {message: 'Please provide your postal code.', groups: [editInstitutionInformation] }
             - MinLength: { limit: 3, message: 'Postal Code must be atleast 3 digits.' }
             - MaxLength: { limit: 15, message: 'Maximum digits must be 15 only.' }
-        state:
-            - NotBlank: {message: 'Please provide your state.', groups: [editInstitutionInformation] }
+        #state:
+            #- NotBlank: {message: 'Please provide your state.', groups: [editInstitutionInformation] }
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation:
     properties:
         name:

@@ -18,7 +18,7 @@ use HealthCareAbroad\HelperBundle\Classes\QueryOption;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+use HealthCareAbroad\AdminBundle\Form\InstitutionProfileFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\InstitutionOfferedServiceListType;
 
@@ -119,7 +119,7 @@ class InstitutionController extends Controller
      */
     public function indexAction()
     {
-        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $institutionStatusForm = $this->createForm(new InstitutionFormType(), new Institution(), array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactDetails','websites')));
         $params = array(
             'pager' => $this->pager,
             'institutions' => $this->filteredResult, 
@@ -148,7 +148,6 @@ class InstitutionController extends Controller
     	$mobileNumber->setType(ContactDetailTypes::MOBILE);
     	$institutionUser->addContactDetail($mobileNumber);
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
-    
 	    	if ($request->isMethod('POST')) {
 	    		$form->bind($request);
 	    		 
@@ -169,7 +168,7 @@ class InstitutionController extends Controller
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
 	    			$institution->setSignupStepStatus(0);
-
+	    			
 	    			$factory->save($institution);
 	    			 
 	    			// create Institution user
@@ -180,7 +179,8 @@ class InstitutionController extends Controller
 	    			$institutionUser->setPassword($form->get('password')->getData());
 	    			$institutionUser->setInstitution($institution);
 	    			$institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
-	    			 
+	    			$this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
+//                     var_dump($institutionUser->getContactDetails()); exit;
 	    			// dispatch event
 	    			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
 	    							$this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
@@ -233,7 +233,7 @@ class InstitutionController extends Controller
 	        unset($formVariables['_token']);
 	        $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
 	        
-	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array(''),'validation_groups' => 'adminValidation' , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array(''), InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
 	        $formRequestData = $request->get($form->getName());
 	        if (isset($formRequestData['medicalProviderGroups']) ) {
 	            // we always expect 1 medical provider group
@@ -253,6 +253,7 @@ class InstitutionController extends Controller
 	            
 	            // update to active status
 	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
+	            $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($institution);
 	            $this->get('services.institution.factory')->save($institution);
 	    		$this->get('session')->setFlash('notice', "Successfully completed details of {$institution->getName()}.");
 	    
@@ -296,7 +297,7 @@ class InstitutionController extends Controller
     	    unset($formVariables['_token']);
     	    $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
     	   
-    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') ,'validation_groups' => 'adminValidation'), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
     	    $formRequestData = $request->get($form->getName());
     	    if (isset($formRequestData['medicalProviderGroups']) ) {
     	        // we always expect 1 medical provider group
@@ -308,7 +309,8 @@ class InstitutionController extends Controller
     		$form->bind($formRequestData);
     		if ($form->isValid()) {
     			
-    			$this->institution = $form->getData();    
+    			$this->institution = $form->getData();   
+    			$this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
     			$institution = $this->get('services.institution.factory')->save($this->institution);
     			$this->get('session')->setFlash('notice', "Successfully updated account");
     			 
@@ -430,7 +432,7 @@ class InstitutionController extends Controller
     
     public function editStatusAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','address1','websites','medicalProviderGroups','city','country','zipCode','state','contactDetails','socialMediaSites','coordinates','type')));
         $template = 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {

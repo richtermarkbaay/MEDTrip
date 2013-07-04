@@ -109,6 +109,7 @@ class InstitutionUserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                     $institutionUser = $form->getData();
+                    $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
                     $this->get('services.institution_user')->update($institutionUser);
                     // create event on editAccount and dispatch
                     $this->get('services.institution_user')->setSessionVariables($institutionUser);
