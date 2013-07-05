@@ -1,16 +1,15 @@
 {% embed 'AdminBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
     {% block modalBody %}
-    <form novalidate="novalidate" action="{{ path('admin_institution_editStatus', {'institutionId' : institution is defined ? institution.id : 0 } ) }}" id="status_institution_form" method="POST" class="basic-form">        
-        {{ form_errors(institutionStatusForm) }}   
-    
-        {{ form_row(institutionStatusForm.status) }}
-        </br>
-        {{ form_rest(institutionStatusForm) }}
+    <form novalidate="novalidate" data-element="" action="{{ path('admin_institution_editStatus', {'institutionId' : institution is defined ? institution.id : 0 } ) }}" id="status_institution_form" method="POST" class="basic-form">        
+        {{ form_widget(institutionStatusForm.status) }}
+       {% if (institutionStatusForm._token) %} {# added condition for test #}
+            {{ form_widget(institutionStatusForm._token) }}
+        {% endif %}
                             	                        	
     </form>
     {% endblock %}
     {% block footerBody %}
         <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        <button data-modalId="#status_institution_modal_form" data-formId="#status_institution_form" data-loader-text="Processing..." data-valueId="{{ institution is defined ? institution.id : 0 }}" onclick="Institution.updateInstitutionStatus(this); return false;" id="modal_status_institution_submitButton" class="btn btn-primary submit-button">Submit</button>
+        <button data-modalId="#status_institution_modal_form" data-formId="#status_institution_form" data-loader-text="Processing..." onclick="Institution.updateInstitutionStatus(this); return false;" id="modal_status_institution_submitButton" class="btn btn-primary submit-button">Submit</button>
     {% endblock %}
 {% endembed %}

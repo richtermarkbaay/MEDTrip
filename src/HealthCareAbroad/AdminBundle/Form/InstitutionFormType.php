@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
+use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -30,22 +34,40 @@ class InstitutionFormType extends AbstractType
     private $options = array();
     
     private static $fieldNames = array(
-        'name',
+         'name',
         'description',
+        'medicalProviderGroups',
+        'country',
+        'city',
+        'zipCode',
+        'state',
         'contactEmail',
-        'contactNumber',
+        'address1',
+        'addressHint',
+        'contactDetails',
         'websites',
+        'socialMediaSites',
+        'coordinates',
+        'logo',
+        'featuredMedia',
+        'coordinates',
+        'type',
         'status'
     );
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
+
     {
+
         $resolver->setDefaults(array(
             self::OPTION_REMOVED_FIELDS => array(),
             self::OPTION_BUBBLE_ALL_ERRORS => false,
             'is_hidden' => true,
+
             'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution'
+
         ));
+
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -58,24 +80,42 @@ class InstitutionFormType extends AbstractType
         }
         
         $imcProperty = new InstitutionMedicalCenterProperty();
-        $this->_add($builder, 'name','text', array('label' => 'Name'));
-        $this->_add($builder, 'description', 'textarea', array('label' => 'Short description of the clinic', 'attr' => array('rows' => 5)));
-        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
-        $this->_add($builder, 'contactNumber', 'contact_number', array('label' => 'Clinic Phone Number'));
+        $this->_add($builder, 'name', 'text');
+        $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
+        $this->_add($builder, 'description', 'textarea', array('required' => false));
+        $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true,'options'  => array( 'required' => false)));
+        $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
+        $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
+        $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
+        $this->_add($builder, 'state', 'text', array( 'error_bubbling' => false ,'label' => 'State / Province' ));
+        $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
+        $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
+        $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
+        $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
         $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
+        $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
+        $this->_add($builder, 'logo', new InstitutionMediaFileType($institution->getLogo()));
+        $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($institution->getFeaturedMedia()));
+        $this->_add($builder, 'coordinates', 'hidden');
+        $this->_add($builder, 'type', 'choice', array ('label' => 'Institution Type' , 'empty_value' => false,'multiple' => false, 'choices' => InstitutionTypes::getFormChoices()));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
     }
     
     private function _isRemoved($fieldName)
+
     {
+
         return \in_array($fieldName, $this->options[self::OPTION_REMOVED_FIELDS]);
+
     }
     
     private function _add(FormBuilderInterface $builder, $fieldName, $fieldType, array $options=array())
     {
         if (!$this->_isRemoved($fieldName)) {
             if ($this->options[self::OPTION_BUBBLE_ALL_ERRORS]) {
+
                 $options['error_bubbling'] = true;
+
             }
             $builder->add($fieldName, $fieldType, $options);
         }

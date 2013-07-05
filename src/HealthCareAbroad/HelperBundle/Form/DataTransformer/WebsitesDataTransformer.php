@@ -9,7 +9,6 @@ class WebsitesDataTransformer implements  DataTransformerInterface
     
     public function transform($value)
     {
-
         $jsonValue = \json_decode($value, true);
 
         if (!$jsonValue) {

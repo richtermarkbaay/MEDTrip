@@ -392,7 +392,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             
             $form->bind($formRequestData); 
             if ($form->isValid()) { 
-                $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
                 

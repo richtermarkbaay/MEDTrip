@@ -410,7 +410,7 @@ class InstitutionTreatmentsController extends Controller
                 }
             }
         }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('city', 'country','zipCode','state','timeZone','status'),InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
+        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         return $this->render($template, array(
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,

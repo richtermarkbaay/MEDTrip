@@ -103,13 +103,4 @@ class ContactDetailService
         }
         return $objectEntity;
     }
-    public function removeInvalidInstitutionContactDetails(Institution $institution)
-    {
-        foreach ($institution->getContactDetails() as $contactDetail){
-            if($contactDetail->getNumber() == ''){
-                $institution->removeContactDetail($contactDetail);
-            }
-        }
-        return $institution;
-    }
 }

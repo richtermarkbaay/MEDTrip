@@ -224,7 +224,7 @@ class InstitutionAccountController extends InstitutionAwareController
                     
                     if(!empty($form['contactDetails']))
                     {
-                       $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+                       $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                     }
                     
                     $this->get('services.institution.factory')->save($this->institution);
