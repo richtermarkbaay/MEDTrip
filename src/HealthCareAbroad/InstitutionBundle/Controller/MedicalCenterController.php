@@ -148,7 +148,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function viewAction(Request $request)
     {
-        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
@@ -162,7 +162,7 @@ class MedicalCenterController extends InstitutionAwareController
         if($this->institutionMedicalCenter->getDoctors()->count()) {
             $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
         }
-        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
         
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
@@ -196,7 +196,7 @@ class MedicalCenterController extends InstitutionAwareController
                 unset($formVariables['_token']);
                 
                 $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
-                $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+                $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
                 
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                     InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
@@ -355,7 +355,7 @@ class MedicalCenterController extends InstitutionAwareController
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
             
-            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
             
             $this->institutionMedicalCenter->setDescription(' ');
             $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
@@ -627,7 +627,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateDoctorAction(Request $request)
     {
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
-        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
         $form->bind($request);

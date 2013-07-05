@@ -60,7 +60,7 @@ class DoctorController extends Controller
             $title = 'Add Doctor Details';
         }
         
-        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE));
         
         $form = $this->createForm(new DoctorFormType(), $doctor);
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -95,7 +95,7 @@ class DoctorController extends Controller
             $title = 'Add Doctor Details';
         }
 
-        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new DoctorFormType(), $doctor);
         

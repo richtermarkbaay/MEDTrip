@@ -115,15 +115,21 @@ class ContactDetailService
      * @return InstitutionUser
      * @author Chaztine Blance
      */
+    
     public function initializeContactDetails($parentObject, $types){
         
+        $newTypes = array();
+        foreach($types as $type){
+            $newTypes[$type] = '';
+        }
+     
         foreach ($parentObject->getContactDetails() as $contact){
-            unset($types[$contact->getType()]);
+            unset($newTypes[$contact->getType()]);
         }
         
-        foreach($types as $each) {
+        foreach($newTypes as $key => $dummy) {
             $number = new ContactDetail();
-            $number->setType($each);
+            $number->setType($key);
             $parentObject->addContactDetail($number);
         }
         

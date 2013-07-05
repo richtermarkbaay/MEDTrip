@@ -334,7 +334,7 @@ class InstitutionTreatmentsController extends Controller
                     return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
                 }
             }
-            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
              
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false,InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
      
@@ -378,7 +378,7 @@ class InstitutionTreatmentsController extends Controller
     {
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
-        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
          
         if ($request->isMethod('POST')) {
             

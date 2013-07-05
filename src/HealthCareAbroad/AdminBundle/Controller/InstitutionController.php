@@ -140,7 +140,7 @@ class InstitutionController extends Controller
     	$institution = $factory->createInstance();  	
     	$institutionUser = new InstitutionUser();
     	
-    	$this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE => '1', ContactDetailTypes::MOBILE => '2'));
+    	$this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE, ContactDetailTypes::MOBILE));
     	
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
 	    	if ($request->isMethod('POST')) {
@@ -206,7 +206,7 @@ class InstitutionController extends Controller
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
         $this->institution->setName(''); //set institution name to empty
 	    // redirect to edit institution if status is already active
@@ -274,7 +274,7 @@ class InstitutionController extends Controller
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
         
-        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE => '1'));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
         if ($request->isMethod('GET')) {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false ));
