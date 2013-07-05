@@ -94,6 +94,11 @@ class ContactDetailService
 	    return $contactDetail;
 	}
 	
+	/**
+	 * Remove Contact Details
+	 * Service is use for every submissions of data that has contact details object
+	 *@author Chaztine Blance
+	 */
     public function removeInvalidContactDetails($objectEntity)
     {
         foreach ($objectEntity->getContactDetails() as $contactDetail){
@@ -103,4 +108,58 @@ class ContactDetailService
         }
         return $objectEntity;
     }
+    
+    /**
+     * Check if user has a contact details (mobile or phone).
+     * @param InstitutionUser $user
+     * @return InstitutionUser
+     * @author Chaztine Blance
+     */
+    public function checkUserContactDetails(InstitutionUser $user){
+        
+        if($user->getContactDetails()->count() == 0){
+            $phoneNumber = new ContactDetail();
+            $phoneNumber->setType(ContactDetailTypes::PHONE);
+            $user->addContactDetail($phoneNumber);
+
+            $mobileNumber = new ContactDetail();
+            $mobileNumber->setType(ContactDetailTypes::MOBILE);
+            $user->addContactDetail($mobileNumber);
+        }
+        if($user->getContactDetails()->count() == 1){
+            
+            foreach ($user->getContactDetails() as $contact){
+                if($contact->getType() != ContactDetailTypes::PHONE) {
+                    $phoneNumber = new ContactDetail();
+                    $phoneNumber->setType(ContactDetailTypes::PHONE);
+                    $user->addContactDetail($phoneNumber);
+                }
+                if($contact->getType() != ContactDetailTypes::MOBILE) {
+                    $mobileNumber = new ContactDetail();
+                    $mobileNumber->setType(ContactDetailTypes::MOBILE);
+                    $user->addContactDetail($mobileNumber);
+                }
+            }
+        }
+        return $user;
+    }
+    
+    /**
+     * Check if Contact Number type is phone and return string value.
+     * @author Chaztine Blance 
+     */
+    public function getContactDetailsStringValue($objectEntity){
+        
+        $output = '';
+        if($objectEntity){
+            foreach ($objectEntity as $keys => $a){
+                if($a->getType() == ContactDetailTypes::PHONE){
+                    $output = $a->__toString();
+                }
+            }
+        }
+        
+        return $output;
+    }
+    
 }

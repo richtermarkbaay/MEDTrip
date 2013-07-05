@@ -160,15 +160,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
         $institutionUser = new InstitutionUser();
-        $phoneNumber = new ContactDetail();
-        $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $institutionUser->addContactDetail($phoneNumber);
-        
-        $mobileNumber = new ContactDetail();
-        $mobileNumber->setType(ContactDetailTypes::MOBILE);
-        $institutionUser->addContactDetail($mobileNumber);
+        $this->get('services.contact_detail')->checkUserContactDetails($institutionUser); //call a service that will check if user has a phone or mobile number if not add Contact Details
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
-  
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {

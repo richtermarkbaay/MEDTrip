@@ -284,16 +284,8 @@ class InstitutionAccountController extends InstitutionAwareController
                             $output['institution'][$key] = $returnVal;
                         }
                         elseif($key == 'contactDetails' ){
-                            $value = $this->institution->{'get'.$key}();
-                            $output['institution'][$key]['phoneNumber'] ='';
-                            if($value){
-                                foreach ($value as $keys => $a){
-                                    if($a->getType() == ContactDetailTypes::PHONE) {
-                                         $output['institution'][$key]['phoneNumber'] = $a->getNumber();
-                                         break;
-                                    }
-                                }
-                            }
+                            $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institution->{'get'.$key}());
+                            $output['institution'][$key]['phoneNumber'] = $value;
                         }
                         elseif($key == 'address1') {
                             $value = $this->institution->{'get'.$key}();

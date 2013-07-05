@@ -35,15 +35,20 @@ class ContactDetail
      * @var string
      */
     private $areaCode;
-
+    
     /**
      * @var string
      */
     private $abbr;
     
+    /**
+     * @var string
+     */
+    private $ext;
+    
     public function __toString()
     {
-        return ($this->countryCode && '' != $this->countryCode? '+'.$this->countryCode:'').$this->areaCode.$this->number;
+        return ($this->countryCode && '' != $this->countryCode ? '+'.$this->countryCode:'').$this->areaCode.$this->number.($this->ext && '' != $this->ext ? ' ('.$this->ext.')':'' );
     }
 
 
@@ -171,6 +176,30 @@ class ContactDetail
     {
         return $this->abbr;
     }
+    
+    /**
+     * Set ext
+     *
+     * @param string $ext
+     * @return ContactDetail
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
+    
+        return $this;
+    }
+    
+    /**
+     * Get ext
+     *
+     * @return string
+     */
+    public function getExt()
+    {
+        return $this->ext;
+    }
+    
     /**
      * @var boolean
      */

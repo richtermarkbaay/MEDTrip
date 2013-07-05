@@ -281,16 +281,8 @@ class MedicalCenterController extends InstitutionAwareController
                             return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }     
                          if($key == 'contactDetails' ){
-                            $value = $this->institutionMedicalCenter->{'get'.$key}();
-                            $returnVal = array('phoneNumber' => '');
-                            if($value){
-                                foreach ($value as $keys => $a){
-                                   if($a->getType() == ContactDetailTypes::PHONE){
-                                       $returnVal['phoneNumber'] =  $a->getNumber();
-                                   }
-                                }    
-                            }
-                            $output['institutionMedicalCenter'][$key] = $returnVal;
+                             $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institutionMedicalCenter->{'get'.$key}());
+                             $output['institutionMedicalCenter'][$key]['phoneNumber'] = $value;
                         }
                         else{
                             

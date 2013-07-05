@@ -140,13 +140,8 @@ class InstitutionController extends Controller
     	$institution = $factory->createInstance();  	
     	$institutionUser = new InstitutionUser();
     	
-    	$phoneNumber = new ContactDetail();
-    	$phoneNumber->setType(ContactDetailTypes::PHONE);
+    	$this->get('services.contact_detail')->checkUserContactDetails($institutionUser); //call a service that will check if user has a phone or mobile number if not add Contact Details
     	
-    	$institutionUser->addContactDetail($phoneNumber);
-    	$mobileNumber = new ContactDetail();
-    	$mobileNumber->setType(ContactDetailTypes::MOBILE);
-    	$institutionUser->addContactDetail($mobileNumber);
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
 	    	if ($request->isMethod('POST')) {
 	    		$form->bind($request);
