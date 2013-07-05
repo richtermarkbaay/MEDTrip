@@ -115,33 +115,19 @@ class ContactDetailService
      * @return InstitutionUser
      * @author Chaztine Blance
      */
-    public function checkUserContactDetails(InstitutionUser $user){
+    public function initializeContactDetails($parentObject, $types){
         
-        if($user->getContactDetails()->count() == 0){
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $user->addContactDetail($phoneNumber);
-
-            $mobileNumber = new ContactDetail();
-            $mobileNumber->setType(ContactDetailTypes::MOBILE);
-            $user->addContactDetail($mobileNumber);
+        foreach ($parentObject->getContactDetails() as $contact){
+            unset($types[$contact->getType()]);
         }
-        if($user->getContactDetails()->count() == 1){
-            
-            foreach ($user->getContactDetails() as $contact){
-                if($contact->getType() != ContactDetailTypes::PHONE) {
-                    $phoneNumber = new ContactDetail();
-                    $phoneNumber->setType(ContactDetailTypes::PHONE);
-                    $user->addContactDetail($phoneNumber);
-                }
-                if($contact->getType() != ContactDetailTypes::MOBILE) {
-                    $mobileNumber = new ContactDetail();
-                    $mobileNumber->setType(ContactDetailTypes::MOBILE);
-                    $user->addContactDetail($mobileNumber);
-                }
-            }
+        
+        foreach($types as $each) {
+            $number = new ContactDetail();
+            $number->setType($each);
+            $parentObject->addContactDetail($number);
         }
-        return $user;
+        
+        return $parentObject;
     }
     
     /**

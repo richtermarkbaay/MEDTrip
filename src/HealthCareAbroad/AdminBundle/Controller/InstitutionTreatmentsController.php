@@ -329,13 +329,13 @@ class InstitutionTreatmentsController extends Controller
             else {
                 // there is an imcId in the Request, check if this is a draft
                 if ($this->institutionMedicalCenter && !$service->isDraft($this->institutionMedicalCenter)) {
-    
                     $request->getSession()->setFlash('error', 'Invalid medical center draft.');
     
                     return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
                 }
             }
-            $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+             
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false,InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
      
             if ($request->isMethod('POST')) {
@@ -378,12 +378,8 @@ class InstitutionTreatmentsController extends Controller
     {
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
-        
-        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE => '1'));
+         
         if ($request->isMethod('POST')) {
             
             $formVariables = $this->request->get(InstitutionMedicalCenterFormType::NAME);

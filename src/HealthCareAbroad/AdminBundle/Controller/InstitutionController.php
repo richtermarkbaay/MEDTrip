@@ -140,7 +140,7 @@ class InstitutionController extends Controller
     	$institution = $factory->createInstance();  	
     	$institutionUser = new InstitutionUser();
     	
-    	$this->get('services.contact_detail')->checkUserContactDetails($institutionUser); //call a service that will check if user has a phone or mobile number if not add Contact Details
+    	$this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE => '1', ContactDetailTypes::MOBILE => '2'));
     	
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
 	    	if ($request->isMethod('POST')) {
@@ -206,12 +206,8 @@ class InstitutionController extends Controller
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
-        if(!$this->institution->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($contactDetails);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE => '1'));
+
         $this->institution->setName(''); //set institution name to empty
 	    // redirect to edit institution if status is already active
 	    
@@ -278,11 +274,8 @@ class InstitutionController extends Controller
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
         
-        if(!$this->institution->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($contactDetails);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE => '1'));
+
         if ($request->isMethod('GET')) {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false ));
         }

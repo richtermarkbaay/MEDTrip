@@ -91,8 +91,7 @@ class InstitutionUserController extends Controller
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
-        
-        $this->get('services.contact_detail')->checkUserContactDetails($institutionUser); //call a service that will check if user has a phone or mobile number if not add Contact Details
+        $this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE => '1', ContactDetailTypes::MOBILE => '2'));
         
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser,  array('include_terms_agreement' => false, 'institution_types' => false));
         $em = $this->getDoctrine()->getManager();

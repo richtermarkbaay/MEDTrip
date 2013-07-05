@@ -60,11 +60,7 @@ class DoctorController extends Controller
             $title = 'Add Doctor Details';
         }
         
-        if(!$doctor->getContactDetails()->count()) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $doctor->addContactDetail($phoneNumber);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE => '1'));
         
         $form = $this->createForm(new DoctorFormType(), $doctor);
         return $this->render('AdminBundle:Doctor:edit.html.twig', array(
@@ -98,10 +94,9 @@ class DoctorController extends Controller
             $msg = "Successfully added doctor";
             $title = 'Add Doctor Details';
         }
-        
-        $phoneNumber = new ContactDetail();
-        $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $doctor->addContactDetail($phoneNumber);
+
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE => '1'));
+
         $form = $this->createForm(new DoctorFormType(), $doctor);
         
         if ($this->getRequest()->isMethod('POST')) {
@@ -112,7 +107,7 @@ class DoctorController extends Controller
                 if(isset($fileBag['media']) && $fileBag['media']) {
                     $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor, false);
                 }
-
+                $this->get('services.contact_detail')->removeInvalidContactDetails($doctor);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($doctor);
                 $em->flush();

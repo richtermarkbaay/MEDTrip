@@ -48,7 +48,6 @@ class DefaultController extends InstitutionAwareController
     public function indexAction(Request $request)
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        $institutionAlerts = array();
         $signup = false;
         if($request->server->has('HTTP_REFERER')){
             if (\preg_match('/setup-doctors/i', $request->server->get('HTTP_REFERER'))) {
@@ -56,11 +55,6 @@ class DefaultController extends InstitutionAwareController
             }
         }
         
-        // TODO - Deprecated??
-        //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
-        //$news = $newsRepository->getLatestNews();
-        $news = array();
-
         if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
             $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
         }
@@ -69,8 +63,6 @@ class DefaultController extends InstitutionAwareController
         }
     
         return $this->render($template, array(
-                        'alerts' => $institutionAlerts,
-                        'news' => $news,
                         'institution' => $this->institution,
                         'isDashBoard' => true,
                         'signup' => $signup
