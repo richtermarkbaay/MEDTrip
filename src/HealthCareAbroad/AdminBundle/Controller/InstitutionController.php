@@ -317,6 +317,7 @@ class InstitutionController extends Controller
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     		}else{
+    		    var_dump($this->get('validator')->validate($form)); exit;
         	    $error = true;
                 $form_errors = $this->get('validator')->validate($form);
                 if($form_errors){

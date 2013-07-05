@@ -74,12 +74,16 @@ class InstitutionMedicalCenterFormType extends AbstractType
             throw new \Exception(__CLASS__.' expects data to be instance of InstitutionMedicalCenter');
         }
         $this->institution = $medicalCenter->getInstitution();
-
+        if (!$medicalCenter->getId()) {
+            $medicalCenter->setWebsites($this->institution->getWebsites());
+            $medicalCenter->setSocialMediaSites($this->institution->getSocialMediaSites());
+            $medicalCenter->setAddress($this->institution->getAddress1());
+            $medicalCenter->setAddressHint($this->institution->getAddressHint());
+        }
         $imcProperty = new InstitutionMedicalCenterProperty();
         $this->_add($builder, 'name','text', array('label' => 'Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short Description Of The Clinic', 'attr' => array('rows' => 4)));
         $this->_add($builder, 'businessHours', 'fancy_business_hours');
-
         $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip or Mail Code','disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getZipCode())));
         $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
@@ -87,11 +91,8 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactDetails', 'collection', array('label' => 'Clinic Phone Number', 'type' => 'simple_contact_detail'));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
-        if (!$medicalCenter->getId()) {
-            $medicalCenter->setWebsites($this->institution->getWebsites());
-        }
         $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
-        $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
+        $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field', array('attr' => array('value' => $this->institution->getSocialMediaSites())));
         $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Address', 'attr' => array('value' => $this->institution->getAddress1())));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'timeZone', 'text', array('label' => 'Timezone', 'virtual' => true, 'disabled' => 'disabled'));
