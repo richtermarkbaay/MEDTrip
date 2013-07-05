@@ -67,8 +67,6 @@ class InstitutionProfileFormType extends AbstractType
         'contactDetails',
         'websites',
         'socialMediaSites',
-        'services',
-        'awards',
         'coordinates',
         'logo',
         'featuredMedia',
@@ -129,8 +127,6 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
         $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
-        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
-        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false));
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'coordinates', 'hidden');

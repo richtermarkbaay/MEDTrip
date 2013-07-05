@@ -253,7 +253,7 @@ class InstitutionController extends Controller
 	            
 	            // update to active status
 	            $institution->setStatus(InstitutionStatus::getBitValueForActiveStatus());
-	            $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($institution);
+	            $this->get('services.contact_detail')->removeInvalidContactDetails($institution);
 	            $this->get('services.institution.factory')->save($institution);
 	    		$this->get('session')->setFlash('notice', "Successfully completed details of {$institution->getName()}.");
 	    
@@ -310,14 +310,13 @@ class InstitutionController extends Controller
     		if ($form->isValid()) {
     			
     			$this->institution = $form->getData();   
-    			$this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+    			$this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
     			$institution = $this->get('services.institution.factory')->save($this->institution);
     			$this->get('session')->setFlash('notice', "Successfully updated account");
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
     		}else{
-    		    var_dump($this->get('validator')->validate($form)); exit;
         	    $error = true;
                 $form_errors = $this->get('validator')->validate($form);
                 if($form_errors){
@@ -445,9 +444,7 @@ class InstitutionController extends Controller
             if ($form->isValid()) {
                 $this->institution = $form->getData();
                 $this->get('services.institution.factory')->save($this->institution);
-                $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" status has been updated!');
-                $response = new Response(\json_encode(array('html' => 'Successfuly updated status', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
-                return $response;
+                $response = new Response(\json_encode(array('html' => '<strong>Success!</strong> Updated status for '.$this->institution->getName().'.', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
             }
         }
         else {

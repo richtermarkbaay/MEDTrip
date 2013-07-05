@@ -23,6 +23,7 @@ var Institution = {
                 .html('Submit');
             	$(_modal).modal('hide');
             	$('#'+_formElement.attr('data-element')).attr('data-status', response.status);
+            	$('.alert').html(response.html).show();
             }
         });
         	
