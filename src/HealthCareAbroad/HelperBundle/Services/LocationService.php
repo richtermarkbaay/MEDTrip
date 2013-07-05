@@ -86,7 +86,6 @@ class LocationService
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	    }
-	    //var_dump(\json_decode($response->getBody(true), true)); exit;
 	    return \json_decode($response->getBody(true), true);
 	}
 	

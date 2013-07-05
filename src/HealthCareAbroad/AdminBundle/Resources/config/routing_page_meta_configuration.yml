@@ -14,7 +14,7 @@ admin_page_metas_process_institution_parameters:
     pattern:  /admin/page_metas/ajax-process-institution-paramters
     defaults: { _controller: AdminBundle:PageMetaConfiguration:ajaxProcessInstitutionParameters }
     requirements:
-         _method: POST
+         _method: POST|GET
     
 admin_page_metas_save:
     pattern:  /admin/page_metas/save/{id}

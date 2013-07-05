@@ -116,7 +116,6 @@ class MedicalCenterController extends InstitutionAwareController
     {
         // Medical Centers Group By Status
         $medicalCenters = $this->service->groupMedicalCentersByStatus($this->institution->getInstitutionMedicalCenters());
-//         var_dump($medicalCenters[InstitutionMedicalCenterStatus::ARCHIVED]);exit;
         
         // Add Medical Center Form
         $institutionMedicalCenter = new InstitutionMedicalCenter();
