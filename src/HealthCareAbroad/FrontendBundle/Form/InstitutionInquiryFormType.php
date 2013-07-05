@@ -17,7 +17,7 @@ class InstitutionInquiryFormType extends AbstractType
     	$builder
     	    ->add('inquirer_name', 'text', array('label' => 'Your Name' ))
     		->add('inquirer_email','email', array('label' => 'Your Email Address'))
-    		->add('country','country_list', array('empty_value' => 'Select Country' ,'label' => 'Your Country'))
+    		->add('country','globalCountry_list', array('empty_value' => 'Select Country' ,'label' => 'Your Country'))
     		->add('message', 'textarea', array('label' => 'Enter Your Message'))
     		->add('captcha', 'captcha', array('label'=>'Please type the code'))
     		;
