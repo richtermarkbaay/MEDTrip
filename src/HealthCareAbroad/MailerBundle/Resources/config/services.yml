@@ -40,16 +40,16 @@ services:
     # this is a mailer that will always use memory spool regardless of the
     # swiftmail spool configuration (? looks like this behavior has changed -
     # we need to enable spool to get a reference to swiftmailer.transport.real)
-    services.mailer.instant:
-        class: %swiftmailer.class%
-        arguments: [@?swiftmailer.transport.real]
-        #arguments: [@swiftmailer.transport.real]
+    # can't make this work in staging
+    #services.mailer.instant:
+    #    class: %swiftmailer.class%
+    #    arguments: [@?swiftmailer.transport.real]
 
     # TODO: create an abstract service to extend from
     services.mailer.notifications.twig:
         class: HealthCareAbroad\MailerBundle\Services\TwigMailer
         arguments:
-            - @services.mailer.instant
+            #- @services.mailer.instant
             #- @mailer
             #- @router
             - @twig

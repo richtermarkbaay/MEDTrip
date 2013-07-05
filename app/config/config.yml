@@ -132,9 +132,9 @@ swiftmailer:
     username: %mailer_user%
     password: %mailer_password%
     encryption: ssl
-    spool:
-        type: file
-        path: %kernel.root_dir%/../spool
+#    spool:
+#        type: file
+#        path: %kernel.root_dir%/../spool
 #    spool:
 #        type: memory
 

@@ -12,13 +12,26 @@ class TwigMailer implements MailerInterface
     protected $twig;
     protected $parameters;
 
-    public function __construct(\Swift_Mailer $mailer, /*UrlGeneratorInterface $router,*/ \Twig_Environment $twig, array $parameters, Logger $logger)
+    public function __construct(/*\Swift_Mailer $mailer, UrlGeneratorInterface $router,*/ \Twig_Environment $twig, array $parameters, Logger $logger)
     {
-        $this->mailer = $mailer;
+        //$this->mailer = $mailer;
         //$this->router = $router;
         $this->twig = $twig;
         $this->parameters = $parameters;
         $this->logger = $logger;
+    }
+
+    protected function initializeMailer($context)
+    {
+        //We directly create the mailer as a temporary workaround. Testing on
+        //staging server doesn't seem to work when using multiple mailer services
+        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl');
+        $ext = $transport->getExtensionHandlers();
+        $auth_handler = $ext[0];
+        $auth_handler->setUserName($context['user']);
+        $auth_handler->setPassword($context['password']);
+
+        return \Swift_Mailer::newInstance($transport);
     }
 
     /**
@@ -34,7 +47,6 @@ class TwigMailer implements MailerInterface
     public function sendMessage($context)
     {
         $context = $this->normalizeContext($context);
-        $this->setupTransport($context);
 
         $template = $this->twig->loadTemplate($context['template']);
         $subject = $template->renderBlock('subject', $context);
@@ -42,12 +54,10 @@ class TwigMailer implements MailerInterface
         $htmlBody = $template->renderBlock('body_html', $context);
 
         //$this->logger->addInfo($htmlBody);
-
         $message = \Swift_Message::newInstance()
             ->setSubject($subject)
             ->setTo($context['to'])
             ->setFrom($context['user']);
-
 
         if (!empty($htmlBody)) {
             $message
@@ -57,7 +67,8 @@ class TwigMailer implements MailerInterface
             $message->setBody($textBody);
         }
 
-        $status = $this->mailer->send($message);
+        $mailer = $this->initializeMailer($context);
+        $status = $mailer->send($message);
 
         $this->logger->addInfo('Mails sent: '.$status);
     }
@@ -90,6 +101,7 @@ class TwigMailer implements MailerInterface
         return $context;
     }
 
+    //Unused but don't remove this yet
     private function setupTransport($context)
     {
         $transport = $this->mailer->getTransport();
@@ -104,10 +116,7 @@ class TwigMailer implements MailerInterface
     {
         $template = $this->parameters['template']['confirmation'];
         $url = $this->router->generate('mailer_registration_confirm', array('token' => $user->getConfirmationToken()), true);
-        $context = array(
-                        'user' => $user,
-                        'confirmationUrl' => $url
-        );
+        $context = array('user' => $user, 'confirmationUrl' => $url);
 
         $this->sendMessage($template, $context, $this->parameters['from_email']['confirmation'], $user->getEmail());
     }
@@ -116,12 +125,8 @@ class TwigMailer implements MailerInterface
     {
         $template = $this->parameters['template']['resetting'];
         $url = $this->router->generate('mailer_resetting_reset', array('token' => $user->getConfirmationToken()), true);
-        $context = array(
-                        'user' => $user,
-                        'confirmationUrl' => $url
-        );
+        $context = array('user' => $user,'confirmationUrl' => $url);
         $this->sendMessage($template, $context, $this->parameters['from_email']['resetting'], $user->getEmail());
     }
-
     // end CONVENIENCE FUNCTIONS
 }
