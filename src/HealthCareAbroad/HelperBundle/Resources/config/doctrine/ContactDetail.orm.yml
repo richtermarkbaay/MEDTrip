@@ -35,9 +35,9 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
             nullable: false
             column: abbr
         ext:
-            type: integer
-            length: 3
-            nullable: tru
+            type: string
+            length: 5
+            nullable: true
             column: ext
         fromNewWidget:
             type: boolean
