@@ -48,7 +48,7 @@ class ContactDetail
     
     public function __toString()
     {
-        return ($this->countryCode && '' != $this->countryCode ? '+'.$this->countryCode:'').$this->areaCode.$this->number.($this->ext && '' != $this->ext ? ' ('.$this->ext.')':'' );
+        return ($this->countryCode ? '+'.$this->countryCode:'').$this->areaCode.$this->number.($this->ext ? ' ('.$this->ext.')':'' );
     }
 
 
