@@ -69,22 +69,27 @@
                         </div> 
          
          {% elseif each == 'contactNumber' or each == 'websites' %}
-                 <div class="row-fluid terms">
-                    <div class="contactEmail control-group">
-                        <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}">
-                            {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
-                        </label>
-                            {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
-                    </div>
-                </div>
-                {% for _widget in institutionMedicalCenterForm.contactDetails %}
-                    {{ form_widget(_widget) }}
-                {% endfor %}
-                <div class="control-group website">
+                           <div class="control-group website">
                     <label for="website"> Clinic Website </label>
                     <span class="pull-left"> http:// </span>
                     {{ form_widget(institutionMedicalCenterForm.websites, { attr: {class: 'span11 pull-right'} } )}}
                 </div>
+
+
+                    <div class="contactEmail control-group">
+                        <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}" style="display:inline-block">
+                            {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
+                        </label>
+                            {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
+                    </div>
+              
+      
+                {% for _widget in institutionMedicalCenterForm.contactDetails %}
+                    
+                       {{ form_widget(_widget) }}
+                     
+                 
+                {% endfor %}
         {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionMedicalCenterForm.socialMediaSites )}}
 

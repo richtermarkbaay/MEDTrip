@@ -1,33 +1,30 @@
 {% block simple_contact_detail_widget %}
     {% set _label = form.vars.value.type ? contact_label_type(form.vars.value.type) : null%}
     
-    <div class="control-group">
+    <div class="control-group hca-contact-number">
         {% if _label %}
             {{ form_label(form, _label, {label_attr: {class: 'control-label'}}) }}
         {% endif %}
         
-        <div class="hca-countrycodes">
+    
             <div class="span3">
-                <small>Country Code</small>
+                <label><small>Country Code</small></label>
                 {{ form_widget(form.country_code, {attr: {class: 'span12'}}) }}
             </div>
             <div class="span2">
-                <small>Area Code</small>
+                <label><small>Area Code</small></label>
                 {{ form_widget(form.area_code, {attr: {class: 'span12'}}) }}
             </div>
             <div class="span5">
-                <small>Phone Number</small>
+                <label><small>Phone Number</small></label>
                 {{ form_widget(form.number, {attr: {class: 'span12'}})}}
                 
             </div>
             <div class="span1">
-                <small class="hca-extension">Ext.</small>
+                <label><small class="hca-extension">Ext.</small></label>
                 {{ form_widget(form.ext, {attr: {class: 'span12', 'maxlength': '3'}})}}
             </div>
-        </div>
-        
-        
-    </div>
+</div>
 {% endblock %}
 
 {% block country_code_list_widget %}
