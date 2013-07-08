@@ -7,30 +7,33 @@
         <div class="span12">
             <div class="tooltip-content">
                 <i class="icon-lightbulb icon-2x pull-left"></i>We will use the details you provide to contact you about potential leads. Please double-check that you've provided the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.</div>
-            <div class="row-fluid terms">
-                <div class="contactEmail control-group span5 {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
-                        <label for="{{ form.children.contactEmail.vars.id }}">
-                            {{ form.children.contactEmail.vars.label }}
-                        </label>
-                        {{ form_widget(form.contactEmail, { 'attr': {'class': 'span12'} }) }}
-                        {{ form_errors(form.contactEmail )}}
-                    </div>
-                  <div class="contactDetails control-group span6">
-                  </div>
-            </div>
-            
-            {% for _widget in form.contactDetails %}
-                {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
-            {% endfor %}
-            
-            
-            <div class="control-group website">
+
+                <div class="control-group website">
                 <div class="span12">
                     <label for="institution_profile_form[websites]">{{ label }} Website</label>
                     <span class="pull-left"> http:// </span>
                     {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
                 </div>
             </div>
+
+       
+                <div class="contactEmail control-group {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                        <label for="{{ form.children.contactEmail.vars.id }}">
+                            {{ form.children.contactEmail.vars.label }}
+                        </label>
+                        {{ form_widget(form.contactEmail, { 'attr': {'class': 'span8'} }) }}
+                        {{ form_errors(form.contactEmail )}}
+                    </div>
+           
+
+
+            
+            {% for _widget in form.contactDetails %}
+                {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
+            {% endfor %}
+            
+            
+
         </div>
     </div>
 </section>

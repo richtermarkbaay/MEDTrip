@@ -40,7 +40,7 @@
     {% endblock %}
 
     {% block viewContent %}
-        <p> <i class="icon-map-marker"> </i>
+        <p> <i class="icon-map-marker"></i>
             {% set _medicalAddress = medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city', 'state', 'country','zipCode']) %}
             <span class="address_column">
                 <span class="address_part "> {{ _medicalAddress | join(',&nbsp;</span><span class="address_part">') | raw }}</span>
@@ -69,7 +69,7 @@
         {% set _website = get_website_from_array(institutionMedicalCenter.websites)  %}
           <div id="alertDiv" class="{{ _website != '' and institutionMedicalCenter.contactEmail != '' ?  '' :'alert alert-block' }}">
             <p>  <i class="icon-globe"  ></i>
-                <span id="profileWebsitesText"> 
+                Website: <span id="profileWebsitesText"> 
                     {% if _website %}
                        http://www.
                        <b >  {{_website}} </b>

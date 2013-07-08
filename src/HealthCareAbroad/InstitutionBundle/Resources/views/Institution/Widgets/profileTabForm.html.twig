@@ -38,11 +38,12 @@
     {% endblock %}
 
     {% block viewContent %}
-        <span class="icon-map-marker"> </span>
+        <i class="icon-map-marker pull-left icon-gray"></i>
         {% set _address = institution_address_to_array(institution) %}
-        <span class="address_column">
+        <p class="address_column">
+
             <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
-        </span>
+        </p>
     {% endblock %}
 {% endembed %}
 
