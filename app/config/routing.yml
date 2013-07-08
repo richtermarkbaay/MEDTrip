@@ -3,69 +3,69 @@ gregwar_captcha_routing:
 
 statistics:
     resource: "@StatisticsBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 term:
     resource: "@TermBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 doctor:
     resource: "@DoctorBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 memcache:
     resource: "@MemcacheBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 advertisement:
     resource: "@AdvertisementBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 SearchBundle:
     resource: "@SearchBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 InstitutionBundle:
     resource: "@InstitutionBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
     requirements:
         _scheme: https
 
 MediaBundle:
     resource: "@MediaBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 MailerBundle:
     resource: "@MailerBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 
 #ProcedureBundle:
-#    resource: "@ProcedureBundle/Resources/config/routing.yml"
-#    prefix:   /
+# resource: "@ProcedureBundle/Resources/config/routing.yml"
+# prefix: /
 
 HelperBundle:
     resource: "@HelperBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 UserBundle:
     resource: "@UserBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
 
 AdminBundle:
     resource: "@AdminBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
     requirements:
         _scheme: https
 
 # Internal routing configuration to handle ESI
 #_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+# resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+# prefix: /_internal
 
 
 # This MUST be in the last line
 FrontendBundle:
     resource: "@FrontendBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix: /
     requirements:
         _scheme: http

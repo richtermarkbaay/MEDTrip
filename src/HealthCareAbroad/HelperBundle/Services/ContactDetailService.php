@@ -94,6 +94,11 @@ class ContactDetailService
 	    return $contactDetail;
 	}
 	
+	/**
+	 * Remove Contact Details
+	 * Service is use for every submissions of data that has contact details object
+	 *@author Chaztine Blance
+	 */
     public function removeInvalidContactDetails($objectEntity)
     {
         foreach ($objectEntity->getContactDetails() as $contactDetail){
@@ -103,4 +108,50 @@ class ContactDetailService
         }
         return $objectEntity;
     }
+    
+    /**
+     * Check if user has a contact details (mobile or phone).
+     * @param InstitutionUser $user
+     * @return InstitutionUser
+     * @author Chaztine Blance
+     */
+    
+    public function initializeContactDetails($parentObject, $types){
+        
+        $newTypes = array();
+        foreach($types as $type){
+            $newTypes[$type] = '';
+        }
+     
+        foreach ($parentObject->getContactDetails() as $contact){
+            unset($newTypes[$contact->getType()]);
+        }
+        
+        foreach($newTypes as $key => $dummy) {
+            $number = new ContactDetail();
+            $number->setType($key);
+            $parentObject->addContactDetail($number);
+        }
+        
+        return $parentObject;
+    }
+    
+    /**
+     * Check if Contact Number type is phone and return string value.
+     * @author Chaztine Blance 
+     */
+    public function getContactDetailsStringValue($objectEntity){
+        
+        $output = '';
+        if($objectEntity){
+            foreach ($objectEntity as $keys => $a){
+                if($a->getType() == ContactDetailTypes::PHONE){
+                    $output = $a->__toString();
+                }
+            }
+        }
+        
+        return $output;
+    }
+    
 }

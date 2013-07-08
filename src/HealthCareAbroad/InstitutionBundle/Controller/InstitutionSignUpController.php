@@ -160,15 +160,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
         $institutionUser = new InstitutionUser();
-        $phoneNumber = new ContactDetail();
-        $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $institutionUser->addContactDetail($phoneNumber);
-        
-        $mobileNumber = new ContactDetail();
-        $mobileNumber->setType(ContactDetailTypes::MOBILE);
-        $institutionUser->addContactDetail($mobileNumber);
+        $this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE, ContactDetailTypes::MOBILE));
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
-  
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
@@ -293,12 +286,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
-        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($phoneNumber);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
         
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         
@@ -369,13 +357,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error_message = '';
         $success = false;
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
-
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($phoneNumber);
-        }
+        
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         
@@ -414,8 +397,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
-                $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
-                $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+                //$calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
+                //$this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
                 //$request->getSession()->setFlash('callout', "");
                 //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
@@ -463,14 +446,8 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
         
-        $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-        }
-
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+        
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
@@ -599,11 +576,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();            
         }
 
-        if(!$editDoctor->getContactDetails()->count()) {
-            $contactDetail = new ContactDetail();
-            //$contactDetail->setType(ContactDetailTypes::MOBILE);
-            $editDoctor->addContactDetail($contactDetail);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
         
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         $params['editForm'] = $editForm->createView();

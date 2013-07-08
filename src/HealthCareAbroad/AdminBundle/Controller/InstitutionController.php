@@ -140,13 +140,8 @@ class InstitutionController extends Controller
     	$institution = $factory->createInstance();  	
     	$institutionUser = new InstitutionUser();
     	
-    	$phoneNumber = new ContactDetail();
-    	$phoneNumber->setType(ContactDetailTypes::PHONE);
+    	$this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE, ContactDetailTypes::MOBILE));
     	
-    	$institutionUser->addContactDetail($phoneNumber);
-    	$mobileNumber = new ContactDetail();
-    	$mobileNumber->setType(ContactDetailTypes::MOBILE);
-    	$institutionUser->addContactDetail($mobileNumber);
     	$form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser, array('include_terms_agreement' => false));
 	    	if ($request->isMethod('POST')) {
 	    		$form->bind($request);
@@ -211,12 +206,8 @@ class InstitutionController extends Controller
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
-        if(!$this->institution->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($contactDetails);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
+
         $this->institution->setName(''); //set institution name to empty
 	    // redirect to edit institution if status is already active
 	    
@@ -283,11 +274,8 @@ class InstitutionController extends Controller
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
         
-        if(!$this->institution->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($contactDetails);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
+
         if ($request->isMethod('GET')) {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') , InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false ));
         }

@@ -116,7 +116,6 @@ class MedicalCenterController extends InstitutionAwareController
     {
         // Medical Centers Group By Status
         $medicalCenters = $this->service->groupMedicalCentersByStatus($this->institution->getInstitutionMedicalCenters());
-//         var_dump($medicalCenters[InstitutionMedicalCenterStatus::ARCHIVED]);exit;
         
         // Add Medical Center Form
         $institutionMedicalCenter = new InstitutionMedicalCenter();
@@ -149,12 +148,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function viewAction(Request $request)
     {
-        if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-            $contactDetails = new ContactDetail();
-            $contactDetails->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($contactDetails);
-        }
-        
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
@@ -168,10 +162,8 @@ class MedicalCenterController extends InstitutionAwareController
         if($this->institutionMedicalCenter->getDoctors()->count()) {
             $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
         }
-        if(!$editDoctor->getContactDetails()->count()) {
-            $contactDetail = new ContactDetail();
-            $editDoctor->addContactDetail($contactDetail);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
+        
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -204,13 +196,7 @@ class MedicalCenterController extends InstitutionAwareController
                 unset($formVariables['_token']);
                 
                 $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
-                
-                if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-                    $phoneNumber = new ContactDetail();
-                    $phoneNumber->setType(ContactDetailTypes::PHONE);
-                    $phoneNumber->setNumber('');
-                    $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-                }
+                $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
                 
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                     InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
@@ -281,16 +267,8 @@ class MedicalCenterController extends InstitutionAwareController
                             return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }     
                          if($key == 'contactDetails' ){
-                            $value = $this->institutionMedicalCenter->{'get'.$key}();
-                            $returnVal = array('phoneNumber' => '');
-                            if($value){
-                                foreach ($value as $keys => $a){
-                                   if($a->getType() == ContactDetailTypes::PHONE){
-                                       $returnVal['phoneNumber'] =  $a->getNumber();
-                                   }
-                                }    
-                            }
-                            $output['institutionMedicalCenter'][$key] = $returnVal;
+                             $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institutionMedicalCenter->{'get'.$key}());
+                             $output['institutionMedicalCenter'][$key]['phoneNumber'] = $value;
                         }
                         else{
                             
@@ -377,11 +355,7 @@ class MedicalCenterController extends InstitutionAwareController
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
             
-            if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-                $phoneNumber = new ContactDetail();
-                $phoneNumber->setType(ContactDetailTypes::PHONE);
-                $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-            }
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
             
             $this->institutionMedicalCenter->setDescription(' ');
             $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
@@ -396,6 +370,7 @@ class MedicalCenterController extends InstitutionAwareController
             $form->bind($request);
 
             if ($form->isValid()) {
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')->saveAsDraft($form->getData());
                 $output =  $this->generateUrl('institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId()));
                 
@@ -652,18 +627,10 @@ class MedicalCenterController extends InstitutionAwareController
     public function ajaxUpdateDoctorAction(Request $request)
     {
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
-
-        if(!$doctor->getContactDetails()->count()) {
-            $number = new ContactDetail();
-            $doctor->addContactDetail($number);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $doctor);
         $form->bind($request);
-
-        if(!$doctor->getContactDetails()->first()->getNumber()) {
-            $doctor->getContactDetails()->remove(0);
-        }
 
         if ($form->isValid()) {
             $fileBag = $request->files->get($form->getName()); 
@@ -671,7 +638,9 @@ class MedicalCenterController extends InstitutionAwareController
             if(isset($fileBag['media'])) {
                 $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor);
             }
-
+            
+            $this->get('services.contact_detail')->removeInvalidContactDetails($doctor);
+            
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($doctor);
             $em->flush();

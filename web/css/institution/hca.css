@@ -608,6 +608,10 @@ hr {
         #content section.section .row-fluid.terms {
           background-color: transparent;
           border: none; }
+          #content section.section .row-fluid.terms .btn-signup {
+            display: block;
+            position: absolute;
+            right: -10px; }
           #content section.section .row-fluid.terms .tooltip-content {
             margin-top: 0px; }
           #content section.section .row-fluid.terms > div {
@@ -849,6 +853,7 @@ hr {
   .hca-banner .hca-institution-name {
     display: block;
     position: absolute;
+    min-height: 80px;
     top: 90px;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px 10px 5px 10px; }
@@ -877,7 +882,7 @@ hr {
 .hca-banner3 {
   height: 420px;
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 70px;
   width: 990px; }
   .hca-banner3 .tooltip-logo {
     position: absolute;
@@ -959,7 +964,8 @@ hr {
     border-radius: 0;
     text-shadow: none;
     text-decoration: none;
-    margin-top: -150px; }
+    margin-top: -150px;
+    margin-bottom: 30px; }
     .hca-banner3 .btn-banner a {
       text-decoration: none; }
       .hca-banner3 .btn-banner a:hover {
@@ -1060,7 +1066,7 @@ ul.hca-notifications, ul.hca-inquiries {
         margin: 0 1px; }
         ul.hca-notifications li:hover ul.actions li a, ul.hca-inquiries li:hover ul.actions li a {
           color: #fe6500;
-          font-family: 'PT Sans', sans-serif;
+          font-family: "PT Sans", sans-serif;
           font-size: 13px;
           font-weight: bold; }
           ul.hca-notifications li:hover ul.actions li a:hover, ul.hca-inquiries li:hover ul.actions li a:hover {
@@ -1073,7 +1079,7 @@ ul.hca-notifications, ul.hca-inquiries {
   .messages-box li {
     text-shadow: none; }
   .messages-box.active {
-    color: #000000 !important; }
+    color: black !important; }
   .messages-box span {
     margin: 0 2px; }
   .messages-box b {
@@ -1180,7 +1186,7 @@ ul.hca-notifications, ul.hca-inquiries {
   width: 16px;
   font-weight: bold;
   font-size: 18px;
-  font-family: 'PT Sans', sans-serif;
+  font-family: "PT Sans", sans-serif;
   color: white;
   z-index: 2;
   display: block;
@@ -1216,7 +1222,10 @@ ul.hca-notifications, ul.hca-inquiries {
     border-radius: 0; }
     .hca-countrycodes .btn-group.btn:first-child, .hca-countrycodes .btn.btn:first-child {
       border-radius: 0;
-      border-right: 0; }
+      border-right: 0;
+      font-family: "Helvetica Neue",Helvetica,Arial,sans-serif; }
+      .hca-countrycodes .btn-group.btn:first-child span, .hca-countrycodes .btn.btn:first-child span {
+        display: inline-block; }
   .hca-countrycodes .caret {
     display: inline-block;
     margin-top: 12px; }
@@ -1715,7 +1724,9 @@ ul.hca-notifications, ul.hca-inquiries {
   margin: 45px auto 50px auto;
   padding: 30px 0; }
   .error-page .btn {
-    margin-top: 30px; }
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: normal; }
   .error-page h1 {
     font-size: 150px;
     color: #959595;
@@ -1794,7 +1805,7 @@ ul.hca-notifications, ul.hca-inquiries {
     padding: 2px !important;
     font-size: 16px; }
   .tooltip-wrap h3 {
-    background-color: #ffffff !important; }
+    background-color: white !important; }
   .tooltip-wrap .tooltip-content {
     position: absolute;
     right: 5%;
@@ -1892,7 +1903,7 @@ ul.hca-notifications, ul.hca-inquiries {
   margin-left: 0;
   z-index: 1000; }
   .tooltip-wrap2 h3 {
-    background-color: #ffffff !important; }
+    background-color: white !important; }
 
 .tooltip-wrap2:focus + .tooltip-content2 {
   display: block;
@@ -2160,7 +2171,7 @@ ul.hca-notifications, ul.hca-inquiries {
 
 span.rollover {
   opacity: 1;
-  background: url(/images/institution/upload-logo.png) center center no-repeat black;
+  background: url(../../images/institution/upload-logo.png) center center no-repeat black;
   cursor: pointer;
   height: 85px;
   width: 85px;
@@ -2183,7 +2194,7 @@ span.rollover {
     font-weight: normal; }
   span.rollover:hover {
     opacity: .65;
-    box-shadow: 0px 0px 4px #000;
+    box-shadow: 0px 0px 4px black;
     width: 75px;
     height: 75px; }
 
@@ -2340,6 +2351,24 @@ ul.two-column > li label {
     text-transform: capitalize; }
   .maincontentguide table i {
     color: #262626; }
+
+.row-fluid.hca-contact-number {
+  padding: 5px 5px 30px 5px !important; }
+  .row-fluid.hca-contact-number small {
+    display: inline-block;
+    color: #888888; }
+  .row-fluid.hca-contact-number input, .row-fluid.hca-contact-number select {
+    display: block; }
+  .row-fluid.hca-contact-number label {
+    display: block; }
+  .row-fluid.hca-contact-number hr {
+    height: 10px;
+    background-color: #EEEEEE; }
+  .row-fluid.hca-contact-number .control-group {
+    padding-top: 10px !important;
+    display: block; }
+.row-fluid .hca-extension {
+  font-size: 10px; }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
   background-image: none;

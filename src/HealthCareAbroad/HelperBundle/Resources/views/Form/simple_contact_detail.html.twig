@@ -22,7 +22,7 @@
             </div>
             <div class="span1">
                 <small class="hca-extension">Ext.</small>
-                <input type="text" class="span12">
+                {{ form_widget(form.ext, {attr: {class: 'span12', 'maxlength': '3'}})}}
             </div>
         </div>
         

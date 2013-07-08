@@ -1,12 +1,12 @@
 {% set _parameterKeys  = get_broadsearch_parameter_keys() %}
-<form class="search-form {{ attr.class is defined ? attr.class : 'row-fluid broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
-
+<form class="search-form {{ attr.class is defined ? attr.class : 'broad_search_form' }} form-inline" name="search_box" method="post" action="{{ form_action is defined ? form_action : '#' }}">
     <div class="combo-wrapper">
         <input class="type_in" type="text" name="{{ _parameterKeys.termLabel }}" id="treatment_input_field" placeholder="Specialization or Treatment" autocomplete="off" data-container="#treatments_list" >
         <input type="hidden" name="{{ _parameterKeys.termId }}" id="treatment_id" />
+        <div class="combolist-wrapper hide"></div>
         
         <div class="popup treatments">
-            <button id="treatments_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+            <button id="treatments_dropdown_button" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down"></span>
             </button>
             <div id="treatments_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
@@ -16,9 +16,9 @@
     <div class="combo-wrapper">
         <input class="type_in" type="text" name="{{ _parameterKeys.destinationLabel }}" id="destination_input_field" placeholder="City or Country" autocomplete="off" data-container="#destinations_list" data-allow-empty="1">
         <input type="hidden" name="{{ _parameterKeys.destinationId }}" id="destination_id"/>
-
+        <div class="combolist-wrapper hide"></div>
         <div class="popup destinations">
-            <button id="destinations_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+            <button id="destinations_dropdown_button" class="btn text-left small default btn-pop">
                 <span class="icon-chevron-down"></span>
             </button>
             <div role="menu" id="destinations_dropdown_menu" class="popup-box dropdown-menu"></div>
