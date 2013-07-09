@@ -74,10 +74,10 @@
 
 </section>
 
-{% include 'InstitutionBundle:Widgets/Profile:doctor.editForm.html.twig' %}
+{% include 'InstitutionBundle:Doctor/Widgets:form.edit.html.twig' %}
 
-{% include 'InstitutionBundle:Widgets/Profile:doctor.addForm.html.twig'  
+{% include 'InstitutionBundle:Doctor/Widgets:form.add.html.twig'  
     with { path : path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id })  } 
 %}
 
-{% include 'InstitutionBundle:Widgets/Profile:doctors.inlineJs.html.twig' %}
+{% include 'InstitutionBundle:Doctor:Widgets/inlineJs.html.twig' %}
