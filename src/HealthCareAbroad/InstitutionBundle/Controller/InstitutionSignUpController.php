@@ -5,72 +5,40 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
-
-
-use HealthCareAbroad\MediaBundle\Services\ImageSizes;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
-
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+use HealthCareAbroad\UserBundle\Entity\SiteUser;
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
-use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
-
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
-
-use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
-
-use HealthCareAbroad\DoctorBundle\Entity\Doctor;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
-
-use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
-
 use HealthCareAbroad\InstitutionBundle\Entity\SignUpStep;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
-
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
-use HealthCareAbroad\InstitutionBundle\Form\InstitutionSignUpFormType;
-
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
-
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionInvitationEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionInvitationEvents;
-use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvents;
-
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionInvitationType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionProfileFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
 
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+use HealthCareAbroad\InstitutionBundle\Services\SignUpService;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInvitation;
-use HealthCareAbroad\HelperBundle\Entity\InvitationToken;
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
-use HealthCareAbroad\UserBundle\Entity\SiteUser;
-use HealthCareAbroad\HelperBundle\Services\LocationService;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use ChromediaUtilities\Helpers\SecurityHelper;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InstitutionSignUpController extends InstitutionAwareController
 {
@@ -515,7 +483,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupDoctorsAction(Request $request)
     {
-
         //TODO: check institution signupStepStatus
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
