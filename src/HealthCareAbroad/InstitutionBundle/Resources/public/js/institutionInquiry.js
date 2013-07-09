@@ -12,7 +12,7 @@ var InstitutionInquiry = {
     
     setTemplatePrototype: function(_prototype) {
     	this._prototype = _prototype;
-    },
+    }, 
     
     _loadContent: function() {
     	
@@ -22,11 +22,14 @@ var InstitutionInquiry = {
         	if(_k + 1 <= _cntr && _k + 1 > _lastIndex ) {
             	var el = $(InstitutionInquiry._prototype);
             	el.attr('class', value.status);
-            	el.find('a.inquiry_sender').html(value.sender);
-            	el.find('a.inquiry_sender').html(value.sender);
-            	$(el.find('a.inquiry_sender')).attr('href', value.viewPath);
+            	el.find('a._inquirySender').html(value.sender);
+            	$(el.find('a._inquirySender')).attr('href', value.viewPath);
+            	
+            	el.find('a._inquiryEmail').html(value.email);
+            	$(el.find('a._inquiryEmail')).attr('href', value.viewPath);
+            	
             	el.find('span.sender-details small').html(value.timeAgo);
-            	el.find('a.inquiry_message').html(value.message);
+            	el.find('a.inquiry_message').html(value.message.replace(/\r\n/g, '<br />'));
             	$(el.find('a.inquiry_message')).attr('href', value.viewPath);
             	$(el.find('a.inquiry_view')).attr('href', value.viewPath);
             	$(el.find('a.inquiry_remove')).attr('href', value.removePath);

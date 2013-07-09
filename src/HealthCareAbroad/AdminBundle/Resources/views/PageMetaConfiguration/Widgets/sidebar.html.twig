@@ -5,7 +5,8 @@
         links: [
             {name: 'results_page_meta',url: path('admin_page_metas_index'), label: 'Results Pages Meta Configuration', icon: 'icon-list', 'active': activeSideBar == 'results_page_meta'},
             {name: 'institution_page_meta',url: path('admin_page_metas_institution'), label: 'Hospital and Clinic Pages Meta Configuration', icon: 'icon-list', 'active': activeSideBar == 'institution_page_meta'},
-            {name: 'rank_page_meta',url: path('admin_ranking_index'), label: 'Hospital and Clinic Ranking', icon: 'icon-list', 'active': activeSideBar == 'rank_page_meta'}
+            {name: 'rank_institution_page',url: path('admin_institution_ranking_index'), label: 'Hospital Ranking', icon: 'icon-list', 'active': activeSideBar == 'rank_institution_page'},
+            {name: 'rank_center_page',url: path('admin_center_ranking_index'), label: 'Clinic Ranking', icon: 'icon-list', 'active': activeSideBar == 'rank_center_page' }
         ] 
     }  
 %} 

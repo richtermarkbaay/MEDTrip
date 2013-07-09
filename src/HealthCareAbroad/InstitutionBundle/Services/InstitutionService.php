@@ -444,18 +444,11 @@ class InstitutionService
 //            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
 //     }
 
-    public function getAllInstitutionBySearhTerm($searchTerm)
+    public function getAllInstitutionByParams($params)
     {
-        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
-        ->select('a')
-        ->from('InstitutionBundle:Institution', 'a')
-        ->where('a.status = :active')
-        ->andWhere('a.name LIKE :searchTerm')
-        ->setParameter('searchTerm', '%'.$searchTerm.'%')
-        ->setParameter('active', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
-        ->getQuery();
+        $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllInstitutionByParams($params);
         
-        return $query->getResult();
+        return $result;
     }
     
     
@@ -510,9 +503,12 @@ class InstitutionService
                 else {
                     $status = 'read';
                 }
-                $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
+                //var_dump();
+                $inquiryArr[] = array(
+                                'sender' => $each->getInquirerName(),
+                                'email' => $each->getInquirerEmail(),
                                 'id' => $each->getId(),
-                                'message' => $each->getMessage(),
+                                'message' => \addcslashes($each->getMessage(), "\r\n"),
                                 'status' => $status,         
                                 'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
                                 'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),

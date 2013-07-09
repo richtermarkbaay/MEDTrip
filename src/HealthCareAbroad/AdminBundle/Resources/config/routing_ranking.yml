@@ -1,10 +1,22 @@
-admin_ranking_index:
-    pattern:  /admin/ranking
-    defaults: { _controller: AdminBundle:Ranking:index }
+admin_institution_ranking_index:
+    pattern:  /admin/institution/ranking
+    defaults: { _controller: AdminBundle:Ranking:institutionIndex }
+    requirements:
+         _method: GET
+
+admin_center_ranking_index:
+    pattern:  /admin/institution-medical-center/ranking
+    defaults: { _controller: AdminBundle:Ranking:institutionMedicalCenterIndex }
     requirements:
          _method: GET
          
-admin_ranking_search:
+admin_center_ranking_search:
+    pattern: /admin/ranking/ajaxSearchInstitutionMedicalCenter
+    defaults: { _controller: AdminBundle:Ranking:ajaxSearchInstitutionMedicalCenter}
+    requirements:
+        _method: GET|POST
+        
+admin_institution_ranking_search:
     pattern: /admin/ranking/ajaxSearchInstitution
     defaults: { _controller: AdminBundle:Ranking:ajaxSearchInstitution}
     requirements:

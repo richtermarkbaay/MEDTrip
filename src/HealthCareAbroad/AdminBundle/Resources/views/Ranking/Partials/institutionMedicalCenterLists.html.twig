@@ -1,0 +1,160 @@
+{% spaceless %}
+<form id="_rankingForm" class="form-inline search-form" action="{{ path('admin_center_ranking_search') }}" method="post">
+    <div class="combo-wrapper">
+        <input class="type_in" type="text" name="institutionName" id="institution_input_field" placeholder="Search Hospital/Institution" autocomplete="off" data-autocomplete-trigger="#institution_dropdown_button" data-dropdown="#institution_dropdown_menu">
+        <input type="hidden" name="institutionId" id="institutionId" />
+        <input type="hidden" name="_countryId" id="_countryId" />
+        <input type="hidden" name="_cityId" id="_cityId" />
+        
+        <div class="popup">
+            <button id="institution_dropdown_button" class="btn text-left small default btn-pop">
+                <span class="icon-chevron-down"></span>
+            </button>
+            <div id="inst_combolist_wrapper"  class="combolist-wrapper"></div>
+        </div>
+    </div>
+    
+    <div class="combo-wrapper">
+        <input class="type_in" type="text" name="imcName" id="institution_medical_center_input_field" placeholder="Search Clinic" autocomplete="off" data-autocomplete-trigger="#institution_medical_center_dropdown_button" data-dropdown="#institution_medical_center_dropdown_menu">
+        <input type="hidden" name="imcId" id="imcId" />
+        
+        <div class="popup">
+            <button id="institution_medical_center_dropdown_button" class="btn text-left small default btn-pop">
+                <span class="icon-chevron-down"></span>
+            </button>
+            <div id="imc_combolist_wrapper" class="combolist-wrapper"></div>
+        </div>
+    </div>
+    
+    <button type="submit" class="btn _btnInstitutionRanking">Search</button>
+</form>
+
+<div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
+    
+<div id="ranking_form_container">
+    {% include 'AdminBundle:Ranking/Partials:view.html.twig' %}
+</div>    
+{% endspaceless %}
+
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+    	$('#_rankingForm').submit(function(){
+            var _form = $(this);
+            $('#ranking_form_container').html('');
+            $('#loader').fadeIn();
+            //$('#institution_medical_center_input_field').data('fancyAutocomplete')
+            //.disabled(true);
+            
+             $('#_countryId').val($('#filter-country').val());
+             $('#_cityId').val($('#filter-city').val());
+            $.ajax({
+                url: _form.attr('action'),
+                data: _form.serialize(),
+                type: 'post',
+                success: function(response) {
+                    $('#loader').hide();
+                    $('.pagination').html('');
+                    $('#ranking_form_container').html(response.html);
+                },
+                error: function(response){
+                    $('#loader').hide();
+                }
+            });
+
+            return false;
+        });
+
+        $('#institution_input_field').keyup(function(e){
+            if(e.keyCode == 8 || e.keyCode == 46) {
+            	$('#institutionId').val('');
+            	
+            	$('#institution_medical_center_input_field').data('fancyAutocomplete')
+                .resetValue()
+                .reloadSource()
+                .disabled(true);
+
+            	$('#institutionId').val('');
+            }
+            
+        }); 
+        
+        $('#institution_input_field').fancyAutocomplete({
+            'source': window.JSON.parse('{{ institutionsJsonData | raw }}'),
+            'autocomplete': {
+                'minLength': 0
+            },
+            'listWrapper': $('#inst_combolist_wrapper'),
+            'valueContainer': $('#institutionId'),
+            'onAutocompleteSelectCallback': function(){
+
+            	$('.pagination').html('');
+            	
+                $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                    .resetValue()
+                    .reloadSource()
+                    .disabled(true);
+
+                
+            }
+        });
+
+        $('#institution_medical_center_input_field').fancyAutocomplete({
+            'source': [],
+            'valueContainer': $('#imcId'),
+            'listWrapper': $('#imc_combolist_wrapper'),
+            'reloadSource': function(){
+
+                var data = [];
+                $.ajax({
+                    url: '{{ path("institution_medical_centers_api") }}',
+                    data: {'institutionId': $('#institutionId').val()},
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+
+                    	$('.pagination').html('');
+                        
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                            .disabled(false)
+                            .options.source = response;
+                    },
+                    error: function(response) {
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                        .disabled(false)
+                        .options.source = [];
+                    }
+                });
+                
+                return data; 
+            }
+        });
+
+        $('a._rankingPtsTrigger').click(function() {
+
+    		var _elem = $(this);
+    		var _url = _elem.attr('href');
+    	    _rankRowId = _elem.attr('data-rankRowId');
+    		_elem.attr('disabled', true).html('Processing...');
+
+    		$.ajax({
+                url: _url,
+                type: 'post',
+                success: function(response) {
+                    $(_rankRowId).html(response.points);
+                	_elem.removeAttr('disabled').html('Ranking Pts');
+                },
+                error: function(response){
+                    alert('errror');
+                }
+            });
+    		
+        	return false;
+    	});
+    });
+})(jQuery);
+//-->
+</script>
