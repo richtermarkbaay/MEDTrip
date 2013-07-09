@@ -40,7 +40,7 @@
                                 <li><a href="{{ path('admin_country_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
                                 
                                 <li>
-                                    {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
+                                    {% set status = each.status is defined and each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
                                     <a href="{{ path('admin_country_updateStatus', {id: each.id} ) }}" title="" class="update-status">
                                         <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
                                     </a>

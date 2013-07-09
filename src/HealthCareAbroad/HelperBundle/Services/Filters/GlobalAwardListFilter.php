@@ -60,7 +60,7 @@ class GlobalAwardListFilter extends ListFilter
     	);
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {   
         $this->queryBuilder->select('a')->from('HelperBundle:GlobalAward', 'a');
 
@@ -93,5 +93,7 @@ class GlobalAwardListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

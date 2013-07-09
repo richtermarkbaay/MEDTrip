@@ -494,6 +494,7 @@ class InstitutionMedicalCenterService
     );
 
 
+
     /**
      * Note: This doesn't add the media to institution gallery.
      *

@@ -50,10 +50,12 @@ class ListFilterBeforeController
         $controller[0]->filteredResult = array();
 
         $listFilter = ListFilterFactory::create($routeName, $this->doctrine);
+        
         foreach ($listFilter->getServiceDependencies() as $serviceId) {
+            
             $listFilter->injectDependency($serviceId, $controller[0]->get($serviceId));
         }
-        //$listFilter->setServiceContainer($controller[0])
+        
         $params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {

@@ -267,6 +267,7 @@ class InstitutionTwigExtension extends \Twig_Extension
                 $html = '<span class="hca-sprite hospital-default-logo"></span>';
             }
             //$html = '<span class="hca-sprite hospital-default-logo '. isset($options['attr']['class']) ? $options['attr']['class'] : '' .'"></span>';
+
         }
 
         return $html;

@@ -7,11 +7,12 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
-class SpecializationListFilter extends ListFilter
+class SpecializationListFilter extends DoctrineOrmListFilter
 {
     public function __construct($doctrine)
     {
         parent::__construct($doctrine);
+
         $this->defaultParams = array('status' => Specialization::STATUS_ACTIVE);
     }
 
@@ -20,18 +21,24 @@ class SpecializationListFilter extends ListFilter
         $this->setStatusFilterOption();
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
-        $this->queryBuilder->select('c')->from('TreatmentBundle:Specialization', 'c');
+        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+
+        $queryBuilder->select('c')->from('TreatmentBundle:Specialization', 'c');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('c.status = :status');
-            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+            $queryBuilder->where('c.status = :status');
+            $queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
         $sortBy = $this->sortBy ? $this->sortBy : 'name';
         $sort = "c.$sortBy " . $this->sortOrder;            
 
-        $this->queryBuilder->add('orderBy', $sort);
+        $queryBuilder->add('orderBy', $sort);
+
+        $this->pager->getAdapter()->setQueryBuilder($queryBuilder);
+
+        $this->filteredResult = $this->pager->getResults();
     }
 }

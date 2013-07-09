@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class CityListFilter extends ListFilter
+class CityListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -39,28 +39,32 @@ class CityListFilter extends ListFilter
         );
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {   
-        $this->queryBuilder->select('a')->from('HelperBundle:City', 'a');
+        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        
+        $queryBuilder->select('a')->from('HelperBundle:City', 'a');
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('a.country = :country');
-            $this->queryBuilder->setParameter('country', $this->queryParams['country']);
+            $queryBuilder->where('a.country = :country');
+            $queryBuilder->setParameter('country', $this->queryParams['country']);
         }
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.status = :status');
-            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+            $queryBuilder->andWhere('a.status = :status');
+            $queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
         if($this->sortBy == 'country') {
-            $this->queryBuilder->leftJoin('a.country', 'b');
+            $queryBuilder->leftJoin('a.country', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';
             $sort = "a.$sortBy " . $this->sortOrder;            
         }
 
-        $this->queryBuilder->add('orderBy', $sort);
+        $queryBuilder->add('orderBy', $sort);
+
+        $this->filteredResult = $this->pager->getResults();
     }
 }

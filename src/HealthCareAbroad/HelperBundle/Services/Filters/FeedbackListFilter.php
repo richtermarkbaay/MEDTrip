@@ -7,7 +7,7 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use Symfony\Component\Validator\Constraints\Date;
 
-class FeedbackListFilter extends ListFilter
+class FeedbackListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
@@ -30,7 +30,7 @@ class FeedbackListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilteredResilts()
     {
         $this->queryBuilder->select('a')->from('HelperBundle:Feedback', 'a');
     
@@ -47,5 +47,7 @@ class FeedbackListFilter extends ListFilter
         }            
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

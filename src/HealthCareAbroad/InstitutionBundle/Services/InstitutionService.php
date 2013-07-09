@@ -551,4 +551,5 @@ class InstitutionService
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findBy(array('institution' => $institution, 'status' => $status));
     }
    
+
 }
