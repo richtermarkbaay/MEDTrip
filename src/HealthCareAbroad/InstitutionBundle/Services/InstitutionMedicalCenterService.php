@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\InstitutionBundle;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
@@ -347,6 +349,14 @@ class InstitutionMedicalCenterService
          $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
 
          return $result;
+    }
+    
+    public function getApprovedMedicalCentersByFiltersAndInstitutionSearchName($params)
+    {
+        
+        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getApprovedInstitutionMedicalCentersByFiltersAndInstitutionSearchName($params);
+        
+        return $result;
     }
 
     public function getAvailableTreatmentsByInstitutionSpecialization(InstitutionSpecialization $institutionSpecialization)

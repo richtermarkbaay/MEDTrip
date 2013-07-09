@@ -191,56 +191,56 @@ class InstitutionUserController extends Controller
     public function resetPasswordAction(Request $request)
     {
         $institutionUserService = $this->get('services.institution_user');
-        $isEmailResetPassword = true;
+            if ($request->isMethod('POST')) {
+                $email = $request->get('email');            
+                $accountId = $this->get('services.institution_user')->findByEmail($email);
+                if($accountId){
+                    //generate token
+                    $daysOfExpiration = 7;
+                    $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
+                    
+                    //send email here
+                    
+                    $this->get('session')->setFlash('notice', 'Next Step: Please check your email and follow the instructions that we\'ve just sent you.');
+                    return $this->redirect($this->generateUrl('institution_login'));
+                }
+                $this->get('session')->setFlash('error', 'The email address you entered does not exist. Please check and try again.');
+            }
+            
+        return $this->render('InstitutionBundle:InstitutionUser:requestResetPassword.html.twig');
+    }
+
+    public function changePasswordAction(Request $request){
+        
+        $institutionUserService = $this->get('services.institution_user');
         if($token = $request->get('token')) {
             $institutionUserToken = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionUserPasswordToken')->findOneByToken($token);
             $accountId = $institutionUserToken->getAccountId();
             $institutionUser = $institutionUserService->findById($accountId, true);
-            $isEmailResetPassword = false;
             $form = $this->createForm(new InstitutionUserResetPasswordType(), $institutionUser);
-            
+        
             if ($request->isMethod('POST')) {
                 $form->bind($request);
                 if ($form->isValid()) {
                     $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
                     $institutionUser = $institutionUserService->deleteInstitutionUserPasswordToken($institutionUserToken, $institutionUser);
-                    
+        
                     //auto login
                     $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
                     $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
                     $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
                     $this->get('security.context')->setToken($securityToken);
                     $institutionUserService->setSessionVariables($institutionUser);
-                    
+        
                     return $this->redirect($this->generateUrl('institution_homepage'));
                 }
-                
             }
-            
+        
             $params = array(
-                            'isEmailPassword' => $isEmailResetPassword,
                             'token' => $token,
                             'form' => $form->createView()
-                       );
-        }
-        else {
-            if ($request->isMethod('POST')) {
-                //send email
-                $email = $request->get('email');            
-                $accountId = $this->get('services.institution_user')->findByEmail($email);
-                
-                //generate token
-                $daysOfExpiration = 7;
-                $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
-            }
-            $params = array(
-                            'isEmailPassword' => $isEmailResetPassword
-                       );
+            );
         }
         return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig',$params);
-    }
-
-    public function changePasswordAction(){
-        
     }
 }

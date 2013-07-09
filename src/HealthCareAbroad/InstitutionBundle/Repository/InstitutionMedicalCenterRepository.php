@@ -156,6 +156,31 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $qb;
     }
 
+    public function getApprovedInstitutionMedicalCentersByFiltersAndInstitutionSearchName($params)
+    {
+        $query = $this->getEntityManager()->createQueryBuilder()
+            ->select('a')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->leftJoin('a.institution', 'b')
+            ->where('b.name LIKE :searchTerm')
+            ->setParameter('searchTerm', '%'.$params['searchTerm'].'%')
+            ->andWhere('a.status = :status')
+            ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
+        
+        if($params['countryId'] != 'all') {
+            $query->andWhere('b.country = :country')->setParameter('country', $params['countryId']);
+        }
+        
+        if($params['cityId'] != 'all') {
+            $query->andWhere('b.city = :city')->setParameter('city', $params['cityId']);
+        }
+        
+        $query = $query->orderBy('a.name');
+        
+        return $query->getQuery()->getResult();
+    }
+    
+    
     public function getInstitutionMedicalCentersByStatusQueryBuilder(Institution $institution, $status)
     {
         $qb = $this->getEntityManager()->createQueryBuilder()

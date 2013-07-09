@@ -191,10 +191,10 @@ class InstitutionAccountController extends InstitutionAwareController
         $output = array();
         if ($request->isMethod('POST')) {
             try {
+                $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-                $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
                 $formRequestData = $request->get($form->getName());
@@ -212,10 +212,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     
-                    if(!empty($form['contactDetails']))
-                    {
                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
-                    }
                     
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){

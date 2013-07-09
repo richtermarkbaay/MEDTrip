@@ -218,8 +218,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUserService->setSessionVariables($institutionUser);
 
                 // commented out due to duplicate messages
-                //$request->getSession()->setFlash('callout', "");
-                //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have successfully setup your personal account."); //set flash message
+                $request->getSession()->setFlash('callout', "");
+                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have successfully setup your personal account."); //set flash message
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
             $form_errors = $this->get('validator')->validate($form);
@@ -334,6 +334,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // get the next step redirect url
                 $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionService->getFirstMedicalCenter($this->institution)->getId()));
+
                 //$request->getSession()->setFlash('callout', "");
                 //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Clinic profile."); //set flash message
 
@@ -418,8 +419,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 //$calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
                 //$this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-                //$request->getSession()->setFlash('callout', "");
-                //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
+                $request->getSession()->setFlash('callout', "");
+                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
 
                 // TODO: Update this when we have formulated a strategy for our event system

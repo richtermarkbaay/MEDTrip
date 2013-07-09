@@ -71,13 +71,14 @@ class DashboardController extends InstitutionAwareController
     
     public function viewAllInquiriesAction(Request $request)
     {
+
         $tab = $request->get('tabName','all');
         $template = "InstitutionBundle:Inquiry:inquiries.html.twig";
         $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
         
         return $this->render($template, array(
                         'institution' => $this->institution,
-                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
+                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_TAG | JSON_HEX_APOS | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_ERROR_SYNTAX | JSON_ERROR_UTF8),
                         'isInquiry' => true,
                         'tabName' => $tab
         ));

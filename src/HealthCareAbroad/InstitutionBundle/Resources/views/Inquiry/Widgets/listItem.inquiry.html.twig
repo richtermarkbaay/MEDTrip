@@ -2,10 +2,12 @@
     <input data-inquiryId="" class="inquiry_checkList" name="inquiry-checkList" type="checkbox">
     <span class="sender-details">
         <b>
-            Sender Name
+            <p>
+               <a class="_inquirySender" href=""></a>
+            </p>
         </b>
         <input type="hidden" class="inquiry_cntr" id="inquiryCntr" value=""/>
-        <a href="" class="inquiry_sender"></a>
+        <a href="" class="_inquiryEmail"></a>
         <small>
              days ago
         </small>
@@ -18,8 +20,8 @@
     <ul class="actions msg">
         <li class="view">
             <div class="btn-group">
-                    <a class="btn inquiry_view btn-misc" href=""><i class="icon-search"></i></a>
-                    <a onclick ="InstitutionInquiry._removeInquiry($(this)); return false;" class="btn inquiry_remove btn-misc" href="#"><i class="icon-trash"></i></a>
+                <a class="btn inquiry_view btn-misc" href=""><i class="icon-search"></i></a>
+                <a onclick ="InstitutionInquiry._removeInquiry($(this)); return false;" class="btn inquiry_remove btn-misc" href="#"><i class="icon-trash"></i></a>
             </div>
         </li>
     </ul>

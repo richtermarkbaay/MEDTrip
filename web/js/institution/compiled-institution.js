@@ -9485,10 +9485,20 @@ var HCA = {
 		window.location = url + '?' + params.substr(1); 
 		$('input[name="dateCreated"]').val(HCA.current);
 	},
+
 	getTimestamp: function(strDate) {
 		var date = new Date();
 		var datum = Date.parse(strDate);
 		return datum/1000;
+	},
+
+	alertMessage: function(type, message)
+	{
+		containerElem = $('#confirmation-message');
+		containerElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
+		containerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p></div>');
+		containerElem.fadeIn('fast');
+    	setTimeout(function() {containerElem.fadeOut("slow")}, 3000);
 	}
 };
 

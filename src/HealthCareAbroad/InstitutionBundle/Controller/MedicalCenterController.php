@@ -212,10 +212,7 @@ class MedicalCenterController extends InstitutionAwareController
                             $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                         }
                     }
-                    if(!empty($form['contactDetails']))
-                    {
-                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
-                    }
+                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                     $institutionMedicalCenterService->save($this->institutionMedicalCenter);
                     
                     if(!empty($form['services']))
