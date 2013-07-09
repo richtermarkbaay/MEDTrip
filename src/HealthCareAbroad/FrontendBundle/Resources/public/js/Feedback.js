@@ -66,6 +66,7 @@ var Feedback = {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         var _errorString = "";
+                        $('#feedbackMessage_captcha').val('');
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
                             Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
