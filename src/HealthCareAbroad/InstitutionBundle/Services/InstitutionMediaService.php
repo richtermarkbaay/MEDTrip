@@ -229,27 +229,4 @@ class InstitutionMediaService extends MediaService
     {
         return isset($this->imageSizes[$imageType]) ? $this->imageSizes[$imageType] : array();
     }
-    
-    /**
-     * @deprecated
-     * 
-     * @param InstitutionMedicalCenter $center
-     * @param unknown_type $businessHours
-     */
-    public function saveBusinessHours(InstitutionMedicalCenter $center, $businessHours)
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-        foreach($businessHours as $_hour)
-        {
-            $hours = new BusinessHour();
-            $hours->setClosing($closing);
-            $hours->setInstitutionMedicalCenter($center);
-            $hours->setNotes($notes);
-            $hours->setOpening($opening);
-            $hours->setWeekdayBitValue($weekdayBitValue);
-            $em->persist($hours);
-        }
-        
-        $em->flush();
-    }
 }

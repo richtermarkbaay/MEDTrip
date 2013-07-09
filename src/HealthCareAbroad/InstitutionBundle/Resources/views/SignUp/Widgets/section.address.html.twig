@@ -51,3 +51,22 @@
         </div>
     </div>
 </section>
+
+
+<div id="confirmMap" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+        <h3>
+            Confirm location on the map<br>
+        </h3>
+        <div class="alert alert-info">
+            <i class="icon-map-marker icon-4x pull-left"></i>
+            Drag and drop the pin to your actual location.  If for some reason your location is not in the vicinity, please go back and check your address.
+        </div>
+        <div id="map_canvas" style="width: 530px; height: 300px"></div>        
+    </div>
+
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn btn-link btn-large">Back</button>
+        <input type="submit" id="confirmMapSubmit" class="btn pull-right btn-primary btn-large" name="submit" value="Confirm">
+    </div>
+</div>

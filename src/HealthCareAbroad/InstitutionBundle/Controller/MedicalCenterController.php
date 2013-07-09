@@ -149,6 +149,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function viewAction(Request $request)
     {
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
@@ -239,11 +240,10 @@ class MedicalCenterController extends InstitutionAwareController
                     foreach ($formVariables as $key => $v){
                         
                         if($key == 'services')
-                        {
-                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterServices.html.twig', array(
-                                    'institution' => $this->institution,
-                                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                    'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                        {                            
+                            $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                             ));
                         
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -435,8 +435,7 @@ class MedicalCenterController extends InstitutionAwareController
     }
     
     /**
-     * TODO: Separate logic for AJAX request.
-     * TODO: Code process is very expensive. Need to optimize!
+     * NOTE: This is an AJAX request
      * @param Request $request
      * @return Ambigous <\Symfony\Component\HttpFoundation\Response, \Symfony\Component\HttpFoundation\RedirectResponse>
      */
@@ -448,44 +447,6 @@ class MedicalCenterController extends InstitutionAwareController
         $errors = array();
         $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
         $hasTreatments = false;
-        if (\count($submittedSpecializations)) {
-
-            foreach ($submittedSpecializations as $specializationId => $_data) {
-
-                if(isset($_data['treatments']) && count($_data['treatments'])) {
-                    $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
-                    $_institutionSpecialization = new InstitutionSpecialization();
-                    $_institutionSpecialization->setSpecialization($specialization);
-                    $_institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-                    $_institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
-                    $_institutionSpecialization->setDescription('');
-
-                    // set passed treatments as choices
-                    $default_choices = array();
-                    $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
-                    foreach ($_treatment_choices as $_t) {
-                        $default_choices[$_t->getId()] = $_t->getName();
-                        // add the treatment
-                        $_institutionSpecialization->addTreatment($_t);
-                    }
-                
-                    $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('default_choices' => $default_choices));
-                    $form->bind($_data);
-                    if ($form->isValid()) {
-                        $hasTreatments = true;
-                        $em->persist($_institutionSpecialization);
-                        $em->flush();
-                        if ($request->isXmlHttpRequest()) {
-                            $ajaxOutput['html'][] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
-                                'each' => $_institutionSpecialization,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                'commonDeleteForm' => $commonDeleteForm->createView()
-                            ));
-                        }
-                    }
-                }
-            }
-        }
 
         if(!$hasTreatments) {
             $errors = 'Please select at least one specialization.';
@@ -502,10 +463,45 @@ class MedicalCenterController extends InstitutionAwareController
         }
         return $response;
     }
-
-    public function saveAction(Request $request)
-    {
     
+    private function saveSpecializationsAndTreatments($submittedSpecializations)
+    {
+        
+        foreach ($submittedSpecializations as $specializationId => $data) {
+        
+            if(isset($data['treatments']) && count($data['treatments'])) {
+                $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
+                $institutionSpecialization = new InstitutionSpecialization();
+                $institutionSpecialization->setSpecialization($specialization);
+                $institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+                $institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
+                $institutionSpecialization->setDescription('');
+
+                // set passed treatments as choices
+                $defaultChoices = array();
+                $treatmentChoices = $this->get('services.treatment_bundle')->findTreatmentsByIds($data['treatments']);
+                foreach ($treatmentChoices as $treatment) {
+                    $defaultChoices[$treatment->getId()] = $treatment->getName();
+                    // add the treatment
+                    $institutionSpecialization->addTreatment($treatment);
+                }
+
+                $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization, array('default_choices' => $defaultChoices));
+                $form->bind($data);
+                if ($form->isValid()) {
+                    $hasTreatments = true;
+                    $em->persist($institutionSpecialization);
+                    $em->flush();
+                    if ($request->isXmlHttpRequest()) {
+                        $ajaxOutput['html'][] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
+                            'each' => $_institutionSpecialization,
+                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                            'commonDeleteForm' => $commonDeleteForm->createView()
+                        ));
+                    }
+                }
+            }
+        }        
     }
     
     /**
@@ -525,8 +521,11 @@ class MedicalCenterController extends InstitutionAwareController
         
         return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
     }
-    
+
     /**
+     * @DEPRECATED ??
+     * NOTE Added By: Adelbert D. Silla
+     * 
      * Ajax handler for loading data 
      * Expected GET parameters
      *     - imcId instituitonMedicalCenterid
@@ -777,17 +776,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $response = new Response("Invalid form", 400);
             }
         }
-//         else {
-            
-//             $html = $this->renderView('InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig', array(
-//                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
-//                 'institutionSpecialization' => $institutionSpecialization,
-//                 'form' => $form->createView()
-//             ));
-            
-//             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-//         }
-        
+
         return $response;
     }
     
@@ -965,7 +954,6 @@ class MedicalCenterController extends InstitutionAwareController
         
         $groupBySubSpecialization = true;
         $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
-        $params['formName'] = InstitutionSpecializationFormType::NAME;
         $params['form'] = $form->createView();
         $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
         $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);

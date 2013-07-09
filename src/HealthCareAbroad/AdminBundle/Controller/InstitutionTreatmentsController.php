@@ -575,8 +575,7 @@ class InstitutionTreatmentsController extends Controller
         }
         else {
     
-            return $this->render('InstitutionBundle:Widgets:modal.deleteMedicalSpecialist.html.twig', array(
-                            'institutionId' => $this->institution->getId(),
+            return $this->render('InstitutionBundle:Widgets/Profile:doctor.confirmDelete.html.twig', array(
                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
                             'doctor' => $doctor,
                             'form' => $form->createView()

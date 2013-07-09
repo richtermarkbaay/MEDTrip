@@ -35,6 +35,7 @@ class SpecializationController extends InstitutionAwareController
     
     public function preExecute()
     {
+        
         parent::preExecute();
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
@@ -175,7 +176,7 @@ class SpecializationController extends InstitutionAwareController
             
             //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
             $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('isId'));
-            $html = $this->renderView('InstitutionBundle:MedicalCenter/Partials:specializationComponents.html.twig', array(
+            $html = $this->renderView('InstitutionBundle:Widgets/Profile:specializations.listForm.html.twig', array(
                             'specializationComponents' => $specializationComponents,
                             'specializationId' => $request->get('isId'),
                             'selectedTreatments' => $specializationTreatments,
@@ -185,6 +186,7 @@ class SpecializationController extends InstitutionAwareController
             return new Response($html, 200);
         }
         return $response;
+        
     }
     
     /**

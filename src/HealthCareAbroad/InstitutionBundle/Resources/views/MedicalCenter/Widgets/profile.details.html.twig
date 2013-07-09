@@ -1,6 +1,10 @@
+{% set editOnClick = 'InstitutionMedicalCenter.toggleForm($(this))' %}
+{% set editFormTemplate = 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' %}
+
 <!-- InstitutionMedicalCenter Description Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
+        medicalCenterProfile: true,
         title: 'Description', toggleBtnId: 'clinic-edit-description-btn', viewElemId: 'view-description', editElemId: 'edit-description',
         formParams: {formId: 'descriptionForm', fields: ['description']}
     } %}
@@ -23,8 +27,9 @@
 
 
 <!-- InstitutionMedicalCenter Address Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with {
+        medicalCenterProfile: true, 
         title: 'Address', toggleBtnId: 'clinic-edit-address-btn', viewElemId: 'view-address', editElemId: 'address',
         formParams: {formId: 'addressForm', fields: ['address']}
     } %}
@@ -51,8 +56,9 @@
 
 
 <!-- InstitutionMedicalCenter ContactDetails Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with {
+        medicalCenterProfile: true, 
         title: 'Contact Details', toggleBtnId: 'clinic-edit-contacts-btn', viewElemId: 'view-contacts', editElemId: 'contactNumber',
         formParams: {formId: 'contactForm', fields: ['contactNumber']} 
     } %}
@@ -106,8 +112,9 @@
 
 
 <!-- InstitutionMedicalCenter SocialMediaSites Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
+        medicalCenterProfile: true,
         title: 'Social Media', toggleBtnId: 'clinic-edit-mediaSites-btn', viewElemId: 'view-socialMediaSites', editElemId: 'socialMediaSites',
         formParams: {formId: 'socicalMediaSitesForm', fields: ['socialMediaSites']} 
     } %}
@@ -133,8 +140,9 @@
 
 
 <!-- InstitutionMedicalCenter businessHours Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
+        medicalCenterProfile: true,
         title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
         formParams: {formId: 'businessHoursForm', fields: ['businessHours']} 
     } %}
@@ -148,8 +156,9 @@
 
 
 <!-- InstitutionMedicalCenter Services Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
+        medicalCenterProfile: true,
         title: 'Services', toggleBtnId: 'clinic-edit-services-btn', viewElemId: 'view-services', editElemId: 'services',
         formParams: {formId: 'servicesForm', fields: ['services']} 
     } %}
@@ -182,8 +191,9 @@
 
 {% set awards = { list: currentGlobalAwards.award, editFormListWrapperId: 'listing-award' } %}
 <!-- Institution Awards Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
+        medicalCenterProfile: true,
         title: 'Awards', toggleBtnId: 'clinic-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award', toggleBtnClass: 'edit-awards',
         formParams: {formId: 'awardsForm', fields: ['awards'] }
     } %}
@@ -200,14 +210,14 @@
     
     {% block viewContent %}
         <div id="awardsText">
-            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: awards , label : 'awards' } %}
+           {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: awards, type: 'awards' } %}
         </div>
     {% endblock %}
 {% endembed %}
 
 {% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
 <!-- Institution Certifications Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
         title: 'Certifications', 
         toggleBtnId: 'clinic-edit-certificates-btn', 
         viewElemId: 'show-certificates', 
@@ -228,14 +238,14 @@
     
     {% block viewContent %}
         <div id="certificatesText">
-            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: certificates, label : 'certificates' } %}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: certificates, type : 'certificates' } %}
         </div>
     {% endblock %}
 {% endembed %}
 
 {% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
 <!-- Institution Affiliations Section -->
-    {% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' with { 
+    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
             title: 'Affiliations', 
             toggleBtnId: 'clinic-edit-affiliations-btn', 
             viewElemId: 'show-affiliations', 
@@ -257,14 +267,14 @@
         
         {% block viewContent %}
             <div id="affiliationsText">
-                {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: affiliations, label : 'affiliations' } %}
+                {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: affiliations, type : 'affiliations' } %}
             </div>
         {% endblock %}
     {% endembed %}
 
 {% set accreditations = { list: currentGlobalAwards.accreditation, editFormListWrapperId: 'listing-accreditation' } %}
 <!-- Institution Accreditations Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
         title: 'Accreditations', 
         toggleBtnId: 'clinic-edit-accreditations-btn', 
@@ -286,7 +296,7 @@
     
     {% block viewContent %}
         <div id="accreditationsText">
-            {% include 'InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig' with { eachAward: accreditations, label : 'accreditations' } %}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: accreditations, type : 'accreditations' } %}
         </div>
     {% endblock %}
 {% endembed %}

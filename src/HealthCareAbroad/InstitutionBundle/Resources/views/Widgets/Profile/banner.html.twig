@@ -21,3 +21,13 @@
             <h3><i class="icon-map-marker"></i>{{ institution.city ~ ', ' ~ institution.country}}</h3>
     </div>
 </div>
+
+<!-- Edit InstitutionName and ProviderGroup -->
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'hca-edit-institution-name', 'title': 'Edit Institution Name' }} %}
+    {% block modalBody %}
+        {% include 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' 
+             with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups']} 
+        %}
+    {% endblock %}
+{% endembed %}
+<!-- End of InstitutionName and ProviderGroup -->

@@ -306,35 +306,31 @@ var InstitutionProfile = {
     },
     
     /**
-     * Clicking on submit button of modal MedicalCenter Sidebar forms
+     * Clicking on submit button of modal 
      * 
      * @param DOMElement button
      */
-    submitInstitutionSidebarForms: function(domButtonElement) {
-        _button = $(domButtonElement);
+    submitForm: function(_form) {
+
+    	_button = _form.find('button[type=submit]:first');
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
+
         _form = _button.parents('form');
-        _parent = _button.parents('form');
-        if(!_form.attr('action')){
-        	_form = _button.parents('div#hca-edit-institution-name').find('form');
-        	_parent = _button.parents('div#hca-edit-institution-name');
-        }
-        _data = _form.serialize();
-        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-        _parent.find('.error').removeClass('error');
-        $('.errorText').remove();
-        
+
+        $('.control-group.ajax-field.error').removeClass('error').find('ul.error_list').remove();
+
         if(_form.attr('id') == 'awardsForm'){
     		$("div[id^='show-']").animate({
     		    opacity: 0.25,
     		  });
     	}
+
         _editButton = _button.parents('section.hca-main-profile').find('.btn-edit');
         
         $.ajax({
             url: _form.attr('action'),
-            data: _data,
+            data: _form.serialize(),
             type: 'POST',
             dataType: 'json',
             success: function(response) {
@@ -428,11 +424,9 @@ var InstitutionProfile = {
                     	break;
                 } 
 
-                $('.errorText').remove();
-                _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                _parent.find('.error').removeClass('error');
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
+                HCA.alertMessage('success', 'successfully updated!');
             },
             error: function(response) {
             	
@@ -440,24 +434,13 @@ var InstitutionProfile = {
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        var _errorString = "We need you to correct some of your input. Please check the fields in red.";
                         $.each(errors, function(key, item){
-                        	if(item.field){
-                        		
-	                        	_parent.find('div[class*="'+item.field+'"]').addClass('error');
-	                        	if(item.field == 'country' || item.field == 'city'){
-	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div[class*="'+item.field+'"] > div'));
-	                        	}else{
-	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div[class*="'+item.field+'"] > input'));
-	                        	}
-                        	}
+                        	$('.control-group.ajax-field'+item.field).addClass('error');
+                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
                         });
                     }
-                    else{
-                    	var _errorString = errors.error;
-                	}
-                    _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                	_parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+
+                	HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
                 }
             }
         });

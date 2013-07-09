@@ -28,3 +28,22 @@
 
 {#<input type="hidden" name="{{ formName }}[{{ specialization.id }}][specialization]" value="{{ specialization.id }}" />#}
 <input type="hidden" name="{{ formName }}[{{ specialization.id }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+
+<div class="accordion tooltip-wrap" id="accordion">
+    {% for specialization in specializations %}
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
+                <i class="icon-plus-sign pull-right"></i>
+                <img src="{{ specialization.media ? specialization_media_src(specialization.media) : imageplaceholder.specializationDefaultLogo }}" class="pull-left">
+                <h4>{{ specialization.name }}</h4>
+            </a>
+        </div>
+        <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
+            <div id="{{ 'panel' ~ specialization.id }}" class="accordion-inner" data-loaded="0">
+                <div class="align-center"><img src="{{ imageplaceholder.loading }}"/></div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

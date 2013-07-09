@@ -126,6 +126,7 @@ var InstitutionMedicalCenter = {
         	
         	viewElem.hide();
         	editElem.slideDown('slow', function(){
+        		console.log(elem.attr('data-edit-elem'));
             	if(elem.attr('data-edit-elem') == "#address") {
         	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
             	}
@@ -433,35 +434,31 @@ var InstitutionMedicalCenter = {
                     case 'businessHoursForm':
                         InstitutionMedicalCenter.displayBusinessHoursView();
                         break;
-                } 
+                }
+
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
                 // Display Callout Message
-//                InstitutionMedicalCenter.displayCallout(response);
+                HCA.alertMessage('success', response);
             },
+
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
+
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        var _errorString = "We need you to correct some of your input. Please check the fields in red.";
                         $.each(errors, function(key, item){
-                        	if(item.field){
-	                        	_parent.find('div.'+item.field).addClass('error');
-	                        	if(item.field == 'country' || item.field == 'city'){
-	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
-	                        	}else{
-	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
-	                        	}
-                        	}
+                        	$('.control-group.'+item.field).addClass('error');
+                        	$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
                         });
                     }
-                    else{
-                    	var _errorString = errors.error;
-                	}
+
                     _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
                 	_parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
                 }
+
+                HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
             }
         });
         return false;
@@ -515,8 +512,9 @@ var InstitutionMedicalCenter = {
             	$('#specialization_list_block').children('div').removeClass('disabled');
                 _formElement.parents('div.modal').modal('hide');
                 $('#specialization_'+response.id).remove();
-                InstitutionMedicalCenter.displayAlert('You have successfully remove specialization' , 'success');
                 $('#new_specializationButton').removeAttr('disabled');
+
+                HCA.alertMessage('success', 'You have successfully remove specialization');
             }
          });
     },
@@ -617,17 +615,7 @@ var InstitutionMedicalCenter = {
 
         $('#featured').hide().fadeIn(2000);
     },
-    
-    /**
-     * DISPLAY alerts after success submission
-     */
-    displayAlert: function(message, status) {
-    	_confirmMessageElem = $('#confirmation-message');
-    	_confirmMessageElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
-    	_confirmMessageElem.find('.confirmation-box').html('<div class="alert alert-'+status+'"><p>' + message + '.</p></div>');
-    	_confirmMessageElem.show();
-    	setTimeout(function() {_confirmMessageElem.fadeOut("slow")}, 5000);
-    }
+
 }; // end InstitutionMedicalCenter
 
 InstitutionMedicalCenter.displayBusinessHoursView = function(){

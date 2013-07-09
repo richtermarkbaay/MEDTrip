@@ -39,8 +39,8 @@
             <small>This number will not be listed on the webpage.</small>
         </label>
         
-        {% for _widget in editForm.contactDetails %}
-            {{ form_widget(_widget) }}
+        {% for widget in editForm.contactDetails %}
+            {{ form_widget(widget) }}
         {% endfor %}
     </div>
 

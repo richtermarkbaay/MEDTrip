@@ -248,6 +248,7 @@ var FancyBusinessHours = function(_options){
                     _processedData.weekdaysBit += getBitValueOfDay(_day);
                 }
                 else {
+                    HCA.alertMessage('error', 'We have detected a conflict in the schedule you have entered. Please recheck your schedule.');
                 	console.log(WEEKDAYS[_day].long + ' '+toTimepickerString(_processedData.openingDateTime) + ' '+toTimepickerString(_processedData.closingDateTime)+' is invalid');
                 }
             });

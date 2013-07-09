@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
-class DefaultController extends InstitutionAwareController
+class DashboardController extends InstitutionAwareController
 {
     /**
      * @var InstitutionMedicalCenterRepository
@@ -48,25 +48,24 @@ class DefaultController extends InstitutionAwareController
     public function indexAction(Request $request)
     {
         //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        $signup = false;
+        $institutionAlerts = array();
+
         if($request->server->has('HTTP_REFERER')){
             if (\preg_match('/setup-doctors/i', $request->server->get('HTTP_REFERER'))) {
-                $signup = true;
+                $newlySignedup = true;
             }
         }
-        
-        if (InstitutionTypes::MULTIPLE_CENTER == $this->institution->getType()) {
-            $template = 'InstitutionBundle:Default:dashboard.multipleCenter.html.twig';
-        }
-        else {
-            $template = 'InstitutionBundle:Default:dashboard.singleCenter.html.twig';
-        }
-    
-        return $this->render($template, array(
-                        'institution' => $this->institution,
-                        'isDashBoard' => true,
-                        'signup' => $signup
-                        
+
+        // TODO - Deprecated??
+        //$newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
+        //$news = $newsRepository->getLatestNews();
+        $news = array();
+
+        return $this->render('InstitutionBundle:Dashboard:index.html.twig', array(
+            'alerts' => $institutionAlerts,
+            'news' => $news,
+            'institution' => $this->institution,
+            'newlySignedup' => isset($newlySignedup) ? true : false
         ));
     }
     
@@ -132,21 +131,7 @@ class DefaultController extends InstitutionAwareController
         
         return $response;
     }
-    
-    public function addClinicAction()
-    {
-        //$institutionAlerts = $this->container->get('services.alert')->getAlertsByInstitution($this->institution);
-        $newsRepository = $this->getDoctrine()->getRepository('HelperBundle:News');
-        $news = $newsRepository->getLatestNews();
-         
-        $template = 'InstitutionBundle:Default:add.clinic.html.twig';
-         
-        return $this->render($template, array(
-                        'alerts' => array(),
-                        'news' => $news,
-                        'institution' => $this->institution,
-        ));
-    }
+
     public function error403Action()
     {
         throw new AccessDeniedHttpException();

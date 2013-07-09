@@ -20,6 +20,8 @@ abstract class InstitutionAwareController extends Controller
      */
     protected $institution;
     
+    protected $isSingleCenter;
+    
     protected $eagerLoadEntities = array();
     
     /**
@@ -48,8 +50,11 @@ abstract class InstitutionAwareController extends Controller
     public function setInstitution(Institution $institution)
     {
         $this->institution = $institution;
+        $this->isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
         $this->get('twig')->addGlobal('institution', $this->institution);
-        $this->get('twig')->addGlobal('isSingleCenter', $this->get('services.institution')->isSingleCenter($this->institution));
+        $this->get('twig')->addGlobal('isSingleCenter', $this->isSingleCenter);
+        $this->get('twig')->addGlobal('institutionLabel', $this->isSingleCenter ? 'Clinic' : 'Hospital');
+        
 //         if($this->get('security.context')->getToken()->getUser()){
 //             $loggedUser = $this->get('security.context')->getToken()->getUser();
 //             $this->get('twig')->addGlobal('userName',$loggedUser);
