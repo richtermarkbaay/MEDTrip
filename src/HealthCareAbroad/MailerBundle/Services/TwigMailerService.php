@@ -3,7 +3,7 @@ namespace HealthCareAbroad\MailerBundle\Services;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
-class TwigMailer implements MailerInterface
+class TwigMailerService implements MailerInterface
 {
     protected $mailer;
     protected $router;
@@ -50,7 +50,7 @@ class TwigMailer implements MailerInterface
             $message->setBody($textBody);
         }
 
-        $this->mailer->send($message);
+        //$this->mailer->send($message);
     }
 
     /**
@@ -64,14 +64,14 @@ class TwigMailer implements MailerInterface
             throw new \Exception('Key "notificationType" is required');
         }
 
-        $defaultParameters = $this->parameters[$context['notificationType']];
+        $mailTemplateParameters = $this->parameters[$context['notificationType']];
 
-        foreach ($defaultParameters as $key => $value) {
+        foreach ($mailTemplateParameters as $key => $value) {
             if (!isset($context[$key])) {
                 $context['$key'] = $value;
             }
         }
-
+var_dump($context); exit;
         return $context;
     }
 

@@ -1,34 +1,4 @@
-parameters:
-    # used by listeners if they should proceed with the sending of emails
-    notifications.enabled: true
-
-    # Temporary or could be made defaults; we may want the users to set these values himself, for example
-    # TODO: Refactor - this doesn't feel ideal.
-    mailer.templates:
-        notification.inquiries:
-            template: "MailerBundle:EmailTemplates:notification.inquiries.html.twig"
-            user: "inquiry@healthcareabroad.com"
-            password: "esV01f#CS9"
-            subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
-        notification.new_account_created:
-            template: "MailerBundle:EmailTemplates:notification.new_account_created.html.twig"
-            user: "support@healthcareabroad.com"
-            password: "HCA#602_h3lp"
-            subject: "Welcome to HealthcareAbroad.com!"
-        notification.support:
-            template: "MailerBundle:EmailTemplates:notification.support.html.twig"
-            user: "support@healthcareabroad.com"
-            password: "HCA#602_h3lp"
-            subject: ~
-
 services:
-    listener.new_account_created:
-        class: HealthCareAbroad\MailerBundle\Listener\NewAccountCreatedListener
-        #arguments: @services.mailer.notifications.twig
-        arguments: [@service_container]
-        tags:
-            - { name: kernel.event_listener, event: mailer_bundle.notification.test, method: onNotificationTest }
-
     services.mailer.message:
         class: HealthCareAbroad\MailerBundle\Services\MessageService
         arguments: [@service_container]
@@ -40,12 +10,13 @@ services:
     # this is a mailer that will always use memory spool regardless of the
     # swiftmail spool configuration (? looks like this behavior has changed -
     # we need to enable spool to get a reference to swiftmailer.transport.real)
-    # can't make this work in staging
+    # can't seem to make this work in staging
     #services.mailer.instant:
     #    class: %swiftmailer.class%
     #    arguments: [@?swiftmailer.transport.real]
 
     # TODO: create an abstract service to extend from
+    # Logger should be removed in prod env
     services.mailer.notifications.twig:
         class: HealthCareAbroad\MailerBundle\Services\TwigMailer
         arguments:
@@ -53,7 +24,7 @@ services:
             #- @mailer
             #- @router
             - @twig
-            - %mailer.templates%
+            #- %mailer.templates%
             - @logger
 
     # UNTESTED/UNUSED

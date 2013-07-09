@@ -1,0 +1,74 @@
+{#
+RULES: Sent immediately following a new account creation. Sent to email address of account owner.
+ASSUMPTIONS: No hospital nor clinic data has been added yet.
+SUBJECT: Welcome to HealthcareAbroad.com!
+FROM: support@healthcareabroad.com
+#}
+
+{% block subject %}
+    {{ subject }}
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+
+Welcome to HealthcareAbroad.com!
+
+Your account has successfully been created. The email address you entered for future logins is: {{ email.user_login }}
+
+Soon patients will be able to find your hospital or clinic on HealthcareAbroad.com, make sure that they find complete and relevant information about everything that you have to offer.
+
+Complete your profile >> {{ url.complete_profile }}
+Add all your units or departments >> {{ url.add_centers }}
+Post photos of your facilities >> {{ url.upload_photos }}
+List the treatments you offer >> {{ url.list_treatments }}
+Feature your doctors >> {{ url.feature_doctors }}
+
+IMPORTANT TIP: To make sure you don't miss any inquiries, list and double check your contact information >> {{ url.contact_info }}
+
+You will also find these guided steps anytime you log in to your account.
+
+Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
+
+
+All the best,
+
+The Healthcare Abroad Team
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+    {#% include 'MailerBundle:EmailTemplates:confirmation_email.html.twig' %#}
+    {# We can also include a twig template here as shown above #}
+
+Welcome to HealthcareAbroad.com!
+
+Your account has successfully been created. The email address you entered for future logins is: {{ email.user_login }}.<br/><br/>
+
+Soon patients will be able to find your hospital or clinic on HealthcareAbroad.com, make sure that they find complete and relevant information about everything that you have to offer.<br/><br/>
+
+<ul>
+    <li><a href='{{ url.complete_profile }}'>Complete your profile >></a></li>
+    <li><a href='{{ url.add_centers }}'>Add all your units or departments >></a></li>
+    <li><a href='{{ url.upload_photos }}'>Post photos of your facilities >></a</li>
+    <li><a href='{{ url.list_treatments }}'>List the treatments you offer >></a></li>
+    <li><a href='{{ url.feature_doctors }}'>Feature your doctors >></a></li>
+</ul>
+
+<br/>
+IMPORTANT TIP: To make sure you don't miss any inquiries, <a href='{{ url.contact_info }}'>list and double check your contact information >></a>
+<br/><br/>
+
+You will also find these guided steps anytime you log in to your account.
+<br/><br/>
+
+Need help?  Contact Support at {{ email.support }} or visit <a href='{{ url.support }}'>support.healthcareabroad.com</a>.
+<br/><br/><br/>
+
+
+All the best,<br/><br/>
+
+The Healthcare Abroad Team
+
+{% endblock %}
