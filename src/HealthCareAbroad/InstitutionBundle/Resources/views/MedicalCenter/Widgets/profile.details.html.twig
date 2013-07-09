@@ -98,8 +98,15 @@
 
             <p>
                 {% for contactDetail in institutionMedicalCenter.contactDetails %}
-                     <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}
-                    <strong><span id="PhoneNumberText"> {{ contactDetail}}  </span> </strong>
+                   <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}
+                   <strong><span id="PhoneNumberText">
+                   {% if contactDetail.number %}
+                             {{ contactDetail }}
+                         {% else %}
+                             <b> no phone number </b> added.
+                              <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i>Add Phone Number</a>
+                     {% endif %}
+                    </span> </strong>
                 {% else %}
                     <i class="icon-phone"> </i>Phone
                     <strong><span id="profileNumberText"></span></strong>

@@ -98,5 +98,11 @@
         HCAGoogleMap.updateMap(getAddress());
     }
 
+    $(document).ready(function() {
+       if($("#PhoneNumberText").find('._alert-phone')){
+    	    $("#show-contact").find('#alertDiv').addClass('alert alert-block');
+       }
+   }); 
+
 </script>
 {% endblock %}

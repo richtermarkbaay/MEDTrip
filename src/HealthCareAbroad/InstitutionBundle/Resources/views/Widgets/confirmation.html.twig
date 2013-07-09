@@ -1,11 +1,23 @@
 <div id="confirmation-message">
     <div class="confirmation-box">
-        {% if app.session.hasFlash('success') %}
+        {% if app.session.hasFlash('success') %} {# This is temporary only.#}
                 <div class="alert alert-success">
                     <p>
                         {{  app.session.flash('success') | raw}}
                     </p>
                 </div>
+        {% elseif app.session.hasFlash('notice') %}
+            <div class="alert alert-notice">
+                <p>
+                    {{  app.session.flash('notice') | raw}}
+                </p>
+            </div>
+        {% elseif app.session.hasFlash('error') %}
+            <div class="alert alert-error">
+                <p>
+                    {{  app.session.flash('error') | raw}}
+                </p>
+            </div>
         {% endif %}
     </div>
 </div>

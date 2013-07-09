@@ -31,6 +31,6 @@ institution_reset_password:
 
 institution_set_new_password:
     pattern: /set-new-password/{token}
-    defaults: { _controller: InstitutionBundle:InstitutionUser:resetPassword }
+    defaults: { _controller: InstitutionBundle:InstitutionUser:changePassword }
     requirements:
         _method: GET|POST
