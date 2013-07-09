@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Form;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType;
 
 use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
@@ -65,13 +67,12 @@ class InstitutionProfileFormType extends AbstractType
         'contactDetails',
         'websites',
         'socialMediaSites',
-        'services',
-        'awards',
         'coordinates',
         'logo',
         'featuredMedia',
         'coordinates',
-        'type'
+        'type',
+        'status'
     );
 
     public function __construct(array $options = array())
@@ -98,7 +99,7 @@ class InstitutionProfileFormType extends AbstractType
     {
         $this->options = $options;
         $this->institution = $builder->getData();
-        
+        $status = InstitutionStatus::getBitValueLabels();
         if (!$this->institution instanceof Institution ) {
             throw InstitutionFormException::nonInstitutionFormData(__CLASS__, $this->institution);
         }
@@ -113,20 +114,19 @@ class InstitutionProfileFormType extends AbstractType
             $builder->addEventSubscriber($subscriber);
         }
         $this->_add($builder, 'name', 'text');
+        $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true,'options'  => array( 'required' => false)));
         $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
         $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
-        $this->_add($builder, 'state', 'text', array('label' => 'State / Province', 'required' => false));
+        $this->_add($builder, 'state', 'text', array('label' => 'State / Province' ));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
-        $this->_add($builder, 'contactDetails', 'collection',array('error_bubbling' => false, 'type' => 'simple_contact_detail', 'constraints'=>array(new NotBlank())));
+        $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
         $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
-        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
-        $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false));
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
         $this->_add($builder, 'coordinates', 'hidden');

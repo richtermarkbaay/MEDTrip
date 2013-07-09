@@ -8,19 +8,11 @@ var Institution = {
     },
     
     updateInstitutionStatus: function(_button) {
-    	var href = '';
     	_button = $(_button);
-    	_formElement = $(_button.attr('data-formId'));
-    	_modal = $(_button.attr('data-modalId'));
-    	dataInstitutionId = $(_button).attr('data-valueId'); 
-    	_button.attr('disabled', true)
-            .html('Processing...');
-    	if (dataInstitutionId == 0) {
-    		href = $('a.show-update-status').attr('href');
-    	}
-    	else {
-    		href = _formElement.attr('action');
-    	} 
+    	_modal = _button.attr('data-modalId');
+    	_formElement = $(_modal).find('form');
+    	_button.attr('disabled', true).html('Processing...');
+		href = _formElement.attr('action');
        
         $.ajax({
             type: 'POST',
@@ -29,7 +21,9 @@ var Institution = {
             success: function(response) {
             	_button.removeAttr('disabled')
                 .html('Submit');
-            	_modal.modal('hide');
+            	$(_modal).modal('hide');
+            	$('#'+_formElement.attr('data-element')).attr('data-status', response.status);
+            	$('.alert').html(response.html).show();
             }
         });
         	

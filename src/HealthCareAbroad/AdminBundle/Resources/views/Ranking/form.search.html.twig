@@ -1,0 +1,132 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+    
+    {% include 'AdminBundle:PageMetaConfiguration/Widgets:sidebar.html.twig' with {'activeSideBar' : 'rank_page_meta'}%}
+    
+    <div id="content" class="span9">
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: 'Search Results'
+            }  
+        %}
+            {% block sectionContent %}
+            
+                <form id="institutionPageMetaForm" class="form-inline search-form" action="{{ path('admin_ranking_search') }}" method="post">
+                    <div class="combo-wrapper">
+                        <input class="type_in" type="text" name="institutionName" id="institution_input_field" placeholder="Search Hospital/Institution" autocomplete="off" data-autocomplete-trigger="#institution_dropdown_button" data-dropdown="#institution_dropdown_menu">
+                        <input type="hidden" name="institutionId" id="institutionId" />
+                        
+                        <div class="popup">
+                            <button id="institution_dropdown_button" class="btn text-left small default btn-pop">
+                                <span class="icon-chevron-down"></span>
+                            </button>
+                            <div id="inst_combolist_wrapper"  class="combolist-wrapper"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="combo-wrapper">
+                        <input class="type_in" type="text" name="imcName" id="institution_medical_center_input_field" placeholder="Search Clinic" autocomplete="off" data-autocomplete-trigger="#institution_medical_center_dropdown_button" data-dropdown="#institution_medical_center_dropdown_menu">
+                        <input type="hidden" name="imcId" id="imcId" />
+                        
+                        <div class="popup">
+                            <button id="institution_medical_center_dropdown_button" class="btn text-left small default btn-pop">
+                                <span class="icon-chevron-down"></span>
+                            </button>
+                            <div id="imc_combolist_wrapper" class="combolist-wrapper"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn">Search</button>
+                </form>
+                
+                <div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
+                    
+                <div id="ranking_form_container">
+                    
+                </div>    
+                    
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+
+    
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('#institutionPageMetaForm').submit(function(){
+            var _form = $(this);
+            $('#ranking_form_container').html('');
+            $('#loader').fadeIn();
+            $('#institution_medical_center_input_field').data('fancyAutocomplete')
+            .disabled(true);
+            $.ajax({
+                url: _form.attr('action'),
+                data: _form.serialize(),
+                type: 'post',
+                success: function(response) {
+                    $('#loader').hide();
+                    $('#ranking_form_container').html(response.html);
+                },
+                error: function(response){
+                    $('#loader').hide();
+                }
+            });
+
+            return false;
+        });
+        
+        $('#institution_input_field').fancyAutocomplete({
+            'source': window.JSON.parse('{{ institutionsJsonData | raw }}'),
+            'autocomplete': {
+                'minLength': 0
+            },
+            'listWrapper': $('#inst_combolist_wrapper'),
+            'valueContainer': $('#institutionId'),
+            'onAutocompleteSelectCallback': function(){
+
+                $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                    .resetValue()
+                    .reloadSource()
+                    .disabled(true);
+            }
+        });
+
+        $('#institution_medical_center_input_field').fancyAutocomplete({
+            'source': [],
+            'valueContainer': $('#imcId'),
+            'listWrapper': $('#imc_combolist_wrapper'),
+            'reloadSource': function(){
+
+                var data = [];
+                $.ajax({
+                    url: '{{ path("institution_medical_centers_api") }}',
+                    data: {'institutionId': $('#institutionId').val()},
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                            .disabled(false)
+                            .options.source = response;
+                    },
+                    error: function(response) {
+                        $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                        .disabled(false)
+                        .options.source = [];
+                    }
+                });
+                
+                return data; 
+            }
+        });
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

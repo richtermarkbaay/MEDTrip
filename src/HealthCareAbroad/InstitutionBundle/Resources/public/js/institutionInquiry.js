@@ -103,7 +103,7 @@ var InstitutionInquiry = {
     _setInquiryCounter: function(_response) {
     	$('#readTab').find('span').html("("+_response.readCntr.length+")");
     	$('#unreadTab').find('span').html("("+_response.unreadCntr.length+")");
-    	$(InstitutionInquiry._inquiryBannerCntrId).find('span').html("("+_response.unreadCntr.length+")");
+    	$(InstitutionInquiry._inquiryBannerCntrId).find('span').html(_response.unreadCntr.length);
     },
     
     _removeInquiry: function (_linkElement) {

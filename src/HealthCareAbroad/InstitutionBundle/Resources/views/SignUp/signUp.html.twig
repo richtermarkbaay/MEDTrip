@@ -68,7 +68,7 @@
                     </div>
                 </section>
                 
-                <section class="section institution-info">
+                <section class="section institution-contact">
                     <h2>
                         Direct Phone Contacts
                         <br>
@@ -76,11 +76,10 @@
                             These numbers will be used to contact you about account management.
                         </small>
                     </h2>
-                     <div class="row-fluid hca-contact-number">
+                     <div class="row-fluid hca-contact-details">
                         {% for _widget in form.contactDetails %}
                             {{ form_widget(_widget) }}
                              {{ form_errors(_widget) }}
-                            <hr />
                         {% endfor %}
                         
                     </div>

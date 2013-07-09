@@ -54,11 +54,7 @@ InstitutionBundle_mediaGallery:
 InstitutionBundle_account:
     resource: "@InstitutionBundle/Resources/config/routing_account.yml"
     prefix: /
-    
-InstitutionBundle_feedback:
-    resource: "@InstitutionBundle/Resources/config/routing_feedback.yml"
-    prefix: /
-    
+
 # Routes for DoctorController #
 InstitutionBundle_doctor:
     resource: "@InstitutionBundle/Resources/config/routing_doctor.yml"
@@ -82,13 +78,13 @@ institution_showEditHistory:
 
 institution_page_exception_report_send:
     pattern: /ajax-send-error
-    defaults: { _controller: InstitutionBundle:Default:ajaxSendErrorReport }
+    defaults: { _controller: InstitutionBundle:Error:ajaxSendErrorReport }
     requirements:
         _method:  POST
 
 institution_homepage:
     pattern:  /institution/dashboard
-    defaults: { _controller: InstitutionBundle:Default:index }
+    defaults: { _controller: InstitutionBundle:Dashboard:index }
 
 institution_accept_user_invitation:
     pattern:  /accounts/accept-invitation/{token}
@@ -120,7 +116,7 @@ institution_addAncilliaryService:
        
 institution_exception_report_create:
     pattern: /institution/error
-    defaults: { _controller: InstitutionBundle:Default:errorReport }
+    defaults: { _controller: InstitutionBundle:Error:errorReport }
     requirements:
         _method:  GET|POST
 
@@ -144,55 +140,55 @@ institution_faq:
         
 institution_error_500:
     pattern: /institution/error500.html
-    defaults: { _controller: InstitutionBundle:Default:error500}
+    defaults: { _controller: InstitutionBundle:Error:error500 }
     requirements:
         _method: GET
                 
 institution_error_401:
     pattern: /institution/401
-    defaults: { _controller: InstitutionBundle:Default:error401}
+    defaults: { _controller: InstitutionBundle:Error:error401 }
     requirements:
         _method: GET
         
 institution_error_403:
     pattern: /institution/403
-    defaults: { _controller: InstitutionBundle:Default:error403}
+    defaults: { _controller: InstitutionBundle:Error:error403 }
     requirements:
         _method: GET
             
 institution_inquiries:
     pattern: /institution/inquiries
-    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
     requirements:
         _method: GET|POST
         
 institution_view_inquiry:
     pattern: /institution/inquiry/{id}/view
-    defaults: { _controller: InstitutionBundle:Default:viewInquiry }
+    defaults: { _controller: InstitutionBundle:Dashboard:viewInquiry }
     requirements:
         _method: GET|POST 
 
 institution_delete_inquiry:
     pattern: /institution/inquiry/{id}/remove
-    defaults: { _controller: InstitutionBundle:Default:removeInquiry }
+    defaults: { _controller: InstitutionBundle:Dashboard:removeInquiry }
     requirements:
         _method: GET|POST
 
 institution_mark_inquiry:
     pattern: /institution/inquiry/ajaxSetInstitutionInquiryStatus
-    defaults: { _controller: InstitutionBundle:Default:ajaxSetInstitutionInquiryStatus }
+    defaults: { _controller: InstitutionBundle:Dashboard:ajaxSetInstitutionInquiryStatus }
     requirements:
         _method: GET|POST
        
 institution_view_readInquiries:
     pattern: /institution/{tabName}-inquiries
-    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
     requirements:
         _method: GET|POST 
        
 institution_view_unreadInquiries:
     pattern: /institution/{tabName}-inquiries
-    defaults: { _controller: InstitutionBundle:Default:viewAllInquiries }
+    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
     requirements:
         _method: GET|POST 
         

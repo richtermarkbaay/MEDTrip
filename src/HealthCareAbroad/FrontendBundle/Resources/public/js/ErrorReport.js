@@ -62,6 +62,7 @@ var ErrorReport = {
 	            	ErrorReport.errorReportComponents.submitButton
 	                .html(ErrorReport.errorReportComponents.submitButton.attr('data-html'))
 	                .attr('disabled', false);
+	            	 $('#ExceptionForm_captcha').val('');
 	            	window.location =  ErrorReport.errorReportComponents.form.find('a.captcha_reload').attr('href');
 	                if (response.status==400) {
 	                    var errors = $.parseJSON(response.responseText).html;

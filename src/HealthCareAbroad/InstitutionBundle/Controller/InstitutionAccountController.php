@@ -117,13 +117,9 @@ class InstitutionAccountController extends InstitutionAwareController
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
-        $contactDetails = $this->get('services.institution')->getContactDetailsByInstitution($this->institution);
-        if(!$contactDetails) {
-            $phoneNumber =new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($phoneNumber);
-        }
+
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE)); 
+
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         
@@ -168,13 +164,12 @@ class InstitutionAccountController extends InstitutionAwareController
         } else {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $params =  array(
-                'institution' => $this->institution,
                 'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                 'institutionForm' => $form->createView(),
-                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'currentGlobalAwards' => $currentGlobalAwards,
                 'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
             );
         }
 
@@ -199,12 +194,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-                if(!$this->institution->getContactDetails()->count()) {
-                    $phoneNumber = new ContactDetail();
-                    $phoneNumber->setType(ContactDetailTypes::PHONE);
-                    $phoneNumber->setNumber('');
-                    $this->institution->addContactDetail($phoneNumber);
-                }
+                $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
                 $formRequestData = $request->get($form->getName());
@@ -224,7 +214,7 @@ class InstitutionAccountController extends InstitutionAwareController
                     
                     if(!empty($form['contactDetails']))
                     {
-                       $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+                       $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                     }
                     
                     $this->get('services.institution.factory')->save($this->institution);
@@ -284,16 +274,8 @@ class InstitutionAccountController extends InstitutionAwareController
                             $output['institution'][$key] = $returnVal;
                         }
                         elseif($key == 'contactDetails' ){
-                            $value = $this->institution->{'get'.$key}();
-                            $output['institution'][$key]['phoneNumber'] ='';
-                            if($value){
-                                foreach ($value as $keys => $a){
-                                    if($a->getType() == ContactDetailTypes::PHONE) {
-                                         $output['institution'][$key]['phoneNumber'] = $a->getNumber();
-                                         break;
-                                    }
-                                }
-                            }
+                            $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institution->{'get'.$key}());
+                            $output['institution'][$key]['phoneNumber'] = $value;
                         }
                         elseif($key == 'address1') {
                             $value = $this->institution->{'get'.$key}();

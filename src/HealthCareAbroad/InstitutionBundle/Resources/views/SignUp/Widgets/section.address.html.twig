@@ -1,0 +1,72 @@
+<section class="section address-info">
+    <h2>{{ label }} Address<br> <small>Complete address of the {{ label | lower }} that you are adding.</small></h2>
+    <div class="row-fluid tooltip-wrap">
+        <div class="span12">
+        <div class="tooltip-content">
+            <i class="icon-map-marker icon-2x pull-left"></i>
+            Providing your complete address helps us push you to the right searches,
+            and helps patients plan their travel better.
+        </div>
+
+            {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
+            <div class="row-fluid terms">
+               <div class="country span6 control-group {{ (form.address1.vars.valid ? '' : 'error') }}">
+                    <label for="{{ form.children.country.vars.id }}">
+                        {{ form.children.country.vars.label }} *
+                    </label>
+                    {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
+                    {{ form_errors(form.country)}} 
+                </div>
+                   <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span6">
+                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                        {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
+                        {{ form_errors(form.city)}} 
+                </div>
+            </div>
+             <div class="row-fluid terms">
+             
+                 <div class="state control-group span6 {{ (form.state.vars.valid ? '' : 'error') }}">
+                        <label>State / Province *</label>
+                        {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
+                        {{ form_errors(form.state)}} 
+                </div>
+                 <div class="zipCode control-group span6 {{ (form.zipCode.vars.valid ? '' : 'error') }}">
+                        <label for="{{ form.children.zipCode.vars.id }}">
+                         {{ form.children.zipCode.vars.label }}
+                        *</label>
+                        {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
+                        {{ form_errors(form.zipCode)}} 
+                </div>
+             </div>
+            <div class="control-group">
+                <div class="span12">
+                    {{ form_label(form.addressHint )}}
+                    {{ form_widget(form.addressHint, { attr: {class: 'span12 tooltip-wrap3'} } )}}
+                    <div class="tooltip-content3">
+                        If there are any instructions that will help someone find you that aren't included in the address put them here. 
+                       This could be something like, 'On the 2nd floor', or 'Next door to the gas station', whatever will make it easy for patients to find you!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="confirmMap" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+        <h3>
+            Confirm location on the map<br>
+        </h3>
+        <div class="alert alert-info">
+            <i class="icon-map-marker icon-4x pull-left"></i>
+            Drag and drop the pin to your actual location.  If for some reason your location is not in the vicinity, please go back and check your address.
+        </div>
+        <div id="map_canvas" style="width: 530px; height: 300px"></div>        
+    </div>
+
+    <div class="modal-footer">
+        <button aria-hidden="true" data-dismiss="modal" class="btn btn-link btn-large">Back</button>
+        <input type="submit" id="confirmMapSubmit" class="btn pull-right btn-primary btn-large" name="submit" value="Confirm">
+    </div>
+</div>

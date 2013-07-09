@@ -15,3 +15,9 @@
         </h4>
     </div>
 </section>
+
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-medical-center-name', 'title': 'Edit Clinic Name' }} %}
+    {% block modalBody %}
+        {% include 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' with {formId: 'nameModalForm', fields: ['name']} %}
+    {% endblock %}
+{% endembed %}

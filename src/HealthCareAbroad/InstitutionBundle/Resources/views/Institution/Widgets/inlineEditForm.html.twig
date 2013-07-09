@@ -1,0 +1,129 @@
+<form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" onsubmit="return InstitutionProfile.submitForm($(this))">
+    {% for each in fields %}
+        {% if each == 'description' %}
+            <div class="description control-group">   
+                {{ form_widget(institutionForm[each], { 'attr': { class: 'span12 tooltip-wrap2', rows: '4', cols: '50' }})  }}
+                <div class="tooltip-content2 hca-textarea">
+                    All the information about your hospital that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your
+                    chance to set your hospital apart. DO NOT include any emails, URLs, or contact information.
+                </div>
+            </div>
+        {% elseif each == 'name' %}
+            <section>
+                <div class="aside-box info dashboard-side">
+                    <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
+                    Changing your Institution name here will change it in ALL Healthcare Abroad listings. Editing your Institution Name is subject to review and approval.
+                </div>
+            </section>
+            <section class="section institution-info">
+                <div class="row-fluid hca-clinic-modal">
+                  <div class="span12">
+                     <div class="name control-group ">
+                        <label for="medicalProviderGroups"> Medical Institution Name  </label>
+                        {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
+                    </div>
+        {% elseif each == 'medicalProviderGroups' %}
+                        <div class="control-group">
+                            <label for="medicalProviederGroups">  Network Name </label>
+                               {% for _i in institutionForm.medicalProviderGroups %}
+                                 {{ form_widget(_i, {'attr': {class: 'span10'} })  }}
+                                 {% else %}
+                                 <input id="institution_profile_form_medicalProviderGroups_0" class="span10" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                               {% endfor %}
+                             <div id="autoDiv">
+                      
+                              </div>
+                        </div>
+                    </div>    
+                </div>
+            </section>
+        {% elseif each == 'address1' %}
+            <div id="map_canvas" style="height: 300px;margin: 20px 20px 30px"></div>
+            <a href="javascript:updateInstitutionStaticMap()" class="pull-right label label-success" style="margin-right:20px;">Review map location</a><br>
+
+            {{ form_widget(institutionForm.address1, {attr: {'class': 'span12'}}) }}
+            {{ form_widget(institutionForm.coordinates) }}
+             <div class="terms">
+                <div class="country control-group span5">
+                        <label for="{{ institutionForm.children.country.vars.id }}">
+                            {{ institutionForm.children.country.vars.label }}
+                        </label>
+                        {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
+                </div>
+                <div class="city control-group span5">
+                         <label for="{{ institutionForm.children.city.vars.id }}">
+                          {{ institutionForm.children.city.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
+                </div>
+                
+            </div>
+            <div class="row-fluid terms">
+                <div class="children[state].data control-group span5 ">
+                        {{ form_label(institutionForm.state) }}
+                        {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
+                </div>
+                <div class="zipCode control-group span5">
+                        <label for="{{ institutionForm.children.zipCode.vars.id }}">
+                         {{ institutionForm.children.zipCode.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.zipCode, {label: 'Zip/Mail Code', attr: {class: 'span6'} } )}}
+                </div>
+            </div>
+            <div class="control-group">
+                {{ form_label(institutionForm.addressHint)}}
+                {{ form_widget(institutionForm.addressHint, {attr: {class: 'span12 tooltip-wrap2'} } )}}
+                <div class="tooltip-content2">
+                   If there are any instructions that will help someone find you that aren't included in the address put them here. 
+                   This could be something like, 'On the 2nd floor', or 'Next door to the gas station', whatever will make it easy for patients to find you! 
+                </div>
+            </div> 
+        {% elseif each == 'contactDetails' or each == 'websites' %}
+                        <div class="control-group website">
+                {{ form_label(institutionForm.websites) }}
+                <span class="pull-left"> http:// </span>
+                {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
+            </div>
+
+
+                <div class="contactEmail control-group">
+                        <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
+                            {{ institutionForm.children.contactEmail.vars.label }}
+                        </label>
+                        {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+                </div>
+                 
+        
+        
+
+
+           {% for _widget in institutionForm.contactDetails %}
+            
+                     {{ form_widget(_widget) }}
+                    
+              
+            {% endfor %}
+
+         {% elseif each == 'socialMediaSites' %}
+             {{ form_widget(institutionForm.socialMediaSites )}}
+         {% elseif each == 'services' %}
+             <div class="control-group">
+                 {{ form_widget(institutionForm.services )}}
+             </div>
+         {% elseif each == 'awards' %}
+                 <input type="hidden" name="awardTypeKey"  id="awardTypeKey" value=""/>    
+             <div class="control-group">
+                 {{ form_widget(institutionForm.awards) }}
+             </div>
+         {% else %}
+                {# form_row(institutionForm[each]) #}
+         {% endif %}
+
+    {% endfor %}
+    
+    {{ _csrf_token_widget | raw}}
+
+    <div class="align-right"> 
+		<button class="btn btn-primary" type="submit">Submit</button>
+    </div>
+</form>

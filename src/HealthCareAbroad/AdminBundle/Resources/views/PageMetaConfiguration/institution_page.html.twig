@@ -20,10 +20,10 @@
                         <input type="hidden" name="institutionId" id="institutionId" />
                         
                         <div class="popup">
-                            <button id="institution_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                            <button id="institution_dropdown_button" class="btn text-left small default btn-pop">
                                 <span class="icon-chevron-down"></span>
                             </button>
-                            <div id="institution_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
+                            <div id="inst_combolist_wrapper"  class="combolist-wrapper"></div>
                         </div>
                     </div>
                     
@@ -32,10 +32,10 @@
                         <input type="hidden" name="imcId" id="imcId" />
                         
                         <div class="popup">
-                            <button id="institution_medical_center_dropdown_button" data-toggle="dropdown" class="btn text-left small default btn-pop">
+                            <button id="institution_medical_center_dropdown_button"  class="btn text-left small default btn-pop">
                                 <span class="icon-chevron-down"></span>
                             </button>
-                            <div id="institution_medical_center_dropdown_menu" role="menu" class="popup-box dropdown-menu"></div>
+                            <div id="imc_combolist_wrapper" class="combolist-wrapper"></div>
                         </div>
                     </div>
                     
@@ -83,6 +83,7 @@
             'autocomplete': {
                 'minLength': 0
             },
+            'listWrapper': $('#inst_combolist_wrapper'),
             'valueContainer': $('#institutionId'),
             'onAutocompleteSelectCallback': function(){
                 $('#institution_medical_center_input_field').data('fancyAutocomplete')
@@ -95,6 +96,7 @@
         $('#institution_medical_center_input_field').fancyAutocomplete({
             'source': [],
             'valueContainer': $('#imcId'),
+            'listWrapper': $('#imc_combolist_wrapper'),
             'reloadSource': function(){
 
                 var data = [];

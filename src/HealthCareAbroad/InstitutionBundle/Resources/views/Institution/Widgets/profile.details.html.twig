@@ -1,0 +1,287 @@
+{% set editOnClick = 'InstitutionProfile.toggleForm($(this))'  %}
+{% set editFormTemplate = 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' %}
+
+<!-- Institution Description Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with {
+        title: 'Description', toggleBtnId: 'institution-edit-description-btn', viewElemId: 'show-about', editElemId: 'description',
+        formParams: {formId: 'descriptionModalForm', fields: ['description']} 
+    } %}
+
+    {% block viewContent %}
+        <p class="hca-helptext"><span id="institutionDescriptionText"> {{ institution.description != '' ? institution.description | raw : '' }} </span></p>
+        {% if institution.description is empty %}
+            <div class="alert alert-block">
+                <div class="hca-profile-sublevel">
+                    Here you can showcase description.
+                </div>
+                <p class="hca-helptext">
+                    You haven't yet added any description about your hospital yet.
+                </p>
+                <a type="button" class="btn btn-primary" onclick="$('#institution-edit-description-btn').click()"> <i class="icon-plus">  </i> Add Entry </a>
+            </div>
+        {% endif %}
+    {% endblock %}
+{% endembed %}
+
+<!--  Institution Address -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Address', toggleBtnId: 'institution-edit-address-btn', viewElemId: 'show-address', editElemId: 'address',
+        formParams: {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit"><i class="icon-info-sign"></i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-map-marker icon-2x pull-left"> </i>
+                Providing your complete address helps us push you to the right searches, and helps patients plan their travel better.
+            </span>
+        </span>
+    {% endblock %}
+
+    {% block viewContent %}
+        <i class="icon-map-marker pull-left icon-gray"></i>
+        {% set _address = institution_address_to_array(institution) %}
+        <p class="address_column">
+
+            <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
+        </p>
+    {% endblock %}
+{% endembed %}
+
+
+<!--  Institution Contact Details -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Contact Details', toggleBtnId: 'institution-edit-contacts-btn', viewElemId: 'show-contact', editElemId: 'number', 
+        formParams: {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'}
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-phone-sign icon-2x pull-left"> </i>
+                This is how we will contact you to let you know about potential leads. Please provide the correct phone numbers and email addresses to make sure
+                you don't miss any inquiries that may come through <b> HealthcareAbroad </b>. <br>
+            </span>
+        </span>
+    {% endblock %}
+
+    {% block viewContent %}
+     {% set _website = get_website_from_array(institution.websites)  %}
+        <div id="alertDiv" class="{{ _website != '' and institution.contactEmail != '' ? '' :'alert alert-block' }}">
+            <p>
+                <i class="icon-globe"> </i>
+                Website:<span id="profileWebsitesText"> 
+                   
+                    {% if _website %}
+                        http://www.<b >{{_website}} </b>
+                    {% else %}
+                        <b> no hospital website </b> added.
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
+                    {% endif %}
+                </span>
+            </p>
+            <p>
+                <i class="icon-envelope"></i>
+                Email: <strong><span id="profileEmailText"> 
+                {% if institution.contactEmail %}
+                   {{ institution.contactEmail }}
+                {% else %}
+                    <b> no contact email </b> added.
+                    <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
+                {% endif %}
+                
+                </span></strong>
+            </p>
+
+            {% for contactDetail in institution.contactDetails %}
+                <p>
+                    <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
+                    <strong><span id="PhoneNumberText"> {{ contactDetail}}</span></strong>
+                </p>
+            {% else %}    
+                <p><i class="icon-phone"></i>Phone<strong><span id="profileNumberText"></span></strong></p>
+            {% endfor %}  
+        </div>
+    {% endblock %}
+{% endembed %}
+
+
+<!-- Institution Social Media Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'institution-socialMediaSites', editElemId: 'socialMedia',
+        formParams: {formId: 'socialMediaForm', fields: ['socialMediaSites']}
+    } %}
+
+    {% block viewContent %}
+        <div id="institution-socialMediaSites">
+            {% for type, site in institution_websites_to_array(institution) %}
+                <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+                    <b>{{ site ? site : 'no account added'}}</b>
+                </p>
+            {% endfor %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% if isSingleCenter %}
+<!-- InstitutionMedicalCenter businessHours Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
+        formParams: {formId: 'businessHoursForm', fields: ['businessHours']},
+        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token) 
+    } %}
+
+    {% block viewContent %}
+        <!-- View Mode here -->
+        <ul class="single-listing" id="businessHoursView" ></ul>
+        
+    {% endblock %}
+{% endembed %}
+{% endif %}
+
+
+
+<!-- Institution Services Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with {
+        title: 'Services', toggleBtnId: 'institution-edit-services-btn', viewElemId: 'show-services', editElemId: 'servicesContainerDiv',
+        formParams: {formId: 'serviceForm', fields: ['services']}
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-ambulance icon-2x pull-left"> </i>
+                Patients, especially medical tourists, always want to know what facilities and services are offered by clinics. This gives them an idea about the
+                level of care and support that can be expected from an institution.<br> <br>
+                Please indicate only what you actually provide. Being honest helps patients plan their trip better, and lets them know what to prepare for.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <h4> List of Services offered. </h4>
+        <div id="serviesText">
+           {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% set awards = { list: currentGlobalAwards.award, editFormListWrapperId: 'listing-award' } %}
+<!-- Institution Awards Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Awards', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award', toggleBtnClass: 'edit-awards',
+        formParams: {formId: 'awardsForm', fields: ['awards'] }
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Awards </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <div id="awardsText">
+            {# include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: awards , label : 'awards' } #}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: awards , type : 'awards' } %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
+<!-- Institution Certifications Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
+        title: 'Certifications', 
+        toggleBtnId: 'institution-edit-certificates-btn', 
+        viewElemId: 'show-certificates', 
+        editElemId: 'certificatesDiv', 
+        awardsFilterList: '#listing-certificate', 
+        toggleBtnClass: 'edit-awards'
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Certifications </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <div id="certificatesText">
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: certificates, type : 'certificates' } %}
+        </div>
+    {% endblock %}
+{% endembed %}
+
+{% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
+<!-- Institution Affiliations Section -->
+    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
+            title: 'Affiliations', 
+            toggleBtnId: 'institution-edit-affiliations-btn', 
+            viewElemId: 'show-affiliations', 
+            editElemId: 'affiliationsDiv', 
+            awardsFilterList: '#listing-affiliation', 
+            toggleBtnClass: 'edit-awards'
+        } %}
+    
+        {% block headingHelptext %}
+            <span class="tooltip-wrap hca-edit">
+                <i class="icon-info-sign"> </i>
+                <span class="tooltip-content hca-edit pull-left">
+                
+                    <i class="icon-asterisk icon-2x pull-left"> </i> <b> Affiliations </b> are indicators that assure patients and their family that your facility
+                    is reliable, reputable and meets acceptable, if not superior, standards.
+                </span>
+            </span>
+        {% endblock %}
+        
+        {% block viewContent %}
+            <div id="affiliationsText">
+                {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: affiliations, type : 'affiliations' } %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+
+{% set accreditations = { list: currentGlobalAwards.accreditation, editFormListWrapperId: 'listing-accreditation' } %}
+<!-- Institution Accreditations Section -->
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+    with { 
+        title: 'Accreditations', 
+        toggleBtnId: 'institution-edit-accreditations-btn', 
+        viewElemId: 'show-accreditations', 
+        editElemId: 'accreditationsDiv', 
+        awardsFilterList: '#listing-accreditation',
+        toggleBtnClass: 'edit-awards'
+    } %}
+
+    {% block headingHelptext %}
+        <span class="tooltip-wrap hca-edit">
+            <i class="icon-info-sign"> </i>
+            <span class="tooltip-content hca-edit pull-left">
+                <i class="icon-asterisk icon-2x pull-left"> </i> <b> Accreditations </b> are indicators that assure patients and their family that your facility
+                is reliable, reputable and meets acceptable, if not superior, standards.
+            </span>
+        </span>
+    {% endblock %}
+    
+    {% block viewContent %}
+        <div id="accreditationsText">
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: accreditations, type : 'accreditations' } %}
+        </div>
+    {% endblock %}
+{% endembed %}

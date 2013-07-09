@@ -1,0 +1,56 @@
+{% if isSingleCenter or institutionMedicalCenter is not defined %}
+    {% set awardsEditUrl = path('institution_ajaxEditGlobalAward') %}
+{% else %}
+    {% set awardsEditUrl = path('institution_medicalCenter_ajaxEditGlobalAward', {imcId: institutionMedicalCenter.id} ) %}
+{% endif %}
+
+{% if eachAward.list is not empty %}
+    <div id="{{ type }}">
+        <h4>{{ type|title }}</h4>
+        <ul class="single-listing">
+            {% set existingAwards = [] %}
+            {% for property in eachAward.list %}
+                {% if property.value not in existingAwards %}
+                    {% set existingAwards = existingAwards|merge([property.value]) %}
+                    {% set award = property.valueObject %}
+                    {% set _extraValueArr = json_to_array(property.extraValue, true) %}
+                    {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
+                    <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" >
+                        <div class="pull-right" >
+                           <span id="containerRow">
+                                <span class="yearAcquired" > {{ _yearAcquired }}</span> 
+                                <a class="edit_global_award" href="{{ awardsEditUrl }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
+                           </span>
+                           <div class="edit_award_form_container" >
+                                <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
+    
+                                <form class="edit_award_form" action="" style="display:none;">
+                                    <a href="#" id="year_submit" onclick="$.globalAward._submitEditForm($(this)); return false;"><i class="icon-ok"></i></a>
+                                    <input type="hidden" name="globalAwardId" value="{{ award.id }}"/>
+                                    <input type="hidden" name="propertyId" value="{{ property.id }}" />
+                                    {{ form_widget(editGlobalAwardForm.extraValue) }}
+                                    {{ form_widget(editGlobalAwardForm.value) }}
+                                    {{ form_widget(editGlobalAwardForm._token) }}
+                                </form>
+                               
+                           </div>
+                        </div>
+                        {{ award.name }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="alert alert-block">
+        <div class="hca-profile-sublevel">
+            Here you can showcase {{ type | lower }} given to your {{ institutionLabel }}.
+        </div>
+        <p class="hca-helptext">
+            You haven't yet added any {{ type | lower }} for your {{ institutionLabel }}. 
+        </p>
+         <button type="button" class="btn btn-primary edit-awards"  onclick="$('#show-{{ type }}').parent().find('#institution-edit-{{ type }}-btn').click()">
+            <i class="icon-plus"></i>Add Entry
+        </button>
+    </div>   
+{% endif %}

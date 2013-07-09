@@ -203,16 +203,13 @@ var FancyAutocompleteWidget = function(widget, options){
         
         _initializeOptions: function(_options) {
 
-        	var listWrapper = _options.valueContainer.siblings('.combolist-wrapper:first');
+        	var listWrapper = _options.listWrapper || _options.valueContainer.siblings('.combolist-wrapper:first');
         	
             var _defaults = {
                 autocomplete: {
                     minLength: 0,
                     delay: 0,
-                    appendTo: listWrapper,
-                    open: function(){
-                    	$('.ui-autocomplete').css('width', $(this).outerWidth() - 2); // minus 2 for input border
-                    }
+                    appendTo: listWrapper
                 },
                 maxItems: 50,
                 valueContainer: null,

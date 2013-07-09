@@ -16,27 +16,26 @@
                     </div>
                 {% endif %}
 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.basicInfo.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.basicInfo.html.twig' %}
 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.address.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.address.html.twig' %}
 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.contactDetails.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.contactDetails.html.twig' %}
 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.socialMedia.html.twig' %}
-                
-                
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.services.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.socialMedia.html.twig' %}
 
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.awards.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.services.html.twig' %}
+
+                {% include 'InstitutionBundle:SignUp/Widgets:section.awards.html.twig' %}
 
                 {{ form_widget(form.coordinates) }}
                 {{ form_widget(form._token) }}
 
-                {% include 'InstitutionBundle:Institution/Partials:map.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.addressMap.html.twig' %}
 
             </form>
             
-                {% include 'InstitutionBundle:Institution/Partials:signup.section.mediaUpload.html.twig' %}
+                {% include 'InstitutionBundle:SignUp/Widgets:section.mediaUpload.html.twig' %}
             
                 <section class="section footer">
                     <div class="row-fluid terms">

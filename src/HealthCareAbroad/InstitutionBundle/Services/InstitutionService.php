@@ -444,6 +444,21 @@ class InstitutionService
 //            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
 //     }
 
+    public function getAllInstitutionBySearhTerm($searchTerm)
+    {
+        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
+        ->select('a')
+        ->from('InstitutionBundle:Institution', 'a')
+        ->where('a.status = :active')
+        ->andWhere('a.name LIKE :searchTerm')
+        ->setParameter('searchTerm', '%'.$searchTerm.'%')
+        ->setParameter('active', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+        ->getQuery();
+        
+        return $query->getResult();
+    }
+    
+    
     /**
      * @deprecated
      * @param Institution $institution
@@ -462,6 +477,7 @@ class InstitutionService
     
     public function getInstitutionInquiries(Institution $institution)
     {
+        
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
         $qb->select('a')
         ->from('InstitutionBundle:InstitutionInquiry', 'a')

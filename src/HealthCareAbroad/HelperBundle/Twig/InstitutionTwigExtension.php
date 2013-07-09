@@ -101,9 +101,12 @@ class InstitutionTwigExtension extends \Twig_Extension
         if(!$isSingleCenter && !$institution->getInstitutionMedicalCenters()) {
             $suggestions[] = array('description' => '<span class="span1"><i class="icon-medkit icon-2x hca-red pull-left"></i></span>You currently have no centers for your '.$label.' yet.');
         }
-
-        if($isSingleCenter && !$this->institutionService->getAllDoctors($institution)) {
-            $suggestions[] = array('description' => '<span class="span1"><i class="icon-user-md icon-2x hca-red pull-left"></i></span>You currently dont have doctors for your '.$label.' yet.');
+        
+        if($isSingleCenter) {
+            $medicalCenter = $this->institutionService->getFirstMedicalCenter($institution);;
+            if(!$medicalCenter->getDoctors()->count()) {
+                $suggestions[] = array('description' => '<span class="span1"><i class="icon-user-md icon-2x hca-red pull-left"></i></span>You currently dont have doctors for your '.$label.' yet.');
+            }
         }
         
         if(!$institution->getDescription()) {
@@ -224,7 +227,7 @@ class InstitutionTwigExtension extends \Twig_Extension
         $contactDetailsArray = array();
 
         foreach($contactDetails as $each) {
-            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->getNumber());
+            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->__toString());
         }
 
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray ;

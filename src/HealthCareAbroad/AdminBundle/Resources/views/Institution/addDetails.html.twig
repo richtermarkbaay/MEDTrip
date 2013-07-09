@@ -47,6 +47,8 @@
                                                 <div class="control-group">
                                                     <label for="network-group">  Medical Provider Group/Network  </label>
                                                         {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
+                                                     <div id="autoDiv">
+                                                     </div>
                                                 </div>
                                                 {{ form_row( form.websites) }}
                                                  <hr />
@@ -114,7 +116,7 @@
     $(function(){
         $('#institution_profile_form_country').change();
 
-        $("#{{ form.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
+        $("#institution_profile_form_medicalProviderGroups_0").autocomplete({
             appendTo: "#autoDiv",
             source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
         });

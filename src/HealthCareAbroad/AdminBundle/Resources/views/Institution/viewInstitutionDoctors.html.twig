@@ -25,7 +25,7 @@
                         		<td>{{ doctor.lastName |title }}, {{ doctor.firstName |title }}</td>
                         		<td>
                             		{% for specialization in doctor.specializations %}
-                            		    {{ specialization.name |title }} 
+                            		    {{ specialization.name |title }}
                             		    {% if loop.last == false %},{% endif %} 
                             	    {% else %}
                             		    No Specializations yet

@@ -1,0 +1,83 @@
+{% set doctorLogoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::DOCTOR_LOGO') %}
+<section id="doctorsList" class="doctors-new-listing">
+    {% for doctor in institutionMedicalCenter.doctors %}
+        <div id="doctor-item-{{ doctor.id }}">
+            <div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px; min-height: 60px;padding: 10px;position:relative;">
+    
+                <!--div class="updating" style="width: 100%; height: 100%; display: block; position: absolute; top: 0px; left: 0px; background-color: rgb(0, 0, 0); opacity: 0.3; z-index: 8;">
+                </div> -->
+
+                <a class="remove-doctor-btn" href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" data-doctor-id="{{ doctor.id }}"><i class="icon-remove-sign pull-right"></i></a>
+                <a class="edit-doctor-btn" data-doctor="{{ json_encode(doctors[doctor.id]) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}"><i class="icon-edit pull-right"></i></a>
+    
+                <form action="{{ path('institution_doctor_logo_upload', {doctorId: doctor.id, imcId: institutionMedicalCenter.id}) }}" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">
+                    <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media ? doctor_media_src(doctor.media, doctorLogoSize) : imageplaceholder.doctorDefaultImage }}" class="pull-left img-polaroid">
+                    <span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>
+                    <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
+                </form>
+    
+                <h4 class="full-name">Dr. {{ doctor.firstName|title }} {{ doctor.middleName ? doctor.middleName|slice(0,1)|title ~ '. ' : '' }}{{ doctor.lastName|title }} {{ doctor.suffix ? doctor.suffix : '' }}</h4>
+
+                <p>
+                    <i class="icon-stethoscope"></i>Specializations: 
+                    <span class="doctor-specializations">
+                        {% if doctor.specializations|length %}
+                            {{ doctor.specializations|join(', ') }}
+                        {% else %}
+                            <em style="font-weight:normal">Click edit to add specializations.</em>
+                        {% endif %}
+                    </span>
+                </p>
+            </div>
+            <div class="hca-hidden-content doctors-listing edit-doctor-wrapper" data-doctor-id="{{ doctor.id }}" style="display:none"></div>
+        </div>
+    {% endfor %}
+
+
+    <!-- DOCTOR ITEM TEMPLATE -->
+    <div id="doctor-item-template" style="display: none">
+        <div class="doctor-heading" style="margin-bottom: 1px; min-height: 60px;padding: 10px;position:relative;">
+
+            <a class="remove-doctor-btn" href="#"><i class="icon-remove-sign pull-right"></i></a>
+            <a class="edit-doctor-btn" href="#" data-doctor=""><i class="icon-edit pull-right"></i></a>
+
+            <form action="#" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">
+                <img id="doctor-thumbnail" class="pull-left img-polaroid doctor-thumbnail" alt="" src="">
+                <span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>
+                <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
+            </form>
+            
+            <h4 class="full-name"></h4>
+            <p><i class="icon-stethoscope"></i>Specializations: <span class="doctor-specializations"><em style="font-weight:normal">Click edit to add specializations.</em></span></p>
+        </div>
+        <div class="hca-hidden-content doctors-listing edit-doctor-wrapper" data-doctor-id="" style="display:none"></div>
+    </div>
+    <!-- END OF DOCTOR ITEM TEMPLATE -->
+
+    <p id="empty-doctors-msg" style="display: {{ institutionMedicalCenter.doctors|length ? 'none' : 'block' }}">
+       You have not yet added any doctors.Patients want to know about who will be performing their treatment. Providing detailed information about the practitioners at your facility will build trust with patients and make them more likely to submit an inquiry.
+    </p>
+        
+    <!-- Modal Confirm Delete Doctor -->
+    {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'remove-doctor-modal', 'title': 'Delete Doctor' }} %}
+        {% block modalBody %}            
+            <p>This Doctor will be deleted from your clinic. Click delete button to confirm.</p>
+        {% endblock %}
+        {% block footerBody %}            
+        <div class="right-align">
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+            <button id="confirm-remove-doctor-btn" type="button" class="btn btn-danger" data-remove-doctor-btn="">Delete</button>
+        </div>
+        {% endblock %}
+    {% endembed %}
+    <!-- End of Modal Confirm Delete -->
+
+</section>
+
+{% include 'InstitutionBundle:Doctor/Widgets:form.edit.html.twig' %}
+
+{% include 'InstitutionBundle:Doctor/Widgets:form.add.html.twig'  
+    with { path : path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id })  } 
+%}
+
+{% include 'InstitutionBundle:Doctor:Widgets/inlineJs.html.twig' %}

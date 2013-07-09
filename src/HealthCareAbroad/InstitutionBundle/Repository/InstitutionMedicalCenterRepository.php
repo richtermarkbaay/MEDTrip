@@ -89,7 +89,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
 
 //         $ids = array();
 //         foreach ($center->getDoctors() as $each) {
-//             var_dump($each);exit;
 //             $ids[] = $each->getSpecialization()->getId();
 //         }
 

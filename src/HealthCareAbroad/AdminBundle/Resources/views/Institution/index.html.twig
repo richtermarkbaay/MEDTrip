@@ -4,20 +4,18 @@
 
 {% block content %}
     <div id="content">
-
         <div id="page-heading"><h3>List of Institutions</h3></div>
         {% embed '::contentWrapper.admin.html.twig' %}
             {% block wrappedContent %}
-            
+             <div class="alert alert-success span9" style="display:none;">
+            </div>
             {% include '::notice.admin.html.twig' %}
-
             <!-- Render Filter Box -->
             {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
 
             {% set sortBy = app.request.get('sortBy') %}
             {% set sortOrder = app.request.get('sortOrder') %}
             {% set default = sortBy | length ? '' : 'sort-asc' %}
-            
             <div>
                 <table class="table table-bordered sortable-list">
                 <tr>
@@ -49,7 +47,7 @@
                         <td>
                             <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 
                             <br/>
-                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_editStatus', {institutionId: institution.id}) }}" class="show-update-status">
+                            <a id="status-{{institution.id}}" href="{{ path('admin_institution_editStatus', {institutionId: institution.id}) }}" data-status="{{ institution.status }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status
                             </a>
                             <br/>
@@ -72,19 +70,6 @@
         {% endif %}
     </div>
 
-    <div id="update-status-container" title="Edit Institution Status" style="display:none">
-        <p>
-            <strong id="current-institution"></strong> is currently <strong id="current-status"></strong>. 
-            Select an option below to update its status.
-        </p>
-        <form id="update-status-form" method="POST">
-        <select name="status" id="selected-status">
-        </select>
-        <input type="submit" class="green-button" value="Confirm"/>
-        </form>
-
-    </div>
-    
     <!-- Modal Institution Status -->
     	{% include 'AdminBundle:Institution/Modals:edit.institutionStatus.html.twig' 
     	     with {modalId: 'status_institution_modal_form', modalTitle: 'Edit Status'}
@@ -98,10 +83,11 @@
 <script type="text/javascript">
     $(function(){
 
-        $("#update-status-container").dialog({autoOpen:false, height:250, width:400, modal:true, resizable:false, close:function(){}});
-
         $("a.show-update-status").click(function() {
+            $('#status_institution_form').attr('action', $(this).attr('href'));
+            $('#status_institution_form').attr('data-element', $(this).attr('id'));
         	$('div#status_institution_modal_form').modal('show');
+            $('#status_institution_form').find('#institution_profile_form_status').val($(this).attr('data-status'));
 
             return false;
         });

@@ -5,9 +5,15 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
@@ -164,13 +170,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $factory = $this->get('services.institution.factory');
         $institution = $factory->createInstance();
         $institutionUser = new InstitutionUser();
-        $phoneNumber = new ContactDetail();
-        $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $institutionUser->addContactDetail($phoneNumber);
 
-        $mobileNumber = new ContactDetail();
-        $mobileNumber->setType(ContactDetailTypes::MOBILE);
-        $institutionUser->addContactDetail($mobileNumber);
+        $this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE, ContactDetailTypes::MOBILE));
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser);
 
         if ($request->isMethod('POST')) {
@@ -301,12 +302,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
-        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($phoneNumber);
-        }
+
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
@@ -377,13 +374,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $error_message = '';
         $success = false;
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-        $contactDetails = $this->institutionService->getContactDetailsByInstitution($this->institution);
 
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institution->addContactDetail($phoneNumber);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
@@ -400,7 +392,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
             $form->bind($formRequestData);
             if ($form->isValid()) {
-                $this->get('services.contact_detail')->removeInvalidInstitutionContactDetails($this->institution);
+                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
 
@@ -422,8 +415,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
-                $calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
-                $this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
+                //$calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
+                //$this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
                 //$request->getSession()->setFlash('callout', "");
                 //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
@@ -471,13 +464,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
 
-        $contactDetails = $this->get('services.institution_medical_center')->getContactDetailsByInstitutionMedicalCenter($this->institutionMedicalCenter);
-
-        if(!$contactDetails) {
-            $phoneNumber = new ContactDetail();
-            $phoneNumber->setType(ContactDetailTypes::PHONE);
-            $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
@@ -535,15 +522,13 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupSpecializationsAction(Request $request)
     {
-        $isSingleCenter = $this->institutionService->isSingleCenter($this->institution);
-        $this->currentSignUpStep = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpStepByRoute':'getMultipleCenterSignUpStepByRoute')}($request->attributes->get('_route'));
         $error = '';
-        //TODO: check institution signupStepStatus
+        $functionName = $this->isSingleCenter ? 'getSingleCenterSignUpStepByRoute' : 'getMultipleCenterSignUpStepByRoute';
+        $this->currentSignUpStep = $this->signUpService->{$functionName}($request->attributes->get('_route'));
 
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
-
             //array of specialization ids each containing an array of treatment ids
             if ($treatments = $request->get('treatments')) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
@@ -614,11 +599,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
         }
 
-        if(!$editDoctor->getContactDetails()->count()) {
-            $contactDetail = new ContactDetail();
-            //$contactDetail->setType(ContactDetailTypes::MOBILE);
-            $editDoctor->addContactDetail($contactDetail);
-        }
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
 
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         $params['editForm'] = $editForm->createView();
@@ -669,11 +650,14 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
 
-        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
-                        'specializationComponents' => $specializationComponents,
-                        'specializationId' => $request->get('specializationId'),
-                        'selectedTreatments' => ''
+        $html = $this->renderView('InstitutionBundle:Widgets/Profile:specializations.listForm.html.twig', array(
+            'form' => $form->createView(),
+            'formName' => InstitutionSpecializationFormType::NAME,
+            'specializationComponents' => $specializationComponents,
+            'specializationId' => $request->get('specializationId'),
+            'selectedTreatments' => ''
         ));
 
         return new Response($html, 200);

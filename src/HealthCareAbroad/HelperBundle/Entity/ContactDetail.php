@@ -27,7 +27,7 @@ class ContactDetail
     private $number;
 
     /**
-     * @var string
+     * @var integer
      */
     private $countryCode;
 
@@ -35,11 +35,21 @@ class ContactDetail
      * @var string
      */
     private $areaCode;
-
+    
     /**
      * @var string
      */
     private $abbr;
+    
+    /**
+     * @var string
+     */
+    private $ext;
+    
+    public function __toString()
+    {
+        return ($this->countryCode ? '+'.$this->countryCode:'').$this->areaCode.$this->number.($this->ext ? ' ('.$this->ext.')':'' );
+    }
 
 
     /**
@@ -165,5 +175,85 @@ class ContactDetail
     public function getAbbr()
     {
         return $this->abbr;
+    }
+    
+    /**
+     * Set ext
+     *
+     * @param string $ext
+     * @return ContactDetail
+     */
+    public function setExt($ext)
+    {
+        $this->ext = $ext;
+    
+        return $this;
+    }
+    
+    /**
+     * Get ext
+     *
+     * @return string
+     */
+    public function getExt()
+    {
+        return $this->ext;
+    }
+    
+    /**
+     * @var boolean
+     */
+    private $fromNewWidget;
+
+
+    /**
+     * Set fromNewWidget
+     *
+     * @param boolean $fromNewWidget
+     * @return ContactDetail
+     */
+    public function setFromNewWidget($fromNewWidget)
+    {
+        $this->fromNewWidget = $fromNewWidget;
+    
+        return $this;
+    }
+
+    /**
+     * Get fromNewWidget
+     *
+     * @return boolean 
+     */
+    public function getFromNewWidget()
+    {
+        return $this->fromNewWidget;
+    }
+    /**
+     * @var boolean
+     */
+    private $isInvalid;
+
+
+    /**
+     * Set isInvalid
+     *
+     * @param boolean $isInvalid
+     * @return ContactDetail
+     */
+    public function setIsInvalid($isInvalid)
+    {
+        $this->isInvalid = $isInvalid;
+    
+        return $this;
+    }
+
+    /**
+     * Get isInvalid
+     *
+     * @return boolean 
+     */
+    public function getIsInvalid()
+    {
+        return $this->isInvalid;
     }
 }
