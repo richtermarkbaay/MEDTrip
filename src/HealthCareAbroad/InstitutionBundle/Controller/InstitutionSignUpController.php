@@ -269,10 +269,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 break;
         }
 
-        // TODO: Update this when we have formulated a strategy for our event system
-        // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-        $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
-
         return $response;
     }
 
@@ -340,6 +336,11 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionService->getFirstMedicalCenter($this->institution)->getId()));
                 //$request->getSession()->setFlash('callout', "");
                 //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Clinic profile."); //set flash message
+
+                // TODO: Update this when we have formulated a strategy for our event system
+                // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
+
                 return $this->redirect($redirectUrl);
             }
             $error = true;
@@ -420,6 +421,10 @@ class InstitutionSignUpController extends InstitutionAwareController
                 //$request->getSession()->setFlash('callout', "");
                 //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
+
+                // TODO: Update this when we have formulated a strategy for our event system
+                // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
 
                 return $this->redirect($redirectUrl);
             }
