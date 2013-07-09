@@ -523,9 +523,6 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * @DEPRECATED ??
-     * NOTE Added By: Adelbert D. Silla
-     * 
      * Ajax handler for loading data 
      * Expected GET parameters
      *     - imcId instituitonMedicalCenterid
