@@ -20,10 +20,20 @@
        <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post"></form>
     </div>
 
-</div>   
-<div id="deleteSpecialization{{ each.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-{% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
-    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
-    'institutionSpecialization' : each }
-%}
 </div>
+
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {modal: {id: 'deleteSpecialization' ~ each.id, title: 'Delete Specialization' }} %}
+    {% block modalBody %}
+        {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
+
+        <p>Are you sure you want to delete <strong>{{ each.specialization.name }}?</strong></p>
+
+        <form action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': each.id } ) }}" style="margin: 0">
+            {{ _commonDeleteCsrfTokenWidget | raw }}
+            <div class="align-right">
+                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button> &nbsp;
+        	    <button data-loading-text="Processing..." class="btn btn-danger delete-button pull-right" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this).parents('form')); return true;">Delete</button>
+    	    </div>
+        </form>
+    {% endblock %}
+{% endembed %}

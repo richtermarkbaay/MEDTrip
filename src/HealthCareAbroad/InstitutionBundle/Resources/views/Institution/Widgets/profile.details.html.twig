@@ -1,3 +1,6 @@
+{% set editOnClick = 'InstitutionProfile.toggleForm($(this))'  %}
+{% set editFormTemplate = 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' %}
+
 <!-- Institution Description Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with {
@@ -124,9 +127,9 @@
     {% endblock %}
 {% endembed %}
 
-{% if isSingleCenter is defined and isSingleCenter %}
+{% if isSingleCenter %}
 <!-- InstitutionMedicalCenter businessHours Section -->
-{% embed 'InstitutionBundle:Embed:clinicProfileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
     with { 
         title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
         formParams: {formId: 'businessHoursForm', fields: ['businessHours']},
@@ -165,7 +168,7 @@
     {% block viewContent %}
         <h4> List of Services offered. </h4>
         <div id="serviesText">
-           {% include 'InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig' %}
+           {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' %}
         </div>
     {% endblock %}
 {% endembed %}
@@ -190,7 +193,8 @@
     
     {% block viewContent %}
         <div id="awardsText">
-            {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: awards , label : 'awards' } %}
+            {# include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: awards , label : 'awards' } #}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: awards , type : 'awards' } %}
         </div>
     {% endblock %}
 {% endembed %}
@@ -218,7 +222,7 @@
     
     {% block viewContent %}
         <div id="certificatesText">
-            {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: certificates, label : 'certificates' } %}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: certificates, type : 'certificates' } %}
         </div>
     {% endblock %}
 {% endembed %}
@@ -247,7 +251,7 @@
         
         {% block viewContent %}
             <div id="affiliationsText">
-                {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: affiliations, label : 'affiliations' } %}
+                {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: affiliations, type : 'affiliations' } %}
             </div>
         {% endblock %}
     {% endembed %}
@@ -276,7 +280,7 @@
     
     {% block viewContent %}
         <div id="accreditationsText">
-            {% include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: accreditations, label : 'accreditations' } %}
+            {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: accreditations, type : 'accreditations' } %}
         </div>
     {% endblock %}
 {% endembed %}

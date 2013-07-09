@@ -57,7 +57,8 @@
     <p id="empty-doctors-msg" style="display: {{ institutionMedicalCenter.doctors|length ? 'none' : 'block' }}">
        You have not yet added any doctors.Patients want to know about who will be performing their treatment. Providing detailed information about the practitioners at your facility will build trust with patients and make them more likely to submit an inquiry.
     </p>
-    
+        
+    <!-- Modal Confirm Delete Doctor -->
     {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'remove-doctor-modal', 'title': 'Delete Doctor' }} %}
         {% block modalBody %}            
             <p>This Doctor will be deleted from your clinic. Click delete button to confirm.</p>
@@ -69,11 +70,14 @@
         </div>
         {% endblock %}
     {% endembed %}
+    <!-- End of Modal Confirm Delete -->
+
 </section>
 
-{% include 'InstitutionBundle:MedicalCenter/Widgets:form.editDoctors.html.twig' %}
-{% include 'InstitutionBundle:MedicalCenter/Widgets:modalForm.doctors.html.twig'  with { path : path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id })  } %}
+{% include 'InstitutionBundle:Widgets/Profile:doctor.editForm.html.twig' %}
 
-{% block inlineJavascriptCode %}
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:inlineJs_doctors.html.twig' %}
-{% endblock %}
+{% include 'InstitutionBundle:Widgets/Profile:doctor.addForm.html.twig'  
+    with { path : path('institution_signup_setup_doctors', { imcId: institutionMedicalCenter.id })  } 
+%}
+
+{% include 'InstitutionBundle:Widgets/Profile:doctors.inlineJs.html.twig' %}

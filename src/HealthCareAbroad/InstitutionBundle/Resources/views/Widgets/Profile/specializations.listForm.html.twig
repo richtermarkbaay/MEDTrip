@@ -12,7 +12,10 @@
             </li>
             {% endfor %}
         </ul>
-        <input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+
+        {% if specializationId is defined and specializationId %}
+            <input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+        {% endif %}
     </li>
     {% endfor %}
 </ul>

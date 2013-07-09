@@ -5,6 +5,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
+
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionSpecializationFormType;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
@@ -518,15 +522,16 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupSpecializationsAction(Request $request)
     {
-        $isSingleCenter = $this->institutionService->isSingleCenter($this->institution);
-        $this->currentSignUpStep = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpStepByRoute':'getMultipleCenterSignUpStepByRoute')}($request->attributes->get('_route'));
         $error = '';
-        //TODO: check institution signupStepStatus
+        $functionName = $this->isSingleCenter ? 'getSingleCenterSignUpStepByRoute' : 'getMultipleCenterSignUpStepByRoute';
+        $this->currentSignUpStep = $this->signUpService->{$functionName}($request->attributes->get('_route'));
 
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
-            
+            var_dump($request);
+            var_dump($request->get('specializationsForm'));
+            exit;
             //array of specialization ids each containing an array of treatment ids
             if ($treatments = $request->get('treatments')) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
@@ -652,11 +657,14 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
-        
-        $html = $this->renderView('InstitutionBundle:Institution/Partials:specializationComponents.html.twig', array(
-                        'specializationComponents' => $specializationComponents,
-                        'specializationId' => $request->get('specializationId'),
-                        'selectedTreatments' => ''
+        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
+
+        $html = $this->renderView('InstitutionBundle:Widgets/Profile:specializations.listForm.html.twig', array(
+            'form' => $form->createView(),
+            'formName' => InstitutionSpecializationFormType::NAME,
+            'specializationComponents' => $specializationComponents,
+            'specializationId' => $request->get('specializationId'),
+            'selectedTreatments' => ''
         ));
 
         return new Response($html, 200);

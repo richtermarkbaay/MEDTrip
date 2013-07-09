@@ -111,7 +111,7 @@ class InstitutionAccountController extends InstitutionAwareController
         
         $contactDetails = $this->get('services.institution')->getContactDetailsByInstitution($this->institution);
         if(!$contactDetails) {
-            $phoneNumber =new ContactDetail();
+            $phoneNumber = new ContactDetail();
             $phoneNumber->setType(ContactDetailTypes::PHONE);
             $this->institution->addContactDetail($phoneNumber);
         }
@@ -160,13 +160,12 @@ class InstitutionAccountController extends InstitutionAwareController
         } else {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $params =  array(
-                'institution' => $this->institution,
                 'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                 'institutionForm' => $form->createView(),
-                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'currentGlobalAwards' => $currentGlobalAwards,
                 'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
             );
         }
 

@@ -1,15 +1,21 @@
+# DEPRECRATED?? - Currently not being used.
+# NOTE Added by: Adelbert D. Silla
 institution_load_tabbed_contents_profile:
     pattern: /ns-institution/{institutionId}/load-tabbed-contents-institution
     defaults: { _controller: InstitutionBundle:Unsecured:loadMultipleCenterInstitutionTabbedContents }
     requirements:
         _method: GET
-        
+
+
+# DEPRECRATED?? - Currently not being used.
+# NOTE Added by: Adelbert D. Silla        
 institution_medicalCenter_loadMedicalSpecialist:
     pattern: /ns-institution/medical-center/{imcId}/medical-specialists/load
     defaults: { _controller: InstitutionBundle:MedicalCenter:loadMedicalSpecialist }
     requirements:
         _method: GET
         imcId: \d+
+
 
 # institutionId is included in request parameters since this is an unsecured request
 institution_medicalCenter_ajaxGlobalAwardSource:

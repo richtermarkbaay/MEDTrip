@@ -4,14 +4,9 @@
 {% set _csrf_token_widget = form_widget(institutionMedicalCenterForm._token) %}
 {% set clinicClassLabel = getClassLabel('clinic') %}
 {% block content %}
-    {% include 'InstitutionBundle:MedicalCenter/Widgets:modal.institutionMedicalCenterName.html.twig' %}
+
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
-            <div id="back-top">
-                <div class="backtotop img-rounded">
-                    <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
-                </div>
-            </div>
             <div class="tab-content span8">
                 {% include 'InstitutionBundle:MedicalCenter/Widgets:profileHeader.html.twig' %}
                 <div class="tabbable">
@@ -22,13 +17,13 @@
                             { label: 'Doctors', 'href' : '#doctors_tab_content', 'icon' : 'user-md' },
                         ]}
                     } %}
-                    
+
                     <div class="tab-content" id="tabbed_content">
                         <div id="profile_tab" class="tab-pane active">
-                            {% include 'InstitutionBundle:MedicalCenter/Widgets:medicalCenterProfileTabForm.html.twig' %}
+                            {% include 'InstitutionBundle:MedicalCenter/Widgets:profile.details.html.twig' %}
                         </div>
                         <div id="specializations_tab_content" class="tab-pane">
-                           {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
+                           {% include 'InstitutionBundle:Widgets/Profile:specializations.html.twig' %}
                         </div>
                         <div id="doctors_tab_content" class="tab-pane">                       
                             {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
@@ -37,7 +32,7 @@
                                         <h3> Your Doctors
                                             <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary pull-right" data-toggle="modal">Add New Doctor</a>
                                         </h3>
-                                        {% include 'InstitutionBundle:MedicalCenter/Widgets:doctorsList.html.twig' %}
+                                        {% include 'InstitutionBundle:Widgets/Profile:doctors.html.twig' %}
                                     </section>
                                 {% endblock %}
                             {% endembed %}                                    
@@ -45,37 +40,31 @@
                    </div><!-- /.tab-content -->
                 </div>
             </div><!-- end .span9 -->
-                        
+
             {% embed 'InstitutionBundle:Embed:wrapper.sidebar.html.twig' %}
                 {% block sidebarWrappedContent %}
-                 {% include 'InstitutionBundle:MedicalCenter/Widgets:sidebar.institutionMedicalCenter.html.twig' %}
+                     {% include 'InstitutionBundle:MedicalCenter/Widgets:sidebar.html.twig' %}
                 {% endblock %}
             {% endembed %}
-                                                
+
         {% endblock %}
     {% endembed %}
-    
+
 {% endblock %}
 
 
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
+
 <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
-<script src="{{ asset('bundles/institution/js/institutionTreatments.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionTreatments.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
-<script type="text/javascript">
-    function toggle(button) {
-        // Change the button caption
-        button.innerHTML = button.innerHTML == 'Edit' ? 'x' : 'Edit';
-        // Change the parent div's CSS class
-        var div = button.parentNode;
-        div.className = div.className == 'hca-display' ? 'hca-edit' : 'hca-display';
-    }
 
+<script type="text/javascript">
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     
     var countryElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
@@ -84,12 +73,12 @@
     var buildingAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_building");
     var cityElem = $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}");
     var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
+
     (function($){
         $(function(){
-
             // display businesshours
             InstitutionMedicalCenter.displayBusinessHoursView();
-            
+
             HCAGoogleMap.initialize({
                 latLngString: '{{ institutionMedicalCenter.coordinates }}',
                 address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
@@ -98,7 +87,7 @@
                     coordinatesElem.val(HCAGoogleMap.latLngString);
                 }
             });
-            
+
             var ajaxFormUploadElem;
             $('form.ajaxUploadLogoForm').ajaxForm({
                success: function(response) {
@@ -106,22 +95,16 @@
                        ajaxFormUploadElem.find('img').attr('src',response.mediaSrc).css('opacity', 1).prev().show();
                    } else {
                        alert('ERROR: Unable to upload Logo!');
+                       HCA.alertMessage('error', 'ERRR: Unable to upload Logo!');
                    }
                },
-               complete: function(xhr) {
-
-               }
-           }).submit(function(){
+               complete: function(xhr) {}
+            }).submit(function(){
                ajaxFormUploadElem = $(this);
                $(this).find('img').css('opacity', 0.5).prev().hide();
-           });
-
+            });
 
             InstitutionMedicalCenter.isEditView = true;
-
-            $('#clinicDescriptionText').truncateByHeight({
-                'visibleRows': 5
-            });
         });
 
     })(jQuery);

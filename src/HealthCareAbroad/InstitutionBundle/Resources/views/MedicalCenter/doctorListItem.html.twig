@@ -1,8 +1,0 @@
-{% set docArr = doctorToArray(doctor) %}
-<div class="doctor_list_item">
-    <p>{{ docArr.name }}</p>
-    <span>Specializations:</span>
-    {{ docArr.medicalCenters | join(', ') }}
-    <br />
-    <a href="{{ path('institution_medicalCenterGroup_removeDoctor', { 'imcgId': imcgId, 'doctorId': docArr.id } ) }}" class="remove_doctor_link">Remove</a>
-</div>

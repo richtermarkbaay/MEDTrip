@@ -2,7 +2,7 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
     <h3> Specializations
-    <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specialization</button>
+        <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right">Add New Specialization</button>
     </h3>
     <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
@@ -18,6 +18,8 @@
             </div>
         {% endfor %}
     </section>
+
+    
     <section id="add-specialization-wrapper" class="section hca-display-specializations">
 
         <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">

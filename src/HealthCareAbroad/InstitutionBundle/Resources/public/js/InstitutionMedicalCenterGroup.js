@@ -45,6 +45,10 @@ var InstitutionMedicalCenterGroup = {
         return false;
     },
     
+    /**
+     * DEPRECATED?? - Currently not being used.
+     * NOTE Added by: Adelbert D. Silla
+     */
     loadAvailableTreatmentsForInstitutionMedicalCenter: function(el) {
         InstitutionMedicalCenterGroup.specializationsForm.institutionTreatmentProcedureField.html("");
         _mcId = $(el).val();
