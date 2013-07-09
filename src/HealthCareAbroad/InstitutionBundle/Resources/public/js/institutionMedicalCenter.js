@@ -382,7 +382,7 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null){
+                		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}else{
                     		$("#alertDiv").attr('class', '');
@@ -399,9 +399,13 @@ var InstitutionMedicalCenter = {
                     	}else{
                     		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
                     	}
+                     	
+                    	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
+                     		$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
+                    	}else{
+                    		$('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
+                    	}
                     	
-						$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
-						
                         break;
                     case 'socicalMediaSitesForm':
                     	var websites = response.institutionMedicalCenter.socialMediaSites;

@@ -383,7 +383,7 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                    	if(response.institution.websites == null || response.institution.contactEmail == null){
+                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){
                     		
                     		$("#alertDiv").attr('class', 'alert alert-block');
                     	}else{
@@ -402,8 +402,13 @@ var InstitutionProfile = {
                     	}else{
                     		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
                     	}
+                     	if(response.institution.contactDetails.phoneNumber){
+                     		$('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
+                    	}else{
+                    		$('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
+                    	}
                        	
-                        $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
+                        
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;

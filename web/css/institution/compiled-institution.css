@@ -902,6 +902,8 @@ hr {
       margin: 0; }
     #content section.section {
       margin-bottom: 2em; }
+      #content section.section.institution-contact .row-fluid {
+        padding-bottom: 20px; }
       #content section.section.media-upload h4 {
         color: #a2a2a2;
         font-weight: normal;
@@ -999,6 +1001,20 @@ hr {
           #content section.section .row-fluid .website span {
             margin-top: 10px;
             color: #a2a2a2; }
+        #content section.section .row-fluid .hca-contact-number {
+          margin-left: 0px;
+          margin-bottom: 0px;
+          clear: both; }
+          #content section.section .row-fluid .hca-contact-number .span3 {
+            margin-left: 0; }
+          #content section.section .row-fluid .hca-contact-number label {
+            display: block;
+            margin-bottom: 0; }
+          #content section.section .row-fluid .hca-contact-number span {
+            margin-top: 10px;
+            color: #a2a2a2; }
+          #content section.section .row-fluid .hca-contact-number select {
+            width: 100%; }
         #content section.section .row-fluid .social-media {
           margin-top: -10px;
           margin-bottom: 0px; }
@@ -1065,6 +1081,10 @@ hr {
             #content section.section .row-fluid.hca-edit-box .control-group.website {
               margin-bottom: 10px; }
               #content section.section .row-fluid.hca-edit-box .control-group.website input {
+                margin-bottom: 15px; }
+            #content section.section .row-fluid.hca-edit-box .control-group.hca-contact-number {
+              margin-bottom: 10px; }
+              #content section.section .row-fluid.hca-edit-box .control-group.hca-contact-number input {
                 margin-bottom: 15px; }
         #content section.section .row-fluid.terms {
           background-color: transparent;
@@ -2222,6 +2242,10 @@ ul.hca-notifications, ul.hca-inquiries {
 .hca-red {
   color: #b94a48 !important; }
 
+.icon-gray {
+  color: #6e6e6e;
+  margin-top: 3px; }
+
 .hca-earth {
   color: #bfc3be; }
 
@@ -2691,6 +2715,22 @@ span.rollover {
       background-size: 55%;
       width: 25px;
       height: 25px; }
+  .doctors-new-listing .hca-contact-number, .specializations-profile-listing .hca-contact-number {
+    margin-left: 0px;
+    margin-bottom: 0px;
+    clear: both; }
+    .doctors-new-listing .hca-contact-number .span3, .specializations-profile-listing .hca-contact-number .span3 {
+      margin-left: 0; }
+    .doctors-new-listing .hca-contact-number label, .specializations-profile-listing .hca-contact-number label {
+      display: block;
+      margin-bottom: 0; }
+    .doctors-new-listing .hca-contact-number span, .specializations-profile-listing .hca-contact-number span {
+      margin-top: 10px;
+      color: #a2a2a2; }
+    .doctors-new-listing .hca-contact-number input, .specializations-profile-listing .hca-contact-number input {
+      margin-bottom: 10px; }
+    .doctors-new-listing .hca-contact-number select, .specializations-profile-listing .hca-contact-number select {
+      width: 100%; }
   .doctors-new-listing h4, .specializations-profile-listing h4 {
     padding: 2px 0 0 0;
     margin: 0; }
@@ -2811,21 +2851,6 @@ ul.two-column > li label {
   .maincontentguide table i {
     color: #262626; }
 
-.row-fluid.hca-contact-number {
-  padding: 5px 5px 30px 5px !important; }
-  .row-fluid.hca-contact-number small {
-    display: inline-block;
-    color: #888888; }
-  .row-fluid.hca-contact-number input, .row-fluid.hca-contact-number select {
-    display: block; }
-  .row-fluid.hca-contact-number label {
-    display: block; }
-  .row-fluid.hca-contact-number hr {
-    height: 10px;
-    background-color: #EEEEEE; }
-  .row-fluid.hca-contact-number .control-group {
-    padding-top: 10px !important;
-    display: block; }
 .row-fluid .hca-extension {
   font-size: 10px; }
 
