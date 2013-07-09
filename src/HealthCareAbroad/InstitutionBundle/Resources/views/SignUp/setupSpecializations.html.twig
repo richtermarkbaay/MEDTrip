@@ -18,19 +18,12 @@
     <h1>{{ institutionMedicalCenter.name | title }}</h1>
     <div class="span8">
         <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>
-        <form name="specializationsForm" action="{{ path('institution_signup_setup_specializations', { imcId: institutionMedicalCenter.id }) }}" method="post">
-            {% if error %}
-                <div class="alert alert-error">{{ error }}</div>
-            {% endif %}
-            
-            {% include 'InstitutionBundle:MedicalCenter:Partials/accordion.specializations.html.twig' with {specializations : specializations } %}
 
-            <div class="align-right" style="margin-top: 10px;">
-                <button type="submit" class="btn pull-right btn-primary btn-large">
-                    Save and Continue
-                </button>
-            </div>
-        </form>
+        {% include 'InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig' with {
+            specializations : specializations,
+            buttonLabel: 'Save and Continue'
+            saveFormAction: path('institution_medicalCenter_ajaxSaveSpecializations',{imcId: institutionMedicalCenter.id})
+        } %}
     </div>
 
     <aside class="span4">

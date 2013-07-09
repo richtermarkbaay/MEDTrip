@@ -10,11 +10,6 @@
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
             <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
-                {% if error_message %}
-                    <div class="alert alert-error">
-                        {{ error_message }}
-                    </div>
-                {% endif %}
 
                 {% include 'InstitutionBundle:SignUp/Widgets:section.basicInfo.html.twig' %}
 
@@ -35,20 +30,20 @@
 
             </form>
             
-                {% include 'InstitutionBundle:SignUp/Widgets:section.mediaUpload.html.twig' %}
-            
-                <section class="section footer">
-                    <div class="row-fluid terms">
-                        <div class="span12">
-                            <div class="span6"><label>* <small>Required Fields</small></label></div>
-                            <div class="span6">
-                                <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
-                                <!-- <input type="submit" /> -->
-                            </div>
-                            
+            {% include 'InstitutionBundle:SignUp/Widgets:section.mediaUpload.html.twig' %}
+        
+            <section class="section footer">
+                <div class="row-fluid terms">
+                    <div class="span12">
+                        <div class="span6"><label>* <small>Required Fields</small></label></div>
+                        <div class="span6">
+                            <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
+                            <!-- <input type="submit" /> -->
                         </div>
+                        
                     </div>
-                </section>
+                </div>
+            </section>
         </div>
 
         <aside class="span4">

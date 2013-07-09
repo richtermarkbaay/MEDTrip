@@ -248,24 +248,12 @@ class InstitutionSignUpController extends InstitutionAwareController
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
-
-                // get the current step by this route
-                $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
-
-                // TODO: check and redirect properly to next page if institution's sign up status is ahead of this step
-
-                $response = $this->setupProfileSingleCenterAction();
+                $response = $this->setupProfileSingleCenter($request);
                 break;
+
             case InstitutionTypes::MULTIPLE_CENTER:
-            //case InstitutionTypes::MEDICAL_TOURISM_FACILITATOR:
             default:
-
-                // get the current step by this route
-                $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
-
-                // TODO: check and redirect properly to next page if institution's sign up status is ahead of this step
-
-                $response = $this->setupProfileMultipleCenterAction($request);
+                $response = $this->setupProfileMultipleCenter($request);
                 break;
         }
 
@@ -281,19 +269,12 @@ class InstitutionSignUpController extends InstitutionAwareController
      * @author acgvelarde
      * @return
      */
-    private function setupProfileSingleCenterAction()
+    private function setupProfileSingleCenter(Request $request)
     {
-        $error_message = false;
-        $success = false;
-        $errorArr = array();
-        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
-        $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+        // Set Current Route
+        $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
 
-        if (!$this->institutionService->isSingleCenter($this->institution)) {
-            // this is not a single center institution, where will we redirect it? for now let us redirect it to dashboard
-            // we should not be here in the first place
-            return $this->redirect($this->generateUrl('institution_homepage'));
-        }
+        $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
 
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
@@ -318,6 +299,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($formRequestData);
             if ($form->isValid()) {
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+
                 // set the sign up status of this single center institution
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
@@ -326,43 +308,30 @@ class InstitutionSignUpController extends InstitutionAwareController
                 if(($fileBag = $this->request->files->get('institution_profile_form')) && $fileBag['logo']) {
                     $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
                 }
+
                 // save institution and create an institution medical center
                 $this->signUpService->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
-
-                // save services and awards
-                //$this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
                 // get the next step redirect url
                 $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionService->getFirstMedicalCenter($this->institution)->getId()));
 
-                //$request->getSession()->setFlash('callout', "");
-                //$request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Clinic profile."); //set flash message
+                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Clinic profile."); //set flash message
 
                 // TODO: Update this when we have formulated a strategy for our event system
                 // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
                 $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
 
                 return $this->redirect($redirectUrl);
-            }
-            $error = true;
-            $form_errors = $this->get('validator')->validate($form);
 
-            if($form_errors){
-                $error_message = 'We need you to correct some of your input. Please check the fields in red.';
+            } else {
+                $request->getSession()->setFlash('success', "test"); //set flash message
             }
         }
 
-        $medicalProviderGroupArr = array();
-
-        foreach ($medicalProviderGroup as $e) {
-            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-        }
         return $this->render('InstitutionBundle:SignUp:setupProfile.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
-            'isSingleCenter' => true,
-            'error_message' => $error_message,
-            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+            'medicalProvidersJSON' => $this->getMedicalProviderGroupJSON()
         ));
     }
 
@@ -373,9 +342,8 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileMultipleCenterAction(Request $request)
     {
-        $error_message = '';
-        $success = false;
-        $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+        // get the current step by this route
+        $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
 
@@ -436,16 +404,11 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
-        $medicalProviderGroupArr = array();
-
-        foreach ($medicalProviderGroup as $e) {
-            $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
-        }
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
             'error_message' => $error_message,
-            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+            'medicalProvidersJSON' => $this->getMedicalProviderGroupJSON()
         ));
     }
 
@@ -501,14 +464,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
-                //$request->getSession()->setFlash('callout', "");
-                //$request->getSession()->setFlash('success', "<b>Congratulations! </b> You have setup your clinic profile."); //set flash message
-
-                // TODO: Update this when we have formulated a strategy for our events system
-                // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-                $this->get('event_dispatcher')->dispatch(
-                    MailerBundleEvents::NOTIFICATIONS_CLINIC_CREATED,
-                    new GenericEvent($this->institutionMedicalCenter, array('userEmail' => $request->getSession()->get('userEmail'))));
 
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
@@ -535,8 +490,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
+            $institutionSpecialization = $request->get(InstitutionSpecializationFormType::NAME);
+
             //array of specialization ids each containing an array of treatment ids
-            if ($treatments = $request->get('treatments')) {
+            if ($treatments = $institutionSpecialization['treatments']) {
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep, true);
 
@@ -551,7 +508,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'specializations' => $specializations,
+            'specializations' => $specializations,  
             'error' => $error,
         ));
     }
@@ -693,5 +650,16 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         return $center;
+    }
+    
+    private function getMedicalProviderGroupJSON()
+    {
+        $medicalProviderGroupArr = array();
+        $medicalProviderGroups = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
+        foreach ($medicalProviderGroups as $each) {
+            $medicalProviderGroupArr[] = array('value' => $each->getName(), 'id' => $each->getId());
+        }
+
+        return \json_encode($medicalProviderGroupArr);
     }
 }

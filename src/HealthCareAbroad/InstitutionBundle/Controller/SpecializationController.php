@@ -188,22 +188,18 @@ class SpecializationController extends InstitutionAwareController
         return $response;
         
     }
-    
-    /**
-     * Add a new specialization to medical center through ajax
-     * This load all Specializations not yet selected
-     * @author Chaztine Blance
-     */
+
     public function ajaxAddSpecializationAction(Request $request)
     {
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
         
-           $params =  array(
-                        'institution' => $this->institution,
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'specializations' => $specializations,
+        $params =  array(
+            'specializations' => $specializations,
+            'saveFormAction' => '',
+            'buttonLabel' => ''
         );
-        $html = $this->renderView('InstitutionBundle:Specialization:section_specialization.html.twig', $params);
+
+        $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
     
