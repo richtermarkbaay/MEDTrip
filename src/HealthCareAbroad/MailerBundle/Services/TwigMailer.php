@@ -45,7 +45,6 @@ class TwigMailer implements MailerInterface
         $status = $this->getMailer($data)->send($message, $failures);
 
         $this->log('Mails sent: '.$status);
-var_dump($data);
     }
 
     /**
