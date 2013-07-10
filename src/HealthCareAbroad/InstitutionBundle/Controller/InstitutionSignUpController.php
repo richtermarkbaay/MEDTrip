@@ -286,7 +286,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // TODO: Update this when we have formulated a strategy for our event system
                 // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
+                //$this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
 
                 return $this->redirect($redirectUrl);
 
@@ -307,7 +307,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      *
      * @param Request $request
      */
-    private function setupProfileMultipleCenterAction(Request $request)
+    private function setupProfileMultipleCenter(Request $request)
     {
         // get the current step by this route
         $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
@@ -352,29 +352,24 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->get('services.institution_property')->addPropertiesForInstitution($this->institution, $form['services']->getData(), $form['awards']->getData());
 
-                //$calloutMessage = $this->get('services.institution.callouts')->get('signup_multiple_center_success');
-                //$this->getRequest()->getSession()->getFlashBag()->add('callout_message', $calloutMessage);
-                $request->getSession()->setFlash('callout', "");
                 $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Hospital's profile."); //set flash message
+
                 $redirectUrl = $this->generateUrl($this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute());
+
 
                 // TODO: Update this when we have formulated a strategy for our event system
                 // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
                 $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
 
                 return $this->redirect($redirectUrl);
-            }
-            $form_errors = $this->get('validator')->validate($form);
 
-            if($form_errors){
-                   $error_message = 'We need you to correct some of your input. Please check the fields in red.';
+            } else {
+                $request->getSession()->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
             }
         }
 
         return $this->render('InstitutionBundle:SignUp:setupProfile.multipleCenter.html.twig', array(
             'form' => $form->createView(),
-            'institution' => $this->institution,
-            'error_message' => $error_message,
             'medicalProvidersJSON' => $this->getMedicalProviderGroupJSON()
         ));
     }
