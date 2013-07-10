@@ -32,6 +32,10 @@
 <div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
     
 <div id="ranking_form_container">
+    {% set sortBy = app.request.get('sortBy') %}
+    {% set sortOrder = app.request.get('sortOrder') %}
+    {% set default = sortBy | length ? '' : 'sort-asc' %}
+    
     {% include 'AdminBundle:Ranking/Partials:view.html.twig' %}
 </div>    
 {% endspaceless %}
@@ -41,16 +45,37 @@
 <!--
 (function($){
     $(function(){
-
+    	window.onload=function(){
+    		$.ajax({
+                url: '{{ path("medical_centers_api") }}',
+                type: 'get',
+                dataType: 'json',
+                success: function(response) {
+                    $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                        .disabled(false)
+                        .options.source = response;
+                },
+                error: function(response) {
+                    $('#institution_medical_center_input_field').data('fancyAutocomplete')
+                    .disabled(false)
+                    .options.source = [];
+                }
+            });
+    		return false;
+    	};
+    	
     	$('#_rankingForm').submit(function(){
             var _form = $(this);
+            var _institutionElem =  $('#institution_input_field');
+        	var _imcElem =  $('#institution_medical_center_input_field');
+        	
+            
             $('#ranking_form_container').html('');
             $('#loader').fadeIn();
-            //$('#institution_medical_center_input_field').data('fancyAutocomplete')
-            //.disabled(true);
             
-             $('#_countryId').val($('#filter-country').val());
-             $('#_cityId').val($('#filter-city').val());
+            $('#_countryId').val($('#filter-country').val());
+            $('#_cityId').val($('#filter-city').val());
+            
             $.ajax({
                 url: _form.attr('action'),
                 data: _form.serialize(),
@@ -64,20 +89,29 @@
                     $('#loader').hide();
                 }
             });
-
             return false;
         });
 
         $('#institution_input_field').keyup(function(e){
-            if(e.keyCode == 8 || e.keyCode == 46) {
+        	if(e.keyCode == 8 || e.keyCode == 46) {
             	$('#institutionId').val('');
-            	
             	$('#institution_medical_center_input_field').data('fancyAutocomplete')
                 .resetValue()
                 .reloadSource()
                 .disabled(true);
+            }
+            
+        }); 
 
-            	$('#institutionId').val('');
+        $('#institution_medical_center_input_field').keyup(function(e){
+        	if(e.keyCode == 8 || e.keyCode == 46) {
+            	$('#imcId').val('');
+            }
+        	$('#institution_medical_center_input_field').val($('#institution_medical_center_input_field').val());
+        	console.log($('#institution_medical_center_input_field').val());
+        	if(e.keyCode == 13) {
+        		$('#_rankingForm').submit();
+            	return false;
             }
             
         }); 
@@ -138,17 +172,17 @@
     		var _elem = $(this);
     		var _url = _elem.attr('href');
     	    _rankRowId = _elem.attr('data-rankRowId');
-    		_elem.attr('disabled', true).html('Processing...');
+    		_elem.attr('disabled', true).html(' Processing...');
 
     		$.ajax({
                 url: _url,
                 type: 'post',
                 success: function(response) {
                     $(_rankRowId).html(response.points);
-                	_elem.removeAttr('disabled').html('Ranking Pts');
+                	_elem.removeAttr('disabled').html(' Ranking Pts');
                 },
                 error: function(response){
-                    alert('errror');
+                    alert('error');
                 }
             });
     		

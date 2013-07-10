@@ -343,22 +343,27 @@ class InstitutionMedicalCenterService
         return $globalAwards;
     }
 
-    public function getActiveMedicalCenters(Institution $institution)
+    public function getActiveMedicalCentersByInstitution(Institution $institution)
     {
-
          $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
 
          return $result;
     }
     
+    public function getApprovedMedicalCenters()
+    {
+        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('status' => InstitutionMedicalCenterStatus::APPROVED));
+    
+        return $result;
+    }
+    
     public function getApprovedMedicalCentersByFiltersAndInstitutionSearchName($params)
     {
-        
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getApprovedInstitutionMedicalCentersByFiltersAndInstitutionSearchName($params);
         
         return $result;
     }
-
+    
     public function getAvailableTreatmentsByInstitutionSpecialization(InstitutionSpecialization $institutionSpecialization)
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')

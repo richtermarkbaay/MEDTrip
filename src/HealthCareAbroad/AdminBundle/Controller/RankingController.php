@@ -14,8 +14,6 @@ class RankingController extends Controller
 {
     public function institutionIndexAction(Request $request)
     {
-        
-        // load approved institutions by default
         $institutions = $this->get('services.institution.factory')->findAllApproved();
         $data = array();
         foreach ($institutions as $_each) {
@@ -31,13 +29,12 @@ class RankingController extends Controller
                         'pager' => $this->pager,
                         'isInstitution' => true,
                         'page' => 'rank_institution_page',
-                        'page_uri' => 'admin_institution_ranking_index'
+                        'page_uri' => 'admin_institution_ranking_index',
         ));
     }
     
     public function institutionMedicalCenterIndexAction(Request $request)
     {
-        // load approved institutions by default
         $institutions = $this->get('services.institution.factory')->findAllApproved();
         
         $data = array();
@@ -53,7 +50,7 @@ class RankingController extends Controller
                         'centers' => $this->filteredResult,
                         'pager' => $this->pager,
                         'page' => 'rank_center_page',
-                        'page_uri' => 'admin_center_ranking_index'
+                        'page_uri' => 'admin_center_ranking_index',
         
         ));
     }
@@ -66,12 +63,11 @@ class RankingController extends Controller
         $imcId = $request->get('imcId',0);
         
         $centers = array();
-        if($imcId != 0 && $institutionId != 0) {
-            $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('id' => $imcId));
-            
-        } 
-        else if($imcId == 0 && $institutionId != 0) {
+        if($imcId == 0 && $institutionId != 0) {
             $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('institution' => $institutionId, 'status' => InstitutionMedicalCenterStatus::APPROVED));
+        } 
+        else if($imcId != 0) {
+            $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('id' => $imcId));
         }
         else {
             if($institutionSearchName = $request->get('institutionName')) {
@@ -95,8 +91,9 @@ class RankingController extends Controller
         $cityId = $request->get('_cityId',0);
         $params = array();
         if($institutionId != 0) {
-            $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($imcId);
-            $params = array('center' => $center);
+            $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy(array('id' => $institutionId));
+            $params = array('institutions' => $institutions,
+                            'isInstitution' => true);
         } 
         else {
             if($institutionSearchName = $request->get('institutionName')) {
@@ -106,14 +103,12 @@ class RankingController extends Controller
                 $institutions = $this->get('services.institution')->getAllInstitutionByParams($data);
                 
                 $params = array('institutions' => $institutions,
-                                'isArray' => true,
-                                'isInstitution' => true,);
+                                'isInstitution' => true);
             }
         }
         $html = $this->renderView('AdminBundle:Ranking/Partials:view.html.twig', $params);
         
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-        
     }
     
     public function ajaxUpdateInstitutionRankingAction(Request $request)
@@ -124,10 +119,10 @@ class RankingController extends Controller
         $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
         
         $currentRankingPts = $institution->getTotalClinicRankingPoints();
-        $institution->setTotalClinicRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts > 0) ? ($currentRankingPts - 1) : NULL));
+        $institution->setTotalClinicRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
         $this->save($institution);
         
-        $response = array('data' => 'success', 'points' => $institution->getTotalClinicRankingPoints());
+        $response = array('data' => 'success', 'points' => $institution->getTotalClinicRankingPoints() ? $institution->getTotalClinicRankingPoints() : 0 );
         
         return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
     }
@@ -145,10 +140,10 @@ class RankingController extends Controller
 
         $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
         $currentRankingPts = $center->getRankingPoints();
-        $center->setRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts > 0) ? ($currentRankingPts - 1) : NULL));
+        $center->setRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
         $this->save($center);
         
-        $response = array('data' => 'success', 'points' => $center->getRankingPoints());
+        $response = array('data' => 'success', 'points' => $center->getRankingPoints() ? $center->getRankingPoints() : 0);
         
         return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
     }

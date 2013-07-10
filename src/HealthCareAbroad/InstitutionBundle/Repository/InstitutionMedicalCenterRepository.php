@@ -180,7 +180,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $query->getQuery()->getResult();
     }
     
-    
     public function getInstitutionMedicalCentersByStatusQueryBuilder(Institution $institution, $status)
     {
         $qb = $this->getEntityManager()->createQueryBuilder()

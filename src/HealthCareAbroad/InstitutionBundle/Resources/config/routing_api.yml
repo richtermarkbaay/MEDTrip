@@ -6,7 +6,13 @@ institutions_api:
         
         
 institution_medical_centers_api:
-    pattern: /api/institution_medical_centers
+    pattern: /api/institution-medical-centers
     defaults: { _controller: InstitutionBundle:Api:listInstitutionMedicalCenters }
+    requirements: 
+        _method: GET
+        
+medical_centers_api:
+    pattern: /api/medical-centers
+    defaults: { _controller: InstitutionBundle:Api:listMedicalCenters }
     requirements:
         _method: GET

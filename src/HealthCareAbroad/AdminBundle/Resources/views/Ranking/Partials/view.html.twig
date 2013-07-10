@@ -1,15 +1,19 @@
 {% spaceless %}
-    {% set sortBy = app.request.get('sortBy') %}
+{% set sortBy = app.request.get('sortBy') %}
     {% set sortOrder = app.request.get('sortOrder') %}
     {% set default = sortBy | length ? '' : 'sort-asc' %}
     <fieldset>
-    
     <legend>Increment/Decrement ranking points</legend>
     <div>
         <table class="table table-bordered sortable-list">
             <tr>
-                <th width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                <th ><a href="{{ app.request.uri }}" class="{{ sortBy == 'rank' ? 'sort-' ~ sortOrder : default }}">Rank</a></th>
+                <th id="column-name" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                {% if isInstitution is defined %}
+                    <th id="column-totalClinicRankingPoints" ><a href="{{ app.request.uri }}" class="{{ sortBy == 'totalClinicRankingPoints' ? 'sort-' ~ sortOrder : default }}">Rank</a></th>
+                {% else %}
+                    <th id="column-rankingPoints" ><a href="{{ app.request.uri }}" class="{{ sortBy == 'rankingPoints' ? 'sort-' ~ sortOrder : default }}">Rank</a></th>
+                {% endif %}
+                
                 <th width="180">Actions</th>
             </tr>
 
@@ -17,7 +21,7 @@
                 {% for institution in institutions %}
                 <tr>
                     <td>{{ institution.name  }}</td>
-                    <td id="_rankRowId{{ institution.id }}" >{{ institution.totalClinicRankingPoints  }}</td>
+                    <td id="_rankRowId{{ institution.id }}" >{{ institution.totalClinicRankingPoints ? institution.totalClinicRankingPoints : 0  }}</td>
                     <td>
                         <a href="{{ path( 'admin_ranking_instituion_updateRanking', { 'id': institution.id, 'type': 'inc' }) }}" title="" data-rankRowId="#_rankRowId{{ institution.id }}" class="icon-plus _rankingPtsTrigger"> Ranking Pts</a><br/>
                         <a href="{{ path( 'admin_ranking_instituion_updateRanking', { 'id': institution.id, 'type': 'dec' }) }}" title="" data-rankRowId="#_rankRowId{{ institution.id }}" class="icon-minus _rankingPtsTrigger"> Ranking Pts</a>
