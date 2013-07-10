@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
@@ -29,6 +31,13 @@ class NewListingsApprovedListener extends NotificationsListener
                 'contact_info' => $urlCenter.'#contact-details'
             )
         );
+    }
+
+    public function isEventProcessable(Event $event)
+    {
+        $institutionMedicalCenter = $event->getSubject();
+
+        return InstitutionMedicalCenterStatus::APPROVED == $institutionMedicalCenter->getStatus();
     }
 
     public function getTemplateConfig()
