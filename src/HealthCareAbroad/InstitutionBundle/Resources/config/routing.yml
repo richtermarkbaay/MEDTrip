@@ -28,7 +28,7 @@ InstitutionBundle_medicalCenterProperties:
 # Routes for Institution SpecializationController #
 InstitutionBundle_specialization:
     resource: "@InstitutionBundle/Resources/config/routing_specialization.yml"
-    prefix:   /institution
+    prefix:   /
 
 # Routes for InstitutionUserController #
 InstitutionBundle_user:

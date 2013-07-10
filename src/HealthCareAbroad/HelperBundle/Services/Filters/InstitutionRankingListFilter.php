@@ -65,7 +65,6 @@ class InstitutionRankingListFilter extends ListFilter
     
     function buildQueryBuilder()
     {
-//         var_dump($this->sortBy);exit;
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
         $this->queryBuilder->andWhere('a.status = :approved_status')->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus());

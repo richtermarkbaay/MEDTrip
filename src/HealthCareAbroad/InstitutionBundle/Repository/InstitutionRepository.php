@@ -195,10 +195,9 @@ class InstitutionRepository extends EntityRepository
     public function getAllInstitutionByParams($params)
     {
         $query = $this->createQueryBuilder('a')
-        ->from('InstitutionBundle:Institution', 'a')
         ->where('a.status = :status')
-        ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
         ->andWhere('a.name LIKE :searchTerm')
+        ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
         ->setParameter('searchTerm', '%'.$params['searchTerm'].'%');
     
         if($params['countryId'] != 'all') {
