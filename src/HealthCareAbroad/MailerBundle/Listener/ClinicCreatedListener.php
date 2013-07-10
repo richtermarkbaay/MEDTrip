@@ -34,7 +34,9 @@ class ClinicCreatedListener extends NotificationsListener
             )
         );
 
-        if ($to != $this->getAccountOwner($institution)->getEmail()) {
+        $accountOwner = $this->container->get('services.institution')->getAccountOwner($institution);
+
+        if (strtolower($to) != strtolower($accountOwner->getEmail())) {
             $data['cc'] = $accountOwnerEmail;
         }
 
@@ -50,13 +52,5 @@ class ClinicCreatedListener extends NotificationsListener
 
     public function getTemplateConfig() {
         return 'notification.clinic_created';
-    }
-
-    private function getAccountOwner($institution)
-    {
-        $userService = $this->container->get('services.institution_user');
-        $hydratedUser = $userService->getAccountData($institution->getInstitutionUsers()->first());
-
-        return $hydratedUser;
     }
 }

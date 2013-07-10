@@ -9,12 +9,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class HospitalProfileCreatedListener extends NotificationsListener
 {
     /**
-     * FIXME: $to key should contain the account owner of the institution. Right
-     * now, we don't have an "account owner" type of user. We will use doctrine's
-     * array collection's first() method - assumption here is the system will
-     * always create upon account creation a user with admin role, of which we
-     * are depending that the array collection first() will return
-     *
      * @see \HealthCareAbroad\MailerBundle\Listener\NotificationsListener::getData()
      */
     public function getData(Event $event)
@@ -48,9 +42,11 @@ class HospitalProfileCreatedListener extends NotificationsListener
         }
         $urlContactDetails = $urlDefaultCenter.'#contact-details';
 
+        $accountOwnerEmail = $this->container->get('services.institution')->getAccountOwner($institution)->getEmail();
+
         return array(
             'institution_name' => $institution->getName(),
-            'to' => $this->getAccountOwner($institution)->getEmail(),
+            'to' => $accountOwnerEmail,
             'url' => array(
                 'add_centers' => $urlDefaultCenter,
                 'upload_photos' => $urlDefaultCenterGallery,
@@ -64,13 +60,5 @@ class HospitalProfileCreatedListener extends NotificationsListener
     public function getTemplateConfig()
     {
         return 'notification.hospital_profile_created';
-    }
-
-    private function getAccountOwner($institution)
-    {
-        $userService = $this->container->get('services.institution_user');
-        $hydratedUser = $userService->getAccountData($institution->getInstitutionUsers()->first());
-
-        return $hydratedUser;
     }
 }
