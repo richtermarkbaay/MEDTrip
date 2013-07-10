@@ -432,6 +432,13 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // redirect to next step
                 $nextStepRoute = $this->signUpService->getMultipleCenterSignUpNextStep($this->currentSignUpStep)->getRoute();
 
+                // TODO: Update this when we have formulated a strategy for our events system
+                // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+                $this->get('event_dispatcher')->dispatch(
+                                MailerBundleEvents::NOTIFICATIONS_CLINIC_CREATED,
+                                new GenericEvent($this->institutionMedicalCenter, array('userEmail' => $request->getSession()->get('userEmail'))));
+
+
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             $form_errors = $this->get('validator')->validate($form);
@@ -475,7 +482,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'specializations' => $specializations,  
+            'specializations' => $specializations,
             'error' => $error,
         ));
     }
@@ -618,7 +625,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         return $center;
     }
-    
+
     private function getMedicalProviderGroupJSON()
     {
         $medicalProviderGroupArr = array();
