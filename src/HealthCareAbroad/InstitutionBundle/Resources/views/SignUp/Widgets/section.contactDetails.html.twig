@@ -12,8 +12,12 @@
                 <div class="span12">
                     <label for="institution_profile_form[websites]">{{ label }} Website</label>
                     <div class="input-prepend">
-                      <span class="add-on">http://</span>
-                      {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
+                        <span class="add-on">http://</span>
+                        {{ form_widget(form.websites, { attr: {class: 'span11 tooltip-wrap3'} } )}}
+                        <div class="tooltip-content3">
+                            The homepage for the hospital, or the homepage of the international or medical tourism
+                            center. This is where prospective patients will be linked to from HealthcareAbroad.com
+                        </div>
                     </div>                    
                 </div>
             </div>
@@ -25,11 +29,9 @@
                 {{ form_widget(form.contactEmail, { 'attr': {'class': 'span8'} }) }}
                 {{ form_errors(form.contactEmail )}}
             </div>
-
             {% for _widget in form.contactDetails %}
                 {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
             {% endfor %}
-
         </div>
     </div>
 </section>
