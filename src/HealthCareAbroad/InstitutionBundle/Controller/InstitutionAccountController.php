@@ -240,7 +240,7 @@ class InstitutionAccountController extends InstitutionAwareController
                     foreach ($formVariables as $key => $v){
                         if($key == 'services'){
                             
-                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', array(
+                            $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
                                             'institution' => $this->institution,
                                             'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                             ));
@@ -254,11 +254,11 @@ class InstitutionAccountController extends InstitutionAwareController
                             $globalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
 
                             foreach($globalAwards as $key => $global ) {
-                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
+                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
                                     'institution' => $this->institution,
                                     'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                     'eachAward' => array('list' => $global),
-                                    'label' => $key.'s'
+                                    'type' => $key,
                             ));
                           }
                              

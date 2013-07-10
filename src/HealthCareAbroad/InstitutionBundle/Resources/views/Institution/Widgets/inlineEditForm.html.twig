@@ -79,31 +79,20 @@
                 </div>
             </div> 
         {% elseif each == 'contactDetails' or each == 'websites' %}
-                        <div class="control-group website">
+            <div class="control-group website">
                 {{ form_label(institutionForm.websites) }}
                 <span class="pull-left"> http:// </span>
                 {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
-
-
                 <div class="contactEmail control-group">
-                        <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
-                            {{ institutionForm.children.contactEmail.vars.label }}
-                        </label>
-                        {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+                    <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
+                        {{ institutionForm.children.contactEmail.vars.label }}
+                    </label>
+                    {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
                 </div>
-                 
-        
-        
-
-
-           {% for _widget in institutionForm.contactDetails %}
-            
-                     {{ form_widget(_widget) }}
-                    
-              
-            {% endfor %}
-
+                {% for _widget in institutionForm.contactDetails %}
+                    {{ form_widget(_widget) }}
+                {% endfor %}
          {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionForm.socialMediaSites )}}
          {% elseif each == 'services' %}
@@ -123,7 +112,7 @@
     
     {{ _csrf_token_widget | raw}}
 
-    <div class="align-right"> 
+    <div class="control-group align-right"> 
 		<button class="btn btn-primary" type="submit">Submit</button>
     </div>
 </form>
