@@ -13,10 +13,14 @@ class NewListingsApprovedListener extends NotificationsListener
     {
         $institutionMedicalCenter = $event->getSubject();
 
-        $urlCenter = $this->container->get('router')->generate('institution_medicalCenter_view', array('imcId' => $institutionMedicalCenter->getId()), true);
+        $router = $this->container->get('router');
+
+        $urlCenter = $router->generate('institution_medicalCenter_view', array('imcId' => $institutionMedicalCenter->getId()), true);
+
+        $accountOwner = $this->container->get('services.institution')->getAccountOwner($institutionMedicalCenter->getInstitution());
 
         return array(
-            'to' => $institutionMedicalCenter->getInstitution()->getInstitutionUsers()->getEmail(),
+            'to' => $accountOwner->getEmail(),
             'url' => array(
                 'center' => $urlCenter,
                 'center_gallery' => $router->generate('institution_mediaGallery_index', array(), true),

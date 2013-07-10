@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType;
@@ -124,15 +128,15 @@ class InstitutionTreatmentsController extends Controller
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', $params));
             }
             else {
-                // no medical center yet, redirect to add medical center with 
+                // no medical center yet, redirect to add medical center with
                 $this->request->getSession()->setFlash('notice', 'No medical centers yet, add a clinic now.');
                 $response = $this->redirect($this->generateUrl('admin_institution_medicalCenter_add', array('institutionId' => $this->institution->getId())));
             }
-                
+
         }
         else {
             $institutionMedicalCenters = $this->filteredResult;//$institutionService->getAllMedicalCenters($this->institution);
-            
+
             // get global ancillary services
             $ancillaryServicesData = array(
                 'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
@@ -149,10 +153,10 @@ class InstitutionTreatmentsController extends Controller
                 'isSingleCenter' => false,
                 'institutionStatusForm' =>$institutionStatusForm->createView()
             );
-            
+
             $response = $this->render('AdminBundle:InstitutionTreatments:tabular.medicalCenters.html.twig', $params);
         }
-        
+
         return $response;
     }
 
@@ -169,25 +173,25 @@ class InstitutionTreatmentsController extends Controller
             $this->institutionMedicalCenter = $request->get('center');
             $this->request = $request;
         }
-        
+
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
         $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
         $institutionMedicalSpecialistForm = $this->createForm(new \HealthCareAbroad\InstitutionBundle\Form\InstitutionDoctorSearchFormType());
         //globalAwards Form
-        
+
         //services
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
-        
+
         $businessFancyForm = $this->createForm(new FancyBusinessHourType());
-        
+
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
         $currentGlobalAwards = $institutionMedicalCenterService->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
         $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-        
+
         // get global,current and selcted ancillary services
         $ancillaryServicesData = array(
             'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
@@ -195,12 +199,12 @@ class InstitutionTreatmentsController extends Controller
             'currentAncillaryData' => array()
         );
         $ancillaryServicesData = $this->get('services.institution_medical_center_property')->getCurrentAndSelectedAncillaryServicesByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $ancillaryServicesData);
-        
+
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        
-   	    $adapter = new ArrayAdapter($this->institutionMedicalCenter->getMedia()->toArray());
-   	    $institutionMedicalCenterMedia = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
-   	    $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
+
+           $adapter = new ArrayAdapter($this->institutionMedicalCenter->getMedia()->toArray());
+           $institutionMedicalCenterMedia = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
+           $this->institutionMedicalCenter->addContactDetail(new ContactDetail());
         $params = array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -220,7 +224,7 @@ class InstitutionTreatmentsController extends Controller
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),         
+            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
             'ancillaryServicesData' => $ancillaryServicesData,
             'sideBarUsed' => 'AdminBundle:InstitutionTreatments:sidebar.html.twig',
             //'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
@@ -229,14 +233,14 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:viewMedicalCenter.html.twig', $params);
     }
-    
+
     public function addNewMedicalSpecialistAction(Request $request)
     {
         $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
         $doctor = new Doctor();
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findByStatus(Specialization::STATUS_ACTIVE);
         $form = $this->createForm(new DoctorFormType(), $doctor);
-        
+
         if ($this->getRequest()->isMethod('POST')) {
             $doctorData = $request->get('doctor');
             if($newMedia = $this->saveMedia($request->files->get('doctor'))) {
@@ -246,22 +250,22 @@ class InstitutionTreatmentsController extends Controller
                     $doctorData['media'] = $media;
                 }
             }
-        
+
             $form->bind($doctorData);
-        
+
             if($form->isValid()) {
                 // Get contactNumbers and convert to json format
                 $contactNumber = json_encode($request->get('contactNumber'));
-        
+
                 $doctor->setContactNumber($contactNumber);
                 $doctor->setStatus(Doctor::STATUS_ACTIVE);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($doctor);
                 $em->flush();
-        
+
                 $this->institutionMedicalCenter->addDoctor($doctor);
                 $center = $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-                
+
                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_ajaxAddMedicalSpecialist',array("institutionId" => $this->institution->getId(), "imcId" => $request->get('imcId'))));
             }
         }
@@ -272,17 +276,17 @@ class InstitutionTreatmentsController extends Controller
                         'specializations' => $specializations
         ));
     }
-        
+
     private function saveMedia($fileBag)
     {
         if($fileBag['media']) {
             $media = $this->get('services.media')->uploadDoctorImage($fileBag['media']);
             return $media;
         }
-    
+
         return null;
     }
-    
+
     /**
      * Ajax handler for searching available doctors for an InstitutionMedicalCenter in HCA Data
      * Expected GET parameters:
@@ -298,9 +302,9 @@ class InstitutionTreatmentsController extends Controller
         $doctorArr = array();
         foreach ($doctors as $each) {
             $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'] . " - " . $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']) , 'id' => $each['id'], 'specializations' => $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']), 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
-          
+
         }
-        
+
         return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
     }
     /**
@@ -309,20 +313,20 @@ class InstitutionTreatmentsController extends Controller
      */
     public function addMedicalCenterAction()
     {
-        
+
         $institutionService = $this->get('services.institution');
         $isSingleCenter = $institutionService->isSingleCenter($this->institution);
-        
+
         // if this is a single center institution , we will not allow to add another medical center
         if($isSingleCenter && $institutionService->getFirstMedicalCenter($this->institution)) {
             return $this->redirect($this->generateUrl('admin_institution_manageCenters',array('institutionId' => $this->institution->getId())));
         }
         else {
-            
+
             $service = $this->get('services.institution_medical_center');
             $request = $this->request;
             if (is_null($this->institutionMedicalCenter)) {
-                
+
                 $this->institutionMedicalCenter = new institutionMedicalCenter();
                 $this->institutionMedicalCenter->setInstitution($this->institution);
             }
@@ -330,37 +334,37 @@ class InstitutionTreatmentsController extends Controller
                 // there is an imcId in the Request, check if this is a draft
                 if ($this->institutionMedicalCenter && !$service->isDraft($this->institutionMedicalCenter)) {
                     $request->getSession()->setFlash('error', 'Invalid medical center draft.');
-    
+
                     return $this->redirect($this->generateUrl('admin_institution_manageCenters', array('institutionId' => $this->institution->getId())));
                 }
             }
             $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
-             
+
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false,InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-     
+
             if ($request->isMethod('POST')) {
                 $form->bind($this->request);
-                
+
                 if ($form->isValid()) {
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                     $form->getData()->setAddress('');
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
-    
-                    
+
+
                     // dispatch event
                     $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER,
                         $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
                     ));
-    
+
                     $this->request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
-    
+
                     return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
                         'institutionId' => $this->institution->getId(),
                         'imcId' => $this->institutionMedicalCenter->getId()
                     )));
                 }
             }
-            
+
             $params = array(
                 'form' => $form->createView(),
                 'institution' => $this->institution,
@@ -379,26 +383,26 @@ class InstitutionTreatmentsController extends Controller
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $template = 'AdminBundle:InstitutionTreatments:form.medicalCenter.html.twig';
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
-         
+
         if ($request->isMethod('POST')) {
-            
+
             $formVariables = $this->request->get(InstitutionMedicalCenterFormType::NAME);
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
-            
+
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                             InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
                             InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
             ));
-            
+
             $form->bind($this->request);
-        
+
             if ($form->isValid()) {
                 $this->institutionMedicalCenter = $form->getData();
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                 $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
                 $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
-                
+
                 if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
                     $phoneNumber = new ContactDetail();
                     $phoneNumber->setType(ContactDetailTypes::PHONE);
@@ -411,7 +415,7 @@ class InstitutionTreatmentsController extends Controller
                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'institution' => $this->institution,
                         'form' => $form->createView(),
-                        'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(), 
+                        'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(),
                         'institutionId' => $this->institution->getId()))
         ));
     }
@@ -461,6 +465,14 @@ class InstitutionTreatmentsController extends Controller
             if ($form->isValid()) {
                 $this->get('services.institution_medical_center')->save($form->getData());
                 $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
+
+                if (InstitutionMedicalCenterStatus::APPROVED == $form->getData()->getStatus()) {
+                    // TODO: Update this when we have formulated a strategy for our events system
+                    // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+                    $this->get('event_dispatcher')->dispatch(
+                        MailerBundleEvents::NOTIFICATIONS_NEW_LISTINGS_APPROVED, new GenericEvent($this->institutionMedicalCenter)
+                    );
+                }
             }
             else {
                 $errors = array();
@@ -478,7 +490,7 @@ class InstitutionTreatmentsController extends Controller
             ));
         }
         $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-        
+
         return $response;
     }
 
@@ -495,7 +507,7 @@ class InstitutionTreatmentsController extends Controller
         $params = array('specializations    ' => $specializations);
         return $this->render('AdminBundle:InstitutionTreatments:centerSpecializations.html.twig', $params);
     }
-    
+
     public function ajaxAddBusinessHoursAction(Request $request)
     {
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','status','description','city','country','zipCode','state','addressHint','contactEmail','contactDetails','address','timeZone','websites','socialMediaSites')));
@@ -505,24 +517,24 @@ class InstitutionTreatmentsController extends Controller
             if ($form->isValid()) {
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-        
+
                 $this->institutionMedicalCenter = $form->getData();
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                     $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                 }
-                
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($this->institutionMedicalCenter);
                 $result = $em->flush();
             }
         }
-        
+
         $response = new Response(\json_encode($result),200, array('content-type' => 'application/json'));
-        
+
         return $response;
-        
+
     }
-    
+
     /*
      * ajax
     * This will add medicalSpecialist on InstitutionMedicalCenter
@@ -530,7 +542,7 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxAddMedicalSpecialistAction(Request $request)
     {
         $specialist = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
-    
+
         if (!$specialist) {
             throw $this->createNotFoundException();
         }
@@ -541,12 +553,12 @@ class InstitutionTreatmentsController extends Controller
         else {
             $this->institutionMedicalCenter->addDoctor($specialist);
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-    
+
             $html = $this->renderView('AdminBundle:InstitutionTreatments:tableRow.specialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
         return $response;
-    
+
     }
     /*
      * ajax
@@ -558,9 +570,9 @@ class InstitutionTreatmentsController extends Controller
         if (!$doctor) {
             throw $this->createNotFoundException('Invalid doctor.');
         }
-    
+
         $form = $this->createForm(new \HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType(), $doctor);
-    
+
         if ($request->isMethod('POST'))  {
             $form->bind($request);
             if ($form->isValid()) {
@@ -574,40 +586,40 @@ class InstitutionTreatmentsController extends Controller
             }
         }
         else {
-    
+
             return $this->render('InstitutionBundle:Widgets/Profile:doctor.confirmDelete.html.twig', array(
                             'institutionMedicalCenter' => $this->institutionMedicalCenter,
                             'doctor' => $doctor,
                             'form' => $form->createView()
             ));
-    
+
             //$response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
-    
+
         return $response;
-    
+
     }
-    
+
     public function ajaxAddSpecializationTreatmentAction(Request $request)
     {
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
             ->find($request->get('isId', 0));
         $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId', 0));
-        
+
         if (!$institutionSpecialization) {
             throw $this->createNotFoundException("Invalid institution specialization {$institutionSpecialization->getId()}.");
         }
         if (!$treatment) {
             throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
         }
-        
+
         $institutionSpecialization->addTreatment($treatment);
-        
+
         try {
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionSpecialization);
             $em->flush();
-            
+
             $output = array(
                 'link' => array(
                     'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment', array(
@@ -619,13 +631,13 @@ class InstitutionTreatmentsController extends Controller
                 ),
                 'icon' => 'icon-trash'
             );
-            
+
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e) {
             $response = new Response($e->getMessage(), 500);
         }
-        
+
         return $response;
     }
 
@@ -704,14 +716,14 @@ class InstitutionTreatmentsController extends Controller
 
         return $this->render('AdminBundle:InstitutionTreatments:addInstitutionTreatments', $params);
     }
-    
+
     /**
      * Remove an ancillary service to medical center
      * Required parameters:
      *     - institutionId
      *     - imcId institution medical center id
      *     - asId ancillary service id
-     *     
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @author acgvelarde
@@ -719,7 +731,7 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxRemoveAncillaryServiceAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id', 0));
-        
+
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
@@ -731,28 +743,28 @@ class InstitutionTreatmentsController extends Controller
                         'currentAncillaryData' => array()
         );
         $ancillaryServicesData = $this->get('services.institution_medical_center_property')->getCurrentAndSelectedAncillaryServicesByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $ancillaryServicesData);
-        
+
         try {
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($property);
             $em->flush();
-            
+
             $output = array(
                     'label' => 'Add Service',
                     'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
                     'ancillaryServicesData' => $ancillaryServicesData,
                     '_isSelected' => false,
             );
-            
+
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e){
             $response = new Response($e->getMessage(), 500);
         }
-        
+
         return $response;
     }
-    
+
     /**
      * Add an ancillary service to medical center
      * Required parameters:
@@ -767,14 +779,14 @@ class InstitutionTreatmentsController extends Controller
     public function ajaxAddAncillaryServiceAction(Request $request)
     {
         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($request->get('id', 0));
-        
+
         if (!$ancillaryService) {
             throw $this->createNotFoundException('Invalid ancillary service id');
         }
-    
+
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
+
         // check if this medical center already have this property value
         if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId())) {
             $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
@@ -789,12 +801,12 @@ class InstitutionTreatmentsController extends Controller
                             'currentAncillaryData' => array()
             );
             $ancillaryServicesData = $this->get('services.institution_medical_center_property')->getCurrentAndSelectedAncillaryServicesByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $ancillaryServicesData);
-            
+
             try {
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-                
+
                 $output = array(
                     'label' => 'Delete Service',
                     'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
@@ -807,7 +819,7 @@ class InstitutionTreatmentsController extends Controller
                 $response = new Response($e->getMessage(), 500);
             }
         }
-    
+
         return $response;
     }
     /**
@@ -823,31 +835,31 @@ class InstitutionTreatmentsController extends Controller
     {
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-        
+
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
-        
+
         if($request->get('isCopy')) {
             foreach ($institutionAncillaryServices as $ancillaryService)
             {
                 // check if this medical center already have this property value
                 if (!$this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService['id'])) {
-                    
+
                     $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
                     $property->setValue($ancillaryService['id']);
                     try {
                         $em = $this->getDoctrine()->getEntityManager();
                         $em->persist($property);
                         $em->flush();
-                
+
                     }
                     catch (\Exception $e){
                         $response = new Response($e->getMessage(), 500);
-                    }                
+                    }
                 }
             }
         }
-        
+
         // get global ancillary services
         $ancillaryServicesData = array(
             'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
@@ -863,7 +875,7 @@ class InstitutionTreatmentsController extends Controller
         foreach ($this->get('services.institution_medical_center')->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
-        
+
         $output = array(
                         'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:field.ancillaryServices.html.twig', array(
                                         'institution' => $this->institution,
@@ -875,7 +887,7 @@ class InstitutionTreatmentsController extends Controller
         );
         return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
-    
+
     public function  showInstitutionAncillaryServiceAction(Request $request)
     {
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -887,18 +899,18 @@ class InstitutionTreatmentsController extends Controller
         );
         return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
-    
+
     public function ajaxAddGlobalAwardAction(Request $request)
     {
         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
-    
+
         if (!$award) {
             throw $this->createNotFoundException();
         }
-    
+
         $propertyService = $this->get('services.institution_medical_center_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
+
         // check if this medical center already have this property
         if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
             $response = new Response("Award {$award->getId()} already exists.", 500);
@@ -910,7 +922,7 @@ class InstitutionTreatmentsController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-    
+
                 $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:row.globalAward.html.twig', array(
                     'award' => $award,
                     'property' => $property,
@@ -918,45 +930,45 @@ class InstitutionTreatmentsController extends Controller
                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
                     'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
                 ));
-    
+
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
             }
         }
-    
+
         return $response;
     }
-    
+
     public function ajaxRemoveGlobalAwardAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id'));
-        
+
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
 
         $form = $this->createForm(new CommonDeleteFormType(), $property);
-    
+
         if ($request->isMethod('POST'))  {
             $form->bind($request);
             if ($form->isValid()) {
-    
+
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-                
+
                 $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);
             }
         }
-    
+
         return $response;
     }
-    
+
     public function ajaxEditGlobalAwardAction()
     {
         $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId', 0));
@@ -991,16 +1003,16 @@ class InstitutionTreatmentsController extends Controller
                 $response = new Response('Form error'.$e->getMessage(), 400);
             }
         }
-    
+
         return $response;
     }
-    
+
     /**
      * Upload InstitutionMedicalCenter Logo
      * @param Request $request
      */
     public function uploadLogoAction(Request $request)
-    {    
+    {
         if (($fileBag = $request->files) && $fileBag->has('file')) {
 
             $media = $this->get('services.institution.media')->medicalCenterUploadLogo($fileBag->get('file'), $this->institutionMedicalCenter);
@@ -1008,10 +1020,10 @@ class InstitutionTreatmentsController extends Controller
                 $this->get('session')->setFlash('error', 'Unable to Upload Logo');
             }
         }
-    
+
         return $this->redirect($request->headers->get('referer'));
     }
-    
+
     /**
      * Upload InstitutionMedicalCenter Media for Gallery
      * @param Request $request
@@ -1020,15 +1032,15 @@ class InstitutionTreatmentsController extends Controller
     {
         $response = new Response(json_encode(true));
         $response->headers->set('Content-Type', 'application/json');
-    
+
         if (($fileBag = $request->files) && $fileBag->has('file')) {
             $media = $this->get('services.institution.media')->medicalCenterUploadToGallery($fileBag->get('file'), $this->institutionMedicalCenter);
             if(!$media) {
                 $response = new Response('Error', 500);
             }
         }
-    
+
         return $response;
     }
-    
+
 }
