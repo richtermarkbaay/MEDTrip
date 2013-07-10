@@ -1,0 +1,33 @@
+<form name="specializationsForm" action="{{ saveFormAction }}" method="post">
+    <div class="accordion tooltip-wrap" id="accordion">
+        {% for specialization in specializations %}
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
+                    <i class="icon-plus-sign pull-right"></i>
+                    <img src="{{ specialization.media ? specialization_media_src(specialization.media) : imageplaceholder.specializationDefaultLogo }}" class="pull-left">
+                    <h4>{{ specialization.name }}</h4>
+                </a>
+            </div>
+            <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
+                <div id="{{ 'panel' ~ specialization.id }}" class="accordion-inner" data-loaded="0">
+                    <div class="align-center"><img src="{{ imageplaceholder.loading }}"/></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="align-right" style="margin-top: 10px;">
+    
+        <!-- Temporary Condition for Edit and signup Add specializations -->
+        {% if buttonLabel == 'Save' %}
+            <button type="button" class="btn" onclick="$('#add-specialization-wrapper').hide().prev().slideDown().prev().slideDown()">Cancel</button>
+            <button type="submit" class="btn btn-primary" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
+                {{ buttonLabel }}
+            </button>
+        {% else %}
+            <button type="submit" class="btn pull-right btn-primary btn-large">{{ buttonLabel }}</button>
+        {% endif %}
+    </div>
+</form>

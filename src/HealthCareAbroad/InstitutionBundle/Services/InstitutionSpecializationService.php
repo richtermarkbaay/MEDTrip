@@ -30,6 +30,11 @@ class InstitutionSpecializationService
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization');
     }
+    
+    public function prepareMultipleAdd()
+    {
+        
+    }
 
     public function save(InstitutionSpecialization $institutionSpecialization)
     {

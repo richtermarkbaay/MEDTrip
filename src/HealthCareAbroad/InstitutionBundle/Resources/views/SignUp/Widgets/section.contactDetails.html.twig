@@ -11,28 +11,24 @@
                 <div class="control-group website">
                 <div class="span12">
                     <label for="institution_profile_form[websites]">{{ label }} Website</label>
-                    <span class="pull-left"> http:// </span>
-                    {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
+                    <div class="input-prepend">
+                      <span class="add-on">http://</span>
+                      {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
+                    </div>                    
                 </div>
             </div>
 
-       
-                <div class="contactEmail control-group {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
-                        <label for="{{ form.children.contactEmail.vars.id }}">
-                            {{ form.children.contactEmail.vars.label }}
-                        </label>
-                        {{ form_widget(form.contactEmail, { 'attr': {'class': 'span8'} }) }}
-                        {{ form_errors(form.contactEmail )}}
-                    </div>
-           
+            <div class="contactEmail control-group {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                <label for="{{ form.children.contactEmail.vars.id }}">
+                    {{ form.children.contactEmail.vars.label }}
+                </label>
+                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span8'} }) }}
+                {{ form_errors(form.contactEmail )}}
+            </div>
 
-
-            
             {% for _widget in form.contactDetails %}
                 {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
             {% endfor %}
-            
-            
 
         </div>
     </div>

@@ -96,9 +96,8 @@
                 
                 </span></strong>
             </p>
-
+            <p>
             {% for contactDetail in institution.contactDetails %}
-                <p>
                     <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
                     <strong><span id="PhoneNumberText"> 
                       {% if contactDetail.number %}
@@ -107,12 +106,9 @@
                           <b> no phone number </b> added.
                           <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add Phone Number</a>
                       {% endif %}
-                     </span></strong> 
                     </span></strong>
-                </p>
-            {% else %}    
-                <p><i class="icon-phone"></i>Phone<strong><span id="profileNumberText"></span></strong></p>
             {% endfor %}  
+               </p>
         </div>
     {% endblock %}
 {% endembed %}
