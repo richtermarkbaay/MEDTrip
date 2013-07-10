@@ -89,10 +89,8 @@ class TwigMailer implements MailerInterface
             throw new \Exception('Mail sender is required.');
         }
 
-        if (isset($data['user']) && isset($data['password'])) {
-            // TODO: we have to modify mail transport to use this; gmail will
-            // overwrite whatever we set the from field to with the email
-            // address of gmail user account used
+        if (!isset($data['password']) || !$data['password']) {
+            throw new \Exception('Mail account credentials are required.');
         }
 
         return $data;
