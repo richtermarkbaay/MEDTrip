@@ -21,8 +21,8 @@
 
         {% include 'InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig' with {
             specializations : specializations,
-            buttonLabel: 'Save and Continue'
-            saveFormAction: path('institution_medicalCenter_ajaxSaveSpecializations',{imcId: institutionMedicalCenter.id})
+            buttonLabel: 'Save and Continue',
+            saveFormAction: path('institution_medicalCenter_ajaxSaveSpecializations', {imcId: institutionMedicalCenter.id})
         } %}
     </div>
 
@@ -70,7 +70,7 @@ $(function(){
 
         // TODO: ideally we should return the data not html
         if (!accordionInnerElem.data('loaded')) {
-            url = "{{ path('institution_ajax_loadSpecializationComponents') }}"; 
+            url = "{{ path('institution_ajax_loadSpecializationTreatments', {imcId: institutionMedicalCenter.id}) }}"; 
             $.get(url, {specializationId: specializationId}, function(response) {
             	accordionInnerElem.html(response).data('loaded', 1);
             });

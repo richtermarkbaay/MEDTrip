@@ -282,7 +282,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // get the next step redirect url
                 $redirectUrl = $this->generateUrl($this->signUpService->getSingleCenterSignUpNextStep($this->currentSignUpStep)->getRoute(), array('imcId' => $this->institutionService->getFirstMedicalCenter($this->institution)->getId()));
-
                 $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have setup your Clinic profile."); //set flash message
 
                 // TODO: Update this when we have formulated a strategy for our event system
@@ -292,7 +291,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 return $this->redirect($redirectUrl);
 
             } else {
-                $request->getSession()->setFlash('success', "test"); //set flash message
+                $request->getSession()->setFlash('error', "We need you to correct some of your input. Please check the fields in red."); //set flash message
             }
         }
 
@@ -570,6 +569,7 @@ class InstitutionSignUpController extends InstitutionAwareController
     }
 
     /**
+     * @deprecated
      * Note: This might be needed by other parts of the system. If so move this to
      * an appropriate and more generic controller.
      *
@@ -582,7 +582,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
         $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
 
-        $html = $this->renderView('InstitutionBundle:Widgets/Profile:specializations.listForm.html.twig', array(
+        $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
             'form' => $form->createView(),
             'formName' => InstitutionSpecializationFormType::NAME,
             'specializationComponents' => $specializationComponents,
