@@ -1,6 +1,6 @@
 parameters:
     # used by listeners if they should proceed with the sending of the notifications
-    notifications.enabled: true
+    notifications.enabled: false
 
     notification.support.user: "support@healthcareabroad.com"
     notification.support.password: "HCA#602_h3lp"
