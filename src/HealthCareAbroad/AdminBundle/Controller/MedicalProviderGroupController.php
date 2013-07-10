@@ -72,7 +72,7 @@ class MedicalProviderGroupController extends Controller
 
            if ($form->isValid()) {
                $em->persist($medicalProviderGroup);
-               $em->flush($medicalProviderGroup);
+               $em->flush();
 
                // dispatch event
                $eventName = $id ? AdminBundleEvents::ON_EDIT_MEDICAL_PROVIDER_GROUP : AdminBundleEvents::ON_ADD_MEDICAL_PROVIDER_GROUP;
