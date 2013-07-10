@@ -20,6 +20,7 @@
         <h2>Add Specializations<br><small>Please select the ones that apply to your Clinic.</small></h2>
 
         {% include 'InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig' with {
+            imcId: institutionMedicalCenter.id, 
             specializations : specializations,
             buttonLabel: 'Save and Continue',
             saveFormAction: path('institution_medicalCenter_ajaxSaveSpecializations', {imcId: institutionMedicalCenter.id})

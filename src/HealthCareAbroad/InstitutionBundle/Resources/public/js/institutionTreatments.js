@@ -41,12 +41,12 @@ var InstitutionSpecialization = {
     showAddTreatmentsForm: function(_linkElement) {
         $('#new_specializationButton').attr("disabled", "disabled"); //set add new button to disabled
         parentElem = _linkElement.parents('.specializations-profile-listing:first');
-        _modifiableDiv = $(_linkElement.attr('href'));
+        accordionContent = $(_linkElement.attr('href'));
         _divToggle = parentElem.find('.hca-hidden-content:first');
 
-        if(_modifiableDiv.html() == '' ) {
+        if(accordionContent.html() == '' ) {
         	_divToggle.show();
-        	_modifiableDiv.hide();
+        	accordionContent.hide();
             $('#specialization_list_block').children('div').addClass('disabled');
         	parentElem.addClass('process');
             $.ajax({
@@ -54,7 +54,7 @@ var InstitutionSpecialization = {
                 type: 'GET',
                 dataType: 'html',
                 success: function(response){
-                	_modifiableDiv.html(response).slideDown('slow');
+                	accordionContent.html(response).slideDown('slow');
                 	parentElem.removeClass('disabled process');
                     $.each(parentElem.find('.sub-specialization-wrapper'), function(){
                         if($(this).find('input[type=checkbox].treatments:checked').length) {

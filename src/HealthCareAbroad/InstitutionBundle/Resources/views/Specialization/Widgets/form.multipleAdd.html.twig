@@ -10,7 +10,7 @@
                 </a>
             </div>
             <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
-                <div id="{{ 'panel' ~ specialization.id }}" class="accordion-inner" data-loaded="0">
+                <div id="{{ 'panel' ~ specialization.id }}" class="accordion-inner" data-loaded="0" data-load-treatments-url="{{ path('institution_ajax_loadSpecializationTreatments', {imcId: specialization.institutionMedicalCenter.id, specializationId: specialization.specialization.id, isId: specialization.id}) }}">
                     <div class="align-center"><img src="{{ imageplaceholder.loading }}"/></div>
                 </div>
             </div>

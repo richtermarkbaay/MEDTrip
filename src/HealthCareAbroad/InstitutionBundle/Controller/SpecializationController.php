@@ -35,8 +35,8 @@ class SpecializationController extends InstitutionAwareController
     
     public function preExecute()
     {
-        
         parent::preExecute();
+
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
                 ->find($imcId);
@@ -145,6 +145,7 @@ class SpecializationController extends InstitutionAwareController
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
         
         $params =  array(
+            'imcId' => $this->institutionMedicalCenter->getId(),
             'specializations' => $specializations,
             'saveFormAction' => '',
             'buttonLabel' => ''

@@ -14,7 +14,6 @@ institution_ajax_loadSpecializationTreatments:
         _method:  GET
         specializationId: \d+
 
-        
 institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations:
     pattern: /ns-institution/ajax/loadInstitutionMedicalCenterSpecializations
     defaults: {_controller: InstitutionBundle:Specialization:ajaxAddSpecialization}

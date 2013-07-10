@@ -16,8 +16,8 @@
         </span>
         <h4>{{ each.specialization.name }}</h4>
     </div>
-    <div class="hca-hidden-content specializations-profile-listing" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post"></form>
+    <div class="hca-hidden-content specializations-profile-listing">
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadSpecializationTreatments', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post"></form>
     </div>
 
 </div>
