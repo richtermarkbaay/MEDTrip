@@ -40,7 +40,12 @@ twig:
                 advanced: %tinymce_advanced_theme%
                 medium: %tinymce_medium_theme%
                 bbcode: %tinymce_bbcode_theme%
-        
+
+# MailChimp configuration
+rezzza_mail_chimp:
+    api_key: %mailchimp_api_key%
+    connection: %mailchimp_connection%                
+                
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -111,3 +116,57 @@ swiftmailer:
     password:  %mailer_password%
     spool:     { type: memory }
     disable_delivery:  true
+    
+    # Captcha configuration
+gregwar_captcha:
+    as_url: true
+    reload: true
+    distortion: false
+    width: 180
+    height: 60
+    invalid_message: Incorrect captcha code.
+    #text_color: { r: 85, g: 85, b: 85 }
+    background_color: [245, 244, 237]
+
+
+knp_gaufrette:
+    adapters:
+        advertisement_local:
+            service:
+                id: services.media.advertisement_local_adapter
+        advertisement_s3:
+            service:
+                id: services.media.advertisement_s3_adapter
+        doctor_local:
+            service:
+                id: services.media.doctor_local_adapter
+        doctor_s3:
+            service:
+                id: services.media.doctor_s3_adapter
+        institution_local:
+            service:
+                id: services.media.institution_local_adapter
+        institution_s3:
+            service:
+                id: services.media.institution_s3_adapter
+        specialization_local:
+            service:
+                id: services.media.specialization_local_adapter
+        specialization_s3:
+            service:
+                id: services.media.specialization_s3_adapter
+
+    filesystems:
+        advertisement:
+            adapter: advertisement_%media_source%
+            alias: advertisement_filesystem
+        doctor:
+            adapter: doctor_%media_source%
+            alias: doctor_filesystem
+        institution:
+            adapter: institution_%media_source%
+            alias: institution_filesystem
+        specialization:
+            adapter: specialization_%media_source%
+            alias: specialization_filesystem
+    
