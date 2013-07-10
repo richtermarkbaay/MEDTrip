@@ -1,6 +1,6 @@
 parameters:
     # used by listeners if they should proceed with the sending of the notifications
-    notifications.enabled: false
+    notifications.enabled: true
 
     notification.support.user: "support@healthcareabroad.com"
     notification.support.password: "HCA#602_h3lp"
@@ -36,8 +36,8 @@ parameters:
             subject: ~
         notification.inquiries:
             template: "MailerBundle:EmailTemplates:notification.inquiries.html.twig"
-            user: %notification.default.user%
-            password: %notification.default.password%
+            user: %notification.inquiry.user%
+            password: %notification.inquiry.password%
             subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
 services:
     listener.notifications:

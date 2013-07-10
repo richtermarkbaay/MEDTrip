@@ -11,10 +11,10 @@ Sent from: inquiry@healthcareabroad.com
     {% autoescape false %}
 
 --------------------------------------------------------------------------------
-You have received this email inquiry because {{ institution_name }} has a listing on HealthcareAbroad.com. To view your listing visit : {{ url.institution }}
+You have received this email inquiry because {{ facility_name }} has a listing on HealthcareAbroad.com. To view your listing visit : {{ url.facility }}
 --------------------------------------------------------------------------------
 
-Facility: {{ institution_name }}
+Facility: {{ facility_name }}
 
 Name:  {{ inquiry.name }}
 
@@ -33,24 +33,29 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }} .
 {% endblock %}
 
 {% block body_html %}
+<br/>
 
---------------------------------------------------------------------------------
-You have received this email inquiry because {{ institution_name }} has a listing on HealthcareAbroad.com. To view your listing visit : <a href="{{ url.institution }}">{{ url.institution }}</a>
---------------------------------------------------------------------------------
-
-Facility: {{ institution_name }}
-
+<div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
+You have received this email inquiry because {{ facility_name }} has a listing
+on HealthcareAbroad.com.
+<br/>
+To view your listing visit : <a href="{{ url.facility }}">{{ url.facility }}</a>
+<div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
+<br/>
+Facility: {{ facility_name }}
+<br/><br/>
 Name:  {{ inquiry.name }}
-
+<br/><br/>
 Email:  {{ inquiry.email }}
-
+<br/><br/>
 Message:  {{ inquiry.message }}
-
---------------------------------------------------------------------------------
+<br/><br/>
+<div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
+<br/>
 View a history of inquiries and manage your clinic profiles by visiting:  <a href="{{ url.login }}">{{ url.login }}</a>
-
+<br/><br/>
 If you are interested in increasing the amount of leads you receive from HealthcareAbroad.com, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>
-
+<br/><br/>
 Need help?  Contact Support at {{ email.support }} or visit <a href="{{ url.support }}">{{ url.support }}</a>.
 
 {% endblock %}
