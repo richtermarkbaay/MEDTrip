@@ -69,6 +69,9 @@ class TwigMailer implements MailerInterface
         $auth_handler->setUserName($data['user']);
         $auth_handler->setPassword($data['password']);
 
+        //For security:
+        unset($data['password']);
+
         return \Swift_Mailer::newInstance($transport);
     }
 
