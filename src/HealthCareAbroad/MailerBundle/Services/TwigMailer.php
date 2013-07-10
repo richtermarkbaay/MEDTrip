@@ -34,6 +34,10 @@ class TwigMailer implements MailerInterface
             $message->setCc($data['cc']);
         }
 
+        if (isset($data['bcc']) && !empty($data['bcc'])) {
+            $message->setBcc($data['bcc']);
+        }
+
         if (empty($htmlBody)) {
             $message->setBody($textBody);
         } else {
