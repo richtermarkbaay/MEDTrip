@@ -21,7 +21,7 @@ class AccountCreatedListener extends NotificationsListener
         $institutionType = $institutionUser->getInstitution()->getType();
         switch ($institutionType) {
             case InstitutionTypes::SINGLE_CENTER:
-                $urlTreatmentList = $urlProfle.'#specializations';
+                $urlTreatmentList = $urlProfile.'#specializations';
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
                 $urlTreatmentList = $urlDefaultCenter;
@@ -31,7 +31,7 @@ class AccountCreatedListener extends NotificationsListener
         }
         switch ($institutionType) {
             case InstitutionTypes::SINGLE_CENTER:
-                $urlFeatureDoctors = $urlProfle.'#doctors';
+                $urlFeatureDoctors = $urlProfile.'#doctors';
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
                 $urlFeatureDoctors = $urlDefaultCenter;
