@@ -651,8 +651,6 @@ class MedicalCenterController extends InstitutionAwareController
             $data = array('status' => false, 'message' => $form->getErrorsAsString());
         }
 
-        $request->getSession()->setFlash('notice', 'Doctor has been updated.');
-
         return new Response(\json_encode($data),200, array('content-type' => 'application/json'));
     }
 
