@@ -383,30 +383,32 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                    	if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){ 
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	var addBtn = $('<a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small">');
+                		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){
+                    		$("#alertDiv").addClass('alert alert-block');
                     	}else{
-                    		$("#alertDiv").attr('class', '');
+                    		$("#alertDiv").removeClass('alert alert-block');
                     	}
                     	
                        	if(response.institutionMedicalCenter.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
+                    		$('#profileWebsitesText').html('<b>http://'+ response.institutionMedicalCenter.websites +'</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                    		$('#profileWebsitesText').html('<b>no website</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Website'));
                     	}
                        	
                      	if(response.institutionMedicalCenter.contactEmail){
                      		$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
                     	}else{
-                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    		$('#profileEmailText').html('<b>no contact email</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Contact Email'));
                     	}
-                    	
-                     	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
- 	                         $('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
-						}else{
-							$('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
-						} 						
+                     	
+                    	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
+                     		$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
+                    	}else{
+                    		$('#PhoneNumberText').html('<b>no phone number</b> added. ' + + addBtn.html('<i class="icon-plus"></i> Add Phone Number'));
+                    	}
                         break;
+
                     case 'socicalMediaSitesForm':
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
                     	$.each(websites, function(type) {

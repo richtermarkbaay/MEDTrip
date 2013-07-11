@@ -98,17 +98,17 @@
             </p>
             <p>
             {% for contactDetail in institution.contactDetails %}
-                    <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
-                    <strong><span id="PhoneNumberText"> 
-                      {% if contactDetail.number %}
-                         {{ contactDetail }}
-                      {% else %}
-                          <b> no phone number </b> added.
-                          <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add Phone Number</a>
-                      {% endif %}
-                    </span></strong>
+                <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
+                <strong><span id="PhoneNumberText"> 
+                  {% if contactDetail.number %}
+                     {{ contactDetail }}
+                  {% else %}
+                      <b> no phone number </b> added.
+                      <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add Phone Number</a>
+                  {% endif %}
+                </span></strong>
             {% endfor %}  
-               </p>
+            </p>
         </div>
     {% endblock %}
 {% endembed %}

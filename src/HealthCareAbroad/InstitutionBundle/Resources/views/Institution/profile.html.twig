@@ -51,7 +51,6 @@
 
     (function($){
         $(function(){
-
             var ajaxFormUploadElem;
             $('form.ajaxUploadLogoForm').ajaxForm({
                 success: function(response) {
@@ -80,6 +79,10 @@
                     coordinatesElem.val(HCAGoogleMap.latLngString);
                 }
             });
+
+            if($("#PhoneNumberText").find('._alert-phone')){
+        	    $("#show-contact").find('#alertDiv').addClass('alert alert-block');
+        	}
         });
     })(jQuery);
     
@@ -97,12 +100,6 @@
     function updateInstitutionStaticMap() {
         HCAGoogleMap.updateMap(getAddress());
     }
-
-    $(document).ready(function() {
-       if($("#PhoneNumberText").find('._alert-phone')){
-    	    $("#show-contact").find('#alertDiv').addClass('alert alert-block');
-       }
-   }); 
 
 </script>
 {% endblock %}

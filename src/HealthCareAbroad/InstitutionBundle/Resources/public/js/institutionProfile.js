@@ -379,31 +379,32 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){ 
-                    		
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	var addBtn = $('<a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small">');
+
+                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){                    		
+                    		$("#alertDiv").addClass('alert alert-block');
                     	}else{
-                    		$("#alertDiv").attr('class', '');
+                    		$("#alertDiv").removeClass('alert alert-block');
                     	}
                     	
                        	if(response.institution.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
-                    		
+                    		$('#profileWebsitesText').html('<b> http://'+response.institution.websites '</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                    		$('#profileWebsitesText').html('<b>no website</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Website'));
                     	}
                        	
                      	if(response.institution.contactEmail){
                      		$('#profileEmailText').html(response.institution.contactEmail);
                     	}else{
-                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    		$('#profileEmailText').html('<b>no contact email</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Contact Email'));
                     	}
+
                      	if(response.institution.contactDetails.phoneNumber){
- 	                        $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
- 	                    }else{
- 	                        $('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
-                        } 
-                     	
+                     		$('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
+                    	}else{
+                    		$('#PhoneNumberText').html('<b>no phone number</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Phone Number'));
+                    	}
+
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;

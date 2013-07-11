@@ -36,7 +36,14 @@ class SyncCitiesFromGlobalDataCommand extends ContainerAwareCommand
         $currentCities = $this->doctrine->getRepository('HelperBundle:City')->findAll();
         $output->writeln("Updating ".count($currentCities).' cities: ');
         foreach ($currentCities as $_city) {
+            if (!$_city->getOldId()){
+                continue;
+            }
             $output->write("Syncronize {$_city->getName()}: ");
+            if ($_city->getGeoCityId()) {
+                $output->writeln("DONE");
+                continue;
+            }
         
             $sql = "SELECT cg_gct.* FROM `chromedia_global`.`geo_cities` cg_gct WHERE cg_gct.`__old_city_id` = {$_city->getOldId()} LIMIT 1";
             $statement = $this->connection->prepare($sql);

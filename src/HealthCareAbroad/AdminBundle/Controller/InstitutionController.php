@@ -224,7 +224,10 @@ class InstitutionController extends Controller
 	        unset($formVariables['_token']);
 	        $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
 	        
-	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array(''), InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false), array( InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+	        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,
+                array( InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array(''), 
+                       InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, 
+                       InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
 	        $formRequestData = $request->get($form->getName());
 	        if (isset($formRequestData['medicalProviderGroups']) ) {
 	            // we always expect 1 medical provider group
@@ -285,7 +288,10 @@ class InstitutionController extends Controller
     	    unset($formVariables['_token']);
     	    $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
     	   
-    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution,array(InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('')), array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
+    	    $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, 
+    	                    array(  InstitutionProfileFormType::OPTION_HIDDEN_FIELDS => array('') ,
+                                    InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, 
+                                    InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
     	    $formRequestData = $request->get($form->getName());
     	    if (isset($formRequestData['medicalProviderGroups']) ) {
     	        // we always expect 1 medical provider group
@@ -330,8 +336,7 @@ class InstitutionController extends Controller
     {   
         $institutionService = $this->get('services.institution');
         $recentMedicalCenters = $this->get('services.institution')->getRecentlyAddedMedicalCenters($this->institution, new QueryOptionBag(array(QueryOption::LIMIT => 1)));
-        $form = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
-        
+        $form = $this->createForm(new InstitutionProfileFormType(), $this->institution);
         return $this->render('AdminBundle:Institution:view.html.twig', array(
             'recentMedicalCenters' => $recentMedicalCenters,
             'institution' => $this->institution,
@@ -423,7 +428,6 @@ class InstitutionController extends Controller
         $output = array();
         if ($request->isMethod('POST')) {
             $formVariables = $request->get(InstitutionProfileFormType::NAME);
-            unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
             $formRequestData = $request->get($form->getName());
@@ -433,6 +437,9 @@ class InstitutionController extends Controller
                 $this->institution = $form->getData();
                 $this->get('services.institution.factory')->save($this->institution);
                 $response = new Response(\json_encode(array('html' => '<strong>Success!</strong> Updated status for '.$this->institution->getName().'.', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response(\json_encode(array('error' => 'Please fill up the form propery')),400, array('content-type' => 'application/json'));
             }
         }
         else {

@@ -122,11 +122,11 @@
     function updateInstitutionStaticMap() {
         HCAGoogleMap.updateMap(getAddress());
     }
-    
+
     $(document).ready(function() {
-        if($("#PhoneNumberText").find('._alert-phone')){
-            $("#view-contacts").find('#alertDiv').addClass('alert alert-block');
-        }
-    }); 
+       if($("#PhoneNumberText").find('._alert-phone')){
+    	   $("#view-contacts").find('#alertDiv').addClass('alert alert-block');
+       }
+    });
 </script>
 {% endblock %}
