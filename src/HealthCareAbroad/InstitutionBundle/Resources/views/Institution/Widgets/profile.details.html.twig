@@ -71,42 +71,40 @@
 
     {% block viewContent %}
      {% set _website = get_website_from_array(institution.websites)  %}
-        <div id="alertDiv" class="{{ _website != '' and institution.contactEmail != '' ? '' :'alert alert-block' }}">
+        <div id="alertDiv" class="{{ _website == '' or institution.contactEmail == '' or not institution.contactDetails.count ? 'alert alert-block' : '' }}">
             <p>
-                <i class="icon-globe"> </i>
-                Website:<span id="profileWebsitesText"> 
-                   
+                <i class="icon-globe"></i> Website:
+                <span id="profileWebsitesText"> 
                     {% if _website %}
-                        <b >http://www.{{_website}} </b>
+                        <b>http://{{_website}}</b>
                     {% else %}
-                        <b> no hospital website </b> added.
-                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
+                        <b>no website</b> added.
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add website</a>
                     {% endif %}
                 </span>
             </p>
             <p>
-                <i class="icon-envelope"></i>
-                Email: <span id="profileEmailText"> 
-                {% if institution.contactEmail %}
-                   <b> {{ institution.contactEmail }}</b>
-                {% else %}
-                    <b> no contact email </b> added.
-                    <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
-                {% endif %}
-                
+                <i class="icon-envelope"></i> Email: 
+                <span id="profileEmailText">
+                    {% if institution.contactEmail %}
+                       <b>{{ institution.contactEmail }}</b>
+                    {% else %}
+                        <b>no contact email</b> added.
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add contact email</a>
+                    {% endif %}
                 </span>
             </p>
             <p>
             {% for contactDetail in institution.contactDetails %}
                 <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
-                <strong><span id="PhoneNumberText"> 
+                <span id="PhoneNumberText"> 
                   {% if contactDetail.number %}
-                     {{ contactDetail }}
+                     <b>{{ contactDetail }}</b>
                   {% else %}
-                      <b> no phone number </b> added.
-                      <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add Phone Number</a>
+                      <b>no phone number</b> added.
+                      <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i>Add phone number</a>
                   {% endif %}
-                </span></strong>
+                </span>
             {% endfor %}  
             </p>
         </div>

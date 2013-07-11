@@ -74,11 +74,10 @@
     {% block viewContent %}
         {% set _website = get_website_from_array(institutionMedicalCenter.websites)  %}
           <div id="alertDiv" class="{{ _website != '' and institutionMedicalCenter.contactEmail != '' ?  '' :'alert alert-block' }}">
-            <p>  <i class="icon-globe"  ></i>
+            <p>  <i class="icon-globe"></i>
                 Website: <span id="profileWebsitesText"> 
                     {% if _website %}
-                       
-                       <b >http://www.{{_website}} </b>
+                       http://<b>{{_website}}</b>
                     {% else %}
                         <b> no clinic website </b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>

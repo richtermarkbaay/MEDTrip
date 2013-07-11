@@ -192,6 +192,7 @@ class InstitutionAccountController extends InstitutionAwareController
         if ($request->isMethod('POST')) {
             try {
                 $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
+                
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));

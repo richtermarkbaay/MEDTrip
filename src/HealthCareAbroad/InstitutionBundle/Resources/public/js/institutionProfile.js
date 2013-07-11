@@ -379,7 +379,7 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                    	var addBtn = $('<a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small">');
+                    	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
 
                     	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){                    		
                     		$("#alertDiv").addClass('alert alert-block');
@@ -388,21 +388,21 @@ var InstitutionProfile = {
                     	}
                     	
                        	if(response.institution.websites){
-                    		$('#profileWebsitesText').html('<b> http://'+response.institution.websites '</b>');
+                    		$('#profileWebsitesText').html('<b>http://'+response.institution.websites + '</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b>no website</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Website'));
+                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'hospital website'));
                     	}
                        	
                      	if(response.institution.contactEmail){
-                     		$('#profileEmailText').html(response.institution.contactEmail);
+                     		$('#profileEmailText').html('<b>'+response.institution.contactEmail+ '</b>');
                     	}else{
-                    		$('#profileEmailText').html('<b>no contact email</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Contact Email'));
+                    		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
 
                      	if(response.institution.contactDetails.phoneNumber){
-                     		$('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
+                     		$('#PhoneNumberText').html('<b>'+response.institution.contactDetails.phoneNumber + '</b>');
                     	}else{
-                    		$('#PhoneNumberText').html('<b>no phone number</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Phone Number'));
+                    		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
                     	}
 
                         break;
@@ -441,7 +441,7 @@ var InstitutionProfile = {
                     if (errors.length) {
                         $.each(errors, function(key, item){
                         	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
 
