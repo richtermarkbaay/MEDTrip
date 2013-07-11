@@ -609,8 +609,6 @@ class MedicalCenterController extends InstitutionAwareController
 
         } catch (\Exception $e) {}
 
-
-
         return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
 
@@ -964,40 +962,6 @@ class MedicalCenterController extends InstitutionAwareController
         //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
 
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-    }
-
-    /**
-     * Add an medical specialist to medical center
-     * Required parameters:
-     *     - institutionId
-     *     - imcId institution medical center id
-     *     - docorId doctor id
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @author Chaztine Blance
-     */
-    public function ajaxAddSpecialistAction(Request $request)
-    {
-        $specialist = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id'));
-
-        if (!$specialist) {
-            throw $this->createNotFoundException();
-        }
-        // check if this medical center already have this property
-        if ($this->get('services.institution_medical_center')->hasSpecialist($this->institutionMedicalCenter, $request->get('id'))) {
-            $response = new Response("Medical specialist value {$specialist->getId()} already exists.", 500);
-        }
-        else {
-            $this->institutionMedicalCenter->addDoctor($specialist);
-            $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-
-            $html = $this->renderView('InstitutionBundle:MedicalCenter:tableRow.specialist.html.twig', array('doctors' => array($specialist) , 'institutionMedicalCenter' => $this->institutionMedicalCenter));
-            $calloutView = $this->_getEditMedicalCenterCalloutView();
-            $response = new Response(\json_encode(array('html' => $html, 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
-        }
-
-        return $response;
     }
 
     public function ajaxRemoveSpecialistAction(Request $request)
