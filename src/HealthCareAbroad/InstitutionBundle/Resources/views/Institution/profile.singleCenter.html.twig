@@ -29,31 +29,6 @@
             </div>
        </div><!-- /.tab-content -->
     </div>
-
-    <script type="text/javascript">
-    /* This is a quick and dirty solution. Will refactor when I get the time. (HAM) */
-    (function() {
-        var hashMatch = (function() {
-            switch (window.location.hash) {
-            case '#specializations':
-                return { 'tab': 'specializations_tab', 'content': 'specializations_tab_content' };
-            case '#doctors':
-                return { 'tab': 'doctors_tab', 'content': 'doctors_tab_content' };
-            }
-            return false;
-        })();
-
-        if (hashMatch) {
-            /*are the selectors unique enough?*/
-            $("ul.nav-tabs > li").each(function() {
-                $(this).attr('id') == hashMatch.tab ? $(this).addClass('active') : $(this).removeClass('active');
-            });
-            $("div#tabbed_content > div").each(function() {
-                $(this).attr('id') == hashMatch.content ? $(this).addClass('active') : $(this).removeClass('active');
-            });
-        }
-    })();
-    </script>
 </div>
 
 {% block inlineJavascriptCode %}

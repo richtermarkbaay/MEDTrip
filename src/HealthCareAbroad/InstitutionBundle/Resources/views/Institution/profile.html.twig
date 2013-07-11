@@ -4,16 +4,16 @@
 {% set _csrf_token_widget = form_widget(institutionForm._token) %}
 {% set globalAwardClassLabel = getClassLabel('global_award') %}
 {% set ancillaryServiceClassLabel = getClassLabel('ancilliary_service') %}
-{% block content %}   
+{% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
-    
+
         {% block wrappedContent %}
              <div id="back-top">
                 <div class="backtotop img-rounded">
                     <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
                 </div>
             </div>
-            <!-- Main Content -->    
+            <!-- Main Content -->
             {% include 'InstitutionBundle:Widgets/Profile:banner.html.twig' %}
 
             {% if (isSingleCenter is defined) and isSingleCenter %}
@@ -26,13 +26,46 @@
             {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
             <!-- end Modal Institution name -->
         {% endblock %}
-        
+
     {% endembed %}
 
 {% endblock %}
 
 
 {% block inlineJavascriptCode %}
+<script type="text/javascript">
+/* This is a quick and dirty solution. Will refactor when I get the time. (HAM) */
+(function() {
+    var hashMatch = (function() {
+        switch (window.location.hash) {
+        case '#specializations':
+            return { 'action': 'openTab', 'tab': 'specializations_tab', 'content': 'specializations_tab_content' };
+        case '#doctors':
+            return { 'action': 'openTab', 'tab': 'doctors_tab', 'content': 'doctors_tab_content' };
+        case '#contact-details':
+            return { 'action': 'scrollTo', 'section': 'show-contact' }
+        }
+        return false;
+    })();
+
+    if (hashMatch) {
+        if (hashMatch.action == 'scrollTo') {
+            $('html, body').animate({
+                 'scrollTop': $('#' + hashMatch.section).offset().top
+            }, 1000);
+        } else if (hashMatch.action == 'openTab') {
+            /*are the selectors unique enough?*/
+            $("ul.nav-tabs > li").each(function() {
+                $(this).attr('id') == hashMatch.tab ? $(this).addClass('active') : $(this).removeClass('active');
+            });
+            $("div#tabbed_content > div").each(function() {
+                $(this).attr('id') == hashMatch.content ? $(this).addClass('active') : $(this).removeClass('active');
+            });
+        }
+    }
+})();
+</script>
+
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
@@ -81,18 +114,18 @@
             });
         });
     })(jQuery);
-    
-    
+
+
     function getAddress() {
-        var address = ''; 
+        var address = '';
         if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
         if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
         if(cityElem.val() != '') { address += $("#input-{{ institutionForm.getChild('city').vars.id }}").val() + ', '; }
         if(countryElem.val() != '') { address += countryInputElem.val(); }
-        
+
         return address;
     }
-    
+
     function updateInstitutionStaticMap() {
         HCAGoogleMap.updateMap(getAddress());
     }
