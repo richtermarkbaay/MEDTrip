@@ -36,7 +36,7 @@
             </section>
             {% endif %} 
             
-            {% if isSingleCenter %}
+            {% if not isSingleCenter %}
                 {% set _centers = render_incomplete_clinic_profile(institution) %}
                 {% if _centers is not empty %}
                 <section class="section row-fluid">

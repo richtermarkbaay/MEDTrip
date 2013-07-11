@@ -1,5 +1,5 @@
 <section class="section action-info hca-main-profile">
-    <a id="{{ toggleBtnId }}" class="btn btn-misc pull-right btn-default btn-edit {{ toggleBtnClass is defined ? toggleBtnClass : '' }}" data-edit-elem="#{{ editElemId }}" data-view-elem="#{{ viewElemId }}" onclick="{{ editOnClick }}">Edit</a>
+    <a id="{{ toggleBtnId }}" class="btn btn-misc pull-right btn-default btn-edit {{ toggleBtnClass is defined ? toggleBtnClass : '' }}" data-edit-elem="#{{ editElemId }}" data-view-elem="#{{ viewElemId }}" onclick="{{ editOnClick }}"><i class="icon-edit"></i> Edit</a>
     <h3>{{ title|raw }} {% block headingHelptext %}{% endblock %}</h3>
     <div id="{{ viewElemId }}">
         {% block viewContent %}{% endblock %}

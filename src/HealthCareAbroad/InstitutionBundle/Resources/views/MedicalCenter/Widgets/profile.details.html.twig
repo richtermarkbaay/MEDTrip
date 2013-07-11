@@ -74,11 +74,10 @@
     {% block viewContent %}
         {% set _website = get_website_from_array(institutionMedicalCenter.websites)  %}
           <div id="alertDiv" class="{{ _website != '' and institutionMedicalCenter.contactEmail != '' ?  '' :'alert alert-block' }}">
-            <p>  <i class="icon-globe"  ></i>
+            <p>  <i class="icon-globe"></i>
                 Website: <span id="profileWebsitesText"> 
                     {% if _website %}
-                       http://www.
-                       <b >  {{_website}} </b>
+                       http://<b>{{_website}}</b>
                     {% else %}
                         <b> no clinic website </b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
@@ -86,27 +85,27 @@
                 </span>
             </p>
             <p> <i class="icon-envelope"> </i>
-                Email: <strong> <span id="profileEmailText"> 
+                Email: <span id="profileEmailText"> 
                    {% if institutionMedicalCenter.contactEmail %}
                        {{ institutionMedicalCenter.contactEmail }}
                     {% else %}
                         <b> no contact email </b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
                     {% endif %}
-                </span>  </strong>
+                </span>
             </p>
 
             <p>
                 {% for contactDetail in institutionMedicalCenter.contactDetails %}
                    <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}
-                   <strong><span id="PhoneNumberText">
+                   <span id="PhoneNumberText">
                      {% if contactDetail.number %}
                              {{ contactDetail }}
                      {% else %}
                              <b> no phone number </b> added.
                               <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i>Add Phone Number</a>
                      {% endif %}
-                    </span> </strong>
+                    </span> 
                 {% endfor %}  
             </p>
         </div>

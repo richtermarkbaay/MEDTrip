@@ -116,23 +116,20 @@ class ContactDetailService
      * @author Chaztine Blance
      */
     
-    public function initializeContactDetails($parentObject, $types){
-        
-        $newTypes = array();
-        foreach($types as $type){
-            $newTypes[$type] = '';
-        }
-     
+    public function initializeContactDetails($parentObject, $types)
+    {
+        $types = array_flip($types);
+
         foreach ($parentObject->getContactDetails() as $contact){
-            unset($newTypes[$contact->getType()]);
+            unset($types[$contact->getType()]);
         }
-        
-        foreach($newTypes as $key => $dummy) {
+
+        foreach($types as $type => $dummy) {
             $number = new ContactDetail();
-            $number->setType($key);
+            $number->setType($type);
             $parentObject->addContactDetail($number);
         }
-        
+
         return $parentObject;
     }
     

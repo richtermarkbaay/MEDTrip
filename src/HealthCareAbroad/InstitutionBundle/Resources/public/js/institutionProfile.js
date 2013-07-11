@@ -275,7 +275,7 @@ var InstitutionProfile = {
         	editElem.slideUp('slow', function(){
         		InstitutionProfile.undoChecked(editElem);
         		viewElem.fadeIn();
-            	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+            	elem.addClass('btn-misc').removeClass('btn-link').html('<i class="icon-edit"></i> Edit');
             	$('section.hca-main-profile .edit-awards').removeClass('disabled');
         	});
     	}
@@ -379,31 +379,32 @@ var InstitutionProfile = {
                         break;
     
                     case 'numberModalForm':
-                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){ 
-                    		
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
+
+                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){                    		
+                    		$("#alertDiv").addClass('alert alert-block');
                     	}else{
-                    		$("#alertDiv").attr('class', '');
+                    		$("#alertDiv").removeClass('alert alert-block');
                     	}
                     	
                        	if(response.institution.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
-                    		
+                    		$('#profileWebsitesText').html('<b>http://'+response.institution.websites + '</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'hospital website'));
                     	}
                        	
                      	if(response.institution.contactEmail){
-                     		$('#profileEmailText').html(response.institution.contactEmail);
+                     		$('#profileEmailText').html('<b>'+response.institution.contactEmail+ '</b>');
                     	}else{
-                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
+
                      	if(response.institution.contactDetails.phoneNumber){
- 	                        $('#PhoneNumberText').html(response.institution.contactDetails.phoneNumber);
- 	                    }else{
- 	                        $('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
-                        } 
-                     	
+                     		$('#PhoneNumberText').html('<b>'+response.institution.contactDetails.phoneNumber + '</b>');
+                    	}else{
+                    		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
+                    	}
+
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;
@@ -440,7 +441,7 @@ var InstitutionProfile = {
                     if (errors.length) {
                         $.each(errors, function(key, item){
                         	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
 

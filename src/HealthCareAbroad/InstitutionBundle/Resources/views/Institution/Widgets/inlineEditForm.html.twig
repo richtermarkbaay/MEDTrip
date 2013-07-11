@@ -1,4 +1,4 @@
-<form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" onsubmit="return InstitutionProfile.submitForm($(this))">
+<form id="{{ formId }}" action="{{ path('institution_ajaxUpdateProfileByField') }}" onsubmit="return InstitutionProfile.submitForm($(this))" novalidate="novalidate">
     {% for each in fields %}
         {% if each == 'description' %}
             <div class="description control-group">   
