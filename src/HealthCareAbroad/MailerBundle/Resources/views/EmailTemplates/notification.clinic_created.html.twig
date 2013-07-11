@@ -18,7 +18,7 @@ We've received the clinic information you submitted. For quality assurance purpo
 
 To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 - Review your clinic information (static list) {{ url.center }}
-- Add any units or departments you may have missed
+- Add any units or departments you may have missed {{ url.add_centers }}
 - Post photos of your clinic {{ url.center_gallery }}
 - Review the treatments you listed {{ url.center_treatments }}
 - Review your doctor list {{ url.center_doctors }}
@@ -26,7 +26,7 @@ To insure prospective patients find complete and relevant information about ever
 To add to your clinic profile please login at: {{ url.login }}
 
 Prospective patients will contact your clinic through:
-- Email inquiries will be sent to #Listing_Email#
+- Email inquiries will be sent to {{ email.inquiries }}
 
 Give your patients the ability to connect to your clinic through social media, web links, and by telephone. Strengthen your clinic’s brand by including a cover photo, logo, photo gallery, and videos on your Clinic Profile page by upgrading your clinic’s listing. Packages start at less than $1 per day, and can have an immediate impact.  If you are interested in upgrading, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: {{ url.advertising_guide }} .
 
@@ -48,7 +48,7 @@ We've received the clinic information you submitted. For quality assurance purpo
 To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 <ul>
     <li><a href="{{ url.center }}">Review your clinic information (static list)</a></li>
-    <li><a href="">Add any units or departments you may have missed</a></li>
+    <li><a href="{{ url.add_centers }}">Add any units or departments you may have missed</a></li>
     <li><a href="{{ url.center_gallery }}">Post photos of your clinic</a></li>
     <li><a href="{{ url.center_treatments }}">Review the treatments you listed</a></li>
     <li><a href="{{ url.center_doctors }}">Review your doctor list</a></li>
@@ -58,7 +58,7 @@ To add to your clinic profile please login at: <a href="{{ url.login }}">{{ url.
 <br/><br/>
 Prospective patients will contact your clinic through:
 <ul>
-    <li>Email inquiries will be sent to #Listing_Email#</li>
+    <li>Email inquiries will be sent to {{ email.inquiries }}</li>
 </ul>
 <br/>
 Give your patients the ability to connect to your clinic through social media, web links, and by telephone. Strengthen your clinic’s brand by including a cover photo, logo, photo gallery, and videos on your Clinic Profile page by upgrading your clinic’s listing. Packages start at less than $1 per day, and can have an immediate impact.  If you are interested in upgrading, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: {{ url.advertising_guide }} .

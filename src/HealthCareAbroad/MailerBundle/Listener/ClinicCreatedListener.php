@@ -21,16 +21,28 @@ class ClinicCreatedListener extends NotificationsListener
         $urlCenter = $router->generate('institution_medicalCenter_view', array('imcId' => $institutionMedicalCenter->getId()), true);
 
         $to = $event->getArgument('userEmail');
+
+        $inquiriesEmail = $institutionMedicalCenter->getContactEmail();
+        if (empty($inquiriesEmail)) {
+            if (!$inquiriesEmail = $institution->getContactEmail()) {
+                $inquiriesEmail = $this->container->get('services.institution')->getAccountOwner($institution)->getEmail();
+            }
+        }
+
         $data = array(
             'clinic_name' => $institutionMedicalCenter->getName(),
             'institution_name' => $institution->getName(),
             'to' => $to,
+            'email' => array(
+                'inquiries' => $inquiriesEmail
+            ),
             'url' => array(
                 'center' => $urlCenter,
+                'add_centers' => $router->generate('institution_medicalCenter_index', array(), true),
                 'center_gallery' => $router->generate('institution_mediaGallery_index', array(), true),
                 'center_treatments' => $urlCenter.'#specializations',
                 'center_doctors' => $urlCenter.'#doctors',
-                'contact_info' => $urlCenter.'#contact-info'
+                'contact_info' => $urlCenter.'#contact-details'
             )
         );
 

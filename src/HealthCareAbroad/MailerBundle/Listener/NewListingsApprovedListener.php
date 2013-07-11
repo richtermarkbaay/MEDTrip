@@ -25,6 +25,7 @@ class NewListingsApprovedListener extends NotificationsListener
             'to' => $accountOwner->getEmail(),
             'url' => array(
                 'center' => $urlCenter,
+                'add_centers' => $router->generate('institution_medicalCenter_index', array(), true),
                 'center_gallery' => $router->generate('institution_mediaGallery_index', array(), true),
                 'center_treatments' => $urlCenter.'#specializations',
                 'center_doctors' => $urlCenter.'#doctors',
