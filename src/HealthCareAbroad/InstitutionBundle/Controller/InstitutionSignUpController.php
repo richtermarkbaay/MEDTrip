@@ -286,7 +286,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // TODO: Update this when we have formulated a strategy for our event system
                 // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-                //$this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
+                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_HOSPITAL_CREATED, new GenericEvent($this->institution));
 
                 return $this->redirect($redirectUrl);
 
