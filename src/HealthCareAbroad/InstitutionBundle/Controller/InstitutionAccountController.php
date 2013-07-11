@@ -240,10 +240,10 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
                         if($key == 'services'){
-                            
+
                             $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                                'institution' => $this->institution,
+                                'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
                             ));
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));

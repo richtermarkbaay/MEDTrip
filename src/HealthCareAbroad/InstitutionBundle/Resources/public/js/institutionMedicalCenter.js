@@ -126,7 +126,6 @@ var InstitutionMedicalCenter = {
         	
         	viewElem.hide();
         	editElem.slideDown('slow', function(){
-        		console.log(elem.attr('data-edit-elem'));
             	if(elem.attr('data-edit-elem') == "#address") {
         	        google.maps.event.trigger(HCAGoogleMap.map, 'resize');
             	}
@@ -285,7 +284,6 @@ var InstitutionMedicalCenter = {
                 },
                 error: function(response) {
                     console.log(response);
-                   
                 }
             });
         }
@@ -383,7 +381,8 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
-                    	var addBtn = $('<a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small">');
+                    	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
+
                 		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){
                     		$("#alertDiv").addClass('alert alert-block');
                     	}else{
@@ -393,19 +392,19 @@ var InstitutionMedicalCenter = {
                        	if(response.institutionMedicalCenter.websites){
                     		$('#profileWebsitesText').html('<b>http://'+ response.institutionMedicalCenter.websites +'</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b>no website</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Website'));
+                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'clinic website'));
                     	}
                        	
                      	if(response.institutionMedicalCenter.contactEmail){
-                     		$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                     		$('#profileEmailText').html('<b>'+response.institutionMedicalCenter.contactEmail+'</b>');
                     	}else{
-                    		$('#profileEmailText').html('<b>no contact email</b> added. ' + addBtn.html('<i class="icon-plus"></i> Add Contact Email'));
+                    		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
                      	
                     	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
-                     		$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
+                     		$('#PhoneNumberText').html('<b>'+response.institutionMedicalCenter.contactDetails.phoneNumber+'</b>');
                     	}else{
-                    		$('#PhoneNumberText').html('<b>no phone number</b> added. ' + + addBtn.html('<i class="icon-plus"></i> Add Phone Number'));
+                    		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
                     	}
                         break;
 
@@ -421,7 +420,7 @@ var InstitutionMedicalCenter = {
                   	break;
                        
                     case 'servicesForm':
-                    	$('#serviceTable').html(response.html);
+                    	$('#servicesTable').html(response.html);
                     	break;
                     case 'awardsForm':
                 		$("div[id^='show-']").animate({
@@ -443,8 +442,10 @@ var InstitutionMedicalCenter = {
 
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
+                
                 // Display Callout Message
-                HCA.alertMessage('success', response);
+
+                HCA.alertMessage('success', 'Clinic Profile has been updated!');
             },
 
             error: function(response) {
@@ -454,16 +455,13 @@ var InstitutionMedicalCenter = {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         $.each(errors, function(key, item){
-                        	$('.control-group.'+item.field).addClass('error');
-                        	$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
+                        	$('.control-group.ajax-field'+item.field).addClass('error');
+                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
 
-                    _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                	_parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+                	HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
                 }
-
-                HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
             }
         });
         return false;

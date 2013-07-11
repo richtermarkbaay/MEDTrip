@@ -1,4 +1,5 @@
-{% if isSingleCenter %}
+
+{% if app.request.attributes.get('_route') == 'institution_medicalCenter_view' or app.request.attributes.get('_route') == 'institution_medicalCenter_ajaxUpdateProfileByField' %}
     {% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
     {% set onclickFunction = "InstitutionMedicalCenter.toggleForm($('#clinic-edit-services-btn'))" %}
 {% else %}
@@ -17,10 +18,8 @@
 {% else %}
     <div class="alert alert-block">
         <p class="hca-helptext">		
-            You haven't yet added any services for your hospital. Explain here the need to add services for your hospital.
+            You haven't yet added any services for your {{ institutionLabel }}. Explain here the need to add services for your {{ institutionLabel }}.
         </p>
-        <button type="button" class="btn btn-primary" onclick="{{ onclickFunction }}">
-            <i class="icon-plus"></i> Add Entry	
-        </button>
+        <button type="button" class="btn btn-primary" onclick="{{ onclickFunction }}"><i class="icon-plus"></i> Add Entry</button>
     </div>
 {% endif %}

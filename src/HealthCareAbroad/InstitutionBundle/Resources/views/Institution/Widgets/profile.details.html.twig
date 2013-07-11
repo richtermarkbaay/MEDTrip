@@ -71,7 +71,7 @@
 
     {% block viewContent %}
      {% set _website = get_website_from_array(institution.websites)  %}
-        <div id="alertDiv" class="{{ _website == '' or institution.contactEmail == '' or not institution.contactDetails.count ? 'alert alert-block' : '' }}">
+        <div id="alertDiv" class="{{ _website == '' or institution.contactEmail == '' or not institution.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p>
                 <i class="icon-globe"></i> Website:
                 <span id="profileWebsitesText"> 
