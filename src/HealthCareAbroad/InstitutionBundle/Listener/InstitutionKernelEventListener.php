@@ -75,8 +75,7 @@ class InstitutionKernelEventListener
         $session = $request->getSession();
         $matchedRoute = $request->get('_route');
 
-        if ( !\preg_match('/^institution/', \preg_match('/^\/institution/', $request->getPathInfo()))) {
-            // request is an AJAX request or request pattern does not start with /institution
+        if (!\preg_match('/^\/institution/', $request->getPathInfo())) {
             return false;
         }
 
@@ -134,6 +133,6 @@ class InstitutionKernelEventListener
     
     private function _getAllowedSignupRoutes() {
 
-        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor', 'institution_signup_finish');
+        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor', 'institution_signup_finish', 'institution_medicalCenter_addExistingDoctor');
     }
 }

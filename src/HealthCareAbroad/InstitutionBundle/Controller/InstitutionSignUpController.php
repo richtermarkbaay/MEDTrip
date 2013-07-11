@@ -459,19 +459,22 @@ class InstitutionSignUpController extends InstitutionAwareController
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
-            $institutionSpecialization = $request->get(InstitutionSpecializationFormType::NAME);
 
-            //array of specialization ids each containing an array of treatment ids
-            if ($treatments = $institutionSpecialization['treatments']) {
-                $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $treatments);
+            $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
+
+            if (\count($specializationsWithTreatments)) {
+
+                $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
+
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep, true);
 
-                // next step url
-
                 $redirectUrl = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
+
                 return $this->redirect($redirectUrl);
+
+            } else {
+                $request->getSession()->setFlash('error', 'Please select at least one specialization.');
             }
-            $error = 'Please select at least one specialization.';
         }
 
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(

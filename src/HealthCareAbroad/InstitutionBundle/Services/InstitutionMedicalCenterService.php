@@ -541,7 +541,7 @@ class InstitutionMedicalCenterService
             $specializationIds[] = $specializationId;
             
         }
-        
+
         $conn = $this->doctrine->getEntityManager()->getConnection();
         $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE status = 1";
         $sqlQuery = "INSERT INTO institution_specializations (description, status, specialization_id, institution_medical_center_id) VALUES $subQuery";
@@ -550,14 +550,15 @@ class InstitutionMedicalCenterService
         $sqlQuery ="SELECT id, specialization_id from institution_specializations where institution_medical_center_id = " . 
                 $institutionMedicalCenter->getId() . " and specialization_id in ( " . implode(',', $specializationIds). ")";
         $result = $conn->executeQuery($sqlQuery);
-        
+
         $subQuery = '';
         foreach($result as $each) {
-            $treatmentIds = $institutionTreatmentIds[$each['specialization_id']];
+            $treatmentIds = $institutionTreatmentIds[$each['specialization_id']]['treatments'];
             foreach ($treatmentIds as $treatmentId) {
                 $subQuery .= "(". $each['id'].", ". $treatmentId ."),";
             }
         }
+
         $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
         $sqlQuery = "INSERT INTO institution_treatments (institution_specialization_id, treatment_id) VALUES $subQuery";
         $conn->executeQuery($sqlQuery);
