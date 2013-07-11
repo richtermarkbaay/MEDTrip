@@ -14,15 +14,15 @@ class HospitalProfileCreatedListener extends NotificationsListener
     public function getData(Event $event)
     {
         $institution = $event->getSubject();
-
         $router = $this->container->get('router');
 
         $urlDefaultCenter = $router->generate('institution_medicalCenter_index', array(), true);
         $urlDefaultCenterGallery = $router->generate('institution_mediaGallery_index', array(), true);
+
         $institutionType = $institution->getType();
         switch ($institutionType) {
             case InstitutionTypes::SINGLE_CENTER:
-                $urlTreatmentList = $urlProfle.'#specializations';
+                $urlTreatmentList = $urlDefaultCenter.'#specializations';
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
                 $urlTreatmentList = $urlDefaultCenter;
@@ -32,7 +32,7 @@ class HospitalProfileCreatedListener extends NotificationsListener
         }
         switch ($institutionType) {
             case InstitutionTypes::SINGLE_CENTER:
-                $urlFeatureDoctors = $urlProfle.'#doctors';
+                $urlFeatureDoctors = $urlDefaultCenter.'#doctors';
                 break;
             case InstitutionTypes::MULTIPLE_CENTER:
                 $urlFeatureDoctors = $urlDefaultCenter;
