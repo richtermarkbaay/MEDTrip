@@ -1,0 +1,30 @@
+institution_error_500:
+    pattern: /error500.html
+    defaults: { _controller: InstitutionBundle:Error:error500 }
+    requirements:
+        _method: GET
+                
+institution_error_401:
+    pattern: /401
+    defaults: { _controller: InstitutionBundle:Error:error401 }
+    requirements:
+        _method: GET
+        
+institution_error_403:
+    pattern: /403
+    defaults: { _controller: InstitutionBundle:Error:error403 }
+    requirements:
+        _method: GET
+        
+institution_page_exception_report_send:
+    pattern: /ajax-send-error
+    defaults: { _controller: InstitutionBundle:Error:ajaxSendErrorReport }
+    requirements:
+        _method:  POST
+        
+institution_exception_report_create:
+    pattern: /error
+    defaults: { _controller: InstitutionBundle:Error:errorReport }
+    requirements:
+        _method:  GET|POST
+        

@@ -65,6 +65,16 @@ InstitutionBundle_properties:
     resource: "@InstitutionBundle/Resources/config/routing_institutionProperties.yml"
     prefix:   /
 
+# Routes for Institution Error Controller #
+InstitutionBundle_error:
+    resource: "@InstitutionBundle/Resources/config/routing_error.yml"
+    prefix:   /institution
+    
+# Routes for Inquiry Controller #
+InstitutionBundle_inquiry:
+    resource: "@InstitutionBundle/Resources/config/routing_inquiry.yml"
+    prefix:   /institution
+    
 institution_loadCities:
     pattern:  /location/load-cities/{countryId}
     defaults: { _controller: HelperBundle:Default:loadCities }
@@ -75,12 +85,6 @@ institution_showEditHistory:
     requirements:
         _method: GET
         objectId: \d+
-
-institution_page_exception_report_send:
-    pattern: /ajax-send-error
-    defaults: { _controller: InstitutionBundle:Error:ajaxSendErrorReport }
-    requirements:
-        _method:  POST
 
 institution_homepage:
     pattern:  /institution/dashboard
@@ -114,12 +118,6 @@ institution_addAncilliaryService:
     requirements:
         institutionId: \d+
        
-institution_exception_report_create:
-    pattern: /institution/error
-    defaults: { _controller: InstitutionBundle:Error:errorReport }
-    requirements:
-        _method:  GET|POST
-
 institution_terms_of_use:
     pattern: /institution/termsofuse.html
     defaults: { _controller: InstitutionBundle:StaticPage:termsOfUse }
@@ -137,60 +135,6 @@ institution_faq:
     defaults: { _controller: InstitutionBundle:StaticPage:faq }
     requirements:
         _method: GET
-        
-institution_error_500:
-    pattern: /institution/error500.html
-    defaults: { _controller: InstitutionBundle:Error:error500 }
-    requirements:
-        _method: GET
-                
-institution_error_401:
-    pattern: /institution/401
-    defaults: { _controller: InstitutionBundle:Error:error401 }
-    requirements:
-        _method: GET
-        
-institution_error_403:
-    pattern: /institution/403
-    defaults: { _controller: InstitutionBundle:Error:error403 }
-    requirements:
-        _method: GET
-            
-institution_inquiries:
-    pattern: /institution/inquiries
-    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
-    requirements:
-        _method: GET|POST
-        
-institution_view_inquiry:
-    pattern: /institution/inquiry/{id}/view
-    defaults: { _controller: InstitutionBundle:Dashboard:viewInquiry }
-    requirements:
-        _method: GET|POST 
-
-institution_delete_inquiry:
-    pattern: /institution/inquiry/{id}/remove
-    defaults: { _controller: InstitutionBundle:Dashboard:removeInquiry }
-    requirements:
-        _method: GET|POST
-
-institution_mark_inquiry:
-    pattern: /institution/inquiry/ajaxSetInstitutionInquiryStatus
-    defaults: { _controller: InstitutionBundle:Dashboard:ajaxSetInstitutionInquiryStatus }
-    requirements:
-        _method: GET|POST
-       
-institution_view_readInquiries:
-    pattern: /institution/{tabName}-inquiries
-    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
-    requirements:
-        _method: GET|POST 
-       
-institution_view_unreadInquiries:
-    pattern: /institution/{tabName}-inquiries
-    defaults: { _controller: InstitutionBundle:Dashboard:viewAllInquiries }
-    requirements:
-        _method: GET|POST 
         
 # removed this route, this will cause invalid urls to fall here. 
 # TODO: find a better approach for static pages
