@@ -23,7 +23,7 @@
             imcId: institutionMedicalCenter.id, 
             specializations : specializations,
             buttonLabel: 'Save and Continue',
-            saveFormAction: path('institution_medicalCenter_ajaxSaveSpecializations', {imcId: institutionMedicalCenter.id})
+            saveFormAction: path('institution_signup_setup_specializations', {imcId: institutionMedicalCenter.id})
         } %}
     </div>
 
@@ -36,48 +36,4 @@
         </section>
     </aside>
 </div>
-{% endblock %}
-
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-$(function(){
-	/***
-	    Added by: Adelbert D. Silla
-	    TODO: js codes already exists in Widgets/Profile:specializations.html.twig. 
-	    Must be removed and use the existing one. 
-	    NOTE: Please consult me first before modifying this code.
-	 ***/
-    $('form[name="specializationsForm"] input:checkbox[name="subSpecialization"]').live('change', function(e) {
-        var subSpecializationContainerElem = $(this).parents('.sub-specialization-wrapper:first');
-        subSpecializationContainerElem.find('input:checkbox[id^="treatments"]').prop('checked', $(this).is(':checked'));
-    });
-
-    $('form[name="specializationsForm"] input:checkbox[id^="treatments"]').live('change', function(e) {
-        var subSpecializationContainerElem = $(this).parents('.sub-specialization-wrapper:first');
-        var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
-        var checkedTreatmentElems = subSpecializationContainerElem.find('input:checkbox[id^="treatments"]:checked');
-
-        subSpecializationCheckbox.prop('checked', true);
-        if(checkedTreatmentElems.length == 0) {
-            subSpecializationCheckbox.prop('checked', $(this).is(':checked'));
-        }
-    });
-
-    $('#accordion').live('show', function(e) {
-        console.log('signupSetup!');
-    	$(e.target).prev().find('i').addClass('icon-minus-sign');
-        specializationId = $(e.target).data('specialization');
-        accordionInnerElem = $('#panel' + specializationId);
-
-        // TODO: ideally we should return the data not html
-        if (!accordionInnerElem.data('loaded')) {
-            url = "{{ path('institution_ajax_loadSpecializationTreatments', {imcId: institutionMedicalCenter.id}) }}"; 
-            $.get(url, {specializationId: specializationId}, function(response) {
-            	accordionInnerElem.html(response).data('loaded', 1);
-            });
-        }
-    }).live('hide', function(e){ $(e.target).prev().find('i').removeClass('icon-minus-sign'); });	
-    /** End of Adelbert Silla's TODO **/
-});
-</script>
 {% endblock %}

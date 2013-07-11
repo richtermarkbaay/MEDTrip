@@ -107,7 +107,7 @@ class SpecializationController extends InstitutionAwareController
     
         return $calloutView;
     }
-    
+
     /**
      *
      * @param Request $request
@@ -121,15 +121,14 @@ class SpecializationController extends InstitutionAwareController
         if($this->institutionSpecialization && $this->institutionSpecialization->getTreatments()) {
             foreach($institutionSpecialization->getTreatments() as $treatment) {
                 $selectedTreatments[] = $treatment->getId();
-            }            
+            }
         }
 
         $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
 
         $specializationTreatments = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($specializationId);
-        
 
-        $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
+        $result['html'] = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
             'form' => $form->createView(),
             'formName' => InstitutionSpecializationFormType::NAME,
             'specializationId' => $specializationId,
@@ -137,7 +136,7 @@ class SpecializationController extends InstitutionAwareController
             'specializationTreatments' => $specializationTreatments
         ));
 
-        return new Response($html, 200, array('content-type' => 'application/json'));
+        return new Response(json_encode($result), 200, array('content-type' => 'application/json'));
     }
 
     public function ajaxAddSpecializationAction(Request $request)

@@ -75,8 +75,7 @@ class InstitutionKernelEventListener
         $session = $request->getSession();
         $matchedRoute = $request->get('_route');
 
-        if ( !\preg_match('/^institution/', \preg_match('/^\/institution/', $request->getPathInfo()))) {
-            // request is an AJAX request or request pattern does not start with /institution
+        if (!\preg_match('/^\/institution/', $request->getPathInfo())) {
             return false;
         }
 
