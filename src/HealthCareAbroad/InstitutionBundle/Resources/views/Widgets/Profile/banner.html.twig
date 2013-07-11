@@ -14,7 +14,7 @@
         </a>
         <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
     </form>
-   <div class="hca-institution-name"><a href="#hca-edit-institution-name" data-toggle="modal" class="btn btn-default pull-right"><i class="icon-edit"></i>&nbsp;Edit</a><h1><span id="institutionNameText">{{ institution.name | title }}</span>
+   <div class="hca-institution-name"><a href="#hca-edit-institution-name" data-toggle="modal" class="btn btn-misc pull-right"><i class="icon-edit"></i>&nbsp;Edit</a><h1><span id="institutionNameText">{{ institution.name | title }}</span>
    <small id="networkName">{{ institution.medicalProviderGroups.0.name is defined ? institution.medicalProviderGroups.0.name | title : '' }}</small>
    </h1></div>
     <div class="institution-details">
