@@ -74,7 +74,7 @@
                 Website:<span id="profileWebsitesText"> 
                    
                     {% if _website %}
-                        http://www.<b >{{_website}} </b>
+                        http://www. {{_website}} 
                     {% else %}
                         <b> no hospital website </b> added.
                         <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
@@ -83,7 +83,7 @@
             </p>
             <p>
                 <i class="icon-envelope"></i>
-                Email: <strong><span id="profileEmailText"> 
+                Email: <span id="profileEmailText"> 
                 {% if institution.contactEmail %}
                    {{ institution.contactEmail }}
                 {% else %}
@@ -91,20 +91,20 @@
                     <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
                 {% endif %}
                 
-                </span></strong>
+                </span>
             </p>
 
             {% for contactDetail in institution.contactDetails %}
                 <p>
                     <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
-                    <strong><span id="PhoneNumberText">
+                   <span id="PhoneNumberText">
                       {% if contactDetail.number %}
                              {{ contactDetail }}
                          {% else %}
                               <b> no phone number </b> added.
                               <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add Phone Number</a>
                           {% endif %}
-                     </span></strong>
+                     </span>
                 </p>
             {% endfor %}  
         </div>
@@ -120,13 +120,10 @@
     } %}
 
     {% block viewContent %}
-        <div id="institution-socialMediaSites">
-            {% for type, site in institution_websites_to_array(institution) %}
-                <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                    <b>{{ site ? site : 'no account added'}}</b>
-                </p>
-            {% endfor %}
-        </div>
+        {% for type, site in institution_websites_to_array(institution) %}
+            <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
+             <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
+            </p>
     {% endblock %}
 {% endembed %}
 

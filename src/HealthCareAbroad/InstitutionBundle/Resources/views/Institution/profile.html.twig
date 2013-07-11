@@ -99,9 +99,14 @@
     }
 
 	   $(document).ready(function() {
-           if($("#PhoneNumberText").find('._alert-phone')){
-        	   $("#show-contact").find('#alertDiv').addClass('alert alert-block');
+           if($('._alert-phone').length >= 1){
+        	   $("#show-contact").find('#alertDiv').attr('class','alert-block');
            }
+           if($('._googleplus-wrapper').html() == 'no account added' ||  $('._twitter-wrapper').html() == 'no account added' || $('._facebook-wrapper').html() == 'no account added'){
+        		$('#institution-socialMediaSites ').attr('class', 'alert alert-block');
+           	}else{
+           		$('#institution-socialMediaSites ').attr('class', '');
+           	}
        });
 
 </script>

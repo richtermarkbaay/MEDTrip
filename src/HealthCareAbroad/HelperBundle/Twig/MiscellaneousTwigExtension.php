@@ -224,7 +224,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         $socialMedia = \json_decode($institution->getSocialMediaSites(), true);
 
         if(!is_array($socialMedia)) {
-            return;
+           return $socialMedia = array(
+                'facebook' => '',
+                'twitter' => '',
+                'googleplus' => ''
+            );
         }
 
         \array_walk($socialMedia, function(&$v, $key){
@@ -242,7 +246,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         $socialMedia = \json_decode($institutionMedicalCenter->getSocialMediaSites(), true);
     
         if(!is_array($socialMedia)) {
-            return;
+           return $socialMedia = array(
+                'facebook' => '',
+                'twitter' => '',
+                'googleplus' => ''
+            );
         }
     
         \array_walk($socialMedia, function(&$v, $key){
@@ -250,7 +258,6 @@ class MiscellaneousTwigExtension extends \Twig_Extension
                 $v = 'http://'.$v;
             }
         });
-    
         return $this->json_websites_to_array($institutionMedicalCenter->getSocialMediaSites());
     }
     

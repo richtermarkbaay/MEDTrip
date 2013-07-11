@@ -212,11 +212,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     
-                    if(!empty($form['contactDetails']))
-                    {
                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
-                    }
-                    
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);

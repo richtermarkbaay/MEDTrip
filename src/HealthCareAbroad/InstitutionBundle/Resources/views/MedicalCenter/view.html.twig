@@ -141,9 +141,14 @@
     }
 
     $(document).ready(function() {
-       if($("#PhoneNumberText").find('._alert-phone')){
+    	if($('._alert-phone').length >= 1){
     	   $("#view-contacts").find('#alertDiv').addClass('alert alert-block');
        }
+        if($('._googleplus-wrapper').html() == 'no account added' ||  $('._twitter-wrapper').html() == 'no account added' || $('._facebook-wrapper').html() == 'no account added'){
+    		$('#view-socialMediaSites ').attr('class', 'alert alert-block');
+       	}else{
+       		$('#view-socialMediaSites ').attr('class', '');
+       	}
     });
 </script>
 {% endblock %}
