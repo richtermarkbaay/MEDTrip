@@ -5,12 +5,12 @@ parameters:
     database_name:     @DATABASE_NAME@
     database_user:     @DATABASE_USER@
     database_password: @DATABASE_PASSWORD@
-    
+
     #statistics
     statistics_db_name: healthcareabroad_stats
     statistics_db_user: @STATISTICS_DATABASE_USER@
     statistics_db_password: @STATISTICS_DATABASE_PASSWORD@
-     
+
 
     couchDbBaseUrl: @COUCHDB_URL@
     couchDbAlert: @COUCHDB_DOCUMENT@
@@ -29,6 +29,8 @@ parameters:
 
     chromedia_accounts_uri: http://accounts.dev.chromedia.com/app_dev.php
     chromedia_api_uri: http://accounts.dev.chromedia.com/app_dev.php/api
-    
+
     memcached.servers:
         - { host: 127.0.0.1, port: 11211 }
+
+    notifications.enabled = false

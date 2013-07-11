@@ -1,6 +1,7 @@
 parameters:
     # used by listeners if they should proceed with the sending of the notifications
-    notifications.enabled: true
+    # moved to parameters.yml
+    #notifications.enabled: true
 
     notification.support.user: "support@healthcareabroad.com"
     notification.support.password: "HCA#602_h3lp"
