@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -32,7 +34,13 @@ abstract class NotificationsListener
 
     public function onSendNotification(Event $event)
     {
-        if (!$this->container->getParameter('notifications.enabled')) {
+        try {
+            $enabled = $this->container->getParameter('notifications.enabled');
+        } catch (InvalidArgumentException $e) {
+            return;
+        }
+
+        if (!$enabled) {
             return;
         }
 
