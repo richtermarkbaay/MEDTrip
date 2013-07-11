@@ -77,7 +77,7 @@
                 Website:<span id="profileWebsitesText"> 
                    
                     {% if _website %}
-                        http://www.<b >{{_website}} </b>
+                        <b >http://www.{{_website}} </b>
                     {% else %}
                         <b> no hospital website </b> added.
                         <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
@@ -86,15 +86,15 @@
             </p>
             <p>
                 <i class="icon-envelope"></i>
-                Email: <strong><span id="profileEmailText"> 
+                Email: <span id="profileEmailText"> 
                 {% if institution.contactEmail %}
-                   {{ institution.contactEmail }}
+                   <b> {{ institution.contactEmail }}</b>
                 {% else %}
                     <b> no contact email </b> added.
                     <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
                 {% endif %}
                 
-                </span></strong>
+                </span>
             </p>
             <p>
             {% for contactDetail in institution.contactDetails %}
@@ -171,7 +171,6 @@
     {% endblock %}
     
     {% block viewContent %}
-        <h4> List of Services offered. </h4>
         <div id="serviesText">
            {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' %}
         </div>

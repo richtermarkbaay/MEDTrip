@@ -275,7 +275,7 @@ var InstitutionProfile = {
         	editElem.slideUp('slow', function(){
         		InstitutionProfile.undoChecked(editElem);
         		viewElem.fadeIn();
-            	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+            	elem.addClass('btn-misc').removeClass('btn-link').html('<i class="icon-edit"></i> Edit');
             	$('section.hca-main-profile .edit-awards').removeClass('disabled');
         	});
     	}
