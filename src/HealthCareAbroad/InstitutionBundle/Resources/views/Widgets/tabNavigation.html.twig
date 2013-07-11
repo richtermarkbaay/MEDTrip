@@ -1,7 +1,7 @@
 {% set tabNavigation = tabNavigation is defined ? tabNavigation : {'links': []}%}
  <ul class="nav nav-tabs">
     {% for _link in tabNavigation.links %}
-    <li class="{{ _link.active is defined and _link.active ? 'active':'' }}">
+    <li class="{{ _link.active is defined and _link.active ? 'active':'' }}" {% if _link.id is defined %}id="{{ _link.id }}"{% endif %}>
         <a data-toggle="tab" class="profile_tab_links" href="{{ _link.href }}"><i class="icon-{{ _link.icon }}"></i>{{ _link.label }}</a>
     </li>
     {% endfor %}
