@@ -103,40 +103,67 @@ class CleanUpTreatmentTermsCommand extends ContainerAwareCommand
         
         $this->output->writeln('Cleaning terms for treatment #'.$treatment->getId().' ['.$treatment->getName().']');
         if (\count($terms)) {
+            $hasInternal = false;
             foreach ($terms as $term) {
                 $this->output->write($this->indent(). $term->getName()." [#{$term->getId()}]".$this->indent());
                 if (!$term->getInternal()){
                     // if this has not been flagged as internal yet, flag it
-                    $term->setInternal($term->getName()==$treatment->getName());
+                    $term->setInternal(\strtolower($term->getName())==\strtolower($treatment->getName()));
                 }
+                
+                if (!$hasInternal) {
+                    $hasInternal = $term->getInternal();
+                }
+                
                 $this->om->persist($term);
                 
                 $this->output->writeln('[OK]');
+            }
+            
+            if (!$hasInternal) {
+                 
+                $term = $this->createTermFromTreatment($treatment);
+                $this->om->persist($term);
+                $this->output->writeln($this->indent().'Added internal term');
             }
         }
         // no  terms for this treatment
         else {
             
             $this->output->write($this->indent()."Found no terms: ");
-            // check first if this term already exists
-            $term = $this->termRepository->findOneByName($treatment->getName());
-            if (!$term) {
-                // term does not exist
-                $term = new Term();
-                $term->setName($treatment->getName());
-            }
             
-            // create new term document
-            $termDocument = new TermDocument();
-            $termDocument->setDocumentId($treatment->getId());
-            $termDocument->setTerm($term);
-            $termDocument->setType(TermDocument::TYPE_TREATMENT);
-            $term->setInternal(true);
-            $term->addTermDocument($termDocument);
+            $term = $this->createTermFromTreatment($treatment);
+            
             $this->om->persist($term);
             
             $this->output->writeln('[OK]');
         }
+    }
+    
+    /**
+     * 
+     * @param Treatment $treatment
+     * @return \HealthCareAbroad\TermBundle\Entity\Term
+     */
+    private function createTermFromTreatment(Treatment $treatment)
+    {
+        // check first if this term already exists
+        $term = $this->termRepository->findOneByName($treatment->getName());
+        if (!$term) {
+            // term does not exist
+            $term = new Term();
+            $term->setName($treatment->getName());
+        }
+        
+        // create new term document
+        $termDocument = new TermDocument();
+        $termDocument->setDocumentId($treatment->getId());
+        $termDocument->setTerm($term);
+        $termDocument->setType(TermDocument::TYPE_TREATMENT);
+        $term->setInternal(true);
+        $term->addTermDocument($termDocument);
+        
+        return $term;
     }
     
     private function indent()
