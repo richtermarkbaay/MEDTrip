@@ -414,7 +414,11 @@ var InstitutionProfile = {
                     	var websites = response.institution.socialMediaSites;
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
-                    			$('#institution-socialMediaSites').removeClass('alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    			if($('._twitter-wrapper').html() == 'no account added.'){
+                    				$('#institution-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    			}else{
+                    				$('#institution-socialMediaSites').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
+                    			}
                     		} else {
                     			$('#institution-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}

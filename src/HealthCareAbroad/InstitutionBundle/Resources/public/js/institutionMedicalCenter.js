@@ -411,7 +411,11 @@ var InstitutionMedicalCenter = {
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
-                    			$('#view-socialMediaSites').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                    			if($('._twitter-wrapper').html() == 'no account added.'){
+                    				$('#view-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    			}else{
+                    				$('#view-socialMediaSites').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                    			}
                     		} else {
                     			$('#view-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}
