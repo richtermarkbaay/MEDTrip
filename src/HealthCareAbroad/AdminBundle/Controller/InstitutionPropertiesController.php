@@ -32,6 +32,11 @@ class InstitutionPropertiesController extends Controller
      */
     private $institutionService;
     
+    /**
+     * @var InstitutionMedicalCenter
+     */
+    private $institutionMedicalCenter;
+    
     public function preExecute()
     {
         $this->institutionService = $this->get('services.institution');
@@ -40,6 +45,16 @@ class InstitutionPropertiesController extends Controller
         // Check Institution
         if(!$this->institution) {
             throw $this->createNotFoundException('Invalid Institution');
+        }
+        
+        // check InstitutionMedicalCenter
+        $this->request = $this->getRequest();
+        if ($institutionMedicalCenterId = $this->request->get('imcId', 0)) {
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
+            if (!$this->institutionMedicalCenter) {
+                throw $this->createNotFoundException('Invalid institution medical center');
+            }
+        
         }
     }
     
@@ -100,7 +115,21 @@ class InstitutionPropertiesController extends Controller
         ));
         
     }
-     
+    /*
+     * Show all ancillaryServices by Institution 
+     */
+    public function  showInstitutionAncillaryServiceAction(Request $request)
+    {
+        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
+        $output = array(
+                        'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:tableList_institution_services.html.twig', array(
+                                        'institutionServices' => $institutionAncillaryServices
+                        )),
+        );
+        return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
     /**
      * Add an ancillary service to institution
      * Required parameters:
@@ -111,7 +140,7 @@ class InstitutionPropertiesController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Chaztine Blance
      */
-    public function ajaxAddAncillaryServiceAction(Request $request)
+    public function ajaxAddInstitutionAncillaryServiceAction(Request $request)
     {
         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')
         ->find($request->get('id', 0));
@@ -137,7 +166,7 @@ class InstitutionPropertiesController extends Controller
     
                  $output = array(
                     'label' => 'Delete Service',
-                    'href' => $this->generateUrl('admin_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $property->getId() )),
+                    'href' => $this->generateUrl('admin_institution_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $property->getId() )),
                     '_isSelected' => true,
                 );
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
@@ -152,7 +181,7 @@ class InstitutionPropertiesController extends Controller
     }
     
     /**
-     * Remove an ancillary service to institution
+     * Remove an ancillary service from institution
      * Required parameters:
      *     - institutionId
      *     - asId ancillary service id
@@ -161,27 +190,27 @@ class InstitutionPropertiesController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      * @author Chaztine Blance
      */
-    public function ajaxRemoveAncillaryServiceAction(Request $request)
+    public function ajaxRemoveInstitutionAncillaryServiceAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('id', 0));
-        
+    
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
-        
+    
         $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($property->getValue());
     
         try {
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($property);
             $em->flush();
-            
+    
             $output = array(
-                    'label' => 'Add Service',
-                    'href' => $this->generateUrl('admin_institution_ajaxaddAncilliaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),
-                    '_isSelected' => false,
+                            'label' => 'Add Service',
+                            'href' => $this->generateUrl('admin_institution_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),
+                            '_isSelected' => false,
             );
-            
+    
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
         }
         catch (\Exception $e){
@@ -191,40 +220,13 @@ class InstitutionPropertiesController extends Controller
         return $response;
     }
     
-    public function addLanguageSpokenAction(Request $request)
-    {
-        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'language_id');
-        $formActionUrl = $this->generateUrl('admin_institution_addLanguageSpoken', array('institutionId' => $this->institution->getId()));
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $this->get('services.institution_property')->save($form->getData());
-        
-                return $this->redirect($formActionUrl);
-            }
-        }
-        
-        $params = array(
-            'formAction' => $formActionUrl,
-            'form' => $form->createView()
-        );
-        return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
-    }
-    private function _jsonResponse($data=array(), $code=200)
-    {
-        $response = new Response(json_encode($data));
-        $response->headers->set('Content-Type', 'application/json');
-    
-        return $response;
-    }
-    
     /**
-     * Add a GlobalAward
+     * Add GlobalAward to Institution
      *
      * @param Request $request
      * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
      */
-    public function ajaxAddGlobalAwardAction(Request $request)
+    public function ajaxAddInstitutionGlobalAwardAction(Request $request)
     {
         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
         if (!$award) {
@@ -242,13 +244,13 @@ class InstitutionPropertiesController extends Controller
             $property = $propertyService->createInstitutionPropertyByName(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institution);
             $property->setValue($award->getId());
             try {
-                
+    
                 $propertyService->save($property);
-                
+    
                 $html = $this->renderView('AdminBundle:Institution/Partials:row.globalAwards.html.twig', array(
-                    'institution' => $this->institution,
-                    'award' => $award,
-                    'property' => $property
+                                'institution' => $this->institution,
+                                'award' => $award,
+                                'property' => $property
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -266,35 +268,37 @@ class InstitutionPropertiesController extends Controller
      *
      * @param Request $request
      */
-    public function ajaxRemoveGlobalAwardAction(Request $request)
+    public function ajaxInstitutionRemoveGlobalAwardAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('id', 0));
-        
+    
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
     
-       $form = $this->createForm(new CommonDeleteFormType(), $property);
-        
+        $form = $this->createForm(new CommonDeleteFormType(), $property);
+    
         if ($request->isMethod('POST'))  {
             $form->bind($request);
             if ($form->isValid()) {
-        
+    
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-        
+    
                 $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
             }
             else{
                 $response = new Response("Invalid form", 400);
             }
         }
-        
+    
         return $response;
     }
-    
-    public function ajaxEditGlobalAwardAction(Request $request)
+    /*
+     * Remove institution globalAwards
+     */
+    public function ajaxEditInstitutionGlobalAwardAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('propertyId', 0));
         $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
@@ -319,7 +323,7 @@ class InstitutionPropertiesController extends Controller
                     $em->flush();
                     $extraValue = \json_decode($property->getExtraValue(), true);
                     $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
-                    
+    
                     $output = array(
                                     'targetRow' => '#globalAwardRow_'.$property->getId(),
                                     'html' => $yearAcquired
@@ -337,4 +341,356 @@ class InstitutionPropertiesController extends Controller
     
         return $response;
     }
+    
+    /*
+     * Add Languages Spoken to Institution
+     */
+    public function addInstitutionLanguageSpokenAction(Request $request)
+    {
+        $form = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'language_id');
+        $formActionUrl = $this->generateUrl('admin_institution_addLanguageSpoken', array('institutionId' => $this->institution->getId()));
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $this->get('services.institution_property')->save($form->getData());
+    
+                return $this->redirect($formActionUrl);
+            }
+        }
+    
+        $params = array(
+                        'formAction' => $formActionUrl,
+                        'form' => $form->createView()
+        );
+        return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
+    }
+    
+    /**
+     * Add an ancillary service to institution medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function ajaxAddInstitutionMedicalCenterAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($request->get('id', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // check if this medical center already have this property value
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId())) {
+            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($ancillaryService->getId());
+            // get global,current and selcted ancillary services
+            $ancillaryServicesData = array(
+                            'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                            'selected' => array(),
+                            'currentAncillaryData' => array()
+            );
+            $ancillaryServicesData = $this->get('services.institution_medical_center_property')->getCurrentAndSelectedAncillaryServicesByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $ancillaryServicesData);
+    
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $output = array(
+                                'label' => 'Delete Service',
+                                'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
+                                'ancillaryServicesData' => $ancillaryServicesData,
+                                '_isSelected' => true,
+                );
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * Remove an ancillary service to institution medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function ajaxRemoveInstitutionMedicalCenterAncillaryServiceAction(Request $request)
+    {
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id', 0));
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
+        }
+        // get global,current and selcted ancillary services
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($property->getValue());
+        $ancillaryServicesData = array(
+                        'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                        'selected' => array(),
+                        'currentAncillaryData' => array()
+        );
+        $ancillaryServicesData = $this->get('services.institution_medical_center_property')->getCurrentAndSelectedAncillaryServicesByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $ancillaryServicesData);
+    
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+    
+            $output = array(
+                            'label' => 'Add Service',
+                            'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
+                            'ancillaryServicesData' => $ancillaryServicesData,
+                            '_isSelected' => false,
+            );
+    
+            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        }
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * copy institution anciallary services to medical center
+     * Required parameters:
+     *     - institutionId
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author ajacobe
+     */
+    public function portInstitutionAncillaryServiceAction(Request $request)
+    {
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
+    
+        if($request->get('isCopy')) {
+            foreach ($institutionAncillaryServices as $ancillaryService)
+            {
+                // check if this medical center already have this property value
+                if (!$this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService['id'])) {
+    
+                    $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+                    $property->setValue($ancillaryService['id']);
+                    try {
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($property);
+                        $em->flush();
+    
+                    }
+                    catch (\Exception $e){
+                        $response = new Response($e->getMessage(), 500);
+                    }
+                }
+            }
+        }
+    
+        // get global ancillary services
+        $ancillaryServicesData = array(
+                        'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                        'selectedAncillaryServices' => array()
+        );
+        foreach ($this->get('services.institution_medical_center_property')->getInstitutionMedicalCenterByPropertyType($this->institutionMedicalCenter, InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE) as $_selectedService) {
+            $ancillaryServicesData['currentAncillaryData'][] = array(
+                            'id' => $_selectedService->getId(),
+                            'value' => $_selectedService->getValue(),
+            );
+            $ancillaryServicesData['selected'][] = $_selectedService->getValue();
+        }
+        foreach ($this->get('services.institution_medical_center')->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
+            $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
+        }
+    
+        $output = array(
+                        'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:field.ancillaryServices.html.twig', array(
+                                        'institution' => $this->institution,
+                                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                        'ancillaryServicesData' => $ancillaryServicesData,
+                                        '_isSelected' => true
+                        )),
+                        'error' => 0
+        );
+        return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     *Add GlobalAward to InstitutionMedicalCenter
+     *
+     * @param unknown_type $institutionId
+     * @param unknown_type $imcId
+     */
+    public function addInstitutionMedicalCenterGlobalAwardsAction()
+    {
+        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institutionMedicalCenter);
+    
+        if ($this->request->isMethod('POST')) {
+            $form->bind($this->request);
+    
+            if ($form->isValid()) {
+    
+                $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+                ->saveAsDraft($form->getData());
+    
+                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
+    
+                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
+                                array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+            }
+        }
+        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
+                        'form' => $form->createView(),
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                        'institution' => $this->institution
+        ));
+    }
+    
+    /*
+     * Ajax Handler that remove InstitutionMedicalCenter GlobalAwards
+    */
+    public function ajaxRemoveInstitutionMedicalCenterGlobalAwardAction(Request $request)
+    {
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id'));
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
+        }
+    
+        $form = $this->createForm(new CommonDeleteFormType(), $property);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+    
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($property);
+                $em->flush();
+    
+                $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
+            }
+            else{
+                $response = new Response("Invalid form", 400);
+            }
+        }
+    
+        return $response;
+    }
+    
+    
+    /*
+     * Ajax Handler that edit InstitutionMedicalCenter GlobalAwards
+     */
+    public function ajaxEditInstitutionMedicalCenterGlobalAwardAction()
+    {
+        $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId', 0));
+        if (!$globalAward) {
+            throw $this->createNotFoundException('Invalid global award');
+        }
+        $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $imcProperty = $this->get('services.institution_medical_center')->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId());
+        $imcProperty->setValueObject($globalAward);
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
+        if ($this->request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($this->request);
+            if ($editGlobalAwardForm->isValid()) {
+                try {
+                    $imcProperty = $editGlobalAwardForm->getData();
+                    $em = $this->getDoctrine()->getEntityManager();
+                    $em->persist($imcProperty);
+                    $em->flush();
+                    $extraValue = \json_decode($imcProperty->getExtraValue(), true);
+                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+                    $output = array(
+                                    'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
+                                    'html' => $yearAcquired
+                    );
+                    $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                }
+                catch(\Exception $e) {
+                    $response = new Response('Error: '.$e->getMessage(), 500);
+                }
+            }
+            else {
+                $response = new Response('Form error'.$e->getMessage(), 400);
+            }
+        }
+    
+        return $response;
+    }
+    
+    /*
+     * Ajax Handler that add Global Awards to InstitutionMedicalCenter
+     */
+    public function ajaxAddInstitutionMedicalCenterGlobalAwardAction(Request $request)
+    {
+        $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
+    
+        if (!$award) {
+            throw $this->createNotFoundException();
+        }
+    
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+    
+        // check if this medical center already have this property
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award->getId())) {
+            $response = new Response("Award {$award->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($award->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:row.globalAward.html.twig', array(
+                                'award' => $award,
+                                'property' => $property,
+                                'institution' => $this->institution,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+                ));
+    
+                $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+    
+        return $response;
+    }
+    
+    private function _jsonResponse($data=array(), $code=200)
+    {
+        $response = new Response(json_encode($data));
+        $response->headers->set('Content-Type', 'application/json');
+    
+        return $response;
+    }
+    
 }

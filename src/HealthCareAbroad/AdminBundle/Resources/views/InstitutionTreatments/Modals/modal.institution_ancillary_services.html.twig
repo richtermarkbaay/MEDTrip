@@ -17,6 +17,6 @@
     {% endblock %}
     {% block footerBody %}
         <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-        <button data-divId="#ancilliaryServices" data-path="{{ path('admin_institution_medicalCenter_port', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}" data-modalId="#institution_ancillaryServices_modal_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.portInstitutionAncillaryServices(this); return false;" id="modal_institution_ancillaryServices_submitButton" class="btn btn-primary submit-button">Submit</button>
+        <button data-divId="#ancilliaryServices" data-path="{{ path('admin_institution_medicalCenter_portAncillaryService', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}" data-modalId="#institution_ancillaryServices_modal_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.portInstitutionAncillaryServices(this); return false;" id="modal_institution_ancillaryServices_submitButton" class="btn btn-primary submit-button">Submit</button>
     {% endblock %}
 {% endembed %}

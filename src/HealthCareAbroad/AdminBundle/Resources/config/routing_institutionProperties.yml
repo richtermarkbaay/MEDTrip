@@ -1,0 +1,115 @@
+admin_institution_ajaxAddAncillaryService:
+    pattern:  /admin/institution/{institutionId}/ajaxAddAncilliaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddInstitutionAncillaryService }
+    requirements:
+        institutionId: \d+
+        
+admin_institution_ajaxRemoveAncillaryService:
+    pattern:  /admin/institution/ajaxRemoveAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveInstitutionAncillaryService }
+    requirements:
+        institutionId: \d+
+        _method: POST
+
+admin_institution_viewAncilliaryService:
+    pattern:  /admin/institution/{institutionId}/ancilliary-services
+    defaults: { _controller: AdminBundle:InstitutionProperties:index }
+    requirements:  
+        institutionId: \d+  
+        _method:  GET
+
+admin_institution_ajaxAddGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddInstitutionGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+
+admin_institution_ajaxRemoveGlobalAward:
+    pattern:  /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxInstitutionRemoveGlobalAward }
+    requirements:
+        _method: GET|POST
+        institutionId: \d+
+       
+admin_institution_ajaxEditGlobalAward:
+    pattern: /admin/institution/{institutionId}/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxEditInstitutionGlobalAward}
+    requirements:
+        _method: POST 
+        
+admin_institution_viewGlobalAwards:
+    pattern:  /admin/institution/{institutionId}/global-awards
+    defaults: { _controller: AdminBundle:InstitutionProperties:viewGlobalAwards }
+    requirements:
+        institutionId: \d+
+
+admin_institution_addLanguageSpoken:
+    pattern:  /admin/institution/{institutionId}/add-language-spoken
+    defaults: { _controller: AdminBundle:InstitutionProperties:addInstitutionLanguageSpoken }
+    requirements:
+        institutionId: \d+
+        
+        
+##institution medical center properties routes
+admin_institution_medicalCenter_ajaxAddGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddInstitutionMedicalCenterGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+        imcId: \d+
+
+admin_institution_medicalCenter_addGlobalAwards:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/global_awards
+    defaults: { _controller: AdminBundle:InstitutionProperties:addInstitutionMedicalCenterGlobalAwards }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+
+admin_institution_medicalCenter_ajaxEditGlobalAward:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxEditInstitutionMedicalCenterGlobalAward, imcId: ~}
+    requirements:
+        _method: POST
+        institutionId: \d+
+        imcId: \d+
+        
+admin_institution_medicalCenter_ajaxRemoveGlobalAward:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveInstitutionMedicalCenterGlobalAward }
+    requirements:
+        _method: GET|POST
+        institutionId: \d+
+        imcId: \d+
+
+admin_institution_medicalCenter_ajaxAddAncillaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddInstitutionMedicalCenterAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+        
+admin_institution_medicalCenter_showAncillaryServiceForm:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/showAncillaryServiceForm
+    defaults: { _controller: AdminBundle:InstitutionProperties:showInstitutionAncillaryService}
+    requirements:
+        _method: POST|GET
+        
+admin_institution_medicalCenter_ajaxRemoveAncillaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveInstitutionMedicalCenterAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST
+        
+admin_institution_medicalCenter_portAncillaryService:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/portAncillaryService
+    defaults: { _controller: AdminBundle:InstitutionProperties:portInstitutionAncillaryService }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST|GET

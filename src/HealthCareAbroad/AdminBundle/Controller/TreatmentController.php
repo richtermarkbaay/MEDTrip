@@ -232,11 +232,12 @@ class TreatmentController extends Controller
     {
         $treatmentRepo = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment');
         $oldTreatment = $treatmentRepo->findOneById($request->get('id'));
+        
         $treatments = $treatmentRepo->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
 
         if($currentTreatment = $request->get('convert_treatment_to_term_form')) {
-            $currentTreatmentId = $currentTreatment['treatments'];
+            $currentTreatmentId = $currentTreatment['treatments'];var_dump($oldTreatment);exit;
             $currentTreatmentName = $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
             $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatmentName);
             

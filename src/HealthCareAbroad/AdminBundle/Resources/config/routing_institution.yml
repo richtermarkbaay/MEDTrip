@@ -40,40 +40,6 @@ admin_institution_getAjaxAccountData:
          accountId: \d+
          institutionId: \d+
          _method: GET
-##-----         
-## institution property related routes
-admin_institution_ajaxaddAncilliaryService:
-    pattern:  /admin/institution/{institutionId}/add-ancilliary-service
-    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddAncillaryService }
-    requirements:
-        institutionId: \d+
-        
-admin_ajaxRemoveAncillaryService:
-    pattern:  /admin/institution/ajaxRemoveAncillaryService
-    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveAncillaryService }
-    requirements:
-        institutionId: \d+
-        _method: POST
-
-admin_institution_viewGlobalAwards:
-    pattern:  /admin/institution/{institutionId}/global-awards
-    defaults: { _controller: AdminBundle:InstitutionProperties:viewGlobalAwards }
-    requirements:
-        institutionId: \d+
-
-admin_institution_viewAncilliaryService:
-    pattern:  /admin/institution/{institutionId}/ancilliary-services
-    defaults: { _controller: AdminBundle:InstitutionProperties:index }
-    requirements:  
-        institutionId: \d+  
-        _method:  GET
-
-admin_institution_addLanguageSpoken:
-    pattern:  /admin/institution/{institutionId}/add-language-spoken
-    defaults: { _controller: AdminBundle:InstitutionProperties:addLanguageSpoken }
-    requirements:
-        institutionId: \d+
-##-----
 
 admin_institution_updateStatus:
     pattern:  /admin/institution/{institutionId}/update-status

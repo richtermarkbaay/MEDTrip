@@ -21,6 +21,7 @@
                 {% if institutionMedicalCenters is not empty %}
                 <table id="city-list" class="table table-bordered sortable-list">
                     <tr>
+                       <th width="50" align="center">Paying</a></th>
                        <th>Clinics</th>
                        <th>Description</th>
                        <th>Status</th>
@@ -29,6 +30,10 @@
                     
                     {% for center in institutionMedicalCenters %}
                     <tr>
+                        <td style="text-align: center;padding: 0">
+                            <input type="checkbox" value="1" {{ center.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_medicalCenter_updatePayingClient', {institutionId: institution.id, imcId: center.id }) }}">
+                            <div style="display:none">updating...</div>
+                        </td>
                         <td>{{ center.name }}</td>
                         <td style="width: 425px";>{{ center.description  | raw  }}</td>
                         <td>{{ get_medical_center_status_label(center) }}</td>
@@ -48,7 +53,7 @@
                         <div class="alert alert-block"> {{ institution.name }} has no {{ centersLabel }} yet. </div>
                 {% endif %}
          {% if pager.isPaginable %}
-         {{ paginate(pager, 'admin_institution_manageCenters', app.request.query.all | merge(app.request.get('_route_params')) ) }}
+         {{ paginate(pager, 'admin_institution_medicalCenter_index', app.request.query.all | merge(app.request.get('_route_params')) ) }}
         {% endif %}
         {% endblock %} 
 
@@ -62,12 +67,20 @@
     $(function(){
         $(".collapse").collapse();
         
-       // $('.view-center').click(function(){
-         //   window.location = $(this).attr('href');
-          //  return false;
-       // });
+       $('input.update-paying-client').change(function(){
+            msgElem = $(this).next().html('updating...').show(); 
+            var params = {
+                payingClient: $(this).prop('checked') ? '1' : '0' 
+            };
 
-
+            $.post($(this).attr('data-update-url'), params, function(response){
+            	msgElem.html('done!');
+            	setTimeout(function(){
+            		msgElem.fadeOut();
+                }, 1000);
+            });
+        });
+       
         $('.edit-center-name').click(function(){
             if($(this).next().is(':visible')) {
             	$(this).find('i').attr('class', 'icon-ok');

@@ -1,4 +1,3 @@
-{#admin_medicalCenter_logo_upload#}
 {% extends 'AdminBundle::layout.institution.html.twig' %}
 
 {% set institutionMedicalCenter_token = form_widget(institutionMedicalCenterForm._token) %}
@@ -31,7 +30,7 @@
                     <div id="media" class="treatmentbox">
                         <h5 style="padding: 10px; border: 1px solid #EEEEEE">
                             Media
-                            <a href="{{ path('admin_institutionMedicalCenter_gallery_add', {institutionId: institution.id, imcId: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                            <a href="{{ path('admin_institution_medicalCenter_gallery_add', {institutionId: institution.id, imcId: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
                                 <i class="icon-plus"></i>Add
                             </a>
                         </h5>

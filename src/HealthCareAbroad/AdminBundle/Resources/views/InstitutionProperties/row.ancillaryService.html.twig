@@ -8,7 +8,7 @@
         		 {% for property in properties %}
         	        {% if property.value == each.id  %}
         	        
-            		    <a href="{{ path('admin_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'id': property.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
+            		    <a href="{{ path('admin_institution_ajaxRemoveAncillaryService', {'institutionId' : institution.id, 'id': property.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
             			    {{ status.label }} Service
             		    </a>
             		    
@@ -16,7 +16,7 @@
         		 {% endfor %}  
         	 {% else %}
         	 
-        	    <a href="{{ path('admin_institution_ajaxaddAncilliaryService', {'institutionId' : institution.id, 'id': each.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
+        	    <a href="{{ path('admin_institution_ajaxAddAncillaryService', {'institutionId' : institution.id, 'id': each.id } ) }}" onclick="Institution.addRemoveAncillaryService($(this)); return false;" title="" >
         	        {{ status.label }} Service
                 </a>
                 

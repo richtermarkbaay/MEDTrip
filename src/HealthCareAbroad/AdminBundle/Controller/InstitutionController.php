@@ -376,12 +376,7 @@ class InstitutionController extends Controller
    	{
    	    $formParams = array('institutionId' => $this->institution->getId());
 
-   	    if($request->get('imcId')) {
-   	        $formParams['imcId'] = $request->get('imcId');
-   	        $uploadFormAction = $this->generateUrl('admin_institution_medicalCenter_media_upload', $formParams);
-   	    } else {
-   	        $uploadFormAction = $this->generateUrl('admin_institution_media_upload', $formParams);
-   	    }
+        $uploadFormAction = $this->generateUrl('admin_institution_media_upload', $formParams);
 
    	    return $this->render('AdminBundle:Institution:addMedia.html.twig', array(
             'institution' => $this->institution,
