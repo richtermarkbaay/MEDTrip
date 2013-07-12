@@ -41,7 +41,7 @@ class NewListingsApprovedListener extends NotificationsListener
         return InstitutionMedicalCenterStatus::APPROVED == $institutionMedicalCenter->getStatus();
     }
 
-    public function getTemplateConfig()
+    public function getTemplateConfig(Event $event = null)
     {
         return 'notification.new_listings_approved';
     }

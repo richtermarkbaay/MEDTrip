@@ -20,11 +20,13 @@ abstract class NotificationsListener
     public abstract function getData(Event $event);
 
     /**
-     * Returns the key used in the configuration for this email template
+     * Returns the key used in the configuration for this email template.
+     * Returned value can vary depending on the event type.
      *
+     * @param Event $event
      * @return string
     */
-    public abstract function getTemplateConfig();
+    public abstract function getTemplateConfig(Event $event = null);
 
     public function __construct(ContainerInterface $container, array $templateConfigs)
     {
@@ -48,7 +50,7 @@ abstract class NotificationsListener
             return;
         }
 
-        $data = $this->mergeTemplateConfigData($this->getData($event));
+        $data = $this->mergeTemplateConfigData($this->getData($event), $this->getTemplateConfig($event));
         $data = $this->mergeTemplateSharedData($data);
 
         $this->container->get('services.mailer.notifications.twig')->sendMessage($data);
@@ -68,17 +70,22 @@ abstract class NotificationsListener
     /**
      *
      * @param array $data
+     * @param string $templateConfig
      * @throws \Exception
      * @return Ambigous <multitype:, unknown>
      */
-    private function mergeTemplateConfigData(array $data)
+    private function mergeTemplateConfigData(array $data, $templateConfig)
     {
-        if (!isset($this->templateConfigs[$this->getTemplateConfig()])) {
+        if (!$templateConfig) {
+            throw new \Exception('Template configuration is required.');
+        }
+
+        if (!isset($this->templateConfigs[$templateConfig])) {
             throw new \Exception('Template configuration does not exist in the mailer.templates parameter. Check that getTemplateConfig() returns a valid value.');
         }
 
         //TODO: recursive merge
-        foreach ($this->templateConfigs[$this->getTemplateConfig()] as $key => $value) {
+        foreach ($this->templateConfigs[$templateConfig] as $key => $value) {
             if (!isset($data[$key])) {
                 $data[$key] = $value;
             }
