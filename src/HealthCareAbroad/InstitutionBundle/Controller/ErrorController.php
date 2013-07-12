@@ -1,23 +1,23 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
-use HealthCareAbroad\PagerBundle\Pager;
+
 use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
+
 use HealthCareAbroad\HelperBundle\Form\ErrorReportFormType;
 use HealthCareAbroad\HelperBundle\Event\CreateErrorReportEvent;
 use HealthCareAbroad\HelperBundle\Event\ErrorReportEvent;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
+
 
 class ErrorController extends InstitutionAwareController
 {
  
- public function error403Action()
+    public function error403Action()
     {
         throw new AccessDeniedHttpException();
     }
@@ -38,13 +38,12 @@ class ErrorController extends InstitutionAwareController
     	$userId = $this->container->get('session')->get('accountId');
     	     	
     	if($userId){
-    		
+
     		$errorReport = new ErrorReport();
     		$form = $this->createForm(new ErrorReportFormType(), $errorReport);   		
     		$form->bind($request);
 
     		if ($form->isValid()) {	
-
 		    	$errorReport->setLoggedUserId($userId);
  			    $errorReport->setStatus(1);
  			    $em->persist($errorReport);
@@ -62,6 +61,7 @@ class ErrorController extends InstitutionAwareController
            	   	}           	   				  
 		    }
 		}
+
 		return $this->render('InstitutionBundle:Exception:error.html.twig', array(
 				'form' => $form->createView(),
 				'reportSubmitted' => true
@@ -73,6 +73,7 @@ class ErrorController extends InstitutionAwareController
 	    if('POST' != $request->getMethod()) {
 	        return new Response("Save requires POST method!", 405);
 	    }
+
 	    $errorReport = new ErrorReport();
 	    $form = $this->createForm(New ErrorReportFormType(), $errorReport);
 	    $form->bind($request);
@@ -86,8 +87,8 @@ class ErrorController extends InstitutionAwareController
 	        $em->flush();
 	
 	        return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
-	    }
-	    else {
+
+	    } else {
 	        $errors = array();
 	        $form_errors = $this->get('validator')->validate($form);
 	

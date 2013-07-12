@@ -1,9 +1,3 @@
-{% if isSingleCenter or institutionMedicalCenter is not defined %}
-    {% set awardsEditUrl = path('institution_ajaxEditGlobalAward') %}
-{% else %}
-    {% set awardsEditUrl = path('institution_medicalCenter_ajaxEditGlobalAward', {imcId: institutionMedicalCenter.id} ) %}
-{% endif %}
-
 {% if eachAward.list is not empty %}
     <div id="{{ type }}">
        {# <h4>{{ type|title }}</h4> #}
@@ -13,27 +7,17 @@
                 {% if property.value not in existingAwards %}
                     {% set existingAwards = existingAwards|merge([property.value]) %}
                     {% set award = property.valueObject %}
-                    {% set _extraValueArr = json_to_array(property.extraValue, true) %}
-                    {% set _yearAcquired = _extraValueArr.year_acquired is defined ? _extraValueArr.year_acquired | join(', '): '' %}
-                    <li class="hca-highlight" id="globalAwardRow_{{ property.id }}" >
-                        <div class="pull-right" >
-                           <span id="containerRow">
-                                <span class="yearAcquired" > {{ _yearAcquired }}</span> 
-                                <a class="edit_global_award" href="{{ awardsEditUrl }}" > {{ _yearAcquired ? '<i class="icon-edit"> </i>' : 'Add Year' }}</a>
-                           </span>
-                           <div class="edit_award_form_container" >
-                                <img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" style="display:none;"/>
-    
-                                <form class="edit_award_form" action="" style="display:none;">
-                                    <a href="#" id="year_submit" onclick="$.globalAward._submitEditForm($(this)); return false;"><i class="icon-ok"></i></a>
-                                    <input type="hidden" name="globalAwardId" value="{{ award.id }}"/>
-                                    <input type="hidden" name="propertyId" value="{{ property.id }}" />
-                                    {{ form_widget(editGlobalAwardForm.extraValue) }}
-                                    {{ form_widget(editGlobalAwardForm.value) }}
-                                    {{ form_widget(editGlobalAwardForm._token) }}
-                                </form>
-                               
-                           </div>
+
+                    <li class="hca-highlight _global-award-item" id="_global-award-{{ property.id }}">
+                        <div class="pull-right">
+                            <div class="_view-award-year-container">
+                                <span class="yearAcquired" >{{ property.extraValue }}</span> 
+                                <a href="javascript:void(0)" class="_edit-global-awards" data-award-id="{{ award.id }}" data-property-id="{{ property.id }}" data-value="{{ property.value }}">
+                                    {{ property.extraValue ? '<i class="icon-edit"> </i>' : 'Add Year' }}
+                                </a>
+                            </div>
+                            
+                            <div class="_edit-award-year-container"></div>
                         </div>
                         {{ award.name }}
                     </li>

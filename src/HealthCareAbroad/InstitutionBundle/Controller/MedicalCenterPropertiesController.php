@@ -147,6 +147,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         $imcProperty = $this->imcService->getPropertyValue($this->institutionMedicalCenter, $propertyType, $globalAward->getId() , $this->request->get('propertyId', 0));
         $imcProperty->setValueObject($globalAward);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $imcProperty);
+
         if ($this->request->isMethod('POST')) {
             $editGlobalAwardForm->bind($this->request);
             if ($editGlobalAwardForm->isValid()) {
@@ -155,13 +156,12 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($imcProperty);
                     $em->flush();
-                    $extraValue = \json_decode($imcProperty->getExtraValue(), true);
-                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
+
                     $output = array(
-                        'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
-                        'html' => $yearAcquired,
-//                         'calloutView' => $this->_getEditMedicalCenterCalloutView()
+                        'status' => true,
+                        'extraValue' => $imcProperty->getExtraValue(),
                     );
+
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
                 catch(\Exception $e) {

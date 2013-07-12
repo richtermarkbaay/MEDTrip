@@ -5,13 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
-use HealthCareAbroad\PagerBundle\Pager;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;

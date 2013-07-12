@@ -252,14 +252,13 @@ class MedicalCenterController extends InstitutionAwareController
                             $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
                             $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
                             foreach($globalAwards as $key => $global ) {
-                                $html['html'][$key][] = $this->renderView('InstitutionBundle:MedicalCenter/Widgets:institutionMedicalCenterAwards.html.twig', array(
-                                        'institution' => $this->institution,
+                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
                                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                         'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                         'eachAward' => array('list' => $global),
-                                        'label' => $key.'s'
+                                        'type' => $key
                                 ));
-
+                                
                             }
                             return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }

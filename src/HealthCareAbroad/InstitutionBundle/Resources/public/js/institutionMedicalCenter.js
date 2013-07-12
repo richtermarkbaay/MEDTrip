@@ -423,9 +423,12 @@ var InstitutionMedicalCenter = {
                     	$('#servicesTable').html(response.html);
                     	break;
                     case 'awardsForm':
-                		$("div[id^='show-']").animate({
-                		    opacity: 1,
-                		 });
+
+                		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
+                		$('#_edit-award-form-container').html($('#_edit-award-form'));
+                		/* End of NOTE: DO NOT REMOVE this line */
+
+                		$("div[id^='show-']").animate({opacity: 1});
                     	 $.each(response.html, function(key, htmlContent){
                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
                     		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
