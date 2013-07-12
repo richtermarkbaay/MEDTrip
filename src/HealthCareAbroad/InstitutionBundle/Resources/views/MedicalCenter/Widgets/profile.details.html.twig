@@ -72,22 +72,23 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set _website = get_website_from_array(institutionMedicalCenter.websites)  %}
-          <div id="alertDiv" class="{{ _website != '' and institutionMedicalCenter.contactEmail != '' ?  '' :'alert alert-block' }}">
-            <p>  <i class="icon-globe"></i>
-                Website: <span id="profileWebsitesText"> 
-                    {% if _website %}
-                       http://<b>{{_website}}</b>
+        {% set website = get_website_from_array(institutionMedicalCenter.websites)  %}
+          <div id="alertDiv" class="{{ website == '' or institutionMedicalCenter.contactEmail == '' or not institutionMedicalCenter.contactDetails.first.number ? 'alert alert-block' : '' }}">
+            <p><i class="icon-globe"></i> Website: 
+                <span id="profileWebsitesText"> 
+                    {% if website %}
+                       <b>http://{{ website }}</b>
                     {% else %}
-                        <b> no clinic website </b> added.
+                        <b>no clinic website</b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
                     {% endif %}
                 </span>
             </p>
-            <p> <i class="icon-envelope"> </i>
-                Email: <span id="profileEmailText"> 
+
+            <p><i class="icon-envelope"></i> Email: 
+                <span id="profileEmailText"> 
                    {% if institutionMedicalCenter.contactEmail %}
-                       {{ institutionMedicalCenter.contactEmail }}
+                       <b>{{ institutionMedicalCenter.contactEmail }}</b>
                     {% else %}
                         <b> no contact email </b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>
@@ -97,13 +98,13 @@
 
             <p>
                 {% for contactDetail in institutionMedicalCenter.contactDetails %}
-                   <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}
+                   <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
                    <span id="PhoneNumberText">
                      {% if contactDetail.number %}
-                             {{ contactDetail }}
+                         <b>{{ contactDetail }}</b>
                      {% else %}
-                             <b> no phone number </b> added.
-                              <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i>Add Phone Number</a>
+                         <b>no phone number</b> added.
+                          <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add Phone Number</a>
                      {% endif %}
                     </span> 
                 {% endfor %}  
@@ -167,27 +168,11 @@
     } %}
 
     {% block viewContent %}
-        <div id="serviceTable">
-            {% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
-            {% if(selected | length) %}
-                <ul class="single-listing">
-                    {% for _service in ancillaryServicesData %}
-                        {% if(selected[_service.id] is defined) %}
-                            <li>{{ _service.name |title }}</li>
-                    	{% endif %}
-                    {% endfor %}
-                </ul>
-            {% else %}
-             <div class="alert alert-block">
-                <p class="hca-helptext">
-                    You haven't yet added any services for your hospital. Explain here the
-                    need to add services for your hospital.
-                </p>
-                <button type="button" class="btn btn-primary" onclick="InstitutionMedicalCenter.toggleForm($('#clinic-edit-services-btn'))">
-                    <i class="icon-plus"></i> Add Entry
-                </button>
-            </div>
-            {% endif %}
+        <div id="servicesTable">
+            {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' with { 
+                institutionMedicalCenter: institutionMedicalCenter,
+                ancillaryServicesData: ancillaryServicesData
+            } %}
         </div>
     {% endblock %}
 {% endembed %}

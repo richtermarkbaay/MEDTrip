@@ -5,14 +5,14 @@
              <div class="control-group {{ (form.name.vars.valid ? '' : 'error') }}">
                 <label for="institution-name">Name of the {{ label  }} *</label>
                 {{ form_widget(form.name, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
-                {{ form_errors(form.name )}} 
-                 <div class="tooltip-content2">
+                <div class="tooltip-content2">
                      {% if (isSingleCenter is defined) and isSingleCenter %}
 	                      The full name of your {{ label | lower }}, which will be displayed as the main heading of your listing.
                      {% else %}
                           The full name of the {{ label | lower }}, which will be displayed with all of your clinics.
 	                 {% endif %}
                 </div>
+                {{ form_errors(form.name )}} 
             </div>
             <div class="control-group">
                 <label for="website">Description <small>(Optional)</small></label>

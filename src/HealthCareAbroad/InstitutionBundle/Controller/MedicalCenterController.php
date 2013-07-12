@@ -226,7 +226,7 @@ class MedicalCenterController extends InstitutionAwareController
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['awards']->getData(),InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
                     }
 
-                    if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
+                    if ($this->isSingleCenter) {
                         // also update the instituion name and description
                         $this->institution->setName($this->institutionMedicalCenter->getName());
                         $this->institution->setDescription($this->institutionMedicalCenter->getDescription());
