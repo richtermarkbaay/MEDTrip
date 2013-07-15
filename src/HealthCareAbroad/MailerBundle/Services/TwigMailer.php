@@ -30,11 +30,11 @@ class TwigMailer extends SmtpMailer
             ->setTo($data['to'])
             ->setFrom($data['user']);
 
-        if (isset($data['cc']) && !empty($data['cc'])) {
+        if (isset($data['cc']) && $data['cc']) {
             $message->setCc($data['cc']);
         }
 
-        if (isset($data['bcc']) && !empty($data['bcc'])) {
+        if (isset($data['bcc']) && $data['bcc']) {
             $message->setBcc($data['bcc']);
         }
 
@@ -46,9 +46,13 @@ class TwigMailer extends SmtpMailer
                 ->addPart($textBody, 'text/plain');
         }
 
-        $status = $this->getMailer($data)->send($message, $failures);
+        try {
+            $status = $this->getMailer($data)->send($message, $failures);
+        } catch (\Exception $e) {
+            $this->log('Email notification error.');
 
-        $this->log('Mails sent: '.$status);
+            throw new \Exception('An error occurred while sending notifications.');
+        }
     }
 
     /**
