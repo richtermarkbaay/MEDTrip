@@ -14,4 +14,8 @@
         </ul>
     </li>
     {% endfor %}
+    
+    {% if isId is defined and isId %}
+       <input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+   {% endif %}
 </ul>

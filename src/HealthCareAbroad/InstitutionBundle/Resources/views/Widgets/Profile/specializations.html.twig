@@ -2,7 +2,7 @@
 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
     {% block tabbedContent %}
     <h3> Specializations
-        <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations') }}" data-toggle="#specialization-list" class="btn btn-primary pull-right"><i class="icon-plus"></i> Add New Specialization</button>
+        <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations', { imcId: institutionMedicalCenter.id }) }}" data-toggle="#specialization-list" class="btn btn-primary pull-right"><i class="icon-plus"></i> Add New Specialization</button>
     </h3>
     <section class="action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
@@ -21,24 +21,22 @@
     
     <section id="add-specialization-wrapper" class="section hca-display-specializations">
 
-        <form name="specializationsForm" id="institutionSpecializationForm" action="{{ path('institution_medicalCenter_addSpecializations_save', { imcId: institutionMedicalCenter.id }) }}" method="post">
-           <div class="edit-specializations">
-                <div class="row-fluid terms hca-edit-box">
-                    <h3> Specializations
-                        <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"> </i>
-                            <span class="tooltip-content hca-edit list-specializations pull-left">
-                                <i class="icon-stethoscope icon-2x pull-left"> </i>
-                                Indicating all the SPECIALIZATIONS and related treatments of your clinic
-                                will allow you to be searchable by patients based on those fields.
-                                <br>
-                            </span>
+       <div class="edit-specializations">
+            <div class="row-fluid terms hca-edit-box">
+                <h3> Specializations
+                    <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"> </i>
+                        <span class="tooltip-content hca-edit list-specializations pull-left">
+                            <i class="icon-stethoscope icon-2x pull-left"> </i>
+                            Indicating all the SPECIALIZATIONS and related treatments of your clinic
+                            will allow you to be searchable by patients based on those fields.
+                            <br>
                         </span>
-                    </h3>     
-                    <section class="section " id="specialization-list">
-                    </section>
-                 </div>
-            </div>
-        </form>
+                    </span>
+                </h3>     
+                <section class="section " id="specialization-list">
+                </section>
+             </div>
+        </div>
 
      </section>
     {% endblock %}

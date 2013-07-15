@@ -393,76 +393,6 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * NOTE: This is an AJAX request
-     * @param Request $request
-     * @return Ambigous <\Symfony\Component\HttpFoundation\Response, \Symfony\Component\HttpFoundation\RedirectResponse>
-     */
-    public function saveSpecializationsAction(Request $request)
-    {
-        $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
-        $em = $this->getDoctrine()->getEntityManager();
-        $ajaxOutput = array('html' => '');
-        $errors = array();
-        $commonDeleteForm = $this->createForm(new CommonDeleteFormType()); // used only in ajax request
-        $hasTreatments = false;
-
-        if(!$hasTreatments) {
-            $errors = 'Please select at least one specialization.';
-        }
-
-        // if AJAX request
-        if ($request->isXmlHttpRequest()) {
-            if ($errors) {
-                $response = new Response($errors ,400);
-            }
-            else {
-                $response = new Response(\json_encode($ajaxOutput),200, array('content-type' => 'application/json'));
-            }
-        }
-        return $response;
-    }
-
-    private function saveSpecializationsAndTreatments($submittedSpecializations)
-    {
-
-        foreach ($submittedSpecializations as $specializationId => $data) {
-
-            if(isset($data['treatments']) && count($data['treatments'])) {
-                $specialization = $this->get('services.treatment_bundle')->getSpecialization($specializationId);
-                $institutionSpecialization = new InstitutionSpecialization();
-                $institutionSpecialization->setSpecialization($specialization);
-                $institutionSpecialization->setInstitutionMedicalCenter($this->institutionMedicalCenter);
-                $institutionSpecialization->setStatus(InstitutionSpecialization::STATUS_ACTIVE);
-                $institutionSpecialization->setDescription('');
-
-                // set passed treatments as choices
-                $defaultChoices = array();
-                $treatmentChoices = $this->get('services.treatment_bundle')->findTreatmentsByIds($data['treatments']);
-                foreach ($treatmentChoices as $treatment) {
-                    $defaultChoices[$treatment->getId()] = $treatment->getName();
-                    // add the treatment
-                    $institutionSpecialization->addTreatment($treatment);
-                }
-
-                $form = $this->createForm(new InstitutionSpecializationFormType(), $institutionSpecialization, array('default_choices' => $defaultChoices));
-                $form->bind($data);
-                if ($form->isValid()) {
-                    $hasTreatments = true;
-                    $em->persist($institutionSpecialization);
-                    $em->flush();
-                    if ($request->isXmlHttpRequest()) {
-                        $ajaxOutput['html'][] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
-                            'each' => $_institutionSpecialization,
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'commonDeleteForm' => $commonDeleteForm->createView()
-                        ));
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Modified for new markup in adding specialist in clinic profile doctors tab
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -656,44 +586,6 @@ class MedicalCenterController extends InstitutionAwareController
         return new Response("Property removed", 200);
     }
 
-    /**
-     * Remove institution specialization
-     *
-     * @param Request $request
-     */
-    public function ajaxRemoveSpecializationAction(Request $request)
-    {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
-            ->find($request->get('isId', 0));
-
-        if (!$institutionSpecialization) {
-            throw $this->createNotFoundException('Invalid instituiton specialization');
-        }
-
-        if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
-            return new Response("Cannot remove specialization that does not belong to this institution", 401);
-        }
-
-        $form = $this->createForm(new CommonDeleteFormType(), $institutionSpecialization);
-
-        if ($request->isMethod('POST'))  {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $_id = $institutionSpecialization->getId();
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->remove($institutionSpecialization);
-                $em->flush();
-
-                $responseContent = array('id' => $_id);
-                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
-            }
-            else {
-                $response = new Response("Invalid form", 400);
-            }
-        }
-
-        return $response;
-    }
 
     /**
      * Remove an ancillary service to medical center
@@ -779,74 +671,6 @@ class MedicalCenterController extends InstitutionAwareController
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
-            }
-        }
-
-        return $response;
-    }
-
-    /**
-     * Save Specialization treatments under clinic profile page
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @author Chaztine Blance
-     */
-    public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
-    {
-        $debugMode = isset($_GET['hcaDebug']) && $_GET['hcaDebug'] == 1;
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
-        if (!$institutionSpecialization ) {
-            throw $this->createNotFoundException('Invalid institution specialization');
-        }
-
-        if ($request->isMethod('POST')) {
-            $submittedSpecializations = $request->get(InstitutionSpecializationFormType::NAME);
-
-            $em = $this->getDoctrine()->getEntityManager();
-            $errors = array();
-            $output = array('html' => '');
-            foreach ($submittedSpecializations as $_isId => $_data) {
-                if ($_isId == $institutionSpecialization->getSpecialization()->getId()) {
-
-                    // set passed treatments as choices
-                    $default_choices = array();
-                    $_treatment_choices = $this->get('services.treatment_bundle')->findTreatmentsByIds($_data['treatments']);
-                    foreach ($_treatment_choices as $_t) {
-                        $default_choices[$_t->getId()] = $_t->getName();
-                        // add the treatment
-                        $institutionSpecialization->addTreatment($_t);
-                    }
-
-                    $form = $this->createForm('institutionSpecialization', $institutionSpecialization, array('default_choices' =>$default_choices ));
-                    $form->bind($_data);
-                    if ($form->isValid()) {
-                        try {
-                            //$institutionSpecialization = $form->getData();
-                            $em->persist($institutionSpecialization);
-                            $em->flush();
-
-                            $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
-                                'institutionSpecialization' => $institutionSpecialization,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
-                            ));
-
-                        } catch (\Exception $e) {
-                            $errors[] = $e->getMessage();
-                        }
-                    }
-                    else {
-                        $errors[] = 'Failed form validation';
-                    }
-                }
-            }
-
-            if (\count($errors) > 0) {
-                $response = new Response('Errors: '.implode('\n',$errors), 400);
-            }
-            else {
-                $output['calloutView'] = $this->_getEditMedicalCenterCalloutView();
-                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
         }
 

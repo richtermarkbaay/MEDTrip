@@ -70,14 +70,6 @@ institution_medicalCenter_ajaxRemoveSpecialization:
         _method: GET|POST
         imcId: \d+
         isId: \d+
-
-institution_medicalCenter_ajaxEditSpecialization:
-    pattern: /medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddInstitutionSpecializationTreatments }
-    requirements:
-        _method: POST
-        imcId: \d+
-        isId: \d+
         
 institution_medicalCenter_addGlobalAwards:
     pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/add
@@ -86,7 +78,6 @@ institution_medicalCenter_addGlobalAwards:
         _method: GET|POST
         imcId: \d+
         
-
 institution_load_doctor_specializations:
     pattern: /medical-center/{imcId}/search-doctor-specializations/{doctorId}
     defaults: {_controller: InstitutionBundle:MedicalCenter:searchMedicalSpecialistSpecialization}

@@ -3,7 +3,7 @@
     	<a data-target="#_delete-specialization-modal-{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
             <i class="icon-remove-sign pull-right"></i>
         </a>
-        <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
+        <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;" data-load-url="{{ path('institution_ajax_loadSpecializationTreatments', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}">
             <i class="icon-edit pull-right" ></i></a>
         <a data-target="{{ each.specialization.id }}" style="display:none;" id="treatments-save"  href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.submitAddTreatmentsForm($(this));return false;">
             <i class="icon-ok pull-right"></i></a>
@@ -17,7 +17,7 @@
         <h4>{{ each.specialization.name }}</h4>
     </div>
     <div class="hca-hidden-content specializations-profile-listing">
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadSpecializationTreatments', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post"></form>
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_medicalCenter_ajaxEditSpecialization', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post"></form>
     </div>
 
 </div>
