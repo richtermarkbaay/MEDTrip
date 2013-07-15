@@ -13,7 +13,7 @@
     
     {% block modalFooter %}
         <div class="align-right">
-            <a href="#" onclick="$('#delete-media').modal('hide')" class="btn">Cancel</a> &nbsp;
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
             <button id="confirm-delete-media-btn" class="btn btn-danger" type="button"><i class="icon-trash"></i>Confirm Delete</button>
         </div>
     {% endblock %}
