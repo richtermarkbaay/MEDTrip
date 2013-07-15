@@ -16,7 +16,7 @@ class MailerController extends Controller
 {
     public function sendEmailAction(Request $request)
     {
-        //throw new NotFoundHttpException();
+        throw new NotFoundHttpException();
 
 //          $message = \Swift_Message::newInstance()
 //              ->setSubject('Hello Email')
