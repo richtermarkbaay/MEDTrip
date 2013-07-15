@@ -34,7 +34,7 @@ class DefaultController extends Controller
     {
         $countryId = $request->get('countryId', 0);
         $selectedCity = $request->get('selectedCityId', 0);
-
+        
         $data = $request->get('loadNonGlobalCities')
             ? $this->get('services.location')->getListActiveCitiesByCountryId($countryId)
             : $this->get('services.location')->getGlobalCitiesListByContry($countryId);
