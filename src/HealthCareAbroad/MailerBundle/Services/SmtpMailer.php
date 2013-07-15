@@ -4,13 +4,14 @@ namespace HealthCareAbroad\MailerBundle\Services;
 /**
  * This class was created primarily for the following issue:
  *
- * We directly create the mailer as a temporary workaround. Testing on staging
- * server doesn't seem to work when using multiple mailer services. In particular
- * the mailer service is getting an instance of Swift_MailTransport instead of
- * using Swift_SmtpTransport. The cause is possibly a simple misconfiguration.
+ * FIXME: We directly create the mailer as a temporary workaround. Testing on
+ * staging server doesn't seem to work when using multiple mailer services. In
+ * particular the mailer service is getting an instance of Swift_MailTransport
+ * instead of using Swift_SmtpTransport. The cause is possibly a simple
+ * misconfiguration.
  *
- * Once we find a way to inject dependencies via configuration we can directly
- * implement the MailerInterface instead.
+ * Once we find a way to inject dependencies via configuration our concrete classes
+ * can directly implement the MailerInterface instead.
  *
  * @author Harold Modesto <harold.modesto@chromedia.com>
  *
