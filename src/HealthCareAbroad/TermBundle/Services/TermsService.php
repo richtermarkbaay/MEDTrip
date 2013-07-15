@@ -149,9 +149,11 @@ class TermsService
         // get the old treatment term
         $oldTreatmentTerm = $this->getTreatmentInternalTerm($oldTreatment);
         
-        $this->doctrine->getRepository('TermBundle:Term')->updateInstitutionTreatmentByTreatment($currentTreatment, $oldTreatment);
+        // move institution treatments of old treatment to new treatment
+        $this->doctrine->getRepository('TermBundle:Term')->moveInstitutionTreatmentsToAnotherTreatment($currentTreatment, $oldTreatment);
         
-        $this->_deleteTermDocumentsExceptForCurrentTerm(null, $oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
+        // delete the term documents of the old treatment
+        $this->deleteTermDocumentsByDocumentIdAndType($oldTreatment->getId(), TermDocument::TYPE_TREATMENT);
         
         // save old treatment term as new term for current treatment
         $this->doctrine->getRepository('TermBundle:TermDocument')->saveBulkTerms(array($oldTreatmentTerm->getId()), $currentTreatment->getId(), TermDocument::TYPE_TREATMENT);
@@ -186,21 +188,20 @@ class TermsService
         return $term;
     }
     
-    private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm=null, $documentId, $type)
+    private function deleteTermDocumentsByDocumentIdAndType($documentId, $type)
     {
-        $qb = $this->doctrine->getEntityManager()->createQueryBuilder()
-            ->delete('TermBundle:TermDocument', 'a')
-            ->where('a.documentId = :documentId')
-            ->setParameter('documentId', $documentId)
-            ->andWhere('a.type = :type')
-            ->setParameter('type', $type);
-
-        // if there is a matched term by name
-        if ($currentTerm) {
+        $qb = $this->doctrine->getRepository('TermBundle:Term')->getQueryBuilderForDeletingTermDocumentsByDocumentIdAndType($documentId, $type);
+        
+        $qb->getQuery()->execute();
+    }
+    
+    
+    private function _deleteTermDocumentsExceptForCurrentTerm(Term $currentTerm, $documentId, $type)
+    {
+        $qb = $this->doctrine->getRepository('TermBundle:Term')->getQueryBuilderForDeletingTermDocumentsByDocumentIdAndType($documentId, $type);
             
-            $qb->andWhere('a.term != :currentTermId')
+        $qb->andWhere('a.term != :currentTermId')
             ->setParameter('currentTermId', $currentTerm->getId());
-        }
         
         $qb->getQuery()->execute();
 
