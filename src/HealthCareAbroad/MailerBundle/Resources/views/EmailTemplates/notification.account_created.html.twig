@@ -39,9 +39,6 @@ The Healthcare Abroad Team
 
 {% block body_html %}
 
-    {#% include 'MailerBundle:EmailTemplates:confirmation_email.html.twig' %#}
-    {# We can also include a twig template here as shown above #}
-
 Welcome to HealthcareAbroad.com!
 
 Your account has successfully been created. The email address you entered for future logins is: {{ email.user_login }}.<br/><br/>
@@ -51,7 +48,7 @@ Soon patients will be able to find your hospital or clinic on HealthcareAbroad.c
 <ul>
     <li><a href='{{ url.complete_profile }}'>Complete your profile >></a></li>
     <li><a href='{{ url.add_centers }}'>Add all your units or departments >></a></li>
-    <li><a href='{{ url.upload_photos }}'>Post photos of your facilities >></a</li>
+    <li><a href='{{ url.upload_photos }}'>Post photos of your facilities >></a></li>
     <li><a href='{{ url.list_treatments }}'>List the treatments you offer >></a></li>
     <li><a href='{{ url.feature_doctors }}'>Feature your doctors >></a></li>
 </ul>
