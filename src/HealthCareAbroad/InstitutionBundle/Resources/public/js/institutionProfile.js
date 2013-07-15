@@ -391,7 +391,7 @@ var InstitutionProfile = {
                     	}
                     	
                        	if(response.institution.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institution.websites +'</b>');
+                    		$('#profileWebsitesText').html(' http://www.'+ response.institution.websites);
                     		
                     	}else{
                     		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
@@ -414,9 +414,13 @@ var InstitutionProfile = {
                     	var websites = response.institution.socialMediaSites;
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
-                    			$('#institution-socialMediaSites > p.' + type + '-wrapper').removeClass('alert-block').find('b').html(websites[type]);
+                    			if($('._twitter-wrapper').html() == 'no account added.'){
+                    				$('#institution-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    			}else{
+                    				$('#institution-socialMediaSites').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
+                    			}
                     		} else {
-                    			$('#institution-socialMediaSites > p.' + type + '-wrapper').addClass('alert-block').find('b').html('no account added. ');
+                    			$('#institution-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}
                     	});
                     	break;

@@ -389,7 +389,7 @@ var InstitutionMedicalCenter = {
                     	}
                     	
                        	if(response.institutionMedicalCenter.websites){
-                    		$('#profileWebsitesText').html(' http://www.<b>'+ response.institutionMedicalCenter.websites +'</b>');
+                    		$('#profileWebsitesText').html(' http://www.'+ response.institutionMedicalCenter.websites);
                     	}else{
                     		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
                     	}
@@ -411,9 +411,13 @@ var InstitutionMedicalCenter = {
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
-                    			$('#view-socialMediaSites > p.' + type + '-wrapper').removeClass('alert-block').find('b').html(websites[type]);
+                    			if($('._twitter-wrapper').html() == 'no account added.'){
+                    				$('#view-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    			}else{
+                    				$('#view-socialMediaSites').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                    			}
                     		} else {
-                    			$('#view-socialMediaSites > p.' + type + '-wrapper').addClass('alert-block').find('b').html('no account added. ');
+                    			$('#view-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}
                     	});
                   	break;

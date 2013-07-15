@@ -31,4 +31,6 @@ HealthCareAbroad\TermBundle\Entity\Term:
         termDocuments:
             targetEntity: HealthCareAbroad\TermBundle\Entity\TermDocument
             mappedBy: term
+            cascade:
+                - "persist"
     lifecycleCallbacks: {  }

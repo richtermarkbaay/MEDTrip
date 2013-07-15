@@ -58,7 +58,12 @@ class TermRepository extends EntityRepository
         return $query->getOneOrNullResult();
     }
     
-    public function updateInstitutionTreatmentByTreatment(Treatment $currentTreatment, Treatment $oldTreatment)
+    /**
+     * 
+     * @param Treatment $currentTreatment
+     * @param Treatment $oldTreatment
+     */
+    public function moveInstitutionTreatmentsToAnotherTreatment(Treatment $currentTreatment, Treatment $oldTreatment)
     {
         $query = "
         INSERT INTO `institution_treatments` (`institution_specialization_id`, `treatment_id`)
@@ -69,11 +74,29 @@ class TermRepository extends EntityRepository
         WHERE a.treatment_id = ". $oldTreatment->getId() ."
         AND _existing.`institution_specialization_id` IS NULL";
         
+        
         $conn = $this->getEntityManager()->getConnection();
         $conn->executeQuery($query);
         
         $deleteQuery = "DELETE FROM institution_treatments WHERE treatment_id = ".$oldTreatment->getId();
         return $conn->executeQuery($deleteQuery);
         
+    }
+    
+    /**
+     * Get query builder for deleting term documents by document id and type
+     * 
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderForDeletingTermDocumentsByDocumentIdAndType($documentId, $type)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->delete('TermBundle:TermDocument', 'a')
+        ->where('a.documentId = :documentId')
+        ->setParameter('documentId', $documentId)
+        ->andWhere('a.type = :type')
+        ->setParameter('type', $type);
+
+        return $qb;
     }
 }

@@ -128,11 +128,9 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set mediaSites = institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-        {% for type, site in mediaSites %}
-            <p class="{{ type }}-wrapper {{ site ? '' : ' alert-block' }}"><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                <b>{{ site ? site : 'no account added'}}  
-                </b>
+        {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
+            <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
+             <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
             </p>
         {% endfor %}
     {% endblock %}

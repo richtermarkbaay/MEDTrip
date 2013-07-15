@@ -17,7 +17,7 @@ class SyncCitiesFromGlobalDataCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this->setName('location:syncCities')
-            ->setDescription('Synchronize data in cities with global geo_cities data');
+            ->setDescription('This script will just populate geo_city_id');
     }
     
     protected function execute(InputInterface $input, OutputInterface $output)
