@@ -1,43 +1,9 @@
-# DEPRECRATED?? - Currently not being used.
-# NOTE Added by: Adelbert D. Silla
-institution_load_tabbed_contents_profile:
-    pattern: /ns-institution/{institutionId}/load-tabbed-contents-institution
-    defaults: { _controller: InstitutionBundle:Unsecured:loadMultipleCenterInstitutionTabbedContents }
-    requirements:
-        _method: GET
-
-
-# DEPRECRATED?? - Currently not being used.
-# NOTE Added by: Adelbert D. Silla        
-institution_medicalCenter_loadMedicalSpecialist:
-    pattern: /ns-institution/medical-center/{imcId}/medical-specialists/load
-    defaults: { _controller: InstitutionBundle:MedicalCenter:loadMedicalSpecialist }
-    requirements:
-        _method: GET
-        imcId: \d+
-
-
 # institutionId is included in request parameters since this is an unsecured request
 institution_medicalCenter_ajaxGlobalAwardSource:
     pattern: /ns-institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search
     defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxMedicalCenterGlobalAwardSource}
     requirements:
         imcId: \d+
-        _method: GET
-        
-        
-institution_medicalCenter_loadAvailableSpecializations:
-    pattern: /ns-institution/medical-center/load-available-specializations/{imcId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableSpecializations }
-    requirements:
-        _method: GET
-        imcId: \d+
-        
-        
-institution_medical_center_ajaxLoadSpecializationAccordionEntry:
-    pattern: /ns-institution/medical-center/ajaxLoadSpecializationAccordionEntry/
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxLoadSpecializationAccordionEntry }
-    requirements:
         _method: GET
 
 institution_medicalCenter_ajaxGetEditSpecialization:

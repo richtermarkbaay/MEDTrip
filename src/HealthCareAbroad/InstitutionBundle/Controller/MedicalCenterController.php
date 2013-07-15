@@ -392,50 +392,6 @@ class MedicalCenterController extends InstitutionAwareController
         return $response;
     }
 
-   /**
-     * @author Chaztine Blance
-     * Modified for new markup in adding specialist in clinic profile doctors tab
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function addMedicalSpecialistAction(Request $request)
-    {
-        if (!$this->institutionMedicalCenter) {
-            throw $this->createNotFoundException("Invalid medical center");
-        }
-
-        $output = array();
-        $content = $request->get('content', null);
-
-        $doctor = new Doctor();
-        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
-
-        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
-
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-
-                $doctor = $form->getData();
-                $doctor->setStatus(Doctor::STATUS_ACTIVE);
-
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($doctor);
-                $em->flush($doctor);
-
-                $data = array(
-                                'status' => true,
-                                'message' => 'Doctor has been added to your clinic!',
-                                'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
-                );
-            } else {
-                $data = array('status' => false, 'message' => $form->getErrorsAsString());
-            }
-
-        }
-        return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
-    }
-
     /**
      * NOTE: This is an AJAX request
      * @param Request $request
@@ -507,76 +463,40 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * Ajax request handler for loading available specializations for an institution medical center group.
-     * This is used in the dropdown data for the Specialization field in add center form.
-     * Current implementation implies that we can load all active Specializations, since an InstitutionMedicalCenter can have one or more InstitutionSpecializations
-     *
-     */
-    public function loadAvailableSpecializationsAction()
-    {
-        // load all active medical centers
-        $specializations = $this->get('services.specialization')->getAllActiveSpecializations();
-        $html = '';
-        foreach ($specializations as $each) {
-            $html .= "<option value='{$each->getId()}'>{$each->getName()}</option>";
-        }
-
-        return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
-    }
-
-    /**
-     * Ajax handler for loading data
-     * Expected GET parameters
-     *     - imcId instituitonMedicalCenterid
-     *     - specializationId specializationId
-     */
-    public function loadAvailableTreatmentsAction(Request $request)
-    {
-        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->find($request->get('specializationId', 0));
-        if (!$specialization) {
-            throw $this->createNotFoundException("Invalid specialization");
-        }
-
-        // get all active Treatments under Specialization
-        $treatments = $this->get('services.treatment')->getActiveTreatmentsBySpecialization($specialization);
-        $html = '';
-
-        if (count($treatments)) {
-            $currentSubSpecialization = $treatments[0]->getSubSpecialization();
-            $html .= "<optgroup label='{$currentSubSpecialization->getName()}'>";
-            foreach ($treatments as $each) {
-
-                if ($each->getTreatment()->getId() != $currentSubSpecialization->getId()) {
-                    $currentSubSpecialization = $each->getSubSpecialization();
-                    $html .= "</optgroup><optgroup label='{$currentSubSpecialization->getName()}'>";
-                }
-                $html .= "<option value='{$each->getId()}' style='margin-left:10px;'>{$each->getName()}</option>";
-            }
-            $html .= "</optgroup>";
-        }
-
-
-        return new Response(\json_encode(array('html' => $html)),200, array('content-type' => 'application/json'));
-    }
-
-    /**
-     * Ajax handler for searching available doctors for an InstitutionMedicalCenter in Client-Admin
-     * Expected GET parameters:
-     *     - imcId institutionMedicalCenterId
-     *     - searchKey
-     *
-     * @param Request $request
+     * Modified for new markup in adding specialist in clinic profile doctors tab
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function loadMedicalSpecialistAction(Request $request)
-    {
-        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
-        $doctorArr = array();
-        foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'], 'id' => $each['id'], 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
+    public function addDoctorAction(Request $request)
+    {    
+        $doctor = new Doctor();
+        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+
+            if ($form->isValid()) {
+                $doctor = $form->getData();
+                $doctor->setStatus(Doctor::STATUS_ACTIVE);
+
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($doctor);
+                $em->flush($doctor);
+
+                $data = array(
+                    'status' => true,
+                    'message' => 'Doctor has been added to your clinic!',
+                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor),
+                    'editDoctorUrl' => $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
+                    'removeDoctorUrl' => $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId())),
+                    'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))
+                );
+            } else {
+                $data = array('status' => false, 'message' => $form->getErrorsAsString());
+            }
         }
 
-        return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
+        return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
     }
 
     /**
@@ -931,34 +851,6 @@ class MedicalCenterController extends InstitutionAwareController
         }
 
         return $response;
-    }
-
-    public function ajaxLoadSpecializationAccordionEntryAction(Request $request)
-    {
-        $specializationId = $request->get('specializationId', 0);
-
-        $criteria = array('status' => Specialization::STATUS_ACTIVE, 'id' => $specializationId);
-
-        $params['specialization'] = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->findOneBy($criteria);
-
-        if(!$params['specialization']) {
-            $result = array('error' => 'Invalid Specialization');
-
-            return new Response('Invalid Specialization', 404);
-        }
-
-        $groupBySubSpecialization = true;
-        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
-        $params['form'] = $form->createView();
-        $params['subSpecializations'] = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationGroupedBySubSpecialization($params['specialization']);
-        $params['showCloseBtn'] = $this->getRequest()->get('showCloseBtn', true);
-        $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
-        $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
-
-        $html = $this->renderView('InstitutionBundle:MedicalCenter:specializationAccordion.html.twig', $params);
-        //         $html = $this->renderView('HelperBundle:Widgets:testForm.html.twig', $params);
-
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
 
     public function ajaxRemoveSpecialistAction(Request $request)

@@ -32,7 +32,7 @@
                                         <h3> Your Doctors
                                             <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary pull-right" data-toggle="modal"> <i class="icon-plus"></i> Add New Doctor</a>
                                         </h3>
-                                        {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' %}
+                                        {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' with {addDoctorFormAction: path('institution_medicalCenter_addDoctor', {imcId: institutionMedicalCenter.id}) }  %}
                                     </section>
                                 {% endblock %}
                             {% endembed %}                                    
