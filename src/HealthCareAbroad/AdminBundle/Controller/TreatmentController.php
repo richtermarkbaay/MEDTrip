@@ -237,7 +237,7 @@ class TreatmentController extends Controller
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
 
         if($currentTreatment = $request->get('convert_treatment_to_term_form')) {
-            $currentTreatmentId = $currentTreatment['treatments'];var_dump($oldTreatment);exit;
+            $currentTreatmentId = $currentTreatment['treatments'];
             $currentTreatmentName = $this->get('services.terms')->convertTreatmentToTerm($currentTreatmentId, $oldTreatment);
             $this->get('session')->setFlash('success', "Successfully converted ". $oldTreatment->getName() ."as Tag of ".$currentTreatmentName);
             
@@ -247,7 +247,7 @@ class TreatmentController extends Controller
         return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 
                         array('specializations' => $specializations,
                               'treatments' => $treatments,
-                              'treatment' => $oldTreatment,
+                              'treatment' => $oldTreatment
                               ));
     }
 }

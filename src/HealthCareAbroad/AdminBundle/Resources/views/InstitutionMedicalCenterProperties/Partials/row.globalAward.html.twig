@@ -8,7 +8,7 @@
 	<td>
 	    <i class="icon-edit" title="Edit date acquired"></i>
         <a class="edit_global_award" href="{{ path('admin_institution_medicalCenter_ajaxEditGlobalAward', {institutionId: institution.id ,'imcId':institutionMedicalCenter.id} ) }}" data-propertyId="{{ property.id }}" data-label="{{ award.name }}" data-globalAwardId="{{ award.id }}" >
-            <small>Edit</small>
+            <small>Add Year Info</small>
         </a>
 		<i class="icon-trash" title="Delete"></i>
 		<a data-toggle="modal" data-id="{{ property.id }}" data-target="#globalAwardModal"  onclick="$.GlobalAutocompleteAction.showCommonModalId(this); return false;" href="#">

@@ -60,13 +60,13 @@ admin_institution_medicalCenter_ajaxAddGlobalAward:
         institutionId: \d+
         imcId: \d+
 
-admin_institution_medicalCenter_addGlobalAwards:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/global_awards
-    defaults: { _controller: AdminBundle:InstitutionProperties:addInstitutionMedicalCenterGlobalAwards }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: GET|POST
+#admin_institution_medicalCenter_addGlobalAwards:
+#    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/global_awards
+#    defaults: { _controller: AdminBundle:InstitutionProperties:addInstitutionMedicalCenterGlobalAwards }
+#    requirements:
+#        institutionId: \d+
+#        imcId: \d+
+#        _method: GET|POST
 
 admin_institution_medicalCenter_ajaxEditGlobalAward:
     pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit

@@ -44,7 +44,8 @@ class InstitutionPropertyRepository extends EntityRepository
     /**
      * Get available institution ancillary services that is still not assigned to institutionMedicalCenter
      */
-    public function getAvailableInstitutionServicesByInstitutionMedicalCenter(Institution $institution, InstitutionMedicalCenter $center, $assignedServices)
+    
+    public function getUnAssignedInstitutionServicesToInstitutionMedicalCenter(Institution $institution, $assignedServices)
     {
         $ancillaryServicePropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE));
         
@@ -62,7 +63,7 @@ class InstitutionPropertyRepository extends EntityRepository
          */
         $query = "SELECT a.* ,b.* FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.id NOT IN ({$idsNotIn})";
         //$query = "SELECT * FROM institution_properties a RIGHT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND a.institution_property_type_id = :propertyType AND b.id NOT IN ({$idsNotIn})";
-        
+//         echo $query;exit;
         
         $stmt = $connection->prepare($query);
         $stmt->bindValue('id', $institution->getId());

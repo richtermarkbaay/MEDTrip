@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -89,7 +91,7 @@ class InstitutionMedicalCenterController extends Controller
     
         }
         else {
-            $institutionMedicalCenters = $this->filteredResult;//$institutionService->getAllMedicalCenters($this->institution);
+            $institutionMedicalCenters = $this->filteredResult;
     
             $ancillaryServicesData = array(
                             'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
@@ -134,10 +136,6 @@ class InstitutionMedicalCenterController extends Controller
         $institutionMedicalSpecialistForm = $this->createForm(new InstitutionDoctorSearchFormType());
         //globalAwards Form
     
-        //services
-        $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
-    
         $businessFancyForm = $this->createForm(new FancyBusinessHourType());
     
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
@@ -167,7 +165,6 @@ class InstitutionMedicalCenterController extends Controller
                         'institutionSpecializationForm' => $institutionSpecializationForm->createView(),
                         'form' => $form->createView(),
                         'fancyBusinessForm' => $businessFancyForm->createView(),
-                        'institutionServices' => $institutionAncillaryServices,
                         'institutionMedicalSpecialistForm' => $institutionMedicalSpecialistForm->createView(),
                         'selectedSubMenu' => 'centers',
                         'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
@@ -194,7 +191,7 @@ class InstitutionMedicalCenterController extends Controller
     public function editStatusAction(Request $request)
     {
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactDetails','address','timeZone','websites','socialMediaSites','addressHint')));
-        $template = 'AdminBundle:InstitutionMedicalCenter:edit.medicalCenter.html.twig';
+        $template = 'AdminBundle:InstitutionMedicalCenter/Modals:editStatus.html.twig';
         $output = array();
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -382,7 +379,7 @@ class InstitutionMedicalCenterController extends Controller
             $this->institutionMedicalCenter->addDoctor($specialist);
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
     
-            $html = $this->renderView('AdminBundle:InstitutionTreatments:tableRow.specialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
+            $html = $this->renderView('AdminBundle:InstitutionMedicalCenter/Partials:row.medicalSpecialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
         return $response;
@@ -393,32 +390,16 @@ class InstitutionMedicalCenterController extends Controller
      */
     public function ajaxRemoveMedicalSpecialistAction(Request $request)
     {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
+        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('_doctorId', 0));
         if (!$doctor) {
             throw $this->createNotFoundException('Invalid doctor.');
         }
     
-        $form = $this->createForm(new CommonDeleteFormType(), $doctor);
-    
         if ($request->isMethod('POST'))  {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $_id = $doctor->getId();
+                $doctorId = $doctor->getId();
                 $this->institutionMedicalCenter->removeDoctor($doctor);
                 $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-                $response = new Response(\json_encode(array('id' => $_id)), 200, array('content-type' => 'application/json'));
-            }
-            else {
-                $response = new Response("Invalid form", 400);
-            }
-        }
-        else {
-    
-            return $this->render('InstitutionBundle:Widgets/Profile:doctor.confirmDelete.html.twig', array(
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'doctor' => $doctor,
-                            'form' => $form->createView()
-            ));
+                $response = new Response(\json_encode(array('id' => $doctorId)), 200, array('content-type' => 'application/json'));
         }
     
         return $response;

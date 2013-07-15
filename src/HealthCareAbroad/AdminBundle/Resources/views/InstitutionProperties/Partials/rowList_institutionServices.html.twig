@@ -1,0 +1,11 @@
+<tbody>
+{% for service in institutionServices %}
+<tr>
+    <td> {{ service.name |title }} </td>
+</tr>
+{% else %}
+<tr>
+    <td> No results to display! </td>
+</tr>
+{% endfor %}
+</tbody>

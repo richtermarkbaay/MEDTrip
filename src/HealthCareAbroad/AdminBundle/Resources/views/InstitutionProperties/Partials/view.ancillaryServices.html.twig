@@ -9,7 +9,7 @@
         <tbody>
             {% for _service in ancillaryServicesData.globalList %}
     			
-            	{% include 'AdminBundle:InstitutionTreatments:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in ancillaryServicesData.selected ,'properties': ancillaryServicesData.currentAncillaryData} %}
+            	{% include 'AdminBundle:InstitutionProperties/Partials:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in ancillaryServicesData.selected ,'properties': ancillaryServicesData.currentAncillaryData} %}
         	
             {% endfor %}
             

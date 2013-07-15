@@ -14,26 +14,7 @@
             }
         %}
             {% block sectionContent %}
-                 <table class="table table-striped table-bordered bootstrap-datatable">
-                    <thead>
-                        <tr>
-            				<th>Services</th>
-            				<th>Actions</th>
-            			</tr>
-                    </thead>
-        			<tbody>
-            			{% for _service in services.globalList %}
-                			{% include 'AdminBundle:InstitutionProperties:row.ancillaryService.html.twig' with {'each': _service, '_isSelected': _service.id in services.selected ,'properties': services.currentAncillaryData
-                			} %}
-                            
-            		    {% else %}
-                		  	<tr>
-                			   <td> No Services yet. </td>
-                			   <td></td>
-                			</tr>
-            			{% endfor %}
-        		    </tbody>
-        	    </table>
+                  {% include 'AdminBundle:InstitutionProperties/Partials:view.ancillaryServices.html.twig' %}
             {% endblock %}
 
         {% endembed %}

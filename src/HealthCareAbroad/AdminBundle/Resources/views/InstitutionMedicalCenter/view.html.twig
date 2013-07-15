@@ -42,16 +42,39 @@
                     {% include 'AdminBundle:Widgets:medicalCenter.medicalSpecialist.html.twig'%}
                     
                     <!-- Modal Medical Center Status -->
-                    	{% include 'AdminBundle:InstitutionTreatments:edit.MedicalCenter.html.twig' 
+                    	{% include 'AdminBundle:InstitutionMedicalCenter/Modals:editStatus.html.twig' 
                     	     with {modalId: 'status_medicalCenter_modal_form', modalTitle: 'Edit Status'} 
                     	%} 
                    <!-- end Modal Medical Center Status -->
                    
                    <!-- Modal Institution Ancillary Services -->
-                    	{% include 'AdminBundle:InstitutionTreatments/Modals:modal.institution_ancillary_services.html.twig' 
-                    	     with {modalId: 'institution_ancillaryServices_modal_form', modalTitle: 'Port Institution Ancillary Services'} 
-                    	%}
+                       {% include 'AdminBundle:InstitutionProperties/Modals:institution_ancillaryServices.html.twig' 
+                            with {modalId: 'institution_ancillaryServices_modal_form', modalTitle: 'Port Institution Ancillary Services'} 
+                       %}
                    <!-- end Modal Institution Ancillary Services -->
+                   
+                   <!-- Modal Institution Medical Center Specialist -->
+                       <div id="_specialistModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                            <h3>Delete Specialist</h3>
+                            
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to remove
+                            	<strong> </strong> ?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {'imcId': institutionMedicalCenter.id, 'institutionId': institution.id } ) }}">
+                                 <input type="hidden" name="_doctorId" class="doctorHiddenId" id="_doctorId" value=""/>
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveMedicalSpecialistForm($(this).parents('form')); return true;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                   <!-- end Modal -->
+                   
                 </div>
             {% endblock %}
     
@@ -76,6 +99,17 @@
         $(function() {
         	$('.ajax_loader').hide();
         	$(".hour").timepicker({ seconds: false  });
+
+        	$('a._removeDoctor').click(function() {
+        	    var _linkElem = $(this);
+        	    var _doctorElemId = $('#_doctorId');
+        	    var _modalId = $(_linkElem.attr('data-modalId'));
+        	    _modalId.find('div.modal-body').find('strong').html(_linkElem.attr('data-doctorName'));
+        	    _doctorElemId.val($(_linkElem).attr('data-doctorId'));
+        	    $('#_specialistModal').modal('show');
+
+        	    return false;
+            });
             
             $('#dialog-container').dialog({
                 position: ['center', 100],
@@ -84,27 +118,6 @@
                 modal: true,
                 resizable: false,
                 close: function() {}
-            });
-
-            $('a.add-global_award').click(function(){
-                var elem = $(this);
-                var _url = elem.attr('href');
-
-                $("#dialog-container").empty();
-                $('#dialog-container').dialog({
-                    title: 'GlobalAwards / Certifications',
-                    open: function() {
-                        $.ajax(_url)
-                            .done(function (data) {
-                                $('#dialog-container').html(data);
-                            }
-                        );
-                    },
-                });
-
-                $('#dialog-container').dialog("open");
-
-                     return false;
             });
 
             $('a.edit_global_award').globalAward('edit', {
@@ -132,48 +145,6 @@
 	        })
 	        .autocomplete();
 
-            $('a.removeDoctor').click(function(){
-            	var elem = $(this);
-                var _url = elem.attr('href');
-                
-                $("#dialog-container").empty();
-                $('#dialog-container').dialog({
-                    title: 'Doctors',
-                    open: function() {
-                        $.ajax(_url)
-                            .done(function (data) {
-                                $('#dialog-container').html(data);
-                            }
-                        );
-                    },
-                });
-                
-                $('#dialog-container').dialog("open");
-
-                     return false;
-            });
-            
-            $('a.add-offered-services').click(function(){
-            	var elem = $(this);
-    			var _url = elem.attr('href');
-
-    			$("#dialog-container").empty();
-    			//$('#dialog-container').dialog('option','title', (elem.hasClass("edit") ? 'Edit' : 'Add') + ' GlobalAwards');
-                $('#dialog-container').dialog({
-                	title: 'Add Offered Services',
-                    open: function() {
-                        $.ajax(_url)
-                            .done(function (data) {        
-                            	$('#dialog-container').html(data);
-                            }
-                        );
-                    },
-                });
-
-            	$('#dialog-container').dialog("open");
-
-                 	return false;           
-            });
             $('.medical-centers').click(function(){
                 var url = $(this).find('.url').attr('href');
                 var specializationElem = $(this).next().find('.specializations:first');

@@ -82,51 +82,25 @@ class InstitutionPropertiesController extends Controller
         }
 
         return $this->render('AdminBundle:InstitutionProperties:index.html.twig', array(
-                        'services' => $ancillaryServicesData,
+                        'ancillaryServicesData' => $ancillaryServicesData,
                         'institution' => $this->institution,
         ));
         
     }
     
-    public function viewGlobalAwardsAction(Request $request)
-    {
-        $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
-        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
-         
-        $propertyService = $this->get('services.institution_property');
-        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-        $awardTypes = GlobalAwardTypes::getTypes();
-        $currentGlobalAwards =$this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        
-        return $this->render('AdminBundle:InstitutionGlobalAwards:index.html.twig', array(
-                        'form' => $form->createView(),
-                        'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-                        'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
-                        'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
-                        'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
-                        'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
-                        'currentGlobalAwards' => $currentGlobalAwards,
-                        'institution' => $this->institution,
-                        'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                        'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
-        ));
-        
-    }
     /*
      * Show all ancillaryServices by Institution 
      */
     public function  showInstitutionAncillaryServiceAction(Request $request)
     {
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
-        $output = array(
-                        'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:tableList_institution_services.html.twig', array(
-                                        'institutionServices' => $institutionAncillaryServices
-                        )),
-        );
+        
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getUnAssignedInstitutionServicesToInstitutionMedicalCenter($this->institution, $assignedServices);
+        $params = array('institutionServices' => $institutionAncillaryServices);
+
+        $output = array('html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:rowList_institutionServices.html.twig', $params),
+                        'count' => count($institutionAncillaryServices));
+        
         return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
     
@@ -472,7 +446,7 @@ class InstitutionPropertiesController extends Controller
     }
     
     /**
-     * copy institution anciallary services to medical center
+     * copy assigned institution anciallary services to medical center
      * Required parameters:
      *     - institutionId
      *
@@ -486,7 +460,7 @@ class InstitutionPropertiesController extends Controller
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
     
         $assignedServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->getAllServicesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getAvailableInstitutionServicesByInstitutionMedicalCenter($this->institution, $this->institutionMedicalCenter, $assignedServices);
+        $institutionAncillaryServices = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->getUnAssignedInstitutionServicesToInstitutionMedicalCenter($this->institution, $assignedServices);
     
         if($request->get('isCopy')) {
             foreach ($institutionAncillaryServices as $ancillaryService)
@@ -521,12 +495,13 @@ class InstitutionPropertiesController extends Controller
             );
             $ancillaryServicesData['selected'][] = $_selectedService->getValue();
         }
+        
         foreach ($this->get('services.institution_medical_center')->getMedicalCenterServices($this->institutionMedicalCenter) as $_selectedService) {
             $ancillaryServicesData['selectedAncillaryServices'][] = $_selectedService->getId();
         }
     
         $output = array(
-                        'html' => $this->renderView('AdminBundle:InstitutionTreatments/Partials:field.ancillaryServices.html.twig', array(
+                        'html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:view.ancillaryServices.html.twig', array(
                                         'institution' => $this->institution,
                                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                         'ancillaryServicesData' => $ancillaryServicesData,
@@ -543,30 +518,30 @@ class InstitutionPropertiesController extends Controller
      * @param unknown_type $institutionId
      * @param unknown_type $imcId
      */
-    public function addInstitutionMedicalCenterGlobalAwardsAction()
-    {
-        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institutionMedicalCenter);
+//     public function addInstitutionMedicalCenterGlobalAwardsAction()
+//     {
+//         $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institutionMedicalCenter);
     
-        if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
+//         if ($this->request->isMethod('POST')) {
+//             $form->bind($this->request);
     
-            if ($form->isValid()) {
+//             if ($form->isValid()) {
     
-                $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-                ->saveAsDraft($form->getData());
+//                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
+//                 ->saveAsDraft($form->getData());
     
-                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
+//                 $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
     
-                return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
-                                array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
-            }
-        }
-        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
-                        'form' => $form->createView(),
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institution' => $this->institution
-        ));
-    }
+//                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
+//                                 array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
+//             }
+//         }
+//         return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
+//                         'form' => $form->createView(),
+//                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
+//                         'institution' => $this->institution
+//         ));
+//     }
     
     /*
      * Ajax Handler that remove InstitutionMedicalCenter GlobalAwards
@@ -667,7 +642,7 @@ class InstitutionPropertiesController extends Controller
                 $em->persist($property);
                 $em->flush();
     
-                $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:row.globalAward.html.twig', array(
+                $html = $this->renderView('AdminBundle:InstitutionMedicalCenterProperties/Partials:row.globalAward.html.twig', array(
                                 'award' => $award,
                                 'property' => $property,
                                 'institution' => $this->institution,

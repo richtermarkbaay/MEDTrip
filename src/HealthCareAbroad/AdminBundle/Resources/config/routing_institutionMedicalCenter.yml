@@ -44,7 +44,7 @@ admin_institution_medicalCenter_loadMedicalSpecialist:
         _method: GET|POST
         
 admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveMedicalSpecialist/{doctorId}
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveMedicalSpecialist
     defaults: { _controller: AdminBundle:InstitutionMedicalCenter:ajaxRemoveMedicalSpecialist}
     requirements:
         _method: GET|POST
