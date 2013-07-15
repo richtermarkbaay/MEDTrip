@@ -49,9 +49,8 @@ class TwigMailer extends SmtpMailer
         try {
             $status = $this->getMailer($data)->send($message, $failures);
         } catch (\Exception $e) {
+            //TODO: how to record the fact that mail notifications failed?
             $this->log('Email notification error.');
-
-            throw new \Exception('An error occurred while sending notifications.');
         }
     }
 
