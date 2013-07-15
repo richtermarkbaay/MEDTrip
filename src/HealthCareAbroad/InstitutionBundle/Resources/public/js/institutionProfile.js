@@ -311,12 +311,15 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
+    	modalContainer = _form.parents('.modal:first'); 
+    	if(modalContainer.length) {
+    		_button = modalContainer.find('._submit-button:first');
+    	} else {
+        	_button = _form.find('button[type=submit]:first');    		
+    	}
 
-    	_button = _form.find('button[type=submit]:first');
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-
-        _form = _button.parents('form');
 
         $('.control-group.ajax-field.error').removeClass('error').find('ul.error_list').remove();
 

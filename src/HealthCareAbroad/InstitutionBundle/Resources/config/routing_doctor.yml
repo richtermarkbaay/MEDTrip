@@ -1,37 +1,5 @@
-institution_manageDoctorProfile:
-    pattern:  /medical-center/{imcId}/specialist/{idId}/manage-doctor-profile.html
-    defaults: { _controller: InstitutionBundle:Doctor:doctorProfile }
-    requirements:
-        _method: GET
-        idId: \d+
-        imcId: \d+
-        
-institution_saveDoctorProfile:
-    pattern: /medical-center/{imcId}/specialist/{idId}/manage-doctor-profile.html
-    defaults: { _controller: InstitutionBundle:Doctor:save }
-    requirements:
-        _method: GET|POST
-        idId: \d+
-        imcId: \d+
-        
-institution_load_tabbed_contents_doctor:
-    pattern: /medical-center/{imcId}/{idId}/load-tabbed-contents-doctor-profile
-    defaults: { _controller: InstitutionBundle:Doctor:loadTabbedContents }
-    requirements:
-        _method: GET
-        idId: \d+
-        imcId: \d+
-        
 institution_doctor_logo_upload:
     pattern: /medical-center/{imcId}/doctor/{doctorId}/upload/logo
     defaults: { _controller: InstitutionBundle:Doctor:upload }
     requirements:
         _method: POST
-
-doctor_update_byField:
-    pattern: /medical-center/{imcId}/doctor/{idId}/update/
-    defaults: { _controller: InstitutionBundle:Doctor:ajaxUpdateDoctorByField }
-    requirements:
-        _method: POST
-        idId: \d+
-        imcId: \d+

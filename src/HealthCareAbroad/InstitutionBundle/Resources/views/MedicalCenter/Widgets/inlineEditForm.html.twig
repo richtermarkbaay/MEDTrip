@@ -114,8 +114,7 @@
     
     {{ _csrf_token_widget | raw}}
     
-     {% if displayButton is not defined %}
-        <div class="alert-box span8"></div>
+     {% if hideSubmitButton is not defined %}
         <div class="row"> 
             <div class="pull-right">
                  <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms($(this));">Submit</button>

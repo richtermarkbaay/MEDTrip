@@ -1,6 +1,6 @@
 <div class="specializations-profile-listing" id="specialization_{{each.id}}" >
     <div class="specializations-heading hca-clinic-specialization-item">
-    	<a data-target="#deleteSpecialization{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
+    	<a data-target="#_delete-specialization-modal-{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
             <i class="icon-remove-sign pull-right"></i>
         </a>
         <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
@@ -22,18 +22,21 @@
 
 </div>
 
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {modal: {id: 'deleteSpecialization' ~ each.id, title: 'Delete Specialization' }} %}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with { modal: {id: '_delete-specialization-modal-' ~ each.id, title: 'Delete Specialization' }} %}
     {% block modalBody %}
         {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
 
         <p>Are you sure you want to delete <strong>{{ each.specialization.name }}?</strong></p>
 
-        <form action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': each.id } ) }}" style="margin: 0">
+        <form id="_delete-specialization-form-{{ each.id }}" action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': each.id } ) }}" style="margin: 0">
             {{ _commonDeleteCsrfTokenWidget | raw }}
-            <div class="align-right">
-                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button> &nbsp;
-        	    <button data-loading-text="Processing..." class="btn btn-danger delete-button pull-right" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this).parents('form')); return true;">Delete</button>
-    	    </div>
         </form>
+    {% endblock %}
+    
+    {% block modalFooter %}
+        <div class="align-right">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button> &nbsp;
+    	    <button data-loading-text="Processing..." data-specialization-id="{{ each.id }}" class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this))">Confirm Delete</button>
+	    </div>
     {% endblock %}
 {% endembed %}

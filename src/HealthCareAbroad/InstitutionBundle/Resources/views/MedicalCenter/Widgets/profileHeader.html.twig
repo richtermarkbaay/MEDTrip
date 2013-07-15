@@ -18,6 +18,12 @@
 
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-medical-center-name', 'title': 'Edit Clinic Name' }} %}
     {% block modalBody %}
-        {% include 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' with {formId: 'nameModalForm', fields: ['name']} %}
+        {% include 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' with {formId: 'nameModalForm', fields: ['name'], hideSubmitButton: true } %}
+    {% endblock %}
+    {% block modalFooter %}
+        <div class="align-right">
+            <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
+    		<button class="btn pull-right btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterSidebarForms(this);">Submit</button>
+		</div>
     {% endblock %}
 {% endembed %}

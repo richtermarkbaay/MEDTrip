@@ -69,7 +69,7 @@
                        
                        {% if (archivedMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="archived">
-                       {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: archivedMedicalCenters, centerType: 'Archived' } %}
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: archivedMedicalCenters, centerType: 'Archived' } %}
                        </div>
                        {% endif %}
                     </div>

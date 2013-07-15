@@ -39,6 +39,8 @@ class MediaGalleryController extends InstitutionAwareController
                 $result['mediaId'] = $media->getId();               
             }
         }
+        
+        $request->getSession()->setFlash('success', "Photo has been successfully uploaded!");
 
         return new Response(json_encode($result), 200, array('Content-Type' => 'application/json'));
     }
@@ -60,6 +62,8 @@ class MediaGalleryController extends InstitutionAwareController
             }
         }
         $em->flush();
+
+        $request->getSession()->setFlash('success', "Photo has been successfully uploaded and linked to clinics!");
         
         return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
     }
@@ -91,6 +95,8 @@ class MediaGalleryController extends InstitutionAwareController
                 }
             }
             $em->flush();
+
+            $request->getSession()->setFlash('success', "Photo has been updated!");
         }
 
         return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
@@ -103,7 +109,10 @@ class MediaGalleryController extends InstitutionAwareController
         $em->remove($media);
         $em->flush();
 
-        return new Response(json_encode(true), 200, array('Content-Type' => 'application/json'));
+        $result['status'] = true;
+        $result['message'] = 'Photo has been deleted!';
+
+        return new Response(json_encode($result), 200, array('Content-Type' => 'application/json'));
     }
     
 }

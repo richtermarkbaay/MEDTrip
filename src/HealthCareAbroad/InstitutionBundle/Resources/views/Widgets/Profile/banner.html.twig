@@ -26,8 +26,15 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'hca-edit-institution-name', 'title': 'Edit Institution Name' }} %}
     {% block modalBody %}
         {% include 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' 
-             with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups']} 
+             with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups'], hideSubmitButton: true } 
         %}
+    {% endblock %}
+    
+    {% block modalFooter %}
+        <div class="align-right">
+            <button class="btn" data-dismiss="modal" aria-hidden="true"> Cancel</button>
+    		<button class="btn btn-primary _submit-button" type="button" onclick="$('#nameModalForm').submit()">Submit</button>
+		</div>
     {% endblock %}
 {% endembed %}
 <!-- End of InstitutionName and ProviderGroup -->
