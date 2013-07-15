@@ -4,7 +4,7 @@
             <i class="icon-user-md icon-4x pull-left"></i>
             Knowing who will administer their procedures is a primary concern for patients. Quite often, access to good doctors is the main reason for their decision to travel abroad for treatment.
         </div>
-        <form id="doctorForm" action="{{ path }}" method="post">
+        <form id="doctorForm" action="{{ addDoctorFormAction }}" method="post">
             <div class="row-fluid">
                 <div class="control-group span6">
                     {{ form_row(doctorForm.lastName, { 'attr': {'class': 'span12'} }) }}

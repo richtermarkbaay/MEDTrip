@@ -78,13 +78,6 @@ institution_medicalCenter_ajaxEditSpecialization:
         _method: POST
         imcId: \d+
         isId: \d+
-
-institution_add_medical_specialist:
-    pattern: /medical-center/{imcId}/medical-specialists/add
-    defaults: {_controller: InstitutionBundle:MedicalCenter:addMedicalSpecialist}
-    requirements:
-        _method: GET|POST
-        imcId: \d+
         
 institution_medicalCenter_addGlobalAwards:
     pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/add
@@ -94,19 +87,17 @@ institution_medicalCenter_addGlobalAwards:
         imcId: \d+
         
 
-
-
 institution_load_doctor_specializations:
     pattern: /medical-center/{imcId}/search-doctor-specializations/{doctorId}
     defaults: {_controller: InstitutionBundle:MedicalCenter:searchMedicalSpecialistSpecialization}
     requirements:
         _method: GET|POST
 
-institution_medicalCenter_loadAvailableTreatments:
-    pattern: /medical-center/load-available-treatments/{imcId}
-    defaults: { _controller: InstitutionBundle:MedicalCenter:loadAvailableTreatments }
+institution_medicalCenter_addDoctor:
+    pattern: /medical-center/{imcId}/add-doctor
+    defaults: { _controller: InstitutionBundle:MedicalCenter:addDoctor }
     requirements:
-        _method: GET
+        _method: GET|POST
         imcId: \d+
 
 institution_medicalCenter_addExistingDoctor:

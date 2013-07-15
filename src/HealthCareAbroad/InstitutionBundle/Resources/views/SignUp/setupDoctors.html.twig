@@ -15,7 +15,7 @@
                 
             </section>
 
-            {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' %}
+            {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' with { addDoctorFormAction: path('institution_signup_setup_doctors', {imcId: institutionMedicalCenter.id }) } %}
 
             <section id="doneSection" style="margin-top: 15px;display: {{ institutionMedicalCenter.doctors|length ? '' : 'none' }}">
                 <a href="{{ path('institution_signup_finish') }}" class="btn pull-right btn-success btn-large">Done Adding Doctors</a>
