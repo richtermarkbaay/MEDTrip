@@ -119,24 +119,24 @@ class SpecializationController extends InstitutionAwareController
         $specializationId = $request->get('specializationId');
 
         if($this->institutionSpecialization && $this->institutionSpecialization->getTreatments()) {
-            foreach($institutionSpecialization->getTreatments() as $treatment) {
+            foreach($this->institutionSpecialization->getTreatments() as $treatment) {
                 $selectedTreatments[] = $treatment->getId();
             }
         }
-
         $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
 
         $specializationTreatments = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($specializationId);
 
-        $result['html'] = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
+        $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
             'form' => $form->createView(),
             'formName' => InstitutionSpecializationFormType::NAME,
             'specializationId' => $specializationId,
             'selectedTreatments' => $selectedTreatments,
-            'specializationTreatments' => $specializationTreatments
+            'specializationTreatments' => $specializationTreatments,
+            'isId' => $this->institutionSpecialization ? $this->institutionSpecialization->getId() : null,
         ));
-
-        return new Response(json_encode($result), 200, array('content-type' => 'application/json'));
+        
+        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
 
     public function ajaxAddSpecializationAction(Request $request)
@@ -146,12 +146,125 @@ class SpecializationController extends InstitutionAwareController
         $params =  array(
             'imcId' => $this->institutionMedicalCenter->getId(),
             'specializations' => $specializations,
-            'saveFormAction' => '',
-            'buttonLabel' => ''
+            'saveFormAction' => $this->generateUrl('institution_ajaxSaveSpecializations', array('imcId' => $this->institutionMedicalCenter->getId())),
+            'buttonLabel' => 'Save'
         );
 
         $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * Save Specializations for Clinics Profile
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function saveSpecializationsAction(Request $request)
+    {
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+    
+        if ($request->isMethod('POST')) {
+    
+            $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
+
+            if (\count($specializationsWithTreatments)) {
+                
+                $isIds = $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
+                if(!empty($isIds)){
+                    foreach ($this->institutionMedicalCenter->getInstitutionSpecializations() as $institutionSpecialization) {
+                        if (in_array($institutionSpecialization->getId(), $isIds)) {
+                            $html['html'][] = $this->renderView('InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig', array(
+                                'each' => $institutionSpecialization,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+                            ));
+                        }
+                    }
+
+                    $response = new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
+                }
+            } else {
+                
+                $response = new Response('Please select at least one treatment.', 400);
+            }
+        }
+
+        return $response;
+    }
+    /**
+     * Edit Specialization treatments under clinic profile page
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author Chaztine Blance
+     */
+    public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
+        if (!$institutionSpecialization ) {
+            throw $this->createNotFoundException('Invalid institution specialization');
+        }
+    
+        if ($request->isMethod('POST')) {
+    
+            $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
+    
+            if (\count($specializationsWithTreatments)) {
+    
+                $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
+    
+                $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
+                                'each' => $institutionSpecialization,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
+                ));
+                 
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    
+            } else {
+                $response = new Response('Unable top edit Treatments', 404);
+            }
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * Remove institution specialization
+     *
+     * @param Request $request
+     */
+    public function ajaxRemoveSpecializationAction(Request $request)
+    {
+        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
+        ->find($request->get('isId', 0));
+    
+        if (!$institutionSpecialization) {
+            throw $this->createNotFoundException('Invalid instituiton specialization');
+        }
+    
+        if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
+            return new Response("Cannot remove specialization that does not belong to this institution", 401);
+        }
+    
+        $form = $this->createForm(new CommonDeleteFormType(), $institutionSpecialization);
+    
+        if ($request->isMethod('POST'))  {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $_id = $institutionSpecialization->getId();
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->remove($institutionSpecialization);
+                $em->flush();
+    
+                $responseContent = array('id' => $_id);
+                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
+            }
+            else {
+                $response = new Response("Invalid form", 400);
+            }
+        }
+    
+        return $response;
     }
     
 }

@@ -50,11 +50,11 @@ var InstitutionSpecialization = {
             $('#specialization_list_block').children('div').addClass('disabled');
         	parentElem.addClass('process');
             $.ajax({
-                url: _divToggle.attr('data-href'),
+                url: _linkElement.attr('data-load-url'),
                 type: 'GET',
-                dataType: 'html',
+                dataType: 'json',
                 success: function(response){
-                	accordionContent.html(response).slideDown('slow');
+                	accordionContent.html(response.html).slideDown('slow');
                 	parentElem.removeClass('disabled process');
                     $.each(parentElem.find('.sub-specialization-wrapper'), function(){
                         if($(this).find('input[type=checkbox].treatments:checked').length) {
@@ -85,7 +85,7 @@ var InstitutionSpecialization = {
             success: function (response) {
                 $('#new_specializationButton').removeAttr('disabled');
                 _buttonElement.hide();
-                InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully added treatment' , 'success');
+                HCA.alertMessage('success', 'You have successfully added treatment');
                 _divToggle.prev('#treatment_list').html(response.html);
                 _buttonElement.prev().show();
                 $('#specialization_list_block').children().removeClass('disabled process');
@@ -93,7 +93,7 @@ var InstitutionSpecialization = {
             },
             error: function (response) {
             	$('#specialization_list_block').children().removeClass('disabled process');
-                InstitutionMedicalCenter.displayAlert(response.responseText, 'error');
+                HCA.alertMessage('error', response.responseText);
             }
         });
     },
@@ -107,17 +107,17 @@ var InstitutionSpecialization = {
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html('Processing...').attr('disabled', true);
-        _form = $(_button).parents('form#institutionSpecializationForm');
-        _formdata = _form.find('div.in :input');
+        _form = _button.parents('form:first');
+//        _formdata = _form.find('div.in :input');
 
-        _data = _formdata.serialize();
+        _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
             data: _data,
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-                InstitutionMedicalCenter.displayAlert('<b> Congratulations! </b> You have successfully added specialization', 'success');
+            	HCA.alertMessage('success', 'You have successfully added specialization');
                 $('#specialization_list_block').find('div.alert-block').hide();
 
                   // insert new content after last specialization block
@@ -128,12 +128,13 @@ var InstitutionSpecialization = {
                          $(_v).insertBefore($('#specialization_list_block div:first'));
                      }
                  });
-                _form.hide();
+                _form.parents('#add-specialization-wrapper').hide();
                 $('#specialization_list_block').slideDown().prev().slideDown();
                 _button.html(_buttonHtml).attr('disabled', false);
             },
             error: function(response) {
-                InstitutionMedicalCenter.displayAlert(response.responseText, 'error');
+            	console.log(response);
+            	HCA.alertMessage('error', response.responseText);
                 _button.html(_buttonHtml).attr('disabled', false);
             }
         });
