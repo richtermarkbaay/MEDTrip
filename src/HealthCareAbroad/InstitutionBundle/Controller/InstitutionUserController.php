@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\Form\Exception\NotValidException;
+
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
@@ -216,43 +220,48 @@ class InstitutionUserController extends Controller
         return $this->render('InstitutionBundle:InstitutionUser:requestResetPassword.html.twig');
     }
 
-    /*
-     * TODO: check for expired tokens
+    /**
+     * TODO: Better way of informing user of exceptions
      */
-    public function changePasswordAction(Request $request){
-
-        $institutionUserService = $this->get('services.institution_user');
-        if($token = $request->get('token')) {
-            $institutionUserToken = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionUserPasswordToken')->findOneByToken($token);
-            $accountId = $institutionUserToken->getAccountId();
-            $institutionUser = $institutionUserService->findById($accountId, true);
-            $form = $this->createForm(new InstitutionUserResetPasswordType(), $institutionUser);
-
-            if ($request->isMethod('POST')) {
-                $form->bind($request);
-                if ($form->isValid()) {
-                    $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
-                    $institutionUser = $institutionUserService->deleteInstitutionUserPasswordToken($institutionUserToken, $institutionUser);
-
-                    //auto login
-                    $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
-                    $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
-                    $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
-                    $this->get('security.context')->setToken($securityToken);
-                    $institutionUserService->setSessionVariables($institutionUser);
-
-                    //send email here
-                    $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_CONFIRM, new GenericEvent(array('email' => $institutionUser->getEmail())));
-
-                    return $this->redirect($this->generateUrl('institution_homepage'));
-                }
-            }
-
-            $params = array(
-                            'token' => $token,
-                            'form' => $form->createView()
-            );
+    public function changePasswordAction(Request $request)
+    {
+        if (!$token = $request->get('token')) {
+            throw new NotFoundHttpException('Invalid or missing token.');
         }
-        return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig',$params);
+        $institutionUserService = $this->get('services.institution_user');
+        if (!$institutionUserToken = $institutionUserService->findUnexpiredUserPasswordToken($token)) {
+            throw new NotFoundHttpException('Invalid or expired token.');
+        }
+        if (!$institutionUser = $institutionUserService->findById($institutionUserToken->getAccountId(), true)) {
+            throw new NotFoundHttpException('User not found.');
+        }
+
+        $form = $this->createForm(new InstitutionUserResetPasswordType(), $institutionUser);
+
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+                // FIXME: the service is using a confusing method name; a more appropriate name can
+                // be updateInstitutionUser, for instance; institution user is also persisted in this
+                // service method but this operation should be distinct from deleting the token or
+                // the intent be made more explicit;
+                $institutionUser = $institutionUserService->deleteInstitutionUserPasswordToken($institutionUserToken, $institutionUser);
+
+                //auto login
+                $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
+                $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
+                $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));
+                $this->get('security.context')->setToken($securityToken);
+                $institutionUserService->setSessionVariables($institutionUser);
+
+                //send email here
+                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_CONFIRM, new GenericEvent(array('email' => $institutionUser->getEmail())));
+
+                return $this->redirect($this->generateUrl('institution_homepage'));
+            }
+        }
+
+        return $this->render('InstitutionBundle:InstitutionUser:resetPassword.html.twig', array('token' => $token, 'form' => $form->createView()));
     }
 }
