@@ -33,4 +33,4 @@ parameters:
     memcached.servers:
         - { host: 127.0.0.1, port: 11211 }
 
-    notifications.enabled = false
+    notifications.enabled: false
