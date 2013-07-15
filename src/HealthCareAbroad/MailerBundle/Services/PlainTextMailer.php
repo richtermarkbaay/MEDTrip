@@ -6,6 +6,12 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * FIXME: This is now outdated.
+ *
+ * @author Harold Modesto <harold.modesto@chromedia.com>
+ *
+ */
 class PlainTextMailer implements MailerInterface
 {
     protected $mailer;
@@ -55,7 +61,7 @@ class PlainTextMailer implements MailerInterface
      * @param string $fromEmail
      * @param string $toEmail
      */
-    protected function sendMessage($renderedTemplate, $fromEmail, $toEmail)
+    public function sendMessage($renderedTemplate, $fromEmail, $toEmail)
     {
         // Render the email, use the first line as the subject, and the rest as the body
         $renderedLines = explode("\n", trim($renderedTemplate));

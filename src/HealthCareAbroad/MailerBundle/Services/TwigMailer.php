@@ -5,7 +5,7 @@ use Symfony\Bridge\Monolog\Logger;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
-class TwigMailer implements MailerInterface
+class TwigMailer extends SmtpMailer
 {
     private $twig;
     private $logger;
@@ -49,30 +49,6 @@ class TwigMailer implements MailerInterface
         $status = $this->getMailer($data)->send($message, $failures);
 
         $this->log('Mails sent: '.$status);
-    }
-
-    /**
-     * We directly create the mailer as a temporary workaround. Testing on
-     * staging server doesn't seem to work when using multiple mailer services.
-     * In particular the mailer service is getting an instance of Swift_MailTransport
-     * instead of using Swift_SmtpTransport. The cause is possibly a simple
-     * misconfiguration.
-     *
-     * @param unknown $data
-     * @return Ambigous <Swift_Mailer, Swift_Mailer>
-     */
-    private function getMailer($data)
-    {
-        $transport = \Swift_SmtpTransport::newInstance('smtp.gmail.com', 465, 'ssl');
-        $ext = $transport->getExtensionHandlers();
-        $auth_handler = $ext[0];
-        $auth_handler->setUserName($data['user']);
-        $auth_handler->setPassword($data['password']);
-
-        //For security:
-        unset($data['password']);
-
-        return \Swift_Mailer::newInstance($transport);
     }
 
     /**
