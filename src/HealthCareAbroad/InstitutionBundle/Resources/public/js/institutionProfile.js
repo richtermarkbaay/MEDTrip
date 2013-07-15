@@ -311,12 +311,15 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
+    	modalContainer = _form.parents('.modal:first'); 
+    	if(modalContainer.length) {
+    		_button = modalContainer.find('._submit-button:first');
+    	} else {
+        	_button = _form.find('button[type=submit]:first');    		
+    	}
 
-    	_button = _form.find('button[type=submit]:first');
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
-
-        _form = _button.parents('form');
 
         $('.control-group.ajax-field.error').removeClass('error').find('ul.error_list').remove();
 
@@ -420,6 +423,11 @@ var InstitutionProfile = {
                     	$('#serviesText').html(response.html);
                     	break;
                     case 'awardsForm':
+
+                    		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
+                    		$('#_edit-award-form-container').html($('#_edit-award-form'));
+                    		/* End of NOTE: DO NOT REMOVE this line */
+
 	                		$("div[id^='show-']").animate({opacity: 1});
 	                    	 $.each(response.html, function(key, htmlContent){
 	                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');

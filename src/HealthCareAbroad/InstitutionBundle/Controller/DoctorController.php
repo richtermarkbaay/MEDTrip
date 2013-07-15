@@ -1,6 +1,5 @@
 <?php
 /**
- * @author Chaztine Blance
  * Manage Doctors Profile
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
@@ -37,20 +36,8 @@ class DoctorController extends InstitutionAwareController
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->repository->find($imcId);
         }
-         
-        $this->request = $this->getRequest();
     }
     
-    public function doctorProfileAction(Request $request)
-    {
-        $form = $this->createForm(new InstitutionDoctorFormType(), $this->institutionDoctor);
-
-        return $this->render('InstitutionBundle:Doctor:index.html.twig', array(
-                    'doctor' => $this->institutionDoctor,
-                     'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                    'form' => $form->createView()
-        ));
-    }
     
     /**
      * Update doctor details
@@ -83,28 +70,7 @@ class DoctorController extends InstitutionAwareController
                         'form' => $form->createView()
         ));
     }
-    
-    /**
-     * Ajax handler for loading tabbed contents in institution profile page
-     *
-     * @param Request $request
-     */
-    public function loadTabbedContentsAction(Request $request)
-    {
-        $content = $request->get('content');
-        $output = array();
-        $parameters = array('institutionMedicalCenter' => $this->institutionMedicalCenter);
-    
-        switch ($content) {
-            case 'specializations':
-                $parameters['specializations'] = $this->institutionDoctor->getSpecializations();
-                $output['specializations'] = array('html' => $this->renderView('InstitutionBundle:Doctor:tabbedContent.doctorSpecialization.html.twig', $parameters));
-                break;
-        }
-    
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-    }
-    
+
     /**
      * Upload logo for Doctor - UPDATED FUNCTION, DO NOT REMOVE
      * @param Request $request
@@ -122,36 +88,5 @@ class DoctorController extends InstitutionAwareController
         }
 
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
-    }
-
-    public function ajaxUpdateDoctorByFieldAction(Request $request)
-    {
-        if ($request->isMethod('POST')) {
-    
-            if($request->get('firstName')){
-               $this->institutionDoctor->setFirstName($request->get('firstName'));
-               $this->institutionDoctor->setLastName($request->get('lastName'));
-               
-               $output['info']['firstName'] = $this->institutionDoctor->getFirstName();
-               $output['info']['lastName'] = $this->institutionDoctor->getLastName();
-            }else{
-                $this->institutionDoctor->setDetails($request->get('details'));
-                $output['info']['details'] = $this->institutionDoctor->getDetails();
-            }
-            
-            $em = $this->getDoctrine()->getEntityManager();
-    
-            try {
-                $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionDoctor);
-                $em->persist($this->institutionDoctor);
-                $em->flush();
-            }
-            catch (\Exception $e) {
-                 
-                return new Response($e->getMessage(),500);
-            }
-        }
-    
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }
 }

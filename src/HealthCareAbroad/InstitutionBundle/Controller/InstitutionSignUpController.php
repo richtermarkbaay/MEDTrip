@@ -187,7 +187,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 // commented out due to duplicate messages
                 $request->getSession()->setFlash('callout', "");
-                $request->getSession()->setFlash('success', "<b>Congratulations!</b> You have successfully setup your personal account."); //set flash message
+
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
             }
             $form_errors = $this->get('validator')->validate($form);

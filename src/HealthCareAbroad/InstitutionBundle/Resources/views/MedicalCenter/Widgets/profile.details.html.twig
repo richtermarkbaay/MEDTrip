@@ -177,6 +177,13 @@
     {% endblock %}
 {% endembed %}
 
+<!-- EDIT YEAR AWARD -->
+{% include 'InstitutionBundle:Widgets/Profile:form.editAward.html.twig' with {
+    editGlobalAwardFormAction: path('institution_medicalCenter_ajaxEditGlobalAward', {imcId: institutionMedicalCenter.id}),
+    editGlobalAwardForm: editGlobalAwardForm
+} %}
+<!-- END OF EDIT YEAR AWARD -->
+
 {% set awards = { list: currentGlobalAwards.award, editFormListWrapperId: 'listing-award' } %}
 <!-- Institution Awards Section -->
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig' 

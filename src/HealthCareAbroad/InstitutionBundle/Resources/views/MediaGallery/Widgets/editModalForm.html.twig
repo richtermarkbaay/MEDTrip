@@ -1,6 +1,6 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'edit-media-' ~ media.id, class: 'hca-file-modal', 'title': 'Edit Media' }} %}
-    {% block modalBody %}            
-        <form class="edit-institution-media-form" action="{{ path('institution_mediaGallery_update') }}" method="post">
+    {% block modalBody %}
+        <form id="_edit-institution-media-form-{{ media.id }}" class="edit-institution-media-form" action="{{ path('institution_mediaGallery_update') }}" method="post">
         
             <div class="row-fluid control-group">
                 <img src="{{ institution_media_src(media) }}" alt="photo" style="width: auto; height: auto; margin: 0 auto;border: 1px solid #EFEFEF"/>
@@ -22,12 +22,14 @@
                 {% if not isSingleCenter %}
                     {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' %}
                 {% endif %}
-
-                <div class="align-right">
-                    <button class="btn cancel" onclick="$('#edit-media-{{ media.id }}').modal('hide')" type="button">Cancel</button> &nbsp;
-                    <button type="submit" class="btn btn-primary"><i class="icon-save"></i>Save Changes</button>
-                </div>
             </div>
         </form>
+    {% endblock %}
+
+    {% block modalFooter %}
+        <div class="align-right">
+            <button class="btn cancel" onclick="$('#edit-media-{{ media.id }}').modal('hide')" type="button">Cancel</button> &nbsp;
+            <button type="button" class="btn btn-primary" onclick="$('#_edit-institution-media-form-{{ media.id }}').submit()"><i class="icon-save"></i>Save Changes</button>
+        </div>
     {% endblock %}
 {% endembed %}

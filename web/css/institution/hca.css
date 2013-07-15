@@ -2649,7 +2649,7 @@ h1, h2, h3, h4, h5 {
     text-transform: uppercase;
     color: #5a5a5a; }
   .table.hca-media td:first-child {
-    width: 30%;
+    width: 50%;
     vertical-align: top; }
     .table.hca-media td:first-child i {
       position: absolute;

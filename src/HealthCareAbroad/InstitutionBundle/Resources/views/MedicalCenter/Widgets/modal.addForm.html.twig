@@ -46,10 +46,9 @@
             {{ form_widget(institutionMedicalCenterForm._token) }}
          </form>
     {% endblock %}
-    {% block footerBody %}
-         <div class="alert-box span4"></div>
-        <button class="btn btn-large btn-link" data-dismiss="modal" aria-hidden="true"> Cancel  </button>
-        <a class="btn pull-right btn-primary btn-large" onclick="InstitutionMedicalCenter.submitAddNewMedicalCenter($(this)); return false;"> Save and Continue  </a>
+    {% block modalFooter %}
+        <button class="btn btn-large btn-link" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <a class="btn pull-right btn-primary btn-large" onclick="InstitutionMedicalCenter.submitAddNewMedicalCenter($(this))"> Save and Continue  </a>
        
     {% endblock %}
 {% endembed %}

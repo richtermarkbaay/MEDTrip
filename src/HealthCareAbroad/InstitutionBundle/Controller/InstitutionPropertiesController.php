@@ -117,35 +117,36 @@ class InstitutionPropertiesController extends InstitutionAwareController
 //         return $response;
 //     }
     
-    public function ajaxEditGlobalAwardAction()
+    public function ajaxEditGlobalAwardAction(Request $request)
     {
-        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($this->request->get('propertyId', 0));
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('propertyId', 0));
         $propertyType = $this->get('services.institution_property')->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
         
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
-        
+
         $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
         if (!$globalAward) {
             throw $this->createNotFoundException('Invalid global award.');
         }
-        
+        $property->setValueObject($globalAward);
+
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $property);
-        if ($this->request->isMethod('POST')) {
-            $editGlobalAwardForm->bind($this->request);
+        
+        if ($request->isMethod('POST')) {
+            $editGlobalAwardForm->bind($request);
+
             if ($editGlobalAwardForm->isValid()) {
+
                 try {
                     $property = $editGlobalAwardForm->getData();
+
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($property);
                     $em->flush();
-                    $extraValue = \json_decode($property->getExtraValue(), true);
-                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
-                    $output = array(
-                                    'targetRow' => '#globalAwardRow_'.$property->getId(),
-                                    'html' => $yearAcquired
-                    );
+
+                    $output = array('status' => true, 'extraValue' => $property->getExtraValue());
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
                 catch(\Exception $e) {

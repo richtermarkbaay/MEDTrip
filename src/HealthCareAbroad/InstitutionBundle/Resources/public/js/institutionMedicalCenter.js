@@ -423,9 +423,12 @@ var InstitutionMedicalCenter = {
                     	$('#servicesTable').html(response.html);
                     	break;
                     case 'awardsForm':
-                		$("div[id^='show-']").animate({
-                		    opacity: 1,
-                		 });
+
+                		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
+                		$('#_edit-award-form-container').html($('#_edit-award-form'));
+                		/* End of NOTE: DO NOT REMOVE this line */
+
+                		$("div[id^='show-']").animate({opacity: 1});
                     	 $.each(response.html, function(key, htmlContent){
                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
                     		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
@@ -502,18 +505,18 @@ var InstitutionMedicalCenter = {
     
     // this function is closely coupled to element structure in client admin
     //
-    submitRemoveSpecializationForm: function(_formElement) {
-        _button = _formElement.find('button.delete-button');
-        _currentHtml = _button.html();
-        _button.attr('disabled', true)
-            .html('Processing...');
+    submitRemoveSpecializationForm: function(elem) {
+        currentHtml = elem.html();
+        elem.attr('disabled', true).html('Processing...');
+        deleteFormElem = $('#_delete-specialization-form-' + elem.data('specialization-id'));
+
         $.ajax({
-            url: _formElement.attr('action'),
-            data: _formElement.serialize(),
+            url: deleteFormElem.attr('action'),
+            data: deleteFormElem.serialize(),
             type: 'POST',
             success: function(response){
             	$('#specialization_list_block').children('div').removeClass('disabled');
-                _formElement.parents('div.modal').modal('hide');
+            	elem.parents('.modal:first').modal('hide');
                 $('#specialization_'+response.id).remove();
                 $('#new_specializationButton').removeAttr('disabled');
 
