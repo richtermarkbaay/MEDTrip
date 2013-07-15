@@ -1,11 +1,13 @@
 <?php
 /**
  * Service class for Institution
- * 
+ *
  * @author Allejo Chris G. Velarde
  * @author Alnie Jacobe
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
+
+use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -44,48 +46,48 @@ use HealthCareAbroad\HelperBundle\Entity\City;
 use HealthCareAbroad\HelperBundle\Entity\Country;
 use HeathCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension;
 class InstitutionService
-{    	
+{
     protected $doctrine;
     protected $router;
     protected $timeAgoExt;
-    /** 
+    /**
      * @var static Institution
      */
     protected static $institution;
-    
+
     /**
      * @var HealthCareAbroad\UserBundle\Services\InstitutionUserService
      */
     protected $institutionUserService;
-    
+
     /**
      * @var InstitutionPropertyService
      */
     protected $institutionPropertyService;
-    
+
     public function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine )
     {
-    	$this->doctrine = $doctrine;
+        $this->doctrine = $doctrine;
     }
-    
+
     public function setRouter(Router $router)
     {
         $this->router = $router;
     }
-    
+
     function setMediaTwigExtension($mediaTwigExtension)
     {
         $this->mediaTwigExtension = $mediaTwigExtension;
     }
-    
+
     public function setTimeAgoExtension(\HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension $timeAgoExt)
     {
         $this->timeAgoExt = $timeAgoExt;
     }
-    
+
     /**
      * Count active medical centers of an institution
-     * 
+     *
      * @author acgvelarde
      * @param Institution $institution
      * @return int
@@ -94,9 +96,9 @@ class InstitutionService
     {
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->countActiveInstitutionMedicalCenters($institution);
     }
-    
+
     /**
-     * List active Specializations of an institution. 
+     * List active Specializations of an institution.
      * Returns a flat array of specializationId => specializationName
      *
      * @param Institution $institution
@@ -113,24 +115,24 @@ class InstitutionService
             $specialization = $_each->getSpecialization();
             $list[$specialization->getId()] = $specialization->getName();
         }
-        
+
         return $list;
     }
-    
+
     public function getContactDetailsByInstitution(Institution $institution)
     {
         $connection = $this->doctrine->getEntityManager()->getConnection();
-        $query = "SELECT * FROM contact_details a 
+        $query = "SELECT * FROM contact_details a
                         LEFT JOIN institution_contact_details b ON a.id = b.contact_detail_id
                         WHERE b.institution_id = :institutionId";
-        
+
         $stmt = $connection->prepare($query);
         $stmt->bindValue('institutionId', $institution->getId());
         $stmt->execute();
 
         return $stmt->fetchAll();
     }
-    
+
     public function getFullInstitutionBySlug($slug = '')
     {
         if(!$slug) {
@@ -153,15 +155,15 @@ class InstitutionService
             ->setParameter('institutionSlug', $slug)
             ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus())
             ->setParameter('medicalCenterStatus', InstitutionMedicalCenterStatus::APPROVED);
-            
+
             self::$institution = $qb->getQuery()->getOneOrNullResult();
 
             $isLoaded = true;
         }
-        
+
         return self::$institution;
     }
-    
+
     public function getFullInstitutionById($id = null)
     {
         static $isLoaded = false;
@@ -181,21 +183,21 @@ class InstitutionService
             ->setParameter('id', $id);
 
             self::$institution = $qb->getQuery()->getOneOrNullResult();
-    
+
             $isLoaded = true;
         }
-    
+
         return self::$institution;
     }
-    
+
     public function setInstitutionPropertyService(InstitutionPropertyService $v)
     {
         $this->institutionPropertyService = $v;
     }
-    
+
     /**
      * Check if $institution is of type SINGLE_CENTER
-     * 
+     *
      * @param Institution $institution
      * @return boolean
      */
@@ -203,10 +205,10 @@ class InstitutionService
     {
         return InstitutionTypes::SINGLE_CENTER == $institution->getType();
     }
-    
+
     /**
      * Check if $institution is of type MULTIPLE_CENTER
-     * 
+     *
      * @param Institution $institution
      * @return boolean
      */
@@ -214,7 +216,7 @@ class InstitutionService
     {
         return InstitutionTypes::MULTIPLE_CENTER == $institution->getType();
     }
-    
+
     /**
      * Get Institution Route Name
      *
@@ -227,7 +229,7 @@ class InstitutionService
             ? 'frontend_multiple_center_institution_profile'
             : 'frontend_single_center_institution_profile';
     }
-    
+
     /**
      * Save Institution to database
      *
@@ -239,13 +241,13 @@ class InstitutionService
         $em = $this->doctrine->getEntityManager();
         $em->persist($institution);
         $em->flush();
-    
+
         return $institution;
     }
-    
-    
+
+
     /**
-     * 
+     *
      * @param Institution $institution
      * @return boolean
      */
@@ -253,13 +255,13 @@ class InstitutionService
     {
         $activeStatus = InstitutionStatus::getBitValueForActiveStatus();
 
-        
+
         return $activeStatus == $activeStatus & $institution->getStatus() ? true : false;
     }
-    
+
     /**
      * Check if the $institution is Approved
-     * 
+     *
      * @param Institution $institution
      * @return boolean
      * @author acgvelarde
@@ -268,7 +270,7 @@ class InstitutionService
     {
         return $institution->getStatus() == InstitutionStatus::getBitValueForApprovedStatus();
     }
-    
+
     public function setInstitutionUserService(InstitutionUserService $institutionUserService)
     {
         $this->institutionUserService = $institutionUserService;
@@ -278,7 +280,7 @@ class InstitutionService
     {
         $_users = $this->doctrine->getRepository('UserBundle:InstitutionUser')
             ->findByTypeName($institution, 'ADMIN');
-        
+
         $retVal = array();
         foreach ($_users as $user) {
             try {
@@ -287,23 +289,23 @@ class InstitutionService
             catch (\Exception $e) {
                 $retVal[] = $user;
             }
-                
+
         }
-        
+
         return $retVal;
     }
-    
+
     public function getAllStaffOfInstitution(Institution $institution)
     {
         $users = $this->doctrine->getRepository('UserBundle:InstitutionUser')->findByInstitution($institution);
-        
+
         $returnValue = array();
         foreach($users as $user) {
             $returnValue[] = $this->institutionUserService->getAccountData($user);
         }
         return $returnValue;
     }
-    
+
     public function getAllNotExpiredArchivedAndInactiveMedicalCenters(Institution $institution)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status != :inActive AND a.status != :expired AND a.status != :archived ";
@@ -314,12 +316,12 @@ class InstitutionService
         ->setParameter('archived', InstitutionMedicalCenterStatus::ARCHIVED);
         return $query->getResult();
     }
-    
+
     public function getActiveMedicalCenters(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
     }
-    
+
     public function getAllMedicalCenters(Institution $institution)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')
@@ -334,17 +336,17 @@ class InstitutionService
             ->where('i.institution = :institutionId')
             ->orderBy('i.dateCreated','desc')
             ->setParameter('institutionId', $institution->getId());
-        
+
         if ($limit = $options->get(QueryOption::LIMIT, null)) {
             $qb->setMaxResults($limit);
         }
-        
+
         return $qb->getQuery()->getResult();
     }
-    
+
     /**
      * Get the first added medical center of an institution
-     * 
+     *
      * @param Institution $institution
      * @return InstitutionMedicalCenter
      */
@@ -352,7 +354,7 @@ class InstitutionService
     {
         return $this->getFirstMedicalCenterByInstitutionId($institution->getId());
     }
-    
+
     /**
      * Get the first added medical center of an institution
      * @param int $insitutionId
@@ -361,7 +363,7 @@ class InstitutionService
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getFirstByInstitutionId($institutionId);
     }
-    
+
     /**
      * Get ancillary services of an institution
      *
@@ -371,13 +373,13 @@ class InstitutionService
     public function getInstitutionServices(Institution $institution)
     {
         $ancilliaryServices = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->getAllServicesByInstitution($institution);
-         
+
         return $ancilliaryServices;
-        
-        
-        
+
+
+
     }
-    
+
     /**
      * Check if $institution has a property type value of $value
      *
@@ -391,10 +393,10 @@ class InstitutionService
     {
         return $this->institutionPropertyService->hasPropertyValue($institution, $propertyType, $value);
     }
-    
+
     /**
      * Get global awards of an institution
-     * 
+     *
      * @param Institution $institution
      * @return array GlobalAward
      */
@@ -402,11 +404,11 @@ class InstitutionService
     {
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
     }
-    
-    
+
+
     /** TODO - Improved!
      * Get Filtered/Unique Institution Doctors
-     * 
+     *
      * @author Adelbert Silla
      * @param Institution $institution
      * @return array Doctor
@@ -418,47 +420,40 @@ class InstitutionService
         $qb = $this->doctrine->getRepository('DoctorBundle:Doctor')
             ->getAllDoctorsByInstitution($institution);
         $institutionDoctors = $qb->getQuery()->getResult();
-        
+
         /**foreach($institution->getInstitutionMedicalCenters() as $each) {
             $doctors = $each->getDoctors();
 
             foreach($doctors as $doctor) {
                 if(!isset($institutionDoctors[$doctor->getId()])) {
-                    $institutionDoctors[$doctor->getId()] = $doctor;                    
+                    $institutionDoctors[$doctor->getId()] = $doctor;
                 }
             }
         }**/
 
         return $institutionDoctors;
     }
-    
+
 //     public function getBranches(Institution $institution)
 //     {
 //         $groupCriteria = array('medicalProviderGroups' => $this->institution->getMedicalProviderGroups()->first());
 //         $institutionBranches = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($groupCriteria);
-        
+
 //         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        
+
 //         $qb->select('a')->from('InstitutionBundle:Institution')
 //            ->leftJoin('a.medicalProviderGroups', 'b')
 //            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
 //     }
 
-    public function getAllInstitutionBySearhTerm($searchTerm)
+    public function getAllInstitutionByParams($params)
     {
-        $query = $this->doctrine->getEntityManager()->createQueryBuilder()
-        ->select('a')
-        ->from('InstitutionBundle:Institution', 'a')
-        ->where('a.status = :active')
-        ->andWhere('a.name LIKE :searchTerm')
-        ->setParameter('searchTerm', '%'.$searchTerm.'%')
-        ->setParameter('active', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
-        ->getQuery();
-        
-        return $query->getResult();
+        $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllInstitutionByParams($params);
+
+        return $result;
     }
-    
-    
+
+
     /**
      * @deprecated
      * @param Institution $institution
@@ -474,10 +469,10 @@ class InstitutionService
 //             $em->flush($institution);
 //         }
     }
-    
+
     public function getInstitutionInquiries(Institution $institution)
     {
-        
+
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
         $qb->select('a')
         ->from('InstitutionBundle:InstitutionInquiry', 'a')
@@ -485,21 +480,21 @@ class InstitutionService
         ->andWhere('a.institution = :institution')
         ->setParameter('status', InstitutionInquiry::STATUS_DELETED)
         ->setParameter('institution', $institution);
-        
-		return $qb->getQuery()
-		->getResult();
+
+        return $qb->getQuery()
+        ->getResult();
     }
-    
+
     public function getInstitutionInquiriesBySelectedTab(Institution $institution, $tab)
     {
         if($tab == "all") {
             $inquiries = $this->getInstitutionInquiries($institution);
         }
         elseif ($tab == "read") {
-            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ); 
+            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ);
         }
         else {
-            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD); 
+            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD);
         }
         $inquiryArr = array();
         if(count($inquiries) != 0  ) {
@@ -510,26 +505,29 @@ class InstitutionService
                 else {
                     $status = 'read';
                 }
-                $inquiryArr[] = array('sender' => $each->getInquirerEmail() ,
+                //var_dump();
+                $inquiryArr[] = array(
+                                'sender' => $each->getInquirerName(),
+                                'email' => $each->getInquirerEmail(),
                                 'id' => $each->getId(),
-                                'message' => $each->getMessage(),
-                                'status' => $status,         
+                                'message' => \addcslashes($each->getMessage(), "\r\n"),
+                                'status' => $status,
                                 'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
                                 'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
                                 'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
-            
+
             }
         }
-        
+
         return $inquiryArr;
     }
-    
+
     public function setInstitutionInquiryStatus(InstitutionInquiry $inquiry, $status)
     {
         $inquiry->setStatus($status);
         $em = $this->doctrine->getEntityManager();
         $em->persist($inquiry);
-        
+
         return $em->flush();
     }
 
@@ -537,18 +535,41 @@ class InstitutionService
     {
         $inquiryResultsList = $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findById($inquiryList);
         $em = $this->doctrine->getEntityManager();
-        
+
         foreach($inquiryResultsList as $inquiry) {
             $inquiry->setStatus($status);
             $em->persist($inquiry);
         }
-        
+
         return $em->flush();
     }
-    
+
     public function getInstitutionInquiriesByStatus(Institution $institution, $status)
     {
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findBy(array('institution' => $institution, 'status' => $status));
     }
-   
+
+    /**
+     * Note: Currently we have no way of flagging which user is the account owner.
+     * We just rely on the behavior that the first user added to an institution,
+     * which as a rule IS set to be the account owner, will be returned by doctrine
+     * ArrayCollection->first(). (This observation has yet to be fully confirmed)
+     *
+     * @param mixed $institution Either institution id or an instance of Institution
+     * @return InstitutionUser
+     */
+    public function getAccountOwner($institution)
+    {
+        if (is_numeric($institution)) {
+            $institution = $this->doctrine->getRepository('InstitutionBundle:Institution')->find($institution);
+        }
+
+        if (!($institution instanceof Institution)) {
+            throw new \Exception('Invalid institution');
+        }
+
+        //FIXME: getAccountData returns null
+        return $this->institutionUserService->getAccountData($institution->getInstitutionUsers()->first());
+        //return $this->institutionUserService->getAccountDataById($institution->getInstitutionUsers()->first()->getAccountId());
+    }
 }

@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+
 use HealthCareAbroad\FrontendBundle\FrontendBundleEvents;
 
 use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
@@ -24,49 +28,49 @@ class InquiryController extends Controller
 {
     /**
      * TODO: is this used or is this deprecated already?
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction()
     {
-    	$form = $this->createForm(new InquiryType());
-    	
-    	if ($this->getRequest()->isMethod('POST')) {
-    	
-    		$form->bindRequest($this->getRequest());
-    	
-    		if ($form->isValid()) {
-    			 
-    			//create inquire
-    			$inquire = new Inquiry();
-    			$inquire->setFirstName($form->get('firstName')->getData());
-    			$inquire->setLastName($form->get('lastName')->getData());
-    			$inquire->setEmail($form->get('email')->getData());
-    			$inquire->setInquirySubject($form->get('inquiry_subject')->getData());
-    			$inquire->setMessage($form->get('message')->getData());
-    			$inquire->setStatus(SiteUser::STATUS_ACTIVE);
-    			$inquire = $this->get('services.inquire')->createInquiry($inquire);
-    			
-    			if ( count($inquire) > 0 ) {
-    				$this->get('session')->setFlash('notice', "Successfully submitted.");
-    			}
-    			else
-    			{
-    				$this->get('session')->setFlash('notice', "Unable to send inqueries!");
-    			}
-    		} else {
+        $form = $this->createForm(new InquiryType());
 
-    		}
-    	}
-    	
+        if ($this->getRequest()->isMethod('POST')) {
+
+            $form->bindRequest($this->getRequest());
+
+            if ($form->isValid()) {
+
+                //create inquire
+                $inquire = new Inquiry();
+                $inquire->setFirstName($form->get('firstName')->getData());
+                $inquire->setLastName($form->get('lastName')->getData());
+                $inquire->setEmail($form->get('email')->getData());
+                $inquire->setInquirySubject($form->get('inquiry_subject')->getData());
+                $inquire->setMessage($form->get('message')->getData());
+                $inquire->setStatus(SiteUser::STATUS_ACTIVE);
+                $inquire = $this->get('services.inquire')->createInquiry($inquire);
+
+                if ( count($inquire) > 0 ) {
+                    $this->get('session')->setFlash('notice', "Successfully submitted.");
+                }
+                else
+                {
+                    $this->get('session')->setFlash('notice', "Unable to send inqueries!");
+                }
+            } else {
+
+            }
+        }
+
         return $this->render('FrontendBundle:Inquiry:index.html.twig', array(
-        		'form' => $form->createView(),
+                'form' => $form->createView(),
         ));
     }
-    
+
     /**
      * TODO: rename function since this is misleading
-     * 
+     *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -74,7 +78,7 @@ class InquiryController extends Controller
     {
         $institutionInquiry = new InstitutionInquiry();
         $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
-    
+
         $form->bindRequest($request);
         if ($form->isValid()) {
             if($request->get('imcId')) {
@@ -92,7 +96,11 @@ class InquiryController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($institutionInquiry);
             $em->flush();
-    
+
+            // TODO: Update this when we have formulated a strategy for our event system
+            // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+            $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
+
             $this->get('session')->setFlash('notice', "Successfully saved!");
             $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
         }
@@ -107,10 +115,10 @@ class InquiryController extends Controller
             if(count($captchaError)) {
                 $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
-            
+
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
-    
+
         return $response;
     }
 }

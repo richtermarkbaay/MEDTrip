@@ -1,0 +1,25 @@
+
+{% if app.request.attributes.get('_route') == 'institution_medicalCenter_view' or app.request.attributes.get('_route') == 'institution_medicalCenter_ajaxUpdateProfileByField' %}
+    {% set selected = get_selected_medicalCenterServices(institutionMedicalCenter) %}
+    {% set onclickFunction = "InstitutionMedicalCenter.toggleForm($('#clinic-edit-services-btn'))" %}
+{% else %}
+    {% set selected = get_selected_AnciliaryServices(institution) %}
+    {% set onclickFunction = "InstitutionProfile.toggleForm($('#institution-edit-services-btn'))" %}
+{% endif %}
+
+{% if(selected | length) %}		
+    <ul class="single-listing">
+        {% for _service in ancillaryServicesData %}
+            {% if(selected[_service.id] is defined) %}
+                <li>{{ _service.name |title }}</li>
+        	{% endif %}
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-block">
+        <p class="hca-helptext">		
+            You haven't yet added any services for your {{ institutionLabel }}. Explain here the need to add services for your {{ institutionLabel }}.
+        </p>
+        <button type="button" class="btn btn-primary" onclick="{{ onclickFunction }}"><i class="icon-plus"></i> Add Entry</button>
+    </div>
+{% endif %}

@@ -126,11 +126,11 @@ class InstitutionUserService extends UserService
 
         // update user in chromedia global accounts
         $siteUser = $this->updateUser($siteUser);
-        
+
         $em = $this->doctrine->getEntityManager();
         $em->persist($siteUser);
         $em->flush();
-        
+
         return $siteUser;
     }
 
@@ -181,51 +181,51 @@ class InstitutionUserService extends UserService
         if ($accountData) {
             return $accountData['id'];
         }
-    
+
         return null;
     }
-    
+
     public function createInstitutionUserPasswordToken($daysofExpiration, $accountId)
     {
         $daysofExpiration = intVal($daysofExpiration);
-    
+
         //check if expiration days given is 0|less than 0
         if ($daysofExpiration <= 0) {
             $daysofExpiration = 7;
         }
-    
+
         //generate token
         $generatedToken = SecurityHelper::hash_sha256(date('Ymdhms'));
-    
+
         //generate expiration date
         $dateNow = new \DateTime('now');
         $expirationDate = $dateNow->modify('+'. $daysofExpiration .' days');
-    
+
         $passwordToken = new InstitutionUserPasswordToken();
         $passwordToken->setAccountId($accountId);
         $passwordToken->setToken($generatedToken);
         $passwordToken->setExpirationDate($expirationDate);
         $passwordToken->setStatus(SiteUser::STATUS_ACTIVE);
-    
+
         $em = $this->doctrine->getEntityManager();
         $em->persist($passwordToken);
         $em->flush();
         return $passwordToken;
     }
-    
+
     public function deleteInstitutionUserPasswordToken(InstitutionUserPasswordToken $token, $institutionUser)
     {
         $em = $this->doctrine->getEntityManager();
         $em->remove($token);
         $em->flush();
-        
+
         if($institutionUser){
             $this->update($institutionUser);
         }
-        
+
         return $institutionUser;
     }
-    
+
     /**
      *
      * @param string $email
@@ -277,5 +277,10 @@ class InstitutionUserService extends UserService
     public function getAccountData(SiteUser $siteUser)
     {
         return $this->getUser($siteUser);
+    }
+
+    public function findUnexpiredUserPasswordToken($token)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionUserPasswordToken')->findToken($token);
     }
 }

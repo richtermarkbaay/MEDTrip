@@ -1,0 +1,63 @@
+{#
+RULES: This should be sent upon Hospital Profile submission/creation. Sent to account owner.
+Assumptions: No Clinics, No Dr profiles nor any public info have yet to be added to the database.
+Auto-notification subject line: #Hospital_Name# has been added to HealthcareAbroad.com
+Auto-notification From address: support@healthcareabroad.com
+#}
+{% block subject %}
+    {{ institution_name }} has been added to HealthcareAbroad.com
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+
+Thank you for creating a profile for {{ institution_name }} on HealthcareAbroad.com!
+
+The next step for patients to find you on HealthcareAbroad.com is to get your hospital’s clinics listed in our international directory.
+
+To make sure that they find complete and relevant information about everything that you have to offer, we suggest that you:
+
+Continue the submission process to add all the clinics/centers within your hospital {{ url.add_centers }}
+Create profiles for the Doctors within the clinics {{ url.feature_doctors }}
+List the treatments and specializations for each clinic {{ url.list_treatments }}
+Post photos and videos of your clinics {{ url.upload_photos }}
+List contact details for prospective patients to contact you {{ url.contact_info }}
+
+Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
+
+All the best,
+
+The Healthcare Abroad Team
+
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+Thank you for creating a profile for {{ institution_name }} on HealthcareAbroad.com!
+<br/><br/>
+
+The next step for patients to find you on HealthcareAbroad.com is to get your hospital’s clinics listed in our international directory.
+<br/><br/>
+
+To make sure that they find complete and relevant information about everything that you have to offer, we suggest that you:
+<br/><br/>
+
+<ul>
+    <li><a href='{{ url.add_centers }}'>Continue the submission process to add all the clinics/centers within your hospital</a></li>
+    <li><a href='{{ url.feature_doctors }}'>Create profiles for the Doctors within the clinics</a></li>
+    <li><a href='{{ url.list_treatments }}'>List the treatments and specializations for each clinic</a></li>
+    <li><a href='{{ url.upload_photos }}'>Post photos and videos of your clinics</a></li>
+    <li><a href='{{ url.contact_info }}'>List contact details for prospective patients to contact you</a></li>
+</ul>
+<br/>
+
+Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
+<br/><br/>
+
+All the best,
+<br/><br/>
+
+The Healthcare Abroad Team
+
+{% endblock %}

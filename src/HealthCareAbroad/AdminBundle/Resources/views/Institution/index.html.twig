@@ -45,7 +45,7 @@
                        {# <td class="status">{{ statusList[institution.status] }}</td> #}
 
                         <td>
-                            <a href="{{ path('admin_institution_manageCenters', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 
+                            <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 
                             <br/>
                             <a id="status-{{institution.id}}" href="{{ path('admin_institution_editStatus', {institutionId: institution.id}) }}" data-status="{{ institution.status }}" class="show-update-status">
                                 <i class="icon-edit"></i> Edit status

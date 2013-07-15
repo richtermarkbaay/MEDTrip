@@ -1,8 +1,0 @@
-{% include 'InstitutionBundle:MedicalCenter:Partials/accordion.specializations.html.twig' with {specializations : specializations } %}
-
-<div class="align-right" style="margin-top: 10px">
-    <button type="button" class="btn" onclick="$('#add-specialization-wrapper').hide().prev().slideDown().prev().slideDown()">Cancel</button>
-    <button type="submit" class="btn btn-primary" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
-        Save
-    </button>
-</div>

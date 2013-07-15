@@ -1,0 +1,245 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+
+{% set institutionMedicalCenter_token = form_widget(institutionMedicalCenterForm._token) %}
+{% set centerLabel = getClassLabel('institution_medical_center').singular | title %}
+{% block content %}
+    <div class="span9">
+
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with {
+                    title: institutionMedicalCenter.name,
+                    actions: [
+                        {link:  path('admin_institution_medicalCenter_edit', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Profile' | title, 
+                                'icon' : 'icon-ok' },
+                        {link:  path('admin_institution_medicalCenter_updateStatus', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id}),
+                                label: 'Edit Clinic Status' | title, 
+                                'icon' : 'icon-ok',
+                                class : 'edit-status' }
+                    ]
+                 }
+         %}
+  
+            {% block sectionContent %}
+                <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
+                    {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
+                    {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
+                    {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig' %}
+                    {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
+        
+                    <div id="media" class="treatmentbox">
+                        <h5 style="padding: 10px; border: 1px solid #EEEEEE">
+                            Media
+                            <a href="{{ path('admin_institution_medicalCenter_gallery_add', {institutionId: institution.id, imcId: institutionMedicalCenter.id} ) }}" class="btn btn-mini pull-right">
+                                <i class="icon-plus"></i>Add
+                            </a>
+                        </h5>
+                        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                            {% include 'MediaBundle:Widgets:gallery.html.twig' with { media: institutionMedicalCenterMedia, mediaContext: media_context.institution } %}
+                        </div>
+                        
+                    </div>
+                    {% include 'AdminBundle:Widgets:medicalCenter.medicalSpecialist.html.twig'%}
+                    
+                    <!-- Modal Medical Center Status -->
+                    	{% include 'AdminBundle:InstitutionMedicalCenter/Modals:editStatus.html.twig' 
+                    	     with {modalId: 'status_medicalCenter_modal_form', modalTitle: 'Edit Status'} 
+                    	%} 
+                   <!-- end Modal Medical Center Status -->
+                   
+                   <!-- Modal Institution Ancillary Services -->
+                       {% include 'AdminBundle:InstitutionProperties/Modals:institution_ancillaryServices.html.twig' 
+                            with {modalId: 'institution_ancillaryServices_modal_form', modalTitle: 'Port Institution Ancillary Services'} 
+                       %}
+                   <!-- end Modal Institution Ancillary Services -->
+                   
+                   <!-- Modal Institution Medical Center Specialist -->
+                       <div id="_specialistModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                            <h3>Delete Specialist</h3>
+                            
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to remove
+                            	<strong> </strong> ?
+                            </p>
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ path('admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist', {'imcId': institutionMedicalCenter.id, 'institutionId': institution.id } ) }}">
+                                 <input type="hidden" name="_doctorId" class="doctorHiddenId" id="_doctorId" value=""/>
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                        	    <button data-loading-text="Processing..." class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveMedicalSpecialistForm($(this).parents('form')); return true;">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                   <!-- end Modal -->
+                   
+                </div>
+            {% endblock %}
+    
+        {% endembed %}
+    </div>
+    
+{% endblock %}
+{#dpat bootstrap implementation na,karon is jquer-ui man#}
+{% block inlineJavascriptCode %}
+
+    
+    <script src="{{ asset('bundles/helper/js/DoctorAutocomplete.js') }}"></script>
+    <script src="{{ asset('bundles/admin/js/institutionTreatments.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/admin/js/institutionMedicalCenter.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="{{ asset('bundles/admin/js/properties.js') }}" ></script>
+    <script src="{{ asset('js/jquery/timepicker.js') }}"></script>
+    <script src="{{ asset('js/jquery/globalize.js') }}"></script>
+    <script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
+    <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function() {
+        	$('.ajax_loader').hide();
+        	$(".hour").timepicker({ seconds: false  });
+
+        	$('a._removeDoctor').click(function() {
+        	    var _linkElem = $(this);
+        	    var _doctorElemId = $('#_doctorId');
+        	    var _modalId = $(_linkElem.attr('data-modalId'));
+        	    _modalId.find('div.modal-body').find('strong').html(_linkElem.attr('data-doctorName'));
+        	    _doctorElemId.val($(_linkElem).attr('data-doctorId'));
+        	    $('#_specialistModal').modal('show');
+
+        	    return false;
+            });
+            
+            $('#dialog-container').dialog({
+                position: ['center', 100],
+                autoOpen: false,
+                width: 750,
+                modal: true,
+                resizable: false,
+                close: function() {}
+            });
+
+            $('a.edit_global_award').globalAward('edit', {
+                'modal': $('div.edit_award_form_container'),
+                'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
+                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete' 
+            });
+
+            $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}');
+
+            $('input.global_award_autocomplete').globalAward('autocompleteAward', {
+                'remoteUrl': '{{ path("admin_ajaxMedicalCenterGlobalAwardSource", {institutionId: institution.id,imcId: institutionMedicalCenter.id}) }}' 
+            });
+            
+        	var LoadMedicalSpecialists = '{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}';
+        	InstitutionSpecialistAutocomplete
+	        .setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
+	        .setLoadMedicalSpecialistUri('{{ path("admin_institution_medicalCenter_loadMedicalSpecialist", {"imcId": institutionMedicalCenter.id, "institutionId": institution.id}) }}')
+	        .setAutocompleteOptions('specialist', {
+	            source: LoadMedicalSpecialists,
+	            target: $('#institutionDoctorSearch_firstName'),
+	            selectedDataContainer: $('table.specialist_table tbody'),
+	            loader: $('table.specialist_table tbody tr.loader'),
+                field: $('#institutionDoctorSearch_firstName')
+	        })
+	        .autocomplete();
+
+            $('.medical-centers').click(function(){
+                var url = $(this).find('.url').attr('href');
+                var specializationElem = $(this).next().find('.specializations:first');
+
+                if($.trim(specializationElem.html()) == '') {
+                	specializationElem.html('<div class="ajax-loading">loading...</div>');
+                    $.get(url, function(result) {
+                    	specializationElem.html(result);
+                    });
+                }
+            });
+
+            $('.view-center').click(function(){
+                window.location = $(this).attr('href');
+                return false;
+            });
+
+            $('.edit-center-description').click(function(){
+                if($(this).next().is(':visible')) {
+                	$(this).find('i').attr('class', 'icon-ok');
+                	$(this).find('span').html('save')
+                    $(this).next().hide().siblings('.mceEditor').show();
+
+                } else {
+                    var url = $(this).attr('href');
+                    var param = { description: $(this).siblings('textarea').val() };
+
+                	$.post(url, param, function(result){}, 'json');
+
+                	$(this).find('i').attr('class', 'icon-edit');
+                	$(this).find('span').html('edit')
+                    $(this).next().html(param.description).show().siblings('.mceEditor').hide();                
+                }
+
+                return false;
+            });
+
+            $('.edit-center-name').click(function(){
+                if($(this).next().is(':visible')) {
+                	$(this).find('i').attr('class', 'icon-ok');
+                	$(this).find('span').html('save')
+                    $(this).next().hide().siblings('input').show();
+            
+                } else {
+                    var url = $(this).attr('href');
+                    var param = { name: $(this).siblings('input').val() };
+
+                	$.post(url, param, function(result){}, 'json');
+
+                	$(this).find('i').attr('class', 'icon-edit');
+                	$(this).find('span').html('edit')
+                    $(this).next().html(param.name).show().siblings('input').hide();
+
+                	$("#centersAccordion").accordion("enable");
+                }
+
+                return false;
+            }).siblings('input').click(function(){
+    			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
+    			$(this).parent().removeClass('ui-state-disabled'); 
+    		});
+
+            $('a.edit-status').click(function(){
+            	$('div#status_medicalCenter_modal_form').modal('show');
+                return false;
+            });
+
+            /*$('a.port_services').click(function() {
+            	$('div#institution_ancillaryServices_modal_form').modal('show');
+                return false;
+            });*/
+
+        });
+
+        
+        
+    	// initialize businesshours form
+        ClinicBusinessHoursForm
+        .setAjaxContentElement($('#institutionBusinessHoursText'))
+        .setFormElement($('#businessHours-form'))
+        .initInputElements({
+            'submitButton': $('#saveBusinessHours'),
+            'isClosed': $('input.closedToggle'),
+            'isOpenWholeDay': $('input.openWholeDayToggle'),
+            'isAlwaysOpen': $('input.alwaysOpenToggle')
+        })
+        .initializeState();
+
+        $('#btnClose').click(function() {
+        	$(this).dialog('close');
+
+         	return false;       
+        });
+
+        
+        
+    </script>
+{% endblock %}

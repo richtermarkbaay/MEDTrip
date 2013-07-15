@@ -69,6 +69,7 @@ var InstitutionInquiry = {
                 window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
+                    $('#institutionInquiry_captcha').val('');
                     if (errors.length) {
                     	var _errorString = '';
                         $.each(errors, function(key, item){

@@ -3,7 +3,7 @@
       GlobalAwards / Certifications
     </h5>
     <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
-    <form action="{{ path('admin_institution_medicalCenter_addGlobalAwards', { 'institutionId': institution.id,'imcId':institutionMedicalCenter.id}) }}" method="POST" id="modal_award_form" >
+    <form action="#" method="POST" id="modal_award_form" >
        {% set _awardsByType = {
                 'awards': {
                     'fieldId': 'awards_field',
@@ -45,7 +45,7 @@
         %}
         
         {% for _awardsListData in _awardsByType %}
-            {% include 'AdminBundle:InstitutionTreatments/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
+            {% include 'AdminBundle:InstitutionMedicalCenterProperties/Partials:awardsList.base.html.twig' with { 'awardsList': _awardsListData } %}
         {% endfor %}
         
         {{ form_widget(form._token) }}
@@ -72,6 +72,6 @@
         </div>
 	</div>
     </div>
-    	{% include 'AdminBundle:InstitutionTreatments/Modals:modal.editGlobalAward.html.twig' %}
+    	{% include 'AdminBundle:InstitutionMedicalCenterProperties/Modals:edit.globalAward.html.twig' %}
     
 </div>

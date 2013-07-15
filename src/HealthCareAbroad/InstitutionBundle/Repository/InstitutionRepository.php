@@ -191,4 +191,24 @@ class InstitutionRepository extends EntityRepository
          
         return $query->getResult();
     }
+    
+    public function getAllInstitutionByParams($params)
+    {
+        $query = $this->createQueryBuilder('a')
+        ->where('a.status = :status')
+        ->andWhere('a.name LIKE :searchTerm')
+        ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+        ->setParameter('searchTerm', '%'.$params['searchTerm'].'%');
+    
+        if($params['countryId'] != 'all') {
+            $query->andWhere('a.country = :country')->setParameter('country', $params['countryId']);
+        }
+    
+        if($params['cityId'] != 'all') {
+            $query->andWhere('a.city = :city')->setParameter('city', $params['cityId']);
+        }
+        $query = $query->orderBy('a.name');
+    
+        return $query->getQuery()->getResult();
+    }
 }

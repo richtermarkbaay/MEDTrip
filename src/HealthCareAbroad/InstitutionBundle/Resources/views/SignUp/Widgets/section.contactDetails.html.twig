@@ -1,0 +1,35 @@
+<section class="section institution-info">
+    <h2>
+        {{ label }} Contact Details<br>
+        <small> These are your {{ label | lower}}'s contact details. Please be as detailed as possible. </small>
+    </h2>
+    <div class="row-fluid tooltip-wrap">
+        <div class="span12">
+            <div class="tooltip-content">
+                <i class="icon-lightbulb icon-2x pull-left"></i>We will use the details you provide to contact you about potential leads. Please double-check that you've provided the correct phone numbers and email addresses to make sure you don't miss any inquiries that may come through HealthcareAbroad.</div>
+
+                <div class="control-group website">
+
+                    <label for="institution_profile_form[websites]">{{ label }} Website</label>
+                    <span class="pull-left"> http:// </span>
+                    {{ form_widget(form.websites, { attr: {class: 'span11'} } )}}
+                    <div class="tooltip-content3">
+                        The homepage for the hospital, or the homepage of the international or medical tourism
+                        center. This is where prospective patients will be linked to from HealthcareAbroad.com
+                    </div>
+
+                </div>
+       
+            <div class="contactEmail control-group {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                <label for="{{ form.children.contactEmail.vars.id }}">
+                    {{ form.children.contactEmail.vars.label }}
+                </label>
+                {{ form_widget(form.contactEmail, { 'attr': {'class': 'span8'} }) }}
+                {{ form_errors(form.contactEmail )}}
+            </div>
+            {% for _widget in form.contactDetails %}
+                {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
+            {% endfor %}
+        </div>
+    </div>
+</section>

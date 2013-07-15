@@ -2,58 +2,39 @@
     <div class="tabbable">
         {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
             tabNavigation: { links: [
-                { label: 'Details', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
-                { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
-                { label: 'Doctors', 'href' : '#medical_specialists_tab_content', 'icon' : 'user-md' },
+                { label: 'Details', 'active': true, 'href' : '#profile_tab_content', 'icon' : 'medkit', 'id' : 'profile_tab' },
+                { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker', 'id' : 'specializations_tab'},
+                { label: 'Doctors', 'href' : '#doctors_tab_content', 'icon' : 'user-md', 'id' : 'doctors_tab' },
             ]}
         } %}
-        
+
        <div class="tab-content" id="tabbed_content">
-           <div id="profile_tab" class="tab-pane active">
-               {% include 'InstitutionBundle:Institution/Widgets:profileTabForm.html.twig' %}
+           <div id="profile_tab_content" class="tab-pane active">
+               {% include 'InstitutionBundle:Institution/Widgets:profile.details.html.twig' %}
            </div>
            <div id="specializations_tab_content" class="tab-pane">
-               {% include 'InstitutionBundle:Widgets:tabbedContent.institutionMedicalCenterSpecializations.html.twig' %}
+               {% include 'InstitutionBundle:Widgets/Profile:specializations.html.twig' %}
            </div>
-           <div id="medical_specialists_tab_content" class="tab-pane">                       
+           <div id="doctors_tab_content" class="tab-pane">
                 {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
                     {% block tabbedContent %}
                          <section class="doctors-listing">
                             <h3> Your Doctors
-                                <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary pull-right" data-toggle="modal">Add New Doctor</a>
+                                <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary pull-right" data-toggle="modal"><i class="icon-plus"></i> Add New Doctor</a>
                             </h3>
-                            {% include 'InstitutionBundle:MedicalCenter/Widgets:doctorsList.html.twig' %}
+                            {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' with {addDoctorFormAction: path('institution_medicalCenter_addDoctor', {imcId: institutionMedicalCenter.id }) } %}
                         </section>
                     {% endblock %}
-                {% endembed %}                                    
+                {% endembed %}
             </div>
        </div><!-- /.tab-content -->
     </div>
-    
 </div>
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionTreatments.js') }}"></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionProfile.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
-<script type="text/javascript">
-(function($){
-    $(function(){
-    	 Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-         $('#clinicDescriptionText').truncateByHeight({
-             'visibleRows': 5
-         });
-
-         // display businesshours
-         InstitutionMedicalCenter.displayBusinessHoursView();
-     
-    });
-
-})(jQuery);
-    
-</script>
 {% endblock %}

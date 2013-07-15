@@ -15,7 +15,7 @@ class MedicalProviderGroupFormType extends AbstractType
 		$status = array(MedicalProviderGroup::STATUS_ACTIVE => 'active', MedicalProviderGroup::STATUS_INACTIVE => 'inactive');
 		
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
-		$builder->add('description', 'text', array('constraints'=>array(new NotBlank())));
+		$builder->add('description', 'text');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 	

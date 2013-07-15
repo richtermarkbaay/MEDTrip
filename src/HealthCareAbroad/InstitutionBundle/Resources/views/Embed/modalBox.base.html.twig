@@ -5,9 +5,7 @@
 
     <div class=" modal-body clearfix" style="overflow:visible;{{ modal.customBodyStyle is defined ? modal.customBodyStyle : '' }}">{% block modalBody %}{% endblock %}</div> 
 
-    <div class="modal-footer">
-        {% block footerBody %}{% endblock %}
-    </div>
-    <!-- end modal-body -->
+    {% if block('modalFooter') %}
+        <div class="modal-footer">{% block modalFooter %}{% endblock %}</div>
+    {% endif %}
 </div>
- <!-- End Modal Clinic Address -->

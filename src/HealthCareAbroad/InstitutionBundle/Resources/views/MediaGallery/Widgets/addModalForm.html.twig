@@ -35,50 +35,20 @@
                     {% if not isSingleCenter %}
                         {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
                     {% endif %}
-
-                    <div class="align-right action-buttons">
-                        <button class="btn cancel" onclick="$('#add-media').modal('hide')" type="button">Cancel</button> &nbsp;
-                        <button class="btn btn-primary save" type="submit" disabled="disabled" style="display:{{ isSingleCenter  ? 'none' : '' }}"><i class="icon-save"></i>Save Changes</button> &nbsp;
-                        <button class="btn btn-success done" onclick="$('#add-media').modal('hide'); window.location.reload()" disabled="disabled" type="button">Done</button>
-                    </div>
                 </form>
             </div>
-            {#
-            <div id="pane2" class="tab-pane">
-                <h4>Link Video</h4>
-                <div class="alert alert-info">
-                    <div class="media">
-                        <i class="icon-facetime-video icon-4x pull-left"></i>
-                        <div class="media-body">
-                            <h4 class="media-heading">Rules in Linking Videos (Youtube and Vimeo)</h4>
-                            <ul>
-                                <li>Make sure the video is set to public</li>
-                                <li>Click the SHARE TAB under the video</li>
-                                <li>Copy the URL and paste it into the form below.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <form action="#">
-                    <div class="row-fluid control-group">
-                        <label for="video-title">Enter Video url</label>
-                        <input type="text" class="span10"><br/>
-                        <small>
-                            Example:<br/>
-                            <p><b>For Youtube:</b>http://www.youtube.com/watch?v=YE7VzlLtp4isYE7VzlLtp-4
-                            <br/>
-                            <b>For Vimeo:</b>http://www.youtube.com/watch?v=YE7VzlLtp-4isYE7VzlLtp-
-                            </p>
-                        </small>
-                    </div>
-                </form>
-            </div>
-            #}
         </div>
     </div>
-
     {% endblock %}
+    
+    {% block modalFooter %}
+        <div class="align-right action-buttons">
+            <button class="btn cancel" onclick="$('#add-media').modal('hide')" type="button">Cancel</button> &nbsp;
+            <button class="btn btn-primary save" type="button" disabled="disabled" style="display:{{ isSingleCenter  ? 'none' : '' }}" onclick="$('#addInstitutionMediaForm').submit()"><i class="icon-save"></i>Save Changes</button> &nbsp;
+            <button class="btn btn-success done" onclick="$('#add-media').modal('hide'); window.location.reload()" disabled="disabled" type="button">Done</button>
+        </div>
+    {% endblock %}
+    
 {% endembed %}
 
 {% block inlineJavascriptCode %}
@@ -89,6 +59,7 @@
     
     	Dropzone.autoDiscover = false;
     	var addMediaFormElem = $('#addInstitutionMediaForm');
+    	var buttonsContainer = $('#add-media .modal-footer .action-buttons:first'); 
     
         $("#custom-dropzone").dropzone({
             url: "{{ path('institution_mediaGallery_upload') }}",
@@ -105,8 +76,8 @@
                 	$(file.previewTemplate).addClass('success');
                 	$('#mediaIds').val($('#mediaIds').val() == '' ? response.mediaId : $('#mediaIds').val() + ',' + response.mediaId);
                 	addMediaFormElem.find('.medical-center-checkbox:first').change();
-                	addMediaFormElem.find('.action-buttons > button.cancel').remove();
-                	addMediaFormElem.find('.action-buttons > button.done').removeAttr('disabled');
+                	buttonsContainer.find('button.cancel').remove();
+                	buttonsContainer.find('button.done').removeAttr('disabled');
                 } else {
                 	$(file.previewTemplate).addClass('error');
                 }
@@ -116,9 +87,9 @@
         addMediaFormElem.find('.medical-center-checkbox').change(function() {
             
             if($('#mediaIds').val() != '' && addMediaFormElem.find('.medical-center-checkbox:checked').length) {
-            	addMediaFormElem.find('.action-buttons > button').removeAttr('disabled');
+            	buttonsContainer.find('button').removeAttr('disabled');
             } else {
-            	addMediaFormElem.find('.action-buttons > button.save').attr('disabled', 'disabled');
+            	buttonsContainer.find('button.save').attr('disabled', 'disabled');
             }
         });
     });

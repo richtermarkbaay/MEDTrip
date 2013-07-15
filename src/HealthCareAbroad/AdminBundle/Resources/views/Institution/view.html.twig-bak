@@ -14,7 +14,7 @@
             {% block wrappedContent %}
                {% include '::notice.admin.html.twig' %}
             {# ----- Related tasks ----- #}
-            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in this clinic or medical institution', 'href': path('admin_institution_manageCenters', {institutionId: institution.id}), 'links': [{title:'Click here to view all centers',href: path('admin_institution_manageCenters', {institutionId: institution.id})}, {title:'Click here to add center', href: path('admin_institution_medicalCenter_add', {institutionId: institution.id})}]} %}
+            {% set manageCentersTask = {"title": 'Manage Available Centers', 'class': 'list-icon', 'description': 'Manage medical centers in this clinic or medical institution', 'href': path('admin_institution_medicalCenter_index', {institutionId: institution.id}), 'links': [{title:'Click here to view all centers',href: path('admin_institution_medicalCenter_index', {institutionId: institution.id})}, {title:'Click here to add center', href: path('admin_institution_medicalCenter_add', {institutionId: institution.id})}]} %}
 
             {% include '::relatedTasks.base.admin.html.twig' with
                 {'contents': [manageCentersTask]}

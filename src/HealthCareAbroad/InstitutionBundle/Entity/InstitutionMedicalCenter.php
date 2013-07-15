@@ -102,6 +102,11 @@ class InstitutionMedicalCenter
     private $rankingPoints;
 
     /**
+     * @var integer
+     */
+    private $payingClient;
+    
+    /**
      * @var string
      */
     private $slug;
@@ -560,6 +565,29 @@ class InstitutionMedicalCenter
         return $this->rankingPoints;
     }
 
+    /**
+     * Set payingClient
+     *
+     * @param smallint $payingClient
+     * @return InstitutionMedicalCenter
+     */
+    public function setPayingClient($payingClient)
+    {
+        $this->payingClient = $payingClient;
+        return $this;
+    }
+    
+    /**
+     * Get payingClient
+     *
+     * @return smallint
+     */
+    public function getPayingClient()
+    {
+        return $this->payingClient;
+    }
+    
+    
     /**
      * Set slug
      *

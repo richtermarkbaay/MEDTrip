@@ -1,0 +1,21 @@
+<ul class="unstyled two-column items-count-{{ specializationTreatments|length }} specialization-wrapper">
+    {% for subSpecialization, treatments in specializationTreatments %}
+    {% set subSpecializationElemId = specializationId ~ '-' ~ subSpecialization %}
+    <li class="sub-specialization-wrapper">
+        <input type="checkbox" id="{{ subSpecializationElemId }}" name="subSpecialization" value="subSpecialization"/>
+        <label for="{{ subSpecializationElemId }}"><strong>{{ subSpecialization }}</strong></label>
+        <ul class="unstyled" style="margin-left: 20px;">
+            {% for treatment in treatments %}
+            <li style="border: none">
+                <input type="checkbox" id="treatments{{ treatment.id }}-{{ subSpecializationElemId }}" name="{{ formName }}[{{ specializationId }}][treatments][]" value="{{ treatment.id }}" class="treatments" {{ treatment.id in selectedTreatments ? 'checked' : '' }}/> 
+                <label for="treatments{{ treatment.id }}-{{ subSpecializationElemId }}">{{ treatment.name }}</label>
+            </li>
+            {% endfor %}
+        </ul>
+    </li>
+    {% endfor %}
+    
+    {% if isId is defined and isId %}
+       <input type="hidden" name="{{ formName }}[{{ specializationId }}][{{form.children._token.vars.name}}]" value="{{ form.children._token.vars.value }}" />
+   {% endif %}
+</ul>

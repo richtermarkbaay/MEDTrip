@@ -1,0 +1,80 @@
+{#
+***This should be sent upon NEW listing approval (not an edit to an existing listing)
+Auto-notification subject line: Patients can now find your clinic on HealthcareAbroad.com!
+Auto-notification From address: support@healthcareabroad.com
+#}
+{% block subject %}
+    Patients can now find your clinic on HealthcareAbroad.com!
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+
+Your clinic listing has been approved!
+
+Patients will find your clinic on HealthcareAbroad.com when they search for:
+- Any of your Specializations
+- Treatments you selected under those specializations
+- A search for the City or Country your clinic is in.
+- Any combination of the above
+
+To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
+- Review your clinic information (static list) {{ url.center }}
+- Add any units or departments you may have missed {{ url.add_centers }}
+- Post photos of your clinic {{ url.center_gallery }}
+- Review the treatments you listed {{ url.center_treatments }}
+- Review your doctor list {{ url.center_doctors }}
+
+To add to your clinic profile please login at: {{ url.login }}
+
+If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }} .
+IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> {{ url.contact_info }}
+We would love the opportunity to discuss how employing some advanced features for your listing can increases the amount of leads you receive from HealthcareAbroad.com.  Packages start at less than $1 per day, and can have an immediate impact.  For full details of all available features, visit: {{ url.advertising_guide }}
+
+Please take the time to review your listing and double check your email address. If changes are required please login at {{ url.login }} to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
+
+All the best,
+
+The HealthcareAbroad.com Team
+
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+Your clinic listing has been approved!
+<br/><br/>
+
+Patients will find your clinic on HealthcareAbroad.com when they search for:
+<ul>
+    <li>Any of your Specializations</li>
+    <li>Treatments you selected under those specializations</li>
+    <li>A search for the City or Country your clinic is in.</li>
+    <li>Any combination of the above</li>
+</ul>
+<br/>
+
+To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
+<ul>
+    <li><a href="{{ url.center }}">Review your clinic information (static list)</a></li>
+    <li><a href="{{ url.add_centers }}">Add any units or departments you may have missed</a></li>
+    <li><a href="{{ url.center_gallery }}">Post photos of your clinic</a></li>
+    <li><a href="{{ url.center_treatments }}">Review the treatments you listed</a></li>
+    <li><a href="{{ url.center_doctors }}">Review your doctor list</a></li>
+</ul>
+<br/>
+
+To add to your clinic profile please login at: {{ url.login }}
+<br/><br/>
+If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }} .
+<br/>
+IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> {{ url.contact_info }}
+<br/>
+We would love the opportunity to discuss how employing some advanced features for your listing can increases the amount of leads you receive from HealthcareAbroad.com.  Packages start at less than $1 per day, and can have an immediate impact.  For full details of all available features, visit: {{ url.advertising_guide }}
+<br/><br/>
+Please take the time to review your listing and double check your email address. If changes are required please login at {{ url.login }} to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
+<br/><br/>
+All the best,
+<br/><br/>
+The HealthcareAbroad.com Team
+{% endblock %}

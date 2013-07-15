@@ -232,6 +232,7 @@ class TreatmentController extends Controller
     {
         $treatmentRepo = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment');
         $oldTreatment = $treatmentRepo->findOneById($request->get('id'));
+        
         $treatments = $treatmentRepo->getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment($oldTreatment->getSpecialization(), $oldTreatment);
         $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getActiveSpecializations();
 
@@ -246,7 +247,7 @@ class TreatmentController extends Controller
         return $this->render('AdminBundle:Treatment:treatment_to_term_form.html.twig', 
                         array('specializations' => $specializations,
                               'treatments' => $treatments,
-                              'treatment' => $oldTreatment,
+                              'treatment' => $oldTreatment
                               ));
     }
 }

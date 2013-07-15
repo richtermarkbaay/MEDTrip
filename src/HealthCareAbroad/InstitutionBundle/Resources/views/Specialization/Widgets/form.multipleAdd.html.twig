@@ -1,0 +1,72 @@
+<form name="specializationsForm" action="{{ saveFormAction }}" method="post">
+    <div class="accordion tooltip-wrap" id="accordion">
+        {% for specialization in specializations %}
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                <a class="accordion-toggle" data-toggle="collapse" data-target="#collapse{{ specialization.id }}">
+                    <i class="icon-plus-sign pull-right"></i>
+                    <img src="{{ specialization.media ? specialization_media_src(specialization.media) : imageplaceholder.specializationDefaultLogo }}" class="pull-left">
+                    <h4>{{ specialization.name }}</h4>
+                </a>
+            </div>
+            <div id="collapse{{ specialization.id }}" data-specialization="{{ specialization.id }}" class=" collapse">
+                <div id="{{ 'panel' ~ specialization.id }}" class="accordion-inner" data-loaded="0" data-load-treatments-url="{{ path('institution_ajax_loadSpecializationTreatments', {imcId: imcId, specializationId: specialization.id}) }}">
+                    <div class="align-center"><img src="{{ imageplaceholder.loading }}"/></div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="align-right" style="margin-top: 10px;">
+    
+        <!-- Temporary Condition for Edit and signup Add specializations -->
+        {% if buttonLabel == 'Save' %}
+            <button type="button" class="btn" onclick="$('#add-specialization-wrapper').hide().prev().slideDown().prev().slideDown()">Cancel</button>
+            <button type="submit" class="btn btn-primary" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
+                {{ buttonLabel }}
+            </button>
+        {% else %}
+            <button type="submit" class="btn pull-right btn-primary btn-large">{{ buttonLabel }}</button>
+        {% endif %}
+    </div>
+</form>
+
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+$(function(){
+	
+	/* Note: Has duplicate code in MedicalCenter:view.html.twig */
+    $('form[name="specializationsForm"] input:checkbox[name="subSpecialization"]').live('change', function(e) {
+        var subSpecializationContainerElem = $(this).parents('.sub-specialization-wrapper:first');
+        subSpecializationContainerElem.find('input:checkbox[id^="treatments"]').prop('checked', $(this).is(':checked'));
+    });
+
+    $('form[name="specializationsForm"] input:checkbox[id^="treatments"]').live('change', function(e) {
+        var subSpecializationContainerElem = $(this).parents('.sub-specialization-wrapper:first');
+        var subSpecializationCheckbox = subSpecializationContainerElem.find('input[name=subSpecialization]');
+        var checkedTreatmentElems = subSpecializationContainerElem.find('input:checkbox[id^="treatments"]:checked');
+
+        subSpecializationCheckbox.prop('checked', true);
+        if(checkedTreatmentElems.length == 0) {
+            subSpecializationCheckbox.prop('checked', $(this).is(':checked'));
+        }
+    });
+    /* Note: Has duplicate code in MedicalCenter:view.html.twig */
+
+    $('#accordion').live('show', function(e) {
+    	$(e.target).prev().find('i').addClass('icon-minus-sign');
+        specializationId = $(e.target).data('specialization');
+        accordionInnerElem = $('#panel' + specializationId);
+        // TODO: ideally we should return the data not html
+        if (!accordionInnerElem.data('loaded')) {
+            console.log(accordionInnerElem);
+            $.getJSON(accordionInnerElem.data('load-treatments-url'), function(response) {
+            	accordionInnerElem.html(response.html).data('loaded', 1);
+            });
+        }
+    }).live('hide', function(e){ $(e.target).prev().find('i').removeClass('icon-minus-sign'); });
+});
+</script>
+{% endblock %}

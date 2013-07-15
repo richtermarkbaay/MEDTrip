@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\Common\Collections\Criteria;
+
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,5 +14,15 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionUserPasswordTokenRepository extends EntityRepository
 {
-    
+    public function findToken($token, $includeExpired = false)
+    {
+        if ($includeExpired) {
+            return $this->findOneByToken($token);
+        }
+
+        $query = $this->_em->createQuery('SELECT t FROM InstitutionBundle:InstitutionUserPasswordToken t WHERE t.token = :token AND t.expirationDate > CURRENT_DATE()');
+        $query->setParameter('token', $token);
+
+        return $query->getOneOrNullResult();
+    }
 }

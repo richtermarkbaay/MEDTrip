@@ -116,7 +116,7 @@ class InstitutionSpecializationController extends Controller
                         if ($form->isValid()) {
                                 $em->persist($this->institutionSpecialization);
                                 $em->flush();
-                                $output['html'] = $this->renderView('AdminBundle:InstitutionTreatments:list.institutionTreatments.html.twig', array(
+                                $output['html'] = $this->renderView('AdminBundle:InstitutionSpecialization:list.institutionTreatments.html.twig', array(
                                                 'institutionSpecialization' => $this->institutionSpecialization,
                                                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                                 'institution' => $this->institution
@@ -220,7 +220,7 @@ class InstitutionSpecializationController extends Controller
                 'specializationsJSON' => \json_encode($specializationArr),
         );
     
-        return $this->render('AdminBundle:InstitutionTreatments:addSpecializations.html.twig', $params);
+        return $this->render('AdminBundle:InstitutionSpecialization:addSpecializations.html.twig', $params);
     
     }
     
@@ -251,7 +251,7 @@ class InstitutionSpecializationController extends Controller
         $params['selectedTreatments'] = $this->getRequest()->get('selectedTreatments', array());
         $params['treatmentsListOnly'] = (bool)$this->getRequest()->get('treatmentsListOnly', 0);
         
-        $html = $this->renderView('AdminBundle:InstitutionTreatments/Partials:specializationAccordion.html.twig', $params);
+        $html = $this->renderView('AdminBundle:InstitutionSpecialization/Partials:specializationAccordion.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
     

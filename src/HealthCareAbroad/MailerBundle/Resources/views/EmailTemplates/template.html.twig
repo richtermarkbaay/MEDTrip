@@ -1,0 +1,20 @@
+{% block subject %}
+    {{ subject }}
+{% endblock %}
+
+{% block body_text %}
+    {% autoescape false %}
+
+Plain text version here
+
+    {% endautoescape %}
+{% endblock %}
+
+{% block body_html %}
+
+    {#% include 'MailerBundle:EmailTemplates:confirmation_email.html.twig' %#}
+    {# We can also include a twig template here as shown above #}
+
+<h1>HTML version here</h1>
+
+{% endblock %}

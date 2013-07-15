@@ -1,6 +1,5 @@
 {% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'delete-media', class: 'hca-file-modal delete-media', 'title': 'Delete Media' }} %}
     {% block modalBody %}            
-
          <!--<div class="alert alert -info">
             <i class="icon-trash icon-2x"></i>
             <span>Text here - disadvantages in deleting media</span>
@@ -10,9 +9,11 @@
             This media will be also deleted in following clinics:
         </p>
         <ul class="clinic-list"></ul>
-        
+    {% endblock %}
+    
+    {% block modalFooter %}
         <div class="align-right">
-            <a href="#" onclick="$('#delete-media').modal('hide')" class="btn">Cancel</a> &nbsp;
+            <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
             <button id="confirm-delete-media-btn" class="btn btn-danger" type="button"><i class="icon-trash"></i>Confirm Delete</button>
         </div>
     {% endblock %}
@@ -44,11 +45,10 @@ $(function(){
         var params = {mediaId: mediaId};
         deleteBtn = $(this).attr('disabled', 'disabled').text('Deleting...');
         $.post("{{ path('institution_mediaGallery_delete', {institutionId: institution.id}) }}", params, function(response){
-        	console.log(response);
             if(response) {
             	deleteBtn.removeAttr('disabled').text('Confirm Delete');
             	$('#delete-media').modal('hide');
-                $('#media-item-' + params.mediaId).fadeOut(1000, function(){$(this).remove()});
+                $('#media-item-' + params.mediaId).fadeOut(1000, function(){$(this).remove();HCA.alertMessage('success', response.message);});
             }
         });
     });

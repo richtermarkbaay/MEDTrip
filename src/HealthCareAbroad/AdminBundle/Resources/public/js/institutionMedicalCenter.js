@@ -182,7 +182,7 @@ var InstitutionMedicalCenter = {
             type: 'POST',
             success: function(response){
             	$('#doctor_id_'+response.id).remove();
-            	$('#dialog-container').dialog("close");
+            	$('#_specialistModal').modal('hide');
             	
             }
          });
@@ -228,10 +228,15 @@ var InstitutionMedicalCenter = {
     	_href = _linkElement.attr('href');
     	_modal = $(_linkElement.attr('data-modalId'));
     	_ancillaryServicesTable = $(_linkElement.attr('data-tableId'));
+    	_modalBtn = $(_linkElement.attr('data-modalBtnId'));
+    	_modalBtn.removeAttr('disabled');
     	$.ajax({
             type: 'POST',
             url: _href,
             success: function(response) {
+            	if(response.count == 0) {
+            		_modalBtn.attr('disabled', true);
+            	}
             	_ancillaryServicesTable.find('tbody').remove();
             	_ancillaryServicesTable.find('thead').after($(response.html));
             	_modal.modal('show');

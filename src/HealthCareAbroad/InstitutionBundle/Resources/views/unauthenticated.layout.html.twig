@@ -3,6 +3,7 @@
 {% set include_zendesk = true %}
 
 {% block body %}
+    {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
     <div id="main-wrap">
         <header id="header">
             <div class="container">
@@ -10,8 +11,7 @@
                     <div class="span4">
                         <a href="{{ path('frontend_main_homepage') }}" target="_blank"><img src="{{ asset('images/institution/healthcareabroad-logo.png') }}" alt="Health Care Abroad Logo"></a>
                     </div>
-                    {#
-                    {% if 'institution_login' != app.request.attributes.get('_route') %}
+                    {% if 'institution_login' != app.request.attributes.get('_route') and 'institution_signUp' == app.request.attributes.get('_route') %}
                     <div class="navbar pull-right">
                         <ul class="nav">
                             <li>
@@ -20,7 +20,6 @@
                         </ul>
                     </div>
                     {% endif %}
-                    #}
                 </div>
             </div>
         </header>

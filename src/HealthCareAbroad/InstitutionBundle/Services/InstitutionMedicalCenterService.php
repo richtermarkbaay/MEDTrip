@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\InstitutionBundle;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
@@ -341,14 +343,27 @@ class InstitutionMedicalCenterService
         return $globalAwards;
     }
 
-    public function getActiveMedicalCenters(Institution $institution)
+    public function getActiveMedicalCentersByInstitution(Institution $institution)
     {
-
          $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getActiveInstitutionMedicalCenters($institution);
 
          return $result;
     }
-
+    
+    public function getApprovedMedicalCenters()
+    {
+        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('status' => InstitutionMedicalCenterStatus::APPROVED));
+    
+        return $result;
+    }
+    
+    public function getApprovedMedicalCentersByFiltersAndInstitutionSearchName($params)
+    {
+        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getApprovedInstitutionMedicalCentersByFiltersAndInstitutionSearchName($params);
+        
+        return $result;
+    }
+    
     public function getAvailableTreatmentsByInstitutionSpecialization(InstitutionSpecialization $institutionSpecialization)
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')
@@ -518,15 +533,20 @@ class InstitutionMedicalCenterService
        $specializationIds = array();
        $subQuery = '';
         foreach ($specializationsWithTreatments as $specializationId => $treatmentIds) {
+
+            if(!isset($treatmentIds['treatments']) || empty($treatmentIds['treatments'])) {
+                continue;
+            }
+
             $specialization = $specializationRepo->find($specializationId);
             
             $subQuery .= "('".$specialization->getDescription()."', 1, ".$specialization->getId().", ".$institutionMedicalCenter->getId()."),";
-            
-            $institutionTreatmentIds[$specializationId] = $treatmentIds;
+
+            $institutionTreatmentIds[$specializationId] = $treatmentIds['treatments'];
             $specializationIds[] = $specializationId;
             
         }
-        
+
         $conn = $this->doctrine->getEntityManager()->getConnection();
         $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE status = 1";
         $sqlQuery = "INSERT INTO institution_specializations (description, status, specialization_id, institution_medical_center_id) VALUES $subQuery";
@@ -535,18 +555,23 @@ class InstitutionMedicalCenterService
         $sqlQuery ="SELECT id, specialization_id from institution_specializations where institution_medical_center_id = " . 
                 $institutionMedicalCenter->getId() . " and specialization_id in ( " . implode(',', $specializationIds). ")";
         $result = $conn->executeQuery($sqlQuery);
-        
         $subQuery = '';
+        $resultIds =array();
+    
         foreach($result as $each) {
             $treatmentIds = $institutionTreatmentIds[$each['specialization_id']];
-            foreach ($treatmentIds as $treatmentId) {
-                $subQuery .= "(". $each['id'].", ". $treatmentId ."),";
-            }
+                foreach ($treatmentIds as $treatmentId) {
+                    $subQuery .= "(". $each['id'].", ". $treatmentId ."),";
+                }
+            $resultIds[] = $each['id'];
         }
         $subQuery = substr($subQuery, 0 , -1) . " ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
         $sqlQuery = "INSERT INTO institution_treatments (institution_specialization_id, treatment_id) VALUES $subQuery";
         $conn->executeQuery($sqlQuery);
         $conn->close();
+        
+
+        return $resultIds;
     }
     
     

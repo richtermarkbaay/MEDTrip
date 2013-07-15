@@ -1,3 +1,11 @@
+admin_institution_medicalCenter_addSpecialization:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/add-specialization
+    defaults: { _controller: AdminBundle:InstitutionSpecialization:addSpecialization }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
 admin_institution_medicalCenter_ajaxRemoveSpecializationTreatment:
     pattern:  /admin/institution/{institutionId}/institutionSpecialization/{isId}/ajaxRemoveSpecializationTreatment/{tId}
     defaults: { _controller: AdminBundle:InstitutionSpecialization:ajaxRemoveSpecializationTreatment }

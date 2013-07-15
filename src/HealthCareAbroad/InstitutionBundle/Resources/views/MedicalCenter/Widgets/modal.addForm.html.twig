@@ -1,0 +1,54 @@
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'add-new-center', 'title': 'Add New Clinic ' , 'class':'hca-doctors-modal'}} %}
+    {% block modalBody %}
+        <form id="addNewMedicalCenterForm" action="{{ path('institution_medicalCenter_add') }}" >
+           <section class="section institution-info">
+                <h4> Basic Information
+                    <br>  <small> Basic information about the Clinic you are adding. </small>
+                </h4>
+                <div class="row-fluid hca-clinic-modal">
+                    <div class="span12">
+                        <div class="name control-group">   
+                            <label for="{{ institutionMedicalCenterForm.children.name.vars.id }}"> Name of the Clinic </label>
+                             {{ form_widget(institutionMedicalCenterForm.name, { 'attr': {class: 'span7 tooltip-wrap2'} })  }}
+                            <div class="tooltip-content2">
+                                This is the name that will show up in search results. Make sure it's descriptive enough to set you apart! If your clinic's name is simply the department in 
+                                a hospital add the hospital to the end of the name. For example, 'The Cardiology Center at Sacred Heart Hospital'.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="section contact-info">
+                <h4> Clinic Contact Details&nbsp;
+                   {# <a href="#"><i class="icon-info-sign"> </i></a> <br> #}
+                    <small> These are your Clinic's contact details. Please be as specific as possible. </small>
+                </h4>
+                <div class="row-fluid hca-clinic-modal">
+                    <div class="contactEmail control-group">
+                        <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}">
+                            {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
+                        </label>
+                            {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span8'} } )}}
+                    </div>
+                    <div class="control-group hca-contact-number">
+                        {% for _widget in institutionMedicalCenterForm.contactDetails %}
+                                {{ form_widget(_widget) }}
+                        {% endfor %}
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="aside-box info dashboard-side">
+                    <i class="icon-info-sign icon-2x pull-left">  </i>
+                    NOTE: If you would like to update anything on your listing, you can log in anytime to your <b>  HealthcareAbroad </b> account. Please note that edits are subject to review and approval.
+                </div>
+            </section>
+            {{ form_widget(institutionMedicalCenterForm._token) }}
+         </form>
+    {% endblock %}
+    {% block modalFooter %}
+        <button class="btn btn-large btn-link" data-dismiss="modal" aria-hidden="true">Cancel</button>
+        <a class="btn pull-right btn-primary btn-large" onclick="InstitutionMedicalCenter.submitAddNewMedicalCenter($(this))"> Save and Continue  </a>
+       
+    {% endblock %}
+{% endembed %}

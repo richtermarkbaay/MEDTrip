@@ -1,0 +1,16 @@
+{% embed 'AdminBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
+    {% block modalBody %}
+        <table id="ancillaryServiceTable" class="table table-striped table-bordered specialist_table">
+            <thead>
+                <tr>
+        		    <th>Ancillary Services</th>
+        		</tr>
+            </thead>
+            
+        </table>
+    {% endblock %}
+    {% block footerBody %}
+        <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+        <button data-divId="#ancilliaryServices" data-path="{{ path('admin_institution_medicalCenter_portAncillaryService', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}" data-modalId="#institution_ancillaryServices_modal_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.portInstitutionAncillaryServices(this); return false;" id="_btnInstitutionAncillaryServices" class="btn btn-primary submit-button">Submit</button>
+    {% endblock %}
+{% endembed %}

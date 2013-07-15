@@ -36,42 +36,6 @@ admin_global_award_updateStatus:
     requirements:
         id: \d+
 
-admin_institution_medicalCenter_ajaxAddGlobalAward:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
-    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxAddGlobalAward, imcId: ~}
-    requirements:
-        _method: POST
-        institutionId: \d+
-        imcId: \d+
-
-admin_institution_medicalCenter_ajaxRemoveGlobalAward:
-    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
-    defaults: { _controller: AdminBundle:InstitutionTreatments:ajaxRemoveGlobalAward }
-    requirements:
-        _method: GET|POST
-        institutionId: \d+
-        imcId: \d+
-        
-admin_institution_ajaxAddGlobalAward:
-    pattern: /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxAdd
-    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddGlobalAward, imcId: ~}
-    requirements:
-        _method: POST
-        institutionId: \d+
-
-admin_institution_ajaxRemoveGlobalAward:
-    pattern:  /admin/institution/{institutionId}/medical-center/awards-certificates-and-affiliations/ajaxRemove
-    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxRemoveGlobalAward }
-    requirements:
-        _method: GET|POST
-        institutionId: \d+
-       
-admin_institution_ajaxEditGlobalAward:
-    pattern: /admin/institution/{institutionId}/awards-certificates-and-affiliations/ajaxEdit
-    defaults: { _controller: AdminBundle:InstitutionProperties:ajaxEditGlobalAward}
-    requirements:
-        _method: POST 
-       
 # institutionId is included in request parameters since this is an unsecured request
 admin_ajaxGlobalAwardSource:
     pattern: /ns-admin/{institutionId}/awards-certificates-and-affiliations/search

@@ -90,6 +90,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         status:
             type: smallint
             nullabe: false
+        payingClient:
+            type: smallint
+            nullable: false
+            column: paying_client    
         rankingPoints:
             type: integer
             nullable: true

@@ -74,8 +74,8 @@ class InstitutionKernelEventListener
         $request = $event->getRequest();
         $session = $request->getSession();
         $matchedRoute = $request->get('_route');
-        if ($request->isXmlHttpRequest() || !\preg_match('/^institution/', $matchedRoute)) {
-            // not a client admin route
+
+        if (!\preg_match('/^\/institution/', $request->getPathInfo())) {
             return false;
         }
 
@@ -83,7 +83,7 @@ class InstitutionKernelEventListener
         if ($matchedRoute == 'institution_login' || in_array($matchedRoute, $this->_getAllowedSignupRoutes())) {
             return;
         }
-
+        
         // validate sign up flow status if it's not complete yet
         if (SignUpService::COMPLETED_SIGNUP_FLOW_STATUS != $session->get('institutionSignupStepStatus') ) {
             $response = $this->validateSignUpStatus($session, $matchedRoute);
@@ -133,6 +133,6 @@ class InstitutionKernelEventListener
     
     private function _getAllowedSignupRoutes() {
 
-        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor', 'institution_signup_finish');
+        return array('institution_medicalCenter_ajaxUpdateDoctor', 'institution_medicalCenter_removeDoctor', 'institution_signup_finish', 'institution_medicalCenter_addExistingDoctor');
     }
 }

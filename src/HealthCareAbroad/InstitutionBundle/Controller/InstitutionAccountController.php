@@ -117,10 +117,13 @@ class InstitutionAccountController extends InstitutionAwareController
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-        
+
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE)); 
+
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
+        
+        //var_dump($this->institutionMedicalCenter->getId()); exit;
         
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
@@ -163,13 +166,12 @@ class InstitutionAccountController extends InstitutionAwareController
         } else {
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $params =  array(
-                'institution' => $this->institution,
                 'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                 'institutionForm' => $form->createView(),
-                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
                 'currentGlobalAwards' => $currentGlobalAwards,
                 'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr)
+                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
             );
         }
 
@@ -191,10 +193,11 @@ class InstitutionAccountController extends InstitutionAwareController
         $output = array();
         if ($request->isMethod('POST')) {
             try {
+                $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
+                
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-                $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
                 $formRequestData = $request->get($form->getName());
@@ -238,10 +241,10 @@ class InstitutionAccountController extends InstitutionAwareController
                     $output['institution'] = array();
                     foreach ($formVariables as $key => $v){
                         if($key == 'services'){
-                            
-                            $html = $this->renderView('InstitutionBundle:Widgets:tabbedContent.institutionServices.html.twig', array(
-                                            'institution' => $this->institution,
-                                            'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+
+                            $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
+                                'institution' => $this->institution,
+                                'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
                             ));
                             
                             return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
@@ -253,11 +256,11 @@ class InstitutionAccountController extends InstitutionAwareController
                             $globalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
 
                             foreach($globalAwards as $key => $global ) {
-                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', array(
+                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
                                     'institution' => $this->institution,
                                     'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                     'eachAward' => array('list' => $global),
-                                    'label' => $key.'s'
+                                    'type' => $key,
                             ));
                           }
                              

@@ -1,6 +1,6 @@
 {% block simple_contact_detail_widget %}
     {% set _label = form.vars.value.type ? contact_label_type(form.vars.value.type) : null%}
-    
+    {% set _placeHolderText =  _label ? _label : 'Number' %}
     <div class="control-group hca-contact-number">
         {% if _label %}
             {{ form_label(form, _label, {label_attr: {class: 'control-label'}}) }}
@@ -16,14 +16,16 @@
                 {{ form_widget(form.area_code, {attr: {class: 'span12'}}) }}
             </div>
             <div class="span5">
-                <label><small>Phone Number</small></label>
-                {{ form_widget(form.number, {attr: {class: 'span12'}})}}
+                <label><small>{{ _placeHolderText }}</small></label>
+                {{ form_widget(form.number, {attr: {class: 'span12', placeholder: _placeHolderText }})}}
                 
             </div>
+            {% if (contact_detail_type_has_extension(form.vars.value.type))%}
             <div class="span1">
                 <label><small class="hca-extension">Ext.</small></label>
                 {{ form_widget(form.ext, {attr: {class: 'span12', 'maxlength': '3'}})}}
             </div>
+            {% endif %}
 </div>
 {% endblock %}
 

@@ -1,0 +1,40 @@
+{% if eachAward.list is not empty %}
+    <div id="{{ type }}">
+       {# <h4>{{ type|title }}</h4> #}
+        <ul class="single-listing">
+            {% set existingAwards = [] %}
+            {% for property in eachAward.list %}
+                {% if property.value not in existingAwards %}
+                    {% set existingAwards = existingAwards|merge([property.value]) %}
+                    {% set award = property.valueObject %}
+
+                    <li class="hca-highlight _global-award-item" id="_global-award-{{ property.id }}">
+                        <div class="pull-right">
+                            <div class="_view-award-year-container">
+                                <span class="yearAcquired" >{{ property.extraValue }}</span> 
+                                <a href="javascript:void(0)" class="_edit-global-awards" data-award-id="{{ award.id }}" data-property-id="{{ property.id }}" data-value="{{ property.value }}">
+                                    {{ property.extraValue ? '<i class="icon-edit"> </i>' : 'Add Year' }}
+                                </a>
+                            </div>
+                            
+                            <div class="_edit-award-year-container"></div>
+                        </div>
+                        {{ award.name }}
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="alert alert-block">
+        <div class="hca-profile-sublevel">
+            Here you can showcase {{ type | lower }} given to your {{ institutionLabel }}.
+        </div>
+        <p class="hca-helptext">
+            You haven't yet added any {{ type | lower }} for your {{ institutionLabel }}. 
+        </p>
+         <button type="button" class="btn btn-primary edit-awards"  onclick="$('#show-{{ type }}').parent().find('#institution-edit-{{ type }}-btn').click()">
+            <i class="icon-plus"></i> Add Entry
+        </button>
+    </div>   
+{% endif %}

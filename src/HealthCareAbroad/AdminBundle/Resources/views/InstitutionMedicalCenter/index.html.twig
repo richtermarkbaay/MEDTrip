@@ -1,0 +1,112 @@
+{% extends 'AdminBundle::layout.institution.html.twig' %}
+
+{% set centerTerm = getClassLabel('institution_medical_center') %}
+{% set centerLabel = centerTerm.singular | title %}
+{% set centersLabel = centerTerm.plural | title %}
+
+{% block content %}
+    <div class="span9">
+        {% include '::notice.admin.html.twig' %}
+
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: centersLabel,
+                actions:  isSingleCenter ? [] : [{link: path('admin_institution_medicalCenter_add', {institutionId:institution.id}), label: 'Add ' ~ centerLabel, 'icon' : 'icon-plus' }]  
+            }
+        %}
+        
+        {% block sectionContent %}
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+                {% if institutionMedicalCenters is not empty %}
+                <table id="city-list" class="table table-bordered sortable-list">
+                    <tr>
+                       <th width="50" align="center">Paying</a></th>
+                       <th>Clinics</th>
+                       <th>Description</th>
+                       <th>Status</th>
+                       <th>Actions</th>
+                    </tr>
+                    
+                    {% for center in institutionMedicalCenters %}
+                    <tr>
+                        <td style="text-align: center;padding: 0">
+                            <input type="checkbox" value="1" {{ center.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_medicalCenter_updatePayingClient', {institutionId: institution.id, imcId: center.id }) }}">
+                            <div style="display:none">updating...</div>
+                        </td>
+                        <td>{{ center.name }}</td>
+                        <td style="width: 425px";>{{ center.description  | raw  }}</td>
+                        <td>{{ get_medical_center_status_label(center) }}</td>
+                        <td><a href="{{ path('admin_institution_medicalCenter_view', {imcId: center.id, institutionId: institution.id}) }}" target="_blank" class="pull-left view-center" style="font-size:13px;font-weight:normal;">
+                                <i class="icon-share"></i><span>view</span>
+                            </a>
+                            <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: center.id, institutionId: institution.id}) }}" target="_blank" class="pull-left edit-center-description" style="font-size:13px;font-weight:normal">
+                                <i class="icon-edit"></i> <span>edit</span>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            
+                
+                </table>
+                {% else %}
+                        <div class="alert alert-block"> {{ institution.name }} has no {{ centersLabel }} yet. </div>
+                {% endif %}
+         {% if pager.isPaginable %}
+         {{ paginate(pager, 'admin_institution_medicalCenter_index', app.request.query.all | merge(app.request.get('_route_params')) ) }}
+        {% endif %}
+        {% endblock %} 
+
+        {% endembed %}
+    </div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script src="{{ asset('bundles/admin/js/viewMedicalCenterManager.js') }}"></script>
+<script type="text/javascript">
+    $(function(){
+        $(".collapse").collapse();
+        
+       $('input.update-paying-client').change(function(){
+            msgElem = $(this).next().html('updating...').show(); 
+            var params = {
+                payingClient: $(this).prop('checked') ? '1' : '0' 
+            };
+
+            $.post($(this).attr('data-update-url'), params, function(response){
+            	msgElem.html('done!');
+            	setTimeout(function(){
+            		msgElem.fadeOut();
+                }, 1000);
+            });
+        });
+       
+        $('.edit-center-name').click(function(){
+            if($(this).next().is(':visible')) {
+            	$(this).find('i').attr('class', 'icon-ok');
+            	$(this).find('span').html('save')
+                $(this).next().hide().siblings('input').show();
+        
+            } else {
+                var url = $(this).attr('href');
+                var param = { name: $(this).siblings('input').val() };
+
+            	$.post(url, param, function(result){}, 'json');
+
+            	$(this).find('i').attr('class', 'icon-edit');
+            	$(this).find('span').html('edit')
+                $(this).next().html(param.name).show().siblings('input').hide();
+
+            	$("#centersAccordion").accordion("enable");
+            }
+
+            return false;
+        }).siblings('input').click(function(){
+			$('#centersAccordion').accordion("disable").removeClass('ui-state-disabled'); 
+			$(this).parent().removeClass('ui-state-disabled'); 
+		});
+
+    });
+
+</script>
+{% endblock %}

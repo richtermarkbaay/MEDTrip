@@ -16,6 +16,7 @@ class InstitutionGlobalAwardFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         // in the future, we may need a customizable field type for extraValue of global award, since, in the future, this may not be limited to acquired date
+        /*
         $builder->add('extraValueAutocomplete', 'text', array(
             'label' => 'Date acquired/awarded',
             'virtual' => true,
@@ -23,8 +24,9 @@ class InstitutionGlobalAwardFormType extends AbstractType
                 'class' => 'pull-left',
                 'placeholder' => 'e.g 2013, 2012, 2011'
             )
-        ));
-        $builder->add('extraValue', 'institution_global_award_extra_value', array('virtual' => false, 'attr' => array('class' => 'extraValueAutocomplete_json')));
+        ));*/
+
+        $builder->add('extraValue', 'text', array('virtual' => false, 'attr' => array('style' => 'display:inline-block;width: 130px; padding: 0 5px')));
         $builder->add('value', 'hidden', array('virtual' => false, 'attr' => array('class' => 'globalAwardId')));
     }
     

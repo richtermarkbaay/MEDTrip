@@ -1,0 +1,98 @@
+admin_institution_medicalCenter_index:
+    pattern:  /admin/institution/{institutionId}/medical-centers
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:index }
+    requirements:
+         institutionId: \d+
+         _method: GET
+         
+admin_institution_medicalCenter_view:
+    pattern:  /admin/institution/{institutionId}/medical-center/view/{imcId}
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:view, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
+admin_institution_medicalCenter_updateStatus:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/edit-status
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:editStatus }
+    requirements:
+        _method: POST|GET
+        
+admin_institution_medicalCenter_edit:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/edit
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:edit }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
+admin_institution_medicalCenter_add:
+    pattern:  /admin/institution/{institutionId}/medical-center/add
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:add, imcId: ~ }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+
+admin_institution_medicalCenter_loadMedicalSpecialist:
+    pattern: /ns-admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/load
+    defaults: {_controller: AdminBundle:InstitutionMedicalCenter:loadMedicalSpecialist}
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+        
+admin_institution_medicalCenter_ajaxRemoveMedicalSpecialist:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveMedicalSpecialist
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:ajaxRemoveMedicalSpecialist}
+    requirements:
+        _method: GET|POST
+        
+admin_institution_medicalCenter_ajaxAddMedicalSpecialist:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/medical-specialists/add
+    defaults: {_controller: AdminBundle:InstitutionMedicalCenter:ajaxAddMedicalSpecialist}
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: GET|POST
+
+admin_institution_medicalCenter_gallery_add:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/gallery/add/{multiUpload}
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:addMedia, multiUpload: 1 }
+    requirements:
+        _method: GET
+        imcId: \d+
+        institutionId: \d+
+
+admin_institution_medicalCenter_logo_upload:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/logo/upload
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:uploadLogo}
+    requirements:
+        _method: POST
+        imageType: \d+
+        imcId: \d+
+        institutionId: \d+
+
+admin_institution_medicalCenter_media_upload:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/media/upload
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:uploadMedia}
+    requirements:
+        _method: POST
+        imcId: \d+
+        institutionId: \d+
+        
+admin_institution_medicalCenter_ajaxAddBusinessHours:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddBusinessHours
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:ajaxAddBusinessHours }
+    requirements:
+        _method: GET|POST
+        
+admin_institution_medicalCenter_updatePayingClient:
+    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxUpdatePayingClient
+    defaults: { _controller: AdminBundle:InstitutionMedicalCenter:ajaxUpdatePayingClient }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        payingClient: \d+
+        _method: POST

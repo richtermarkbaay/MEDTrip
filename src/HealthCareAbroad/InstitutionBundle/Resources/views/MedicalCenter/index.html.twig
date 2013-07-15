@@ -7,7 +7,7 @@
             <a href="#top"><span><i class="icon-chevron-up"></i></span>Top</a>
         </div>
     </div>
-    {% include 'InstitutionBundle:Widgets/Modals:modal.addMedicalCenter.html.twig'  %} <!-- add enw clinic modal form  -->
+    {% include 'InstitutionBundle:MedicalCenter/Widgets:modal.addForm.html.twig'  %} <!-- add enw clinic modal form  -->
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}    
             <h1>
@@ -46,30 +46,30 @@
                    <div class="tab-content" id="medicalCenterListing">
                        {% if (approvedMedicalCenters|length) != 0 %}
                        <div class="tab-pane active" id=all>
-                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: approvedMedicalCenters, centerType: 'Current Listing' } %}
+                            {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: approvedMedicalCenters, centerType: 'Current Listing' } %}
                        </div>
                        {% endif %}
                        {% if (draftMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="draft">
-                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: draftMedicalCenters, centerType: 'Draft' } %}
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: draftMedicalCenters, centerType: 'Draft' } %}
                        </div>
                        {% endif %}
                        
                        {% if (pendingMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="pending">
-                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: pendingMedicalCenters, centerType: 'Pending' } %}
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: pendingMedicalCenters, centerType: 'Pending' } %}
                        </div>
                        {% endif %}
                        
                        {% if (expiredMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="expired"> 
-                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: expiredMedicalCenters, centerType: 'Expired' } %}
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: expiredMedicalCenters, centerType: 'Expired' } %}
                        </div>
                        {% endif %}
                        
                        {% if (archivedMedicalCenters|length) != 0 %}
                        <div class="tab-pane" id="archived">
-                       {% include 'InstitutionBundle:MedicalCenter/Widgets:list_clinics.html.twig' with {medicalCenters: archivedMedicalCenters, centerType: 'Archived' } %}
+                           {% include 'InstitutionBundle:MedicalCenter/Widgets:list.html.twig' with {medicalCenters: archivedMedicalCenters, centerType: 'Archived' } %}
                        </div>
                        {% endif %}
                     </div>
@@ -80,15 +80,11 @@
 
 {% endblock %}
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/common.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/InstitutionMedicalCenterTab.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
-        $('.truncatedDescription').truncateByHeight({'visibleRows': 5});
-
         $('#listingTabs a:first').tab('show');
     });
 })(jQuery);

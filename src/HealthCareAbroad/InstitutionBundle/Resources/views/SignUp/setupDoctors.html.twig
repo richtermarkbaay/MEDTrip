@@ -10,12 +10,12 @@
             <section class="row-fluid" style="margin-bottom: 12px;">
                 <h2>
                     List of Doctors 
-                    <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary btn-large pull-right" data-toggle="modal">Add New Doctor</a>
+                    <a id="addDoctorButton" href="#add-doctor" class="btn btn-primary btn-large pull-right" data-toggle="modal"><i class="icon-plus"></i> Add New Doctor</a>
                 </h2>
                 
             </section>
 
-            {% include 'InstitutionBundle:MedicalCenter/Widgets:doctorsList.html.twig' %}
+            {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' with { addDoctorFormAction: path('institution_signup_setup_doctors', {imcId: institutionMedicalCenter.id }) } %}
 
             <section id="doneSection" style="margin-top: 15px;display: {{ institutionMedicalCenter.doctors|length ? '' : 'none' }}">
                 <a href="{{ path('institution_signup_finish') }}" class="btn pull-right btn-success btn-large">Done Adding Doctors</a>

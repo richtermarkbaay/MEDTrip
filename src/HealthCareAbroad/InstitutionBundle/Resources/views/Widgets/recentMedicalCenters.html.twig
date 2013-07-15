@@ -1,0 +1,72 @@
+{% set centerLabel = getClassLabel('institution_medical_center') %}
+
+{% if isSingleCenter and medicalCenters|length %}
+    {% embed 'HelperBundle:Widgets:section.html.twig' 
+        with { 
+            title: 'Recently Added ' ~ centerLabel.singular|title,  
+        }  
+    %}
+
+        {% block sectionContent %}
+            {% for each in medicalCenters %}
+                <div class="boxcontent">
+                    <span class="pull-left" style="margin-right: 20px;">
+                        <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}">
+                            {% if each.logo %}
+                                {# media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw #}
+                                <img src="{{ institution_media_src(each.logo) }}" alt="" style="width:120px;border: 1px solid #ddd;padding: 3px"/>
+                            {% else %}
+                                <img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/>
+                            {% endif %}
+                        </a>
+                    </span>
+            
+                    <h6>{{ each.name }} </h6>
+                    <p>{{ each.description | raw }}</p>
+            
+                    <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}" class="btn btn-info"><i class="icon-search"></i>View Details</a>
+                </div>
+            {% endfor %}
+            
+            <div style="text-align:right">
+                <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</a>
+            </div>
+        {% endblock  %}
+    
+    {% endembed %}
+{% else %}
+    {% embed 'HelperBundle:Widgets:section.html.twig' 
+        with { 
+            title: 'Recently Added ' ~ centerLabel.singular|title,  
+            actions: [{link: path('admin_institution_medicalCenter_add', { institutionId: institution.id }) , label: 'Add ' ~ centerLabel.singular|title, 'icon' : 'icon-edit' }]
+        }  
+    %}
+        {% block sectionContent %}
+            {% for each in medicalCenters %}
+                <div class="boxcontent">
+                    <span class="pull-left" style="margin-right: 20px;">
+                        <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}">
+                            {% if each.logo %}
+                                {# media(each.logo, institution, 'default', {style: 'width:120px;border: 1px solid #ddd;padding: 3px'}) | raw #}
+                                <img src="{{ institution_media_src(each.logo) }}" alt="" style="width:120px;border: 1px solid #ddd;padding: 3px"/>
+                            {% else %}
+                                <img alt="..." src="{{ asset('images/institution/institution-logo.gif') }}"/>
+                            {% endif %}
+                        </a>
+                    </span>
+            
+                    <h6>{{ each.name }} </h6>
+                    <p>{{ each.description | raw }}</p>
+
+                    <a href="{{ path('admin_institution_medicalCenter_view', {institutionId : institution.id ,imcId : each.id }) }}" class="btn btn-info"><i class="icon-search"></i>View Details</a>
+                </div>
+            {% endfor %}
+            
+            <div style="text-align:right">
+                 <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" class="btn btn-primary"><i class="icon-search"></i>View List of All {{ centerLabel.plural | title }}</a>
+            </div>
+        {% endblock  %}
+    
+    {% endembed %}
+    
+{% endif %}

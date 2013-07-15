@@ -7,16 +7,39 @@ institution_medicalCenter_ajaxRemoveSpecializationTreatment:
         _method: POST
         
 # AJAX
-institution_ajax_loadInstitutionMedicalCenterSpecializationComponents:
-    pattern: /ns-institution/{imcId}/ajax/loadInstitutionMedicalCenterSpecializationComponents
-    defaults: {_controller: InstitutionBundle:Specialization:ajaxLoadMedicalCenterSpecializationComponents}
-    requirements:
-        _method:  GET|POST
-        imcId: \d+
-        isId: \d+
-        
-institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations:
-    pattern: /ns-institution/ajax/loadInstitutionMedicalCenterSpecializations
-    defaults: {_controller: InstitutionBundle:Specialization:ajaxAddSpecialization}
+institution_ajax_loadSpecializationTreatments:
+    pattern: /ns-institution/{imcId}/ajax/load-specialization-treatments/{isId}
+    defaults: {_controller: InstitutionBundle:Specialization:ajaxLoadSpecializationTreatments, isId: ~ }
     requirements:
         _method:  GET
+        specializationId: \d+
+
+institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations:
+    pattern: /ns-institution/ajax/{imcId}/loadInstitutionMedicalCenterSpecializations
+    defaults: {_controller: InstitutionBundle:Specialization:ajaxAddSpecialization}
+    requirements:
+        imcId: \d+
+        _method:  GET
+
+institution_ajaxSaveSpecializations:
+    pattern: /medical-center/{imcId}/ajaxSave/Specializations
+    defaults: { _controller: InstitutionBundle:Specialization:saveSpecializations }
+    requirements:
+        _method: POST
+        imcId: \d+
+        
+institution_medicalCenter_ajaxRemoveSpecialization:
+    pattern: /medical-center/{imcId}/specializations/{isId}/ajaxRemove
+    defaults: { _controller: InstitutionBundle:Specialization:ajaxRemoveSpecialization }
+    requirements:
+        _method: GET|POST
+        imcId: \d+
+        isId: \d+
+
+institution_medicalCenter_ajaxEditSpecialization:
+    pattern: /medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
+    defaults: { _controller: InstitutionBundle:Specialization:ajaxAddInstitutionSpecializationTreatments }
+    requirements:
+        _method: POST
+        imcId: \d+
+        isId: \d+

@@ -136,7 +136,7 @@ var InstitutionMedicalCenter = {
         	editElem.slideUp('slow', function(){
         		InstitutionMedicalCenter.undoChecked(editElem);
         		viewElem.fadeIn();
-            	elem.addClass('btn-misc').removeClass('btn-link').html('Edit');
+            	elem.addClass('btn-misc').removeClass('btn-link').html('<i class="icon-edit"></i> Edit');
             	$('section.hca-main-profile .edit-awards').removeClass('disabled');
         	});
     	}
@@ -284,7 +284,6 @@ var InstitutionMedicalCenter = {
                 },
                 error: function(response) {
                     console.log(response);
-                   
                 }
             });
         }
@@ -382,31 +381,33 @@ var InstitutionMedicalCenter = {
                         break;
     
                     case 'contactForm':
+                    	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
+
                 		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){
-                    		$("#alertDiv").attr('class', 'alert alert-block');
+                    		$("#alertDiv").addClass('alert alert-block');
                     	}else{
-                    		$("#alertDiv").attr('class', '');
+                    		$("#alertDiv").removeClass('alert alert-block');
                     	}
                     	
                        	if(response.institutionMedicalCenter.websites){
-                    		$('#profileWebsitesText').html(' http://www.'+ response.institutionMedicalCenter.websites);
+                    		$('#profileWebsitesText').html('<b>http://'+ response.institutionMedicalCenter.websites +'</b>');
                     	}else{
-                    		$('#profileWebsitesText').html('<b> no website </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>');
+                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'clinic website'));
                     	}
                        	
                      	if(response.institutionMedicalCenter.contactEmail){
-                     		$('#profileEmailText').html(response.institutionMedicalCenter.contactEmail);
+                     		$('#profileEmailText').html('<b>'+response.institutionMedicalCenter.contactEmail+'</b>');
                     	}else{
-                    		$('#profileEmailText').html('<b> no contact email </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Contact Email</a>');
+                    		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
                      	
                     	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
-                     		$('#PhoneNumberText').html(response.institutionMedicalCenter.contactDetails.phoneNumber);
+                     		$('#PhoneNumberText').html('<b>'+response.institutionMedicalCenter.contactDetails.phoneNumber+'</b>');
                     	}else{
-                    		$('#PhoneNumberText').html('<b> no phone number </b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>');
+                    		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
                     	}
-                    	
                         break;
+
                     case 'socicalMediaSitesForm':
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
                     	$.each(websites, function(type) {
@@ -423,12 +424,15 @@ var InstitutionMedicalCenter = {
                   	break;
                        
                     case 'servicesForm':
-                    	$('#serviceTable').html(response.html);
+                    	$('#servicesTable').html(response.html);
                     	break;
                     case 'awardsForm':
-                		$("div[id^='show-']").animate({
-                		    opacity: 1,
-                		 });
+
+                		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
+                		$('#_edit-award-form-container').html($('#_edit-award-form'));
+                		/* End of NOTE: DO NOT REMOVE this line */
+
+                		$("div[id^='show-']").animate({opacity: 1});
                     	 $.each(response.html, function(key, htmlContent){
                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
                     		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
@@ -441,34 +445,29 @@ var InstitutionMedicalCenter = {
                     case 'businessHoursForm':
                         InstitutionMedicalCenter.displayBusinessHoursView();
                         break;
-                } 
+                }
+
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
+                
                 // Display Callout Message
-//                InstitutionMedicalCenter.displayCallout(response);
+
+                HCA.alertMessage('success', 'Clinic Profile has been updated!');
             },
+
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
+
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        var _errorString = "We need you to correct some of your input. Please check the fields in red.";
                         $.each(errors, function(key, item){
-                        	if(item.field){
-	                        	_parent.find('div.'+item.field).addClass('error');
-	                        	if(item.field == 'country' || item.field == 'city'){
-	                        		$('<ul class="errorText"><li>'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > div'));
-	                        	}else{
-	                        		$('<ul><li class="errorText">'+item.error+'</li></ul>').insertAfter(_parent.find('div.'+item.field+' > input'));
-	                        	}
-                        	}
+                        	$('.control-group.ajax-field'+item.field).addClass('error');
+                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
-                    else{
-                    	var _errorString = errors.error;
-                	}
-                    _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-                	_parent.find('.alert-box').addClass('alert alert-error').html(_errorString);
+
+                	HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
                 }
             }
         });
@@ -510,21 +509,22 @@ var InstitutionMedicalCenter = {
     
     // this function is closely coupled to element structure in client admin
     //
-    submitRemoveSpecializationForm: function(_formElement) {
-        _button = _formElement.find('button.delete-button');
-        _currentHtml = _button.html();
-        _button.attr('disabled', true)
-            .html('Processing...');
+    submitRemoveSpecializationForm: function(elem) {
+        currentHtml = elem.html();
+        elem.attr('disabled', true).html('Processing...');
+        deleteFormElem = $('#_delete-specialization-form-' + elem.data('specialization-id'));
+
         $.ajax({
-            url: _formElement.attr('action'),
-            data: _formElement.serialize(),
+            url: deleteFormElem.attr('action'),
+            data: deleteFormElem.serialize(),
             type: 'POST',
             success: function(response){
             	$('#specialization_list_block').children('div').removeClass('disabled');
-                _formElement.parents('div.modal').modal('hide');
+            	elem.parents('.modal:first').modal('hide');
                 $('#specialization_'+response.id).remove();
-                InstitutionMedicalCenter.displayAlert('You have successfully remove specialization' , 'success');
                 $('#new_specializationButton').removeAttr('disabled');
+
+                HCA.alertMessage('success', 'You have successfully remove specialization');
             }
          });
     },
@@ -625,17 +625,7 @@ var InstitutionMedicalCenter = {
 
         $('#featured').hide().fadeIn(2000);
     },
-    
-    /**
-     * DISPLAY alerts after success submission
-     */
-    displayAlert: function(message, status) {
-    	_confirmMessageElem = $('#confirmation-message');
-    	_confirmMessageElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
-    	_confirmMessageElem.find('.confirmation-box').html('<div class="alert alert-'+status+'"><p>' + message + '.</p></div>');
-    	_confirmMessageElem.show();
-    	setTimeout(function() {_confirmMessageElem.fadeOut("slow")}, 5000);
-    }
+
 }; // end InstitutionMedicalCenter
 
 InstitutionMedicalCenter.displayBusinessHoursView = function(){

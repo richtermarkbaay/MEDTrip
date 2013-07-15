@@ -1,0 +1,50 @@
+<section class="section media-upload">
+    <h2>
+        Logo and Cover Photo
+        <small>
+            (Optional)
+        </small>
+    </h2>
+    <h4>
+        Having a logo and cover photo is important, but don't worry if you don't have the images now, you can always add them later.
+    </h4>
+    <div class="row-fluid">
+        <div class="span12">
+            <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+                {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
+                <div class="span6">
+                    <div class="media">
+                        {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://dummyimage.com/96x96/cccccc/fff.png&text=Image+Logo' %}  
+                        <img id="institutionLogo" src="{{ logoImage }}" class="pull-left">
+                        
+                        <div class="media-body">
+                            <p>Your logo should be at least 135 x 135 pixels.</p>
+                            <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Logo</button>
+                            {#{ form_widget(form.logo) }#}
+                            <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
+                            <input name="logoSize" type="hidden" value="small">
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+                <div class="span6 divider">
+                    <div class="media">
+                        {% set featuredImage = form.vars.value.featuredMedia ? institution_media_src(form.vars.value.featuredMedia, imageSize) : 'http://dummyimage.com/96x96/cccccc/fff.png&text=Cover+Photo' %}  
+                        <img id="institutionFeaturedImage" src="{{ featuredImage }}" class="pull-left">
+        
+                        <div class="media-body">
+                        
+                            <p>Your cover photo should be at least 950 x 420 pixels.</p>
+                            <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Cover Photo</button>
+                            {#{ form_widget(form.featuredMedia) }#}
+                            <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
+                            <input type="hidden" name="logoSize" value="small">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

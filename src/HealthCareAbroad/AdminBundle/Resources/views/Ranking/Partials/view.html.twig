@@ -1,0 +1,47 @@
+{% spaceless %}
+{% set sortBy = app.request.get('sortBy') %}
+    {% set sortOrder = app.request.get('sortOrder') %}
+    {% set default = sortBy | length ? '' : 'sort-asc' %}
+    <fieldset>
+    <legend>Increment/Decrement ranking points</legend>
+    <div>
+        <table class="table table-bordered sortable-list">
+            <tr>
+                <th id="column-name" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                {% if isInstitution is defined %}
+                    <th id="column-totalClinicRankingPoints" ><a href="{{ app.request.uri }}" class="{{ sortBy == 'totalClinicRankingPoints' ? 'sort-' ~ sortOrder : default }}">Rank</a></th>
+                {% else %}
+                    <th id="column-rankingPoints" ><a href="{{ app.request.uri }}" class="{{ sortBy == 'rankingPoints' ? 'sort-' ~ sortOrder : default }}">Rank</a></th>
+                {% endif %}
+                
+                <th width="180">Actions</th>
+            </tr>
+
+            {% if isInstitution is defined and institutions is not empty %}
+                {% for institution in institutions %}
+                <tr>
+                    <td>{{ institution.name  }}</td>
+                    <td id="_rankRowId{{ institution.id }}" >{{ institution.totalClinicRankingPoints ? institution.totalClinicRankingPoints : 0  }}</td>
+                    <td>
+                        <a href="{{ path( 'admin_ranking_instituion_updateRanking', { 'id': institution.id, 'type': 'inc' }) }}" title="" data-rankRowId="#_rankRowId{{ institution.id }}" class="icon-plus _rankingPtsTrigger"> Ranking Pts</a><br/>
+                        <a href="{{ path( 'admin_ranking_instituion_updateRanking', { 'id': institution.id, 'type': 'dec' }) }}" title="" data-rankRowId="#_rankRowId{{ institution.id }}" class="icon-minus _rankingPtsTrigger"> Ranking Pts</a>
+                    </td>
+                </tr>
+                {% endfor %}         
+            {% else %}
+                {% for center in centers %}
+                <tr>
+                    <td>{{ center.name  }}</td>
+                    <td id="_rankRowId{{ center.id }}" >{{ center.rankingPoints ? center.rankingPoints : 0   }}</td>
+                    <td>
+                        <a href="{{ path( 'admin_ranking_imc_updateRanking', { 'id': center.id , 'type': 'inc' }) }}" title="" data-rankRowId="#_rankRowId{{ center.id }}" class="icon-plus _rankingPtsTrigger"> Ranking Pts</a><br/>
+                        <a href="{{ path( 'admin_ranking_imc_updateRanking', { 'id': center.id , 'type': 'dec' }) }}" title="" data-rankRowId="#_rankRowId{{ center.id }}" class="icon-minus _rankingPtsTrigger"> Ranking Pts</a>
+                    </td>
+                </tr>
+                {% endfor %} 
+            {% endif %}
+       </table>
+    </div>
+    
+	</fieldset>
+{% endspaceless %}

@@ -1,11 +1,37 @@
-parameters:
-#    mailer.example.class: HealthCareAbroad\MailerBundle\Example
-
 services:
     services.mailer.message:
         class: HealthCareAbroad\MailerBundle\Services\MessageService
         arguments: [@service_container]
-        
+
     services.mailer.queue:
         class: HealthCareAbroad\MailerBundle\Services\MailerQueue
         arguments: [@service_container]
+
+    # this is a mailer that will always use memory spool regardless of the
+    # swiftmail spool configuration (? looks like this behavior has changed -
+    # we need to enable spool to get a reference to swiftmailer.transport.real)
+    # can't seem to make this work in staging
+    #services.mailer.instant:
+    #    class: %swiftmailer.class%
+    #    arguments: [@?swiftmailer.transport.real]
+
+    # TODO: create an abstract service to extend from
+    # Logger should be removed in prod env
+    services.mailer.notifications.twig:
+        class: HealthCareAbroad\MailerBundle\Services\TwigMailer
+        arguments:
+            #- @services.mailer.instant
+            #- @mailer
+            #- @router
+            - @twig
+            #- %mailer.templates%
+            - @logger
+
+    # UNTESTED/UNUSED
+#    services.mailer.notifications.plain_text:
+#        class: HealthCareAbroad\MailerBundle\Services\PlainTextMailer
+#        arguments:
+#            - @services.mailer.instant
+#            - @router
+#            - @templating
+#            - %mailer.templates%

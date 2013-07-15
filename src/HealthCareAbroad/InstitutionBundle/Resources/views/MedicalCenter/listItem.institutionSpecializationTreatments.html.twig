@@ -1,9 +1,9 @@
 <div class="specializations-profile-listing" id="specialization_{{each.id}}" >
     <div class="specializations-heading hca-clinic-specialization-item">
-    	<a data-target="#deleteSpecialization{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
+    	<a data-target="#_delete-specialization-modal-{{ each.id }}" data-id="{{ each.id }}" onclick="InstitutionMedicalCenter.showCommonSpecializationModal(this); return false;" role="button" title="" href="#">
             <i class="icon-remove-sign pull-right"></i>
         </a>
-        <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;">
+        <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;" data-load-url="{{ path('institution_ajax_loadSpecializationTreatments', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}">
             <i class="icon-edit pull-right" ></i></a>
         <a data-target="{{ each.specialization.id }}" style="display:none;" id="treatments-save"  href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.submitAddTreatmentsForm($(this));return false;">
             <i class="icon-ok pull-right"></i></a>
@@ -16,14 +16,27 @@
         </span>
         <h4>{{ each.specialization.name }}</h4>
     </div>
-    <div class="hca-hidden-content specializations-profile-listing" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.specialization.id }) }}" >
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_ajax_loadInstitutionMedicalCenterSpecializationComponents', { imcId: institutionMedicalCenter.id, isId: each.id }) }}" method="post"></form>
+    <div class="hca-hidden-content specializations-profile-listing">
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_medicalCenter_ajaxEditSpecialization', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post"></form>
     </div>
 
-</div>   
-<div id="deleteSpecialization{{ each.id }}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-{% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
-    {% include 'InstitutionBundle:Widgets:modal.deleteSpecialization.html.twig' with {
-    'institutionSpecialization' : each }
-%}
 </div>
+
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with { modal: {id: '_delete-specialization-modal-' ~ each.id, title: 'Delete Specialization' }} %}
+    {% block modalBody %}
+        {% set _commonDeleteCsrfTokenWidget = _commonDeleteCsrfTokenWidget is defined ? _commonDeleteCsrfTokenWidget : form_widget(commonDeleteForm._token) %}
+
+        <p>Are you sure you want to delete <strong>{{ each.specialization.name }}?</strong></p>
+
+        <form id="_delete-specialization-form-{{ each.id }}" action="{{ path('institution_medicalCenter_ajaxRemoveSpecialization', {'imcId': institutionMedicalCenter.id, 'isId': each.id } ) }}" style="margin: 0">
+            {{ _commonDeleteCsrfTokenWidget | raw }}
+        </form>
+    {% endblock %}
+    
+    {% block modalFooter %}
+        <div class="align-right">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button> &nbsp;
+    	    <button data-loading-text="Processing..." data-specialization-id="{{ each.id }}" class="btn btn-danger delete-button" type="button" onclick="InstitutionMedicalCenter.submitRemoveSpecializationForm($(this))">Confirm Delete</button>
+	    </div>
+    {% endblock %}
+{% endembed %}

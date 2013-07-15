@@ -470,7 +470,15 @@
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  font-weight: normal;
+  text-transform: capitalize;
   font-family: 'PT Sans'sans-serif; }
+  .btn.btn-top {
+    background: #ff8432;
+    border-color: #ff8432; }
+    .btn.btn-top:hover {
+      background: #ff8432;
+      /* Old browsers */ }
   .btn.btn-primary {
     border-color: #3E74E8;
     background: #7abcff;
@@ -787,7 +795,8 @@ form select {
     box-shadow: inset 0 2px 2px 0 rgba(0, 0, 0, 0.1); }
 
 body {
-  background-color: #eef5ed; }
+  background-color: #eef5ed;
+  color: #555555; }
 
 a {
   color: #468199; }
@@ -823,6 +832,13 @@ hr {
       #confirmation-message .confirmation-box .alert p {
         text-align: center; }
 
+#topnav {
+  padding: 5px 0;
+  color: #a2a2a2;
+  font-size: 13px;
+  font-family: 'PT Sans';
+  text-align: right; }
+
 #header {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 10px 0;
@@ -838,7 +854,6 @@ hr {
       #header .navbar .nav > li {
         position: relative; }
         #header .navbar .nav > li > a {
-          color: #626262;
           padding: 10px 18px 10px 18px;
           font-family: 'PT Sans';
           font-weight: bold;
@@ -900,12 +915,21 @@ hr {
     z-index: 1000; }
     #content section h1 {
       margin: 0; }
+    #content section h4, #content section h5 {
+      color: #6e6e6e; }
+      #content section h4 a, #content section h5 a {
+        font-weight: bold; }
     #content section.section {
       margin-bottom: 2em; }
+      #content section.section p {
+        color: #6e6e6e; }
+        #content section.section p a {
+          font-weight: bold; }
+      #content section.section .btn-small {
+        font-weight: normal !important; }
       #content section.section.institution-contact .row-fluid {
-        padding-bottom: 20px; }
+        padding-bottom: 25px; }
       #content section.section.media-upload h4 {
-        color: #a2a2a2;
         font-weight: normal;
         line-height: 1.40em;
         margin-top: -8px; }
@@ -917,8 +941,6 @@ hr {
           margin-left: -8px; }
       #content section.section.clinic-schedule hr {
         margin: 15px 0; }
-      #content section.section.notifications h5 {
-        color: #959595; }
       #content section.section.section-alert-info {
         margin-bottom: .25em; }
       #content section.section.hca-clinic-heading, #content section.section.hca-doctor-heading {
@@ -932,33 +954,15 @@ hr {
           padding-bottom: 0;
           margin-bottom: 0;
           padding-top: 55px; }
-          #content section.section.hca-clinic-heading h1 a, #content section.section.hca-doctor-heading h1 a {
-            color: #333333; }
-            #content section.section.hca-clinic-heading h1 a:hover, #content section.section.hca-doctor-heading h1 a:hover {
-              color: #fe6500; }
-        #content section.section.hca-clinic-heading h4 a, #content section.section.hca-doctor-heading h4 a {
-          color: #626262; }
-          #content section.section.hca-clinic-heading h4 a:hover, #content section.section.hca-doctor-heading h4 a:hover {
+          #content section.section.hca-clinic-heading h1 a:hover, #content section.section.hca-doctor-heading h1 a:hover {
             color: #fe6500; }
+        #content section.section.hca-clinic-heading h4 a:hover, #content section.section.hca-doctor-heading h4 a:hover {
+          color: #fe6500; }
         #content section.section.hca-clinic-heading h4 small, #content section.section.hca-doctor-heading h4 small {
           margin-right: 3px;
           font-size: 70%; }
       #content section.section.hca-main-profile {
         margin-bottom: 3em; }
-        #content section.section.hca-main-profile .edit-timezone {
-          padding: 15px 20px 2px 20px;
-          background-color: #e1e1e1; }
-          #content section.section.hca-main-profile .edit-timezone .btn {
-            display: block;
-            position: absolute;
-            margin-left: 420px;
-            margin-top: 5px; }
-        #content section.section.hca-main-profile .control-group .clinictime {
-          margin: 0 -20px !important; }
-        #content section.section.hca-main-profile p {
-          color: #6e6e6e; }
-          #content section.section.hca-main-profile p b {
-            color: #5a5a5a; }
         #content section.section.hca-main-profile .social-media {
           padding: 10px 0; }
         #content section.section.hca-main-profile .hca-save-changes {
@@ -968,12 +972,11 @@ hr {
         #content section.section.hca-main-profile h3 {
           border-bottom: 1px solid rgba(0, 0, 0, 0.1);
           padding-bottom: 10px;
-          padding-top: 5px; }
+          padding-top: 5px;
+          font-weight: normal; }
         #content section.section.hca-main-profile .hca-profile-sublevel {
           font-weight: bold;
           color: #6e6e6e; }
-        #content section.section.hca-main-profile .hca-helptext {
-          color: #626262; }
       #content section.section .row-heading {
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         padding-bottom: 50px; }
@@ -1001,20 +1004,6 @@ hr {
           #content section.section .row-fluid .website span {
             margin-top: 10px;
             color: #a2a2a2; }
-        #content section.section .row-fluid .hca-contact-number {
-          margin-left: 0px;
-          margin-bottom: 0px;
-          clear: both; }
-          #content section.section .row-fluid .hca-contact-number .span3 {
-            margin-left: 0; }
-          #content section.section .row-fluid .hca-contact-number label {
-            display: block;
-            margin-bottom: 0; }
-          #content section.section .row-fluid .hca-contact-number span {
-            margin-top: 10px;
-            color: #a2a2a2; }
-          #content section.section .row-fluid .hca-contact-number select {
-            width: 100%; }
         #content section.section .row-fluid .social-media {
           margin-top: -10px;
           margin-bottom: 0px; }
@@ -1027,7 +1016,7 @@ hr {
           #content section.section .row-fluid .social-media span {
             font-family: 'PT Sans';
             margin-right: 3px;
-            color: #a2a2a2;
+            color: #888888;
             display: block;
             margin-top: 10px; }
           #content section.section .row-fluid .social-media label {
@@ -1073,7 +1062,6 @@ hr {
               padding: 15px 20px 18px 20px; }
               #content section.section .row-fluid.hca-edit-box .control-group.hca-edit-control-group p {
                 margin-left: 20px;
-                color: #c8c8c8;
                 padding-top: 18px;
                 margin-bottom: 0;
                 display: block;
@@ -1089,6 +1077,8 @@ hr {
         #content section.section .row-fluid.terms {
           background-color: transparent;
           border: none; }
+          #content section.section .row-fluid.terms label {
+            color: #555555; }
           #content section.section .row-fluid.terms .btn-signup {
             display: block;
             position: absolute;
@@ -1128,8 +1118,7 @@ hr {
   margin-top: 40px;
   background-color: #eef5ed;
   padding: 2em 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  color: #6e6e6e; }
+  border-top: 1px solid rgba(0, 0, 0, 0.1); }
   #footer .copy {
     display: inline-block;
     margin-top: 5px; }
@@ -1140,8 +1129,9 @@ hr {
   margin-bottom: 20px;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
-  border-radius: 5px;
-  opacity: 0.8; }
+  border-radius: 5px; }
+  .aside-box p a {
+    font-weight: bold; }
   .aside-box textarea {
     height: 150px; }
   .aside-box h1, .aside-box h2, .aside-box h3, .aside-box h4, .aside-box h5 {
@@ -1149,12 +1139,6 @@ hr {
     padding-bottom: 14px;
     margin-bottom: 14px;
     font-weight: normal; }
-  .aside-box p {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    margin-bottom: 1em;
-    margin-top: .5em; }
   .aside-box.map {
     margin-top: -15px; }
   .aside-box.info {
@@ -1183,7 +1167,8 @@ hr {
     opacity: 1; }
   .aside-box.get-started {
     margin-top: 93px;
-    border: 1px solid rgba(0, 0, 0, 0.1); }
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    opacity: 0.8; }
   .aside-box .row-fluid {
     background-color: #eeeeee;
     border: 1px solid rgba(0, 0, 0, 0.1); }
@@ -1196,11 +1181,9 @@ hr {
       .aside-box .row-fluid .hca-gallery-upload .span6 {
         text-align: center;
         margin-bottom: 5px; }
-        .aside-box .row-fluid .hca-gallery-upload .span6 a {
-          color: #888888; }
-          .aside-box .row-fluid .hca-gallery-upload .span6 a:hover {
-            text-decoration: none;
-            color: #a2a2a2; }
+        .aside-box .row-fluid .hca-gallery-upload .span6 a:hover {
+          text-decoration: none;
+          color: #a2a2a2; }
         .aside-box .row-fluid .hca-gallery-upload .span6.hca-upload-media {
           text-align: center;
           padding: 5px 0 15px 0; }
@@ -1268,8 +1251,6 @@ hr {
     .aside-box .features .hca-profile-sublevel {
       font-weight: bold;
       color: #414141; }
-    .aside-box .features .hca-helptext {
-      color: #505050; }
     .aside-box .features .btn i {
       color: white;
       margin-right: 5px; }
@@ -1338,9 +1319,8 @@ hr {
     top: 90px;
     background-color: rgba(0, 0, 0, 0.5);
     padding: 10px 10px 5px 10px; }
-    .hca-banner .hca-institution-name .btn-default {
+    .hca-banner .hca-institution-name .btn-misc {
       display: inline-block;
-      font-family: 'PT Sans';
       margin-left: 15px; }
     .hca-banner .hca-institution-name h1 {
       border-bottom: none !important;
@@ -1524,8 +1504,6 @@ ul.hca-notifications, ul.hca-inquiries {
       ul.hca-notifications span.msg-details b, ul.hca-inquiries span.msg-details b {
         display: block;
         font-size: 18px; }
-      ul.hca-notifications span.msg-details p, ul.hca-inquiries span.msg-details p {
-        color: #7b7b7b; }
   ul.hca-notifications li, ul.hca-inquiries li {
     padding: 10px 20px 2px 10px;
     background-color: #f1f1f1;
@@ -1565,19 +1543,17 @@ ul.hca-notifications, ul.hca-inquiries {
     margin: 0 2px; }
   .messages-box b {
     color: #7e7e7e; }
-  .messages-box a {
-    color: #979797; }
-    .messages-box a.active {
-      color: #7399c4;
-      cursor: default; }
-      .messages-box a.active:hover {
-        border-bottom: none; }
-    .messages-box a:hover {
-      text-decoration: none;
-      border-bottom: 1px solid #d4d4d4; }
-    .messages-box a > span {
-      color: #82a4ca;
-      font-weight: normal; }
+  .messages-box a.active {
+    color: #7399c4;
+    cursor: default; }
+    .messages-box a.active:hover {
+      border-bottom: none; }
+  .messages-box a:hover {
+    text-decoration: none;
+    border-bottom: 1px solid #d4d4d4; }
+  .messages-box a > span {
+    color: #82a4ca;
+    font-weight: normal; }
 
 .input-append.hca-clinic-status, .popup-box.hca-clinic-status {
   margin: 0; }
@@ -1633,7 +1609,6 @@ ul.hca-notifications, ul.hca-inquiries {
       border-bottom: 0; }
     .input-append.dropdown-menu li a, .popup-box.dropdown-menu li a {
       display: block;
-      color: #555555;
       word-wrap: break-word;
       white-space: normal; }
       .input-append.dropdown-menu li a:hover, .input-append.dropdown-menu li a:focus, .popup-box.dropdown-menu li a:hover, .popup-box.dropdown-menu li a:focus {
@@ -1716,12 +1691,6 @@ ul.hca-notifications, ul.hca-inquiries {
 .activity-feeds {
   text-align: left;
   padding: 10px !important; }
-  .activity-feeds p {
-    color: #5a5a5a; }
-    .activity-feeds p i {
-      color: #626262; }
-    .activity-feeds p b {
-      color: #2f2f2f; }
   .activity-feeds div {
     margin: 0;
     padding: 0;
@@ -1783,11 +1752,9 @@ ul.hca-notifications, ul.hca-inquiries {
   top: auto;
   background-color: #fff;
   width: 100%; }
-  .specializations-listing-edit a {
-    color: #555555; }
-    .specializations-listing-edit a:hover {
-      color: #555555;
-      text-decoration: none; }
+  .specializations-listing-edit a:hover {
+    color: #555555;
+    text-decoration: none; }
   .specializations-listing-edit h3 {
     color: #7b7b7b; }
   .specializations-listing-edit ul {
@@ -1845,7 +1812,7 @@ ul.hca-notifications, ul.hca-inquiries {
   margin-bottom: 10px;
   width: 100%; }
   .single-listing a {
-    color: #555555; }
+    font-weight: bold; }
     .single-listing a:hover {
       color: #555555;
       text-decoration: none; }
@@ -2233,8 +2200,7 @@ ul.hca-notifications, ul.hca-inquiries {
     text-align: center;
     display: inline-block;
     margin: 20px 0 40px 0;
-    font-size: 18px;
-    color: #626262; }
+    font-size: 18px; }
 
 .hca-yellow {
   color: #ffcc00; }
@@ -2453,7 +2419,7 @@ ul.hca-notifications, ul.hca-inquiries {
   width: 65%; }
 
 .backtotop {
-  margin: 20px 0px 0px 20px;
+  margin: 20px 0px 50px 20px;
   text-transform: uppercase;
   position: fixed;
   bottom: 15px;
@@ -2506,133 +2472,85 @@ ul.hca-notifications, ul.hca-inquiries {
   position: absolute;
   z-index: 1000; }
 
-.hca-hidden-content, .hca-clinic-content, .hca-specialization-content {
+.hca-hidden-content {
   display: none; }
-  .hca-hidden-content.doctors-listing, .hca-clinic-content.doctors-listing, .hca-specialization-content.doctors-listing {
+  .hca-hidden-content.doctors-listing {
     background-color: #aeaeae;
     padding: 20px 20px 5px 20px;
     max-height: 300px;
     border-bottom: 1px solid #aeaeae;
     overflow: auto; }
-    .hca-hidden-content.doctors-listing form, .hca-clinic-content.doctors-listing form, .hca-specialization-content.doctors-listing form {
+    .hca-hidden-content.doctors-listing form {
       background-color: white;
       padding: 10px 5px; }
-    .hca-hidden-content.doctors-listing .row-fluid, .hca-clinic-content.doctors-listing .row-fluid, .hca-specialization-content.doctors-listing .row-fluid {
+    .hca-hidden-content.doctors-listing .row-fluid {
       padding: 5px 10px 0 10px;
       width: 97%; }
-      .hca-hidden-content.doctors-listing .row-fluid textarea, .hca-clinic-content.doctors-listing .row-fluid textarea, .hca-specialization-content.doctors-listing .row-fluid textarea {
+      .hca-hidden-content.doctors-listing .row-fluid textarea {
         height: 150px; }
-      .hca-hidden-content.doctors-listing .row-fluid.hca-upload-file, .hca-clinic-content.doctors-listing .row-fluid.hca-upload-file, .hca-specialization-content.doctors-listing .row-fluid.hca-upload-file {
+      .hca-hidden-content.doctors-listing .row-fluid.hca-upload-file {
         min-height: 600px; }
-      .hca-hidden-content.doctors-listing .row-fluid input.hca-country, .hca-hidden-content.doctors-listing .row-fluid input.hca-city, .hca-clinic-content.doctors-listing .row-fluid input.hca-country, .hca-clinic-content.doctors-listing .row-fluid input.hca-city, .hca-specialization-content.doctors-listing .row-fluid input.hca-country, .hca-specialization-content.doctors-listing .row-fluid input.hca-city {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-country, .hca-hidden-content.doctors-listing .row-fluid input.hca-city {
         width: 200px !important; }
-      .hca-hidden-content.doctors-listing .row-fluid input.hca-suffix, .hca-clinic-content.doctors-listing .row-fluid input.hca-suffix, .hca-specialization-content.doctors-listing .row-fluid input.hca-suffix {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-suffix {
         width: 100px;
         height: 25px; }
-      .hca-hidden-content.doctors-listing .row-fluid input.hca-languages, .hca-clinic-content.doctors-listing .row-fluid input.hca-languages, .hca-specialization-content.doctors-listing .row-fluid input.hca-languages {
+      .hca-hidden-content.doctors-listing .row-fluid input.hca-languages {
         width: 200px;
         height: 25px; }
-      .hca-hidden-content.doctors-listing .row-fluid .dropbox, .hca-clinic-content.doctors-listing .row-fluid .dropbox, .hca-specialization-content.doctors-listing .row-fluid .dropbox {
+      .hca-hidden-content.doctors-listing .row-fluid .dropbox {
         height: 45px;
         background-color: #c8c8c8;
         border: 2px dashed white;
         color: white;
         text-align: center;
         padding: 20px 0 0 0; }
-      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.zipcode, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.zipcode, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
         max-height: 115px;
         width: 268px; }
-      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.location-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.location-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.location-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.location-select {
         max-height: 140px;
         width: 235px;
         margin-left: -213px; }
-      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.languages-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.languages-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
         max-height: 140px;
         width: 234px;
         margin-left: -212px; }
-      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, .hca-clinic-content.doctors-listing .row-fluid .dropdown-menu.suffix-select, .hca-specialization-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
+      .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
         max-height: 70px;
         margin-left: -113px;
         width: 50px; }
-      .hca-hidden-content.doctors-listing .row-fluid form, .hca-clinic-content.doctors-listing .row-fluid form, .hca-specialization-content.doctors-listing .row-fluid form {
+      .hca-hidden-content.doctors-listing .row-fluid form {
         margin-top: 5px;
         margin-bottom: 8px; }
-        .hca-hidden-content.doctors-listing .row-fluid form .row-fluid, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid {
+        .hca-hidden-content.doctors-listing .row-fluid form .row-fluid {
           padding: 0 20px !important;
           width: 92.85%; }
-          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid ul, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid ul, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid ul {
+          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid ul {
             max-height: 150px;
             padding-top: 10px; }
-          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
+          .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li {
             padding: 3px 0 !important; }
-            .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-clinic-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child, .hca-specialization-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
+            .hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
               border-bottom: none; }
-  .hca-hidden-content.specializations-profile-listing, .hca-clinic-content.specializations-profile-listing, .hca-specialization-content.specializations-profile-listing {
+  .hca-hidden-content.specializations-profile-listing {
     background-color: #aeaeae;
     padding: 20px 20px 0px 20px;
     border-bottom: 1px solid white;
     max-height: 200px;
     overflow: auto; }
-    .hca-hidden-content.specializations-profile-listing .specializations-listing, .hca-clinic-content.specializations-profile-listing .specializations-listing, .hca-specialization-content.specializations-profile-listing .specializations-listing {
+    .hca-hidden-content.specializations-profile-listing .specializations-listing {
       max-height: none; }
-    .hca-hidden-content.specializations-profile-listing form, .hca-clinic-content.specializations-profile-listing form, .hca-specialization-content.specializations-profile-listing form {
+    .hca-hidden-content.specializations-profile-listing form {
       background-color: white;
       padding: 10px 5px; }
-      .hca-hidden-content.specializations-profile-listing form label input[type="radio"], .hca-hidden-content.specializations-profile-listing form label input[type="checkbox"], .hca-clinic-content.specializations-profile-listing form label input[type="radio"], .hca-clinic-content.specializations-profile-listing form label input[type="checkbox"], .hca-specialization-content.specializations-profile-listing form label input[type="radio"], .hca-specialization-content.specializations-profile-listing form label input[type="checkbox"] {
+      .hca-hidden-content.specializations-profile-listing form label input[type="radio"], .hca-hidden-content.specializations-profile-listing form label input[type="checkbox"] {
         margin-top: -5px; }
 
 .hca-display-specializations div.edit-specializations {
   display: none; }
 
 .hca-edit-specializations div.show-specializations {
-  display: none; }
-
-.hca-display div.edit {
-  display: none; }
-
-.hca-edit div.show {
-  display: none; }
-
-.hca-display div.edit-address {
-  display: none; }
-
-.hca-edit div.show-address {
-  display: none; }
-
-.hca-display div.edit-contactdetails {
-  display: none; }
-
-.hca-edit div.show-contactdetails {
-  display: none; }
-
-.hca-display div.edit-socialmedia {
-  display: none; }
-
-.hca-edit div.show-socialmedia {
-  display: none; }
-
-.hca-display div.edit-services {
-  display: none; }
-
-.hca-edit div.show-services {
-  display: none; }
-
-.hca-display div.edit-awards {
-  display: none; }
-
-.hca-edit div.show-awards {
-  display: none; }
-
-.hca-display div.edit-clinic-schedule {
-  display: none; }
-
-.hca-edit div.show-clinic-schedule {
-  display: none; }
-
-.hca-display div.edit-specializations {
-  display: none; }
-
-.hca-edit div.show-specializations {
   display: none; }
 
 .hca-logo {
@@ -2654,7 +2572,7 @@ ul.hca-notifications, ul.hca-inquiries {
 
 span.rollover {
   opacity: 1;
-  background: url(../../images/institution/upload-logo.png) center center no-repeat black;
+  background: url(/images/institution/upload-logo.png) center center no-repeat black;
   cursor: pointer;
   height: 85px;
   width: 85px;
@@ -2715,27 +2633,10 @@ span.rollover {
       background-size: 55%;
       width: 25px;
       height: 25px; }
-  .doctors-new-listing .hca-contact-number, .specializations-profile-listing .hca-contact-number {
-    margin-left: 0px;
-    margin-bottom: 0px;
-    clear: both; }
-    .doctors-new-listing .hca-contact-number .span3, .specializations-profile-listing .hca-contact-number .span3 {
-      margin-left: 0; }
-    .doctors-new-listing .hca-contact-number label, .specializations-profile-listing .hca-contact-number label {
-      display: block;
-      margin-bottom: 0; }
-    .doctors-new-listing .hca-contact-number span, .specializations-profile-listing .hca-contact-number span {
-      margin-top: 10px;
-      color: #a2a2a2; }
-    .doctors-new-listing .hca-contact-number input, .specializations-profile-listing .hca-contact-number input {
-      margin-bottom: 10px; }
-    .doctors-new-listing .hca-contact-number select, .specializations-profile-listing .hca-contact-number select {
-      width: 100%; }
   .doctors-new-listing h4, .specializations-profile-listing h4 {
     padding: 2px 0 0 0;
     margin: 0; }
   .doctors-new-listing p, .specializations-profile-listing p {
-    color: #7b7b7b;
     padding: 0 0 25px 0;
     margin: 0; }
     .doctors-new-listing p span, .specializations-profile-listing p span {
@@ -2757,10 +2658,6 @@ span.rollover {
 
 .icon-minus-sign {
   margin-top: 5px; }
-
-a {
-  font-weight: bold;
-  color: black; }
 
 a:hover {
   text-decoration: none; }
@@ -2796,63 +2693,50 @@ ul.two-column > li label {
 .accordion .row-fluid ul.two-column li:last-child {
   border: none; }
 
-/*style-guide*/
-/*main*/
-.main-guide p {
-  color: #555555; }
-.main-guide h2 {
-  font-size: 18px;
-  line-height: 1.75em;
-  color: #35577e;
-  margin-bottom: 20px; }
-  .main-guide h2 small {
-    font-size: 16px; }
+/*for contact form*/
+.hca-contact-number {
+  margin-left: 0px;
+  margin-bottom: 0px;
+  clear: both; }
+  .hca-contact-number .span3 {
+    margin-left: 0; }
+  .hca-contact-number label {
+    display: block;
+    margin-bottom: 0; }
+  .hca-contact-number span {
+    margin-top: 10px;
+    color: #a2a2a2; }
+  .hca-contact-number input {
+    margin-bottom: 10px; }
+  .hca-contact-number select {
+    width: 100%; }
 
-.maincontentguide .row {
-  margin-left: 15px; }
-.maincontentguide h4.desc {
-  color: #888888;
-  font-weight: normal;
-  line-height: 1.5em; }
-.maincontentguide .bg-gray {
-  background-color: #e1e1e1;
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 15px;
-  text-transform: uppercase;
-  color: #888888; }
-.maincontentguide .bg-header {
-  background-color: #f7f7f7;
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 15px;
-  text-transform: uppercase;
-  color: #888888;
-  border-bottom: #dedede 1px solid; }
-.maincontentguide .bg-footer {
-  background-color: #eef5ed;
-  text-align: center;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin-top: 15px;
-  text-transform: uppercase;
-  color: #888888;
-  border-top: #dedede 1px solid; }
-.maincontentguide .icon-2x {
-  margin-right: 5px; }
-.maincontentguide table {
-  color: #6e6e6e; }
-  .maincontentguide table h3 {
-    color: #333333; }
-  .maincontentguide table td {
-    text-transform: capitalize; }
-  .maincontentguide table i {
-    color: #262626; }
-
-.row-fluid .hca-extension {
+.hca-extension {
   font-size: 10px; }
+
+.slidingDiv {
+  background-color: #a6bed9;
+  padding: 20px;
+  color: white; }
+  .slidingDiv input[type="text"], .slidingDiv input[type="password"], .slidingDiv input[type="email"], .slidingDiv select {
+    height: 20px !important; }
+
+.show_hide {
+  display: none; }
+  .show_hide .btn {
+    margin-top: -5px;
+    border-radius: 0px;
+    box-shadow: none; }
+    .show_hide .btn i {
+      background-color: white;
+      padding: 2px 3px;
+      color: #b94a48;
+      border-radius: 4px; }
+    .show_hide .btn.btn-top {
+      background-color: #a6bed9 !important;
+      border-color: #a6bed9 !important;
+      text-transform: uppercase;
+      color: #626262; }
 
 .dropdown-menu li > a:hover, .dropdown-menu li > a:focus, .dropdown-submenu:hover > a {
   background-image: none;
@@ -2922,7 +2806,7 @@ h1, h2, h3, h4, h5 {
   background-color: white;
   margin: 20px 0 20px 10px; }
   .breadcrumb a {
-    color: #626262; }
+    color: #7b7b7b; }
     .breadcrumb a:hover {
       color: #fe6500; }
 
@@ -3121,8 +3005,7 @@ h1, h2, h3, h4, h5 {
     .modal .modal-body.center {
       text-align: center; }
     .modal .modal-body.media-edit p {
-      line-height: 20px;
-      color: #737373; }
+      line-height: 20px; }
     .modal .modal-body.media-edit label {
       margin-top: 20px; }
     .modal .modal-body .tab-content {
@@ -3169,18 +3052,22 @@ h1, h2, h3, h4, h5 {
 
 .custom-select-list {
   font-weight: normal !important;
-  color: black !important; }
+  color: #555555 !important; }
 
 .control-group.error .checkbox, .control-group.error .radio {
-  color: black !important; }
+  color: #555555 !important; }
 
 .control-group.error .checkbox, .control-group.error .radio, .control-group.error input, .control-group.error select, .control-group.error textarea {
-  color: black; }
+  color: #555555; }
 
 .tab-content {
   z-index: 0; }
   .tab-content.clinic-listing {
     padding-bottom: 60px !important; }
+  .tab-content .span9 h1 a, .tab-content .span9 p a {
+    color: #484848; }
+    .tab-content .span9 h1 a:hover, .tab-content .span9 p a:hover {
+      color: #555555 !important; }
 
 .tab-pane {
   margin-top: 2em;
@@ -3407,15 +3294,15 @@ h1, h2, h3, h4, h5 {
     position: relative;
     margin: 0px;
     border-radius: 0; }
+    .thumbnails li.thumbnail .hca-edit {
+      text-transform: uppercase !important; }
     .thumbnails li.thumbnail .btn-group .btn-misc {
       padding: 5px;
       width: 105px; }
     .thumbnails li.thumbnail .btn {
-      text-transform: uppercase;
       font-weight: bold;
       position: relative;
       padding: 5px 0 !important;
-      font-family: 'PT Sans';
       width: 200px; }
       .thumbnails li.thumbnail .btn a {
         color: white; }
@@ -3513,8 +3400,7 @@ h1, h2, h3, h4, h5 {
           display: block;
           position: relative; }
     .thumbnails li div.medicalcenter-name h3, .thumbnails li span.medicalcenter-name h3, .thumbnails li a.medicalcenter-name h3 {
-      margin: 0 0 1px 0;
-      text-shadow: -1px 0px 0 rgba(0, 0, 0, 0.9), 1px 1px 0 rgba(255, 255, 255, 0.8); }
+      margin: 0 0 1px 0; }
     .thumbnails li div.medicalcenter-name span, .thumbnails li span.medicalcenter-name span, .thumbnails li a.medicalcenter-name span {
       margin-top: 0;
       padding: 0; }
@@ -3584,13 +3470,13 @@ h1, h2, h3, h4, h5 {
         display: inline;
         margin: 0; }
         .thumbnails li:hover ul.actions.hca-listing-actions li .btn {
-          width: 190px;
-          text-transform: uppercase; }
+          width: 190px; }
         .thumbnails li:hover ul.actions.hca-listing-actions li a {
           padding: 0;
           color: white;
           font-weight: bold;
-          text-decoration: none; }
+          text-decoration: none;
+          text-transform: capitalize; }
           .thumbnails li:hover ul.actions.hca-listing-actions li a:hover {
             color: #f2f2f2; }
     .thumbnails li:hover ul.actions.hca-listing-services {
@@ -3631,7 +3517,6 @@ h1, h2, h3, h4, h5 {
         .thumbnails li.thumbnail-doctor-listing:hover ul.actions li a {
           padding: 0 3px;
           color: #fe6500;
-          font-family: 'PT Sans', sans-serif;
           font-size: 14px;
           font-weight: bold; }
           .thumbnails li.thumbnail-doctor-listing:hover ul.actions li a:hover {

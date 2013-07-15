@@ -1,0 +1,43 @@
+{% set _commonDeleteCsrfTokenWidget = form_widget(commonDeleteForm._token) %}
+{% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
+    {% block tabbedContent %}
+    <h3> Specializations
+        <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations', { imcId: institutionMedicalCenter.id }) }}" data-toggle="#specialization-list" class="btn btn-primary pull-right"><i class="icon-plus"></i> Add New Specialization</button>
+    </h3>
+    <section class="action-info hca-main-profile" id="specialization_list_block">
+        {% for each in specializations %}
+              {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
+        {% else %}
+            <div class="alert alert-block">
+                <div class="hca-profile-sublevel">
+                    Here you can showcase specializations of your Clinic.
+                </div>
+                <p class="hca-helptext">
+                    You haven't yet added any Specializations.
+                </p>
+            </div>
+        {% endfor %}
+    </section>
+    
+    <section id="add-specialization-wrapper" class="section hca-display-specializations">
+
+       <div class="edit-specializations">
+            <div class="row-fluid terms hca-edit-box">
+                <h3> Specializations
+                    <span class="tooltip-wrap hca-edit"> <i class="icon-info-sign"> </i>
+                        <span class="tooltip-content hca-edit list-specializations pull-left">
+                            <i class="icon-stethoscope icon-2x pull-left"> </i>
+                            Indicating all the SPECIALIZATIONS and related treatments of your clinic
+                            will allow you to be searchable by patients based on those fields.
+                            <br>
+                        </span>
+                    </span>
+                </h3>     
+                <section class="section " id="specialization-list">
+                </section>
+             </div>
+        </div>
+
+     </section>
+    {% endblock %}
+{% endembed %}

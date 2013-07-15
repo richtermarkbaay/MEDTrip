@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -42,7 +44,14 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_websites_to_array' => new \Twig_Function_Method($this, 'json_websites_to_array'),
             'institutionMedicalCenter_websites_to_array' => new \Twig_Function_Method($this, 'institutionMedicalCenter_websites_to_array'),
             'get_website_from_array' => new \Twig_Function_Method($this, 'get_website_from_array'),
+            'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
         );
+    }
+    
+    public function contactDetailTypeHasExtension($contactDetailType)
+    {
+        // as of now we only know of mobile number that has no ext
+        return ContactDetailTypes::MOBILE == $contactDetailType ? false: true;
     }
 
     public function base64_encode($s) {
