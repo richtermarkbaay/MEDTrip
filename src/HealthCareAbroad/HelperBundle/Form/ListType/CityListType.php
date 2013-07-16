@@ -40,14 +40,15 @@ class CityListType extends AbstractType
     {
         $resolver->setDefaults(array(
             'empty_value' => 'Select City',
-            'attr' => array('data-custom-type' => 'city_dropdown'),
+            //'attr' => array('data-custom-type' => 'city_dropdown'),
             'choices' => array()
         ));
     }
    
     public function getParent()
     {
-        return 'custom_select';
+        //return 'custom_select';
+        return 'choice';
     }
 
     public function getName()
