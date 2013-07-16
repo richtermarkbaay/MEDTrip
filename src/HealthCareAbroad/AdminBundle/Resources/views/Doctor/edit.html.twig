@@ -22,8 +22,9 @@
                         {{ form_row(form.firstName) }}
                         {{ form_row(form.middleName) }}
                         {{ form_row(form.lastName) }}
-                         {{ form_row(form.suffix) }}
+                        {{ form_row(form.suffix) }}
                         {{ form_row(form.gender) }}
+                        {{ form_row(form.media, { imageType: imageType, imageSize: imageSize}) }}
                         {{ form_row(form.details, {attr: {class: 'tinymce'} }) }}
                         {{ form_row(form.contactEmail) }}
                         <div class="row-fluid">
@@ -34,7 +35,6 @@
                                 {% endfor %}
                             </div>
                         </div>
-                        {{ form_row(form.media, { imageType: imageType, imageSize: imageSize}) }}
                         {{ form_row(form.country) }}
 
                         <br>

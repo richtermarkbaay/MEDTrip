@@ -33,7 +33,7 @@
         <p class="hca-helptext">
             You haven't yet added any {{ type | lower }} for your {{ institutionLabel }}. 
         </p>
-         <button type="button" class="btn btn-primary edit-awards"  onclick="$('#show-{{ type }}').parent().find('#institution-edit-{{ type }}-btn').click()">
+         <button type="button" class="btn btn-primary edit-awards"  onclick="$('#show-{{ type }}').parent().find('#{{toggleBtnId}}').click()">
             <i class="icon-plus"></i> Add Entry
         </button>
     </div>   
