@@ -6,7 +6,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class ErrorReportListFilter extends ListFilter
+class ErrorReportListFilter extends DoctrineOrmListFilter
 {
 
     function setFilterOptions()
@@ -14,7 +14,7 @@ class ErrorReportListFilter extends ListFilter
         $this->setStatusFilterOption();
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('AdminBundle:ErrorReport', 'a');
     
@@ -24,6 +24,8 @@ class ErrorReportListFilter extends ListFilter
         }
 
         $this->queryBuilder->orderBy('a.id', 'ASC');
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }
 

@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,9 +62,8 @@ class CityController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
-    public function saveAction()
+    public function saveAction(Request $request)
     {
-        $request = $this->getRequest();
         if('POST' != $request->getMethod()) {
             return new Response("Save requires POST method!", 405);
         }
@@ -74,22 +75,36 @@ class CityController extends Controller
 
         $form = $this->createForm(New CityFormType(), $city);
         $form->bind($request);
-
+        
         if ($form->isValid()) {
-           $em->persist($city);
-           $em->flush($city);
+            
+            if(!$id) {
+                $data = $request->get('city');
+                
+            }
+            else {
+                $data = array(
+                        'id' => $city->getId(),
+                        'name' => $city->getName(),
+                        'countryId' =>  $city->getCountry()->getId(),
+                        'status' => $city->getStatus()
+                );
+            }
+            $city = $this->get('services.location')->saveGlobalCity($data);
+            $em->persist($city);
+            $em->flush($city);
+            
+            // dispatch event
+            $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
+            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
 
-           // dispatch event
-           $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
-           $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
-
-           $request->getSession()->setFlash('success', 'City has been saved!');
-           return $this->redirect($this->generateUrl('admin_city_index'));
+            $request->getSession()->setFlash('success', 'City has been saved!');
+            
+            return $this->redirect($this->generateUrl('admin_city_index'));
         }
-
         $formAction = $id
             ? $this->generateUrl('admin_city_update', array('id' => $id))
-            : $this->generateUrl('admin_city_create');
+            : $this->generateUrl('location_city_save');
 
         return $this->render('AdminBundle:City:form.html.twig', array(
             'id' => $id,

@@ -4,12 +4,12 @@
     <h3> Specializations
         <button id ="new_specializationButton" onclick="InstitutionSpecialization.toggle($(this)); return false;" data-href="{{ path('institution_ajax_loadInstitutionMedicalCenterAvailableSpecializations', { imcId: institutionMedicalCenter.id }) }}" data-toggle="#specialization-list" class="btn btn-primary pull-right"><i class="icon-plus"></i> Add New Specialization</button>
     </h3>
-    <section class="action-info hca-main-profile" id="specialization_list_block">
+    <section class="section action-info hca-main-profile" id="specialization_list_block">
         {% for each in specializations %}
               {% include 'InstitutionBundle:MedicalCenter:listItem.institutionSpecializationTreatments.html.twig'  %}
         {% else %}
             <div class="alert alert-block">
-                <div class="hca-profile-sublevel">
+               <div class="hca-profile-sublevel"> 
                     Here you can showcase specializations of your Clinic.
                 </div>
                 <p class="hca-helptext">

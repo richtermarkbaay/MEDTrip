@@ -34,11 +34,22 @@ class DefaultController extends Controller
     {
         $countryId = $request->get('countryId', 0);
         $selectedCity = $request->get('selectedCityId', 0);
-
-        $data = $request->get('loadNonGlobalCities')
-            ? $this->get('services.location')->getListActiveCitiesByCountryId($countryId)
-            : $this->get('services.location')->getGlobalCitiesListByContry($countryId);
-
+        
+        
+       if($request->get('loadNonGlobalCities')) {
+           $data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
+       }
+       else {
+           $data =  array();
+           $countries = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
+           foreach ($countries['data'] as $each){
+               $data[] =  array(
+                               'id' => $each['id'],
+                               'name' => $each['name']
+                               );
+           }
+       }
+        
         $html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
         $response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
 

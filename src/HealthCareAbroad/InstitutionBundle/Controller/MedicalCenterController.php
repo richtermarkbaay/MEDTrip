@@ -204,6 +204,7 @@ class MedicalCenterController extends InstitutionAwareController
                     InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                 ));
                 $form->bind($request);
+                
                 if ($form->isValid()) {
                     $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                     if (isset($formVariables['businessHours'])) {
@@ -297,14 +298,15 @@ class MedicalCenterController extends InstitutionAwareController
                     }
 
                     $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-                }
-                 else {
-                    $errors = array();
-                    $form_errors = $this->get('validator')->validate($form);
 
-                    foreach ($form_errors as $_err) {
-                        $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
+                } else {
+                    $errors = array();
+                    $formErrors = $this->get('validator')->validate($form);
+
+                    foreach ($formErrors as $err) {
+                        $errors[] = array('field' => str_replace(array('data.','children[', '].data'),'',$err->getPropertyPath()), 'error' => $err->getMessage());
                     }
+
                     return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
             }

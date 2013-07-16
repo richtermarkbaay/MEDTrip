@@ -306,6 +306,10 @@ var InstitutionMedicalCenter = {
      * @param DOMElement button
      */
     submitMedicalCenterSidebarForms: function(domButtonElement) {
+    	
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
+
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
@@ -413,12 +417,12 @@ var InstitutionMedicalCenter = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#view-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#view-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}else{
-                    				$('#view-socialMediaSites').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                					$('#view-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}
                     		} else {
-                    			$('#view-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#view-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                     		}
                     	});
                   	break;
@@ -462,8 +466,8 @@ var InstitutionMedicalCenter = {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         $.each(errors, function(key, item){
-                        	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
+                        	$('.control-group.' + item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
 

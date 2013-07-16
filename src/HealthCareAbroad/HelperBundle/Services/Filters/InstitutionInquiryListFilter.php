@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraints\Date;
 
 use HealthCareAbroad\AdminBundle\Entity\InquirySubject;
 
-class InstitutionInquiryListFilter extends ListFilter
+class InstitutionInquiryListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
@@ -45,7 +45,7 @@ class InstitutionInquiryListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
         
@@ -69,5 +69,7 @@ class InstitutionInquiryListFilter extends ListFilter
     	$sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

@@ -4,22 +4,22 @@
             <div class="description control-group">   
                 {{ form_widget(institutionForm[each], { 'attr': { class: 'span12 tooltip-wrap2', rows: '4', cols: '50' }})  }}
                 <div class="tooltip-content2 hca-textarea">
-                    All the information about your hospital that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your
-                    chance to set your hospital apart. DO NOT include any emails, URLs, or contact information.
+                    All the information about your {{ institutionLabel }} that a visitor may want to know. The history, the capacity, the capabilities and technologies. This is your
+                    chance to set your {{ institutionLabel }} apart. DO NOT include any emails, URLs, or contact information.
                 </div>
             </div>
         {% elseif each == 'name' %}
             <section>
                 <div class="aside-box info dashboard-side">
                     <i class="icon-info-sign icon-4x pull-left"> </i> <b> NOTE: </b>
-                    Changing your Institution name here will change it in ALL Healthcare Abroad listings. Editing your Institution Name is subject to review and approval.
+                    Changing your {{ institutionLabel }} name here will change it in ALL Healthcare Abroad listings. Editing your {{ institutionLabel }} Name is subject to review and approval.
                 </div>
             </section>
             <section class="section institution-info">
                 <div class="row-fluid hca-clinic-modal">
                   <div class="span12">
                      <div class="name control-group ">
-                        <label for="medicalProviderGroups"> Medical Institution Name  </label>
+                        <label for="medicalProviderGroups"> {{ institutionLabel }} Name  </label>
                         {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
                     </div>
         {% elseif each == 'medicalProviderGroups' %}
@@ -84,15 +84,15 @@
                 <span class="pull-left"> http:// </span>
                 {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
-                <div class="contactEmail control-group">
-                    <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
-                        {{ institutionForm.children.contactEmail.vars.label }}
-                    </label>
-                    {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
-                </div>
-                {% for _widget in institutionForm.contactDetails %}
-                    {{ form_widget(_widget) }}
-                {% endfor %}
+            <div class="contactEmail control-group">
+                <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
+                    {{ institutionForm.children.contactEmail.vars.label }}
+                </label>
+                {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+            </div>
+            {% for _widget in institutionForm.contactDetails %}
+                {{ form_widget(_widget) }}
+            {% endfor %}
          {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionForm.socialMediaSites )}}
          {% elseif each == 'services' %}

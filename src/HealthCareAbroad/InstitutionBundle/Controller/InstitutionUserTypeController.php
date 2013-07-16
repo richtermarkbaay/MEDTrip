@@ -69,7 +69,6 @@ class InstitutionUserTypeController extends InstitutionAwareController
     	$institutionId = $this->institution->getId();
     	
     	$id = $request->get('id', 0);
-    	echo $id."test";
         $userType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find($id);
         
         if ($id && !$userType) {

@@ -20,6 +20,8 @@ class CountryFormType extends AbstractType
 		);
 
 		$builder->add('name', 'text');
+		$builder->add('abbr', 'text');
+		$builder->add('code', 'text');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}
 

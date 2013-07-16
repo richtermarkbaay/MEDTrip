@@ -14,7 +14,7 @@ class SimpleContactDetailFieldType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options=array())
     {
-        $builder->add('country_code', 'country_code_list');
+        $builder->add('country_code', 'globalCountry_list');
         $builder->add('area_code', 'text', array('attr' => array('placeholder' => 'Area Code')));
         $builder->add('number', 'text', array('attr' => array( 'placeholder' => 'Phone Number')));
         $builder->add('ext', 'text', array('required' => false));

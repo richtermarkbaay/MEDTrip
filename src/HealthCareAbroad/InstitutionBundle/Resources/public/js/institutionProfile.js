@@ -311,6 +311,10 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
+
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
+    	
     	modalContainer = _form.parents('.modal:first'); 
     	if(modalContainer.length) {
     		_button = modalContainer.find('._submit-button:first');
@@ -414,12 +418,12 @@ var InstitutionProfile = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#institution-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type]+'</b>');
                     			}else{
-                    				$('#institution-socialMediaSites').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}
                     		} else {
-                    			$('#institution-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#institution-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                     		}
                     	});
                     	break;
@@ -446,14 +450,14 @@ var InstitutionProfile = {
                 HCA.alertMessage('success', 'successfully updated!');
             },
             error: function(response) {
-            	
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         $.each(errors, function(key, item){
-                        	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
+                        	$('.control-group.' + item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > ' + (item.field == 'city' ? '.custom-select' : 'input')));
+
                         });
                     }
 

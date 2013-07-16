@@ -23,7 +23,7 @@
 </div>
 
 <!-- Edit InstitutionName and ProviderGroup -->
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'hca-edit-institution-name', 'title': 'Edit Institution Name' }} %}
+{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : 'hca-edit-institution-name', 'title': 'Edit Name' }} %}
     {% block modalBody %}
         {% include 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' 
              with {formId: 'nameModalForm', fields: ['name','medicalProviderGroups'], hideSubmitButton: true } 

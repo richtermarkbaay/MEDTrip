@@ -572,4 +572,5 @@ class InstitutionService
         return $this->institutionUserService->getAccountData($institution->getInstitutionUsers()->first());
         //return $this->institutionUserService->getAccountDataById($institution->getInstitutionUsers()->first()->getAccountId());
     }
+
 }

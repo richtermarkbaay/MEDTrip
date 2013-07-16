@@ -1,0 +1,26 @@
+<div id="{{ awardsList.containerId }}">
+    {{ awardsList.selectorFieldLabel | raw }}
+    {{ awardsList.selectorFieldWidget | raw }}
+    <img style="display:none; margin:7px 370px 0 0;" class="property {{ awardsList.fieldId }}" src="{{ asset('images/institution/loading.gif') }}" />
+    <table class="globalAwardsTable table table-striped table-bordered {{ awardsList.tableId }} ">
+        <thead>
+            <tr>
+				<th>{{ awardsList.header }}</th>
+				<th>Year</th>
+				<th>Actions</th>
+			</tr>
+        </thead>
+		<tbody>
+		    <tr style="display:none;"  class="loader"><td colspan="3" >Loading...</td></tr>
+			{% for _award in awardsList.list %}
+			    {% include 'AdminBundle:InstitutionProperties/Partials:row.globalAward.html.twig' with {'property': _award, 'award': _award.valueObject} %}
+			{% else %}
+			    {#
+			    <tr class="empty_row">
+			        <td colspan="3">No {{ awardsList.header | lower }} yet. </td>
+			    </tr>
+			    #}
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
