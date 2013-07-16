@@ -2,10 +2,10 @@
 {% set editFormTemplate = 'InstitutionBundle:Institution/Widgets:inlineEditForm.html.twig' %}
 
 <!-- Institution Description Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
     with {
         title: 'Description', toggleBtnId: 'institution-edit-description-btn', viewElemId: 'show-about', editElemId: 'description',
-        formParams: {formId: 'descriptionModalForm', fields: ['description']} 
+        formParams: {formId: 'descriptionModalForm', fields: ['description']}
     } %}
 
     {% block viewContent %}
@@ -25,10 +25,10 @@
 {% endembed %}
 
 <!--  Institution Address -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
         title: 'Address', toggleBtnId: 'institution-edit-address-btn', viewElemId: 'show-address', editElemId: 'address',
-        formParams: {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'} 
+        formParams: {formId: 'addressModalForm', fields: ['address1','country','city','state','zipCode'], modalId: 'addressModal', modalTitle: 'Edit Address'}
     } %}
 
     {% block headingHelptext %}
@@ -50,11 +50,12 @@
     {% endblock %}
 {% endembed %}
 
-
+<!-- Quick and dirty workaround -->
+<a name="contact-details"></a>
 <!--  Institution Contact Details -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
-        title: 'Contact Details', toggleBtnId: 'institution-edit-contacts-btn', viewElemId: 'show-contact', editElemId: 'number', 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
+        title: 'Contact Details', toggleBtnId: 'institution-edit-contacts-btn', viewElemId: 'show-contact', editElemId: 'number',
         formParams: {formId: 'numberModalForm', fields: ['contactDetails','contactEmail'], modalId: 'numberModal', modalTitle: 'Edit Number'}
     } %}
 
@@ -74,7 +75,7 @@
         <div id="alertDiv" class="{{ _website == '' or institution.contactEmail == '' or not institution.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p>
                 <i class="icon-globe"></i> Website:
-                <span id="profileWebsitesText"> 
+                <span id="profileWebsitesText">
                     {% if _website %}
                         <b>http://{{_website}}</b>
                     {% else %}
@@ -84,7 +85,7 @@
                 </span>
             </p>
             <p>
-                <i class="icon-envelope"></i> Email: 
+                <i class="icon-envelope"></i> Email:
                 <span id="profileEmailText">
                     {% if institution.contactEmail %}
                        <b>{{ institution.contactEmail }}</b>
@@ -97,7 +98,7 @@
             <p>
             {% for contactDetail in institution.contactDetails %}
                 <i class="icon-phone"></i> {{ contact_label_type(contactDetail.type) }}:
-                <span id="PhoneNumberText"> 
+                <span id="PhoneNumberText">
                   {% if contactDetail.number %}
                      <b>{{ contactDetail }}</b>
                   {% else %}
@@ -105,7 +106,7 @@
                       <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add phone number</a>
                   {% endif %}
                 </span>
-            {% endfor %}  
+            {% endfor %}
             </p>
         </div>
     {% endblock %}
@@ -113,8 +114,8 @@
 
 
 <!-- Institution Social Media Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
         title: 'Social Media', toggleBtnId: 'institution-edit-socialmedia-btn', viewElemId: 'institution-socialMediaSites', editElemId: 'socialMedia',
         formParams: {formId: 'socialMediaForm', fields: ['socialMediaSites']}
     } %}
@@ -123,7 +124,7 @@
       {% set social = institution_websites_to_array(institution) %}
         <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
             {% for type, site in social %}
-                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
+                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
                  <span class="_{{ type }}-wrapper">
                       {% if site %}
                          <b>{{ site }}</b>
@@ -140,24 +141,24 @@
 
 {% if isSingleCenter %}
 <!-- InstitutionMedicalCenter businessHours Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
         title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
         formParams: {formId: 'businessHoursForm', fields: ['businessHours']},
-        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token) 
+        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token)
     } %}
 
     {% block viewContent %}
         <!-- View Mode here -->
         <ul class="single-listing" id="businessHoursView" ></ul>
-        
+
     {% endblock %}
 {% endembed %}
 {% endif %}
 
 
 <!-- Institution Services Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
     with {
         title: 'Services', toggleBtnId: 'institution-edit-services-btn', viewElemId: 'show-services', editElemId: 'servicesContainerDiv',
         formParams: {formId: 'serviceForm', fields: ['services']}
@@ -174,7 +175,7 @@
             </span>
         </span>
     {% endblock %}
-    
+
     {% block viewContent %}
         <div id="serviesText">
            {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' %}
@@ -191,8 +192,8 @@
 
 {% set awards = { list: currentGlobalAwards.award, editFormListWrapperId: 'listing-award' } %}
 <!-- Institution Awards Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
         title: 'Awards', toggleBtnId: 'institution-edit-awards-btn', viewElemId: 'show-awards', editElemId: 'awardsDiv', awardsFilterList: '#listing-award', toggleBtnClass: 'edit-awards',
         formParams: {formId: 'awardsForm', fields: ['awards'] }
     } %}
@@ -206,7 +207,7 @@
             </span>
         </span>
     {% endblock %}
-    
+
     {% block viewContent %}
         <div id="awardsText">
             {# include 'InstitutionBundle:Institution/Widgets:institutionAwards.html.twig' with { eachAward: awards , label : 'awards' } #}
@@ -217,12 +218,12 @@
 
 {% set certificates = { list: currentGlobalAwards.certificate, editFormListWrapperId: 'listing-certificate' } %}
 <!-- Institution Certifications Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
-        title: 'Certifications', 
-        toggleBtnId: 'institution-edit-certificates-btn', 
-        viewElemId: 'show-certificates', 
-        editElemId: 'certificatesDiv', 
-        awardsFilterList: '#listing-certificate', 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig' with {
+        title: 'Certifications',
+        toggleBtnId: 'institution-edit-certificates-btn',
+        viewElemId: 'show-certificates',
+        editElemId: 'certificatesDiv',
+        awardsFilterList: '#listing-certificate',
         toggleBtnClass: 'edit-awards'
     } %}
 
@@ -235,7 +236,7 @@
             </span>
         </span>
     {% endblock %}
-    
+
     {% block viewContent %}
         <div id="certificatesText">
             {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: certificates, type : 'certificates' } %}
@@ -245,26 +246,26 @@
 
 {% set affiliations = { list: currentGlobalAwards.affiliation, editFormListWrapperId: 'listing-affiliation' } %}
 <!-- Institution Affiliations Section -->
-    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' with { 
-            title: 'Affiliations', 
-            toggleBtnId: 'institution-edit-affiliations-btn', 
-            viewElemId: 'show-affiliations', 
-            editElemId: 'affiliationsDiv', 
-            awardsFilterList: '#listing-affiliation', 
+    {% embed 'InstitutionBundle:Embed:profileSection.html.twig' with {
+            title: 'Affiliations',
+            toggleBtnId: 'institution-edit-affiliations-btn',
+            viewElemId: 'show-affiliations',
+            editElemId: 'affiliationsDiv',
+            awardsFilterList: '#listing-affiliation',
             toggleBtnClass: 'edit-awards'
         } %}
-    
+
         {% block headingHelptext %}
             <span class="tooltip-wrap hca-edit">
                 <i class="icon-info-sign"> </i>
                 <span class="tooltip-content hca-edit pull-left">
-                
+
                     <i class="icon-asterisk icon-2x pull-left"> </i> <b> Affiliations </b> are indicators that assure patients and their family that your facility
                     is reliable, reputable and meets acceptable, if not superior, standards.
                 </span>
             </span>
         {% endblock %}
-        
+
         {% block viewContent %}
             <div id="affiliationsText">
                 {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: affiliations, type : 'affiliations' } %}
@@ -274,12 +275,12 @@
 
 {% set accreditations = { list: currentGlobalAwards.accreditation, editFormListWrapperId: 'listing-accreditation' } %}
 <!-- Institution Accreditations Section -->
-{% embed 'InstitutionBundle:Embed:profileSection.html.twig' 
-    with { 
-        title: 'Accreditations', 
-        toggleBtnId: 'institution-edit-accreditations-btn', 
-        viewElemId: 'show-accreditations', 
-        editElemId: 'accreditationsDiv', 
+{% embed 'InstitutionBundle:Embed:profileSection.html.twig'
+    with {
+        title: 'Accreditations',
+        toggleBtnId: 'institution-edit-accreditations-btn',
+        viewElemId: 'show-accreditations',
+        editElemId: 'accreditationsDiv',
         awardsFilterList: '#listing-accreditation',
         toggleBtnClass: 'edit-awards'
     } %}
@@ -293,7 +294,7 @@
             </span>
         </span>
     {% endblock %}
-    
+
     {% block viewContent %}
         <div id="accreditationsText">
             {% include 'InstitutionBundle:Widgets/Profile:globalAwards.html.twig' with { eachAward: accreditations, type : 'accreditations' } %}
