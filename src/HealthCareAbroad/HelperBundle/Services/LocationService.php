@@ -89,18 +89,16 @@ class LocationService
 	
 	public function getGlobalCountries(array $params=array())
 	{
-	    $default = array(
-            'status' => 1
-        );
+	    $default = array('status' => 1);
 	    
 	    $params = \array_merge($default, $params);
 	    static $hasLoaded = false;
 	    static $results = array();
-	    $params['data'] = $params;
 
 	    if (!$hasLoaded) {
 	        $queryString = count($params) ? '?' . http_build_query($params) : '';
 	        $response = $this->request->get($this->chromediaApiUri."/countries" . $queryString);
+
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }
