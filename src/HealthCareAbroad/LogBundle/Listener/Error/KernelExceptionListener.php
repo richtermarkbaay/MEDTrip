@@ -1,7 +1,7 @@
 <?php
 /**
  * Listener kernel exception event. This will only log the exception in the database
- * 
+ *
  * @author Allejo Chris G. Velarde
  *
  */
@@ -23,31 +23,36 @@ class KernelExceptionListener
      * @var Registry
      */
     private $doctrine;
-    
+
     /**
      * @var ErrorLogRepository
      */
     private $repository;
-    
+
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getEntityManager('logger')->getRepository('LogBundle:ErrorLog');
     }
-    
+
     /**
      * listener for kernel.exception
-     * 
+     *
      * @param GetResponseForExceptionEvent $event
      */
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
         $this->logException($exception);
-        
+
         // do nothing since we only want to save this to database
     }
-    
+
+    /**
+     * TODO: copied this to ErrorLogService; use that instead
+     *
+     * @param \Exception $exception
+     */
     public function logException(\Exception $exception)
     {
         $errorLog = new ErrorLog();
@@ -57,7 +62,7 @@ class KernelExceptionListener
         $errorLog->setHttpUserAgent(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
         $errorLog->setRemoteAddress(isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
         $errorLog->setServerJSON(\json_encode($_SERVER));
-        
+
         $em = $this->doctrine->getEntityManager('logger');
         if (!$em->isOpen()) {
             $this->doctrine->resetEntityManager('logger');

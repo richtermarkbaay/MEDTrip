@@ -7,6 +7,10 @@ services:
         class: HealthCareAbroad\LogBundle\Services\EntityVersionService
         arguments: [@doctrine]
 
+    services.log.error_log:
+        class: HealthCareAbroad\LogBundle\Services\ErrorLogService
+        arguments: [@doctrine]
+
     listener.log.kernelException:
         class: HealthCareAbroad\LogBundle\Listener\Error\KernelExceptionListener
         arguments: [@doctrine]
