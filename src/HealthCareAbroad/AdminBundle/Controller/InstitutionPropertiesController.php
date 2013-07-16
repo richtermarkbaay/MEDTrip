@@ -316,6 +316,34 @@ class InstitutionPropertiesController extends Controller
         return $response;
     }
     
+    public function viewGlobalAwardsAction(Request $request)
+    {
+        $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
+        $repo = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward');
+        $globalAwards = $repo->findBy(array('status' => GlobalAward::STATUS_ACTIVE));
+         
+        $propertyService = $this->get('services.institution_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        $awardTypes = GlobalAwardTypes::getTypes();
+        $currentGlobalAwards =$this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
+        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
+        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+    
+        return $this->render('AdminBundle:InstitutionGlobalAwards:index.html.twig', array(
+                        'form' => $form->createView(),
+                        'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+                        'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
+                        'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
+                        'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
+                        'accreditationsSourceJSON' => \json_encode($autocompleteSource['accreditation']),
+                        'currentGlobalAwards' => $currentGlobalAwards,
+                        'institution' => $this->institution,
+                        'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+                        'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
+        ));
+    
+    }
+    
     /*
      * Add Languages Spoken to Institution
      */
