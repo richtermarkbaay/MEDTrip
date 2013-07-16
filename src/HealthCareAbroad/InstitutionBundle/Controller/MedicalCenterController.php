@@ -258,7 +258,8 @@ class MedicalCenterController extends InstitutionAwareController
                                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                         'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                         'eachAward' => array('list' => $global),
-                                        'type' => $key
+                                        'type' => $key.'s',
+                                        'toggleBtnId' => 'clinic-edit-'.$key.'s-btn'
                                 ));
                                 
                             }

@@ -260,7 +260,8 @@ class InstitutionAccountController extends InstitutionAwareController
                                     'institution' => $this->institution,
                                     'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
                                     'eachAward' => array('list' => $global),
-                                    'type' => $key,
+                                    'type' => $key.'s',
+                                    'toggleBtnId' => 'institution-edit-'.$key.'s-btn'
                             ));
                           }
                              
