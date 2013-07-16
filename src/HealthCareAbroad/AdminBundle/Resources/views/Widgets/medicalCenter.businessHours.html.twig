@@ -1,7 +1,17 @@
 <div id="businessHours" class="treatmentbox">
  <h5 style="padding: 10px; border: 1px solid #EEEEEE"> Clinic Schedule</h5>
+ <div class="alert alert-success" style="display:none;">Successfully updated business hours</div>
     <form action="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', { 'institutionId': institution.id,'imcId':institutionMedicalCenter.id}) }}" method="POST" id="fancy_businessHours_form" >
-        {{ form_widget(institutionMedicalCenterForm.businessHours) }}
+        <div class="control-group span8">
+            <label>
+                <input type="checkbox" name="isAlwaysOpen" id="tick_24_hours" value="1" {{ institutionMedicalCenter.isAlwaysOpen ? 'checked' : ''}}>
+                Open 24 hours a day 7 days a week 
+            </label>
+        </div>
+        <hr />
+        <div id="businessHoursWidget" style="{{ institutionMedicalCenter.isAlwaysOpen ? 'display:none;' : '' }}">
+            {{ form_widget(institutionMedicalCenterForm.businessHours) }}
+        </div>
        <div class="modal-footer">
             <a href="{{ path('admin_institution_medicalCenter_ajaxAddBusinessHours', {institutionId : institution.id, imcId: institutionMedicalCenter.id } ) }}" data-formId="#fancy_businessHours_form" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.submitFancyBusinessHoursForm($(this)); return false;" id="save_fancyBusinessHours" class="btn btn-primary submit-button">Submit</a>
        </div>

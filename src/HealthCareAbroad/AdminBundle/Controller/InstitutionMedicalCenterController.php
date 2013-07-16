@@ -461,18 +461,28 @@ class InstitutionMedicalCenterController extends Controller
         $result = '';
         if ($request->isMethod('POST')) {
             $form->bind($request);
+            
             if ($form->isValid()) {
-                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
-                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-    
-                $this->institutionMedicalCenter = $form->getData();
-                foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
-                    $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                if($request->get('isAlwaysOpen')){
+                    $this->institutionMedicalCenter->setIsAlwaysOpen(1);
+                    foreach ($this->institutionMedicalCenter->getBusinessHours() as $businessHours ) {
+                        $this->institutionMedicalCenter->removeBusinessHour($businessHours);
+                    }
                 }
-    
+                else{
+                    $this->institutionMedicalCenter->setIsAlwaysOpen(null);
+                    $institutionMedicalCenterService = $this->get('services.institution_medical_center');
+                    $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+                    
+                    $this->institutionMedicalCenter = $form->getData();
+                    foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
+                        $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
+                    }
+                }
+                
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($this->institutionMedicalCenter);
-                $result = $em->flush();
+                $em->flush();
             }
         }
     

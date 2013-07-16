@@ -140,6 +140,7 @@ var InstitutionMedicalCenter = {
     submitFancyBusinessHoursForm: function(_formElement) {
     	_href = $(_formElement).attr('href');
     	_formId = $(_formElement).attr('data-formId');
+    	$(_formId).prev('.alert').hide();
     	$(_formElement).html('Processing...');
     	_formData = $(_formId).serialize();
     	$.ajax({
@@ -147,7 +148,7 @@ var InstitutionMedicalCenter = {
     		data: _formData,
     		type: "POST",
     		success: function(response) {
-    			console.log(response);
+    			$(_formId).prev('.alert').show();
     			$(_formElement).html('Submit');
     		}
     	})
