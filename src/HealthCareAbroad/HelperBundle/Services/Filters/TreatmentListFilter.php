@@ -11,7 +11,7 @@ use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
-class TreatmentListFilter extends ListFilter
+class TreatmentListFilter extends DoctrineOrmListFilter
 {
     protected $serviceDependencies = array(
         'services.treatment_bundle'
@@ -67,7 +67,7 @@ class TreatmentListFilter extends ListFilter
         );
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a, b')->from('TreatmentBundle:Treatment', 'a');
         
@@ -102,5 +102,7 @@ class TreatmentListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

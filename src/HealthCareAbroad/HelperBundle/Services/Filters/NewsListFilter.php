@@ -5,7 +5,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-class NewsListFilter extends ListFilter
+class NewsListFilter extends DoctrineOrmListFilter
 {
 
     function setFilterOptions()
@@ -13,7 +13,7 @@ class NewsListFilter extends ListFilter
         $this->setStatusFilterOption();
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('HelperBundle:News', 'a');
     
@@ -26,5 +26,7 @@ class NewsListFilter extends ListFilter
         $sort = "a.$sortBy " . $this->sortOrder;            
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }

@@ -22,7 +22,9 @@
 
 				{{ form_row(form.name) }}
 				{{ form_row(form.status) }}
-				{{ form_rest(form) }}
+				{{ form_row(form.abbr) }}
+				{{ form_row(form.code) }}    
+				{{ form_row(form._token) }}    
 
 				 <input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
 			</form>

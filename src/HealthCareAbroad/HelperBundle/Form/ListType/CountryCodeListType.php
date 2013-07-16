@@ -32,9 +32,11 @@ class CountryCodeListType extends AbstractType
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $countries = $this->service->getGlobalCountryList();
+        $countries = $this->service->getGlobalCountries();
         $choices = array();
-        foreach ($countries as $country) {
+        
+        foreach ($countries['data'] as $country) {
+            
             $code = (int)$country['code'];
             if ($code) {
                 $choices[$code] = $country['name'].' (+'.$code.')';

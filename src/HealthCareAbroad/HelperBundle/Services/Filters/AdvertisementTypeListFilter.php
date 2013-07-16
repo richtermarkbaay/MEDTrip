@@ -8,7 +8,7 @@
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 
-class AdvertisementTypeListFilter extends ListFilter
+class AdvertisementTypeListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -22,18 +22,22 @@ class AdvertisementTypeListFilter extends ListFilter
         
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
-        $this->queryBuilder->select('a')->from('AdvertisementBundle:AdvertisementType', 'a');
+        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        
+        $queryBuilder->select('a')->from('AdvertisementBundle:AdvertisementType', 'a');
 
     	if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-    		$this->queryBuilder->andWhere('a.status = :status');
-    		$this->queryBuilder->setParameter('status', $this->queryParams['status']);
+    		$queryBuilder->andWhere('a.status = :status');
+    		$queryBuilder->setParameter('status', $this->queryParams['status']);
     	}
     	
     	$sort = "a.name " . $this->sortOrder;
 
-    	$this->queryBuilder->add('orderBy', $sort);
+    	$queryBuilder->add('orderBy', $sort);
+
+    	$this->filteredResult = $this->pager->getResults();
     	
     }
 }

@@ -12,7 +12,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\ORM\QueryBuilder;
 use HealthCareAbroad\PagerBundle\Pager;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
 
 abstract class ListFilter
 {
@@ -37,12 +36,9 @@ abstract class ListFilter
 
     protected $filteredResult = array();
 
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
-
     protected $pager;
+    
+    protected $pagerAdapter;
 
     protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
     
@@ -61,16 +57,6 @@ abstract class ListFilter
      * @var array
      */
     protected $statusFilterOptions = array(1 => 'Active', 0 => 'Inactive', self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL);
-
-    public function __construct($doctrine)
-    {
-        $this->doctrine = $doctrine;
-        $this->queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
-    }
-
-    abstract function setFilterOptions();
-
-    abstract function buildQueryBuilder();
     
     final public function getServiceDependencies()
     {
@@ -84,6 +70,7 @@ abstract class ListFilter
     
     final public function getInjectedDependcy($serviceId)
     {
+
         if (!\array_key_exists($serviceId, $this->injectedDependencies)){
             throw ListFilterException::unregisteredServiceDependency($serviceId);
         }
@@ -101,11 +88,11 @@ abstract class ListFilter
 
         $this->setFilterOptions();
 
-        $this->buildQueryBuilder();
+        //$this->buildQueryBuilder();
 
         $this->setPager();
-
-        $this->setFilteredResult();
+        
+        $this->setFilteredResults();
     }
 
     /**
@@ -143,7 +130,7 @@ abstract class ListFilter
     {
         if(count($statusFilterOptions))
             $this->statusFilterOptions = $statusFilterOptions;
-
+    
         $this->filterOptions['status'] = array(
             'label' => 'Status',
             'selected' => $this->queryParams['status'],
@@ -170,17 +157,10 @@ abstract class ListFilter
 
     function setPager()
     {
-        $adapter = new DoctrineOrmAdapter($this->queryBuilder);
-        
         $params['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
         $params['limit'] = isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit'];
 
-        $this->pager = new Pager($adapter, $params);
-    }
-
-    function setFilteredResult()
-    {
-        $this->filteredResult = $this->pager->getResults();
+        $this->pager = new Pager($this->pagerAdapter, $params);
     }
 
     /**

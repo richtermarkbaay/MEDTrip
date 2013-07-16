@@ -7,7 +7,7 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
-class InstitutionMedicalCenterListFilter extends ListFilter
+class InstitutionMedicalCenterListFilter extends DoctrineOrmListFilter
 {
     function setFilterOptions()
     {
@@ -22,7 +22,7 @@ class InstitutionMedicalCenterListFilter extends ListFilter
         $this->setStatusFilterOption($statusFilterOptions);
     }
 
-    public function buildQueryBuilder()
+    public function setFilteredResults()
     {
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
         $this->queryBuilder->where('a.institution = :institutionId');
@@ -40,5 +40,7 @@ class InstitutionMedicalCenterListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }
