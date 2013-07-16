@@ -37,10 +37,10 @@ class GlobalCountryListType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {	
         
-        $countries = $this->locationService->getGlobalCountryList();
+        $countries = $this->locationService->getGlobalCountries();
         $choices = array();
-        foreach ($countries as $countryArray){
-            $choices[$countryArray['id']] = $countryArray['name'];
+        foreach ($countries['data'] as $country){
+            $choices[$country['id']] = $country['name'];
         }
         
         $resolver->setDefaults(array('choices' => $choices));
