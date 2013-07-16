@@ -99,7 +99,12 @@ class InquiryController extends Controller
 
             // TODO: Update this when we have formulated a strategy for our event system
             // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-            $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
+            try {
+                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
+            } catch (\Exception $e) {
+                //TODO: Mark this inquiry as having failed to send notifications
+                //ignored for now
+            }
 
             $this->get('session')->setFlash('notice', "Successfully saved!");
             $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
