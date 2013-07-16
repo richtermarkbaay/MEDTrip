@@ -207,9 +207,18 @@ class InstitutionUserController extends Controller
                 $daysOfExpiration = 7;
                 $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
 
-                //send email here
-                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_RESET, new GenericEvent(array(
-                    'email' => $email, 'expiresIn' => $daysOfExpiration, 'token' => $token->getToken())));
+                //listener will propagate any exceptions caught
+                try {
+                    $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_RESET, new GenericEvent(array(
+                        'email' => $email, 'expiresIn' => $daysOfExpiration, 'token' => $token->getToken())));
+                } catch (\Exception $e) {
+                    //TODO:
+                    // 1. finetune exception and messages
+                    // 2. remove token
+                    $this->get('session')->setFlash('notice', 'Connection could not be established with our email servers. Please try your request later.');
+
+                    return $this->render('InstitutionBundle:InstitutionUser:requestResetPassword.html.twig');
+                }
 
                 $this->get('session')->setFlash('notice', 'Next Step: Please check your email and follow the instructions that we\'ve just sent you.');
                 return $this->redirect($this->generateUrl('institution_login'));
@@ -256,7 +265,11 @@ class InstitutionUserController extends Controller
                 $institutionUserService->setSessionVariables($institutionUser);
 
                 //send email here
-                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_CONFIRM, new GenericEvent(array('email' => $institutionUser->getEmail())));
+                try {
+                    $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_PASSWORD_CONFIRM, new GenericEvent(array('email' => $institutionUser->getEmail())));
+                } catch (\Exception $e) {
+                    //TODO: inform user of failed email notif
+                }
 
                 return $this->redirect($this->generateUrl('institution_homepage'));
             }
