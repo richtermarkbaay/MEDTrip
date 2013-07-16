@@ -418,12 +418,12 @@ var InstitutionProfile = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#institution-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type]+'</b>');
                     			}else{
-                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}
                     		} else {
-                    			$('#institution-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#institution-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                     		}
                     	});
                     	break;

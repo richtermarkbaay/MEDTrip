@@ -417,12 +417,12 @@ var InstitutionMedicalCenter = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#view-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#view-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}else{
-                    				$('#view-socialMediaSites > div').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                					$('#view-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
                     			}
                     		} else {
-                    			$('#view-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#view-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                     		}
                     	});
                   	break;
