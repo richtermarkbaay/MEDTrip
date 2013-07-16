@@ -52,7 +52,6 @@ class ListFilterBeforeController
         $listFilter = ListFilterFactory::create($routeName, $this->doctrine);
         
         foreach ($listFilter->getServiceDependencies() as $serviceId) {
-            
             $listFilter->injectDependency($serviceId, $controller[0]->get($serviceId));
         }
         
