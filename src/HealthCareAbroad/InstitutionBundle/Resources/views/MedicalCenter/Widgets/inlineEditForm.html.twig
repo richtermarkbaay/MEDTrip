@@ -76,18 +76,16 @@
                 {{ form_widget(institutionMedicalCenterForm.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
 
-            <div class="contactEmail control-group span12">
-                <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}">
+            <div class="contactEmail control-group">
+                <label for="{{ institutionMedicalCenterForm.children.contactEmail.vars.id }}" style="display:inline-block">
                     {{ institutionMedicalCenterForm.children.contactEmail.vars.label }}
                 </label>
                 {{ form_widget(institutionMedicalCenterForm.contactEmail, { attr: {class: 'span12'} } )}}
             </div>
 
-            <div class="contactDetails span12">
                 {% for widget in institutionMedicalCenterForm.contactDetails %}
                     {{ form_widget(widget) }}
                 {% endfor %}
-            </div>
 
         {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionMedicalCenterForm.socialMediaSites )}}

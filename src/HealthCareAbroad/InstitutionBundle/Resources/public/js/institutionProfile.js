@@ -414,12 +414,12 @@ var InstitutionProfile = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#institution-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
                     			}else{
-                    				$('#institution-socialMediaSites').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html(websites[type]);
                     			}
                     		} else {
-                    			$('#institution-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#institution-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}
                     	});
                     	break;

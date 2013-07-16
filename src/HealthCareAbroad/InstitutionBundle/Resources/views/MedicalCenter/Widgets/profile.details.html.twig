@@ -104,7 +104,7 @@
                          <b>{{ contactDetail }}</b>
                      {% else %}
                          <b>no phone number</b> added.
-                          <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add Phone Number</a>
+                          <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Phone Number</a>
                      {% endif %}
                     </span> 
                 {% endfor %}  
@@ -132,11 +132,14 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% for type, site in institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-            <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
-             <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
-            </p>
-        {% endfor %}
+        {% set social = institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
+        <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
+            {% for type, site in social %}
+                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
+                 <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
+                </p>
+            {% endfor %}
+        </div>
     {% endblock %}
 {% endembed %}
 

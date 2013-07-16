@@ -84,15 +84,15 @@
                 <span class="pull-left"> http:// </span>
                 {{ form_widget(institutionForm.websites, { attr: {class: 'span11 pull-right'} } )}}
             </div>
-                <div class="contactEmail control-group">
-                    <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
-                        {{ institutionForm.children.contactEmail.vars.label }}
-                    </label>
-                    {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
-                </div>
-                {% for _widget in institutionForm.contactDetails %}
-                    {{ form_widget(_widget) }}
-                {% endfor %}
+            <div class="contactEmail control-group">
+                <label for="{{ institutionForm.children.contactEmail.vars.id }}" style="display:inline-block">
+                    {{ institutionForm.children.contactEmail.vars.label }}
+                </label>
+                {{ form_widget(institutionForm.contactEmail, { attr: {class: 'span12'} } )}}
+            </div>
+            {% for _widget in institutionForm.contactDetails %}
+                {{ form_widget(_widget) }}
+            {% endfor %}
          {% elseif each == 'socialMediaSites' %}
              {{ form_widget(institutionForm.socialMediaSites )}}
          {% elseif each == 'services' %}

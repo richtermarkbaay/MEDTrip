@@ -18,7 +18,7 @@
                 <p class="hca-helptext">
                     You haven't yet added any description about your hospital yet.
                 </p>
-                <a type="button" class="btn btn-primary" onclick="$('#institution-edit-description-btn').click()"> <i class="icon-plus">  </i> Add Entry </a>
+                <a type="button" class="btn btn-primary" onclick="$('#institution-edit-description-btn').click()"> <i class="icon-plus"></i> Add Entry </a>
             </div>
         {% endif %}
     {% endblock %}
@@ -79,7 +79,7 @@
                         <b>http://{{_website}}</b>
                     {% else %}
                         <b>no website</b> added.
-                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add website</a>
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add website</a>
                     {% endif %}
                 </span>
             </p>
@@ -90,7 +90,7 @@
                        <b>{{ institution.contactEmail }}</b>
                     {% else %}
                         <b>no contact email</b> added.
-                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i>Add contact email</a>
+                        <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add contact email</a>
                     {% endif %}
                 </span>
             </p>
@@ -102,7 +102,7 @@
                      <b>{{ contactDetail }}</b>
                   {% else %}
                       <b>no phone number</b> added.
-                      <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i>Add phone number</a>
+                      <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add phone number</a>
                   {% endif %}
                 </span>
             {% endfor %}  
@@ -120,11 +120,14 @@
     } %}
 
     {% block viewContent %}
-        {% for type, site in institution_websites_to_array(institution) %}
-            <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
-             <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
-            </p>
-        {% endfor %}
+      {% set social = institution_websites_to_array(institution) %}
+        <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
+            {% for type, site in social %}
+                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i> 
+                 <span class="_{{ type }}-wrapper">{{ site ? site : 'no account added'}}</span>
+                </p>
+            {% endfor %}
+        </div>
     {% endblock %}
 {% endembed %}
 

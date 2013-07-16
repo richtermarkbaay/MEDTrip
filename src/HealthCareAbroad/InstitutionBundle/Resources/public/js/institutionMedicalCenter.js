@@ -413,12 +413,12 @@ var InstitutionMedicalCenter = {
                     	$.each(websites, function(type) {
                     		if($.trim(websites[type]) != '') {
                     			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#view-socialMediaSites').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#view-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html(websites[type]);
                     			}else{
-                    				$('#view-socialMediaSites').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
+                    				$('#view-socialMediaSites > div').attr('class',' ').find('._' + type + '-wrapper').html(websites[type]);
                     			}
                     		} else {
-                    			$('#view-socialMediaSites').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
+                    			$('#view-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('no account added.');
                     		}
                     	});
                   	break;
