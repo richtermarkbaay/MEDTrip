@@ -306,6 +306,10 @@ var InstitutionMedicalCenter = {
      * @param DOMElement button
      */
     submitMedicalCenterSidebarForms: function(domButtonElement) {
+    	
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
+
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
@@ -462,8 +466,8 @@ var InstitutionMedicalCenter = {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         $.each(errors, function(key, item){
-                        	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
+                        	$('.control-group.' + item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                     }
 

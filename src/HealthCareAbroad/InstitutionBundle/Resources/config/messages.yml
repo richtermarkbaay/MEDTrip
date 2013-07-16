@@ -1,0 +1,91 @@
+parameters:
+
+    registration_steps:
+        multiple_center:
+            - {label: Create Your Personal Account,route: institution_signUp}
+            - {label: Set-Up Profile For Your Hospital,route: institution_signup_setup_profile}
+            - {label: Add Clinic / Center, route: institution_signup_setup_institutionMedicalCenter}
+            - {label: Setup Clinic Profile, route: institution_signup_setup_institutionMedicalCenter, sub: true}
+            - {label: Add Specializations, route: institution_signup_setup_specializations, sub: true}
+            - {label: Add Doctors, route: institution_signup_setup_doctors, sub: true}
+        single_center:
+            - {label: Create Your Personal Account, route: institution_signUp}
+            - {label: Set-Up Profile For Your Clinic, route: institution_signup_setup_profile}
+              # same route for Add Specializations
+            - {label: Add Clinic / Center Details, route: institution_signup_setup_specializations}
+            - {label: Add Specializations, route: institution_signup_setup_specializations,sub: true}
+            - {label: Add Doctors, route: institution_signup_setup_doctors, sub: true}
+
+    flash_message: 
+          institution:
+              add_success: ~
+              add_error: ~
+              edit_sucess: ~
+              edit_error: ~
+              delete_success: ~
+              delete_error: ~
+          medicalCenter:
+              add_success: ~
+              add_error: ~
+              edit_sucess: ~
+              edit_error: ~
+              delete_success: ~
+              delete_error: ~
+
+    callout_message:
+        signup_multiple_center_success:
+            highlight: "Your account has been created!"
+            subText: "You can either complete your profile using the guide below, or start adding your clinics or departments. We recommend that you complete the steps below to ensure that you are providing patients with complete and updated information about what your institution offers."
+        login_complete_profile:
+            highlight: "Welcome back {FIRST_NAME}!"
+            subText: "Now, let's give your patients a way to contact and find you."
+        login_incomplete_profile_singleCenter:
+            highlight: "Welcome back {FIRST_NAME}! Please take time to complete your clinic profile:"
+        login_incomplete_profile_multipleCenter:
+            highlight: "Welcome back {FIRST_NAME}! Please take time to complete your profile:"
+        success_add_center:
+            highlight: "Your Clinic {CENTER_NAME} has been added! Review the clinic information below or <a href={ADD_CLINIC_URL}>Add another Clinic >></a> "
+        success_edit_center:
+            highlight: "Your edits to {CENTER_NAME} have been saved! Review the clinic information below or <a href={ADD_CLINIC_URL}>Add another Clinic >></a>"
+
+
+    helptext_message:
+
+        dashboardSuggestions:
+            institution:
+                institutionMedicalCenters:
+                    icon: icon-medkit
+                    message: 'You currently have no centers for your Hospital yet.'
+                description:
+                    icon: icon-file
+                    message: 'You currently have no <b>description</b> for your {INSTITUTION_LABEL} yet.'
+                doctors:
+                    icon: icon-user-md
+                    message: 'You currently dont have doctors for your {INSTITUTION_LABEL} yet.'
+                logo:
+                    icon: icon-h-sign
+                    message: 'Upgrade your listing today and have your <b>logo</b> show on your profile.'
+                    message_payingClient: 'You have not yet added a <b>logo</b>. Upload it today and help patients make an instant brand connection between your clinic and the treatments you offer'
+                featuredMedia:
+                    icon: icon-picture
+                    message: 'Upgrade your listing today and have a <b>cover photo</b> show on your profile. Making use of this space to add a large image helps in establishing your brand and reputation.'
+                    message_payingClient: 'You have not yet uploaded your <b>cover photo</b>. Make use of this space to add a large image to establish your brand and reputation.'
+                gallery:
+                    icon: icon-film
+                    message: 'Upgrade your listing today to add <b>photos and videos</b>. Beautiful photos and videos help give users a more complete image of your {INSTITUTION_LABEL}, and makes decisions easier and more likely.'
+                    message_payingClient: 'You have not yet uploaded <b>photos or videos</b>. Beautiful photos and videos help give users a more complete image of your {INSTITUTION_LABEL}, and makes decisions easier and more likely.' 
+                contactDetails:
+                    icon: icon-phone
+                    message: You currently have no <b>contact details</b> for your {INSTITUTION_LABEL} yet.
+                socialMediaSites:
+                    icon: icon-group
+                    message: You currently have no <b>social media sites</b> for your {INSTITUTION_LABEL} yet.
+                globalAwards:
+                    icon: icon-asterisk
+                    message: 'You have not yet listed any <b>awards, certifications, affiliations or accreditations</b>. List your certifications and accreditations to help show that your clinics adhere to international standards of quality; list your awards and affiliations to show you are recognized by peers in your industry.'
+
+            medicalCenter: ~
+
+        form:
+            inlineText: ~
+            popUp: ~

@@ -311,6 +311,10 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
+
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
+    	
     	modalContainer = _form.parents('.modal:first'); 
     	if(modalContainer.length) {
     		_button = modalContainer.find('._submit-button:first');
@@ -446,14 +450,14 @@ var InstitutionProfile = {
                 HCA.alertMessage('success', 'successfully updated!');
             },
             error: function(response) {
-            	
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
                         $.each(errors, function(key, item){
-                        	$('.control-group.ajax-field'+item.field).addClass('error');
-                        	$('<ul class="error_list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
+                        	$('.control-group.' + item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > ' + (item.field == 'city' ? '.custom-select' : 'input')));
+
                         });
                     }
 

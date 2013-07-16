@@ -311,10 +311,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 }
                 else {
                     $errors = array();
-                    $form_errors = $this->get('validator')->validate($form);
-                     
-                    foreach ($form_errors as $_err) {
-                        $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
+                    $formErrors = $this->get('validator')->validate($form);
+
+                    foreach ($formErrors as $err) {
+                        $errors[] = array('field' => str_replace('data.','',$err->getPropertyPath()), 'error' => $err->getMessage());
                     }
                     return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
