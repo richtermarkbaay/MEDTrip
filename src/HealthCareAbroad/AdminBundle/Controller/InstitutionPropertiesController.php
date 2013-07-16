@@ -221,7 +221,7 @@ class InstitutionPropertiesController extends Controller
     
                 $propertyService->save($property);
     
-                $html = $this->renderView('AdminBundle:Institution/Partials:row.globalAwards.html.twig', array(
+                $html = $this->renderView('AdminBundle:InstitutionProperties/Partials:row.globalAward.html.twig', array(
                                 'institution' => $this->institution,
                                 'award' => $award,
                                 'property' => $property
