@@ -167,7 +167,7 @@ class LocationService
 	
 	public function getGlobalCitiesListByContry($countryId)
 	{
-	    $response = $this->request->get($this->chromediaApiUri.'/cities?country='.$countryId);
+	    $response = $this->request->get($this->chromediaApiUri."/country/$countryId/cities");
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	    }
