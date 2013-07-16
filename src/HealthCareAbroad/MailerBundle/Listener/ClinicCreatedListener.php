@@ -65,4 +65,10 @@ class ClinicCreatedListener extends NotificationsListener
     public function getTemplateConfig(Event $event = null) {
         return 'notification.clinic_created';
     }
+
+    public function propagateExceptions(Event $event)
+    {
+        //silently ignore for now
+        return false;
+    }
 }

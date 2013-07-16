@@ -61,4 +61,10 @@ class AccountCreatedListener extends NotificationsListener
     {
         return 'notification.account_created';
     }
+
+    public function propagateExceptions(Event $event)
+    {
+        //silently ignore for now
+        return false;
+    }
 }

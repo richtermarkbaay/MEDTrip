@@ -45,4 +45,10 @@ class NewListingsApprovedListener extends NotificationsListener
     {
         return 'notification.new_listings_approved';
     }
+
+    public function propagateExceptions(Event $event)
+    {
+        //silently ignore for now
+        return false;
+    }
 }

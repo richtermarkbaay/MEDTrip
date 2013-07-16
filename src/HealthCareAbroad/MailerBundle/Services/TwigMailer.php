@@ -49,8 +49,8 @@ class TwigMailer extends SmtpMailer
         try {
             $status = $this->getMailer($data)->send($message, $failures);
         } catch (\Exception $e) {
-            //TODO: how to record the fact that mail notifications failed?
-            $this->log('Email notification error.');
+            $this->log('Notification error.');
+            throw $e;
         }
     }
 
@@ -78,9 +78,15 @@ class TwigMailer extends SmtpMailer
         return $data;
     }
 
-    private function log($message) {
+    /**
+     * For debugging
+     *
+     * @param string $message
+     */
+    private function log($message)
+    {
         if (!is_null($this->logger)) {
-            $this->logger->addInfo($message);
+            $this->logger->addInfo('>>>MailerBundle: ' . $message);
         }
     }
 }

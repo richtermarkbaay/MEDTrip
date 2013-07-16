@@ -1,8 +1,9 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+use HealthCareAbroad\LogBundle\Services\ExceptionLogger;
 
+use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -10,6 +11,7 @@ abstract class NotificationsListener
 {
     protected $container;
     protected $templateConfigs;
+    protected $exceptionLogger;
 
     /**
      * Returns context dependent data needed by the email template
@@ -28,12 +30,28 @@ abstract class NotificationsListener
     */
     public abstract function getTemplateConfig(Event $event = null);
 
+    /**
+     *
+     * @param ContainerInterface $container
+     * @param array $templateConfigs
+     */
     public function __construct(ContainerInterface $container, array $templateConfigs)
     {
         $this->container = $container;
         $this->templateConfigs = $templateConfigs;
     }
 
+    public function setExceptionLogger(ExceptionLogger $logger)
+    {
+        $this->exceptionLogger = $logger;
+    }
+
+    /**
+     * If
+     *
+     *
+     * @param Event $event
+     */
     public function onSendNotification(Event $event)
     {
         try {
@@ -53,7 +71,19 @@ abstract class NotificationsListener
         $data = $this->mergeTemplateConfigData($this->getData($event), $this->getTemplateConfig($event));
         $data = $this->mergeTemplateSharedData($data);
 
-        $this->container->get('services.mailer.notifications.twig')->sendMessage($data);
+        try {
+            $this->container->get('services.mailer.notifications.twig')->sendMessage($data);
+        } catch (\Exception $e) {
+            if ($this->propagateExceptions($event)) {
+                throw $e;
+            }
+
+            //We are bypassing the system's internal exceptions handler so
+            //we have to log the exception ourselves.
+            //TODO: right now we are ignoring the exceptions; find a way to
+            //inform client of the notifications error
+            $this->exceptionLogger->logException($e);
+        }
     }
 
     /**
@@ -63,6 +93,17 @@ abstract class NotificationsListener
      * @return boolean
      */
     public function isEventProcessable(Event $event)
+    {
+        return true;
+    }
+
+    /**
+     * Whether or not exceptions should be propagated up the call stack.
+     *
+     * @param Event $event
+     * @return boolean
+     */
+    public function propagateExceptions(Event $event)
     {
         return true;
     }

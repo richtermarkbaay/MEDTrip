@@ -8,5 +8,10 @@ namespace HealthCareAbroad\MailerBundle\Services;
 
 interface MailerInterface
 {
+    /**
+     * Sends email.
+     *
+     * @param array $data
+     */
     function sendMessage($data);
 }

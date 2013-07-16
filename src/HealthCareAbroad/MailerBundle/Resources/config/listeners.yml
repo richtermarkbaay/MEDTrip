@@ -56,6 +56,8 @@ services:
     listener.notifications:
         class: HealthCareAbroad\MailerBundle\Listener\NotificationsListener
         arguments: [@service_container, %mailer.templates%]
+        calls:
+            - [setExceptionLogger, [@services.log.error_log]]
         abstract: true
 
     listener.notifications.account_created:

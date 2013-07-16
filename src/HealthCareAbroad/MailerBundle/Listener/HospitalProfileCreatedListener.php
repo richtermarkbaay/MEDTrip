@@ -61,4 +61,10 @@ class HospitalProfileCreatedListener extends NotificationsListener
     {
         return 'notification.hospital_profile_created';
     }
+
+    public function propagateExceptions(Event $event)
+    {
+        //silently ignore for now
+        return false;
+    }
 }
