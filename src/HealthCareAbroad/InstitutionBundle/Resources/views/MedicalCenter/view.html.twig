@@ -13,8 +13,8 @@
                     {% include 'InstitutionBundle:Widgets:tabNavigation.html.twig' with {
                         tabNavigation: { links: [
                             { label: 'Clinic Details', 'active': true, 'href' : '#profile_tab', 'icon' : 'medkit' },
-                            { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker'},
-                            { label: 'Doctors', 'href' : '#doctors_tab_content', 'icon' : 'user-md' },
+                            { label: 'Specializations', 'href' : '#specializations_tab_content', 'icon' : 'beaker', 'id' : 'specializations_tab'},
+                            { label: 'Doctors', 'href' : '#doctors_tab_content', 'icon' : 'user-md', 'id' : 'doctors_tab' },
                         ]}
                     } %}
 
@@ -25,7 +25,7 @@
                         <div id="specializations_tab_content" class="tab-pane">
                            {% include 'InstitutionBundle:Widgets/Profile:specializations.html.twig' %}
                         </div>
-                        <div id="doctors_tab_content" class="tab-pane">                       
+                        <div id="doctors_tab_content" class="tab-pane">
                             {% embed 'InstitutionBundle:Widgets:tabbedContent.base.html.twig' %}
                                 {% block tabbedContent %}
                                      <section class="doctors-listing">
@@ -35,7 +35,7 @@
                                         {% include 'InstitutionBundle:Doctor/Widgets:doctors.html.twig' with {addDoctorFormAction: path('institution_medicalCenter_addDoctor', {imcId: institutionMedicalCenter.id}) }  %}
                                     </section>
                                 {% endblock %}
-                            {% endembed %}                                    
+                            {% endembed %}
                         </div>
                    </div><!-- /.tab-content -->
                 </div>
@@ -54,6 +54,41 @@
 
 
 {% block inlineJavascriptCode %}
+<script type="text/javascript">
+/* This is a quick and dirty solution. Will refactor when I get the time. (HAM)
+ * TODO: move to external js file.
+ */
+(function() {
+    var hashMatch = (function() {
+        switch (window.location.hash) {
+        case '#specializations':
+            return { 'action': 'openTab', 'tab': 'specializations_tab', 'content': 'specializations_tab_content' };
+        case '#doctors':
+            return { 'action': 'openTab', 'tab': 'doctors_tab', 'content': 'doctors_tab_content' };
+        case '#contact-details':
+            return { 'action': 'scrollTo', 'section': 'show-contact' }
+        }
+        return false;
+    })();
+
+    if (hashMatch) {
+        if (hashMatch.action == 'scrollTo') {
+            $('html, body').animate({
+                 'scrollTop': $('#' + hashMatch.section).offset().top
+            }, 1000);
+        } else if (hashMatch.action == 'openTab') {
+            /*are the selectors unique enough?*/
+            $("ul.nav-tabs > li").each(function() {
+                $(this).attr('id') == hashMatch.tab ? $(this).addClass('active') : $(this).removeClass('active');
+            });
+            $("div#tabbed_content > div").each(function() {
+                $(this).attr('id') == hashMatch.content ? $(this).addClass('active') : $(this).removeClass('active');
+            });
+        }
+    }
+})();
+</script>
+
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_business_hours.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
@@ -66,7 +101,7 @@
 
 <script type="text/javascript">
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-    
+
     var countryElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
     var coordinatesElem = $("#{{ institutionMedicalCenterForm.getChild('coordinates').vars.id }}");
     var streetAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_street");
@@ -124,21 +159,21 @@
                 }
             });
             /* End of Note: Has duplicate code in form.multipleAdd.html.twig */
-            
+
         });
 
     })(jQuery);
 
     function getAddress() {
-        var address = ''; 
+        var address = '';
         if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
         if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
         if(cityElem.val() != '') { address += $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}").val() + ', '; }
         if(countryElem.val() != '') { address += countryInputElem.val(); }
-        
+
         return address;
     }
-    
+
     function updateInstitutionStaticMap() {
         HCAGoogleMap.updateMap(getAddress());
     }
