@@ -24,6 +24,7 @@ class InstitutionMedicalCenterListFilter extends DoctrineOrmListFilter
 
     public function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
         $this->queryBuilder->where('a.institution = :institutionId');
         $this->queryBuilder->setParameter('institutionId', $this->queryParams['institutionId']);
