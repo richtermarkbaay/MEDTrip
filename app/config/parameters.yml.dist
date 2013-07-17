@@ -34,3 +34,10 @@ parameters:
         - { host: 127.0.0.1, port: 11211 }
 
     notifications.enabled: false
+    notification.account_created.enabled: true
+    notification.hospital_profile_created.enabled: true
+    notification.clinic_created.enabled: true
+    notification.new_listings_approved.enabled: false
+    notification.inquiries.enabled: false
+    notification.password_reset.enabled: true
+    notification.password_confirm.enabled: true

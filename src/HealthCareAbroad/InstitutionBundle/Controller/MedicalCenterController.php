@@ -204,7 +204,7 @@ class MedicalCenterController extends InstitutionAwareController
                     InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                 ));
                 $form->bind($request);
-                
+
                 if ($form->isValid()) {
                     $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                     if (isset($formVariables['businessHours'])) {
@@ -261,7 +261,7 @@ class MedicalCenterController extends InstitutionAwareController
                                         'type' => $key.'s',
                                         'toggleBtnId' => 'clinic-edit-'.$key.'s-btn'
                                 ));
-                                
+
                             }
                             return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                         }
@@ -376,10 +376,11 @@ class MedicalCenterController extends InstitutionAwareController
 
                 // TODO: Update this when we have formulated a strategy for our events system
                 // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+                /*
                 $this->get('event_dispatcher')->dispatch(
                     MailerBundleEvents::NOTIFICATIONS_CLINIC_CREATED,
                     new GenericEvent($this->institutionMedicalCenter, array('userEmail' => $request->getSession()->get('userEmail'))));
-
+                */
                 $response = new Response(\json_encode(array('redirect' => $output)), 200, array('content-type' => 'application/json'));
             }
             else {
@@ -401,7 +402,7 @@ class MedicalCenterController extends InstitutionAwareController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function addDoctorAction(Request $request)
-    {    
+    {
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);

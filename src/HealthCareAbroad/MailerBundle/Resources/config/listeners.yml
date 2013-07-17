@@ -20,43 +20,43 @@ parameters:
             user: %notification.support.user%
             password: %notification.support.password%
             subject: "Welcome to HealthcareAbroad.com!"
-            enabled: true
+            enabled: %notification.account_created.enabled%
         notification.hospital_profile_created:
             template: "MailerBundle:EmailTemplates:notification.hospital_profile_created.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: ~
-            enabled: true
+            enabled: %notification.hospital_profile_created.enabled%
         notification.clinic_created:
             template: "MailerBundle:EmailTemplates:notification.clinic_created.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: ~
-            enabled: true
+            enabled: %notification.clinic_created.enabled%
         notification.new_listings_approved:
             template: "MailerBundle:EmailTemplates:notification.new_listings_approved.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: ~
-            enabled: false
+            enabled: %notification.new_listings_approved.enabled%
         notification.inquiries:
             template: "MailerBundle:EmailTemplates:notification.inquiries.html.twig"
             user: %notification.inquiry.user%
             password: %notification.inquiry.password%
             subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
-            enabled: false
+            enabled: %notification.inquiries.enabled%
         notification.password_reset:
             template: "MailerBundle:EmailTemplates:notification.password_reset.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: "HealthcareAbroad.com Password Reset Request"
-            enabled: false
+            enabled: %notification.password_reset.enabled%
         notification.password_confirm:
             template: "MailerBundle:EmailTemplates:notification.password_confirm.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: "HealthcareAbroad.com Password Updated"
-            enabled: false
+            enabled: %notification.password_confirm.enabled%
 services:
 
     listener.notifications:
