@@ -46,9 +46,8 @@ class ClinicCreatedListener extends NotificationsListener
             )
         );
 
-        $accountOwner = $this->container->get('services.institution')->getAccountOwner($institution);
-
-        if (strtolower($to) != strtolower($accountOwner->getEmail())) {
+        $accountOwnerEmail = $this->container->get('services.institution')->getAccountOwner($institution)->getEmail();
+        if (strtolower($to) != strtolower($accountOwnerEmail)) {
             $data['cc'] = $accountOwnerEmail;
         }
 
