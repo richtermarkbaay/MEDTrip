@@ -5,10 +5,30 @@ var Location = {
     
     citiesDropdownElement: null,
 	
+    loadCities: function(countryDropdown, selectedCityId){
+        var countryId = countryDropdown.val();
+        var cityDropdown = countryDropdown.parents('form').find('input[data-custom-type=city_dropdown]');
+        var cityValueContainer = cityDropdown.siblings('input[data-elem=value]');
+        var triggerBtn = cityDropdown.siblings('button.show_list_btn');
+        cityDropdown.attr('disabled', true).val('Loading...');
+        triggerBtn.attr('disabled', true);
+        $.ajax({
+            url:  Location.loadCitiesUrl,
+            data: {'countryId': countryId, 'selectedCityId': selectedCityId, 'loadNonGlobalCities': Location.loadNonGlobalCities },
+            type: 'get',
+            success: function(response){
+                cityDropdown.attr('disabled', false).val('');
+                triggerBtn.attr('disabled', false);
+                var fancyAutocomplete = cityDropdown.data('fancyAutocomplete');
+                fancyAutocomplete.setSource(response.data);
+            }
+         });
+    },
+    
     /**
      * @param jQuery DOM object
      */
-    loadCities : function(elem, selectedCityId)
+    loadCitiesBak : function(elem, selectedCityId)
     {
     	var countryId = elem.val();
 

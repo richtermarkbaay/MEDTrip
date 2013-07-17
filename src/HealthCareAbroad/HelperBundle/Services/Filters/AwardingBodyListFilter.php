@@ -17,6 +17,7 @@ class AwardingBodyListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('c')->from('HelperBundle:AwardingBody', 'c');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {

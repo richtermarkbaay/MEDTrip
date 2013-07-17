@@ -157,16 +157,18 @@ class LocationService
 	        $this->loadedGlobalCityList = \json_decode($response->getBody(true), true);
 	        $hasLoaded = true;
 	    }
-	     
+
 	    return $this->loadedGlobalCityList;
 	}
 	
 	public function getGlobalCitiesListByContry($countryId)
 	{
 	    $response = $this->request->get($this->chromediaApiUri."/country/$countryId/cities");
+
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	    }
+
 	    return \json_decode($response->getBody(true), true);
 	}
 	
@@ -253,7 +255,7 @@ class LocationService
 	
 	public function createCityFromArray(array $data)
 	{
-	    $requiredFields = array('id', 'name', 'countryId', 'slug');
+	    $requiredFields = array('id', 'name', 'country', 'slug');
 	    foreach ($requiredFields as $key) {
 	        if (!\array_key_exists($key, $data)) {
 	            throw LocationServiceException::missingRequiredCityDataKey($key);
@@ -264,10 +266,17 @@ class LocationService
 	    $city->setId($data['id']);
 	    $city->setName($data['name']);
 	    $city->setSlug($data['slug']);
-	    $country=$this->getCountryById($data['countryId']);
-	    $city->setCountry($country);
 	    $city->setStatus(City::STATUS_ACTIVE);
-	    
+
+	    $country = new Country();
+	    $country->setId($data['country']['id']);
+	    $country->setName($data['country']['name']);
+	    $country->setSlug($data['country']['slug']);
+	    $country->setCode($data['country']['code']);
+	    $country->setStatus($data['country']['status']);
+
+	    $city->setCountry($country);
+
 	    return $city;
 	}
 

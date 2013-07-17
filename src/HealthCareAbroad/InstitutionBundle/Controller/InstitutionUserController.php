@@ -88,19 +88,21 @@ class InstitutionUserController extends Controller
     public function editAccountAction(Request $request)
     {
         $error_message = false;
-        $accountId = $request->get('accountId', null);
         $session = $request->getSession();
-        if (!$accountId ){
-            // no account id in parameter, editing currently logged in account
-            $accountId = $session->get('accountId');
-        }
+        
+        $accountId = $session->get('accountId');
         $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
         $this->get('twig')->addGlobal('institution', $this->institution);
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        
+        if(!$institutionUser){
+            
+            throw new AccessDeniedHttpException();
+        }
+        
         $this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE ,ContactDetailTypes::MOBILE ));
-
         $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser,  array('include_terms_agreement' => false, 'institution_types' => false));
         $em = $this->getDoctrine()->getManager();
 

@@ -47,8 +47,8 @@ class CityListType extends AbstractType
    
     public function getParent()
     {
-        return 'custom_select';
-        //return 'choice';
+        //return 'custom_select';
+        return 'choice';
     }
 
     public function getName()

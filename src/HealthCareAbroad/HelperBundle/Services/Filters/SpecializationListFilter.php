@@ -23,24 +23,22 @@ class SpecializationListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
-        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
 
-        $queryBuilder->select('c')->from('TreatmentBundle:Specialization', 'c');
+        $this->queryBuilder->select('c')->from('TreatmentBundle:Specialization', 'c');
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $queryBuilder->where('c.status = :status');
-            $queryBuilder->setParameter('status', $this->queryParams['status']);
+            $this->queryBuilder->where('c.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
         $sortBy = $this->sortBy ? $this->sortBy : 'name';
         $sort = "c.$sortBy " . $this->sortOrder;            
 
-        $queryBuilder->add('orderBy', $sort);
+        $this->queryBuilder->add('orderBy', $sort);
 
-        $this->pager->getAdapter()->setQueryBuilder($queryBuilder);
+        $this->pager->getAdapter()->setQueryBuilder($this->queryBuilder);
 
-        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
-        
         $this->filteredResult = $this->pager->getResults();
     }
 }
