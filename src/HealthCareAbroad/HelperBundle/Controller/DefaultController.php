@@ -35,7 +35,7 @@ class DefaultController extends Controller
         $countryId = $request->get('countryId', 0);
         $selectedCity = $request->get('selectedCityId', 0);
         
-        
+        $selectedCityData = array();
        if($request->get('loadNonGlobalCities')) {
            $data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
        }
@@ -45,11 +45,14 @@ class DefaultController extends Controller
 
            foreach ($countries['data'] as $each){
                $data[] =  array('id' => $each['id'], 'name' => $each['name']);
+               if ($selectedCity == $each['id']) {
+                   $selectedCityData = array('id' => $each['id'], 'name' => $each['name']);
+               }
            }
        }
         
-        $html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
-        $response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
+        //$html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
+        $response = new Response(json_encode(array('data' => $data, 'selectedCity' => $selectedCityData)), 200, array('content-type' => 'application/json'));
 
         return $response;
     }

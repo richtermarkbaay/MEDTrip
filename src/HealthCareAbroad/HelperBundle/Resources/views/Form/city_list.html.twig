@@ -5,7 +5,7 @@
         {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
         <div class="fancy-country-wrapper">
             <input id="{{ elemId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
-            <input data-autocomplete-trigger=".show_list_btn" id="input-{{ elemId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}   placeholder="{{ empty_value }}" data-elem="input" disabled="disabled">
+            <input data-autocomplete-trigger=".show_list_btn" id="input-{{ elemId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}   placeholder="{{ empty_value }}" data-elem="input" disabled="disabled" >
             <button type="button" class="btn show_list_btn" data-elem="btn"><span class="icon-chevron-down"></span></button>
             <div class="combolist-wrapper"></div>
         </div>

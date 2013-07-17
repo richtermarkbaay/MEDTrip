@@ -17,7 +17,12 @@ var Location = {
             data: {'countryId': countryId, 'selectedCityId': selectedCityId, 'loadNonGlobalCities': Location.loadNonGlobalCities },
             type: 'get',
             success: function(response){
-                cityDropdown.attr('disabled', false).val('');
+                var _currentCity = '';
+                if (selectedCityId) {
+                    cityValueContainer.val(selectedCityId);
+                    _currentCity = response.selectedCity.name;
+                }
+                cityDropdown.attr('disabled', false).val(_currentCity);
                 triggerBtn.attr('disabled', false);
                 var fancyAutocomplete = cityDropdown.data('fancyAutocomplete');
                 fancyAutocomplete.setSource(response.data);
