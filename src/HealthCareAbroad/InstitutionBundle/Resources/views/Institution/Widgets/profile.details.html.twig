@@ -141,6 +141,7 @@
 
 {% if isSingleCenter %}
 <!-- InstitutionMedicalCenter businessHours Section -->
+{% set editFormTemplate = 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' %}
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig'
     with {
         title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
@@ -150,7 +151,28 @@
 
     {% block viewContent %}
         <!-- View Mode here -->
-        <ul class="single-listing" id="businessHoursView" ></ul>
+        <ul class="single-listing" id="businessHoursView" >
+          {{ dump(institutionMedicalCenter.isAlwaysOpen)}}
+    		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
+                <li>Open 24/7</li>
+    		{% else %}
+    		    {% for each in institutionMedicalCenter.businessHours %}
+        		   <li>
+        		        {% set _bhData =  business_hours_to_view_data(each) %}
+                        <span class="fbh_selected_days_label">{{ _bhData.daysLabel | upper }}</span>
+                        <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
+                        <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
+                    </li>
+                {% else %}
+                    <div class="alert alert-block">
+                        <p class="hca-helptext">		
+                            You haven't yet added business hours schedule for your {{ institutionLabel }}.
+                        </p>
+                        <button type="button" class="btn btn-primary edit-awards"  onclick="$('#clinic-edit-businessHours-btn').click()"><i class="icon-plus"></i> Add Entry</button>
+                    </div>
+    			{% endfor %}
+    		{% endif %}
+        </ul>
 
     {% endblock %}
 {% endembed %}
