@@ -7,7 +7,7 @@ namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
 use HealthCareAbroad\HelperBundle\Entity\AwardingBody;
 
-class GlobalAwardListFilter extends ListFilter
+class GlobalAwardListFilter extends DoctrineOrmListFilter
 {
 
     function __construct($doctrine)
@@ -62,6 +62,7 @@ class GlobalAwardListFilter extends ListFilter
 
     function setFilteredResults()
     {   
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('HelperBundle:GlobalAward', 'a');
 
         if ($this->queryParams['awardingBody'] != ListFilter::FILTER_KEY_ALL) {
@@ -93,6 +94,8 @@ class GlobalAwardListFilter extends ListFilter
         }
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
         
         $this->filteredResult = $this->pager->getResults();
     }

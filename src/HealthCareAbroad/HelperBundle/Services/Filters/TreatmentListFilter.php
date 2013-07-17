@@ -69,6 +69,7 @@ class TreatmentListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a, b')->from('TreatmentBundle:Treatment', 'a');
         
         if ($this->queryParams['specialization'] != ListFilter::FILTER_KEY_ALL) {
