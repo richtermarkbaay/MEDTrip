@@ -9,16 +9,18 @@ var Location = {
         var countryId = countryDropdown.val();
         var cityDropdown = countryDropdown.parents('form').find('input[data-custom-type=city_dropdown]');
         var cityValueContainer = cityDropdown.siblings('input[data-elem=value]');
-        cityDropdown.attr('disabled', true).val('Loading...').next().attr('disabled', true);
+        var triggerBtn = cityDropdown.siblings('button.show_list_btn');
+        cityDropdown.attr('disabled', true).val('Loading...');
+        triggerBtn.attr('disabled', true);
         $.ajax({
             url:  Location.loadCitiesUrl,
             data: {'countryId': countryId, 'selectedCityId': selectedCityId, 'loadNonGlobalCities': Location.loadNonGlobalCities },
             type: 'get',
             success: function(response){
-                cityDropdown.attr('disabled', false).val('').next().attr('disabled', false);
+                cityDropdown.attr('disabled', false).val('');
+                triggerBtn.attr('disabled', false);
                 var fancyAutocomplete = cityDropdown.data('fancyAutocomplete');
                 fancyAutocomplete.setSource(response.data);
-                console.log('here');
             }
          });
     },
