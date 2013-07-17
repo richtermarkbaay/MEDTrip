@@ -38,25 +38,25 @@ parameters:
             user: %notification.support.user%
             password: %notification.support.password%
             subject: ~
-            enabled: true
+            enabled: false
         notification.inquiries:
             template: "MailerBundle:EmailTemplates:notification.inquiries.html.twig"
             user: %notification.inquiry.user%
             password: %notification.inquiry.password%
             subject: "This Prospective Patient Inquiry is from HealthcareAbroad.com"
-            enabled: true
+            enabled: false
         notification.password_reset:
             template: "MailerBundle:EmailTemplates:notification.password_reset.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: "HealthcareAbroad.com Password Reset Request"
-            enabled: true
+            enabled: false
         notification.password_confirm:
             template: "MailerBundle:EmailTemplates:notification.password_confirm.html.twig"
             user: %notification.support.user%
             password: %notification.support.password%
             subject: "HealthcareAbroad.com Password Updated"
-            enabled: true
+            enabled: false
 services:
 
     listener.notifications:
