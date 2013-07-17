@@ -37,6 +37,8 @@ class InstitutionSpecializationListFilter extends DoctrineOrmListFilter
 
         $this->queryBuilder->add('orderBy', $sort);
         
+        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
+        
         $this->filteredResult = $this->pager->getResults();
     }
 }

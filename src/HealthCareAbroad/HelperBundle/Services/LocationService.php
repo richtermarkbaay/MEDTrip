@@ -72,7 +72,6 @@ class LocationService
 	
 	public function saveGlobalCountry(array $data)
 	{
-        
 	    $country['data'] = $data;
 	    $response = $this->request->post($this->chromediaApiUri.'/country/add', $country);
 	    $country = $this->createCountryFromArray(\json_decode($response->getBody(true), true));
@@ -94,7 +93,6 @@ class LocationService
 	    $params = \array_merge($default, $params);
 	    static $hasLoaded = false;
 	    static $results = array();
-
 	    if (!$hasLoaded) {
 	        $queryString = count($params) ? '?' . http_build_query($params) : '';
 	        $response = $this->request->get($this->chromediaApiUri."/countries" . $queryString);
@@ -130,11 +128,9 @@ class LocationService
 	public function getGlobalCities(array $params)
 	{
 	    static $hasLoaded = false;
-	    $params['data'] = $params;
-	     
 	    if (!$hasLoaded) {
-	         
-	        $response = $this->request->get($this->chromediaApiUri."/cities?status=".$params['status']."&country=".$params['country']."&page=".$params['page']);
+	        $queryString = count($params) ? '?' . http_build_query($params) : '';
+	        $response = $this->request->get($this->chromediaApiUri."/cities" . $queryString);
 	        if (200 != $response->getStatusCode()) {
 	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	        }

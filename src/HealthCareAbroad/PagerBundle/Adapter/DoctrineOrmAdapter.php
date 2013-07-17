@@ -55,6 +55,7 @@ class DoctrineOrmAdapter implements PagerAdapterInterface, \Countable
         }
 
         $aliases = $queryBuilder->getRootAliases();
+        
         $alias = $aliases[0];
 
         $qb = clone $queryBuilder;

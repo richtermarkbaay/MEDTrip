@@ -40,6 +40,8 @@ class AdminUserListFilter extends DoctrineOrmListFilter
         $sort = "a.$sortBy " . $this->sortOrder;
 
     	$queryBuilder->add('orderBy', $sort);
+    	
+    	$this->pagerAdapter->setQueryBuilder($this->queryBuilder);
 
     	$this->filteredResult = $this->pager->getResults();
     }
