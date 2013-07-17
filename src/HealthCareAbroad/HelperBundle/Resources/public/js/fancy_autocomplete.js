@@ -47,6 +47,12 @@ var FancyAutocompleteWidget = function(widget, options){
             return this;
         },
         
+        setSource: function(source){
+            this.options.source = source;
+            
+            return this;
+        },
+        
         disabled: function(disabled){
             var _disabled = (disabled === true || disabled === 1) ;
             
@@ -145,8 +151,9 @@ var FancyAutocompleteWidget = function(widget, options){
             // variable "this" refers to the ui.autocomplete widget
             var dataSource = this.element.data('fancyAutocomplete').options.source;
             $.each(dataSource, function(_i, _each){
-            	if (_each.id && ( !request.term || matcher.test(_each.label))) {
-                    matches.push({'id': _each.id, 'label': _each.label, 'custom_label': _each.custom_label ? _each.custom_label : null });
+                var _label = _each.label ? _each.label : _each.name;
+            	if (_each.id && ( !request.term || matcher.test(_label))) {
+                    matches.push({'id': _each.id, 'label': _label, 'custom_label': _each.custom_label ? _each.custom_label : null });
                 }
             });
 
