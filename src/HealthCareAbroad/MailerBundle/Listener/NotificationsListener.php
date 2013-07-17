@@ -54,13 +54,7 @@ abstract class NotificationsListener
      */
     public function onSendNotification(Event $event)
     {
-        try {
-            $enabled = $this->container->getParameter('notifications.enabled');
-        } catch (InvalidArgumentException $e) {
-            return;
-        }
-
-        if (!$enabled) {
+        if (!$this->isEnabled($event)) {
             return;
         }
 
@@ -177,5 +171,22 @@ abstract class NotificationsListener
         }
 
         return $data;
+    }
+
+    private function isEnabled(Event $event)
+    {
+        try {
+            //"global" parameter
+            $enabled = $this->container->getParameter('notifications.enabled');
+        } catch (InvalidArgumentException $e) {
+            return false;
+        }
+
+        if ($enabled) {
+            $config = $this->templateConfigs[$this->getTemplateConfig($event)];
+            $enabled = isset($config['enabled']) && $config['enabled'];
+        }
+
+        return $enabled;
     }
 }
