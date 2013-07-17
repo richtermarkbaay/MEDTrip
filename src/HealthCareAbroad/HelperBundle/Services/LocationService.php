@@ -255,27 +255,23 @@ class LocationService
 	
 	public function createCityFromArray(array $data)
 	{
-	    $requiredFields = array('id', 'name', 'country', 'slug');
+	    $requiredFields = array('id', 'name', 'slug');
 	    foreach ($requiredFields as $key) {
 	        if (!\array_key_exists($key, $data)) {
 	            throw LocationServiceException::missingRequiredCityDataKey($key);
 	        }
 	    }
-	    
+
 	    $city = new City();
 	    $city->setId($data['id']);
 	    $city->setName($data['name']);
 	    $city->setSlug($data['slug']);
 	    $city->setStatus(City::STATUS_ACTIVE);
 
-	    $country = new Country();
-	    $country->setId($data['country']['id']);
-	    $country->setName($data['country']['name']);
-	    $country->setSlug($data['country']['slug']);
-	    $country->setCode($data['country']['code']);
-	    $country->setStatus($data['country']['status']);
-
-	    $city->setCountry($country);
+	    if(isset($data['country'])) {
+	        $country = $this->createCountryFromArray($data['country']);
+	        $city->setCountry($country);	        
+	    }
 
 	    return $city;
 	}
