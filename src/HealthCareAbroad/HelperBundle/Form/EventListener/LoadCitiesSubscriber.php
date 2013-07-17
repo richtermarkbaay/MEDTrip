@@ -56,11 +56,11 @@ class LoadCitiesSubscriber implements EventSubscriberInterface
         $choices = array(0 => null);
         if ($countryId) {
             $cities = $locationService->getGlobalCitiesListByContry($countryId);
-            foreach ($cities as $id => $value){
+            foreach ($cities['data'] as $id => $value){
                 $choices[$id] = $value['name'];
             }    
         }
-        
+
         $form->add($this->factory->createNamed('city', 'city_list', null, compact('choices')));
     }
 }
