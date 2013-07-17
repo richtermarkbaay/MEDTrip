@@ -1,3 +1,31 @@
 {% block city_list_widget %}
-{% dump(form.parent.country)%}
+    
+    {% spaceless %}
+        {% set empty_value = empty_value is defined and empty_value is not none ? empty_value|trans : '' %}
+        {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
+        <div class="fancy-country-wrapper">
+            <input id="{{ elemId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
+            <input data-autocomplete-trigger=".show_list_btn" id="input-{{ elemId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}   placeholder="{{ empty_value }}" data-elem="input" disabled="disabled">
+            <button type="button" class="btn show_list_btn" data-elem="btn"><span class="icon-chevron-down"></span></button>
+            <div class="combolist-wrapper"></div>
+        </div>
+        
+        {% set jsFiles = [asset('bundles/helper/js/fancy_autocomplete.js')] %}
+        
+        <!-- TODO: Need to move and improve js implementation -->
+        <script type="text/javascript">
+        (function($){
+            $(function(){
+                var _inputElem = $('#input-{{ elemId }}');
+                var _valueContainer = $('#{{ elemId }}');
+                _inputElem.fancyAutocomplete({
+                    source: [],
+                    maxItems: 0,
+                    valueContainer:  _valueContainer,
+                    autocomplete: {minLength: 0}
+                });
+            });
+        })(jQuery);
+        </script>
+    {% endspaceless %}
 {% endblock %}
