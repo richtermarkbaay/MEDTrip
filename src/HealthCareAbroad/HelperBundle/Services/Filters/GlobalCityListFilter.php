@@ -34,8 +34,8 @@ class GlobalCityListFilter extends ArrayListFilter
     function setCountryFilterOption()
     {
         // Set The Filter Option
-        $countries = $this->getInjectedDependcy('services.location')->getAllGlobalCountries();
-        foreach($countries as $each) {
+        $countries = $this->getInjectedDependcy('services.location')->getGlobalCountries();
+        foreach($countries['data'] as $each) {
             $options[$each['id']] = $each['name'];
         }
     

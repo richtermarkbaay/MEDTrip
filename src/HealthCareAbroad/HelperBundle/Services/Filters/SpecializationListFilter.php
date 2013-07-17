@@ -39,6 +39,8 @@ class SpecializationListFilter extends DoctrineOrmListFilter
 
         $this->pager->getAdapter()->setQueryBuilder($queryBuilder);
 
+        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
+        
         $this->filteredResult = $this->pager->getResults();
     }
 }

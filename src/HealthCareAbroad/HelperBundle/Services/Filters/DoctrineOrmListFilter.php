@@ -19,6 +19,6 @@ abstract class DoctrineOrmListFilter extends ListFilter {
         $this->doctrine = $doctrine;
 
         $queryBuilder = $doctrine->getEntityManager()->createQueryBuilder();
-        $this->pagerAdapter = new DoctrineOrmAdapter($queryBuilder);
+        $this->pagerAdapter = new DoctrineOrmAdapter();
     }
 }

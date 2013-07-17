@@ -25,6 +25,8 @@ class ErrorReportListFilter extends DoctrineOrmListFilter
 
         $this->queryBuilder->orderBy('a.id', 'ASC');
         
+        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
+        
         $this->filteredResult = $this->pager->getResults();
     }
 }

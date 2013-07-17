@@ -42,16 +42,19 @@ class DefaultController extends Controller
        else {
            $data =  array();
            $countries = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
+
+           //TODO:  Temporary FIX
+           if(!isset($countries['data']) && is_array($countries)) {
+               $countries['data'] = $countries;
+           }
+           
            foreach ($countries['data'] as $each){
-               $data[] =  array(
-                               'id' => $each['id'],
-                               'name' => $each['name']
-                               );
+               $data[] =  array('id' => $each['id'], 'name' => $each['name']);
            }
        }
         
         $html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
-        $response = new Response(json_encode(array('data' => $data, 'html' => $html)), 200, array('content-type' => 'application/json'));
+        $response = new Response(json_encode(array('data' => $countries, 'html' => $html)), 200, array('content-type' => 'application/json'));
 
         return $response;
     }
