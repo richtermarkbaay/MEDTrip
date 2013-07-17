@@ -152,7 +152,6 @@
     {% block viewContent %}
         <!-- View Mode here -->
         <ul class="single-listing" id="businessHoursView" >
-          {{ dump(institutionMedicalCenter.isAlwaysOpen)}}
     		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
                 <li>Open 24/7</li>
     		{% else %}
