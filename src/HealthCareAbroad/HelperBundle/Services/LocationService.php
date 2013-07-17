@@ -163,10 +163,12 @@ class LocationService
 	
 	public function getGlobalCitiesListByContry($countryId)
 	{
-	    $response = $this->request->get($this->chromediaApiUri."/cities?$countryId");
+	    $response = $this->request->get($this->chromediaApiUri."/country/$countryId/cities");
+	    
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
 	    }
+	    
 	    return \json_decode($response->getBody(true), true);
 	}
 	
