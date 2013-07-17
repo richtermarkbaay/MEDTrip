@@ -8,7 +8,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use HealthCareAbroad\LogBundle\Entity\ErrorLog;
 
 /**
- * Services handling the ErrorLog entity class
+ * Service handling the ErrorLog entity class
  *
  *
  * @author Harold Modesto <harold.modesto@chromedia.com>
