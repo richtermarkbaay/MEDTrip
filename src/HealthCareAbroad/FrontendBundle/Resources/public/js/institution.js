@@ -54,12 +54,9 @@ var InstitutionInquiry = {
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false)
                 .hide();
+                $('#_closeBtnTrigger').html('Close');
                 InstitutionInquiry.showAlertSuccess();
                 InstitutionInquiry.institutionInquiryComponents.form.hide();
-                setTimeout(function() {
-                	InstitutionInquiry.institutionInquiryComponents.modal.modal('hide');
-                }, 2000);
-                
                 
             },
             error: function(response){
