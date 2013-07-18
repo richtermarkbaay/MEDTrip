@@ -1728,6 +1728,17 @@ CREATE TABLE IF NOT EXISTS `treatment_sub_specializations` (
   KEY `sub_specialization_id` (`sub_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='association table for treatment and sub_specializations';
 
+--
+-- Table structure for table `user_contact_details`
+--
+
+DROP TABLE IF EXISTS `user_contact_details`;
+CREATE TABLE IF NOT EXISTS `user_contact_details` (
+  `account_id` bigint(20) unsigned NOT NULL,
+  `contact_detail_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`account_id`,`contact_detail_id`),
+  KEY `contact_detail_id` (`contact_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
 -- --------------------------------------------------------
@@ -1953,3 +1964,10 @@ ALTER TABLE `treatments`
 ALTER TABLE `treatment_sub_specializations`
   ADD CONSTRAINT `treatment_sub_specializations_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `treatment_sub_specializations_ibfk_2` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+--
+-- Constraints for table `user_contact_details`
+--
+ALTER TABLE `user_contact_details`
+  ADD CONSTRAINT `user_contact_details_ibfk_1` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
