@@ -1,4 +1,4 @@
-{% embed 'InstitutionBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
+{% embed 'AdminBundle:Embed:modalBox.base.html.twig' with {'modal': {'id' : modalId, 'title': modalTitle, 'customBodyStyle' : 'max-height:200px;'}} %}
     {% block modalBody %}
     <form novalidate="novalidate" action="{{ path('admin_institution_medicalCenter_updateStatus', {'imcId': institutionMedicalCenter.id, 'institutionId' : institution.id} ) }}" id="status_medicalCenter_form" method="POST" class="basic-form">        
         {{ form_errors(form) }}   
