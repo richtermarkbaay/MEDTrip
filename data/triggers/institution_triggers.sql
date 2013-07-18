@@ -34,7 +34,7 @@ BEGIN
         WHERE `institution_id` = OLD.`id`;
 
     -- clinic status has been changed from ACTIVE to NON-ACTIVE
-    ELSEIF OLD.`status` = @ACTIVE_INSTITUTION_STATUS AND NEW.`status` != @ACTIVE_INSTITUTION_STATUS THEN
+    ELSEIF OLD.`status` = @ACTIVE_INSTITUTION_STATUS AND OLD.`status` != NEW.`status` THEN
         -- update statuses of existing search terms referencing this medical center to INACTIVE_SEARCH_TERM_STATUS
         UPDATE `search_terms` SET `status` = @INACTIVE_SEARCH_TERM_STATUS
         WHERE `institution_id` = OLD.`id`;
