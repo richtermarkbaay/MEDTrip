@@ -156,6 +156,191 @@ INSERT INTO `countries` (`id`, `name`, `abbr`, `code`, `slug`, `status`) VALUES
 (1, 'USA', 'test', 'test', 'test', 1),
 (2, 'PHIL', 'ph', 'ph', 'ph', 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_cities`
+--
+
+DROP TABLE IF EXISTS `geo_cities`;
+CREATE TABLE IF NOT EXISTS `geo_cities` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `geo_country_id` int(10) unsigned NOT NULL COMMENT 'geo_countries.id',
+  `timezone` int(2) unsigned DEFAULT NULL COMMENT 'utc offset',
+  `latitude` float DEFAULT NULL,
+  `longitude` float DEFAULT NULL,
+  `population` int(11) DEFAULT NULL,
+  `geo_state_id` bigint(20) unsigned DEFAULT NULL,
+  `county` varchar(255) DEFAULT NULL COMMENT 'Name of county. US only',
+  `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `__old_country_id` int(10) unsigned DEFAULT NULL COMMENT 'old countries.id',
+  `__old_city_id` int(10) unsigned DEFAULT NULL COMMENT 'old cities.id',
+  `__region_code` int(11) DEFAULT NULL,
+  `__sub_region_code` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `__adm1_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `__adm1_full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `__adm2_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The name of a subdivision of a second-order administrative division, or known as a county in the United States. (US only).',
+  `__adm2_full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `country_id` (`geo_country_id`),
+  KEY `geo_state_id` (`geo_state_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2686938 ;
+
+--
+-- Dumping data for table `geo_cities`
+--
+
+INSERT INTO `geo_cities` (`id`, `name`, `geo_country_id`, `timezone`, `latitude`, `longitude`, `population`, `geo_state_id`, `county`, `slug`, `status`, `__old_country_id`, `__old_city_id`, `__region_code`, `__sub_region_code`, `__adm1_code`, `__adm1_full_name`, `__adm2_code`, `__adm2_full_name`) VALUES
+(1, 'Oranjestad', 1, NULL, 12.5333, 12.5333, 42, 1, 'test', 'test', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_countries`
+--
+
+DROP TABLE IF EXISTS `geo_countries`;
+CREATE TABLE IF NOT EXISTS `geo_countries` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `cc_fips` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cc_iso` varchar(2) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `top_level_domain` varchar(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country_code` int(10) unsigned DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `old_country_id` int(10) unsigned DEFAULT NULL,
+  `status` smallint(6) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=524 ;
+
+--
+-- Dumping data for table `geo_countries`
+--
+
+INSERT INTO `fixtures_chromedia_global`.`geo_countries` (`id`, `name`, `cc_fips`, `cc_iso`, `top_level_domain`, `country_code`, `slug`, `old_country_id`, `status`) VALUES ('1', 'test', 'aa', 'aw', '.aw', '1', 'test', NULL, '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_regions`
+--
+
+DROP TABLE IF EXISTS `geo_regions`;
+CREATE TABLE IF NOT EXISTS `geo_regions` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `geo_regions`
+--
+
+INSERT INTO `geo_regions` (`id`, `name`) VALUES
+(1, 'Africa'),
+(2, 'Americas'),
+(3, 'Antarctica'),
+(4, 'Asia'),
+(5, 'Europe'),
+(6, 'Oceania');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_states`
+--
+
+DROP TABLE IF EXISTS `geo_states`;
+CREATE TABLE IF NOT EXISTS `geo_states` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `geo_country_id` int(10) unsigned NOT NULL,
+  `administrative_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'First-Order Administrative Division Code',
+  PRIMARY KEY (`id`),
+  KEY `geo_country_id` (`geo_country_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3702 ;
+
+--
+-- Dumping data for table `geo_states`
+--
+
+INSERT INTO `fixtures_chromedia_global`.`geo_states` (`id`, `name`, `geo_country_id`, `administrative_code`) VALUES ('1', 'test', '1', '01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `geo_sub_regions`
+--
+
+DROP TABLE IF EXISTS `geo_sub_regions`;
+CREATE TABLE IF NOT EXISTS `geo_sub_regions` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `region_id` int(10) unsigned NOT NULL,
+  `code` char(2) DEFAULT NULL,
+  `name` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `region_id` (`region_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=35 ;
+
+--
+-- Dumping data for table `geo_sub_regions`
+--
+
+INSERT INTO `geo_sub_regions` (`id`, `region_id`, `code`, `name`) VALUES
+(1, 1, '1A', 'Central Africa'),
+(2, 1, '1B', 'Eastern Africa');
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `region`
+--
+
+DROP TABLE IF EXISTS `region`;
+CREATE TABLE IF NOT EXISTS `region` (
+  `region_code` int(11) DEFAULT NULL,
+  `region_name` varchar(10) COLLATE utf8_bin DEFAULT NULL,
+  KEY `idx_region_code` (`region_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `region`
+--
+
+INSERT INTO `region` (`region_code`, `region_name`) VALUES
+(1, 'Africa'),
+(2, 'Americas'),
+(3, 'Antarctica'),
+(4, 'Asia'),
+(5, 'Europe'),
+(6, 'Oceania');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sub_region`
+--
+
+DROP TABLE IF EXISTS `sub_region`;
+CREATE TABLE IF NOT EXISTS `sub_region` (
+  `sub_region_code` char(2) COLLATE utf8_bin DEFAULT NULL,
+  `sub_region_name` varchar(20) COLLATE utf8_bin DEFAULT NULL,
+  KEY `idx_sub_region_code` (`sub_region_code`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `sub_region`
+--
+
+
+INSERT INTO `sub_region` (`sub_region_code`, `sub_region_name`) VALUES
+('1A', 'Central Africa'),
+('1B', 'Eastern Africa'),
+('1C', 'Indian Ocean');
+
 --
 -- Constraints for dumped tables
 --
@@ -172,6 +357,13 @@ ALTER TABLE `account_applications`
 --
 ALTER TABLE `cities`
   ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `geo_cities`
+--
+ALTER TABLE `geo_cities`
+  ADD CONSTRAINT `geo_cities_ibfk_2` FOREIGN KEY (`geo_state_id`) REFERENCES `geo_states` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `geo_cities_ibfk_1` FOREIGN KEY (`geo_country_id`) REFERENCES `geo_countries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

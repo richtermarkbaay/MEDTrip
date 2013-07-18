@@ -61,7 +61,7 @@ class PlainTextMailer implements MailerInterface
      * @param string $fromEmail
      * @param string $toEmail
      */
-    public function sendMessage($renderedTemplate, $fromEmail, $toEmail)
+    public function sendMessage($data)
     {
         // Render the email, use the first line as the subject, and the rest as the body
         $renderedLines = explode("\n", trim($renderedTemplate));
