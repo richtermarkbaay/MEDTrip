@@ -8,7 +8,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
-class InstitutionRankingListFilter extends ListFilter
+class InstitutionRankingListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
@@ -63,7 +63,7 @@ class InstitutionRankingListFilter extends ListFilter
         );
     }
     
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
@@ -82,5 +82,9 @@ class InstitutionRankingListFilter extends ListFilter
         $sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
+        
+        $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
+        
+        $this->filteredResult = $this->pager->getResults();
     }
 }
