@@ -22,9 +22,10 @@
                         <li>
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') | title }} {{ app.session.get('userLastName') | title }}<i class="icon-caret-down"></i></a>
                             <ul class="dropdown-menu">
-                               {# <li> <a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a> </li>#}
-                                 {#<li class="divider"> </li>
-                               <li> <a href="{{ path('institution_invite_user') }}"><i class="icon-user"></i> Invite User</a> </li>#}
+                               {# <li> <a href="manage-account-profile.html"><i class="icon-edit"></i> Manage Account</a> </li>
+                                 <li class="divider"> </li>
+                               <li> <a href="{{ path('institution_invite_user') }}"><i class="icon-user"></i> Invite User</a> </li>
+                               #}
                                 <li class="divider"> </li>
                                 <li class="nav-header"> Logged in as:  </li>
                                 <li class="text"> {{ app.session.get('userEmail') }}  </li>
