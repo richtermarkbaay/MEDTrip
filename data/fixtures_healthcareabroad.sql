@@ -418,6 +418,24 @@ CREATE TABLE IF NOT EXISTS `command_script_logs` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contact_details`
+--
+
+CREATE TABLE IF NOT EXISTS `contact_details` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `type` tinyint(4) DEFAULT NULL,
+  `number` varchar(25) NOT NULL,
+  `country_code` int(11) DEFAULT NULL,
+  `area_code` varchar(25) DEFAULT NULL,
+  `abbr` varchar(25) DEFAULT NULL,
+  `extension` varchar(5) DEFAULT NULL,
+  `from_new_widget` tinyint(4) DEFAULT NULL,
+  `is_invalid` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2731 ;
 
 -- --------------------------------------------------------
 
@@ -888,13 +906,18 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `coordinates` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `business_hours` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `old_business_hours` varchar(500) COLLATE ucs2_unicode_ci DEFAULT NULL,
+  `s_always_open` tinyint(1) DEFAULT NULL,
   `contact_number` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact_email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `websites` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `website_back_up` text COLLATE ucs2_unicode_ci,
   `social_media_sites` varchar(300) COLLATE ucs2_unicode_ci DEFAULT NULL,
   `description_highlight` varchar(200) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'this is the text that will appear in the results pages. 200 chars only',
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `logo_id` bigint(20) unsigned DEFAULT NULL,
+  `paying_client` smallint(1) unsigned DEFAULT NULL,
+  `ranking_points` int(11) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` varchar(250) CHARACTER SET latin1 NOT NULL,
@@ -908,9 +931,24 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 -- Dumping data for table `institution_medical_centers`
 --
 
-INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `coordinates`, `business_hours`, `contact_number`, `contact_email`, `websites`, `social_media_sites`, `description_highlight`, `description`, `logo_id`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', '', '', '', NULL, 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
-(2, 2, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', '', '', '', NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `coordinates`, `business_hours`, `old_business_hours`, `s_always_open`, `contact_number`, `contact_email`, `websites`, `website_back_up`, `social_media_sites`, `description_highlight`, `description`, `logo_id`, `paying_client`, `ranking_points`, `date_created`, `date_updated`, `slug`, `status`) VALUES
+(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, '', '{"Monday":{"from":" 8:30 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:30 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:30 AM","to":" 5:30 PM"},"Friday":{"from":" 8:30 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:30 AM","to":"12:30 PM"}}', NULL, NULL, '', '', '', NULL, NULL, 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, NULL, NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
+(2, 2, 'Audiology Services', NULL, '', '{"Monday":{"from":" 8:00 AM","to":" 5:30 PM"},"Tuesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Wednesday":{"from":" 8:00 AM","to":" 5:30 PM"},"Thursday":{"from":" 8:00 AM","to":" 5:30 PM"},"Friday":{"from":" 8:00 AM","to":" 5:30 PM"},"Saturday":{"from":" 8:00 AM","to":"12:30 PM"}}', NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, NULL, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `institution_medical_center_contact_details`
+--
+
+DROP TABLE IF EXISTS `institution_medical_center_contact_details`;
+CREATE TABLE IF NOT EXISTS `institution_medical_center_contact_details` (
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `contact_detail_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`institution_medical_center_id`,`contact_detail_id`),
+  KEY `contact_detail_id` (`contact_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 -- --------------------------------------------------------
 
 --
@@ -1815,6 +1853,13 @@ ALTER TABLE `institution_invitations`
 ALTER TABLE `institution_medical_centers`
   ADD CONSTRAINT `institution_medical_centers_ibfk_2` FOREIGN KEY (`logo_id`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `institution_medical_center_contact_details`
+--
+ALTER TABLE `institution_medical_center_contact_details`
+  ADD CONSTRAINT `institution_medical_center_contact_details_ibfk_2` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_medical_center_contact_details_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `institution_medical_center_media`
