@@ -14,7 +14,13 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 class InstitutionControllerTest extends InstitutionBundleWebTestCase
 {
 	
-	public function testEditInformation()
+    public function testViewAllStaffAction()
+    {
+        $viewAllStaffUrl = '';
+    }
+   
+    
+	/*public function testEditInformation()
 	{ 
 		$editAccountUrl = '/institution/edit-information/1';
 		
@@ -63,6 +69,6 @@ class InstitutionControllerTest extends InstitutionBundleWebTestCase
 		
 		
 		
-	}
+	}*/
 	
 }

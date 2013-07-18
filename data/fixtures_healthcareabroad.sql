@@ -197,10 +197,10 @@ CREATE TABLE IF NOT EXISTS `advertisement_denormalized_properties` (
   `treatment_id` int(10) unsigned NOT NULL,
   `sub_specialization_id` int(10) unsigned NOT NULL,
   `specialization_id` int(10) unsigned NOT NULL,
-  `institution_medical_center_id` int(10) unsigned DEFAULT NULL,
+  `institution_medical_center_id` int(10) unsigned NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `city_id` int(10) unsigned NOT NULL,
-  `media_id` bigint(20) unsigned DEFAULT NULL,
+  `media_id` bigint(20) unsigned NOT NULL,
   `video_url` varchar(200) NOT NULL,
   `external_url` varchar(200) NOT NULL,
   `highlights` text NOT NULL,
@@ -228,7 +228,6 @@ CREATE TABLE IF NOT EXISTS `advertisement_media` (
   PRIMARY KEY (`advertisement_id`,`media_id`),
   KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -379,7 +378,30 @@ CREATE TABLE IF NOT EXISTS `breadcrumb_tree` (
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `business_hours`
+--
+DROP TABLE IF EXISTS `business_hours`;
+CREATE TABLE IF NOT EXISTS `business_hours` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `institution_medical_center_id` bigint(20) unsigned NOT NULL,
+  `weekday_bit_value` int(10) unsigned NOT NULL,
+  `opening` time DEFAULT NULL,
+  `closing` time DEFAULT NULL,
+  `notes` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1
 
+--
+-- Dumping data for table `business_hours`
+--
+
+INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES(25, 456, 1, '10:00:00', '11:00:00', '');
+INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES(26, 456, 12, '10:00:00', '11:00:00', '');
+INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES(27, 456, 64, '10:00:00', '18:00:00', '');
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `cities`
 --
@@ -508,7 +530,7 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   `contact_number` text,
   `details` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `country_id` int(10) unsigned DEFAULT NULL,
-  `media_id` bigint(20) DEFAULT NULL,
+  `media_id` bigint(20) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
@@ -586,13 +608,14 @@ CREATE TABLE IF NOT EXISTS `error_reports` (
 --
 -- Table structure for table `feedback_messages`
 --
-
+DROP TABLE IF EXISTS `feedback_messages`;
 CREATE TABLE IF NOT EXISTS `feedback_messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(500) NOT NULL,
   `email_address` varchar(250) NOT NULL,
   `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `remote_address` varchar(100) NOT NULL,
+  `country_id` int(15) NOT NULL,
   `http_user_agent` varchar(500) DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
@@ -722,17 +745,17 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
   `contact_number` text,
   `message` text NOT NULL,
   `inquiry_subject_id` int(10) unsigned DEFAULT NULL,
-  `clinic_name` varchar(250) DEFAULT NULL,
+  `clinic_name` varchar(100) DEFAULT NULL,
   `country_id` int(10) unsigned DEFAULT NULL,
   `city_id` int(10) unsigned DEFAULT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `http_user_agent` varchar(250) NOT NULL,
   `remote_address` varchar(250) NOT NULL,
+  `http_user_agent` varchar(250) DEFAULT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `inquiry_subject_id` (`inquiry_subject_id`),
-  KEY `city_id` (`city_id`),
-  KEY `country_id` (`country_id`)
+  KEY `country_id` (`country_id`),
+  KEY `city_id` (`city_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
@@ -783,7 +806,8 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `contact_email` varchar(100) NOT NULL,
   `contact_number` text NOT NULL,
   `websites` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-  `social_media_sites` varchar(250) DEFAULT NULL,
+  `website_back_up` text,
+  `social_media_sites` varchar(250) DEFAULT '{facebook:"",twitter:"",googleplus:""}',
   `address1` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address_hint` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
   `city_id` int(10) unsigned DEFAULT NULL,
@@ -791,10 +815,12 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `zip_code` char(10) DEFAULT NULL,
   `state` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `coordinates` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `paying_client` smallint(1) unsigned DEFAULT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `signup_step_status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  `total_clinic_ranking_points` int(11) DEFAULT NULL COMMENT 'temporary field. this is the sum all ranking points of clinics of this institution',
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
@@ -814,8 +840,21 @@ INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `lo
 (4, 1, 'Apollo Hospital, Chennai', 'The flagship hospital of the Apollo Group, Apollo Hospitals Chennai, was established in 1983. Today it is one of the most respected hospitals in the world, and is also amongst the most preferred destinations for both patients from several parts of India, as well as for medical tourism and medical value travel. The hospital specializes in cutting-edge medical procedures. It has over 60 departments spearheaded by internationally trained doctors who are skillfully supported by dedicated patient-care personnel. It is one of the few hospitals in Chennai that have state of the art facilities for various health disorders.\r\n\r\nIt has been a pioneer among the hospitals in Chennai, and even in India, in many different treatments and procedures.', NULL, NULL, 'enquiry@apollohospitals.com', '{"country_code":"","area_code":"","number":""}', '{"main":"","facebook":"","twitter":""}', '{"room_number":"","building":"","street":"Apollo Hospitals - Chennai No. 21, Greams Lane, Off. Greams Road, Chennai 600006 India"}', 22151, 1, '600006', 'Tammil Nadu', '', '2013-01-16 05:08:04', '2012-12-06 07:46:49', 'apollo-hospital-chennai', 0, 8),
 (5, 1, 'Apollo Hospital, Hyderabad', 'Today, Apollo Hospitals, Hyderabad has risen to be on par with the best in the world, in terms of technical expertise, deliverables and outcomes. It has now evolved into a one of a kind institution , the Apollo Health City, Hyderabad, which is the first health city in Asia and a perfect example of an integrated healthcare system offering solutions across the healthcare space. A 350 bedded multi-specialty hospital with over 50 specialties and super-specialties, 10 Centers of Excellence, education, research, information technology, all in one sprawling campus creates an environment dedicated to healing.\r\n\r\nApollo Health City , Hyderabad covers the entire spectrum from illness to wellness and is thus a health city and not a medical city. Institutes for Heart Diseases, Cancer, Joint Diseases, Emergency, Renal Diseases, Neurosciences, Eye and Cosmetic Surgery are all centers of excellence and are positioned to offer the best care in the safest manner to every patient.\r\n\r\nApart from patient care, each of these Centers of Excellence spend a significant amount of time in training and research essentially aimed at preventing disease and improving outcomes when the disease does occur.\r\n\r\nMost of the consultants at the Health city have international experience either educational, work experience - related or observational. The average staff to patient ratio for the hospital is 3:1 with a 1:1 ratio prevailing in priority areas like the Intensive Care Unit and the Cardiac Care Unit.\r\n\r\nApollo Healthcity, Hyderabad handles close to 100,000 patients a year. International patients from Tanzania, the USA, the UAE, Kenya, Oman and neighbouring Asian countries are treated by the hospital every year.', NULL, NULL, 'apollohealthcity@apollohospitals.com', '', '', 'Apollo Hospitals Jubilee Hills Hyderabad Andhra Pradesh 500033 India', 20484, 1, '500033', 'Andra Pradesh', '', '2013-01-16 05:08:04', '2012-12-06 07:56:18', 'apollo-hospital-hyderabad', 0, 8);
 
+
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `institution_contact_details`
+--
+DROP TABLE IF EXISTS `institution_contact_details`;
+CREATE TABLE IF NOT EXISTS `institution_contact_details` (
+  `institution_id` int(10) unsigned NOT NULL,
+  `contact_detail_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`institution_id`,`contact_detail_id`),
+  KEY `contact_detail_id` (`contact_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `institution_global_awards`
 --
@@ -860,12 +899,12 @@ CREATE TABLE IF NOT EXISTS `institution_inquiries` (
   `institution_id` int(10) unsigned NOT NULL,
   `institution_medical_center_id` bigint(20) unsigned DEFAULT NULL COMMENT 'Null if this was made in the hospital profile page',
   `inquirer_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `inquirer_email` int(11) NOT NULL,
-  `country_id` int(10) unsigned NOT NULL,
+  `inquirer_email` varchar(500) NOT NULL,
   `message` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `remote_address` varchar(100) NOT NULL,
-  `http_user_agent` varchar(100) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `country_id` int(11) DEFAULT NULL,
+  `remote_address` varchar(250) DEFAULT NULL,
+  `http_user_agent` varchar(250) DEFAULT NULL,
   `status` tinyint(3) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `institution_id` (`institution_id`),
@@ -1800,6 +1839,13 @@ ALTER TABLE `advertisement_type_configurations`
   ADD CONSTRAINT `advertisement_type_configurations_ibfk_1` FOREIGN KEY (`advertisement_type_id`) REFERENCES `advertisement_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `business_hours`
+--
+ALTER TABLE `business_hours`
+  ADD CONSTRAINT `business_hours_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--
 -- Constraints for table `cities`
 --
 ALTER TABLE `cities`
@@ -1851,7 +1897,15 @@ ALTER TABLE `inquiries`
 --
 ALTER TABLE `institutions`
   ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`logo_id`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-  
+
+--
+-- Constraints for table `institution_contact_details`
+--
+ALTER TABLE `institution_contact_details`
+  ADD CONSTRAINT `institution_contact_details_ibfk_1` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_contact_details_ibfk_2` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
 --
 -- Constraints for table `institution_invitations`
 --
