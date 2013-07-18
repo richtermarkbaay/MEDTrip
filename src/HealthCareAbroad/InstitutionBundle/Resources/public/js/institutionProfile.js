@@ -415,17 +415,20 @@ var InstitutionProfile = {
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;
+                    	var hasError = false;
                     	$.each(websites, function(type) {
-                    		if($.trim(websites[type]) != '') {
-                    			if($('._twitter-wrapper').html() == 'no account added.'){
-                    				$('#institution-socialMediaSites > div').attr('class','alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type]+'</b>');
-                    			}else{
-                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
-                    			}
-                    		} else {
-                    			$('#institution-socialMediaSites > div').addClass('alert alert-block').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
-                    		}
+	                    		if($.trim(websites[type]) != '') {
+	                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+	                    		}else{
+	                    			hasError = true;
+	                    			$('#institution-socialMediaSites > div').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
+	                        	}
                     	});
+                    	
+                    	if(hasError){
+                    		$('#institution-socialMediaSites > div').addClass('alert alert-block');
+                    	}
+                    	
                     	break;
                     case 'serviceForm':
                     	$('#serviesText').html(response.html);
