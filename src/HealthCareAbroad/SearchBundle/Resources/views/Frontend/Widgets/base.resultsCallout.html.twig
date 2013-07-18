@@ -4,14 +4,18 @@
         <h2 class="heading search-info">
             {% if count > 0 %}
                 {% if isArraySearchLabel is defined and isArraySearchLabel %}
-                    We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }} 
+                    We have found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} that {{ count > 1 ? ' offer ' : ' offers ' }}
                     <strong>{{ searchLabel.treatment }} in {{ searchLabel.destination }}</strong>
                 {% else %}
                     Search Results for <strong>{{ searchLabel }}</strong>
                 {% endif %}
             {% else %}
-                We have found no clinics that offer <strong>{{ searchLabel }}</strong>
-            {% endif %}        
+                {% if isArraySearchLabel is defined and isArraySearchLabel %}
+                    We have found no clinics that offer <strong>{{ searchLabel.treatment }} in {{ searchLabel.destination }}</strong>
+                {% else %}
+                    Search Results for <strong>{{ searchLabel }}</strong>
+                {% endif %}
+            {% endif %}
         </h2>
         <a href="{{ path('frontend_main_homepage') }}" class="btn green"><span class="hca-sprite list-icon"></span> Back to Search</a>
     {% endblock %}
