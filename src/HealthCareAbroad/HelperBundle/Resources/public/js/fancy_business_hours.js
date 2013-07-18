@@ -532,10 +532,8 @@ var FancyBusinessHourWidget = function(owner){
         else {
             // no initial data, set to current time
             this.openingTimePickerData = new Date();
-            this.openingTimePickerData.setMinutes(0); // reset minutes to 0
-            this.openingTimePickerData.setSeconds(0); // reset seconds to 0
-            this.openingTimePickerData.setMilliseconds(0); // reset milliseconds to 0
-            this.closingTimePickerData = new Date(this.openingTimePickerData.getTime()+(60*MINUTES)); // set to one hour from opening time
+            this.closingTimePickerData = new Date();
+            this.setDefaultData();
         }
         this._initializeTimepickerWidget(this.openingTimePicker, this.openingTimePickerData); // init the opening time widget
         this._initializeTimepickerWidget(this.closingTimePicker, this.closingTimePickerData); // init the closing time widget
@@ -556,6 +554,7 @@ var FancyBusinessHourWidget = function(owner){
             if (_data) {
                 _widget._owner.addData(_data.weekdays, _data.openingDateTime, _data.closingDateTime, _data.notes);
             }
+            _widget.resetForm();
             
             return false;
         });
@@ -572,7 +571,28 @@ var FancyBusinessHourWidget = function(owner){
         return this;
     }; // -- end of initialize
     
+    FancyBusinessHourWidget.setDefaultData = function(){
+     
+        
+        this.openingTimePickerData.setHours(8); // default to 8am
+        this.openingTimePickerData.setMinutes(0); // reset minutes to 0
+        this.openingTimePickerData.setSeconds(0); // reset seconds to 0
+        this.openingTimePickerData.setMilliseconds(0); // reset milliseconds to 0
+        //this.closingTimePickerData = new Date(this.openingTimePickerData.getTime()+(60*MINUTES)); // set to one hour from opening time
+        
+        this.closingTimePickerData.setHours(17); // defaut to 5pm
+        this.closingTimePickerData.setMinutes(0); // reset minutes to 0
+        this.closingTimePickerData.setSeconds(0); // reset seconds to 0
+        this.closingTimePickerData.setMilliseconds(0); // reset milliseconds to 0
+    };
     
+    FancyBusinessHourWidget.resetForm = function(){
+        this.element.find('input.fbh_weekdays:checked').attr('checked', false);
+        this.notesElement.val('');
+        this.setDefaultData();
+        this.openingTimePicker.val(toTimepickerString(this.openingTimePickerData));
+        this.closingTimePicker.val(toTimepickerString(this.closingTimePickerData));
+    };
     
     /** internal helper functions **/
     // initialize timepicker widget
