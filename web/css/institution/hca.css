@@ -579,8 +579,6 @@ hr {
             margin-top: 0px; }
           #content section.section .row-fluid.hca-edit-box .accordion {
             width: 100%; }
-            #content section.section .row-fluid.hca-edit-box .accordion .accordion-inner {
-              padding: 0; }
           #content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
             margin: 10px 20px 15px 20px; }
           #content section.section .row-fluid.hca-edit-box h3 {
@@ -2162,7 +2160,10 @@ span.rollover {
   .doctors-new-listing .doctor-heading, .doctors-new-listing .specializations-heading, .specializations-profile-listing .doctor-heading, .specializations-profile-listing .specializations-heading {
     background-color: #e1e1e1;
     padding: 10px 20px 2px 10px; }
-    .doctors-new-listing .doctor-heading.hca-clinic-specialization-item, .doctors-new-listing .specializations-heading.hca-clinic-specialization-item, .specializations-profile-listing .doctor-heading.hca-clinic-specialization-item, .specializations-profile-listing .specializations-heading.hca-clinic-specialization-item {
+    .doctors-new-listing .doctor-heading.hca-clinic-specialization-item, 
+    .doctors-new-listing .specializations-heading.hca-clinic-specialization-item, 
+    .specializations-profile-listing .doctor-heading.hca-clinic-specialization-item, 
+    .specializations-profile-listing .specializations-heading.hca-clinic-specialization-item {
       min-height: 60px;
       padding: 10px; }
     .doctors-new-listing .doctor-heading span.rollover, .doctors-new-listing .specializations-heading span.rollover, .specializations-profile-listing .doctor-heading span.rollover, .specializations-profile-listing .specializations-heading span.rollover {
@@ -2214,8 +2215,9 @@ ul.two-column:not(.items-count-1) {
   -moz-column-count: 2;
   -moz-column-gap: 10px; }
 
-ul.two-column:not(.items-count-1) > li {
-  float: left; }
+
+/*ul.two-column:not(.items-count-1) > li {
+  float: left; } */
 
 ul.two-column > li {
   margin-bottom: 20px;
