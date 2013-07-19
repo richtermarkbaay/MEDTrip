@@ -108,7 +108,7 @@
             var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
             HCAGoogleMap.initialize({
                 latLngString: '{{ institution.coordinates }}',
-                address: "{{ institution_address_to_array(institution)|join(',') }}",
+                address: "{{ institution_address_to_array(institution, ['address1', 'city', 'state', 'country', 'zipCode'])|join(',') }}",
                 defaultAddress: city + "{{ institution.country.name }}",
                 mapOnChangeCallback: function() {
                     coordinatesElem.val(HCAGoogleMap.latLngString);

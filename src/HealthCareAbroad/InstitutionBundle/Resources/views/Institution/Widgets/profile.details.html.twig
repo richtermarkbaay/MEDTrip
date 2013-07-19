@@ -42,7 +42,7 @@
 
     {% block viewContent %}
         <i class="icon-map-marker pull-left icon-gray"></i>
-        {% set _address = institution_address_to_array(institution) %}
+        {% set _address = institution_address_to_array(institution, ['address1', 'city', 'state', 'country', 'zipCode']) %}
         <p class="address_column">
 
             <span class="address_part "> {{ _address | join(',&nbsp;</span><span class="address_part">') | raw}}</span>
