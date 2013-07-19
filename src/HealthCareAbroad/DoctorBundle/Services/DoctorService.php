@@ -92,6 +92,7 @@ class DoctorService
                 'number' => $each->getNumber(),
                 'countryCode'=> $each->getCountryCode(),
                 'areaCode' => $each->getAreaCode(),
+                'ext' => $each->getExt(),
                 'abbr' => $each->getAbbr()
             );
         }
