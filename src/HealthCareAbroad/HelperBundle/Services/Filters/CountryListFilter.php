@@ -26,8 +26,9 @@ class CountryListFilter extends DoctrineOrmListFilter
         $this->setStatusFilterOption();
     }
 
-    function buildQueryBuilder()
+    function setFilteredResults()
     {
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('c')->from('HelperBundle:Country', 'c');    
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {

@@ -41,29 +41,29 @@ class CityListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {   
-        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        $this->queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
         
-        $queryBuilder->select('a')->from('HelperBundle:City', 'a');
+        $this->queryBuilder->select('a')->from('HelperBundle:City', 'a');
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
-            $queryBuilder->where('a.country = :country');
-            $queryBuilder->setParameter('country', $this->queryParams['country']);
+            $this->queryBuilder->where('a.country = :country');
+            $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
 
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $queryBuilder->andWhere('a.status = :status');
-            $queryBuilder->setParameter('status', $this->queryParams['status']);
+            $this->queryBuilder->andWhere('a.status = :status');
+            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
 
         if($this->sortBy == 'country') {
-            $queryBuilder->leftJoin('a.country', 'b');
+            $this->queryBuilder->leftJoin('a.country', 'b');
             $sort = 'b.name ' . $this->sortOrder;
         } else {
             $sortBy = $this->sortBy ? $this->sortBy : 'name';
             $sort = "a.$sortBy " . $this->sortOrder;            
         }
 
-        $queryBuilder->add('orderBy', $sort);
+        $this->queryBuilder->add('orderBy', $sort);
 
         $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
         

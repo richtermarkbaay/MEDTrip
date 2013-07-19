@@ -16,7 +16,7 @@ class InstitutionSpecializationListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
-
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionSpecialization', 'a');
         $this->queryBuilder->leftJoin('a.institutionMedicalCenter', 'b');
         $this->queryBuilder->where('b.institution = :institutionId');

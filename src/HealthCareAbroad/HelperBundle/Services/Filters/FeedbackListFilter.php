@@ -32,6 +32,7 @@ class FeedbackListFilter extends DoctrineOrmListFilter
     
     function setFilteredResilts()
     {
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('HelperBundle:Feedback', 'a');
     
         if ($this->queryParams['dateCreated'] != ListFilter::FILTER_KEY_ALL) {
