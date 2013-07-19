@@ -138,12 +138,12 @@
         <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
             {% for type, site in social %}
                 <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
-                 <span class="_{{ type }}-wrapper">
+                 <span class="_{{ type }}-wrapper _social-media-sites">
                   {% if site %}
                      <b>{{ site }}</b>
                      {% else %}
                          <b>no {{ type == 'googleplus' ? 'google-plus' : type }} account</b> added.
-                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small _alert-phone"><i class="icon-plus"></i> Add {{ type == 'googleplus' ? 'google plus' : type }} account</a>
+                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ type == 'googleplus' ? 'google plus' : type }} account</a>
                   {% endif %}
                  </span>
                 </p>

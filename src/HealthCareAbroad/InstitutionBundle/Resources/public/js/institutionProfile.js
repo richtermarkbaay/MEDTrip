@@ -415,18 +415,18 @@ var InstitutionProfile = {
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;
-                    	var hasError = false;
                     	$.each(websites, function(type) {
-	                    		if($.trim(websites[type]) != '') {
-	                    				$('#institution-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
-	                    		}else{
-	                    			hasError = true;
-	                    			$('#institution-socialMediaSites > div').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
-	                        	}
+                    		if($.trim(websites[type]) != '') {
+                				$('#institution-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+                    		} else{
+                    			$('#institution-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
+                        	}
                     	});
                     	
-                    	if(hasError){
+                    	if($('#institution-socialMediaSites ._social-media-sites a.btn').length){
                     		$('#institution-socialMediaSites > div').addClass('alert alert-block');
+                    	} else {
+                    		$('#institution-socialMediaSites > div').removeClass('alert alert-block');
                     	}
                     	
                     	break;

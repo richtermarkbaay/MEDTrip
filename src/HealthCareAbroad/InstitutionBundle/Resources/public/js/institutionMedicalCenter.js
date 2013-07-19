@@ -414,20 +414,19 @@ var InstitutionMedicalCenter = {
 
                     case 'socicalMediaSitesForm':
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
-                    	var hasError = false;
                     	$.each(websites, function(type) {
-	                    		if($.trim(websites[type]) != '') {
-	                    				$('#view-socialMediaSites > div').removeClass('alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
-	                    		}else{
-	                    			hasError = true;
-	                    			$('#view-socialMediaSites > div').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
-	                        	}
+                    		if($.trim(websites[type]) != '') {
+                				$('#view-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+                    		}else{
+                    			$('#view-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
+                        	}
                     	});
-                    	
-                    	if(hasError){
+
+                    	if($('#view-socialMediaSites ._social-media-sites a.btn').length){
                     		$('#view-socialMediaSites > div').addClass('alert alert-block');
+                    	} else {
+                    		$('#view-socialMediaSites > div').removeClass('alert alert-block');
                     	}
-                    	
                   	break;
                        
                     case 'servicesForm':
