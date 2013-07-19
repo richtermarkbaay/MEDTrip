@@ -390,7 +390,8 @@ class InstitutionAccountController extends InstitutionAwareController
         return new Response("Property removed", 200);
     }
 
-    /**
+    /** 
+     * @deprecated
      * Upload logo or featuredImage for Institution
      * @param Request $request
      */
