@@ -82,7 +82,7 @@ class InstitutionAccountController extends InstitutionAwareController
         $this->institutionService = $this->get('services.institution');
         $this->request = $this->getRequest();
         
-        // NOTE: This code is not neccessary anymore and can be remove.
+        // NOTE: This code is not necessary anymore and can be remove.
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->repository->find($imcId);
         }
@@ -197,6 +197,9 @@ class InstitutionAccountController extends InstitutionAwareController
                     if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
                         unset($formRequestData['medicalProviderGroups'][0]);
                     }
+                     else {
+                        $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
+                    }
                 } 
                 
                 $form->bind($formRequestData);
@@ -204,7 +207,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
                     
-                       $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+                   $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);

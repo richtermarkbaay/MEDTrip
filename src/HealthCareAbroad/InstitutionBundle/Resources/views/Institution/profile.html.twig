@@ -102,7 +102,7 @@
 
             $("#{{ institutionForm.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
                 appendTo: "#autoDiv",
-                source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
+                source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
             });
 
             var city = "{{ institution.city ? institution.city.name ~ ', ' : '' }}";
