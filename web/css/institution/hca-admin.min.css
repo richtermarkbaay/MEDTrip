@@ -1030,14 +1030,22 @@ ul.hca-notifications, ul.hca-inquiries {
     position: absolute; }
   ul.hca-notifications span, ul.hca-inquiries span {
     margin-left: 30px; }
+    ul.hca-notifications span.sender-details, ul.hca-inquiries span.sender-details p {
+      margin:0;
+    }
     ul.hca-notifications span.sender-details, ul.hca-inquiries span.sender-details {
-      width: 200px;
-      display: inline-block; }
+      width: 260px;
+      display: inline-block;
+      vertical-align:top; }
       ul.hca-notifications span.sender-details b, ul.hca-notifications span.sender-details small, ul.hca-inquiries span.sender-details b, ul.hca-inquiries span.sender-details small {
-        display: block; }
+        display: block; margin-bottom:5px; }
     ul.hca-notifications span.msg-details, ul.hca-inquiries span.msg-details {
-      width: 550px;
-      display: inline-block; }
+      width: 485px;
+      display: inline-block;
+      vertical-align:top; }
+          ul.hca-notifications span.msg-details, ul.hca-inquiries span.msg-details p a {
+      font-weight:normal; }
+
       ul.hca-notifications span.msg-details b, ul.hca-inquiries span.msg-details b {
         display: block;
         font-size: 18px; }
