@@ -38,7 +38,7 @@ class CountryCodeListType extends AbstractType
         foreach ($countries['data'] as $country) {
             
             $code = (int)$country['code'];
-            if ($code) {
+            if ($code && !isset($choices[$code])) {
                 $choices[$code] = $country['name'].' (+'.$code.')';
             }
         }
