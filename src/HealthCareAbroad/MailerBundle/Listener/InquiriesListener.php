@@ -19,9 +19,7 @@ class InquiriesListener extends NotificationsListener
         if ($institutionMedicalCenter) {
             $facilityName = $institutionMedicalCenter->getName();
             $urlFacility = $router->generate('frontend_institutionMedicaCenter_profile', array(
-                            'institutionSlug' => $institution->getSlug(),
-                            'imcSlug' => $institutionMedicalCenter->getSlug()),
-                            true
+                'institutionSlug' => $institution->getSlug(), 'imcSlug' => $institutionMedicalCenter->getSlug()), true
             );
 
             $to = $institutionMedicalCenter->getContactEmail();
