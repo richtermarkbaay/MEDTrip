@@ -30,6 +30,7 @@ class AdminUserRoleListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('UserBundle:AdminUserRole', 'a');
         $this->queryBuilder->where('a.status = :status');
         $this->queryBuilder->setParameter('status', AdminUserRole::STATUS_ACTIVE);

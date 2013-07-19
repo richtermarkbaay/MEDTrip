@@ -29,17 +29,18 @@ class AdminUserListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
-        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+        $this->queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
         
-        $queryBuilder->select('a, b')->from('UserBundle:AdminUser', 'a');
-        $queryBuilder->leftJoin('a.adminUserType', 'b');
-        $queryBuilder->where('a.status != :status');
-        $queryBuilder->setParameter('status', SiteUser::STATUS_INACTIVE);
+        $this->queryBuilder->select('a, b')->from('UserBundle:AdminUser', 'a');
+        $this->queryBuilder->leftJoin('a.adminUserType', 'b');
+        $this->queryBuilder->where('a.status != :status');
+        $this->queryBuilder->setParameter('status', SiteUser::STATUS_INACTIVE);
 
         $sortBy = $this->sortBy ? $this->sortBy : 'status';
         $sort = "a.$sortBy " . $this->sortOrder;
 
-    	$queryBuilder->add('orderBy', $sort);
+    	$this->queryBuilder->add('orderBy', $sort);
     	
     	$this->pagerAdapter->setQueryBuilder($this->queryBuilder);
 

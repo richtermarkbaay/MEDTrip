@@ -24,18 +24,17 @@ class AdvertisementTypeListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
-        $queryBuilder = $this->pager->getAdapter()->getQueryBuilder();
-        
-        $queryBuilder->select('a')->from('AdvertisementBundle:AdvertisementType', 'a');
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
+        $this->queryBuilder->select('a')->from('AdvertisementBundle:AdvertisementType', 'a');
 
     	if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-    		$queryBuilder->andWhere('a.status = :status');
-    		$queryBuilder->setParameter('status', $this->queryParams['status']);
+    		$this->queryBuilder->andWhere('a.status = :status');
+    		$this->queryBuilder->setParameter('status', $this->queryParams['status']);
     	}
     	
     	$sort = "a.name " . $this->sortOrder;
 
-    	$queryBuilder->add('orderBy', $sort);
+    	$this->queryBuilder->add('orderBy', $sort);
     	
     	$this->pagerAdapter->setQueryBuilder($this->queryBuilder);
 

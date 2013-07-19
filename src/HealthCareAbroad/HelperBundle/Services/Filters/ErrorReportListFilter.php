@@ -16,6 +16,7 @@ class ErrorReportListFilter extends DoctrineOrmListFilter
     
     function setFilteredResults()
     {
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('AdminBundle:ErrorReport', 'a');
     
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {

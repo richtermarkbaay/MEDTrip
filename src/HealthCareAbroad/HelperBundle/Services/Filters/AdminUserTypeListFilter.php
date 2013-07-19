@@ -30,6 +30,7 @@ class AdminUserTypeListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('UserBundle:AdminUserType', 'a');
         $this->queryBuilder->where('a.status = :active OR a.status = :inactive');
         $this->queryBuilder->setParameter('active', AdminUserType::STATUS_ACTIVE);

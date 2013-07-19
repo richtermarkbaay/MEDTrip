@@ -47,6 +47,7 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
     
     function setFilteredResults()
     {
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
         
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {

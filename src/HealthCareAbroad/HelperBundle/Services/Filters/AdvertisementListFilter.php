@@ -48,6 +48,7 @@ class AdvertisementListFilter extends DoctrineOrmListFilter
 
     function setFilteredResults()
     {
+        $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('AdvertisementBundle:Advertisement', 'a');
 
     	if ($this->queryParams['advertisementType'] != ListFilter::FILTER_KEY_ALL) {

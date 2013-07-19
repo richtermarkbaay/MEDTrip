@@ -47,6 +47,7 @@ class InquiryListFilter extends DoctrineOrmListFilter
     
     function setFilteredResults()
     {
+        $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('AdminBundle:Inquiry', 'a');
         
         if ($this->queryParams['field'] != ListFilter::FILTER_KEY_ALL) {
