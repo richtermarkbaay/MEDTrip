@@ -47,7 +47,7 @@ class TwigMailer extends SmtpMailer
         }
 
         try {
-            $status = $this->getMailer($data)->send($message, $failures);
+            $status = $this->getMailer($this->getMailAccountCredentials($data))->send($message, $failures);
         } catch (\Exception $e) {
             $this->log('Notification error.');
             throw $e;
@@ -88,5 +88,13 @@ class TwigMailer extends SmtpMailer
         if (!is_null($this->logger)) {
             $this->logger->addInfo('>>>MailerBundle: ' . $message);
         }
+    }
+
+    private function getMailAccountCredentials($data)
+    {
+        $creds['password'] = $data['password'];
+        $creds['user'] = is_array($data['user']) ? key($data['user']) : $data['user'];
+
+        return $creds;
     }
 }
