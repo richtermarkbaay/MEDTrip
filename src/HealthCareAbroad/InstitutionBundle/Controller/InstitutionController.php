@@ -59,7 +59,7 @@ class InstitutionController extends InstitutionAwareController
 	        $media = $this->get('services.institution.media')->uploadLogo($file, $this->institution);
 	        if($media->getName()) {
 	            $imageSize = ImageSizes::MEDIUM;
-	            if($this->getRequest()->get('logoSize') == 'small') {
+	            if($this->getRequest()->get('logoSize') == ImageSizes::SMALL) {
 	                $imageSize = ImageSizes::SMALL;
 	            }
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
@@ -68,7 +68,6 @@ class InstitutionController extends InstitutionAwareController
 	        $data['status'] = true;
 	    }
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json')); 
-// 	    return $this->redirect($this->getRequest()->headers->get('referer'));
 	}
 	
 	public function uploadFeaturedImageAction()
@@ -80,7 +79,8 @@ class InstitutionController extends InstitutionAwareController
 	        $data['status'] = true;
 	        if($media->getName()) {
 	            $imageSize = ImageSizes::LARGE_BANNER;
-	            if($this->getRequest()->get('logoSize') == 'small') {
+	            
+	            if($this->getRequest()->get('logoSize') == ImageSizes::SMALL) {
 	                $imageSize = ImageSizes::SMALL;
 	            }
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
@@ -89,6 +89,5 @@ class InstitutionController extends InstitutionAwareController
 	    }
 	    
 	    return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
-// 	    return $this->redirect($this->getRequest()->headers->get('referer'));
 	}
 }

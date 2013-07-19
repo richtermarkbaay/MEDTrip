@@ -8,10 +8,11 @@
     <h4>
         Having a logo and cover photo is important, but don't worry if you don't have the images now, you can always add them later.
     </h4>
+    
+    {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
     <div class="row-fluid">
         <div class="span12">
             <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
-                {% set imageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
                 <div class="span6">
                     <div class="media">
                         {% set logoImage = form.vars.value.logo ? institution_media_src(form.vars.value.logo, imageSize) : 'http://dummyimage.com/96x96/cccccc/fff.png&text=Image+Logo' %}  
@@ -22,7 +23,7 @@
                             <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Logo</button>
                             {#{ form_widget(form.logo) }#}
                             <input name="logo" type="file" onchange="$(this).parent().submit()" accept="image/*">
-                            <input name="logoSize" type="hidden" value="small">
+                            <input name="logoSize" type="hidden" value="{{imageSize}}">
                         </div>
                     </div>
                 </div>
@@ -40,7 +41,7 @@
                             <button type="button" class="btn btn-default file-browse-btn" onclick="$(this).next().click()">Upload Cover Photo</button>
                             {#{ form_widget(form.featuredMedia) }#}
                             <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
-                            <input type="hidden" name="logoSize" value="small">
+                            <input type="hidden" name="logoSize" value="{{imageSize}}">
                         </div>
                     </div>
                 </div>
