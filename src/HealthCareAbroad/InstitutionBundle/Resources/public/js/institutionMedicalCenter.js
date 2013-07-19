@@ -417,7 +417,7 @@ var InstitutionMedicalCenter = {
                     	var hasError = false;
                     	$.each(websites, function(type) {
 	                    		if($.trim(websites[type]) != '') {
-	                    				$('#view-socialMediaSites > div').attr('class','').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+	                    				$('#view-socialMediaSites > div').removeClass('alert alert-block').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
 	                    		}else{
 	                    			hasError = true;
 	                    			$('#view-socialMediaSites > div').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
