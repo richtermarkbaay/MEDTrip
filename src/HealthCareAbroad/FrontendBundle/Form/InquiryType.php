@@ -33,7 +33,6 @@ class InquiryType extends AbstractType
     		->add('lastName', 'text', array('error_bubbling' => false))
     		->add('clinicName', 'text')
     		->add('country', 'fancy_country')
-    		->add('city','city_list')
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))
