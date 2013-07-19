@@ -3,10 +3,12 @@ parameters:
     # moved to parameters.yml
     #notifications.enabled: true
 
-    notification.support.user: "support@healthcareabroad.com"
+    notification.support.user:
+        "support@healthcareabroad.com": "The HealthcareAbroad Team"
     notification.support.password: "HCA#602_h3lp"
 
-    notification.inquiry.user: "inquiry@healthcareabroad.com"
+    notification.inquiry.user:
+        "inquiry@healthcareabroad.com": "The HealthcareAbroad Team"
     notification.inquiry.password: "esV01f#CS9"
 
     notification.default.user: %mailer_user%
