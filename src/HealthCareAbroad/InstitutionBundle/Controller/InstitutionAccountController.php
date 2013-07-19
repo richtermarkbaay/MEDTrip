@@ -77,26 +77,20 @@ class InstitutionAccountController extends InstitutionAwareController
     public function preExecute()
     {
         parent::preExecute();
+        
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-
-        if ($imcId=$this->getRequest()->get('imcId',0)) {
-            //$this->institutionMedicalCenter = $this->repository->find($imcId);
-            $this->institutionMedicalCenter = $this->service->findById($imcId, false);
-        }
-
         $this->institutionService = $this->get('services.institution');
-        if ($this->institutionService->isSingleCenter($this->institution)) {
-            //$this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById(895, false);
-//             var_dump($this->institutionMedicalCenter->getId());
-//             var_dump(get_class($this->institutionMedicalCenter->getDoctors()));
-//             var_dump($this->institutionMedicalCenter->getDoctors()->count());
-//             foreach ($this->institutionMedicalCenter->getDoctors() as $e){
-//                 var_dump($e->getId());
-//             }
-//             exit;
-        }
         $this->request = $this->getRequest();
+        
+        // NOTE: This code is not neccessary anymore and can be remove.
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->repository->find($imcId);
+        }
+        // End of note
+        
+        if ($this->isSingleCenter) {
+            $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+        }
     }
 
     public function ajaxAddInstitutionUserAction(Request $request)
@@ -123,19 +117,14 @@ class InstitutionAccountController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         
-        //var_dump($this->institutionMedicalCenter->getId()); exit;
-        
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
-            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-            if (\is_null($this->institutionMedicalCenter)) {
-                $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-            }
+        if ($this->isSingleCenter) {
             
             $doctor = new Doctor();
             $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
             $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
             $editDoctor = new Doctor();
+            
             if($this->institutionMedicalCenter->getDoctors()->count()) {
                 $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
             }
