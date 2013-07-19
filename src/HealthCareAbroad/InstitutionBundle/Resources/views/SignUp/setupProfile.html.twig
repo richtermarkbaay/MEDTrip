@@ -10,7 +10,6 @@
         <h1>Set-up {{ label }} Profile</h1>
         <div class="span8">
             <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
-
                 {% include 'InstitutionBundle:SignUp/Widgets:section.basicInfo.html.twig' %}
 
                 {% include 'InstitutionBundle:SignUp/Widgets:section.address.html.twig' %}
@@ -123,8 +122,7 @@ $(function(){
 
         return address;
     }
-
-    var availableTags = $.parseJSON('{{ medicalProvidersJSON | raw}}');
+    var availableTags = $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}');
 
     var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
     

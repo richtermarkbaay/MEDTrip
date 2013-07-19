@@ -261,6 +261,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // if it is empty remove it from the array
                 if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
                     unset($formRequestData['medicalProviderGroups'][0]);
+                }else {
+                    $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
 
@@ -324,6 +326,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // if it is empty remove it from the array
                 if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
                     unset($formRequestData['medicalProviderGroups'][0]);
+                }else {
+                    $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
 
