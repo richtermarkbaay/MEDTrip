@@ -1,31 +1,21 @@
+{% set closeBtn = '<a id="_close-confirmation-message" href="javascript:void(0)" class="close"><i class="icon-remove"></i></a>' %}
 <div id="confirmation-message">
     <div class="confirmation-box">
         {% if app.session.hasFlash('success') %} {# This is temporary only.#}
-                <div class="alert alert-success">
-                    <p>
-                        {{  app.session.flash('success') | raw}}
-                    </p>
-                </div>
+            <div class="alert alert-success">
+                <p>{{ app.session.flash('success') | raw }}</p>
+                {{ closeBtn | raw }}
+            </div>
         {% elseif app.session.hasFlash('notice') %}
             <div class="alert alert-notice">
-                <p>
-                    {{  app.session.flash('notice') | raw}}
-                </p>
+                <p>{{ app.session.flash('notice') | raw }}</p>
+                {{ closeBtn | raw }}
             </div>
         {% elseif app.session.hasFlash('error') %}
             <div class="alert alert-error">
-                <p>
-                    {{  app.session.flash('error') | raw}}
-                </p>
+                <p>{{  app.session.flash('error') | raw}}</p>
+                {{ closeBtn | raw }}
             </div>
         {% endif %}
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-	 setTimeout(function() {
-         $("#confirmation-message").fadeOut("slow")
-     }, 5000);
-    });
-</script>

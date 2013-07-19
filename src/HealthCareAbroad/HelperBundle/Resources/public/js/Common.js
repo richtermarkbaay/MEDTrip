@@ -36,9 +36,8 @@ var HCA = {
 	{
 		containerElem = $('#confirmation-message');
 		containerElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
-		containerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p></div>');
+		containerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p><a id="_close-confirmation-message" class="close" href="javascript:void(0)"><i class="icon-remove"></i></a></div>');
 		containerElem.fadeIn('fast');
-    	setTimeout(function() {containerElem.fadeOut("slow")}, 3000);
 	}
 };
 
@@ -154,6 +153,12 @@ $(function(){
 	// Initialize HCA autocomplete object.
 	HCA.autocomplete.init();
 	
+	
+	// Confirmation Close button 
+    $('#_close-confirmation-message').live('click', function(e) {
+        $("#confirmation-message").fadeOut();
+    });
+
 
 	// activate/deactivate status of current record 
 	$('a.update-status').click(function(){

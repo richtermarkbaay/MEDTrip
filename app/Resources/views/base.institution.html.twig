@@ -33,6 +33,23 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+        
+            #confirmation-message .alert > p {
+                padding-right: 30px;
+            }
+            
+            #confirmation-message .alert > .close {
+                top: -30px;
+                right: -5px;
+                float: right;
+                font-size: 16px;
+                position: relative;
+            }
+            
+            #confirmation-message .alert > .close:hover {
+                color: red;
+            }
+        
             form .awards-listing input[type=checkbox] + label,
             form .services-listing input[type=checkbox] + label,
             form .specialization-wrapper input[type=checkbox] + label {

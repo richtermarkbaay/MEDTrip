@@ -6,13 +6,6 @@ institution_medicalCenter_ajaxGlobalAwardSource:
         imcId: \d+
         _method: GET
 
-institution_medicalCenter_ajaxGetEditSpecialization:
-    pattern: /ns-institution/medical-center/{imcId}/specializations/{isId}/ajaxEditInstitutionSpecialization
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddInstitutionSpecializationTreatments }
-    requirements:
-        _method: GET
-        imcId: \d+
-        isId: \d+
         
 institution_medicalCenter_ajaxSpecializationSource:
     pattern: /ns-institution/{institutionId}/medical-center/{imcId}/specialization/search

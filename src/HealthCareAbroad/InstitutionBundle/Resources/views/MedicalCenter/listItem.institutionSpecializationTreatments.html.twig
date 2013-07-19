@@ -4,15 +4,13 @@
             <i class="icon-remove-sign pull-right"></i>
         </a>
         <a data-target="{{ each.specialization.id }}" href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.showAddTreatmentsForm($(this));return false;" data-load-url="{{ path('institution_ajax_loadSpecializationTreatments', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}">
-            <i class="icon-edit pull-right" ></i></a>
+            <i class="icon-edit pull-right" ></i>
+        </a>
         <a data-target="{{ each.specialization.id }}" style="display:none;" id="treatments-save"  href="#panel{{ each.specialization.id }}" onclick="InstitutionSpecialization.submitAddTreatmentsForm($(this));return false;">
-            <i class="icon-ok pull-right"></i></a>
-        <span>
-            {% if each.specialization.media %}
-                <img src="{{ specialization_media_src(each.specialization.media) }}" class="pull-left img-polaroid" >
-            {% else %}
-                <img src="{{ asset('images/institution/default-specialization-logo.png') }}" class="pull-left img-polaroid" >
-            {% endif %}
+            <i class="icon-ok pull-right"></i>
+        </a>
+        <span>            
+            <img src="{{ each.specialization.media ? specialization_media_src(each.specialization.media) : imageplaceholder.specializationDefaultLogo }}" class="pull-left img-polaroid">
         </span>
         <h4>{{ each.specialization.name }}</h4>
     </div>
