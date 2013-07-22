@@ -69,8 +69,7 @@
                             <input type="radio" name="isSameAddress" value="1" onclick="InstitutionMedicalCenter.toggleAddress($(this));" data-toggle="#sameAddress" id="addressType-sameAdress" class="pull-left" checked>
                             <label for="addressType-sameAdress">Same Address</label>
                             <div id="sameAddress">
-                                {% set institution_address = institution_address_to_array(institution, ['address1', 'city', 'state', 'country', 'zipCode']) | join(', ') %}
-                                <p>{{ institution_address | title }}</p>
+                                <p>{{ institution_address_to_string(institution) }}</p>
                             </div>
                         </div>
                         <hr>

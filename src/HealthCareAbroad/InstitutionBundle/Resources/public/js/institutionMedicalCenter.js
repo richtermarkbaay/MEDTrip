@@ -305,12 +305,11 @@ var InstitutionMedicalCenter = {
      * 
      * @param DOMElement button
      */
-    submitMedicalCenterSidebarForms: function(domButtonElement) {
+    submitMedicalCenterForm: function(_button) {
     	
     	$('.control-group').removeClass('error');
     	$('.control-group > ul._error-list').remove();
 
-        _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
         _form = _button.parents('form');
@@ -353,29 +352,21 @@ var InstitutionMedicalCenter = {
                         break;
                     case 'addressForm':
                     	var address = [];
-                        var _street_address = [];
-                        $.each(response.institutionMedicalCenter.address, function(_k, _v){
-                           if ($.trim(_v) != '') {
-                               _street_address.push(_v);
+                        $.each(response.institutionMedicalCenter.address, function(key, value){
+                           if ($.trim(value) != '') {
+                        	   address.push(ucwords(value));
                            } 
                         });
-                        if (_street_address.length) {
-                            address.push(ucwords(_street_address.join(', ')));
-                        } else {
-                        	_street_address = '';
-                        }
-                        _keys = ['city', 'state', 'country', 'zipCode'];
-                        $.each(_keys, function(_k, _v){
-                            if (response.institutionMedicalCenter[_v]) {
-                                address.push(ucwords(response.institutionMedicalCenter[_v]));
+
+                        keys = ['city', 'state', 'country'];
+                        $.each(keys, function(dummy, key){
+                            if (response.institutionMedicalCenter[key]) {
+                                address.push(ucwords(response.institutionMedicalCenter[key]));
                             }
                         });
-                        
-                		$('.addressLabel').html('Edit Address');
-                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
-                        
-                        $('.address_column').find('span.address_part').remove();
-                        $('.address_column').prepend(_html);
+
+                        zipCode = typeof(response.institutionMedicalCenter['zipCode']) != 'undefined' && response.institutionMedicalCenter['zipCode'] ? ' ' + response.institutionMedicalCenter['zipCode'] : '';
+                        $('.address_column').html(address.join(', ') + zipCode);
                         
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institutionMedicalCenter.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institutionMedicalCenter.coordinates;

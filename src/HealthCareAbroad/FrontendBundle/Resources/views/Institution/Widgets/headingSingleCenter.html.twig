@@ -8,8 +8,8 @@
 		<div class="address-wrapper">
 		    <span class="hca-sprite address-icon-dark"></span>
 			<address>
-			    {{ institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ') }}
-			    <strong>{{ institution_address_to_array(institution, ['city', 'state', 'country']) | join(', ') }}</strong>
+			    {{ institution_address_to_string(institution, ['address1', 'zipCode']) }}
+			    <strong>{{ institution_address_to_string(institution, ['city', 'state', 'country']) }}</strong>
 			</address>
 		</div>
 

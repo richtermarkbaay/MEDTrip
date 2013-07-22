@@ -9,11 +9,9 @@
     	<h2>{{ institutionMedicalCenter.name }}</h2>
 		<div class="address-wrapper">
 		    <span class="hca-sprite address-icon-dark"></span>
-		    {% set _institution_medical_center_address = medical_center_complete_address_to_array(institutionMedicalCenter, ['address', 'zipCode']) %}
-            {% set _institution_address = medical_center_complete_address_to_array(institutionMedicalCenter, ['city', 'state', 'country']) %}
 			<address>
-			    {{ _institution_medical_center_address | join(', ') }}
-			    <strong>{{ _institution_address | join(', ') }}</strong>
+			    {{ medical_center_complete_address_to_string(institutionMedicalCenter, ['address', 'zipCode']) }}
+			    <strong>{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country']) }}</strong>
 			</address>
 		</div>
 

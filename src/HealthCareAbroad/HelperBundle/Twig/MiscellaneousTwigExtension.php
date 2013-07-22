@@ -17,6 +17,8 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     private $classKeys;
     private $classLabels;
 
+    private static $institutionDefaultAddressKeys = array('address1', 'state', 'city', 'country', 'zipCode');
+
     public function setClassKeys($keys)
     {
         $this->classKeys = $keys;
@@ -36,6 +38,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
             'institution_address_to_array' => new \Twig_Function_Method($this, 'institution_address_to_array'),
+            'institution_address_to_string' => new \Twig_Function_Method($this, 'institution_address_to_string'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
             'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
@@ -187,36 +190,56 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function institution_address_to_array(Institution $institution, array $includedKeys=array())
     {
         $elements = array();
-        $defaultIncludedKeys = array('address1', 'zipCode', 'state', 'city', 'country');
-        $includedKeys = \count($includedKeys) ? \array_intersect($includedKeys, $defaultIncludedKeys) : $defaultIncludedKeys;
-        
+        $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : self::$institutionDefaultAddressKeys);
+
         $street_address = \json_decode($institution->getAddress1(), true);
-        if (\in_array('address1', $includedKeys) && !\is_null($street_address)) {
+        if (isset($includedKeys['address1']) && !\is_null($street_address)) {
             $this->_removeEmptyValueInArray($street_address);
             if (\count($street_address)) {
                 $elements['address1'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
             }
         }
-
-        if (\in_array('city', $includedKeys) && $institution->getCity()) {
+        
+        if (isset($includedKeys['city']) && $institution->getCity()) {
             $elements['city'] = $institution->getCity()->getName();
         }
 
-        if (\in_array('state', $includedKeys) && '' != $institution->getState()) {
+        if (isset($includedKeys['state']) && '' != $institution->getState()) {
             $elements['state'] = $institution->getState();
         }
 
-        if (\in_array('country', $includedKeys) && $institution->getCountry()) {
+        if (isset($includedKeys['country']) && $institution->getCountry()) {
             $elements['country'] = $institution->getCountry()->getName();
         }
 
-        if (\in_array('zipCode', $includedKeys) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
+        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
             $elements['zipCode'] = $institution->getZipCode();
         }
-        
-        $keysWithValues = \array_intersect($includedKeys, \array_keys($elements));
-        
-        return array_merge(array_flip($keysWithValues), $elements);
+
+        return $elements;
+    }
+    
+    /**
+     * Convert institution address to string
+     *     - address1
+     *     - city
+     *     - state
+     *     - country
+     *     - zip code
+     *
+     * @param Institution $institution
+     */
+    public function institution_address_to_string(Institution $institution, array $includedKeys=array(), $glue = ', ')
+    {
+        $arrAddress = $this->institution_address_to_array($institution, $includedKeys);
+
+        $zipCode = '';
+        if(isset($arrAddress['zipCode'])) {
+            $zipCode = ' ' . $arrAddress['zipCode'];
+            unset($arrAddress['zipCode']);
+        }
+
+        return ucwords(implode($glue, $arrAddress)) . $zipCode;        
     }
 
     public function unset_array_key($key, $arr)

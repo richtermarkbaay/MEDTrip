@@ -114,7 +114,7 @@
 
             HCAGoogleMap.initialize({
                 latLngString: '{{ institutionMedicalCenter.coordinates }}',
-                address: "{{ medical_center_complete_address_to_array(institutionMedicalCenter, ['address','city','country']) |join(',')}}",
+                address: "{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['address','city','country']) }}",
                 defaultAddress: cityElem.val() + ',' + countryElem.val(),
                 mapOnChangeCallback: function() {
                     coordinatesElem.val(HCAGoogleMap.latLngString);

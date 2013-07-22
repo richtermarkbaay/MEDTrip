@@ -6,7 +6,7 @@
     {% if institution.coordinates %}
         {% set coordinates = institution.coordinates %}
     {% else %}
-        {% set coordinates = institution_address_to_array(institution, ['address1', 'city', 'country'])|join(',') %}
+        {% set coordinates = institution_address_to_string(institution, ['address1', 'city', 'country', 'zipCode']) %}
     {% endif %}
 
 

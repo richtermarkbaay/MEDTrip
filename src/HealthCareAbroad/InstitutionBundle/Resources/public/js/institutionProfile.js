@@ -354,35 +354,26 @@ var InstitutionProfile = {
     
                     case 'addressModalForm':
                     	var address = [];
-                        var _street_address = [];
-                        $.each(response.institution.address1, function(_k, _v){
-                           if ($.trim(_v) != '') {
-                               _street_address.push(_v);
+                        $.each(response.institution.address1, function(key, value){
+                           if ($.trim(value) != '') {
+                               address.push(ucwords(value));
                            } 
                         });
-                        if (_street_address.length) {
-                            address.push(_street_address.join(', '));
-                        } else {
-                        	_street_address = '';
-                        }
-                        _keys = ['city', 'state', 'country', 'zipCode'];
-                        $.each(_keys, function(_k, _v){
-                            if (response.institution[_v]) {
-                                address.push(ucwords(response.institution[_v]));
+
+                        keys = ['city', 'state', 'country'];
+                        $.each(keys, function(dummy, key){
+                            if (response.institution[key]) {
+                                address.push(ucwords(response.institution[key]));
                             }
                         });
-                        
-                		$('.addressLabel').html('Edit Address');
-                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
-                        
-                        $('.address_column').find('span.address_part').remove();
-                        $('.address_column').prepend(_html);
-                                                
+
+                        zipCode = typeof(response.institution['zipCode']) != 'undefined' && response.institution['zipCode'] ? ' ' + response.institution['zipCode'] : '';
+                        $('.address_column').html(address.join(', ') + zipCode);
+
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institution.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institution.coordinates;
                         	$('#institution-static-map').prop('src', mapStaticUrl);
                         }
-                        
                         break;
     
                     case 'numberModalForm':

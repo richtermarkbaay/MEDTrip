@@ -38,7 +38,7 @@
                         {# include 'FrontendBundle:Widgets:ratings.html.twig' #}
     
                         <div class="location">
-                            <strong>{{ each.institution.city.name }}, {{ each.institution.country.name }}</strong>
+                            <strong>{{ institution_address_to_string(each.institution, ['city', 'country']) }}</strong>
                         </div>
     				</div>
     				<div class="description-box">
