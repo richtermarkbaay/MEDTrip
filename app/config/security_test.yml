@@ -20,6 +20,8 @@ security:
                     admin_not_authorized: { password: 123456, roles: 'ROLE_ADMIN' }
                     institution_authorized: { password: 123456, roles: ['SUPER_ADMIN', 'INSTITUTION_USER'] }
                     institution_not_authorized: {password: 123456, roles: 'INSTITUTION_USER' }
+                    institution_authorized_multiple: {password: 123456, roles: 'INSTITUTION_USER' }
+                    institution_authorized_single: {password: 123456, roles: 'INSTITUTION_USER' }
         admin_user_provider:
             id: services.admin_user_provider
 

@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -77,26 +79,20 @@ class InstitutionAccountController extends InstitutionAwareController
     public function preExecute()
     {
         parent::preExecute();
+        
         $this->repository = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter');
-
-        if ($imcId=$this->getRequest()->get('imcId',0)) {
-            //$this->institutionMedicalCenter = $this->repository->find($imcId);
-            $this->institutionMedicalCenter = $this->service->findById($imcId, false);
-        }
-
         $this->institutionService = $this->get('services.institution');
-        if ($this->institutionService->isSingleCenter($this->institution)) {
-            //$this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById(895, false);
-//             var_dump($this->institutionMedicalCenter->getId());
-//             var_dump(get_class($this->institutionMedicalCenter->getDoctors()));
-//             var_dump($this->institutionMedicalCenter->getDoctors()->count());
-//             foreach ($this->institutionMedicalCenter->getDoctors() as $e){
-//                 var_dump($e->getId());
-//             }
-//             exit;
-        }
         $this->request = $this->getRequest();
+        
+        // NOTE: This code is not neccessary anymore and can be remove.
+        if ($imcId=$this->getRequest()->get('imcId',0)) {
+            $this->institutionMedicalCenter = $this->repository->find($imcId);
+        }
+        // End of note
+        
+        if ($this->isSingleCenter) {
+            $this->institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
+        }
     }
 
     public function ajaxAddInstitutionUserAction(Request $request)
@@ -117,20 +113,11 @@ class InstitutionAccountController extends InstitutionAwareController
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE)); 
-
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-        
-        //var_dump($this->institutionMedicalCenter->getId()); exit;
-        
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        if (InstitutionTypes::SINGLE_CENTER == $this->institution->getType()) {
-            $this->institutionMedicalCenter = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-            if (\is_null($this->institutionMedicalCenter)) {
-                $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-            }
+        if ($this->isSingleCenter) {
             
             $doctor = new Doctor();
             $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -164,7 +151,6 @@ class InstitutionAccountController extends InstitutionAwareController
             $params['editForm'] = $editForm->createView();
 
         } else {
-            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
             $params =  array(
                 'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
                 'institutionForm' => $form->createView(),
@@ -186,22 +172,18 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
-        if (\is_null($this->institutionMedicalCenter)) {
-            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-        }
         $propertyService = $this->get('services.institution_property');
         $output = array();
         if ($request->isMethod('POST')) {
-            try {
                 $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
+//                 var_dump($formVariables); exit;
                 unset($formVariables['_token']);
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 
                 $formRequestData = $request->get($form->getName());
-                
                 if (isset($formRequestData['medicalProviderGroups']) ) {
                     // we always expect 1 medical provider group
                     // if it is empty remove it from the array
@@ -209,7 +191,7 @@ class InstitutionAccountController extends InstitutionAwareController
                         unset($formRequestData['medicalProviderGroups'][0]);
                     }
                 } 
-                
+               
                 $form->bind($formRequestData);
                 
                 if ($form->isValid()) {
@@ -319,10 +301,6 @@ class InstitutionAccountController extends InstitutionAwareController
                     }
                     return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
                 }
-            }
-            catch (\Exception $e) {
-                return new Response($e->getMessage(),500);
-            }
         }
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
     }

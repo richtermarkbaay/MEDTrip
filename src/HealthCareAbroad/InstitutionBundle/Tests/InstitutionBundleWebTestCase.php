@@ -83,9 +83,9 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
                         'PHP_AUTH_PW'   => '123456',
         ));
         $session = $client->getContainer()->get('session');
-        $session->set('accountId', 2);
+        $session->set('accountId', 3);
         $session->set('institutionId', 2);
-        $session->set('institutionName', 'test single institution');
+        $session->set('institutionName', 'Apollo Hospital, Bangalore');
         $session->save();
     
         return $client;
@@ -98,8 +98,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
                         'PHP_AUTH_PW'   => '123456',
         ));
         $session = $client->getContainer()->get('session');
-        $session->set('accountId', 3);
-        $session->set('institutionId', 3);
+        $session->set('accountId', 1);
+        $session->set('institutionId', 1);
         $session->set('institutionName', 'test multiple institution');
         $session->save();
     
