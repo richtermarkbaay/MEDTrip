@@ -116,10 +116,6 @@ class InstitutionAccountController extends InstitutionAwareController
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE)); 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-<<<<<<< HEAD
-=======
-        
->>>>>>> added changes in InstitutionAccountController.php
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
         if ($this->isSingleCenter) {
             

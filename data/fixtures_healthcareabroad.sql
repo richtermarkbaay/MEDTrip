@@ -920,6 +920,12 @@ CREATE TABLE IF NOT EXISTS `institution_inquiries` (
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='inquiries for an institution or a medical center' AUTO_INCREMENT=3 ;
 
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(1, 1, NULL, 'Hazel', 'hazel.caballero@chromedia.com', 'Test inquiry', '2013-07-05 07:34:46', NULL, NULL, NULL, 2);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(2, 1, 617, 'Kim Kieu', 'kieuk1@msn.com', 'How much (in US dollars) would a toal facelift and facial contouring costs including lodging? I am from USA. How long is the downtime? I ma 56 years old 114 lbs  5 feet 3. Also what can stem cell do for me? Thanks.', '2013-03-01 18:21:21', NULL, NULL, NULL, 1);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(3, 1, NULL, 'test from HCA', 'sdfsdf@yahoo.com', 'sadfsdf sdf dfsad fsd f', '2013-07-05 07:31:31', NULL, NULL, NULL, 1);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(4, 1, NULL, 'Alnie Jacobe', 'asldni@uahoo.com', 'kjahs jahsd', '2013-07-17 01:49:26', NULL, NULL, NULL, 2);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(5, 1, NULL, 'jer jacobe', 'kajsd@ayka.com', 'kal lahsdkjh', '2013-06-17 08:41:49', NULL, NULL, NULL, 0);
+
 -- --------------------------------------------------------
 
 --
