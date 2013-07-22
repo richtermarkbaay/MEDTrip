@@ -2734,9 +2734,9 @@ table.schedule-wrapper tr > td.open24hrs {
     content: "-";
 }
 
-.modal {
+/*.modal {
     position: absolute;
-}
+}*/
 
 .modal .modal-header {
     color: #468199;
@@ -3289,8 +3289,5 @@ ul.socials-nav li {
 
 ul.socials-nav li a.social-icon {
     opacity: .85;
-}
-.or-option {
-    
 }
 /********** END OF FOOTER STYLES ***********/
