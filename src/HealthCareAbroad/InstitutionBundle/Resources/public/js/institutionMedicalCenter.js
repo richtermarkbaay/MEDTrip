@@ -131,7 +131,8 @@ var InstitutionMedicalCenter = {
             	}
         	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
-        	
+        	HCA.closeAlertMessage();
+
     	} else {
         	editElem.slideUp('slow', function(){
         		InstitutionMedicalCenter.undoChecked(editElem);
@@ -229,19 +230,20 @@ var InstitutionMedicalCenter = {
         _linkElement = $(_linkElement);
         _modal = $(_linkElement.attr('data-target'));
         _modal.modal('show');
+        HCA.closeAlertMessage();
         
         return false;
     },
     
     showCommonSpecializationModal:  function (_linkElement) {
-    	
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
         _name = $(_linkElement).parent().find('h4').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
         _modal.modal('show').appendTo('body');
-        
+        HCA.closeAlertMessage();
+
         return false;
     },
     

@@ -34,7 +34,7 @@ class CountryCodeListType extends AbstractType
     {
         $countries = $this->service->getGlobalCountries();
         $choices = array();
-        
+
         foreach ($countries['data'] as $country) {
             
             $code = (int)$country['code'];

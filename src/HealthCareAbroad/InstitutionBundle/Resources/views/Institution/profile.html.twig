@@ -91,11 +91,13 @@
                 success: function(response) {
                    if(response.status) {
                        ajaxFormUploadElem.find('img').attr('src',response.mediaSrc).css('opacity', 1).prev().show();
+                       HCA.alertMessage('success', 'Your ' + ajaxFormUploadElem.data('image-label')  + ' has been updated!');
                    } else {
-                       alert('ERROR: Unable to upload Logo!');
+                	   HCA.alertMessage('error', 'Unable to upload your ' + ajaxFormUploadElem.data('image-label')  + '!');
                    }
                }
             }).submit(function(){
+               HCA.closeAlertMessage();
                ajaxFormUploadElem = $(this);
                $(this).find('img').css('opacity', 0.5).prev().hide();
             });

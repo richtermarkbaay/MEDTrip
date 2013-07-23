@@ -189,17 +189,14 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $request->getSession()->setFlash('callout', "");
 
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
-            }
-            $form_errors = $this->get('validator')->validate($form);
-            if($form_errors){
-                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
+            } else {
+                $request->getSession()->setFlash('error', "We need you to correct some of your input. Please check the fields in red.");
             }
         }
 
         return $this->render('InstitutionBundle:SignUp:signUp.html.twig', array(
             'form' => $form->createView(),
-            'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'error_message' => $error_message,
+            'institutionTypes' => InstitutionTypes::getFormChoices()
         ));
     }
 
