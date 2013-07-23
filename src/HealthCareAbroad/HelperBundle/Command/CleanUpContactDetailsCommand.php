@@ -37,22 +37,135 @@ class CleanUpContactDetailsCommand extends ContainerAwareCommand
         $this->doctrine = $this->getContainer()->get('doctrine');
         
         // clean up institution contact details
-        $this->output->writeln("============== CLEANING UP INSTITUTION ==============");
-        $this->cleanUpInstitutionContactDetails();
-        $this->output->writeln("=====================================================");
+//         $this->output->writeln("============== CLEANING UP INSTITUTION ==============");
+//         $this->cleanUpInstitutionContactDetails();
+//         $this->output->writeln("=====================================================");
         
-        $this->output->writeln("================ CLEANING UP CLINIC =================");
-        $this->cleanUpClinicContactDetails();
-        $this->output->writeln("=====================================================");
+//         $this->output->writeln("================ CLEANING UP CLINIC =================");
+//         $this->cleanUpClinicContactDetails();
+//         $this->output->writeln("=====================================================");
         
-        $this->output->writeln("================ CLEANING UP DOCTOR =================");
-        $this->cleanUpDoctorContactDetails();
-        $this->output->writeln("=====================================================");
+//         $this->output->writeln("================ CLEANING UP DOCTOR =================");
+//         $this->cleanUpDoctorContactDetails();
+//         $this->output->writeln("=====================================================");
         
-        $this->output->writeln("================ CLEANING UP USER =================");
-        $this->cleanUpUserContactDetails();
+//         $this->output->writeln("================ CLEANING UP USER =================");
+//         $this->cleanUpUserContactDetails();
+//         $this->output->writeln("=====================================================");
+
+        // populate country_id field based on country_code
+        $this->output->writeln("================ POPULATING COUNTRY FIELD =================");
+        $this->populateCountryField();
         $this->output->writeln("=====================================================");
     }
+    
+    private function populateCountryField()
+    {
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('cd')
+            ->from('HelperBundle:ContactDetail', 'cd')
+            ->where('cd.number IS NOT NULL')
+            ->andWhere('cd.countryCode IS NOT NULL')
+            ->andWhere('cd.country IS NULL');
+        $contactDetails = $qb->getQuery()->getResult();
+        $countriesByCountryCode = array();
+        $em = $this->doctrine->getManager();
+        foreach ($contactDetails as $contactDetail) {
+            $this->output->write("id:[#{$contactDetail->getId()}] -> {$contactDetail->__toString()} [");
+            $code = (int)$contactDetail->getCountryCode();
+            
+            if (!$code){
+                $this->output->writeln("No CC]");
+                continue;
+            }
+            
+            if (!isset($countriesByCountryCode[$code])) {
+                $countries = $this->doctrine->getRepository('HelperBundle:Country')->findByCode($code);
+                $countriesByCountryCode[$code] = $countries;
+            }
+            
+            if (count($countriesByCountryCode[$code]) == 1){
+                // we only set those countries that have unique country codes
+                $contactDetail->setCountry($countriesByCountryCode[$code][0]);
+                $em->persist($contactDetail);
+                $this->output->writeln("OK]");
+            }
+            else {
+                $this->output->writeln("Multiple CC]");
+            }
+        }
+        
+        $this->output->writeln("Flushing to db");
+        $em->flush();
+        
+        // populate remaining contact details by cross matching the owner objects of the contact detail
+        // -- start with institution contact details
+        $em = $this->doctrine->getManager();
+        $this->output->writeln("=====================================================");
+        $this->output->writeln("Populate remaining data by cross matching institution contact details");
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('inst, cd, co')
+            ->from('InstitutionBundle:Institution', 'inst')
+            ->innerJoin('inst.contactDetails', 'cd')
+            ->innerJoin('inst.country', 'co')
+            ->where('cd.country IS NULL')
+            ->andWhere('cd.number IS NOT NULL')
+            ->andWhere('cd.countryCode IS NOT NULL');
+        $objects = $qb->getQuery()->getResult();
+        foreach ($objects as $obj) {
+            $this->output->writeln("id: #{$obj->getId()} >> ");
+            if ($country = $obj->getCountry()){
+                $this->_updateCountryFieldOfContactDetailsByCountry($country, $obj->getContactDetails(), $em);
+            }
+        }
+        $em->flush();
+        $this->output->writeln("=====================================================");
+        // -- end with institution contact details
+        
+        // -- start with doctor contact details
+        $em = $this->doctrine->getManager();
+        $this->output->writeln("=====================================================");
+        $this->output->writeln("Populate remaining data by cross matching doctor contact details");
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('doc, cd, co')
+        ->from('DoctorBundle:Doctor', 'doc')
+        ->innerJoin('doc.contactDetails', 'cd')
+        ->innerJoin('doc.country', 'co')
+        ->where('cd.country IS NULL')
+        ->andWhere('cd.number IS NOT NULL')
+        ->andWhere('cd.countryCode IS NOT NULL');
+        $objects = $qb->getQuery()->getResult();
+        foreach ($objects as $obj) {
+            $this->output->writeln("id: #{$obj->getId()} >> ");
+            if ($country = $obj->getCountry()){
+                $this->_updateCountryFieldOfContactDetailsByCountry($country, $obj->getContactDetails(), $em);
+            }
+        }
+        $em->flush();
+        // -- end with doctor contact details
+        
+    }
+    
+    private function _updateCountryFieldOfContactDetailsByCountry(Country $country, $contactDetails = array(), $em)
+    {
+        foreach ($contactDetails as $contactDetail) {
+            $this->output->write("    #{$contactDetail->getId()} -> {$contactDetail->__toString()} [");
+            if (!$contactDetail->getCountry()){
+                $code = (int)$contactDetail->getCountryCode();
+                if ($code && $code == $country->getCode()){
+                    $contactDetail->setCountry($country);
+                    $em->persist($contactDetail);
+                    $this->output->writeln("OK]");
+                }
+                else {
+                    
+                    $this->output->writeln("Invalid CC {$code} == {$country->getCode()}] C.id={$country->getId()}");
+                }
+            }
+        }
+    }
+    
+    
     
     private function cleanUpInstitutionContactDetails()
     {
