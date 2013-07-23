@@ -7,6 +7,9 @@ function ucwords (str) {
 	}
 (function($){
     $(function(){
+        {% if institutionMedicalCenter.doctors|length < 1 %}
+            $('#add-doctor').modal('show');
+        {% endif %}
 
         $('form.ajaxUploadForm').ajaxForm({
          /* beforeSend: function(e) {},
@@ -27,6 +30,7 @@ function ucwords (str) {
         });
 
         $('#add-doctor').on('show', function(){
+            HCA.closeAlertMessage();
             window.location.href = '#';
             $('#search-doctor-btn').show();
             $('#doctor-search-results, #add-doctor-btn').hide();
@@ -37,6 +41,7 @@ function ucwords (str) {
         });
 
         $('.remove-doctor-btn').live('click', function(e) {
+            HCA.closeAlertMessage();
         	$('#remove-doctor-modal').modal('show');
         	$('#confirm-remove-doctor-btn').data('remove-url', $(this).attr('href'));
         	$('#confirm-remove-doctor-btn').data('doctor-id', $(this).data('doctor-id'));
@@ -73,6 +78,7 @@ function ucwords (str) {
         });
         
         $(".edit-doctor-btn").live('click', function(e) {
+            HCA.closeAlertMessage();
             doctor = $.parseJSON($(this).attr('data-doctor'));
 
             var btnIcon = $(this).find('i');
@@ -308,12 +314,7 @@ function ucwords (str) {
         }
 
         function displayConfirmation(response) {
-        	$('#confirmation-message').show()
-        	    .find('div.confirmation-box')
-                    .attr('class', 'confirmation-box fixed')
-                    .html('<div class="alert alert-'+ (response.status ? 'success' : 'error') +'"><p>' + response.message + '.</p></div>')                    
-
-        	setTimeout(function() {$('#confirmation-message').fadeOut("slow")}, 5000);
+            HCA.alertMessage(response.status ? 'success' : 'error', response.message);
         }
     });
     

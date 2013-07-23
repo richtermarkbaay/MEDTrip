@@ -68,6 +68,7 @@
             previewsContainer: "#previews",
             
             sending: function(file) {
+            	HCA.closeAlertMessage();
                 addMediaFormElem.find('.action-buttons > button').attr('disabled', 'disabled');
             },
 

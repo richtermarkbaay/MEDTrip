@@ -46,8 +46,8 @@
                                 
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(mediaClinics[each.id]) : [] }}"><i class="icon-edit"></i>edit</a>
-                                        <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}"><i class="icon-trash"></i>delete</a>
+                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(mediaClinics[each.id]) : [] }}" onclick="HCA.closeAlertMessage()"><i class="icon-edit"></i>edit</a>
+                                        <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}" onclick="HCA.closeAlertMessage()"><i class="icon-trash"></i>delete</a>
                                     </div>
                                     
                                     {% include 'InstitutionBundle:MediaGallery/Widgets:editModalForm.html.twig' with {media: each, selectedClinics: hasClinics ? mediaClinics[each.id] : [] } %}
@@ -67,11 +67,10 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ asset('bundles/media/js/fancybox/jquery.fancybox.css?v=2.1.0') }}" type="text/css" media="screen"/>
 <script type="text/javascript" src="{{ asset('bundles/media/js/fancybox/jquery.fancybox.pack.js?v=2.1.0') }}"></script>
 
 <script type="text/javascript">
-
 (function($){
 	var editFormElem;
 	var medicalCenterId = "{{ app.request.get('medical-center-id') }}";
@@ -95,6 +94,8 @@
         editFormElem.find('input[name=remove-medical-center-ids]').val(removeMedicalCenterIds.join(','));
     });
 
+    // Medial Gallery Lightbox
+    $(".fancybox").fancybox({'autoDimensions': false, 'width': 350, 'height': 'auto', 'transitionIn': 'none'});
 })(jQuery);
 </script>
 {% endblock %}

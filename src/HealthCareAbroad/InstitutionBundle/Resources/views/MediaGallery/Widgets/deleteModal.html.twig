@@ -24,6 +24,7 @@
 $(function(){
 	var mediaId;
     $(".delete-media").click(function(){
+        HCA.closeAlertMessage();
         mediaId = $(this).attr('data-media_id');
         var deleteWrapperElem = $('#delete-media');
 

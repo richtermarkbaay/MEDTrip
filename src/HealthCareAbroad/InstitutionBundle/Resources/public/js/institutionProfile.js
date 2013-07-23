@@ -251,7 +251,7 @@ var InstitutionProfile = {
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
     	
-    	if(viewElem.is(':visible')) {        	
+    	if(viewElem.is(':visible')) {
         	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
         		$('section.hca-main-profile .edit-awards').addClass('disabled');
         		elem.removeClass('disabled');
@@ -270,7 +270,8 @@ var InstitutionProfile = {
             	}
         	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
-        	
+        	HCA.closeAlertMessage();
+
     	} else {
         	editElem.slideUp('slow', function(){
         		InstitutionProfile.undoChecked(editElem);
@@ -441,7 +442,7 @@ var InstitutionProfile = {
 
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
-                HCA.alertMessage('success', 'successfully updated!');
+                HCA.alertMessage('success', 'Profile has been updated!');
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);

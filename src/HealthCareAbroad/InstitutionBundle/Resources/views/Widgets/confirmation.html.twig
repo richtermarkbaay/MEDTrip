@@ -1,5 +1,5 @@
-{% set closeBtn = '<a id="_close-confirmation-message" href="javascript:void(0)" class="close"><i class="icon-remove"></i></a>' %}
-<div id="confirmation-message">
+{% set closeBtn = '<a id="_close-confirmation-message" href="javascript:void(0)" class="close" onclick="HCA.closeAlertMessage()"><i class="icon-remove"></i></a>' %}
+<div id="confirmation-message" class="{{ class is defined ? class : '' }}">
     <div class="confirmation-box">
         {% if app.session.hasFlash('success') %} {# This is temporary only.#}
             <div class="alert alert-success">

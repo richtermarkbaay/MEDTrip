@@ -1,20 +1,12 @@
-<div class=" span8 tab-content">
+<div class="span8 tab-content">
    <div class="tabbable">
         <div class="tab-content" id="tabbed_content">
             <div id="profile_tab" class="tab-pane active">
               {% include 'InstitutionBundle:Institution/Widgets:profile.details.html.twig' %}
            </div>
-            <div id="medical_centers" class="tab-pane"><img id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" /></div>
         </div><!-- /.tab-content -->
     </div>
 </div>
 {% block inlineJavascriptCode %}
-<script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
-<script type="text/javascript">
-    (function($){
-        $(function(){
-        	$('#confirm-message').modal('show');
-        });
-    })(jQuery);
-</script>
+    <script type="text/javascript" src="{{ asset('bundles/institution/js/properties.js') }}" ></script>
 {% endblock %}
