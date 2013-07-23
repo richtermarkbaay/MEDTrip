@@ -86,6 +86,10 @@ class LocationService
 	    return $this->createCountryFromArray(\json_decode($response->getBody(true), true));
 	}
 	
+	/**
+	 * @deprecated
+	 * @param array $params
+	 */
 	public function getGlobalCountries(array $params=array())
 	{
 	    $default = array('status' => 1);
@@ -109,6 +113,9 @@ class LocationService
 	    return $results;
 	}
 	
+	/**
+	 * @deprecated
+	 */
 	public function getAllGlobalCountries()
 	{
 	    static $hasLoaded = false;
@@ -322,6 +329,10 @@ class LocationService
         return $qb->getQuery()->getResult();
 	}
 	
+	public function getActiveCountries()
+	{
+	    return $this->getQueryBuilderForCountries()->getQuery()->getResult();
+	}
 	/**
 	 * Hackish way to use this service without injecting it on other services.
 	 * 

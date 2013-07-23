@@ -46,4 +46,11 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
         isInvalid:
             type: boolean
             nullable: true
-            column: is_invalid            
+            column: is_invalid
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false

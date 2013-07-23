@@ -46,6 +46,11 @@ class ContactDetail
      */
     private $ext;
     
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+    
     public function __toString()
     {
         return ($this->countryCode ? '+'.$this->countryCode:'').$this->areaCode.$this->number.($this->ext ? ' ('.$this->ext.')':'' );
@@ -255,5 +260,28 @@ class ContactDetail
     public function getIsInvalid()
     {
         return $this->isInvalid;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return ContactDetail
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+    
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }
