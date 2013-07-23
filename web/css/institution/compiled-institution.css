@@ -813,24 +813,27 @@ hr {
   background-color: white; }
 
 #confirmation-message {
-  float: left;
-  position: fixed;
   left: 50%;
+  float: left;
   z-index: 1000;
-  text-align: center; }
+  margin-top: 62px;
+  text-align: center;
+  position: absolute; }
   #confirmation-message .confirmation-box {
     float: left;
     position: relative;
-    left: -50%;
-    margin-top: 62px; }
-    #confirmation-message .confirmation-box.fixed {
-      margin-top: 0; }
+    left: -50%; }
     #confirmation-message .confirmation-box .alert {
       padding-bottom: 0px;
       padding-right: 14px;
       border-radius: 0; }
       #confirmation-message .confirmation-box .alert p {
         text-align: center; }
+
+#confirmation-message.fixed {
+	position: fixed;
+	margin-top: 0;
+}
 
 #topnav {
   padding: 5px 0;
