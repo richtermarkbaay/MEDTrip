@@ -50,3 +50,7 @@ helper_ajax_sleep:
 helper_ajax_called_afterwards:
     pattern: /symfony-test/called-afterwards
     defaults: { _controller: HelperBundle:Test:ajaxCalledAfterwards }
+    
+helper_testContactDetail:
+    pattern: /symfony-test/testContactDetail
+    defaults: {_controller: HelperBundle:Test:testContactDetail }

@@ -2,6 +2,14 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
+use HealthCareAbroad\HelperBundle\Form\EventListener\ContactDetailDataSubscriber;
+
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryTransformer;
+
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\ContactDetailDataTransformer;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -12,9 +20,29 @@ use Symfony\Component\Form\AbstractType;
 
 class SimpleContactDetailFieldType extends AbstractType
 {
+    /**
+     * @var LocationService
+     */
+    private $locationService;
+    
+    public function setLocationService(LocationService $v)
+    {
+        $this->locationService = $v;    
+    }
+    
     public function buildForm(FormBuilderInterface $builder, array $options=array())
     {
-        $builder->add('country_code', 'country_code_list');
+        $builder->addEventSubscriber(new ContactDetailDataSubscriber());
+        $countryChoices = array();
+        foreach ($this->locationService->getActiveCountries() as $country) {
+            $code = (int)$country->getCode();
+            $countryChoices[$country->getId()] = $country->getName()." (+{$code})";    
+        }
+        
+        $countryList = $builder->create('country', 'choice', array('label' => "Country", 'choices' => $countryChoices))
+            ->addModelTransformer(new CountryTransformer($this->locationService));
+        
+        $builder->add($countryList);
         $builder->add('area_code', 'text', array('attr' => array('placeholder' => 'Area Code')));
         $builder->add('number', 'text', array('attr' => array( 'placeholder' => 'Phone Number')));
         $builder->add('ext', 'text', array('required' => false));

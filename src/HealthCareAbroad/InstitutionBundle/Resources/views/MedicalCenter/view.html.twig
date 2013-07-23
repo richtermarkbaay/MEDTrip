@@ -126,13 +126,14 @@
                success: function(response) {
                    if(response.status) {
                        ajaxFormUploadElem.find('img').attr('src',response.mediaSrc).css('opacity', 1).prev().show();
+                       HCA.alertMessage('success', 'Your Logo has been updated!');
                    } else {
-                       alert('ERROR: Unable to upload Logo!');
-                       HCA.alertMessage('error', 'ERRR: Unable to upload Logo!');
+                       HCA.alertMessage('error', 'Unable to your upload Logo!');
                    }
                },
                complete: function(xhr) {}
-            }).submit(function(){
+            }).submit(function() {
+            	HCA.closeAlertMessage();
                ajaxFormUploadElem = $(this);
                $(this).find('img').css('opacity', 0.5).prev().hide();
             });

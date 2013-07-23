@@ -1,6 +1,12 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Controller;
 
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -8,6 +14,36 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class TestController extends Controller
 {
+    public function testContactDetailAction(Request $request)
+    {
+        $contactDetail = new ContactDetail();
+        $contactDetail->setType(ContactDetailTypes::PHONE);
+        
+        $doctor = new Doctor();
+        $doctor->setFirstName('Test Only');
+        $doctor->setLastName('Doctor');
+        $doctor->addContactDetail($contactDetail);
+        $form = $this->createFormBuilder($doctor)
+            ->add('contactDetails', 'collection', array('type' => 'simple_contact_detail', 'allow_add' => true))
+            ->getForm();
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($contactDetail);
+                //$em->flush();
+                exit;
+            }
+            else {
+                var_dump($form->getErrors()); exit;
+            }
+        }
+        
+        return $this->render('HelperBundle:Test:contactDetailTest.html.twig', array('form' => $form->createView()));
+    }
+    
     public function showFormAction()
     {
         $form = $this->createForm(new TrackerFormType());

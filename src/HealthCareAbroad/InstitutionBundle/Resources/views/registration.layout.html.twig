@@ -3,8 +3,8 @@
 {% set include_zendesk = true %}
 
 {% block body %}
+    {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
     <div id="main-wrap">
-        {% include 'InstitutionBundle:Widgets:confirmation.html.twig' %}
         {% include 'InstitutionBundle:Widgets:registrationHeader.layout.html.twig' %}
         <!-- Page content here -->
         <div id="content" class="container">
