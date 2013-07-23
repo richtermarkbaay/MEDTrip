@@ -99,7 +99,7 @@ parameters:
     amazonS3_bucket_name: assets.healthcareabroad.com 
 
     media_directory: media
-    media_advertisement_subdir: %media_directory%/ads
+    media_advertisement_subdir: %media_directory%/features
     media_doctor_subdir: %media_directory%/doctors
     media_institution_subdir: %media_directory%/institutions
     media_specialization_subdir: %media_directory%/specializations
