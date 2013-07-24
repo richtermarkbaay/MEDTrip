@@ -215,7 +215,6 @@ class InstitutionPropertiesController extends InstitutionAwareController
     
         $propertyService = $this->get('services.institution_property');
         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-    
         // check if this institution already have this property value
         if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $ancillaryService->getId())) {
             $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);

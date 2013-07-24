@@ -1090,7 +1090,8 @@ CREATE TABLE IF NOT EXISTS `institution_properties` (
 --
 
 INSERT INTO `institution_properties` (`id`, `institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
-(1, 1, 1, '1', 'test');
+(1, 1, 3, '1', 'test2'),
+(2, 1, 2, '1', 'test23');
 
 -- --------------------------------------------------------
 

@@ -11,8 +11,8 @@ institution_view_inquiry:
         _method: GET|POST 
 
 institution_delete_inquiry:
-    pattern: /inquiry/{id}/remove
-    defaults: { _controller: InstitutionBundle:Inquiry:removeInquiry }
+    pattern: /inquiry/{id}/ajaxRemoveInquiry
+    defaults: { _controller: InstitutionBundle:Inquiry:ajaxRemoveInquiry }
     requirements:
         _method: GET|POST
 

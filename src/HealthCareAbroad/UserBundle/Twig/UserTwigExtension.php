@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\UserBundle\Twig;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
@@ -31,7 +33,7 @@ class UserTwigExtension extends \Twig_Extension
         );
     }
     
-    public function is_admin_user(SiteUser $user)
+    public function is_admin_user(UserInterface $user)
     {
         return $user instanceof AdminUser;
     }

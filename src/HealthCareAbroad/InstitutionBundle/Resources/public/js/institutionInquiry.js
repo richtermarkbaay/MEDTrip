@@ -77,7 +77,6 @@ var InstitutionInquiry = {
     	_inputCheckAllId = $(_linkElement).attr('data-checkAllId');
     	_tab = $(_inputCheckAllId).attr('data-tab');
     	_mainDiv = $(_inputCheckAllId).attr('data-mainDivId');
-    	_lastIndex = 0;
     	$('#inquiryCntr').val('');
     	$(InstitutionInquiry._divId +' input[type=checkbox]').each(function() {
     		if ($(this).attr('checked')) {
@@ -100,7 +99,6 @@ var InstitutionInquiry = {
         });
     	
     	return false;
-    	
     },
     
     _setInquiryCounter: function(_response) {
@@ -111,7 +109,7 @@ var InstitutionInquiry = {
     
     _removeInquiry: function (_linkElement) {
     	var _href = $(_linkElement).attr('href');
-    	_lastIndex = 0;
+    	$('#inquiryCntr').val('');
     	$.ajax({
             url: _href,
             type: 'POST',
