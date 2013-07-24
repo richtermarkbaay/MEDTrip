@@ -144,8 +144,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
      */
     protected function setInvalidInstitutionInSession($client)
     {
-        self::$clientWithLoggedUser = static::createClient();
-        $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
+//         self::$clientWithLoggedUser = static::createClient();
+//         $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
         
         $session = $client->getContainer()->get('session');
         $session->set('institutionId', 99999999);

@@ -123,7 +123,7 @@ class InstitutionPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        static $isLoadedAvailableTypes = false;
+        $isLoadedAvailableTypes = false;
         if (!$isLoadedAvailableTypes) {
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
