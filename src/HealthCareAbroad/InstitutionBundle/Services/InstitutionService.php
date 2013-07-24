@@ -166,9 +166,10 @@ class InstitutionService
 
     public function getFullInstitutionById($id = null)
     {
-        static $isLoaded = false;
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoaded = false;
 
-        if(!$isLoaded) {
+        //if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f, g, h, i')->from('InstitutionBundle:Institution', 'a')
             ->leftJoin('a.country', 'b')
@@ -181,13 +182,14 @@ class InstitutionService
             ->leftJoin('h.media', 'i')
             ->where('a.id = :id')
             ->setParameter('id', $id);
+            $result = $qb->getQuery()->getOneOrNullResult();
 
-            self::$institution = $qb->getQuery()->getOneOrNullResult();
+            //self::$institution = $qb->getQuery()->getOneOrNullResult();
 
-            $isLoaded = true;
-        }
+            //$isLoaded = true;
+        //}
 
-        return self::$institution;
+        return $result;
     }
 
     public function setInstitutionPropertyService(InstitutionPropertyService $v)

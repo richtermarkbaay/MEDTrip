@@ -40,7 +40,6 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         // test for no login user
         $client = $this->requestUrlWithNoLoggedInUser($uri);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($this->isRedirectedToLoginPage($client), 'Expecting redirect to login page');
 
         // test for correct logged user
         $client = $this->getBrowserWithActualLoggedInUser();

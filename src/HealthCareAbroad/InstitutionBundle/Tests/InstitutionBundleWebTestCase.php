@@ -79,7 +79,7 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     protected function getBrowserWithActualLoggedInUserForSingleType()
     {
         self::$clientWithLoggedUser = static::createClient();
-        $crawler = self::$clientWithLoggedUser->request('GET', '/institution/login');
+        $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
         
         $client = static::createClient(array(), array(
                         'PHP_AUTH_USER' => 'institution_authorized_single',
@@ -142,8 +142,11 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
      * Convenience function to set an invalid institution id in the browser session
      * @param unknown_type $client
      */
-    protected function setInvalidInstitutionInSession(&$client)
+    protected function setInvalidInstitutionInSession($client)
     {
+        self::$clientWithLoggedUser = static::createClient();
+        $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
+        
         $session = $client->getContainer()->get('session');
         $session->set('institutionId', 99999999);
         $session->save();

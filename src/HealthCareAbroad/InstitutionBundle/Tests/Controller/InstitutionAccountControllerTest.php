@@ -28,14 +28,20 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
         '_token' => '',
     ));
     
-    public function testAjaxUpdateProfileByField()
+    public function testSingleProfile()
     {
+        $uri = '/institution/profile.html';
+        
         $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        
+        
         $invalidProfileFormValues =  array( 'institution_profile_form' => array( 'name' => null));
         $crawler = $client->request('POST', '/institution/ajax/update-profile-by-field', $invalidProfileFormValues);
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
         
-        $uri = '/institution/profile.html';
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $extract = $crawler->filter('input[name="institution_profile_form[_token]"]')->extract(array('value'));
@@ -49,9 +55,13 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('POST', '/institution/ajax/update-profile-by-field', $invalidAwardsFormValues);
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
         
-//         $awardsFormValues =  array( 'institution_profile_form' => array('awards' => array ( 0 => '1' ,1 => '2' ) ));
-//         $crawler = $client->request('POST', '/institution/ajax/update-profile-by-field', $awardsFormValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // test invalid institution
+        $this->setInvalidInstitutionInSession($client);
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        $awardsFormValues =  array( 'institution_profile_form' => array('awards' => array ( 0 => '1' ,1 => '2' ) ));
+        $crawler = $client->request('POST', '/institution/ajax/update-profile-by-field', $awardsFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testMultipleProfile(){
@@ -60,6 +70,8 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $crawler = $client->request('GET', $uri);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        
     }
     
     public function testAjaxUpdateCoordinates(){
