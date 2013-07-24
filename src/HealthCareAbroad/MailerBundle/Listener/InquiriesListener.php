@@ -17,8 +17,7 @@ class InquiriesListener extends NotificationsListener
         $router = $this->container->get('router');
 
         if ($institutionMedicalCenter) {
-            $facilityName = $institutionMedicalCenter->getName();
-            $facilityNameWithHospital = $facilityName . ' at ' . $institution->getName();
+            $facilityName = $institutionMedicalCenter->getName() . ' at ' . $institution->getName();
             $urlFacility = $router->generate('frontend_institutionMedicaCenter_profile', array(
                 'institutionSlug' => $institution->getSlug(), 'imcSlug' => $institutionMedicalCenter->getSlug()), true
             );
@@ -27,7 +26,6 @@ class InquiriesListener extends NotificationsListener
 
         } else {
             $facilityName = $institution->getName();
-            $facilityNameWithHospital = $facilityName;
 
             switch ($institution->getType()) {
                 case InstitutionTypes::SINGLE_CENTER:

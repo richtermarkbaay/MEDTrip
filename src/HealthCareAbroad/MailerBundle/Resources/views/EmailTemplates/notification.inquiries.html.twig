@@ -11,7 +11,7 @@ This Prospective Patient Inquiry is from HealthcareAbroad.com
     {% autoescape false %}
 
 --------------------------------------------------------------------------------
-You have received this email inquiry because {{ facility_name_with_hospital }} has a listing on HealthcareAbroad.com. To view your listing visit : {{ url.facility }}
+You have received this email inquiry because {{ facility_name }} has a listing on HealthcareAbroad.com. To view your listing visit : {{ url.facility }}
 --------------------------------------------------------------------------------
 
 Facility: {{ facility_name }}
@@ -36,7 +36,7 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }} .
 <br/>
 
 <div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
-You have received this email inquiry because {{ facility_name_with_hospital }} has a listing
+You have received this email inquiry because {{ facility_name }} has a listing
 on HealthcareAbroad.com.
 <br/>
 To view your listing visit : <a href="{{ url.facility }}">{{ url.facility }}</a>
