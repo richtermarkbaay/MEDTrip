@@ -11,7 +11,7 @@ use HealthCareAbroad\HelperBundle\Entity\Country;
 class LocationService
 {
 	protected $doctrine;
-	
+
 	/**
 	 * @var ChromediaGlobalRequest
 	 */
@@ -22,6 +22,14 @@ class LocationService
 	private $loadedGlobalCityList = array();
 	
 	private $totalResults;
+
+	public $chromediaApiUri;
+
+	/**
+	 * 
+	 * @var CouchDbService
+	 */
+	public $couchDbServie;
 	
 	/**
 	 * @var LocationService
@@ -37,7 +45,7 @@ class LocationService
 	{
 	    $this->chromediaApiUri = $uri;
 	}
-	
+
 	public function setChromediaGlobalRequest(ChromediaGlobalRequest $request)
 	{
 	    $this->request = $request;
@@ -46,6 +54,12 @@ class LocationService
 	public function setDoctrine(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine)
 	{
 		$this->doctrine = $doctrine;
+	}
+	
+	public function setCouchDbService(CouchDbService $couchDbService, $locationDb)
+	{
+	    $this->couchDbService = $couchDbService;
+	    $this->couchDbService->setDatabase($locationDb);
 	}
 	
 	public function getGlobalCountryById($id)
@@ -135,6 +149,7 @@ class LocationService
 	public function getGlobalCities(array $params)
 	{
 	    static $hasLoaded = false;
+
 	    if (!$hasLoaded) {
 	        $queryString = count($params) ? '?' . http_build_query($params) : '';
 	        $response = $this->request->get($this->chromediaApiUri."/cities" . $queryString);
@@ -170,13 +185,16 @@ class LocationService
 	
 	public function getGlobalCitiesListByContry($countryId)
 	{
-	    $response = $this->request->get($this->chromediaApiUri."/country/$countryId/cities");
+// 	    $response = $this->request->get($this->chromediaApiUri."/country/$countryId/cities");
+// 	    if (200 != $response->getStatusCode()) {
+// 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
+// 	    }
+// 	    $citiesData = \json_decode($response->getBody(true), true);
 
-	    if (200 != $response->getStatusCode()) {
-	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
-	    }
+	    $citiesDoc = \json_decode($this->couchDbService->get("country_$countryId"), true);
+	    $citiesData = $citiesDoc['data'];
 
-	    return \json_decode($response->getBody(true), true);
+	    return $citiesData;
 	}
 	
 	/**
