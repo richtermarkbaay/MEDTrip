@@ -159,7 +159,9 @@ var InstitutionSpecialization = {
             success: function(response) {
                 $(_attr.selector).html(response.html);
             },
-            error: function(response) { `log(response); }
+            error: function(response) { 
+                
+            }
         });
     },
     
