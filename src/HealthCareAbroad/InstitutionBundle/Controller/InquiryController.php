@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -13,20 +15,25 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class InquiryController extends InstitutionAwareController
 {
+    
+    protected $inquiryRepo;
+    
     public function preExecute()
     {
         parent::preExecute();
+        
+        $this->inquiryRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry');
     }
     
     public function viewAllInquiriesAction(Request $request)
     {
-    
         $tab = $request->get('tabName','all');
         $template = "InstitutionBundle:Inquiry:inquiries.html.twig";
-        $inquiryArr = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        $inquiries = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
+        
         return $this->render($template, array(
                         'institution' => $this->institution,
-                        'inquiries' => \json_encode($inquiryArr, JSON_HEX_APOS),
+                        'inquiries' => \json_encode($inquiries, JSON_HEX_APOS),
                         'isInquiry' => true,
                         'tabName' => $tab
         ));
@@ -34,8 +41,9 @@ class InquiryController extends InstitutionAwareController
     
     public function viewInquiryAction(Request $request)
     {
-        $inquiryId = $request->get('id');
-        $inquiry = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry')->findOneById($inquiryId);
+        if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
+            throw $this->createNotFoundException('Invalid Inquiry Id');
+        }
         $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_READ);
     
         return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
@@ -45,17 +53,18 @@ class InquiryController extends InstitutionAwareController
         ));
     }
     
-    public function removeInquiryAction(Request $request)
+    public function ajaxRemoveInquiryAction(Request $request)
     {
         $institutionService = $this->get('services.institution');
-        $inquiryId = $request->get('id');
-        $tab = $request->get('tabName');
-        $inquiry = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionInquiry')->findOneById($inquiryId);
+        if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
+            throw $this->createNotFoundException('Invalid Inquiry Id');
+        }
+        
         $institutionService->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
-        $inquiryArr = $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
-        $output = array('inquiryList' => $inquiryArr,
+        $output = array('inquiryList' => $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $request->get('tabName')),
                         'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
                         'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
+        
         $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
     
         return $response;
@@ -65,15 +74,17 @@ class InquiryController extends InstitutionAwareController
     public function ajaxSetInstitutionInquiryStatusAction(Request $request)
     {
         $institutionService = $this->get('services.institution');
-        $inquiryList = $request->get('inquiryListArr');
+        
         $inquiryStatus = InstitutionInquiry::STATUS_READ;
-        $tab = $request->get('tabName');
         if($request->get('status') == '1') {
             $inquiryStatus = InstitutionInquiry::STATUS_UNREAD;
         }
-        $inquiries = $institutionService->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
-        $inquiryArr = $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
-        $output = array('inquiryList' => $inquiryArr,
+        
+        if($inquiryList = $request->get('inquiryListArr')) {
+            $inquiries = $institutionService->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
+        }
+       
+        $output = array('inquiryList' => $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $request->get('tabName')),
                         'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
                         'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
         $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
