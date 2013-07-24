@@ -4,7 +4,9 @@ Auto-notification subject line: Patients can now find your clinic on HealthcareA
 Auto-notification From address: support@healthcareabroad.com
 #}
 {% block subject %}
-    Patients can now find your clinic on HealthcareAbroad.com!
+    {% autoescape false %}
+Patients can now find your clinic on HealthcareAbroad.com!
+    {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}
@@ -13,23 +15,27 @@ Auto-notification From address: support@healthcareabroad.com
 Your clinic listing has been approved!
 
 Patients will find your clinic on HealthcareAbroad.com when they search for:
+
 - Any of your Specializations
 - Treatments you selected under those specializations
-- A search for the City or Country your clinic is in.
+- A search for the City or Country your clinic is in
 - Any combination of the above
 
-To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
-- Review your clinic information (static list) {{ url.center }}
-- Add any units or departments you may have missed {{ url.add_centers }}
-- Post photos of your clinic {{ url.center_gallery }}
-- Review the treatments you listed {{ url.center_treatments }}
-- Review your doctor list {{ url.center_doctors }}
+To ensure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 
-To add to your clinic profile please login at: {{ url.login }}
+- Review your clinic information (static list): {{ url.center }}
+- Add any units or departments you may have missed: {{ url.add_centers }}
+- Post photos of your clinic: {{ url.center_gallery }}
+- Review the treatments you listed: {{ url.center_treatments }}
+- Review your doctor list: {{ url.center_doctors }}
+
+To update your clinic profile please login at: {{ url.login }}
 
 If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }} .
-IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> {{ url.contact_info }}
-We would love the opportunity to discuss how employing some advanced features for your listing can increases the amount of leads you receive from HealthcareAbroad.com.  Packages start at less than $1 per day, and can have an immediate impact.  For full details of all available features, visit: {{ url.advertising_guide }}
+
+IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information: {{ url.contact_info }}
+
+We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from HealthcareAbroad.com. Packages start at less than $1 per day, and can have an immediate impact. For full details of all available features, visit: {{ url.advertising_guide }} .
 
 Please take the time to review your listing and double check your email address. If changes are required please login at {{ url.login }} to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
 
@@ -54,7 +60,7 @@ Patients will find your clinic on HealthcareAbroad.com when they search for:
 </ul>
 <br/>
 
-To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
+To ensure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 <ul>
     <li><a href="{{ url.center }}">Review your clinic information (static list)</a></li>
     <li><a href="{{ url.add_centers }}">Add any units or departments you may have missed</a></li>
@@ -67,12 +73,12 @@ To insure prospective patients find complete and relevant information about ever
 To add to your clinic profile please login at: {{ url.login }}
 <br/><br/>
 If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }} .
-<br/>
-IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> {{ url.contact_info }}
-<br/>
-We would love the opportunity to discuss how employing some advanced features for your listing can increases the amount of leads you receive from HealthcareAbroad.com.  Packages start at less than $1 per day, and can have an immediate impact.  For full details of all available features, visit: {{ url.advertising_guide }}
 <br/><br/>
-Please take the time to review your listing and double check your email address. If changes are required please login at {{ url.login }} to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
+IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> <a href="{{ url.contact_info }}">{{ url.contact_info }}</a>
+<br/><br/>
+We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from HealthcareAbroad.com. <b>Packages start at less than $1 per day,</b> and can have an immediate impact. For full details of all available features, visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>.
+<br/><br/>
+Please take the time to review your listing and double check your email address. If changes are required please login at <a href="{{ url.login }}">{{ url.login }}</a> to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
 <br/><br/>
 All the best,
 <br/><br/>
