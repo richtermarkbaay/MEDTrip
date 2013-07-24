@@ -134,8 +134,12 @@ var FancyAutocompleteWidget = function(widget, options){
             // override _renderMenu
             widget.data('ui-autocomplete')._renderMenu = function(ul, data){
                 var _cnt = 0;
-                $.each( data, function( index, item ) {
-                    if (options.maxItems && _cnt > options.maxItems) {
+                
+                // Reset OnSrollLoad
+                ul.data('startIndex', options.maxItem).data('loadOnScrollTop', ul.data('defaultScrollTop')).animate({ scrollTop: 0 }, 'fast');
+
+                $.each( data, function( index, item ) {                	
+                    if (_cnt > options.maxItems) {
                         return false;
                     }
                     widget.data('ui-autocomplete')._renderItemData( ul, item );
@@ -285,8 +289,48 @@ var FancyAutocompleteWidget = function(widget, options){
     
     $.fn.fancyAutocomplete = function(_options) {
         return this.each(function(){
-            var _myWidget = new FancyAutocompleteWidget($(this), _options);
-            $(this).data('fancyAutocomplete', _myWidget);
+
+        	// always limit since it will not work on too many iterations
+        	if (!_options.maxItems){
+        		_options.maxItems = 1000;
+        	}
+
+            $(this).data('fancyAutocomplete', new FancyAutocompleteWidget($(this), _options));
+
+
+            // IF CITY AUTOCOMPLETE
+            if(typeof($(this).data('city-autocomplete')) != 'undefined') {
+                var defaultScrollTop = 26.5 * _options.maxItems; // 26.72
+                //console.log($(this).scrollTop() + " > " + defaultScrollTop);
+                $(this).siblings('.combolist-wrapper:first').find('ul.ui-autocomplete')
+                	.data('defaultScrollTop', defaultScrollTop)
+                	.data('loadOnScrollTop', defaultScrollTop)
+                	.data('startIndex', _options.maxItems)
+                	.scroll(function() {
+
+    	            	if($(this).scrollTop() > $(this).data('loadOnScrollTop')) {
+    	            		var data = $(this).parents('.fancy-country-wrapper:first').find('input[data-elem=input]').data('fancyAutocomplete').options.source;
+
+    	            		if(data.length > $(this).children().length) {
+    		            		$(this).data('startIndex', $(this).children().length);
+
+    		            		appendString = '';
+    	            			//console.log("startIndex: " + $(this).data('startIndex'));
+    		            		for(var i=$(this).data('startIndex'); i < $(this).data('startIndex') + _options.maxItems; i++) {
+    		            			if(typeof(data[i]) == 'undefined') {
+    		            				break;
+    		            			}
+    		            			appendString += '<li class="ui-menu-item" role="presentation"><a data-type="undefined" data-value="'+data[i].id+'" class="ui-corner-all" tabindex="-1">'+data[i].name+'</a></li>';
+    		            		}
+
+    		            		$(this).data('loadOnScrollTop', parseInt($(this).data('loadOnScrollTop')) + $(this).data('defaultScrollTop'));
+    		                	$(this).append(appendString);            		
+    	            		}
+    	            	}
+                	});            	
+            }
+            // END OF IF CITY AUTOCOMPLETE
+
         });
     };
     
