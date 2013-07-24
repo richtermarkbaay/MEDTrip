@@ -17,7 +17,7 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
     private $signupFormValues = array(
         'institutionUserSignUp[firstName]' => 'testFirstName',
         'institutionUserSignUp[lastName]' => 'testLastName',
-        'institutionUserSignUp[email]' => 'test_sisgnu1@chsromedia.com',
+        'institutionUserSignUp[email]' => 'test_sisde@fessd.com',
         'institutionUserSignUp[password]' => '123456',
         'institutionUserSignUp[confirm_password]' => '123456',
         'institutionUserSignUp[type]' => '1',
@@ -86,49 +86,122 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Your Email address")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Set your password")')->count());
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Re-type your password")')->count());
+		
 		$form = $crawler->selectButton('Create Account')->form();
 		$crawler = $client->submit($form, $this->signupFormValues);
-		
 		// test that it will redirect to institution homepagex
  		$this->assertEquals(302, $client->getResponse()->getStatusCode());
 		$client->followRedirect();
 	}
-	
+
+    private $setupProfileFormValues =  array( 'institution_profile_form' => array(
+        'name' => 'new name',
+        'address1' => array ( 'room_number' => 'test', 'building' => 'test', 'street' => 'test' ),
+        'country' => '11',
+        'city' => '61914',
+        'description' => 'test',
+        'state' => 'test test',
+        'zipCode' => '232',
+        'contactEmail' => 'test@yahoo.com',
+        'contactDetails' =>array ( '0' =>  array ( 'country_code' => '358', 'area_code' => '343','number' => '434','ext' => '3' )),
+        'addressHint' => 'test',
+        'medicalProviderGroups' => array( '0' => 'group'),
+        'coordinates' => '10.3112791,123.89776089999998',
+        'socialMediaSites' => array ( 'facebook' => 'test', 'twitter' => 'test','googleplus' => 'test' ),
+        '_token' => '',
+    ));
+
+    public function testSetupProfileforMultipleType()
+    {
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 1);
+        $crawler = $client->request('GET', 'institution/setup-profile');
+         
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Set-up Hospital Profile")')->count());
+        $extract = $crawler->filter('input[name="institution_profile_form[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
+        $this->setupProfileFormValues['institution_profile_form']['name'] = 'nwewew';
+        $this->setupProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
+         
+        $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $this->setupProfileFormValues['institution_profile_form']['name'] = null;
+        $this->setupProfileFormValues['institution_profile_form']['medicalProviderGroups'] = array( '0' => '');
+        $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your hosipital name.")')->count());
+    }
+    
+
     public function testSetupProfileforSingleType()
     {
 	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
 	    $session = $client->getContainer()->get('session');
 	    $session->set('institutionSignupStepStatus', 1);
-	    
 	    $crawler = $client->request('GET', 'institution/setup-profile');
-	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
-	    $setupProfileFormValues = array(
-            'institution_profile_form[name]' => 'test11221212121',
-            'institution_profile_form[description]' => 'test',
-            'institution_profile_form[address1]' => 'test',
-            'institution_profile_form[country]' => '1',
-            'institution_profile_form[city]' => '1',
-            'institution_profile_form[zipCode]' => '2322',
-            'institution_profile_form[addressHint]' => 'test.com',
-            'institution_profile_form[contactEmail]' => '1',
-            'institution_profile_form[contactNumber]' => '1',
-            'institution_profile_form[websites]' => 'www.test.com',
-            'institution_profile_form[socialMediaSites]' => 'test',
-            'institution_profile_form[services]' => '1',
-            'institution_profile_form[awards]' => '1',
-            'institution_profile_form[coordinates]' => '12.879721, 121.77401699999996'
-	    );
 	    
-	    $form = $crawler->selectButton('Confirm')->form();
-	    $crawler = $client->submit($form, $this->signupFormValues);
+	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Set-up Clinic Profile")')->count());
+	    $extract = $crawler->filter('input[name="institution_profile_form[_token]"]')->extract(array('value'));
+	    $csrf_token = $extract[0];
+	    $this->setupProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
+	    
+	    $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
+	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
+	    
+	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+	    $this->setupProfileFormValues['institution_profile_form']['name'] = null;
+	    $this->setupProfileFormValues['institution_profile_form']['medicalProviderGroups'] = array( '0' => '');
+	    $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your hosipital name.")')->count());
     }
     
-    public function testSetupProfileForMultitpleType()
+    public function testSetupInstitutionMedicalCenter()
     {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', 'institution/setup-profile');
+	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+	    $crawler = $client->request('GET', 'institution/setup-clinic-details/2');
+	    $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 3);
+        $crawler = $client->request('GET', 'institution/setup-clinic-details/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
+        $formValues = array(
+            'institutionMedicalCenter[name]' => 'testFirstName',
+            'institutionMedicalCenter[description]' => 'testLastName',
+            'institutionMedicalCenter[city]' => '1@fed.com',
+            'institutionMedicalCenter[zipCode]' => '3423',
+            'institutionMedicalCenter[contactEmail]' => '123456@mail.com',
+            'institutionMedicalCenter[contactDetails]' =>array ( '0' =>  array ( 'country_code' => '358', 'area_code' => '343','number' => '434','ext' => '3' )),
+            'institutionMedicalCenter[address]' => array ( 'room_number' => 'test', 'building' => 'test', 'street' => 'test' ),
+//             'institutionMedicalCenter[businessHours]' => array ( '4c1d0d5c-8507-4982-9a38-c213c8a68a25' => '{"weekdayBitValue":12,"opening":"8:00 AM","closing":"5:00 PM","notes":""}' ),
+            'institutionMedicalCenter[socialMediaSites]' => array ( 'facebook' => 'tttt' , 'twitter' => 'dsdf', 'googleplus' =>'')
+        );
+
+        $form = $crawler->selectButton('Continue to Adding Specializations')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+	    $formValues['institutionMedicalCenter[name]'] = null;
+	    $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+    }
+    
+    public function testSetupInstitutionMedicalCenterNoIdPassed()
+    {
+    
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 3);
+        $crawler = $client->request('GET', 'institution/setup-clinic-details');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
 }

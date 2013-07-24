@@ -78,8 +78,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     
     protected function getBrowserWithActualLoggedInUserForSingleType()
     {
-        self::$clientWithLoggedUser = static::createClient();
-        $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
+//         self::$clientWithLoggedUser = static::createClient();
+//         $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
         
         $client = static::createClient(array(), array(
                         'PHP_AUTH_USER' => 'institution_authorized_single',
