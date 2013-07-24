@@ -4,7 +4,9 @@ Subject:  This Prospective Patient Inquiry is from HealthcareAbroad.com:
 Sent from: inquiry@healthcareabroad.com
 #}
 {% block subject %}
+    {% autoescape false %}
 This Prospective Patient Inquiry is from HealthcareAbroad.com
+    {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}

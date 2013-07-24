@@ -5,7 +5,9 @@ Auto-notification subject line: #Hospital_Name# has been added to HealthcareAbro
 Auto-notification From address: support@healthcareabroad.com
 #}
 {% block subject %}
-    {{ institution_name }} has been added to HealthcareAbroad.com
+    {% autoescape false %}
+{{ institution_name }} has been added to HealthcareAbroad.com
+    {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}
