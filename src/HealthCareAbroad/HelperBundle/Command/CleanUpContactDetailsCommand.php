@@ -144,6 +144,29 @@ class CleanUpContactDetailsCommand extends ContainerAwareCommand
         $em->flush();
         // -- end with doctor contact details
         
+        // -- start with clinic contact details
+        $em = $this->doctrine->getManager();
+        $this->output->writeln("=====================================================");
+        $this->output->writeln("Populate remaining data by cross matching doctor contact details");
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('imc, cd, co, inst')
+        ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
+        ->innerJoin('imc.institution', 'inst')
+        ->innerJoin('imc.contactDetails', 'cd')
+        ->innerJoin('inst.country', 'co')
+        ->where('cd.country IS NULL')
+        ->andWhere('cd.number IS NOT NULL')
+        ->andWhere('cd.countryCode IS NOT NULL');
+        $objects = $qb->getQuery()->getResult();
+        foreach ($objects as $obj) {
+            $this->output->writeln("id: #{$obj->getId()} >> ");
+            if ($country = $obj->getInstitution()->getCountry()){
+                $this->_updateCountryFieldOfContactDetailsByCountry($country, $obj->getContactDetails(), $em);
+            }
+        }
+        $em->flush();
+        // -- end with clinic contact details
+        
     }
     
     private function _updateCountryFieldOfContactDetailsByCountry(Country $country, $contactDetails = array(), $em)
