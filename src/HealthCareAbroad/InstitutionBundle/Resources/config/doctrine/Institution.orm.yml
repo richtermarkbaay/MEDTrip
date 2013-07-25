@@ -161,7 +161,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         state:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\State
             joinColumns:
-                city_id:
+                state_id:
                     referencedColumnName: id
             orphanRemoval: false
 
