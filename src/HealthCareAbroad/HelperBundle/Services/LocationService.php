@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\State;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -270,16 +272,6 @@ class LocationService
 	    return $cityBySlugs[$slug];
 	}
 	
-	public function getGlobalCityById($id)
-	{
-	    $response = $this->request->get($this->chromediaApiUri.'/city/'.$id);
-	    if (200 != $response->getStatusCode()) {
-	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
-	    }
-	    
-	    return \json_decode($response->getBody(true), true);
-	}
-	
 	public function createCityFromArray(array $data)
 	{
 	    $requiredFields = array('id', 'name', 'slug');
@@ -295,11 +287,11 @@ class LocationService
 	    $city->setSlug($data['slug']);
 	    $city->setStatus(City::STATUS_ACTIVE);
 
-	    if(isset($data['country'])) {
-	        $country = $this->createCountryFromArray($data['country']);
-	        $city->setCountry($country);	        
+	    if(isset($data['geoCountry'])) {
+	        $country = $this->getCountryById($data['geoCountry']['id']);
+	        $city->setCountry($country);
 	    }
-
+	    
 	    return $city;
 	}
 
@@ -368,10 +360,39 @@ class LocationService
 	}
 	
 	//-------------------------------------
+	// start city related functions
+    public function getGlobalCityById($id)
+	{
+	    return  $this->findGlobalCityById($id);
+	}
+	
+	public function findGlobalCityById($id)
+	{
+	    $response = $this->request->get($this->chromediaApiUri.'/cities/'.$id);
+	    if (200 != $response->getStatusCode()) {
+	        if (404 == $response->getStatusCode()){
+	            return null;
+	        }
+	        else {
+	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getBody(true));
+	        }
+	    }
+	     
+	    return \json_decode($response->getBody(true), true);
+	}
+	
+	
+	//-------------------------------------
 	// Start state related functions
+	public function saveState(State $state)
+	{
+	    $em = $this->doctrine->getManager();
+	    $em->persist($state);
+	    $em->flush();
+	}
+	
 	public function findGlobalStatesByCountry($countryId)
 	{
-	    
 	    $response = $this->request->get($this->chromediaApiUri.'/states?country_id='.$countryId);
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
@@ -383,5 +404,20 @@ class LocationService
 	public function findStateById($stateId)
 	{
 	    return $this->doctrine->getRepository('HelperBundle:State')->find($stateId);
+	}
+	
+	public function getGlobalStateById($stateId)
+	{
+	    $response = $this->request->get($this->chromediaApiUri.'/states/'.$stateId);
+	    if (200 != $response->getStatusCode()) {
+	        if (404 == $response->getStatusCode()){
+	            return null; // id does not exist
+	        }
+	        else {
+	            throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
+	        }
+	    }
+	    
+	    return \json_decode($response->getBody(true), true);
 	}
 }

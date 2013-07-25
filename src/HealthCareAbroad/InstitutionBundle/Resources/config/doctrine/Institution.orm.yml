@@ -163,6 +163,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             joinColumns:
                 state_id:
                     referencedColumnName: id
+            cascade: 
+                - "persist"
             orphanRemoval: false
 
         logo:

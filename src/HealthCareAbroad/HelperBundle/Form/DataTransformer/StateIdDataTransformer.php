@@ -37,7 +37,20 @@ class StateIdDataTransformer implements DataTransformerInterface
         
         $state = $this->locationService->findStateById($id);
         if (!$state){
-            throw new \Exception('Failed to transform invalid state id');
+            $globalStateData = $this->locationService->getGlobalStateById($id);
+            if (null === $globalStateData){
+                throw new \Exception('Failed to transform invalid state id: '.$id);
+            }
+            $globalStateData = $globalStateData['state'];
+            $state = new State();
+            $state->setId($globalStateData['id']);
+            $state->setName($globalStateData['name']);
+            
+            $countryData = $globalStateData['geoCountry'];
+            $country = $this->locationService->getCountryById($countryData['id']);
+            
+            $state->setCountry($country);
+//             $this->locationService->saveState($state);
         }
         
         return $state;
