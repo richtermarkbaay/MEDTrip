@@ -379,6 +379,13 @@ CREATE TABLE IF NOT EXISTS `business_hours` (
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4215 ;
 
+--
+-- Dumping data for table `business_hours`
+--
+
+INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES
+(1, 1, 12, '10:00:00', '11:00:00', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -530,7 +537,8 @@ CREATE TABLE IF NOT EXISTS `doctors` (
 
 INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `gender`, `contact_email`, `contact_number`, `details`, `country_id`, `media_id`, `date_created`, `status`) VALUES
 (1, 'Arihant', NULL, 'Surana', NULL, NULL, NULL, '[{"number":"13241234324","type":"phone"}]', 'Dr Arihant Surana is a senior practicing cosmetic dermatologist and minimal invasive hair transplant surgeon. After his post graduate degree in dermatology, he has been practicing in the field of cosmetic dermatology and trichology and is the most sought after hair transplant surgeon in India.\r\nSurgical Expertise: Dr. Surana has done extensive research in the field of hair transplant and was first one to introduce customized hair transplant to all his clients.\r\nHonors &amp; Expertise: He specializes in minimal invasive painless hair transplant and many dermatological procedures like lasers, fillers, etc.', 1, NULL, '2013-01-17 03:43:25', 1),
-(2, 'Pankaj', NULL, 'Chaturvedi', NULL, NULL, NULL, '[{"number":"","type":"phone"}]', 'Surgical Expertise: He is known widely for his acne and acne scar treatments, laser treatments, Botox&reg;, filler and anti-ageing treatments and state of the art hair transplantation procedures. He currently holds the position of senior consultant and co-director of dermatology at Adiva aesthetics.\r\nHonors &amp; Expertise: He has an excellent academic career and has achieved many prestigious awards nationally and internationally for his path breaking researches on hair disorders and baldness treatments.\r\n&nbsp;', 1, NULL, '2013-01-17 03:43:25', 1);
+(2, 'asdasd', NULL, 'asdaasdturvedi', NULL, NULL, NULL, '[{"number":"","type":"phone"}]', 'Surgical Expertise: He is known widely for his acne and acne scar treatments, laser treatments, Botox&reg;, filler and anti-ageing treatments and state of the art hair transplantation procedures. He currently holds the position of senior consultant and co-director of dermatology at Adiva aesthetics.\r\nHonors &amp; Expertise: He has an excellent academic career and has achieved many prestigious awards nationally and internationally for his path breaking researches on hair disorders and baldness treatments.\r\n&nbsp;', 1, NULL, '2013-01-17 03:43:25', 1),
+(3, 'Pankaj', NULL, 'Chaturvedi', NULL, NULL, NULL, '[{"number":"","type":"phone"}]', 'Surgical Expertise: He is known widely for his acne and acne scar treatments, laser treatments, Botox&reg;, filler and anti-ageing treatments and state of the art hair transplantation procedures. He currently holds the position of senior consultant and co-director of dermatology at Adiva aesthetics.\r\nHonors &amp; Expertise: He has an excellent academic career and has achieved many prestigious awards nationally and internationally for his path breaking researches on hair disorders and baldness treatments.\r\n&nbsp;', 1, NULL, '2013-01-17 03:43:25', 1);
 
 -- --------------------------------------------------------
 
@@ -1015,7 +1023,9 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
 --
 
 INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
-(1, 1);
+(1, 1),
+(2, 2),
+(2, 3);
 
 -- --------------------------------------------------------
 

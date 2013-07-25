@@ -123,7 +123,7 @@ class InstitutionPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        $isLoadedAvailableTypes = false;
+        static $isLoadedAvailableTypes = false;
         if (!$isLoadedAvailableTypes) {
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
@@ -157,11 +157,9 @@ class InstitutionPropertyService
      */
 
     public function findById($id)
-
     {
 
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->find($id);
-
     }
 
     public function getGlobalAwardPropertiesByInstitution(Institution $institution, array $options=array())

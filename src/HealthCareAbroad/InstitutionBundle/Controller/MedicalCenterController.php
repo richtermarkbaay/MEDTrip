@@ -198,7 +198,6 @@ class MedicalCenterController extends InstitutionAwareController
 
                 $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
                 $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
-
                 $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array(
                     InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false,
                     InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
@@ -352,6 +351,7 @@ class MedicalCenterController extends InstitutionAwareController
             }
 
             $formVariables = $request->get(InstitutionMedicalCenterFormType::NAME);
+            
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
 
