@@ -17,6 +17,13 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class UrlGeneratorTwigExtension extends \Twig_Extension
 {
     private $generator;
+    
+    private $chromediaApiUrl;
+    
+    public function setChromediaApiUrl($url)
+    {
+        $this->chromediaApiUrl=$url;
+    }
 
     public function __construct(UrlGeneratorInterface $generator)
     {
@@ -28,7 +35,9 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
         return array(
             'get_treatment_url' => new \Twig_Function_Method($this, 'get_treatment_url'),
             'get_country_url' => new \Twig_Function_Method($this, 'get_country_url'),
-            'get_city_url' => new \Twig_Function_Method($this, 'get_city_url')
+            'get_city_url' => new \Twig_Function_Method($this, 'get_city_url'),
+            'get_load_states_api_uri' => new \Twig_Function_Method($this, 'getLoadStatesApiUri'),
+            'get_load_cities_api_uri' => new \Twig_Function_Method($this, 'getLoadCitiesApiUri'),
         );
     }
 
@@ -52,6 +61,16 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
         $params = array('country' => $city->getCountry()->getSlug(), 'city' => $city->getSlug());
 
         return $this->generator->generate('frontend_search_results_cities', $params, true);
+    }
+    
+    public function getLoadStatesApiUri()
+    {
+        return $this->chromediaApiUrl.'/states';
+    }
+    
+    public function getLoadCitiesApiUri()
+    {
+        return $this->chromediaApiUrl.'/cities';
     }
 
     public function getName()

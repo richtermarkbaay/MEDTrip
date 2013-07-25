@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\HelperBundle\Entity\City;
 
 use HealthCareAbroad\HelperBundle\Exception\LocationServiceException;
@@ -347,9 +349,13 @@ class LocationService
         return $qb->getQuery()->getResult();
 	}
 	
-	public function getActiveCountries()
+	public function getActiveCountries($hydrationMode=Query::HYDRATE_OBJECT)
 	{
-	    return $this->getQueryBuilderForCountries()->getQuery()->getResult();
+	    $qb = $this->getQueryBuilderForCountries();
+	    $qb->andWhere('c.status = 1')
+	        ->orderBy('c.name');
+	    
+	    return $qb->getQuery()->getResult($hydrationMode);
 	}
 	/**
 	 * Hackish way to use this service without injecting it on other services.
@@ -359,5 +365,18 @@ class LocationService
 	public static function getCurrentInstance()
 	{
 	    return self::$instance;
+	}
+	
+	//-------------------------------------
+	// Start state related functions
+	public function findGlobalStatesByCountry($countryId)
+	{
+	    
+	    $response = $this->request->get($this->chromediaApiUri.'/states?country_id='.$countryId);
+	    if (200 != $response->getStatusCode()) {
+	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
+	    }
+	    
+	    return \json_decode($response->getBody(true), true);
 	}
 }

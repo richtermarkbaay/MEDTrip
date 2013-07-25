@@ -180,7 +180,7 @@ var FancyAutocompleteWidget = function(widget, options){
                 
                 // check if their is an onAutocompleteSelectCallback function
                 if (_options.onAutocompleteSelectCallback && 'function' == typeof(_options.onAutocompleteSelectCallback)) {
-                    _options.onAutocompleteSelectCallback();
+                    _options.onAutocompleteSelectCallback(widget);
                 }
             }
         },
