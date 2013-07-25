@@ -41,7 +41,7 @@ class MedicalProviderGroupTransformer implements DataTransformerInterface
     		return $medicalProviderGroups;
     	}
     	$medicalProviderGroupName = $medicalProviderGroups->getName();
-    	
+    	 
 		return $medicalProviderGroupName;
     }
 
