@@ -86,22 +86,20 @@ class MedicalCenterController extends InstitutionAwareController
             if($this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view') {
                 $this->institutionMedicalCenter = $this->service->findById($imcId, false);
 
-                // medical center group does not belong to this institution
                 if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
                     return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
                 }
             } else {
                 $this->institutionMedicalCenter  = $this->repository->find($imcId);
             }
-        }
 
-        // non-existent medical center group
-        if (!$this->institutionMedicalCenter) {
-            if ($this->getRequest()->isXmlHttpRequest()) {
-                throw $this->createNotFoundException('Invalid medical center.');
-            }
-            else {
-                return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
+            if (!$this->institutionMedicalCenter) {
+                if ($this->getRequest()->isXmlHttpRequest()) {
+                    throw $this->createNotFoundException('Invalid medical center.');
+                }
+                else {
+                    return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
+                }
             }
         }
     }
@@ -149,7 +147,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function viewAction(Request $request)
     {
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
-
+        
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
