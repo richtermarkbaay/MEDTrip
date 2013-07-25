@@ -221,7 +221,7 @@
 {% block fancy_country_widget %}
     {% spaceless %}
    
-        <div class="fancy-country-wrapper">
+        <div class="fancy-dropdown-wrapper">
             {% set cityField = form.parent.vars.value.city is defined ? form.parent.vars.value.city : false %}
             {% set city = cityField ? form.parent.vars.value.city.id : 0 %}
             {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}            

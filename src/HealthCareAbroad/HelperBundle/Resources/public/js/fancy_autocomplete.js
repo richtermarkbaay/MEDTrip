@@ -1,5 +1,5 @@
 /**
- * Autocomplete widget that combines jQuery autocomplete widget and bootstrap dropdown
+ * jQuery autocomplete 
  * 
  * @author Allejo Chris Velarde
  * April 02, 2013
@@ -134,7 +134,7 @@ var FancyAutocompleteWidget = function(widget, options){
             // override _renderMenu
             widget.data('ui-autocomplete')._renderMenu = function(ul, data){
                 var _cnt = 0;
-                
+                ul.attr('data-widget-id', '#'+widget.attr('id'));
                 // Reset OnSrollLoad
                 ul.data('startIndex', options.maxItem).data('loadOnScrollTop', ul.data('defaultScrollTop')).animate({ scrollTop: 0 }, 'fast');
 
@@ -300,8 +300,8 @@ var FancyAutocompleteWidget = function(widget, options){
 
             // IF CITY AUTOCOMPLETE
             if(typeof($(this).data('city-autocomplete')) != 'undefined') {
-                var defaultScrollTop = 26.5 * _options.maxItems; // 26.72
-                //console.log($(this).scrollTop() + " > " + defaultScrollTop);
+                var defaultScrollTop = 26 * _options.maxItems; // 26.72
+                
                 $(this).siblings('.combolist-wrapper:first').find('ul.ui-autocomplete')
                 	.data('defaultScrollTop', defaultScrollTop)
                 	.data('loadOnScrollTop', defaultScrollTop)
@@ -309,7 +309,8 @@ var FancyAutocompleteWidget = function(widget, options){
                 	.scroll(function() {
 
     	            	if($(this).scrollTop() > $(this).data('loadOnScrollTop')) {
-    	            		var data = $(this).parents('.fancy-country-wrapper:first').find('input[data-elem=input]').data('fancyAutocomplete').options.source;
+    	            		var autcompleteWidget = $($(this).data('widget-id'));
+    	            		var data = autcompleteWidget.data('fancyAutocomplete').options.source;
 
     	            		if(data.length > $(this).children().length) {
     		            		$(this).data('startIndex', $(this).children().length);
@@ -320,11 +321,13 @@ var FancyAutocompleteWidget = function(widget, options){
     		            			if(typeof(data[i]) == 'undefined') {
     		            				break;
     		            			}
-    		            			appendString += '<li class="ui-menu-item" role="presentation"><a data-type="undefined" data-value="'+data[i].id+'" class="ui-corner-all" tabindex="-1">'+data[i].name+'</a></li>';
+    		                        var label = data[i].label ? data[i].label : data[i].name;
+		                    		var itemData = {'id': data[i].id, 'label': label, 'custom_label': data[i].custom_label ? data[i].custom_label : null };
+
+    		            			autcompleteWidget.data('ui-autocomplete')._renderItemData($(this), itemData);
     		            		}
 
-    		            		$(this).data('loadOnScrollTop', parseInt($(this).data('loadOnScrollTop')) + $(this).data('defaultScrollTop'));
-    		                	$(this).append(appendString);            		
+    		            		$(this).data('loadOnScrollTop', parseInt($(this).data('loadOnScrollTop')) + $(this).data('defaultScrollTop'));            		
     	            		}
     	            	}
                 	});            	
