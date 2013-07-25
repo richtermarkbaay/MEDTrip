@@ -81,6 +81,48 @@ class InstitutionUserController extends Controller
                         'error'         => $error
         ));
     }
+    
+    public function editAccountPasswordAction(Request $request){
+        $error_message = false;
+        $session = $request->getSession();
+        $accountId = $session->get('accountId');
+        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+        $this->get('twig')->addGlobal('institution', $this->institution);
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
+        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
+        $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        
+        if(!$institutionUser){
+        
+            throw new AccessDeniedHttpException();
+        }
+        
+        $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
+        $em = $this->getDoctrine()->getManager();
+        
+        if($request->isMethod('POST')){
+            $form->bind($request);
+            if ($form->isValid()) {
+                $institutionUser = $form->getData();
+                
+                $this->get('services.institution_user')->update($institutionUser);
+                // create event on editAccount and dispatch
+                $this->get('services.institution_user')->setSessionVariables($institutionUser);
+                $this->get('session')->setFlash('success', 'You have successfuly changed your password');
+            }else{
+                $form_errors = $this->get('validator')->validate($form);
+                if($form_errors){
+                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
+                }
+            }
+        }
+        
+        return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
+                        'form' => $form->createView(),
+                        'institutionUser' => $institutionUser,
+                        'error_message' => $error_message
+        ));
+    }
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
@@ -103,7 +145,7 @@ class InstitutionUserController extends Controller
         }
         
         $this->get('services.contact_detail')->initializeContactDetails($institutionUser, array(ContactDetailTypes::PHONE ,ContactDetailTypes::MOBILE ));
-        $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser,  array('include_terms_agreement' => false, 'institution_types' => false));
+        $form = $this->createForm(new InstitutionUserSignUpFormType(), $institutionUser,  array('signup_fields' => false,'include_terms_agreement' => false, 'institution_types' => false));
         $em = $this->getDoctrine()->getManager();
 
           if($request->isMethod('POST')){
