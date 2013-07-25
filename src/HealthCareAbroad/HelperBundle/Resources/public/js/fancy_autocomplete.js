@@ -296,6 +296,7 @@ var FancyAutocompleteWidget = function(widget, options){
         	}
 
             $(this).data('fancyAutocomplete', new FancyAutocompleteWidget($(this), _options));
+            $(this).trigger('bindFancyAutomplete');
 
 
             // IF CITY AUTOCOMPLETE

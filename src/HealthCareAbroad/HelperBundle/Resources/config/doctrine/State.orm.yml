@@ -1,0 +1,26 @@
+HealthCareAbroad\HelperBundle\Entity\State:
+    type: entity
+    table: states
+    repositoryClass: HealthCareAbroad\HelperBundle\Repository\StateRepository
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: false
+            nullable: false
+            generator:
+                strategy: NONE
+        name:
+            type: string
+            length: 255
+            fixed: false
+            nullable: false     
+    manyToOne:
+        country:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
+            cascade: {  }
+            joinColumns:
+                country_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

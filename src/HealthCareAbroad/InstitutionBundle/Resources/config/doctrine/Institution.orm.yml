@@ -53,10 +53,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 10
             nullable: false
             column: zip_code
-        state:
-            type: string
-            length: 50
-            column: state
         coordinates:
             type: string
             length: 100
@@ -158,6 +154,12 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 - "persist"
             mappedBy: null
             inversedBy: null
+            joinColumns:
+                city_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+        state:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\State
             joinColumns:
                 city_id:
                     referencedColumnName: id

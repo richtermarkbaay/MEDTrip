@@ -30,6 +30,7 @@ var Location = {
                 if (response.states.length){
                     Location.disableWidget(widget, false);
                     widget.data('fancyAutocomplete').setSource(response.states);
+                    widget.trigger('reloadedDataSource');
                 }
             }
         });
@@ -47,6 +48,7 @@ var Location = {
                 if (response.cities.length){
                     Location.disableWidget(widget, false);
                     widget.data('fancyAutocomplete').setSource(response.cities);
+                    widget.trigger('reloadedDataSource');
                 }
             }
         });

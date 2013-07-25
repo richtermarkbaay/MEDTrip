@@ -20,7 +20,11 @@ class TestController extends Controller
 {
     public function testLocationAction(Request $request)
     {
+        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find(206);
+        $state = $this->getDoctrine()->getRepository('HelperBundle:State')->find(2363);
         $institution = new Institution();
+        $institution->setCountry($country);
+        $institution->setState($state);
         $form = $this->createFormBuilder($institution, array('validation_groups' => array('editInstitutionInformation', 'Default')))
             ->add('country', 'fancy_country', array())
             ->add('city', 'city_list',array('attr' => array('placeholder' => 'Select a city')))
@@ -38,13 +42,14 @@ class TestController extends Controller
                 
                 $errors = array();
                 foreach ($form->getChildren() as $field){
-                    $fieldErrors = $field->getErrors();
-                    if (\count($fieldErrors)){
-                        var_dump($fieldErrors);   
+                    foreach ($field->getErrors() as $err){
+                        $errors[] = array(
+                            'name' => $field->getName(),
+                            'error' => $err->getMessage()
+                        );
                     }
-                    
-                    
                 }
+                var_dump($errors);
                 echo 'adi invalid'; exit;
             }
         }

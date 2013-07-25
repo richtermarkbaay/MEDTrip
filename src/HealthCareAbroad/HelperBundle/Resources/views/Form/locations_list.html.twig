@@ -3,14 +3,14 @@
         {% set valueContainerId = form.vars.id %}
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
-        <div class="fancy-country-wrapper">
+        <div class="fancy-dropdown-wrapper">
             <input type="hidden" id="{{ valueContainerId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
             <input required="required" type="text" id="{{ widgetId }}" placeholder="Select Country" data-autocomplete-trigger="#{{ triggerId }}" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
             <button id="{{ triggerId }}" class="btn hca-location-btn show_list_btn" type="button">
                 <span class="icon-chevron-down"></span>
             </button>
             <div class="combolist-wrapper"></div>
-
+            
             {% set jsFiles = [asset('bundles/helper/js/fancy_autocomplete.js'), asset('bundles/helper/js/Location.js')] %}
             {{ include_js_files(jsFiles) | raw }}
 
@@ -20,6 +20,7 @@
                 $(function(){
                     var _inputElem = $('#{{ widgetId }}')
                 	var _valueContainer = $('#{{ valueContainerId }}');
+                    
                 	_inputElem.fancyAutocomplete({
                         source: window.JSON.parse('{{ countries | raw }}'),
                         maxItems: 0,
@@ -29,6 +30,13 @@
                             widget.trigger('selectedCountry');
                         }
                     });
+                	
+                	{# there is a data for current country #}
+                    {% if form.parent.vars.value.country %}
+                        _valueContainer.val('{{ form.parent.vars.value.country.id }}');
+                        _inputElem.val('{{ form.parent.vars.value.country.name }}');
+                        
+                    {% endif %}
                     
                 });
             })(jQuery);
@@ -44,7 +52,7 @@
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
         
-        <div class="fancy-country-wrapper fancy-autocomplete-wrapper">
+        <div class="fancy-dropdown-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
             <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}  data-elem="input" disabled="disabled" >
             <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn" disabled="disabled">
@@ -79,14 +87,27 @@
 
                 {% if form.parent.state %}
                     var dependencyElement = $('#{{ form.parent.state.vars.id }}_widget');
+                    var dependencyElementValueContainer = $('#{{ form.parent.state.vars.id }}');
                     
                     dependencyElement.on('selectedState', function(e){
                         var stateWidget = $(e.target);
-                        var stateFancy = stateWidget.data('fancyAutocomplete');
                         var countryValue = $('#{{ form.parent.country.vars.id }}').val();
-                        Location.loadCities(countryValue, stateFancy.options.valueContainer.val(), $('#{{ widgetId }}'), 0);
+                        Location.loadCities(countryValue, $('#{{ form.parent.state.vars.id }}').val(), $('#{{ widgetId }}'), 0);
                         
                     });
+    
+                    if (parseInt(dependencyElementValueContainer.val())){
+                        dependencyElement.trigger('selectedState');
+                    }
+    
+                    {% if form.parent.vars.value.city %}
+                        {#-- there is city value in form data --#}
+                        _inputElem.on('reloadedDataSource', function(e){
+                            $('#{{ widgetId }}').val('{{ form.parent.vars.value.city.name }}');
+                            $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.city.id }}');
+                        });
+                    {% endif %}
+                
                 {% endif %}
             });
         })(jQuery);
@@ -101,8 +122,7 @@
         {% set valueContainerId = form.vars.id %}
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
-        
-        <div class="fancy-country-wrapper fancy-autocomplete-wrapper">
+        <div class="fancy-dropdown-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
             <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} data-elem="input" disabled="disabled" >
             <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn" disabled="disabled">
@@ -128,14 +148,31 @@
                 });
 
                 {% if form.parent.country %}
+                
                     // state is dependent on country widget
                     var dependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
+                    var dependencyElementValueContainer = $('#{{ form.parent.country.vars.id }}');
+                    
                     dependencyElement.on('selectedCountry', function(e){
                         var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
                         var countryValue = fancyAutocomplete.options.valueContainer.val();
                         var widget = $('#{{ widgetId }}');
                         Location.loadStatesOfCountry(countryValue,widget, 0);
                     });
+
+                    // country has a loaded value, trigger selctedCountry
+                    if (parseInt(dependencyElementValueContainer.val())){
+                        dependencyElement.trigger('selectedCountry');
+                    }
+    
+                    {% if form.parent.vars.value.state %}
+                        {#-- there is state value in form data --#}
+                        _inputElem.on('reloadedDataSource', function(e){
+                            $('#{{ widgetId }}').val('{{ form.parent.vars.value.state.name }}');
+                            $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.state.id }}');
+                        });
+                    {% endif %}
+                    
                 {% endif %}
             });
         })(jQuery);

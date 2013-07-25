@@ -379,4 +379,9 @@ class LocationService
 	    
 	    return \json_decode($response->getBody(true), true);
 	}
+	
+	public function findStateById($stateId)
+	{
+	    return $this->doctrine->getRepository('HelperBundle:State')->find($stateId);
+	}
 }
