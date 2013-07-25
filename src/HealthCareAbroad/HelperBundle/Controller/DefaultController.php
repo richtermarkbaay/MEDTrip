@@ -30,6 +30,17 @@ class DefaultController extends Controller
         return $this->render('HelperBundle:Default:index.html.twig', array('name' => $name));
     }
     
+    public function loadStatesAction(Request $request)
+    {
+        $countryId = $request->get('countryId', 0);
+        $selectedStateId = $request->get('selectedStateId', 0);
+        $globalData = $this->get('services.location')->findGlobalStatesByCountry($countryId);
+        
+        $json = \json_encode($globalData['states']);
+        
+        return new Response($json, 200, array('content-type' => 'application/json'));
+    }
+    
     public function loadCitiesAction(Request $request)
     {
         $countryId = $request->get('countryId', 0);

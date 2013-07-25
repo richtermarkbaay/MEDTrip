@@ -1,5 +1,5 @@
 {% use 'HelperBundle:Form:simple_contact_detail.html.twig'%}
-{% use 'HelperBundle:Form:city_list.html.twig'%}
+{% use 'HelperBundle:Form:locations_list.html.twig'%}
 
 {% block contact_number_with_flag_widget %}
     {% spaceless %}
@@ -217,7 +217,7 @@
             {% endfor %}
     {% endspaceless %}
 {% endblock %}
-
+{#
 {% block fancy_country_widget %}
     {% spaceless %}
    
@@ -274,7 +274,8 @@
 
         </div>
     {% endspaceless %}
-{% endblock %}    
+{% endblock %}
+#}
 
 {% block custom_select_widget %}
     {% spaceless %}

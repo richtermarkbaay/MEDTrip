@@ -210,6 +210,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
 
+        
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -221,7 +222,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $response = $this->setupProfileMultipleCenter($request);
                 break;
         }
-
+         
+        
         return $response;
     }
 
@@ -240,7 +242,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
 
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-
+        
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
@@ -249,6 +251,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
+        
         if ($this->request->isMethod('POST')) {
 
             $formRequestData = $this->request->get($form->getName());
@@ -294,6 +297,9 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
+//         $startTime = \microtime(true);
+//         $form->createView();
+//         $endTime = \microtime(true); $diff = $endTime-$startTime; echo "{$diff}s"; exit;
         return $this->render('InstitutionBundle:SignUp:setupProfile.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,

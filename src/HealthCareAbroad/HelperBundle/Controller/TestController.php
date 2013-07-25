@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Controller;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -14,6 +18,40 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class TestController extends Controller
 {
+    public function testLocationAction(Request $request)
+    {
+        $institution = new Institution();
+        $form = $this->createFormBuilder($institution, array('validation_groups' => array('editInstitutionInformation', 'Default')))
+            ->add('country', 'fancy_country', array())
+            ->add('city', 'city_list',array('attr' => array('placeholder' => 'Select a city')))
+            ->add('state', 'state_list',array('attr' => array('placeholder' => 'Select a state/province')))
+        ->getForm();
+        
+        if ($request->isMethod('POST')){
+            //var_dump($request->get($form->getName()));
+            
+            $form->bind($request);
+            if ($form->isValid()){
+                echo 'adi valid'; exit;
+            }
+            else {
+                
+                $errors = array();
+                foreach ($form->getChildren() as $field){
+                    $fieldErrors = $field->getErrors();
+                    if (\count($fieldErrors)){
+                        var_dump($fieldErrors);   
+                    }
+                    
+                    
+                }
+                echo 'adi invalid'; exit;
+            }
+        }
+        
+        return $this->render('HelperBundle:Test:testLocation.html.twig', array('form' => $form->createView()));
+    }
+    
     public function testContactDetailAction(Request $request)
     {
         $contactDetail = new ContactDetail();

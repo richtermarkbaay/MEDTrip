@@ -39,31 +39,55 @@
 {% endblock %}
 
 {% block city_list_widget %}
-    
     {% spaceless %}
-        {% set empty_value = empty_value is defined and empty_value is not none ? empty_value|trans : '' %}
-        {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
-        <div class="fancy-country-wrapper">
-            <input id="{{ elemId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
-            <input data-autocomplete-trigger=".show_list_btn" id="input-{{ elemId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}   placeholder="{{ empty_value }}" data-elem="input" disabled="disabled" >
-            <button type="button" class="btn show_list_btn" data-elem="btn"><span class="icon-chevron-down"></span></button>
+        {% set valueContainerId = form.vars.id %}
+        {% set widgetId = form.vars.id~'_widget' %}
+        {% set triggerId = form.vars.id~'_trigger'%}
+        
+        <div class="fancy-country-wrapper fancy-autocomplete-wrapper">
+            <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
+            <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}  data-elem="input" disabled="disabled" >
+            <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn" disabled="disabled">
+                <span class="icon-chevron-down"></span>
+            </button>
             <div class="combolist-wrapper"></div>
-            
         </div>
         
-        
-        <!-- TODO: Need to move and improve js implementation -->
         <script type="text/javascript">
         (function($){
             $(function(){
-                var _inputElem = $('#input-{{ elemId }}');
-                var _valueContainer = $('#{{ elemId }}');
+                var _inputElem = $('#{{ widgetId }}')
+            	var _valueContainer = $('#{{ valueContainerId }}');
+                Location.loadCitiesUrl = '{{ get_load_cities_api_uri() }}';
                 _inputElem.fancyAutocomplete({
                     source: [],
                     maxItems: 0,
                     valueContainer:  _valueContainer,
                     autocomplete: {minLength: 0}
                 });
+
+                {% if form.parent.country %}
+                    var dependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
+                    dependencyElement.on('selectedCountry', function(e){
+                        var cityWidget = $('#{{ widgetId }}');
+                        Location.disableWidget(cityWidget, true);
+
+                        // we should reset the source here to empty
+                        Location.resetWidgetValue(cityWidget);
+                    });
+                {% endif %}
+
+                {% if form.parent.state %}
+                    var dependencyElement = $('#{{ form.parent.state.vars.id }}_widget');
+                    
+                    dependencyElement.on('selectedState', function(e){
+                        var stateWidget = $(e.target);
+                        var stateFancy = stateWidget.data('fancyAutocomplete');
+                        var countryValue = $('#{{ form.parent.country.vars.id }}').val();
+                        Location.loadCities(countryValue, stateFancy.options.valueContainer.val(), $('#{{ widgetId }}'), 0);
+                        
+                    });
+                {% endif %}
             });
         })(jQuery);
         </script>
@@ -80,25 +104,27 @@
         
         <div class="fancy-country-wrapper fancy-autocomplete-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
-            <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}   placeholder="{{ empty_value }}" data-elem="input" disabled="disabled" >
-            <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn"><span class="icon-chevron-down"></span></button>
+            <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %} data-elem="input" disabled="disabled" >
+            <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn" disabled="disabled">
+                <span class="icon-chevron-down"></span>
+            </button>
             <div class="combolist-wrapper"></div>
         </div>
         
-        
-        <!-- TODO: Need to move and improve js implementation -->
         <script type="text/javascript">
         (function($){
             $(function(){
                 var _inputElem = $('#{{ widgetId }}')
             	var _valueContainer = $('#{{ valueContainerId }}');
-            	
-            	
+                Location.loadStatesUrl = '{{ get_load_states_api_uri() }}';
                 _inputElem.fancyAutocomplete({
                     source: [],
                     maxItems: 0,
                     valueContainer:  _valueContainer,
-                    autocomplete: {minLength: 0}
+                    autocomplete: {minLength: 0},
+                    onAutocompleteSelectCallback: function(widget){
+                        widget.trigger('selectedState');
+                    }
                 });
 
                 {% if form.parent.country %}
@@ -107,7 +133,8 @@
                     dependencyElement.on('selectedCountry', function(e){
                         var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
                         var countryValue = fancyAutocomplete.options.valueContainer.val();
-                        Location.loadStatesOfCountry(countryValue,$(e.target), 0);
+                        var widget = $('#{{ widgetId }}');
+                        Location.loadStatesOfCountry(countryValue,widget, 0);
                     });
                 {% endif %}
             });

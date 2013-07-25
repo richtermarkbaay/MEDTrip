@@ -16,7 +16,6 @@ class StateListType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'empty_value' => 'Select State',
             'choices' => array()
         ));
     }
