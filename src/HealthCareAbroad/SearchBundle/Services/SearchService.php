@@ -42,12 +42,20 @@ class SearchService
      *
      * @return Ambigous <multitype:, multitype:multitype:string  >
      */
-    public function getDestinations(SearchParameterBag $searchParams)
+    public function getDestinations(SearchParameterBag $searchParams, array $options = array())
     {
 //         $this->searchStrategy->setResultType(SearchStrategy::RESULT_TYPE_ARRAY);
 
 //         return $this
 //             ->transformResults($this->searchStrategy->search($searchParams));
+
+        //TODO: looks we may not need to go this route; getDestinationsByName()
+        //should be enough
+        if ($options) {
+            if (isset($options['context']) && $options['context'] == 'homepage') {
+                return $this->searchStrategy->getDestinationsByNameWithCustomSort($searchParams);
+            }
+        }
 
         return $this->searchStrategy->getDestinationsByName($searchParams);
     }
@@ -257,7 +265,7 @@ class SearchService
         $sId = 0;
         $loopCounter = 1;
         //group this now by sub specialty so we don't have problems rendering in grouped by subs
-        
+
         // this will be in a format of
         // [specialization_id] = {'id': _id, 'name': _name, '', sub_specializations: {} }
         $groupedBySubSpecializations = array();
@@ -294,9 +302,9 @@ class SearchService
                     'treatmentSlug' => $row['treatment_slug']
                 );
             }
-            
+
         }
-        
+
         return $groupedBySubSpecializations;
         /**
         foreach ($results as $row) {
