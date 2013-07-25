@@ -94,7 +94,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -131,7 +131,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
