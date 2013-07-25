@@ -39,7 +39,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('imc, inst, imc_media, imc_bh, imc_cd, imc_pr, co, ci, imc_sp, sp, tr, tr_subs, doctors, docSpecializations, docMedia, docContacts')
+        $qb->select('imc, inst, imc_media, imc_bh, imc_cd, imc_pr, co, ci, imc_sp, sp, tr, tr_subs')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->leftJoin('imc.institution', 'inst')
             ->leftJoin('imc.media', 'imc_media')
@@ -50,10 +50,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->leftJoin('imc_sp.specialization', 'sp')
             ->leftJoin('imc_sp.treatments', 'tr')
             ->leftJoin('tr.subSpecializations', 'tr_subs')
-            ->leftJoin('imc.doctors', 'doctors')
-            ->leftJoin('doctors.specializations', 'docSpecializations')
-            ->leftJoin('doctors.media', 'docMedia')
-            ->leftJoin('doctors.contactDetails', 'docContacts')
             ->leftJoin('inst.country', 'co')
             ->leftJoin('inst.city', 'ci');
         
