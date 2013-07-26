@@ -95,6 +95,11 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             unsigned: true
             nullable: false
             column: institution_type
+        stateBak:
+            type: string
+            length: 255
+            nullable: true
+            column: state_bak
     oneToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter

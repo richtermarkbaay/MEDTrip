@@ -887,4 +887,32 @@ class Institution
     {
         return $this->state;
     }
+    /**
+     * @var string
+     */
+    private $stateBak;
+
+
+    /**
+     * Set stateBak
+     *
+     * @param string $stateBak
+     * @return Institution
+     */
+    public function setStateBak($stateBak)
+    {
+        $this->stateBak = $stateBak;
+    
+        return $this;
+    }
+
+    /**
+     * Get stateBak
+     *
+     * @return string 
+     */
+    public function getStateBak()
+    {
+        return $this->stateBak;
+    }
 }
