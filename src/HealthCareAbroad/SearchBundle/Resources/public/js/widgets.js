@@ -68,6 +68,21 @@ var BroadSearchWidget = {
 
     initializeComponents: function(){
 
+        var getLink = function(item) {
+            /*TODO: use classes to format the labels*/
+            var link;
+            if (item.type == 'destinations') {
+                link = item.id.slice(-2) == '-0' ?
+                    '<a data-value="'+item.id+'" data-type="'+item.type+'"><b>'+item.label+'<b/></a>':
+                    '<a data-value="'+item.id+'" data-type="'+item.type+'">&nbsp;&nbsp;'+item.label+'</a>'
+                ;
+            } else if (item.type == 'treatments') {
+                link = '<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>';
+            }
+
+            return link;
+        };
+
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
@@ -86,15 +101,48 @@ var BroadSearchWidget = {
                             listWrapper.removeClass('hide');
                         }
                     },
+
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
                         var matches = [];
+                        var submatches = [];
                         $.each(componentOptions.dataSource, function(_i, _each){
                             if (_each.value && ( !request.term || matcher.test(_each.label))) {
-                                matches.push({'value': _each.label, 'id': _each.value, 'label': _each.label, 'type': type});
+                                var _eachLabel = _each.label;
+
+                                if (type == 'destinations') {
+                                    var isCountry = _each.value.slice(-2) == '-0';
+
+                                    if (isCountry) {
+                                        if (typeof submatches[_eachLabel] != 'undefined') {
+                                            return true;
+                                        }
+                                        submatches[_eachLabel] = _each.value;
+                                        matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
+                                        return true;
+                                    }
+
+
+                                    for (var i = 0, l = componentOptions.dataSource; i < l; i++) {
+                                        var subeach = componentOptions.dataSource[i];
+
+                                        if (typeof submatches[subeach.label] == 'undefined') {
+                                            var subeachValue = subeach.value;
+                                            if (subeachValue == _each.value.split('-')[0] + '-0') {
+                                                submatches[subeach.label] = subeachValue;
+                                                matches.push({'value': subeach.label, 'id': subeach.value, 'label': subeach.label, 'type': type});
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                   _eachLabel = _eachLabel.split(',').reverse().splice(-1).join(',');
+                                }
+
+                                matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
                             }
                         });
-                       response(matches);
+                        response(matches);
                    },
                    select: function(event, ui) {
                        if ($(BroadSearchWidget.formComponents[type].valueField).val()  != ui.item.id) {
@@ -126,7 +174,9 @@ var BroadSearchWidget = {
                 });
 
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
-                var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+                /*var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');*/
+                var _itemLink = $(getLink(item));
+
                 _itemLink.on('click', function(){
                     BroadSearchWidget.loadSourcesByType(item);
                     $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
