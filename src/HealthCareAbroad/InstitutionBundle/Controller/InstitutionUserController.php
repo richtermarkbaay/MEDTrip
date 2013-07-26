@@ -91,9 +91,8 @@ class InstitutionUserController extends Controller
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
         $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
-        
+            
         if(!$institutionUser){
-        
             throw new AccessDeniedHttpException();
         }
         
@@ -104,23 +103,17 @@ class InstitutionUserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $institutionUser = $form->getData();
-                
+                $institutionUser->setPassword($form->get('new_password')->getData());
                 $this->get('services.institution_user')->update($institutionUser);
-                // create event on editAccount and dispatch
-                $this->get('services.institution_user')->setSessionVariables($institutionUser);
                 $this->get('session')->setFlash('success', 'You have successfuly changed your password');
             }else{
-                $form_errors = $this->get('validator')->validate($form);
-                if($form_errors){
-                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
-                }
+                $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
             }
         }
         
         return $this->render('InstitutionBundle:InstitutionUser:changePassword.html.twig', array(
-                        'form' => $form->createView(),
-                        'institutionUser' => $institutionUser,
-                        'error_message' => $error_message
+            'form' => $form->createView(),
+            'institutionUser' => $institutionUser,
         ));
     }
 

@@ -474,6 +474,8 @@ var InstitutionMedicalCenter = {
     },
     
     submitAddNewMedicalCenter: function(domButtonElement) {
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
@@ -496,6 +498,7 @@ var InstitutionMedicalCenter = {
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
                         	_button.parents('div#add-new-center').find('div.'+item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                         _button.parents('div#add-new-center').find('.alert-box').removeClass('alert alert-error alert-success').html("");
                         _button.parents('div#add-new-center').find('.alert-box').addClass('alert alert-error').html(_errorString);
