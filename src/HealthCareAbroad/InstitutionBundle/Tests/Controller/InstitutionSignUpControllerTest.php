@@ -17,7 +17,7 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
     private $signupFormValues = array(
         'institutionUserSignUp[firstName]' => 'testFirstName',
         'institutionUserSignUp[lastName]' => 'testLastName',
-        'institutionUserSignUp[email]' => 'test_sisde@fessd.com',
+        'institutionUserSignUp[email]' => 'testsisde@ssf5srd.com',
         'institutionUserSignUp[password]' => '123456',
         'institutionUserSignUp[confirm_password]' => '123456',
         'institutionUserSignUp[type]' => '1',
@@ -167,7 +167,7 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
         
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $session = $client->getContainer()->get('session');
-        $session->set('institutionSignupStepStatus', 3);
+        $session->set('institutionSignupStepStatus', 2);
         $crawler = $client->request('GET', 'institution/setup-clinic-details/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
@@ -229,46 +229,48 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
         $client->followRedirect();
     }
 
-        public function testSetupDoctors()
-        {
-    
-            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-            $session = $client->getContainer()->get('session');
-            $session->set('institutionSignupStepStatus', 5);
-            
-            $crawler = $client->request('GET', 'institution/setup-doctors/1');
-            $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
-            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    public function testSetupDoctors()
+    {
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 5);
+        
+        $crawler = $client->request('GET', 'institution/setup-doctors/1');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-            // Search for Doctor
-            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-            $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
-            $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//             $extract = $crawler->filter('input[name="institutionMedicalCenterDoctor[_token]"]')->extract(array('value'));
-//             $csrf_token = $extract[0];
-//             var_dump($csrf_token); exit;
-            // Add new doctor
-//             $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-//             $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
-//             $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
-//             $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // Search for Doctor
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
             
-            
-            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-            $formValues =  array( 'doctorId' => 4); //add invalid doctor
-            $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
-            $this->assertEquals(404, $client->getResponse()->getStatusCode());
-            
-            //Add existing Doctor
-            $formValues =  array( 'doctorId' => 1);
-            $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
-            $this->assertEquals(200, $client->getResponse()->getStatusCode());
-            
-            // Finish Add Doctor Step
-            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-            $crawler = $client->request('GET', 'institution/setup-finish');
-            $this->assertEquals(302, $client->getResponse()->getStatusCode());
-            $client->followRedirect();
-        }
+             /* NOTE: this test only works if csrf token is set to fasle */
+             /*   Add new doctor */
+//                 $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+//                 $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
+//                 $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
+//                 $this->assertEquals(200, $client->getResponse()->getStatusCode());
+             /* end of NOTE */
+                
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formValues =  array( 'doctorId' => 4); //add invalid doctor
+        $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+        //Add existing Doctor
+        $formValues =  array( 'doctorId' => 1);
+        $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+        
+    public function testFinish(){
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 5);
+        
+        $crawler = $client->request('GET', 'institution/setup-finish');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->followRedirect();
+    }
     
 }
