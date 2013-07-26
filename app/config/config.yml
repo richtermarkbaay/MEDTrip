@@ -22,7 +22,7 @@ framework:
     session: true
     trusted_proxies: ~
     session:
-        cookie_lifetime: 7776000
+        cookie_lifetime: 7200
 # Twig Configuration
 twig:
     form:
