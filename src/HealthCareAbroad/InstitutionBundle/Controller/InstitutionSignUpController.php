@@ -481,7 +481,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($request);
 
             if ($form->isValid()) {
-                var_dump($request->get('institutionMedicalCenterDoctor')); exit;
                 $doctor = $form->getData();
                 $doctor->setStatus(Doctor::STATUS_ACTIVE);
 
@@ -498,11 +497,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))
                 );
             } else {
-                $errors = array();
-                foreach ($form->getErrors() as $_err) {
-                    $errors[] = $_err->getMessage();
-                }
-                var_dump($errors); exit;
                 $data = array('status' => false, 'message' => $form->getErrorsAsString());
             }
 
