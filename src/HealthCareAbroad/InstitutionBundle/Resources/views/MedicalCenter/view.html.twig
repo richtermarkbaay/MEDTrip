@@ -100,13 +100,9 @@
 <script type="text/javascript">
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
 
-    var countryElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
-    var coordinatesElem = $("#{{ institutionMedicalCenterForm.getChild('coordinates').vars.id }}");
-    var streetAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_street");
-    var buildingAddressElem = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_building");
-    var cityElem = $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}");
-    var countryInputElem = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}");
-
+    console.log("{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['address','city','country']) }}");
+    console.log("{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['city','country']) }}");
+    
     (function($){
         $(function(){
             // display businesshours
@@ -115,9 +111,9 @@
             HCAGoogleMap.initialize({
                 latLngString: '{{ institutionMedicalCenter.coordinates }}',
                 address: "{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['address','city','country']) }}",
-                defaultAddress: cityElem.val() + ',' + countryElem.val(),
+                defaultAddress: "{{ medical_center_complete_address_to_string(institutionMedicalCenter, ['city','country']) }}",
                 mapOnChangeCallback: function() {
-                    coordinatesElem.val(HCAGoogleMap.latLngString);
+                	$("#{{ institutionMedicalCenterForm.getChild('coordinates').vars.id }}").val(HCAGoogleMap.latLngString);
                 }
             });
 
@@ -164,11 +160,18 @@
     })(jQuery);
 
     function getAddress() {
+
+
+        var streetAddress = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_street").val();
+        //var buildingAddress = $("#{{ institutionMedicalCenterForm.getChild('address').vars.id }}_building").val();
+        var city = $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}").val();
+        var country = $("#{{ institutionMedicalCenterForm.getChild('country').vars.id }}").val();
+
         var address = '';
-        if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
-        if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
-        if(cityElem.val() != '') { address += $("#{{ institutionMedicalCenterForm.getChild('city').vars.id }}").val() + ', '; }
-        if(countryElem.val() != '') { address += countryInputElem.val(); }
+        //if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
+        if(streetAddress != '') { address += streetAddress + ', '; }
+        if(city != '') { address += city + ', '; }
+        if(country != '') { address += country; }
 
         return address;
     }

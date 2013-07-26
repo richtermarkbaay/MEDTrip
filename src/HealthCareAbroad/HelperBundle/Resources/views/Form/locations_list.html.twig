@@ -54,7 +54,7 @@
         
         <div class="fancy-dropdown-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
-            <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}  data-elem="input" disabled="disabled" >
+            <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}  data-elem="input" disabled="disabled" data-city-autocomplete="">
             <button id="{{ triggerId }}" type="button" class="btn show_list_btn" data-elem="btn" disabled="disabled">
                 <span class="icon-chevron-down"></span>
             </button>
@@ -102,10 +102,12 @@
     
                     {% if form.parent.vars.value.city %}
                         {#-- there is city value in form data --#}
-                        _inputElem.on('reloadedDataSource', function(e){
-                            $('#{{ widgetId }}').val('{{ form.parent.vars.value.city.name }}');
-                            $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.city.id }}');
-                        });
+                        /**_inputElem.on('reloadedDataSource', function(e){
+                            
+                        });**/
+
+                        $('#{{ widgetId }}').val('{{ form.parent.vars.value.city.name }}');
+                        $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.city.id }}');
                     {% endif %}
                 
                 {% endif %}
@@ -167,10 +169,13 @@
     
                     {% if form.parent.vars.value.state %}
                         {#-- there is state value in form data --#}
-                        _inputElem.on('reloadedDataSource', function(e){
-                            $('#{{ widgetId }}').val('{{ form.parent.vars.value.state.name }}');
-                            $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.state.id }}');
-                        });
+                        /**_inputElem.on('reloadedDataSource', function(e){
+                            
+                            
+                        });**/
+
+                        $('#{{ widgetId }}').val('{{ form.parent.vars.value.state.name }}');
+                        $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.state.id }}');
                     {% endif %}
                     
                 {% endif %}

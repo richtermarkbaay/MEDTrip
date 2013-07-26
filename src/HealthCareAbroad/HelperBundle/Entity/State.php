@@ -19,6 +19,11 @@ class State
      * @var \HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
+    
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 
     /**

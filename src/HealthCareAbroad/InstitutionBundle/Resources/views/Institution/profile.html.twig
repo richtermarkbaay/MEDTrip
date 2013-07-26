@@ -75,15 +75,6 @@
 <script type="text/javascript">
 <!--
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-
-    var emailElem = $("#{{ institutionForm.getChild('contactEmail').vars.id }}");
-    var countryElem = $("#{{ institutionForm.getChild('country').vars.id }}");
-    var coordinatesElem = $("#{{ institutionForm.getChild('coordinates').vars.id }}");
-    var streetAddressElem = $("#{{ institutionForm.getChild('address1').vars.id }}_street");
-    var buildingAddressElem = $("#{{ institutionForm.getChild('address1').vars.id }}_building");
-    var cityElem = $("#{{ institutionForm.getChild('city').vars.id }}");
-    var countryInputElem = $("#input-{{ institutionForm.getChild('country').vars.id }}");
-
     (function($){
         $(function(){
             var ajaxFormUploadElem;
@@ -113,19 +104,24 @@
                 address: "{{ institution_address_to_array(institution, ['address1', 'city', 'state', 'country', 'zipCode'])|join(',') }}",
                 defaultAddress: city + "{{ institution.country.name }}",
                 mapOnChangeCallback: function() {
-                    coordinatesElem.val(HCAGoogleMap.latLngString);
+                	$("#{{ institutionForm.getChild('coordinates').vars.id }}").val(HCAGoogleMap.latLngString);
                 }
             });
         });
     })(jQuery);
 
-
     function getAddress() {
         var address = '';
-        if(buildingAddressElem.val() != '') { address += buildingAddressElem.val() + ', '; }
-        if(streetAddressElem.val() != '') { address += streetAddressElem.val() + ', '; }
-        if(cityElem.val() != '') { address += $("#input-{{ institutionForm.getChild('city').vars.id }}").val() + ', '; }
-        if(countryElem.val() != '') { address += countryInputElem.val(); }
+        var streetAddress = $("#{{ institutionForm.getChild('address1').vars.id }}_street").val();
+        var buildingAddress = $("#{{ institutionForm.getChild('address1').vars.id }}_building").val();
+        var city = $("#{{ institutionForm.getChild('city').vars.id }}_widget").val();
+        //var country = $("#{{ institutionForm.getChild('country').vars.id }}");
+        var country = $("#{{ institutionForm.getChild('country').vars.id }}_widget").val();
+
+        //if(buildingAddress != '') { address += buildingAddressElem + ', '; }
+        if(streetAddress != '') { address += streetAddress + ', '; }
+        if(city != '') { address += city + ', '; }
+        if(country != '') { address += country; }
 
         return address;
     }

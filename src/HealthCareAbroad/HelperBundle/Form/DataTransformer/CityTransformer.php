@@ -27,7 +27,7 @@ class CityTransformer implements DataTransformerInterface
     
     public function reverseTransform($id)
     {
-        if(null === $id){
+        if(!$id){
             return null;
         }
 

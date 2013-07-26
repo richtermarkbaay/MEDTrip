@@ -298,11 +298,11 @@ var FancyAutocompleteWidget = function(widget, options){
             $(this).data('fancyAutocomplete', new FancyAutocompleteWidget($(this), _options));
             $(this).trigger('bindFancyAutomplete');
 
-
             // IF CITY AUTOCOMPLETE
             if(typeof($(this).data('city-autocomplete')) != 'undefined') {
+
                 var defaultScrollTop = 26 * _options.maxItems; // 26.72
-                
+
                 $(this).siblings('.combolist-wrapper:first').find('ul.ui-autocomplete')
                 	.data('defaultScrollTop', defaultScrollTop)
                 	.data('loadOnScrollTop', defaultScrollTop)
