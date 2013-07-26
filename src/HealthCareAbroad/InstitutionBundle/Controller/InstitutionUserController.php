@@ -294,7 +294,7 @@ class InstitutionUserController extends Controller
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('new_password')->getData()));
+                $institutionUser->setPassword($form->get('new_password')->getData());
                 // FIXME: the service is using a confusing method name; a more appropriate name can
                 // be updateInstitutionUser, for instance; institution user is also persisted in this
                 // service method but this operation should be distinct from deleting the token or
