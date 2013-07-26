@@ -282,7 +282,10 @@ class InstitutionAccountController extends InstitutionAwareController
                         elseif($key == 'country') {
                             $output['institution'][$key] = $this->institution->getCountry()->getName();
                         }
-                        elseif( $key == 'city' ) {
+                        elseif( $key == 'state' && $this->institution->getState()) {
+                            $output['institution'][$key] =  $this->institution->getState()->getName() ;
+                        }
+                        elseif( $key == 'city' && $this->institution->getCity()) {
                             $output['institution'][$key] = $this->institution->getCity()->getName();
                         }
                        else{  
