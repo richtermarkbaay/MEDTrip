@@ -92,7 +92,7 @@ institution_medicalCenter_addDoctor:
         imcId: \d+
 
 institution_medicalCenter_addExistingDoctor:
-    pattern: /medical-center/add-existing-doctor/{imcId}
+    pattern: /medical-center/{imcId}/add-existing-doctor
     defaults: { _controller: InstitutionBundle:MedicalCenter:addExistingDoctor }
     requirements:
         _method: GET|POST

@@ -986,7 +986,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 
 INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `address_hint`, `coordinates`, `business_hours`, `old_business_hours`, `is_always_open`, `contact_number`, `contact_email`, `websites`, `website_back_up`, `social_media_sites`, `description_highlight`, `description`, `logo_id`, `paying_client`, `ranking_points`, `date_created`, `date_updated`, `slug`, `status`) VALUES
 (1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, NULL, NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
-(2, 2, 'Audiology Services', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, NULL, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
+(2, 1, 'Audiology Services', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, NULL, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2);
 
 -- --------------------------------------------------------
 

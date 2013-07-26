@@ -128,11 +128,12 @@ class InstitutionMedicalCenterPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        static $isLoadedAvailableTypes = false;
-        if (!$isLoadedAvailableTypes) {
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoadedAvailableTypes = false;
+        //if (!$isLoadedAvailableTypes) {
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
-        }
+        //}
         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
         }

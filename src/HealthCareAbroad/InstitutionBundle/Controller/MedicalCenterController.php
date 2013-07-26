@@ -390,6 +390,7 @@ class MedicalCenterController extends InstitutionAwareController
                 foreach ($form_errors as $_err) {
                     $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
                 }
+                
                 $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
             }
 
@@ -445,9 +446,10 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function addExistingDoctorAction(Request $request)
     {
+        
         $result = array('status' => false);
         $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId', 0));
-
+        
         if (!$doctor) {
             $result['message'] = 'Invalid doctor.';
         }

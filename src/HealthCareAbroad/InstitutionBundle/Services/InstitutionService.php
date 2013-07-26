@@ -138,10 +138,10 @@ class InstitutionService
         if(!$slug) {
             return null;
         }
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoaded = false;
 
-        static $isLoaded = false;
-
-        if(!$isLoaded) {
+        //if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, f, g, h')->from('InstitutionBundle:Institution', 'a')
             ->leftJoin('a.institutionMedicalCenters ', 'b', Join::WITH, 'b.status = :medicalCenterStatus')
@@ -155,13 +155,14 @@ class InstitutionService
             ->setParameter('institutionSlug', $slug)
             ->setParameter('status', InstitutionStatus::getBitValueForApprovedStatus())
             ->setParameter('medicalCenterStatus', InstitutionMedicalCenterStatus::APPROVED);
+            $result = $qb->getQuery()->getOneOrNullResult();
+            //self::$institution = $qb->getQuery()->getOneOrNullResult();
 
-            self::$institution = $qb->getQuery()->getOneOrNullResult();
+            //$isLoaded = true;
+       // }
 
-            $isLoaded = true;
-        }
-
-        return self::$institution;
+        //return self::$institution;
+        return $result;
     }
 
     public function getFullInstitutionById($id = null)
