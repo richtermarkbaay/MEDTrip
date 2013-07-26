@@ -559,32 +559,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
     }
 
-    /**
-     * @deprecated
-     * Note: This might be needed by other parts of the system. If so move this to
-     * an appropriate and more generic controller.
-     *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ajaxLoadSpecializationComponentsAction(Request $request)
-    {
-        //TODO: this will pull in additional component data not needed by our view layer. create another method on service class.
-        $specializationComponents = $this->get('services.treatment_bundle')->getTreatmentsBySpecializationIdGroupedBySubSpecialization($request->get('specializationId'));
-        $form = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
-
-        $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.specializationTreatments.html.twig', array(
-            'form' => $form->createView(),
-            'formName' => InstitutionSpecializationFormType::NAME,
-            'specializationComponents' => $specializationComponents,
-            'specializationId' => $request->get('specializationId'),
-            'selectedTreatments' => ''
-        ));
-
-        return new Response($html, 200);
-        //return new Response($html, 200, array('Content-Type'=>'application/json'));
-    }
-
     public function finishAction(Request $request)
     {
         if($this->institution->getInstitutionMedicalCenters()->count() && $this->institution->getInstitutionMedicalCenters()->first()->getDoctors()->count()) {

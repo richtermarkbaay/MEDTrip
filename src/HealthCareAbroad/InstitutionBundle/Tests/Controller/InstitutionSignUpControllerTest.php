@@ -2,7 +2,6 @@
 /**
  * Functional test for InstitutionController
  * 
- * @author Alnie Jacobe
  * @author Chaztine Blance
  *
  */
@@ -17,7 +16,7 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
     private $signupFormValues = array(
         'institutionUserSignUp[firstName]' => 'testFirstName',
         'institutionUserSignUp[lastName]' => 'testLastName',
-        'institutionUserSignUp[email]' => 'testsisde@ssf5srd.com',
+        'institutionUserSignUp[email]' => 'testsisde@ssxssd.com', //make sure to change the email before running the test
         'institutionUserSignUp[password]' => '123456',
         'institutionUserSignUp[confirm_password]' => '123456',
         'institutionUserSignUp[type]' => '1',
@@ -262,7 +261,19 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-        
+
+    /* NOTE: this test only works if csrf token is set to fasle */
+    public function testUpdateDoctor(){
+    
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formDoctorValues = array( 'editInstitutionMedicalCenterDoctorForm' => 
+                           array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  '','specializations' => array ( 0 => '1'),
+                                   ));
+        $crawler = $client->request('POST', 'institution/medical-center/1/update-doctor/1', $formDoctorValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+    /* end of NOTE */
+    
     public function testFinish(){
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $session = $client->getContainer()->get('session');

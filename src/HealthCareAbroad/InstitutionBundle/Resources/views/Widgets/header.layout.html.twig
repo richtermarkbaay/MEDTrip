@@ -34,14 +34,14 @@
                             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-user"></i>{{ app.session.get('userFirstName') | title}} {{ app.session.get('userLastName') | title }}<i class="icon-caret-down"></i></a>
                             <ul class="dropdown-menu">
                                 
-                                {% if not is_internal_admin_user(app.user) %}
+                                {# % if not is_internal_admin_user(app.user) %}
                                 <li>
                                     <a href="{{ path('institution_editAccount' , {accountId: app.session.get('accountId')} ) }}" ><i class="icon-edit"></i> Manage Account</a>
                                 </li>
                                 <li>
                                     <a href="{{ path('institution_editAccountPassword' , {accountId: app.session.get('accountId')} ) }}" ><i class="icon-lock"></i> Change Password</a>
                                 </li>
-                                {% endif %}
+                                {% endif % #}
                                 <li class="divider">
                                     <li class="nav-header">
                                         Logged in as:

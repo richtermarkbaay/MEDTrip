@@ -484,14 +484,7 @@ class MedicalCenterController extends InstitutionAwareController
         $form->bind($request);
 
         if ($form->isValid()) {
-            $fileBag = $request->files->get($form->getName());
-
-            if(isset($fileBag['media'])) {
-                $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor);
-            }
-
             $this->get('services.contact_detail')->removeInvalidContactDetails($doctor);
-
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($doctor);
             $em->flush();
