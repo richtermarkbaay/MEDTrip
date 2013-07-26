@@ -241,7 +241,6 @@ class InstitutionSignUpController extends InstitutionAwareController
     {
         // Set Current Route
         $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
-
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
 
         if (\is_null($institutionMedicalCenter)) {
@@ -249,13 +248,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
-
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
-
             $formRequestData = $this->request->get($form->getName());
-
             if (isset($formRequestData['medicalProviderGroups']) ) {
                 // we always expect 1 medical provider group
                 // if it is empty remove it from the array
@@ -274,11 +270,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
 
-                // Upload Logo
-                if(($fileBag = $this->request->files->get('institution_profile_form')) && $fileBag['logo']) {
-                    $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
-                }
-
                 // save institution and create an institution medical center
                 $this->signUpService->completeProfileOfInstitutionWithSingleCenter($form->getData(), $institutionMedicalCenter);
 
@@ -293,6 +284,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 return $this->redirect($redirectUrl);
 
             } else {
+                $formErrors = $this->get('validator')->validate($form);
+                
                 $request->getSession()->setFlash('error', "We need you to correct some of your input. Please check the fields in red."); //set flash message
             }
         }
@@ -311,6 +304,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileMultipleCenter(Request $request)
     {
+        
         // get the current step by this route
         $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
@@ -341,16 +335,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 // set sign up status to current step number
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep);
                 $form->getData()->setSignupStepStatus($this->currentSignUpStep->getStepNumber());
-
-                $fileBag = $request->files->get('institution_profile_form');
-
-                if($fileBag['logo']) {
-                    $this->get('services.institution.media')->uploadLogo($fileBag['logo'], $form->getData(), false);
-                }
-
-                if($fileBag['featuredMedia']) {
-                    $this->get('services.institution.media')->uploadFeaturedImage($fileBag['featuredMedia'], $form->getData(), false);
-                }
 
                 $this->signUpService->completeProfileOfInstitutionWithMultipleCenter($form->getData());
 
@@ -404,7 +388,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
-
             $formRequestData = $request->get($form->getName());
 
             if((bool)$request->get('isSameAddress')) {
@@ -441,7 +424,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
             $form_errors = $this->get('validator')->validate($form);
-
             if($form_errors){
                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
@@ -456,6 +438,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
     public function setupSpecializationsAction(Request $request)
     {
+        
         $error = '';
         $functionName = $this->isSingleCenter ? 'getSingleCenterSignUpStepByRoute' : 'getMultipleCenterSignUpStepByRoute';
         $this->currentSignUpStep = $this->signUpService->{$functionName}($request->attributes->get('_route'));
@@ -463,7 +446,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
 
         if ($request->isMethod('POST')) {
-
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
 
             if (\count($specializationsWithTreatments)) {
@@ -472,7 +454,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep, true);
 
-                $redirectUrl = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
+                $redirectUrl = $this->signUpService->{($this->isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
 
                 return $this->redirect($redirectUrl);
 
@@ -480,7 +462,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $request->getSession()->setFlash('error', 'Please select at least one specialization.');
             }
         }
-
         return $this->render('InstitutionBundle:SignUp:setupSpecializations.html.twig', array(
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
@@ -494,14 +475,13 @@ class InstitutionSignUpController extends InstitutionAwareController
         //TODO: check institution signupStepStatus
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
-
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-
+                var_dump($request->get('institutionMedicalCenterDoctor')); exit;
                 $doctor = $form->getData();
                 $doctor->setStatus(Doctor::STATUS_ACTIVE);
 
@@ -518,6 +498,11 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'uploadLogoUrl' => $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()))
                 );
             } else {
+                $errors = array();
+                foreach ($form->getErrors() as $_err) {
+                    $errors[] = $_err->getMessage();
+                }
+                var_dump($errors); exit;
                 $data = array('status' => false, 'message' => $form->getErrorsAsString());
             }
 

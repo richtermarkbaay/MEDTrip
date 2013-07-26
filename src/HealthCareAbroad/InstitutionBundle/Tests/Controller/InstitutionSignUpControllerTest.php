@@ -182,7 +182,7 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
 //             'institutionMedicalCenter[businessHours]' => array ( '4c1d0d5c-8507-4982-9a38-c213c8a68a25' => '{"weekdayBitValue":12,"opening":"8:00 AM","closing":"5:00 PM","notes":""}' ),
             'institutionMedicalCenter[socialMediaSites]' => array ( 'facebook' => 'tttt' , 'twitter' => 'dsdf', 'googleplus' =>'')
         );
-
+        
         $form = $crawler->selectButton('Continue to Adding Specializations')->form();
         $crawler = $client->submit($form, $formValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -203,5 +203,72 @@ class institutionUserSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', 'institution/setup-clinic-details');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
+    
+    
+    public function testSetupSpecializations()
+    {
+    
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 4);
+        $crawler = $client->request('GET', 'institution/setup-specializations/1');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Specializations")')->count());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/4');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        
+        $invalidProfileFormValues =  array( 'institutionSpecialization' => array( ));
+        $crawler = $client->request('POST', '/institution/setup-specializations/1', $invalidProfileFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please select at least one specialization.")')->count());
+        
+        $formValues = array('institutionSpecialization' => array( 4 => array ('treatments' => array ( 0 => '5'))));
+        $crawler = $client->request('POST', '/institution/setup-specializations/1', $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->followRedirect();
+    }
+
+        public function testSetupDoctors()
+        {
+    
+            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+            $session = $client->getContainer()->get('session');
+            $session->set('institutionSignupStepStatus', 5);
+            
+            $crawler = $client->request('GET', 'institution/setup-doctors/1');
+            $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
+            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+            // Search for Doctor
+            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+            $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
+            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//             $extract = $crawler->filter('input[name="institutionMedicalCenterDoctor[_token]"]')->extract(array('value'));
+//             $csrf_token = $extract[0];
+//             var_dump($csrf_token); exit;
+            // Add new doctor
+//             $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+//             $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
+//             $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
+//             $this->assertEquals(200, $client->getResponse()->getStatusCode());
+            
+            
+            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+            $formValues =  array( 'doctorId' => 4); //add invalid doctor
+            $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
+            $this->assertEquals(404, $client->getResponse()->getStatusCode());
+            
+            //Add existing Doctor
+            $formValues =  array( 'doctorId' => 1);
+            $crawler = $client->request('POST', 'institution/medical-center/add-existing-doctor/1', $formValues);
+            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+            
+            // Finish Add Doctor Step
+            $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+            $crawler = $client->request('GET', 'institution/setup-finish');
+            $this->assertEquals(302, $client->getResponse()->getStatusCode());
+            $client->followRedirect();
+        }
     
 }
