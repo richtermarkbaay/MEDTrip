@@ -14,6 +14,7 @@ parameters:
 
     couchDbBaseUrl: @COUCHDB_URL@
     couchDbAlert: @COUCHDB_DOCUMENT@
+    couchDbCities:  @COUCHDB_DOCUMENT@
 
     mailer_transport:  smtp
     mailer_host:       localhost
@@ -41,3 +42,5 @@ parameters:
     notification.inquiries.enabled: false
     notification.password_reset.enabled: true
     notification.password_confirm.enabled: true
+    
+    

@@ -204,8 +204,8 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             $elements['city'] = $institution->getCity()->getName();
         }
 
-        if (isset($includedKeys['state']) && '' != $institution->getState()) {
-            $elements['state'] = $institution->getState();
+        if (isset($includedKeys['state']) && $institution->getState()) {
+            $elements['state'] = $institution->getState()->getName();
         }
 
         if (isset($includedKeys['country']) && $institution->getCountry()) {

@@ -16,6 +16,14 @@ helper_autoCompleteSearch:
 helper_loadCities:
     pattern:  /location/load-cities
     defaults: { _controller: HelperBundle:Default:loadCities }
+    requirements:
+        _method: GET
+        
+helper_loadStates:
+    pattern:  /location/load-states
+    defaults: { _controller: HelperBundle:Default:loadStates }
+    requirements:
+        _method: GET
 
 helper_specializationAccordionEntry:
     pattern:  /specialization-accordion-entry
@@ -54,3 +62,8 @@ helper_ajax_called_afterwards:
 helper_testContactDetail:
     pattern: /symfony-test/testContactDetail
     defaults: {_controller: HelperBundle:Test:testContactDetail }
+    
+    
+helper_testLocation:
+    pattern: /symfony-test/testLocation
+    defaults: {_controller: HelperBundle:Test:testLocation }

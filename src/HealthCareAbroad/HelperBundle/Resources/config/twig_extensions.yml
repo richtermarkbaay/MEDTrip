@@ -98,6 +98,8 @@ services:
     services.url_generator.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\UrlGeneratorTwigExtension
         public: false
+        calls:
+            - [setChromediaApiUrl, [%chromedia_api_uri%]]
         arguments: [@router]
         tags:
             - { name: twig.extension }

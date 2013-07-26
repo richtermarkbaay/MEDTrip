@@ -53,10 +53,6 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 10
             nullable: false
             column: zip_code
-        state:
-            type: string
-            length: 50
-            column: state
         coordinates:
             type: string
             length: 100
@@ -99,6 +95,11 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             unsigned: true
             nullable: false
             column: institution_type
+        stateBak:
+            type: string
+            length: 255
+            nullable: true
+            column: state_bak
     oneToMany:
         institutionMedicalCenters:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
@@ -161,6 +162,14 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             joinColumns:
                 city_id:
                     referencedColumnName: id
+            orphanRemoval: false
+        state:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\State
+            joinColumns:
+                state_id:
+                    referencedColumnName: id
+            cascade: 
+                - "persist"
             orphanRemoval: false
 
         logo:

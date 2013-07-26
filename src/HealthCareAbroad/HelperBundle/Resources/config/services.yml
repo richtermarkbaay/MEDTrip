@@ -15,6 +15,10 @@ parameters:
     services.static_page_class: HealthCareAbroad\HelperBundle\Services\StaticPageService
 services:
 
+    services.helper.couchDb:
+        class: %services.couch_db_class%
+        arguments: [%couchDbBaseUrl%]
+
     services.helper.ancillary_service:
         class: HealthCareAbroad\HelperBundle\Services\AncillaryServicesService
         arguments: [@doctrine]
@@ -66,6 +70,7 @@ services:
             - [setChromediaGlobalRequest, [@services.chromedia_request]]
             - [setChromediaApiUri, [%chromedia_api_uri%]]
             - [setDoctrine, [@doctrine]]
+            - [setCouchDbService, [@services.helper.couchDb, %couchDbCities%]]
     services.contact_detail:
         class: %services.contact_detail_class%
         calls:

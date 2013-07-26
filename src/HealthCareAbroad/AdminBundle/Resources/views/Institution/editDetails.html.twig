@@ -55,16 +55,18 @@
                               {{ form_widget( form.country ) }}
                               {{ form_errors(form.country) }}
                         </div>
-                        <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
-                            <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                        
+                        <div class="state control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
+                            <label>State / Province </label>
+                            {{ form_widget( form.state ) }}         
+                            {{ form_errors(form.state) }}    
+                        </div>
+                        
+                    </div> 
+                    <div class="city control-group ">
+                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
                             {{ form_widget( form.city ) }}
                             {{ form_errors(form.city) }}
-                        </div>
-                    </div> 
-                    <div class="state control-group ">
-                        <label>State / Province </label>
-                        {{ form_widget( form.state ) }}         
-                        {{ form_errors(form.state) }}
                     </div>     
                     
                     <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">

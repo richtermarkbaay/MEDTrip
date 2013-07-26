@@ -2,28 +2,46 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\StateIdDataTransformer;
+
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
+use Symfony\Component\Form\FormBuilderInterface;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Symfony\Component\Form\AbstractType;
 
 class StateListType extends AbstractType
 {
+    /**
+     * @var LocationService
+     */
+    private $locationService;
+    
+    public function __construct(LocationService $service)
+    {
+        $this->locationService = $service;
+    }
+    
     public function getName()
     {
         return 'state_list';
     }
     
+    public function buildForm(FormBuilderInterface $builder, array $options=array())
+    {
+        $builder->addModelTransformer(new StateIdDataTransformer($this->locationService));   
+    }
+    
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'empty_value' => 'Select State',
-            'choices' => array()
-        ));
+        
     }
     
     public function getParent()
     {
-        return 'choice';
+        return 'text';
     }
     
 }

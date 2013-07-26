@@ -54,6 +54,12 @@ services:
         arguments: [@services.location]
         tags:
             - { name: form.type, alias: city_list }
+            
+    form.state_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\StateListType
+        arguments: [@services.location]
+        tags:
+            - { name: form.type, alias: state_list }
 
     form.institutionServices_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\InstitutionServicesListType

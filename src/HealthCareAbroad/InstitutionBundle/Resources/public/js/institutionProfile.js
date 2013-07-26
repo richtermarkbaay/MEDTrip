@@ -447,12 +447,12 @@ var InstitutionProfile = {
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
-                    var errors = $.parseJSON(response.responseText).html;
-                    if (errors.length) {
-                        $.each(errors, function(key, item){
-                        	$('.control-group.' + item.field).addClass('error');
-                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > ' + (item.field == 'city' ? '.custom-select' : 'input')));
+                    var responseText = $.parseJSON(response.responseText);
 
+                    if (responseText.errors.length) {
+                        $.each(responseText.errors, function(i, each){
+                        	$('.control-group.' + each.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (each.field == 'city' ? '.fancy-dropdown-wrapper' : 'input')));
                         });
                     }
 

@@ -19,11 +19,11 @@ class CouchDbService {
     private $kernelException;
     private $isExistingBaseUrl;
 
-    public function __construct($baseUrl, $kernelException) {
+    public function __construct($baseUrl, $kernelException = null) {
         $this->isExistingBaseUrl = $this->checkIfExistingBaseUrl($baseUrl);
 
         $this->client = new Client($baseUrl);
-        $this->kernelException = $kernelException;
+        //$this->kernelException = $kernelException;
     }
 
     // TODO - Temporary code for checking. Need Improvement
@@ -55,7 +55,6 @@ class CouchDbService {
     }
 
     public function getView($uri, $params = array()) {
-
         if(isset($params['keys'])) {
             $headers = array('Content-Type' => 'application/json');
             $result = $this->send('POST', $uri, $params, $headers);
@@ -124,13 +123,13 @@ class CouchDbService {
                 if($this->db)  {
                     $uri = $this->db . '/' . $uri;        
                 }
-    
+
                 $response = $this->client->{strtolower($method)}($uri, $headers, json_encode($post_data))->send();
                 
                 return $response->getBody()->__toString();
     
              } catch(\Exception $e) {
-                 $this->kernelException->logException($e);
+                 //$this->kernelException->logException($e);
              }
         }
     }

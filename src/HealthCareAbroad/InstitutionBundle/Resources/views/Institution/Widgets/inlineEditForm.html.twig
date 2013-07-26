@@ -15,6 +15,7 @@
                     Changing your {{ institutionLabel }} name here will change it in ALL Healthcare Abroad listings. Editing your {{ institutionLabel }} Name is subject to review and approval.
                 </div>
             </section>
+
             <section class="section institution-info">
                 <div class="row-fluid hca-clinic-modal">
                   <div class="span12">
@@ -23,17 +24,15 @@
                         {{ form_widget(institutionForm.name, {'attr': {class: 'span10'} })  }}
                     </div>
         {% elseif each == 'medicalProviderGroups' %}
-                        <div class="control-group">
-                            <label for="medicalProviederGroups">  Network Name </label>
-                               {% for _i in institutionForm.medicalProviderGroups %}
-                                 {{ form_widget(_i, {'attr': {class: 'span10'} })  }}
-                                 {% else %}
-                                 <input id="institution_profile_form_medicalProviderGroups_0" class="span10" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
-                               {% endfor %}
-                             <div id="autoDiv">
-                      
-                              </div>
-                        </div>
+                    <div class="control-group">
+                        <label for="medicalProviederGroups">  Network Name </label>
+                        {% for _i in institutionForm.medicalProviderGroups %}
+                            {{ form_widget(_i, {'attr': {class: 'span10'} })  }}
+                        {% else %}
+                            <input id="institution_profile_form_medicalProviderGroups_0" class="span10" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                       {% endfor %}
+                       <div id="autoDiv"></div>
+                    </div>
                     </div>    
                 </div>
             </section>
@@ -50,18 +49,16 @@
                         </label>
                         {{ form_row(institutionForm.country, {attr: {class: 'span12'}})}} 
                 </div>
-                <div class="city control-group span5">
-                         <label for="{{ institutionForm.children.city.vars.id }}">
-                          {{ institutionForm.children.city.vars.label }}
-                        </label>
-                        {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
+                <div class="state control-group span5">
+                        {{ form_label(institutionForm.state) }}
+                        {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
                 </div>
                 
             </div>
             <div class="row-fluid terms">
-                <div class="children[state].data control-group span5 ">
-                        {{ form_label(institutionForm.state) }}
-                        {{ form_widget(institutionForm.state, { attr: {class: 'span12'} } )}}
+                <div class="control-group span5 city">
+                    {{ form_label(institutionForm.city) }}
+                    {{ form_widget(institutionForm.city, {label: 'City', attr: {class: 'span12'} } )}}
                 </div>
                 <div class="zipCode control-group span5">
                         <label for="{{ institutionForm.children.zipCode.vars.id }}">

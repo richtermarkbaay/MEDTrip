@@ -219,7 +219,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
         
         if (isset($includedKeys['state']) && '' != $institution->getState()) {
-            $returnVal['state'] = $institution->getState();
+            $returnVal['state'] = $institution->getState()->getName();
         }
         
         if (isset($includedKeys['country']) && $institution->getCountry()) {

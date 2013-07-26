@@ -68,11 +68,6 @@ class Institution
     /**
      * @var string
      */
-    private $state;
-
-    /**
-     * @var string
-     */
     private $coordinates;
 
     /**
@@ -409,29 +404,6 @@ class Institution
     public function getZipCode()
     {
         return $this->zipCode;
-    }
-
-    /**
-     * Set state
-     *
-     * @param string $state
-     * @return Institution
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-    
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return string 
-     */
-    public function getState()
-    {
-        return $this->state;
     }
 
     /**
@@ -886,5 +858,61 @@ class Institution
     public function getTotalClinicRankingPoints()
     {
         return $this->totalClinicRankingPoints;
+    }
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\State
+     */
+    private $state;
+
+
+    /**
+     * Set state
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\State $state
+     * @return Institution
+     */
+    public function setState(\HealthCareAbroad\HelperBundle\Entity\State $state = null)
+    {
+        $this->state = $state;
+    
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\State 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+    /**
+     * @var string
+     */
+    private $stateBak;
+
+
+    /**
+     * Set stateBak
+     *
+     * @param string $stateBak
+     * @return Institution
+     */
+    public function setStateBak($stateBak)
+    {
+        $this->stateBak = $stateBak;
+    
+        return $this;
+    }
+
+    /**
+     * Get stateBak
+     *
+     * @return string 
+     */
+    public function getStateBak()
+    {
+        return $this->stateBak;
     }
 }
