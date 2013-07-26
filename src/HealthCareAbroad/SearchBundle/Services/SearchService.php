@@ -51,13 +51,15 @@ class SearchService
 
         //TODO: looks we may not need to go this route; getDestinationsByName()
         //should be enough
-        if ($options) {
-            if (isset($options['context']) && $options['context'] == 'homepage') {
-                return $this->searchStrategy->getDestinationsByNameWithCustomSort($searchParams);
-            }
-        }
+//         if ($options) {
+//             if (isset($options['context']) && $options['context'] == 'homepage') {
+//                 return $this->searchStrategy->getDestinationsByNameWithCustomSort($searchParams);
+//             }
+//         }
 
-        return $this->searchStrategy->getDestinationsByName($searchParams);
+//         return $this->searchStrategy->getDestinationsByName($searchParams);
+
+        return $this->searchStrategy->getDestinationsByNameWithCustomSort($searchParams);
     }
 
     public function getAllDestinations()
