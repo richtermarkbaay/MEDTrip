@@ -121,9 +121,12 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $idsNotIn = "'".\implode("', '",$ids)."'";
 
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
-                    AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
-                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
+        $query = "SELECT a.*, s.name AS specialization_name FROM doctors a 
+                  LEFT JOIN doctor_specializations b ON a.id = b.doctor_id
+                  LEFT JOIN specializations s ON s.id = b.specialization_id
+                  WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
+                  AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
+                  IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $center->getId());
         $stmt->bindValue('searchKey', '%'.$searchKey.'%');

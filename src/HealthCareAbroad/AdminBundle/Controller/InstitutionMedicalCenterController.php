@@ -354,8 +354,9 @@ class InstitutionMedicalCenterController extends Controller
         $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
         $doctorArr = array();
         foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'] . " - " . $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']) , 'id' => $each['id'], 'specializations' => $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->getSpecializationListByMedicalSpecialist($each['id']), 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
-
+            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'] . " - " . $each['specialization_name'] , 
+                                 'id' => $each['id'], 
+                                 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
         }
 
         return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));
