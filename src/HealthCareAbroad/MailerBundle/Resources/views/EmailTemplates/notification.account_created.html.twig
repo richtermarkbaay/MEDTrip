@@ -6,7 +6,9 @@ FROM: support@healthcareabroad.com
 #}
 
 {% block subject %}
-    {{ subject }}
+    {% autoescape false %}
+{{ subject }}
+    {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}

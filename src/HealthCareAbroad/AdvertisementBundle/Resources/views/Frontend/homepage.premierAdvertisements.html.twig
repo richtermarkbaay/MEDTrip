@@ -19,14 +19,8 @@
     		        link: { url: institutionUrl, html: highlight.institution.name }
 			} %}
         </h3>
-        <h5>
-            {% if highlight.institution.city %}
-                {{ highlight.institution.city.name }},
-            {% endif %} 
-            {{ highlight.institution.country.name }}
-        
-        </h5>
-        
+        <h5>{{ institution_address_to_string(highlight.institution, ['city', 'country']) }}</h5>
+
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,
     	        link: {url: institutionUrl, html: render_institution_logo(highlight.institution, {context: 4, attr: {class: 'mini'}}), class: 'mini-logo-wrapper'}

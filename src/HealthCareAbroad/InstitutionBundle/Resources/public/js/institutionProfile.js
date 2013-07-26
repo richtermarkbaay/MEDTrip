@@ -251,7 +251,7 @@ var InstitutionProfile = {
     	viewElem = $(elem.attr('data-view-elem'));
     	editElem = $(elem.attr('data-edit-elem'));
     	
-    	if(viewElem.is(':visible')) {        	
+    	if(viewElem.is(':visible')) {
         	if(elem.hasClass('edit-awards')) { /* TODO: Temporary Fixed */
         		$('section.hca-main-profile .edit-awards').addClass('disabled');
         		elem.removeClass('disabled');
@@ -270,7 +270,8 @@ var InstitutionProfile = {
             	}
         	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
-        	
+        	HCA.closeAlertMessage();
+
     	} else {
         	editElem.slideUp('slow', function(){
         		InstitutionProfile.undoChecked(editElem);
@@ -354,35 +355,26 @@ var InstitutionProfile = {
     
                     case 'addressModalForm':
                     	var address = [];
-                        var _street_address = [];
-                        $.each(response.institution.address1, function(_k, _v){
-                           if ($.trim(_v) != '') {
-                               _street_address.push(_v);
+                        $.each(response.institution.address1, function(key, value){
+                           if ($.trim(value) != '') {
+                               address.push(ucwords(value));
                            } 
                         });
-                        if (_street_address.length) {
-                            address.push(_street_address.join(', '));
-                        } else {
-                        	_street_address = '';
-                        }
-                        _keys = ['city', 'state', 'country', 'zipCode'];
-                        $.each(_keys, function(_k, _v){
-                            if (response.institution[_v]) {
-                                address.push(ucwords(response.institution[_v]));
+
+                        keys = ['city', 'state', 'country'];
+                        $.each(keys, function(dummy, key){
+                            if (response.institution[key]) {
+                                address.push(ucwords(response.institution[key]));
                             }
                         });
-                        
-                		$('.addressLabel').html('Edit Address');
-                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
-                        
-                        $('.address_column').find('span.address_part').remove();
-                        $('.address_column').prepend(_html);
-                                                
+
+                        zipCode = typeof(response.institution['zipCode']) != 'undefined' && response.institution['zipCode'] ? ' ' + response.institution['zipCode'] : '';
+                        $('.address_column').html(address.join(', ') + zipCode);
+
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institution.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institution.coordinates;
                         	$('#institution-static-map').prop('src', mapStaticUrl);
                         }
-                        
                         break;
     
                     case 'numberModalForm':
@@ -450,17 +442,17 @@ var InstitutionProfile = {
 
                 _button.html(_buttonHtml).attr('disabled', false);
                 _editButton.click();
-                HCA.alertMessage('success', 'successfully updated!');
+                HCA.alertMessage('success', 'Profile has been updated!');
             },
             error: function(response) {
                 _button.html(_buttonHtml).attr('disabled', false);
                 if (response.status==400) {
-                    var errors = $.parseJSON(response.responseText).html;
-                    if (errors.length) {
-                        $.each(errors, function(key, item){
-                        	$('.control-group.' + item.field).addClass('error');
-                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > ' + (item.field == 'city' ? '.custom-select' : 'input')));
+                    var responseText = $.parseJSON(response.responseText);
 
+                    if (responseText.errors.length) {
+                        $.each(responseText.errors, function(i, each){
+                        	$('.control-group.' + each.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (each.field == 'city' ? '.fancy-dropdown-wrapper' : 'input')));
                         });
                     }
 

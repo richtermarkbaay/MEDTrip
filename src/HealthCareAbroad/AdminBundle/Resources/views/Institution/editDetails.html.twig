@@ -21,7 +21,11 @@
                     {{ form_row( form.description, {attr: {class:'tinymce', style: 'width: 750px;'} } ) }}
                     <div class="control-group">
                         <label for="network-group">  Medical Provider Group/Network </label>
-                            {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
+                            {% for _i in form.medicalProviderGroups %}
+                                 {{ form_widget(_i, {'attr': {class: 'span3'} })  }}
+                                 {% else %}
+                                 <input id="institution_profile_form_medicalProviderGroups_0" class="span3" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                             {% endfor %}
                          <div id="autoDiv">
                          </div>
                     </div>
@@ -51,16 +55,18 @@
                               {{ form_widget( form.country ) }}
                               {{ form_errors(form.country) }}
                         </div>
-                        <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
-                            <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                        
+                        <div class="state control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
+                            <label>State / Province </label>
+                            {{ form_widget( form.state ) }}         
+                            {{ form_errors(form.state) }}    
+                        </div>
+                        
+                    </div> 
+                    <div class="city control-group ">
+                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
                             {{ form_widget( form.city ) }}
                             {{ form_errors(form.city) }}
-                        </div>
-                    </div> 
-                    <div class="state control-group ">
-                        <label>State / Province </label>
-                        {{ form_widget( form.state ) }}         
-                        {{ form_errors(form.state) }}
                     </div>     
                     
                     <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">
@@ -98,7 +104,7 @@
 
         $("#{{ form.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
             appendTo: "#autoDiv",
-            source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
+            source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
         });
         
         $('#institution_profile_form_country').change();

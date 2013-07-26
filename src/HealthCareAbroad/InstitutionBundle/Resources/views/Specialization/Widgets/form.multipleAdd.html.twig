@@ -24,7 +24,7 @@
         {% if buttonLabel == 'Save' %}
             <button type="button" class="btn" onclick="$('#add-specialization-wrapper').hide().prev().slideDown().prev().slideDown()">Cancel</button>
             <button type="submit" class="btn btn-primary" onclick="InstitutionSpecialization.submitAddSpecialization($(this)); return false;">
-                {{ buttonLabel }}
+                <i class="icon-save"></i> &nbsp;{{ buttonLabel }} 
             </button>
         {% else %}
             <button type="submit" class="btn pull-right btn-primary btn-large">{{ buttonLabel }}</button>
@@ -59,9 +59,9 @@ $(function(){
     	$(e.target).prev().find('i').addClass('icon-minus-sign');
         specializationId = $(e.target).data('specialization');
         accordionInnerElem = $('#panel' + specializationId);
+
         // TODO: ideally we should return the data not html
         if (!accordionInnerElem.data('loaded')) {
-            console.log(accordionInnerElem);
             $.getJSON(accordionInnerElem.data('load-treatments-url'), function(response) {
             	accordionInnerElem.html(response.html).data('loaded', 1);
             });

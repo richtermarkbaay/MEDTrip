@@ -200,8 +200,7 @@ class InstitutionAccountController extends InstitutionAwareController
                 
                 if ($form->isValid()) {
                     $this->institution = $form->getData();
-                    
-                   $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                     $this->get('services.institution.factory')->save($this->institution);
                     if(!empty($form['services'])){
                           $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
@@ -276,7 +275,10 @@ class InstitutionAccountController extends InstitutionAwareController
                         elseif($key == 'country') {
                             $output['institution'][$key] = $this->institution->getCountry()->getName();
                         }
-                        elseif( $key == 'city' ) {
+                        elseif( $key == 'state' && $this->institution->getState()) {
+                            $output['institution'][$key] =  $this->institution->getState()->getName() ;
+                        }
+                        elseif( $key == 'city' && $this->institution->getCity()) {
                             $output['institution'][$key] = $this->institution->getCity()->getName();
                         }
                        else{  
@@ -292,18 +294,21 @@ class InstitutionAccountController extends InstitutionAwareController
                      * Always expects empty if form submitted are from awards or services
                      */
                     if(empty($output['institution'])){ 
-                        $errors = array('error' => 'Please select at least one.');
-                        return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+                        $errors[] = array('error' => 'Please select at least one.', 'field' => $key);
+                        return new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
                     }
                 }
                 else {
                     $errors = array();
-                    $formErrors = $this->get('validator')->validate($form);
-
-                    foreach ($formErrors as $err) {
-                        $errors[] = array('field' => str_replace('data.','',$err->getPropertyPath()), 'error' => $err->getMessage());
+                    foreach ($form->getChildren() as $field){
+                        if (\count($eachErrors = $field->getErrors())){
+                            $errors[] = array('field' => $field->getName(), 'error' => $eachErrors[0]->getMessageTemplate());
+                        }
                     }
-                    return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+
+                    $responseJson = \json_encode(array('errors' => $errors));
+
+                    return new Response($responseJson, 400, array('content-type' => 'application/json'));
                 }
         }
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));

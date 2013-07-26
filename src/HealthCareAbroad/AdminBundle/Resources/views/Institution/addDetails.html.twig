@@ -46,7 +46,11 @@
                                                 {% endfor %}
                                                 <div class="control-group">
                                                     <label for="network-group">  Medical Provider Group/Network  </label>
-                                                        {{ form_widget(form.medicalProviderGroups.vars.prototype, { 'attr': {'class': 'span3'} }) | replace({'__name__': '0'}) | raw}}
+                                                        {% for _i in form.medicalProviderGroups %}
+                                                             {{ form_widget(_i, {'attr': {class: 'span3'} })  }}
+                                                             {% else %}
+                                                             <input id="institution_profile_form_medicalProviderGroups_0" class="span3" type="text" name="institution_profile_form[medicalProviderGroups][0]" value="">
+                                                         {% endfor %}
                                                      <div id="autoDiv">
                                                      </div>
                                                 </div>
@@ -118,7 +122,7 @@
 
         $("#institution_profile_form_medicalProviderGroups_0").autocomplete({
             appendTo: "#autoDiv",
-            source: $.parseJSON('{{ medicalProvidersJSON | raw}}'),
+            source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
         });
         
     });

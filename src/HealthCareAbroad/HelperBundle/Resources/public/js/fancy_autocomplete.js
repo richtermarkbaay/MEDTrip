@@ -1,5 +1,5 @@
 /**
- * Autocomplete widget that combines jQuery autocomplete widget and bootstrap dropdown
+ * jQuery autocomplete 
  * 
  * @author Allejo Chris Velarde
  * April 02, 2013
@@ -134,8 +134,12 @@ var FancyAutocompleteWidget = function(widget, options){
             // override _renderMenu
             widget.data('ui-autocomplete')._renderMenu = function(ul, data){
                 var _cnt = 0;
-                $.each( data, function( index, item ) {
-                    if (options.maxItems && _cnt > options.maxItems) {
+                ul.attr('data-widget-id', '#'+widget.attr('id'));
+                // Reset OnSrollLoad
+                ul.data('startIndex', options.maxItem).data('loadOnScrollTop', ul.data('defaultScrollTop')).animate({ scrollTop: 0 }, 'fast');
+
+                $.each( data, function( index, item ) {                	
+                    if (_cnt > options.maxItems) {
                         return false;
                     }
                     widget.data('ui-autocomplete')._renderItemData( ul, item );
@@ -176,7 +180,7 @@ var FancyAutocompleteWidget = function(widget, options){
                 
                 // check if their is an onAutocompleteSelectCallback function
                 if (_options.onAutocompleteSelectCallback && 'function' == typeof(_options.onAutocompleteSelectCallback)) {
-                    _options.onAutocompleteSelectCallback();
+                    _options.onAutocompleteSelectCallback(widget);
                 }
             }
         },
@@ -285,8 +289,52 @@ var FancyAutocompleteWidget = function(widget, options){
     
     $.fn.fancyAutocomplete = function(_options) {
         return this.each(function(){
-            var _myWidget = new FancyAutocompleteWidget($(this), _options);
-            $(this).data('fancyAutocomplete', _myWidget);
+
+        	// always limit since it will not work on too many iterations
+        	if (!_options.maxItems){
+        		_options.maxItems = 1000;
+        	}
+
+            $(this).data('fancyAutocomplete', new FancyAutocompleteWidget($(this), _options));
+            $(this).trigger('bindFancyAutomplete');
+
+            // IF CITY AUTOCOMPLETE
+            if(typeof($(this).data('city-autocomplete')) != 'undefined') {
+
+                var defaultScrollTop = 26 * _options.maxItems; // 26.72
+
+                $(this).siblings('.combolist-wrapper:first').find('ul.ui-autocomplete')
+                	.data('defaultScrollTop', defaultScrollTop)
+                	.data('loadOnScrollTop', defaultScrollTop)
+                	.data('startIndex', _options.maxItems)
+                	.scroll(function() {
+
+    	            	if($(this).scrollTop() > $(this).data('loadOnScrollTop')) {
+    	            		var autcompleteWidget = $($(this).data('widget-id'));
+    	            		var data = autcompleteWidget.data('fancyAutocomplete').options.source;
+
+    	            		if(data.length > $(this).children().length) {
+    		            		$(this).data('startIndex', $(this).children().length);
+
+    		            		appendString = '';
+    	            			//console.log("startIndex: " + $(this).data('startIndex'));
+    		            		for(var i=$(this).data('startIndex'); i < $(this).data('startIndex') + _options.maxItems; i++) {
+    		            			if(typeof(data[i]) == 'undefined') {
+    		            				break;
+    		            			}
+    		                        var label = data[i].label ? data[i].label : data[i].name;
+		                    		var itemData = {'id': data[i].id, 'label': label, 'custom_label': data[i].custom_label ? data[i].custom_label : null };
+
+    		            			autcompleteWidget.data('ui-autocomplete')._renderItemData($(this), itemData);
+    		            		}
+
+    		            		$(this).data('loadOnScrollTop', parseInt($(this).data('loadOnScrollTop')) + $(this).data('defaultScrollTop'));            		
+    	            		}
+    	            	}
+                	});            	
+            }
+            // END OF IF CITY AUTOCOMPLETE
+
         });
     };
     

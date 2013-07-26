@@ -23,8 +23,8 @@
                            logo: render_institution_logo(institution, {attr: {alt: 'hospital logo', class: 'small'}}),
                            name: institution.name,
                            description: institution.description | striptags,
-                           mainAddress: institution_address_to_array(institution, ['city', 'state', 'country']) | join(', '),
-                           streetAddress: institution_address_to_array(institution, ['address1', 'zipCode']) | join(', ')
+                           mainAddress: institution_address_to_string(institution, ['city', 'state', 'country']),
+                           streetAddress: institution_address_to_string(institution, ['address1', 'zipCode'])
                        }
                     }
                 %}

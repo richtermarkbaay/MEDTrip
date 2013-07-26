@@ -131,7 +131,8 @@ var InstitutionMedicalCenter = {
             	}
         	});
         	elem.addClass('btn-link').removeClass('btn-misc').html('<i class="icon-remove"></i>');
-        	
+        	HCA.closeAlertMessage();
+
     	} else {
         	editElem.slideUp('slow', function(){
         		InstitutionMedicalCenter.undoChecked(editElem);
@@ -229,19 +230,20 @@ var InstitutionMedicalCenter = {
         _linkElement = $(_linkElement);
         _modal = $(_linkElement.attr('data-target'));
         _modal.modal('show');
+        HCA.closeAlertMessage();
         
         return false;
     },
     
     showCommonSpecializationModal:  function (_linkElement) {
-    	
         _linkElement = $(_linkElement);
         _id = _linkElement.data('id');
         _name = $(_linkElement).parent().find('h4').html();
         _modal = $(_linkElement.attr('data-target'));
         $(".modal-body p strong").text(_name+'?');
         _modal.modal('show').appendTo('body');
-        
+        HCA.closeAlertMessage();
+
         return false;
     },
     
@@ -305,12 +307,11 @@ var InstitutionMedicalCenter = {
      * 
      * @param DOMElement button
      */
-    submitMedicalCenterSidebarForms: function(domButtonElement) {
+    submitMedicalCenterForm: function(_button) {
     	
     	$('.control-group').removeClass('error');
     	$('.control-group > ul._error-list').remove();
 
-        _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
         _form = _button.parents('form');
@@ -353,29 +354,21 @@ var InstitutionMedicalCenter = {
                         break;
                     case 'addressForm':
                     	var address = [];
-                        var _street_address = [];
-                        $.each(response.institutionMedicalCenter.address, function(_k, _v){
-                           if ($.trim(_v) != '') {
-                               _street_address.push(_v);
+                        $.each(response.institutionMedicalCenter.address, function(key, value){
+                           if ($.trim(value) != '') {
+                        	   address.push(ucwords(value));
                            } 
                         });
-                        if (_street_address.length) {
-                            address.push(ucwords(_street_address.join(', ')));
-                        } else {
-                        	_street_address = '';
-                        }
-                        _keys = ['city', 'state', 'country', 'zipCode'];
-                        $.each(_keys, function(_k, _v){
-                            if (response.institutionMedicalCenter[_v]) {
-                                address.push(ucwords(response.institutionMedicalCenter[_v]));
+
+                        keys = ['city', 'state', 'country'];
+                        $.each(keys, function(dummy, key){
+                            if (response.institutionMedicalCenter[key]) {
+                                address.push(ucwords(response.institutionMedicalCenter[key]));
                             }
                         });
-                        
-                		$('.addressLabel').html('Edit Address');
-                        _html = '<span class="address_part">' + address.join(',&nbsp;</span><span class="address_part">')+'</span>';
-                        
-                        $('.address_column').find('span.address_part').remove();
-                        $('.address_column').prepend(_html);
+
+                        zipCode = typeof(response.institutionMedicalCenter['zipCode']) != 'undefined' && response.institutionMedicalCenter['zipCode'] ? ' ' + response.institutionMedicalCenter['zipCode'] : '';
+                        $('.address_column').html(address.join(', ') + zipCode);
                         
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institutionMedicalCenter.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institutionMedicalCenter.coordinates;
@@ -481,6 +474,8 @@ var InstitutionMedicalCenter = {
     },
     
     submitAddNewMedicalCenter: function(domButtonElement) {
+    	$('.control-group').removeClass('error');
+    	$('.control-group > ul._error-list').remove();
         _button = $(domButtonElement);
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
@@ -503,6 +498,7 @@ var InstitutionMedicalCenter = {
                         $.each(errors, function(key, item){
                         	_errorString += item.error+"<br>";
                         	_button.parents('div#add-new-center').find('div.'+item.field).addClass('error');
+                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
                         });
                         _button.parents('div#add-new-center').find('.alert-box').removeClass('alert alert-error alert-success').html("");
                         _button.parents('div#add-new-center').find('.alert-box').addClass('alert alert-error').html(_errorString);

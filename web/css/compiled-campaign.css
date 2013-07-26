@@ -283,12 +283,12 @@ a:hover {
   margin-top: 7px;
   display: block;
 }
-.media-body .alert {
+.media-body .alert2 {
   margin: 10px 0;
-  padding: 20px;
+/*  padding: 20px;
   -moz-box-shadow: 5px 5px rgb(175,175,175);
 -webkit-box-shadow: 5px 5px rgb(175,175,175);
-box-shadow: 5px 5px rgb(175,175,175);
+box-shadow: 5px 5px rgb(175,175,175);*/
 line-height: 1.35em;
 }
 .media-body .alert a {

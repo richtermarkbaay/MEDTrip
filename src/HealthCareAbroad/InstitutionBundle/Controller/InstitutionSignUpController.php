@@ -189,17 +189,14 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $request->getSession()->setFlash('callout', "");
 
                 return $this->redirect($this->generateUrl('institution_signup_setup_profile'));
-            }
-            $form_errors = $this->get('validator')->validate($form);
-            if($form_errors){
-                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
+            } else {
+                $request->getSession()->setFlash('error', "We need you to correct some of your input. Please check the fields in red.");
             }
         }
 
         return $this->render('InstitutionBundle:SignUp:signUp.html.twig', array(
             'form' => $form->createView(),
-            'institutionTypes' => InstitutionTypes::getFormChoices(),
-            'error_message' => $error_message,
+            'institutionTypes' => InstitutionTypes::getFormChoices()
         ));
     }
 
@@ -213,6 +210,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
 
+        
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -224,7 +222,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $response = $this->setupProfileMultipleCenter($request);
                 break;
         }
-
+         
+        
         return $response;
     }
 
@@ -242,7 +241,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         // Set Current Route
         $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-
+        
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
@@ -250,6 +249,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
+        
         if ($this->request->isMethod('POST')) {
             $formRequestData = $this->request->get($form->getName());
             if (isset($formRequestData['medicalProviderGroups']) ) {
@@ -290,6 +290,9 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
+//         $startTime = \microtime(true);
+//         $form->createView();
+//         $endTime = \microtime(true); $diff = $endTime-$startTime; echo "{$diff}s"; exit;
         return $this->render('InstitutionBundle:SignUp:setupProfile.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,

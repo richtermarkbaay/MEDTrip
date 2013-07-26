@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head></head>
+
+    <body>
+        {% block body %}
+        <form action="{{ path('helper_testContactDetail') }}" method="POST" novalidate>
+            {% for _widget in form.contactDetails %}
+                {{ form_widget(_widget, { 'attr': {'class': 'span12'} }) }}  
+            {% endfor %}
+            {{ form_rest(form) }}
+            <button type="submit">Submit</button>
+        </form>
+        {% endblock %}
+        
+    </body>
+</html>

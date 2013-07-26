@@ -293,13 +293,16 @@ class InstitutionController extends Controller
                                     InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, 
                                     InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
     	    $formRequestData = $request->get($form->getName());
-    	    if (isset($formRequestData['medicalProviderGroups']) ) {
-    	        // we always expect 1 medical provider group
-    	        // if it is empty remove it from the array
-    	        if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
-    	            unset($formRequestData['medicalProviderGroups'][0]);
-    	        }
-    	    }
+    	      if (isset($formRequestData['medicalProviderGroups']) ) {
+                    // we always expect 1 medical provider group
+                    // if it is empty remove it from the array
+                    if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
+                        unset($formRequestData['medicalProviderGroups'][0]);
+                    }
+                     else {
+                        $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
+                    }
+                } 
     		$form->bind($formRequestData);
     		if ($form->isValid()) {
     			

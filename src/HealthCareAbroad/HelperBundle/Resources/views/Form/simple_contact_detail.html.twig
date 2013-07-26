@@ -6,10 +6,9 @@
             {{ form_label(form, _label, {label_attr: {class: 'control-label'}}) }}
         {% endif %}
         
-    
             <div class="span3">
                 <label><small>Country Code</small></label>
-                {{ form_widget(form.country_code, {attr: {class: 'span12'}}) }}
+                {{ form_widget(form.country, {attr: {class: 'span12'}}) }}
             </div>
             <div class="span2">
                 <label><small>Area Code</small></label>
@@ -22,7 +21,7 @@
             </div>
             {% if (contact_detail_type_has_extension(form.vars.value.type))%}
             <div class="span1">
-                <label><small class="hca-extension">Ext.</small></label>
+                <label><small>Ext.</small></label>
                 {{ form_widget(form.ext, {attr: {class: 'span12', 'maxlength': '3'}})}}
             </div>
             {% endif %}

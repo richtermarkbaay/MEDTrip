@@ -8,8 +8,6 @@ use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
-use HealthCareAbroad\HelperBundle\Form\FieldType\ContactDetailFieldType;
-
 use Doctrine\Common\Collections\ArrayCollection;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetail;

@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use Symfony\Component\Validator\Constraints\MinLength;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\CorrectCurrentPassword;
@@ -45,7 +47,7 @@ class InstitutionUserChangePasswordType extends AbstractType
     	    ->add( 'new_password', 'password', array(
                     'label' => 'New Password', 
                     'virtual' => true, 
-                    'constraints' => array(new NotBlank())
+                    'constraints' => array(new NotBlank(array('message'=>'Password is required.')) , new MinLength(array('limit' => 6,'message' => 'Password is too short. Please enter at least 6 characters.')))
                 ))
     	    ->add('confirm_password', 'password', array(
                     'label' => 'Confirm Password', 

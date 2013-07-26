@@ -22,12 +22,7 @@
     					<!-- User Ratings Temporarily Commented -->
                         {# include 'FrontendBundle:Widgets:ratings.html.twig' #}
     
-                        <strong>
-                            {% if each.institution.city %}
-                                {{ each.institution.city.name }},
-                            {% endif %}
-                            {{ each.institution.country.name }}
-                        </strong>
+                        <strong>{{ institution_address_to_string(each.institution, ['city', 'country']) }}</strong>
     				</div>
     				<div class="description-box">
     				    

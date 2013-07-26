@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
+use Doctrine\ORM\Query;
+
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -46,10 +48,11 @@ class FancyCountryFieldType extends AbstractType
      */
     private function _getCountryList()
     {
-        $countries = $this->locationService->getGlobalCountries();        
+        //$countries = $this->locationService->getGlobalCountries();
+        $countries = $this->locationService->getActiveCountries(Query::HYDRATE_ARRAY);
         $result = array();
 
-        foreach ($countries['data'] as $each){
+        foreach ($countries as $each){
             $result[] =  array(
                 'id' => $each['id'],
                 'custom_label' => "<span class='flag16 ".strtolower($each['abbr'])."'> </span> " . "<span class='item-label'>" .$each['name']. "</span>",

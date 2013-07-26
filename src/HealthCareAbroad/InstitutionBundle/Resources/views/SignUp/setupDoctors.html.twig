@@ -27,14 +27,3 @@
         </aside>
     </div>
 {% endblock %}
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-(function($){
-	$(function(){
-        {% if institutionMedicalCenter.doctors|length < 1 %}
-             $('#add-doctor').modal('show');
-        {% endif %} 
-	});
-})(jQuery);
-</script>
-{% endblock %}

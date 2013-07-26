@@ -1,6 +1,18 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
+use HealthCareAbroad\DoctorBundle\Entity\Doctor;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
+
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -8,6 +20,85 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class TestController extends Controller
 {
+    public function testLocationAction(Request $request)
+    {
+        $country = $this->getDoctrine()->getRepository('HelperBundle:Country')->find(206);
+        $state = $this->getDoctrine()->getRepository('HelperBundle:State')->find(2363);
+        $institution = new Institution();
+        $institution->setName('test only '.time());
+        $institution->setType(InstitutionTypes::MULTIPLE_CENTER);
+//         $institution->setCountry($country);
+//         $institution->setState($state);
+        $validationGroups = array('editInstitutionInformation', 'Default');
+        $validationGroups = array();
+        
+        $form = $this->createFormBuilder($institution, array('validation_groups' => $validationGroups))
+            ->add('country', 'fancy_country', array())
+            ->add('city', 'city_list',array('attr' => array('placeholder' => 'Select a city')))
+            ->add('state', 'state_list',array('attr' => array('placeholder' => 'Select a state/province')))
+        ->getForm();
+        
+        if ($request->isMethod('POST')){
+            $form->bind($request);
+            if ($form->isValid()){
+                echo 'adi valid'; exit;
+            }
+            else {
+                
+                $errors = array();
+                foreach ($form->getChildren() as $field){
+                    foreach ($field->getErrors() as $err){
+                        $errors[] = array(
+                            'name' => $field->getName(),
+                            'error' => $err->getMessage()
+                        );
+                    }
+                }
+                
+                foreach ($form->getErrors() as $err){
+                    $errors[] = array(
+                        'name' => $form->getName(),
+                        'error' => $err->getMessage()
+                    );
+                }
+                var_dump($errors);
+                echo 'adi invalid'; exit;
+            }
+        }
+        
+        return $this->render('HelperBundle:Test:testLocation.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function testContactDetailAction(Request $request)
+    {
+        $contactDetail = new ContactDetail();
+        $contactDetail->setType(ContactDetailTypes::PHONE);
+        
+        $doctor = new Doctor();
+        $doctor->setFirstName('Test Only');
+        $doctor->setLastName('Doctor');
+        $doctor->addContactDetail($contactDetail);
+        $form = $this->createFormBuilder($doctor)
+            ->add('contactDetails', 'collection', array('type' => 'simple_contact_detail', 'allow_add' => true))
+            ->getForm();
+        
+        if ($request->isMethod('POST')) {
+            $form->bind($request);
+            if ($form->isValid()) {
+                
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($contactDetail);
+                //$em->flush();
+                exit;
+            }
+            else {
+                var_dump($form->getErrors()); exit;
+            }
+        }
+        
+        return $this->render('HelperBundle:Test:contactDetailTest.html.twig', array('form' => $form->createView()));
+    }
+    
     public function showFormAction()
     {
         $form = $this->createForm(new TrackerFormType());

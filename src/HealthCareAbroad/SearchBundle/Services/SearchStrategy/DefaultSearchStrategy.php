@@ -94,7 +94,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -131,7 +131,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -165,7 +165,7 @@ class DefaultSearchStrategy extends SearchStrategy
             }
         }
 
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -203,7 +203,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.specialization_id = {$searchParameter['specialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -245,7 +245,7 @@ class DefaultSearchStrategy extends SearchStrategy
                 $sql .= " AND b.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
         }
-        $sql .= " GROUP BY a.id ";
+        $sql .= " GROUP BY a.id ORDER BY label";
 
         $stmt = $connection->prepare($sql);
         $stmt->bindValue('term', '%'.$parameters['term'].'%');
@@ -672,22 +672,110 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll();
     }
 
+
+    /**
+     * The destinations are grouped by country with cities underneath them.
+     * Both are sorted alphabetically.
+     *
+     * @param SearchParameterBag $searchParams
+     */
+    public function getDestinationsByNameWithCustomSort(SearchParameterBag $searchParams)
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+        $sql = "INVALID SQL";
+
+        $optionalWhereClause = ' ';
+        $optionalJoin = ' ';
+
+        if ($termId = $searchParams->get('treatmentId', 0)) {
+            $optionalWhereClause .= ' AND a.term_id = :treatmentId ';
+        } elseif ($termName = $searchParams->get('treatmentLabel')) {
+            $optionalJoin .= ' LEFT JOIN terms AS b ON a.term_id = b.id ';
+            $optionalWhereClause .= ' AND b.name LIKE :termName ';
+        }
+
+        //TODO: test if cast really helps speed up query?
+        // FIXME: the query can be made faster - orderedLabel was added as a quick hack for sorting;
+        $sqlCountry = "
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country, a.country_name AS orderedLabel
+            FROM search_terms AS a
+            $optionalJoin
+            WHERE a.country_name LIKE :name AND a.status = {$this->searchTermActiveStatus}
+            $optionalWhereClause
+        ";
+
+        $sqlCity = "
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country, CONCAT(a.country_name, a.city_name) AS orderedLabel
+            FROM search_terms AS a
+            $optionalJoin
+            WHERE (a.country_name LIKE :name OR a.city_name LIKE :name) AND a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+            $optionalWhereClause
+        ";
+
+        if ($filter = $searchParams->get('filter', '')) {
+            if ($filter == 'country') {
+                $sql = $sqlCountry;
+            } elseif ($filter == 'city') {
+                $sql = $sqlCity;
+            }
+        } else {
+            $sql = $sqlCountry . ' UNION ' . $sqlCity;
+        }
+
+        $sql .= ' GROUP BY label ORDER BY orderedLabel ASC ';
+
+        $stmt = $connection->prepare($sql);
+        $stmt->bindValue('name', '%'.$searchParams->get('searchedTerm').'%');
+        if ($termId) {
+            $stmt->bindValue('treatmentId', $termId, \PDO::PARAM_INT);
+        } elseif ($termName) {
+            $stmt->bindValue('termName', '%'.$termName.'%');
+        }
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
+//     public function getAllDestinations()
+//     {
+//         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+
+//         $stmt = $connection->query("
+//             SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country
+//             FROM search_terms AS a
+//             WHERE a.status = {$this->searchTermActiveStatus}
+
+//             UNION
+
+//             SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country
+//             FROM search_terms AS a
+//             WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+
+//             GROUP BY label ORDER BY country, label ASC
+//         ");
+
+//         $stmt->execute();
+
+//         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+//     }
+
     public function getAllDestinations()
     {
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
+        // FIXME: the query can be made faster - orderedLabel was added as a quick hack for sorting;
         $stmt = $connection->query("
-            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country, a.country_name AS orderedLabel
             FROM search_terms AS a
             WHERE a.status = {$this->searchTermActiveStatus}
 
             UNION
 
-            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country, CONCAT(a.country_name, a.city_name) AS orderedLabel
             FROM search_terms AS a
             WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
 
-            GROUP BY label ORDER BY country, label ASC
+            GROUP BY label ORDER BY orderedLabel ASC
         ");
 
         $stmt->execute();

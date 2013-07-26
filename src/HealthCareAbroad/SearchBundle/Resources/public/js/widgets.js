@@ -4,13 +4,13 @@
 
 var BroadSearchWidget = {
     sourceUri: '',
-    
+
     form: null,
-    
+
     submitButton: null,
-    
+
     inputboxCommonClass: '.type_in',
-    
+
     formComponents: {
         treatments: {
             'mainInputField': null,
@@ -31,15 +31,15 @@ var BroadSearchWidget = {
             'selectedLabel': ''
         }
     },
-    
+
     setSourceUri: function(_v){
-        this.sourceUri = _v;       
+        this.sourceUri = _v;
         return this;
     },
-    
+
     loadSourcesByType: function(params) {
         var _type = typeof params.type === 'undefined' ? null : params.type;
-        
+
         if (_type != 'treatments' || _type != 'destinations') {
             var _theOtherType = _type == 'treatments' ? 'destinations' : 'treatments';
 
@@ -47,14 +47,14 @@ var BroadSearchWidget = {
             if ('' == $.trim(BroadSearchWidget.formComponents[_theOtherType].autocompleteField.val())) {
                 $(BroadSearchWidget.formComponents[_theOtherType].valueField).val(0);
             }
-            
+
             // reset dataSource of the other type
             BroadSearchWidget.formComponents[_theOtherType].dataSource = {};
-            
+
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
                 // replace the type since we will be updating the dataSource for the other type
-                data: {type: _theOtherType, 'value': params.id, 'label': params.label}, 
+                data: {type: _theOtherType, 'value': params.id, 'label': params.label},
                 dataType: 'json',
                 success: function(response) {
                     // update the value of the dataSource for this type
@@ -65,16 +65,16 @@ var BroadSearchWidget = {
              });
         }
     },
-    
+
     initializeComponents: function(){
-        
+
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
             });
-            
+
             var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
-            
+
             componentOptions.autocompleteField
                 // setup autocomplete
                 .autocomplete({
@@ -85,7 +85,7 @@ var BroadSearchWidget = {
                         if (ui.content.length > 0) {
                             listWrapper.removeClass('hide');
                         }
-                    }, 
+                    },
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
                         var matches = [];
@@ -112,19 +112,19 @@ var BroadSearchWidget = {
                                $(this).val('');
                            }
                        }
-                       
+
                        // check if both type-in values are empty
                        var _allEmpty = BroadSearchWidget.form.find('input.type_in:text[value=""]').length >= BroadSearchWidget.form.find('input.type_in:text').length;
                        BroadSearchWidget.submitButton.attr('disabled', _allEmpty);
                    },
                    open: function(event, ui) {
-                	   $('.ui-autocomplete').css('width','auto');
+                       $('.ui-autocomplete').css('width','auto');
                    },
                    close: function(event, ui) {
-                	   listWrapper.addClass('hide');
+                       listWrapper.addClass('hide');
                    }
                 });
-            
+
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
                 _itemLink.on('click', function(){
@@ -132,14 +132,14 @@ var BroadSearchWidget = {
                     $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
                     BroadSearchWidget.submitButton.attr('disabled', false);
                     BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
-                    
+
                 });
                 return $("<li>").append(_itemLink).appendTo(ul);
             };
-            
+
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData = function (ul, item) {
-                var _renderedItem = componentOptions.autocompleteField.data('ui-autocomplete')._renderItem( ul, item ); 
-                return _renderedItem.data( "ui-autocomplete-item", item ); 
+                var _renderedItem = componentOptions.autocompleteField.data('ui-autocomplete')._renderItem( ul, item );
+                return _renderedItem.data( "ui-autocomplete-item", item );
             };
             //ui-menu-item
             componentOptions.autocompleteField.data('ui-autocomplete')._renderMenu = function(ul, data) {
@@ -154,14 +154,14 @@ var BroadSearchWidget = {
             }
         });
     },
-    
+
     initializeForm: function(form, components){
-        
+
         BroadSearchWidget.form = form;
         BroadSearchWidget.submitButton = form.find('button[type="submit"]');
         BroadSearchWidget.submitButton.attr('disabled', true);
         $.extend(true, BroadSearchWidget.formComponents, components);
-        
+
         $.ajax({
             url: BroadSearchWidget.sourceUri,
             data: {type:"all"},
@@ -172,7 +172,7 @@ var BroadSearchWidget = {
                 BroadSearchWidget.initializeComponents();
             }
          });
-        
+
         return this;
     }
 }/** end of BroadSearchWidget **/
@@ -187,7 +187,7 @@ var NarrowSearchWidget = {
         this.sourceUri = _v;
         return this;
     },
-    
+
     updateSource: function(widget_key){
         NarrowSearchWidget.form.find('input[name="filter"]').val(widget_key);
         $.ajax({
@@ -200,14 +200,14 @@ var NarrowSearchWidget = {
             }
         })
     },
-    
+
     initializeForm: function(_form, _options){
         this.form = _form;
         // setup the sources that will be used by autocomplete
         $.each(_options.widget_keys, function(_index, widget_key){
             NarrowSearchWidget.updateSource(widget_key);
         });
-        
+
         if (_options.dropdown_triggers) {
             this.__initFromButtonTriggers(_options.dropdown_triggers);
         }
@@ -225,7 +225,7 @@ var NarrowSearchWidget = {
             });
         });
     },
-    
+
     __initAutocomplete: function(field, dropdown, widget_key){
         var dropdown = dropdown;
         field.click(function(e){
@@ -247,7 +247,7 @@ var NarrowSearchWidget = {
                    response(matches);
                 },
                 open: function(event, ui) {
-             	   $('.ui-autocomplete').css('width','auto');
+                    $('.ui-autocomplete').css('width','auto');
                 },
             });
         // override _renderItem function of UI.autocomplete
@@ -264,20 +264,20 @@ var NarrowSearchWidget = {
                     // append new input element
                     $('<input type="hidden" name="'+_searchInputName+'" value="'+item.id+'"/>').appendTo(NarrowSearchWidget.form);
                 }
-                
+
                 // reload the other sources
                 $.each(NarrowSearchWidget.sources, function(_key, source){
                    if (_key != item.type) {
                        NarrowSearchWidget.updateSource(_key);
-                   } 
+                   }
                 });
             });
             return $("<li>").append(_itemLink).appendTo(ul);
         };
         // override _renderItemData
         field.data('ui-autocomplete')._renderItemData = function (ul, item) {
-            var _renderedItem = field.data('ui-autocomplete')._renderItem( ul, item ); 
-            return _renderedItem.data( "ui-autocomplete-item", item ); 
+            var _renderedItem = field.data('ui-autocomplete')._renderItem( ul, item );
+            return _renderedItem.data( "ui-autocomplete-item", item );
         };
         //ui-menu-item
         field.data('ui-autocomplete')._renderMenu = function(ul, data) {
@@ -293,7 +293,7 @@ var NarrowSearchWidget = {
                 _cnt++;
             });
         };
-        
+
         // override suggest function not to resize and reposition menu
         field.data('ui-autocomplete')._suggest = function( items ) {
             var ul = this.menu.element.empty();

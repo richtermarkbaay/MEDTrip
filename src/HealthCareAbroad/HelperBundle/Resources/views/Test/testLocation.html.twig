@@ -1,0 +1,16 @@
+{% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
+
+{% block content %}
+    
+            
+        <h1>Create New Account</h1> 
+        <div class="span8">
+            <form action="{{ path('helper_testLocation') }}" method="POST" novalidate>
+                {{ form_rest(form) }}
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        
+ 
+ 
+{% endblock %}

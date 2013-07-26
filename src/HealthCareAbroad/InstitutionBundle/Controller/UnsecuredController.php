@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * DEPRECATED ???
+ * Note added by: Adelbert Silla
+ * 
+ */  
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -87,8 +91,10 @@ class UnsecuredController extends Controller
     }
     
     /**
+     * DEPRECATED ??? - Note added by: Adelbert
+     *   
      * Load tabbed contents of an institution
-     * 
+     *   
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function loadMultipleCenterInstitutionTabbedContentsAction()
@@ -132,7 +138,7 @@ class UnsecuredController extends Controller
                 $parameters['currentGlobalAwards'] = $currentGlobalAwards;
                 $parameters['institution'] = $this->institution;
                 $parameters['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
-                $output['awards'] = array('html' => $this->renderView('InstitutionBundle:Institution/Widgets:institutionAwards.html.twig', $parameters));
+                $output['awards'] = array('html' => '');
         }
         
         return new Response(\json_encode($output),200, array('content-type' => 'application/json'));

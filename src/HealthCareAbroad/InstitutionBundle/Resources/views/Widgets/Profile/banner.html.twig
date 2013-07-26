@@ -1,12 +1,12 @@
 <div class="hca-banner">
-    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+    <form method="POST" action="{{ path('institution_uploadFeaturedImage') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden" data-image-label="Cover Photo">
         <a href="javascript:void(0)" onclick="$(this).next().click()" class="btn-large btn-banner file-browse-btn">Change Cover</a>
         <input name="featuredImage" type="file" onchange="$(this).parent().submit()" accept="image/*">
         {% set bannerSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
         <img id="institutionFeaturedImage" src="{{ institution.featuredMedia ? institution_media_src(institution.featuredMedia, bannerSize) : imageplaceholder.institutionFeaturedImage }}" alt="">
     </form>
                     
-    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden">
+    <form method="POST" action="{{ path('institution_uploadLogo') }}" enctype="multipart/form-data" class="ajaxUploadLogoForm hidden" data-image-label="Logo">
         <a class="hca-logo file-browse-btn"  href="javascript:void(0)" onclick="$(this).next().click()">        
             <span class="rollover"></span>
             {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}

@@ -206,12 +206,16 @@ form .section > .section-content > div .row-field:last-child {
     display: inline-block;
     background: url(/images/frontend/sprite.png) no-repeat;    
 }
-
 .hca-sprite.social-icon {
     width: 35px;
     height: 35px;
 }
-
+.hca-sprite.or-option {
+    background-position: 48px -43px;
+    display:block;
+    height:41px;
+    width:287px; 
+}
 .hca-sprite.social-icon.google-plus {
     opacity: 0.75;
     background-position: -418px 0px;    
@@ -419,7 +423,6 @@ form .section > .section-content > div .row-field:last-child {
     height: 123px;
     background-position: -315px -205px; 
 }
-
 .hca-v-sprite {
     display: block;
     background: url(/images/frontend/sprite-vertical.png) repeat-x;
@@ -2731,9 +2734,9 @@ table.schedule-wrapper tr > td.open24hrs {
     content: "-";
 }
 
-.modal {
+/*.modal {
     position: absolute;
-}
+}*/
 
 .modal .modal-header {
     color: #468199;
@@ -3199,7 +3202,7 @@ ul.ui-autocomplete.ui-menu li ul li a:before {
 
 #footer-wrapper .top-content-wrapper .subscribe-section div.register h4.bordered {
     padding-bottom: 15px;
-    border-bottom: #848783 solid 1px;
+    /*border-bottom: #848783 solid 1px;*/
 }
 
 #footer-wrapper .top-content-wrapper .subscribe-section div.register a {

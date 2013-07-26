@@ -39,7 +39,7 @@ class InstitutionMedicalCenterRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('imc, inst, imc_media, imc_bh, imc_cd, imc_pr, co, ci, imc_sp, sp, tr, tr_subs, doctors, docSpecializations, docMedia, docContacts')
+        $qb->select('imc, inst, imc_media, imc_bh, imc_cd, imc_pr, co, ci, imc_sp, sp, tr, tr_subs')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->leftJoin('imc.institution', 'inst')
             ->leftJoin('imc.media', 'imc_media')
@@ -50,10 +50,6 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->leftJoin('imc_sp.specialization', 'sp')
             ->leftJoin('imc_sp.treatments', 'tr')
             ->leftJoin('tr.subSpecializations', 'tr_subs')
-            ->leftJoin('imc.doctors', 'doctors')
-            ->leftJoin('doctors.specializations', 'docSpecializations')
-            ->leftJoin('doctors.media', 'docMedia')
-            ->leftJoin('doctors.contactDetails', 'docContacts')
             ->leftJoin('inst.country', 'co')
             ->leftJoin('inst.city', 'ci');
         
@@ -125,9 +121,12 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         $idsNotIn = "'".\implode("', '",$ids)."'";
 
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
-                    AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
-                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
+        $query = "SELECT a.*, s.name AS specialization_name FROM doctors a 
+                  LEFT JOIN doctor_specializations b ON a.id = b.doctor_id
+                  LEFT JOIN specializations s ON s.id = b.specialization_id
+                  WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
+                  AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
+                  IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $center->getId());
         $stmt->bindValue('searchKey', '%'.$searchKey.'%');

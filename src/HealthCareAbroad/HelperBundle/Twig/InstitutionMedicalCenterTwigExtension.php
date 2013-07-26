@@ -68,6 +68,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'business_hours_bit_value_label' => new \Twig_Function_Method($this, 'getBusinessHoursBitValueLabel'),
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
+            'medical_center_complete_address_to_string' => new \Twig_Function_Method($this, 'getCompleteAddressAsString'),
             'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
             'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
             'render_institution_medical_center_contact_details' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_details'),
@@ -182,11 +183,13 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     
     public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array() )
     {
-        $defaultIncludedKeys = array('address', 'zipCode', 'city', 'state','country');
-        $includedKeys = \array_intersect($includedKeys, $defaultIncludedKeys);
-        $institution = $institutionMedicalCenter->getInstitution();
         $returnVal = array();
-        if (\in_array('address', $includedKeys)) {
+        $defaultIncludedKeys = array('address', 'city', 'state', 'country', 'zipCode');
+        $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : $defaultIncludedKeys);
+
+        $institution = $institutionMedicalCenter->getInstitution();
+
+        if (isset($includedKeys['address'])) {
             $street_address = \json_decode($institutionMedicalCenter->getAddress(), true);
             
             $street_address = !\is_null($street_address)
@@ -207,24 +210,46 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             }
         }
         
-        if (\in_array('zipCode', $includedKeys) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
+        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
             $returnVal['zipCode'] = $institution->getZipCode();
         }
         
-        if (\in_array('city', $includedKeys) && $institution->getCity()) {
+        if (isset($includedKeys['city']) && $institution->getCity()) {
             $returnVal['city'] = $institution->getCity()->getName();
         }
         
-        if (\in_array('state', $includedKeys) && '' != $institution->getState()) {
-            $returnVal['state'] = $institution->getState();
+        if (isset($includedKeys['state']) && '' != $institution->getState()) {
+            $returnVal['state'] = $institution->getState()->getName();
         }
         
-        if (\in_array('country', $includedKeys) && $institution->getCountry()) {
+        if (isset($includedKeys['country']) && $institution->getCountry()) {
             $returnVal['country'] = $institution->getCountry()->getName();
         }
-        $keysWithValues = \array_intersect($includedKeys, \array_keys($returnVal));
-        
-        return array_merge(array_flip($keysWithValues), $returnVal);
+
+        return $returnVal;
+    }
+    
+    /**
+     * Convert InstitutionMedicalCenter address to string
+     *     - address
+     *     - city
+     *     - state
+     *     - country
+     *     - zip code
+     *
+     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     */
+    public function getCompleteAddressAsString(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
+    {
+        $arrAddress = $this->getCompleteAddressAsArray($institutionMedicalCenter, $includedKeys);
+
+        $zipCode = '';
+        if(isset($arrAddress['zipCode'])) {
+            $zipCode = ' ' . $arrAddress['zipCode'];
+            unset($arrAddress['zipCode']);
+        }
+
+        return implode($glue, $arrAddress) . $zipCode;
     }
 
     function getBusinessHoursBitValueLabel($bitValue)

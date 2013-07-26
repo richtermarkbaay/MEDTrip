@@ -43,6 +43,7 @@ var InstitutionSpecialization = {
         parentElem = _linkElement.parents('.specializations-profile-listing:first');
         accordionContent = $(_linkElement.attr('href'));
         _divToggle = parentElem.find('.hca-hidden-content:first');
+        HCA.closeAlertMessage();
 
         if(accordionContent.html() == '' ) {
         	_divToggle.show();
@@ -117,7 +118,7 @@ var InstitutionSpecialization = {
             type: 'POST',
             dataType: 'json',
             success: function(response) {
-            	HCA.alertMessage('success', 'You have successfully added specialization');
+            	HCA.alertMessage('success', 'You have successfully added specializations!');
                 $('#specialization_list_block').find('div.alert-block').hide();
 
                   // insert new content after last specialization block
@@ -142,27 +143,26 @@ var InstitutionSpecialization = {
         return false;
     },
     
-    toggle: function (_element){
-        _attr = $(_element.attr('data-toggle'));
-        _element.parent().slideUp().next().slideUp();
-        $(_attr).show();
+    toggle: function (elem){
+        _attr = $(elem.attr('data-toggle'));
+        elem.parent().slideUp().next().slideUp();
         $('#add-specialization-wrapper').show();
-        $(_attr.selector).html('<div class="align-center" style="padding:10px"><img src="/images/institution/spinner_large.gif" /></center>');
+        _attr.html('<div class="align-center" style="padding:10px"><img src="/images/institution/spinner_large.gif"/></div>').show();
         $(_attr).parents('div.edit-specializations').show();
-        $(_attr).parents('form').show();
-        _element.next().find('.edit-specializations').show();
-            _href = _element.attr('data-href');
-              $.ajax({
-                    url: _href,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(response) {
-                        $(_attr.selector).html(response.html);
-                    },
-                    error: function(response) {
-                        console.log(response);
-                    }
-                });
+        elem.next().find('.edit-specializations').show();
+        HCA.closeAlertMessage();
+
+        $.ajax({
+        	url: elem.attr('data-href'),
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                $(_attr.selector).html(response.html);
+            },
+            error: function(response) { 
+                
+            }
+        });
     },
     
     treatmentsCheckBox: function (){

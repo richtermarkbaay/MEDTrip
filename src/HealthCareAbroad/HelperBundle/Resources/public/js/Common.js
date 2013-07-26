@@ -1,5 +1,5 @@
 var HCA = {
-
+	alertContainerElem: null,
 	tinymceConfig: null,
 	date: null,
 	current: null,
@@ -7,7 +7,8 @@ var HCA = {
 	init : function(params)
 	{
 		//HCA.autocompleteSearchUrl = params.autocompleteSearchUrl;
-		
+		HCA.alertContainerElem = $('#confirmation-message');
+
 		HCA.tinymceConfig = params.tinymceConfig;
 	},
 	
@@ -34,10 +35,14 @@ var HCA = {
 
 	alertMessage: function(type, message)
 	{
-		containerElem = $('#confirmation-message');
-		containerElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
-		containerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p><a id="_close-confirmation-message" class="close" href="javascript:void(0)"><i class="icon-remove"></i></a></div>');
-		containerElem.fadeIn('fast');
+		HCA.alertContainerElem.find('div.confirmation-box').attr('class', 'confirmation-box fixed');
+		HCA.alertContainerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p><a id="_close-confirmation-message" class="close" href="javascript:HCA.closeAlertMessage()"><i class="icon-remove"></i></a></div>');
+		HCA.alertContainerElem.fadeIn('fast');
+	},
+
+	closeAlertMessage: function()
+	{
+		HCA.alertContainerElem.fadeOut();
 	}
 };
 
@@ -152,7 +157,6 @@ $(function(){
 
 	// Initialize HCA autocomplete object.
 	HCA.autocomplete.init();
-	
 	
 	// Confirmation Close button 
     $('#_close-confirmation-message').live('click', function(e) {

@@ -6,7 +6,9 @@ Auto-notification From address: support@healthcareabroad.com
 #}
 
 {% block subject %}
-    {{ clinic_name }} has been added to HealthcareAbroad.com
+    {% autoescape false %}
+{{ clinic_name }} has been added to HealthcareAbroad.com
+    {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}

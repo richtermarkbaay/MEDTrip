@@ -38,18 +38,7 @@
                                     Your email address will be your username when you log in.
                                 </div>
                               </div>
-                               <div class="control-group row-field {{ (form.password.vars.valid ? '' : 'error') }}">
-                                <label for="institutionSignUp_password">
-                                    Set your password <small>( Must be atleast 6 characters long ) </small>
-                                </label>
-                               {{ form_widget(form.password, { 'attr': {'class': 'span6'} }) }}
-                               {{ form_errors(form.password) }}
-                            </div>
-                             <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
-                                <label for="institutionSignUp_confirmPassword"> Re-type your password </label>
-                                   {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
-                                   {{ form_errors(form.confirm_password) }}
-                            </div>
+                            
                         </div>
                     </div>
 		         </section>

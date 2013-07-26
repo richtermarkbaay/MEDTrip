@@ -46,9 +46,9 @@
         <div class="address">
             <span class="hca-sprite address-icon pull-left"></span>
             <address>
-                {{ institution_address_to_array(institution, ['address1']) | join(', ')}}
+                {{ institution_address_to_string(institution, ['address1']) }}
                 <br/>
-                {{ institution_address_to_array(institution, ['zipCode', 'city', 'state', 'country']) | join(', ')}}
+                {{ institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode']) }}
             </address>
         </div>
     </div>    

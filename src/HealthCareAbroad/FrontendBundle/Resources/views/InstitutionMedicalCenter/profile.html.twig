@@ -25,7 +25,7 @@
     {% if institutionMedicalCenter.coordinates %}
         {% set coordinates = institutionMedicalCenter.coordinates %}
     {% else %}
-        {% set coordinates = medical_center_complete_address_to_array(institutionMedicalCenter, ['address'])|join(',') ~ ',' ~ institution_address_to_array(institutionMedicalCenter.institution, ['city', 'country'])|join(',') %}
+        {% set coordinates = medical_center_complete_address_to_string(institutionMedicalCenter, ['address', 'city', 'country', 'zipCode']) %}
     {% endif %}
 
         <div class="span8 profile-wrapper">
