@@ -84,7 +84,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'name','text', array('label' => 'Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short Description Of The Clinic', 'attr' => array('rows' => 4)));
         $this->_add($builder, 'businessHours', 'fancy_business_hours');
-        $this->_add($builder, 'state', 'text', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true, 'attr' => array('value' => $this->institution->getState())));
+        $this->_add($builder, 'state', 'state_list', array('label' => 'State or Province','disabled' => 'disabled', 'virtual' => true));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactDetails', 'collection', array('label' => 'Clinic Phone Number', 'type' => 'simple_contact_detail'));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));

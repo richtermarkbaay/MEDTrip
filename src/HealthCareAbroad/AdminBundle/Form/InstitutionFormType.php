@@ -87,7 +87,7 @@ class InstitutionFormType extends AbstractType
         $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
         $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
-        $this->_add($builder, 'state', 'text', array( 'error_bubbling' => false ,'label' => 'State / Province' ));
+        $this->_add($builder, 'state', 'state_list', array( 'error_bubbling' => false ,'label' => 'State / Province' ));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
