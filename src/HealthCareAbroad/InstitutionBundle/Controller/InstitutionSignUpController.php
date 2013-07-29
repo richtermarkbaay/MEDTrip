@@ -162,23 +162,24 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setSignupStepStatus(1); // this is always the first step
                 $factory->save($institution);
 
+                $institutionUserService = $this->get('services.institution_user');
                 // create Institution user
                 $institutionUser->setEmail($form->get('email')->getData());
                 $institutionUser->setFirstName($form->get('firstName')->getData());
                 $institutionUser->setLastName($form->get('lastName')->getData());
                 $institutionUser->setContactNumber('');
-                $institutionUser->setPassword($form->get('password')->getData());
+                $institutionUser->setPassword($institutionUserService->encryptPassword($form->get('password')->getData()));
                 $institutionUser->setJobTitle($form->get('jobTitle')->getData());
                 $institutionUser->setInstitution($institution);
                 $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
                 $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
+                
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
                 ));
 
                 // auto login
-                $institutionUserService = $this->get('services.institution_user');
                 $roles = $institutionUserService->getUserRolesForSecurityToken($institutionUser);
                 $securityToken = new UsernamePasswordToken($institutionUser,$institutionUser->getPassword() , 'institution_secured_area', $roles);
                 $this->get('session')->set('_security_institution_secured_area',  \serialize($securityToken));

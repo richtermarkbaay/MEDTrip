@@ -8,6 +8,8 @@
 
 namespace HealthCareAbroad\UserBundle\Services;
 
+use ChromediaUtilities\Helpers\SecurityHelper;
+
 use HealthCareAbroad\HelperBundle\Factory\EventFactory;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -259,5 +261,10 @@ abstract class UserService
         else {
             throw new FailedAccountRequestException("Cannot get Account with no id");
         }
+    }
+    
+    public function encryptPassword($password)
+    {
+        return SecurityHelper::hash_sha256($password);
     }
 }
