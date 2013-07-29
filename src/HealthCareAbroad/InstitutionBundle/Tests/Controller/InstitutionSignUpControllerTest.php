@@ -245,7 +245,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 //                 $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
 //                 $this->assertEquals(200, $client->getResponse()->getStatusCode());
              /* end of NOTE */
-                
+        
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formValues =  array( 'doctorId' => 43242); //add invalid doctor
         $crawler = $client->request('POST', 'institution/medical-center/1/add-existing-doctor', $formValues);

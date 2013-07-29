@@ -114,22 +114,6 @@ institution_medicalCenter_ajaxUpdateDoctor:
         doctorId: \d+
         imcId: \d+
         
-institution_medicalCenter_ajaxAddAncillaryService:
-    pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddAncillaryService }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
-        
-institution_medicalCenter_ajaxRemoveAncillaryService:
-    pattern:  /{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxRemoveAncillaryService }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
-
 institution_medicalCenter_ajaxAddSpecialistService:
     pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddSpecialistService
     defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxAddSpecialist }

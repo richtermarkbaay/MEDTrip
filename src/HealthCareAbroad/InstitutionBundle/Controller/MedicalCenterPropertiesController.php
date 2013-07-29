@@ -211,6 +211,111 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
         return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
 
+    public function ajaxRemovePropertyValueAction(Request $request)
+    {
+        $property = $this->get('services.institution_medical_center_property')->findById($request->get('id', 0));
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid medical center property.');
+        }
+    
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($property);
+        $em->flush();
+    
+        return new Response("Property removed", 200);
+    }
+    
+    /**
+     * Add an ancillary service to medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxAddAncillaryServiceAction(Request $request)
+    {
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($request->get('id', 0));
+    
+        if (!$ancillaryService) {
+            throw $this->createNotFoundException('Invalid ancillary service id');
+        }
+    
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+    
+        // check if this medical center already have this property value
+        if ($this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $ancillaryService->getId())) {
+            $response = new Response("Property value {$ancillaryService->getId()} already exists.", 500);
+        }
+        else {
+            $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+            $property->setValue($ancillaryService->getId());
+            try {
+                $em = $this->getDoctrine()->getEntityManager();
+                $em->persist($property);
+                $em->flush();
+    
+                $output = array(
+                                'label' => 'Delete Service',
+                                'href' => $this->generateUrl('institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
+                                '_isSelected' => true,
+                                'calloutView' => $this->_getEditMedicalCenterCalloutView()
+                );
+    
+                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
+            }
+        }
+    
+        return $response;
+    }
+    
+    /**
+     * Remove an ancillary service to medical center
+     * Required parameters:
+     *     - institutionId
+     *     - imcId institution medical center id
+     *     - asId ancillary service id
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function ajaxRemoveAncillaryServiceAction(Request $request)
+    {
+        $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')->find($request->get('id', 0));
+    
+        if (!$property) {
+            throw $this->createNotFoundException('Invalid property.');
+        }
+        $ancillaryService = $this->getDoctrine()->getRepository('AdminBundle:OfferedService')->find($property->getValue());
+    
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->remove($property);
+            $em->flush();
+    
+            $output = array(
+                            'label' => 'Add Service',
+                            'href' => $this->generateUrl('institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
+                            '_isSelected' => false,
+            );
+    
+            $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        }
+    
+        catch (\Exception $e){
+            $response = new Response($e->getMessage(), 500);
+        }
+    
+        return $response;
+    }
+    
     private function _getEditMedicalCenterCalloutView()
     {
         $calloutParams = array(

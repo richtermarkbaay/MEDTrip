@@ -1020,8 +1020,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
 
 INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
 (1, 1),
-(2, 2),
-(2, 3);
+(2,2);
 
 -- --------------------------------------------------------
 
