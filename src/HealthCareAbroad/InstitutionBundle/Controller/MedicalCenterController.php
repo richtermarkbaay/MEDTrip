@@ -233,7 +233,6 @@ class MedicalCenterController extends InstitutionAwareController
                     }
 
                     $output['institutionMedicalCenter'] = array();
-                    var_dump($formVariables);exit;
                     foreach ($formVariables as $key => $v){
 
                         if($key == 'services')
