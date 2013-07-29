@@ -96,8 +96,8 @@ class InstitutionUserService extends UserService
     //public function create(InstitutionUser $institutionUser)
     public function create(SiteUser $siteUser)
     {
-        // hash first the password
-        $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));
+        // removed password hashing here to avoid double hashing
+        // $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));
 
         // create user in chromedia global accounts
         $siteUser = $this->createUser($siteUser);
@@ -111,7 +111,8 @@ class InstitutionUserService extends UserService
     }
 
     /**
-     * Update Account of institution user
+     * Update Account of institution user. 
+     * Password must be encrypted first on the client that uses this service method
      *
      * @param \HealthCareAbroad\UserBundle\Entity\InstitutionUser $institutionUser
      * @return \HealthCareAbroad\UserBundle\Entity\SiteUser
@@ -122,7 +123,8 @@ class InstitutionUserService extends UserService
         if (!$siteUser->getAccountId()) {
             throw InvalidInstitutionUserOperationException::illegalUpdateWithNoAccountId();
         }
-        $siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));
+        // removed password hashing here to avoid double hashing when a site user will be updated, without updating the password
+        //$siteUser->setPassword(SecurityHelper::hash_sha256($siteUser->getPassword()));
 
         // update user in chromedia global accounts
         $siteUser = $this->updateUser($siteUser);

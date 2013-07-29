@@ -90,7 +90,8 @@ class InstitutionUserController extends Controller
         $this->get('twig')->addGlobal('institution', $this->institution);
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
-        $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        $institutionUserService = $this->get('services.institution_user');
+        $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
             
         if(!$institutionUser){
             throw new AccessDeniedHttpException();
@@ -103,8 +104,11 @@ class InstitutionUserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $institutionUser = $form->getData();
-                $institutionUser->setPassword($form->get('new_password')->getData());
-                $this->get('services.institution_user')->update($institutionUser);
+                
+                // encrypt password here
+                $institutionUser->setPassword($institutionUserService->encryptPassword($form->get('new_password')->getData()));
+                
+                $institutionUserService->update($institutionUser);
                 $this->get('session')->setFlash('success', 'You have successfuly changed your password');
             }else{
                 $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
@@ -130,7 +134,8 @@ class InstitutionUserController extends Controller
         $this->get('twig')->addGlobal('institution', $this->institution);
         $loggedUser = $this->get('security.context')->getToken()->getUser();
         $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
-        $institutionUser = $this->get('services.institution_user')->findById($accountId, true); //get user account in chromedia global accounts by accountID
+        $institutionUserService = $this->get('services.institution_user');
+        $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
         
         if(!$institutionUser){
             
@@ -146,9 +151,8 @@ class InstitutionUserController extends Controller
             if ($form->isValid()) {
                     $institutionUser = $form->getData();
                     $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
-                    $this->get('services.institution_user')->update($institutionUser);
-                    // create event on editAccount and dispatch
-                    $this->get('services.institution_user')->setSessionVariables($institutionUser);
+                    $institutionUserService->update($institutionUser);
+                    $institutionUserService->setSessionVariables($institutionUser);
                     $this->get('session')->setFlash('success', 'You have successfuly edit your account.');
             }else{
                 $form_errors = $this->get('validator')->validate($form);
@@ -206,16 +210,17 @@ class InstitutionUserController extends Controller
         $temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
 
         // create a institution user
+        $institutionUserService = $this->get('services.institution_user');
         $institutionUser = new InstitutionUser();
         $institutionUser->setInstitution($invitation->getInstitution());
         $institutionUser->setInstitutionUserType($institutionUserType);
         $institutionUser->setEmail($invitation->getEmail());
-        $institutionUser->setPassword($temporaryPassword);
+        $institutionUser->setPassword($institutionUserService->encryptPassword($temporaryPassword));
         $institutionUser->setFirstName($invitation->getFirstName());
         $institutionUser->setMiddleName($invitation->getMiddleName());
         $institutionUser->setLastName($invitation->getLastName());
         $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
-        $this->get('services.institution_user')->create($institutionUser);
+        $institutionUserService->create($institutionUser);
 
         // dispatch event regarding institution user creation
         $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $this->get('events.factory')
@@ -223,9 +228,6 @@ class InstitutionUserController extends Controller
                 CreateInstitutionUserEvent::OPTION_TEMPORARY_PASSWORD => $temporaryPassword,
                 CreateInstitutionUserEvent::OPTION_USED_INVITATION => $invitation,
         )));
-
-        // login to institution
-        //$this->get('services.institution_user')->login($institutionUser->getEmail(), $temporaryPassword);
 
         // redirect to institution homepage
         $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');
@@ -238,11 +240,11 @@ class InstitutionUserController extends Controller
         $institutionUserService = $this->get('services.institution_user');
         if ($request->isMethod('POST')) {
             $email = $request->get('email');
-            $accountId = $this->get('services.institution_user')->findByEmail($email);
+            $accountId = $institutionUserService->findByEmail($email);
             if($accountId){
                 //generate token
                 $daysOfExpiration = 7;
-                $token = $this->get('services.institution_user')->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
+                $token = $institutionUserService->createInstitutionUserPasswordToken($daysOfExpiration, $accountId);
 
                 //listener will propagate any exceptions caught
                 try {
@@ -287,7 +289,7 @@ class InstitutionUserController extends Controller
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $institutionUser->setPassword($form->get('new_password')->getData());
+                $institutionUser->setPassword($institutionUserService->encryptPassword($form->get('new_password')->getData()));
                 // FIXME: the service is using a confusing method name; a more appropriate name can
                 // be updateInstitutionUser, for instance; institution user is also persisted in this
                 // service method but this operation should be distinct from deleting the token or
