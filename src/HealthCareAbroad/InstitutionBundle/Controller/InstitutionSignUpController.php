@@ -155,7 +155,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institution->setDescription('');
                 $institution->setCoordinates('');
                 $institution->setType(trim($postData['type'])); /* FIX ME! */
-                $institution->setState('');
+                $institution->setState(null);
                 $institution->setWebsites('');
                 $institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
                 $institution->setZipCode('');
