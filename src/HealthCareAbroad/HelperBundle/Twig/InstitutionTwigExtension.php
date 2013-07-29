@@ -227,7 +227,13 @@ class InstitutionTwigExtension extends \Twig_Extension
         $contactDetailsArray = array();
 
         foreach($contactDetails as $each) {
-            $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->__toString());
+            if ('' != \trim($each->getNumber())){
+                $contactDetailsArray[$each->getType()] = array('type' => ContactDetailTypes::getTypeLabel($each->getType()), 'number' => $each->__toString());
+            }
+        }
+        
+        if (!\count($contactDetailsArray)) {
+            return null;
         }
 
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray ;
