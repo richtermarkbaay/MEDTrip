@@ -312,6 +312,8 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
+        
+        tinyMCE.triggerSave();
 
     	$('.control-group').removeClass('error');
     	$('.control-group > ul._error-list').remove();

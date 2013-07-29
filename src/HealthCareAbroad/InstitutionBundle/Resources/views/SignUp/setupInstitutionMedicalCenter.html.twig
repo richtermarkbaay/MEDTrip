@@ -41,7 +41,7 @@
                         </div>
                         <div class="control-group {{ (form.description.vars.valid ? '' : 'error') }}">
                             <label for="description">Description <small>(Optional)</small></label>
-                            {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                            {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2 tinymce'} }) }}
                             <div class="tooltip-content2 hca-textarea">
                                 All the information about your clinic that a visitor may want to know.
                                 The history, the capacity, the capabilities and technologies. This is your

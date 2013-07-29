@@ -998,7 +998,7 @@ hr {
         background-color: #eeeeee;
         border: 1px solid rgba(0, 0, 0, 0.1); }
         #content section.section .row-fluid .description small {
-          margin-top: -10px;
+          /*margin-top: -10px;*/
           display: block;
           color: #a2a2a2; }
         #content section.section .row-fluid .website {
