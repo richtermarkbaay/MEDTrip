@@ -379,13 +379,6 @@ CREATE TABLE IF NOT EXISTS `business_hours` (
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4215 ;
 
---
--- Dumping data for table `business_hours`
---
-
-INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES
-(1, 1, 12, '10:00:00', '11:00:00', NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -1168,6 +1161,12 @@ CREATE TABLE IF NOT EXISTS `institution_treatments` (
   KEY `treatment_id` (`treatment_id`),
   KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `institution_treatments`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES ('1', '1');
 
 -- --------------------------------------------------------
 
