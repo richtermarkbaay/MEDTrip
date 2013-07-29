@@ -22,9 +22,13 @@ class CityController extends Controller
      */
     public function indexAction()
     {
+        $filterForm = $this->createFormBuilder(array('country' => null, 'state' => null), array())
+            ->add('country', 'fancy_country')
+            ->add('state', 'state_list')
+            ->add('name', 'text')
+            ->getForm();
         return $this->render('AdminBundle:City:index.html.twig', array(
-            'cities' => $this->filteredResult,
-            'pager' => $this->pager
+            'filterForm' => $filterForm->createView()
         ));
     }
 

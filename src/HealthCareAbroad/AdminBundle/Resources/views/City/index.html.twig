@@ -18,46 +18,71 @@
     
  		{% block sectionContent %}
             
-                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
-                {% set sortBy = app.request.get('sortBy') %}
-                {% set sortOrder = app.request.get('sortOrder') %}
-                {% set default = sortBy | length ? '' : 'sort-asc' %}
+            <div id="filter-wrapper2">
+                <form id="{{ filterForm.vars.id }}" action="#" method="get" class="form-search" novalidate>
+                    <label>Country:</label>
+                    {{ form_widget(filterForm.country, {attr:{placeholder: 'Select a country'} }) }}
+                    <label>State:</label>
+                    {{ form_widget(filterForm.state, {attr:{placeholder: 'Select a state'} }) }}
+                    <label>City name:</label><br />
+                    {{ form_widget(filterForm.name, {attr:{placeholder: 'Select by name'} }) }}
+        			<button class="btn btn-success" type="submit" >Go</button>
+                </form>
+        		
+            </div>
                 
-                <table id="city-list" class="table table-bordered sortable-list">
+            <table id="city-list" class="table table-bordered sortable-list">
+                <thead>
                     <tr>
-                       <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                       <th id="column-country"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
+                       <th id="column-name">Name</th>
+                       <th id="column-country">Country</th>
                        <th width="15%">Actions</th>
                     </tr>
+                </thead>
+                
+                <tbody></tbody>
             
-                {% for each in cities %}
-                     
-                    <tr>
-                        <td>{{ each.name }}</td>
-                        <td>{{ each.countryName }}</td>
-                        <td>
-                            <ul class="table-action">
-                                <li><a href="{{ path('admin_city_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a></li>
-                                
-                                <li>
-                                    {% set status = each.status ? {label: 'Deactivate', icon: 'icon-remove'} : {label: 'Activate', icon: 'icon-ok'} %}
-                                    <a href="{{ path('admin_city_updateStatus', {id: each.id} ) }}" title="" class="update-status">
-                                        <i class="{{ status.icon }}"></i> <span>{{ status.label }}</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </table>
-            {% endblock %}
+            </table>
+        {% endblock %}
             
         {% endembed %}
-        
-        {% if pager.isPaginable %}
-           {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
-        {% endif %}
-        
     </div>
     
 {% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+        var LOAD_CITIES_API = '{{ get_load_cities_api_uri() }}';
+        var loadingHtml = '<tr class="info"><td colspan="3">Loading...</td></tr>';
+        var prototype = '{{ getTemplateContents("AdminBundle:City:itemView.city.html.twig") | raw }}';
+        
+        $('#{{ filterForm.vars.id }}').submit(function(e){
+            e.preventDefault();
+
+            $('#city-list tbody').html(loadingHtml);
+            
+            $.ajax({
+                url: LOAD_CITIES_API,
+                data: {country_id: $('#{{ filterForm.country.vars.id }}').val(), state_id: $('#{{ filterForm.state.vars.id }}').val()},
+                type: 'get',
+                dataType: 'json',
+                success: function(response){
+                    $('#city-list tbody').html('');
+                    $.each(response.cities, function(k, cityData){
+                        var view = $(prototype);
+                        view.find('.data-name').html(cityData.name);
+                        //view.find('.data-countryName').html(cityData.country.name);
+                        $('#city-list tbody').append(view);
+                    });
+                }
+            });
+        });
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}
+
