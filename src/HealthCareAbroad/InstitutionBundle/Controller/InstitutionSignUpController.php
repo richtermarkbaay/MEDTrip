@@ -476,9 +476,10 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $this->_updateInstitutionSignUpStepStatus($this->currentSignUpStep, true);
 
-                $redirectUrl = $this->signUpService->{($isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
+                $redirectUrl = $this->signUpService->{($this->isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
 
-                return $this->redirect($redirectUrl);
+                //return $this->redirect($redirectUrl);
+                return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
 
             } else {
                 $request->getSession()->setFlash('error', 'Please select at least one specialization.');
