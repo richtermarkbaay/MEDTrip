@@ -81,15 +81,12 @@
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
         <div class="control-group social-media">
-            <label for="{{ form.vars.full_name ~ '[facebook]' }}">Facebook</label>
-            <input type="text" value="{{ form.vars.value.facebook }}" name="{{ form.vars.full_name ~ '[facebook]' }}" class="span7 pull-right">
-            <i class="icon-facebook icon-2x"></i> <span class="pull-right">https://facebook.com/</span>
-            <label for="{{ form.vars.full_name ~ '[twitter]' }}">Twitter</label>
-            <input type="text" value="{{ form.vars.value.twitter }}" name="{{ form.vars.full_name ~ '[twitter]' }}" class="span7 pull-right">
-            <i class="icon-twitter icon-2x pull-left"></i><span class="pull-right">https://twitter.com/</span>
-            <label for="{{ form.vars.full_name ~ '[googleplus]' }}">Google +</label>
-            <input type="text" value="{{ form.vars.value.googleplus }}" name="{{ form.vars.full_name ~ '[googleplus]' }}" class="span7 pull-right">
-            <i class="icon-google-plus icon-2x"></i><span class="pull-right">https://plus.google.com/</span>
+            {% for type, site in form.vars.value %}
+                {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
+                <label for="{{ form.vars.full_name ~ '['~ type ~']' }}">{{ get_social_media_site_label(type) }}</label>
+                <input type="text" value="{{ site }}" name="{{ form.vars.full_name ~ '[' ~ type ~']' }}" class="span7 pull-right">
+                <i class="icon-{{ iconClass }} icon-2x"></i><span class="pull-right _{{ type }}-prefix">{{ get_social_media_site_url(type) }}</span>
+            {% endfor %}
         </div>
     {% endspaceless %}
 {% endblock %}

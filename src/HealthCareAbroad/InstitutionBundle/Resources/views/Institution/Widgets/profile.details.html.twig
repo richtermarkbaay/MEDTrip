@@ -9,18 +9,17 @@
     } %}
 
     {% block viewContent %}
-        <p class="hca-helptext"><span id="institutionDescriptionText"> {{ institution.description != '' ? institution.description | raw : '' }} </span></p>
-        {% if institution.description is empty %}
-            <div class="alert alert-block">
-                <div class="hca-profile-sublevel">
-                    Here you can showcase description.
-                </div>
-                <p class="hca-helptext">
-                    You haven't yet added any description about your {{ institutionLabel }} yet.
-                </p>
-                <a type="button" class="btn btn-primary" onclick="$('#institution-edit-description-btn').click()"> <i class="icon-plus"></i> Add Entry </a>
+        <div id="institutionDescriptionText"> {{ institution.description|raw }} </div>
+
+        <div class="alert alert-block" style="display:{{ institution.description is empty ? 'block' : 'none' }}">
+            <div class="hca-profile-sublevel">
+                Here you can showcase description.
             </div>
-        {% endif %}
+            <p class="hca-helptext">
+                You haven't yet added any description about your {{ institutionLabel }} yet.
+            </p>
+            <a type="button" class="btn btn-primary" onclick="$('#institution-edit-description-btn').click()"> <i class="icon-plus"></i> Add Entry </a>
+        </div>
     {% endblock %}
 {% endembed %}
 
@@ -67,13 +66,13 @@
     {% endblock %}
 
     {% block viewContent %}
-     {% set _website = get_website_from_array(institution.websites)  %}
-        <div id="alertDiv" class="{{ _website == '' or institution.contactEmail == '' or not institution.contactDetails.first.number ? 'alert alert-block' : '' }}">
+        {% set website = get_main_website(institution.websites) %}
+        <div id="alertDiv" class="{{ website == '' or institution.contactEmail == '' or not institution.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p>
                 <i class="icon-globe"></i> Website:
                 <span id="profileWebsitesText">
-                    {% if _website %}
-                        <b>http://{{_website}}</b>
+                    {% if website %}
+                        <b>http://{{ website }}</b>
                     {% else %}
                         <b>no website</b> added.
                         <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add website</a>
@@ -117,16 +116,16 @@
     } %}
 
     {% block viewContent %}
-      {% set social = institution_websites_to_array(institution) %}
-        <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
-            {% for type, site in social %}
-                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
+      {% set socialSites = social_media_sites_to_array(institution.socialMediaSites) %}
+        <div class="{{ socialSites.facebook.value == '' or socialSites.twitter.value == '' or  socialSites.googleplus.value == '' ? 'alert alert-block' : '' }}">
+            {% for type, socialSite in socialSites %}
+                <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"></i>
                  <span class="_{{ type }}-wrapper _social-media-sites">
-                      {% if site %}
-                         <b>{{ site }}</b>
+                      {% if socialSite.value %}
+                         <b>{{ socialSite.value }}</b>
                       {% else %}
-                          <b>no {{ type == 'googleplus' ? 'google-plus' : type }} account</b> added.
-                          <a onclick="$('#institution-edit-socialmedia-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ type == 'googleplus' ? 'google plus' : type }} account</a>
+                          <b>no {{ socialSite.label }} account</b> added.
+                          <a onclick="$('#institution-edit-socialmedia-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ socialSite.label }} account</a>
                       {% endif %}
                   </span>
                 </p>
@@ -194,7 +193,7 @@
     {% endblock %}
 
     {% block viewContent %}
-        <div id="serviesText">
+        <div id="servicesText">
            {% include 'InstitutionBundle:Widgets/Profile:services.html.twig' %}
         </div>
     {% endblock %}

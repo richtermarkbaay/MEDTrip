@@ -172,11 +172,8 @@ class InstitutionPropertyService
         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
 
         $criteria = array(
-
             'institution' => $institution,
-
             'institutionPropertyType' => $propertyType
-
         );
 
         // get the properties

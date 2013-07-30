@@ -2,16 +2,6 @@
  * @author Allejo Chris G. Velarde
  */
 
-/**
- * Created a function to capitalize every first text return
- * @author: Chaztine Blance
- */
-function ucwords (str) {
-  return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
-    return $1.toUpperCase();
-  });
-}
-
 var InstitutionMedicalCenter = {
     isEditView: false,
     removePropertyUri: '',
@@ -307,85 +297,69 @@ var InstitutionMedicalCenter = {
      * 
      * @param DOMElement button
      */
-    submitMedicalCenterForm: function(_button) {
-    	
-        tinyMCE.triggerSave();
-        
-    	$('.control-group').removeClass('error');
-    	$('.control-group > ul._error-list').remove();
+    submitMedicalCenterForm: function(_form) {
+    	tinyMCE.triggerSave();
+    	HCA.closeAlertMessage();
+    	$('.control-group').removeClass('error').children('ul.error').remove();
+
+        if(_form.attr('id') == 'servicesForm') {
+        	if(!_form.find('ul.services-listing > li input:checked').length) {
+        		_form.find('.control-group').addClass('error');
+        		HCA.alertMessage('error', 'Please select at least one service.');
+            	return false;
+        	}
+        }
+
+    	if(_form.parents('.modal:first').length) {
+    		_button = _form.parents('.modal:first').find('._submit-button:first');
+    	} else {
+        	_button = _form.find('button[type=submit]:first');    		
+    	}
 
         _buttonHtml = _button.html();
         _button.html(InstitutionMedicalCenter._processing).attr('disabled', true);
-        _form = _button.parents('form');
-        _parent = _button.parents('form');
-        if(!_form.attr('action')){
-        	_form = _button.parents('div#edit-medical-center-name').find('form');
-        	_parent = _button.parents('div#edit-medical-center-name');
-        }
-        _data = _form.serialize();
-        _parent.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-        _parent.find('.error').removeClass('error');
-        $('.errorText').remove();
-        
+
      	if(_form.attr('id') == 'awardsForm'){
-    		$("div[id^='show-']").animate({
-    		    opacity: 0.25,
-    		  });
+    		$("div[id^='show-']").animate({ opacity: 0.25});
     	}
+
      	 _editButton = _button.parents('section.hca-main-profile').find('a.btn-edit');
         $.ajax({
             url: _form.attr('action'),
-            data: _data,
+            data: _form.serialize(),
             type: 'POST',
             dataType: 'json',
             success: function(response) {
             	switch(_form.attr('id')){
             	    case 'nameModalForm':
             	        $('#clinicNameText').html(ucwords(response.institutionMedicalCenter.name));
-            	        _form.parents('div.modal').modal('hide');
+            	        _form.parents('div.modal:first').modal('hide');
                         break;
                     case 'descriptionForm':
                         $('#clinicDescriptionText').html(response.institutionMedicalCenter.description);
-                        if($('#clinicDescriptionText').parent('p').next('.alert')){
-                        	if(response.institutionMedicalCenter.description){
-                        		$('#clinicDescriptionText').parent('p').next('.alert').hide();
-                        	}else{
-                        		$('#clinicDescriptionText').parent('p').next('.alert').show();
-                        	}
+                        if($.trim(response.institutionMedicalCenter.description)  == '') {
+                        	$('#clinicDescriptionText').siblings('.alert').show();                        	
+                        } else {
+                        	$('#clinicDescriptionText').siblings('.alert').hide();
                         }
                         break;
+
                     case 'addressForm':
-                    	var address = [];
-                        $.each(response.institutionMedicalCenter.address, function(key, value){
-                           if ($.trim(value) != '') {
-                        	   address.push(ucwords(value));
-                           } 
-                        });
+                        $('.address_column').html(response.institutionMedicalCenter.stringAddress);
 
-                        keys = ['city', 'state', 'country'];
-                        $.each(keys, function(dummy, key){
-                            if (response.institutionMedicalCenter[key]) {
-                                address.push(ucwords(response.institutionMedicalCenter[key]));
-                            }
-                        });
-
-                        zipCode = typeof(response.institutionMedicalCenter['zipCode']) != 'undefined' && response.institutionMedicalCenter['zipCode'] ? ' ' + response.institutionMedicalCenter['zipCode'] : '';
-                        $('.address_column').html(address.join(', ') + zipCode);
-                        
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institutionMedicalCenter.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institutionMedicalCenter.coordinates;
                         	$('#medical-center-static-map').prop('src', mapStaticUrl);
                         }
-                        
                         break;
     
                     case 'contactForm':
                     	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
 
-                		if(response.institutionMedicalCenter.websites == null || response.institutionMedicalCenter.contactEmail == null || response.institutionMedicalCenter.contactDetails.phoneNumber == ''){
-                    		$("#alertDiv").addClass('alert alert-block');
+                		if(!response.institutionMedicalCenter.websites || !response.institutionMedicalCenter.contactEmail || !response.institutionMedicalCenter.contactDetails){
+                    		$("#_view-contacts-content").addClass('alert alert-block');
                     	}else{
-                    		$("#alertDiv").removeClass('alert alert-block');
+                    		$("#_view-contacts-content").removeClass('alert alert-block');
                     	}
                     	
                        	if(response.institutionMedicalCenter.websites){
@@ -399,9 +373,9 @@ var InstitutionMedicalCenter = {
                     	}else{
                     		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
-                     	
-                    	if(response.institutionMedicalCenter.contactDetails.phoneNumber){
-                     		$('#PhoneNumberText').html('<b>'+response.institutionMedicalCenter.contactDetails.phoneNumber+'</b>');
+
+                    	if(response.institutionMedicalCenter.contactDetails){
+                     		$('#PhoneNumberText').html('<b>'+response.institutionMedicalCenter.contactDetails+'</b>');
                     	}else{
                     		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
                     	}
@@ -409,9 +383,10 @@ var InstitutionMedicalCenter = {
 
                     case 'socicalMediaSitesForm':
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
-                    	$.each(websites, function(type) {
+                    	$.each(websites, function(type, value) {                    		
                     		if($.trim(websites[type]) != '') {
-                				$('#view-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+                    			website = _form.find('.social-media ._'+type+'-prefix').html() + value;
+                				$('#view-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ website +'</b>');
                     		}else{
                     			$('#view-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                         	}
@@ -425,22 +400,24 @@ var InstitutionMedicalCenter = {
                   	break;
                        
                     case 'servicesForm':
-                    	$('#servicesTable').html(response.html);
+                    	liList = '';
+                    	$.each(_form.find('ul.services-listing > li input:checked'), function() {
+                    		liList += '<li>' + $(this).next().text() + '</li>';
+                    	});
+
+                    	$('#servicesTable > ul:first').html(liList);
                     	break;
                     case 'awardsForm':
+                		$("div[id^='show-']").animate({opacity: 1});
 
                 		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
-                		$('#_edit-award-year-container').html($('#_edit-award-form'));
-                		/* End of NOTE: DO NOT REMOVE this line */
+                		if(!$('#_edit-award-form-container').find('#_edit-award-form').length) {
+                			$('#_edit-award-form-container').html($('#_edit-award-form'));
+                		} /* End of NOTE: DO NOT REMOVE this line */
 
-                		$("div[id^='show-']").animate({opacity: 1});
-                    	 $.each(response.html, function(key, htmlContent){
-                      		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
-                    		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
-                        	
-                        	$('#'+key+'sText').html(htmlContent);
-                         });
-                    
+                   		$('#listing-'+response.awardsType).find("input[type=checkbox].old:not(:checked)").removeClass('old');
+                		$('#listing-'+response.awardsType).find("input[type=checkbox]:checked:not(.old)").addClass('old');
+                    	$('#'+response.awardsType+'sText').html(response.awardsHtml);
                     	break;
                     	
                     case 'businessHoursForm':
@@ -460,11 +437,11 @@ var InstitutionMedicalCenter = {
                 _button.html(_buttonHtml).attr('disabled', false);
 
                 if (response.status==400) {
-                    var errors = $.parseJSON(response.responseText).html;
-                    if (errors.length) {
-                        $.each(errors, function(key, item){
-                        	$('.control-group.' + item.field).addClass('error');
-                        	$('<ul class="_error-list"><li>'+item.error+'</li></ul>').insertAfter(_form.find('div.'+item.field+' > input'));
+                    var responseText = $.parseJSON(response.responseText);
+                    if (responseText.errors.length) {
+                        $.each(responseText.errors, function(i, each){
+                        	$('.control-group.' + each.field).addClass('error');
+                        	$('<ul class="error"><li>'+each.error+'</li></ul>').insertAfter(_form.find('div.'+each.field+' > input'));
                         });
                     }
 

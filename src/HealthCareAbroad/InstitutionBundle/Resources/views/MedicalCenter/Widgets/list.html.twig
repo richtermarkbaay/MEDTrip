@@ -1,6 +1,6 @@
 <ul class="thumbnails">
 {% for institutionMedicalCenter in medicalCenters %}
-    {% set website = get_website_from_array(institutionMedicalCenter.websites) %}
+    {% set website = get_main_website(institutionMedicalCenter.websites) %}
     <li class="thumbnail hca-clinic-listing">
         {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
         {% set imgSrc = institutionMedicalCenter.logo ? institution_media_src(institutionMedicalCenter.logo, logoSize) : imageplaceholder.imcDefaultLogo %}
@@ -17,8 +17,8 @@
                 </p>
                 {% endif %}
 
-                {% if institutionMedicalCenter.websites is not empty %}
-                <p>Website clicks are sent to: <a href="http://{{ website }}">www.{{ website }}</a></p>
+                {% if website is not empty %}
+                <p>Website clicks are sent to: <a href="http://{{ website }}">{{ website }}</a></p>
                 {% endif %}
             </div>
         </div>
