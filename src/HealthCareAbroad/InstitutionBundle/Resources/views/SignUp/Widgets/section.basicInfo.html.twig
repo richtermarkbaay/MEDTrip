@@ -16,7 +16,7 @@
             </div>
             <div class="control-group">
                 <label for="website">Description <small>(Optional)</small></label>
-                {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2'} }) }}
+                {{ form_widget(form.description, { 'attr': {'class': 'span12 tooltip-wrap2 tinymce'} }) }}
                 <div class="tooltip-content2 hca-textarea">
                     {% if (isSingleCenter is defined) and isSingleCenter %}
                         Include things like a brief history of the facility, any notable achievements, capacity, and unique treatments or technologies. <br>

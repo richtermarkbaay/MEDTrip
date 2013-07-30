@@ -173,7 +173,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUser->setInstitution($institution);
                 $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
                 $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
-                
+
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
@@ -211,7 +211,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
 
-        
+
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -223,8 +223,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $response = $this->setupProfileMultipleCenter($request);
                 break;
         }
-         
-        
+
+
         return $response;
     }
 
@@ -242,7 +242,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         // Set Current Route
         $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-        
+
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
@@ -250,7 +250,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
-        
+
         if ($this->request->isMethod('POST')) {
             $formRequestData = $this->request->get($form->getName());
             if (isset($formRequestData['medicalProviderGroups']) ) {
@@ -447,7 +447,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         $functionName = $this->isSingleCenter ? 'getSingleCenterSignUpStepByRoute' : 'getMultipleCenterSignUpStepByRoute';
         $this->currentSignUpStep = $this->signUpService->{$functionName}($request->attributes->get('_route'));
 
-        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        //Multiple centers of an institution with similar specializations are now allowed.
+        //Both functions will really return the same specializations as this is the first center for the institution
+        //$specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializationsOfInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         if ($request->isMethod('POST')) {
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
@@ -460,7 +463,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 $redirectUrl = $this->signUpService->{($this->isSingleCenter?'getSingleCenterSignUpNextStep':'getMultipleCenterSignUpNextStep')}($this->currentSignUpStep)->getRoute();
 
-                return $this->redirect($redirectUrl);
+                //return $this->redirect($redirectUrl);
+                return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
 
             } else {
                 $request->getSession()->setFlash('error', 'Please select at least one specialization.');

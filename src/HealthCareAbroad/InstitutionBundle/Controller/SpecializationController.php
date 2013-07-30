@@ -17,7 +17,7 @@ use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 /**
  * Controller for actions related to Institution Specializations
- * 
+ *
  * @author Allejo Chris G. Velarde
  *
  */
@@ -27,12 +27,12 @@ class SpecializationController extends InstitutionAwareController
      * @var InstitutionMedicalCenter
      */
     protected $institutionMedicalCenter;
-    
+
     /**
      * @var InstitutionSpecialization
      */
     protected $institutionSpecialization;
-    
+
     public function preExecute()
     {
         parent::preExecute();
@@ -40,23 +40,23 @@ class SpecializationController extends InstitutionAwareController
         if ($imcId=$this->getRequest()->get('imcId',0)) {
             $this->institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
                 ->find($imcId);
-        
+
             // non-existent medical center group
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid medical center.');
             }
-        
+
             // medical center group does not belong to this institution
             if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
-                 return new Response('Medical center does not belong to institution', 401);           
+                 return new Response('Medical center does not belong to institution', 401);
             }
         }
-        
+
         if($isId = $this->getRequest()->get('isId', 0)) {
             $this->institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($isId);
         }
     }
-    
+
     private function _getEditMedicalCenterCalloutView()
     {
         $calloutParams = array(
@@ -65,7 +65,7 @@ class SpecializationController extends InstitutionAwareController
         );
         $calloutMessage = $this->get('services.institution.callouts')->get('success_edit_center', $calloutParams);
         $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
-    
+
         return $calloutView;
     }
 
@@ -96,14 +96,16 @@ class SpecializationController extends InstitutionAwareController
             'specializationTreatments' => $specializationTreatments,
             'isId' => $this->institutionSpecialization ? $this->institutionSpecialization->getId() : null,
         ));
-        
+
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
 
     public function ajaxAddSpecializationAction(Request $request)
     {
-        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
-        
+        //Multiple centers of an institution with similar specializations are now allowed.
+        //$specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializationsOfInstitutionMedicalCenter($this->institutionMedicalCenter);
+
         $params =  array(
             'imcId' => $this->institutionMedicalCenter->getId(),
             'specializations' => $specializations,
@@ -114,7 +116,7 @@ class SpecializationController extends InstitutionAwareController
         $html = $this->renderView('InstitutionBundle:Specialization/Widgets:form.multipleAdd.html.twig', $params);
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
-    
+
     /**
      * Save Specializations for Clinics Profile
      * @param Request $request
@@ -122,14 +124,16 @@ class SpecializationController extends InstitutionAwareController
      */
     public function saveSpecializationsAction(Request $request)
     {
-        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
-    
+        //Multiple centers of an institution with similar specializations are now allowed.
+        //$specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializationsOfInstitutionMedicalCenter($this->institutionMedicalCenter);
+
         if ($request->isMethod('POST')) {
-    
+
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
 
             if (\count($specializationsWithTreatments)) {
-                
+
                 $isIds = $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
                 if(!empty($isIds)){
                     foreach ($this->institutionMedicalCenter->getInstitutionSpecializations() as $institutionSpecialization) {
@@ -145,7 +149,7 @@ class SpecializationController extends InstitutionAwareController
                     $response = new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                 }
             } else {
-                
+
                 $response = new Response('Please select at least one treatment.', 400);
             }
         }
@@ -164,29 +168,29 @@ class SpecializationController extends InstitutionAwareController
         if (!$institutionSpecialization ) {
             throw $this->createNotFoundException('Invalid institution specialization');
         }
-    
+
         if ($request->isMethod('POST')) {
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
             if (\count($specializationsWithTreatments)) {
-    
+
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
-    
+
                 $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
                                 'each' => $institutionSpecialization,
                                 'institutionMedicalCenter' => $this->institutionMedicalCenter,
                                 'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
                 ));
-                 
+
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
-    
+
             } else {
                 $response = new Response('Unable top edit Treatments', 404);
             }
         }
-    
+
         return $response;
     }
-    
+
     /**
      * Remove institution specialization
      *
@@ -196,17 +200,16 @@ class SpecializationController extends InstitutionAwareController
     {
         $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')
         ->find($request->get('isId', 0));
-    
         if (!$institutionSpecialization) {
             throw $this->createNotFoundException('Invalid instituiton specialization');
         }
-    
+
         if ($institutionSpecialization->getInstitutionMedicalCenter()->getId() != $this->institutionMedicalCenter->getId()) {
             return new Response("Cannot remove specialization that does not belong to this institution", 401);
         }
-    
+
         $form = $this->createForm(new CommonDeleteFormType(), $institutionSpecialization);
-    
+
         if ($request->isMethod('POST'))  {
             $form->bind($request);
             if ($form->isValid()) {
@@ -214,7 +217,7 @@ class SpecializationController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($institutionSpecialization);
                 $em->flush();
-    
+
                 $responseContent = array('id' => $_id);
                 $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
             }
@@ -222,8 +225,8 @@ class SpecializationController extends InstitutionAwareController
                 $response = new Response("Invalid form", 400);
             }
         }
-    
+
         return $response;
     }
-    
+
 }

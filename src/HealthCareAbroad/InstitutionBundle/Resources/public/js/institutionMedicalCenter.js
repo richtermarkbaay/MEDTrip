@@ -309,6 +309,8 @@ var InstitutionMedicalCenter = {
      */
     submitMedicalCenterForm: function(_button) {
     	
+        tinyMCE.triggerSave();
+        
     	$('.control-group').removeClass('error');
     	$('.control-group > ul._error-list').remove();
 

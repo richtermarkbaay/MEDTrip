@@ -66,7 +66,7 @@ class InstitutionKernelEventListener
     
     public function onKernelRequest(GetResponseEvent $event)
     {
-        if (!HttpKernel::MASTER_REQUEST == $event->getRequestType()) {
+        if (HttpKernel::MASTER_REQUEST != $event->getRequestType()) {
             // not a master request, do nothing
             return;
         }
