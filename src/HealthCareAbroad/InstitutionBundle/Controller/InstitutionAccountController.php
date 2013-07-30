@@ -116,15 +116,22 @@ class InstitutionAccountController extends InstitutionAwareController
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
-        
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
+
+        $params = array(
+            'institutionForm' => $form->createView(),
+            'currentGlobalAwards' => $currentGlobalAwards,
+            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
+            'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
+            'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
+        );
+
         if ($this->isSingleCenter) {
-            
             $doctor = new Doctor();
             $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
             $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
             $editDoctor = new Doctor();
-            
+
             if($this->institutionMedicalCenter->getDoctors()->count()) {
                 $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
             }
@@ -132,36 +139,17 @@ class InstitutionAccountController extends InstitutionAwareController
                 $contactDetail = new ContactDetail();
                 $editDoctor->addContactDetail($contactDetail);
             }
-            
-            $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-            
+
+            $editMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
             $institutionMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-            
-            $params['institutionMedicalCenterForm'] = $institutionMedicalCenterForm->createView();
-            $params['isSingleCenter'] = true;            
+
+            $params['editForm'] = $editMedicalCenterForm->createView();
             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
-            $params['institution'] = $this->institution;
-            $params['institutionForm'] = $form->createView();
-            $params['specializations'] = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter);
-            $params['medicalProvidersJSON'] = \json_encode($medicalProviderGroupArr);
-            $params['currentGlobalAwards'] = $currentGlobalAwards;
-            $params['editGlobalAwardForm'] = $editGlobalAwardForm->createView();
+            $params['institutionMedicalCenterForm'] = $institutionMedicalCenterForm->createView();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
-            $params['ancillaryServicesData'] = $this->get('services.helper.ancillary_service')->getActiveAncillaryServices();
+            $params['specializations'] = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter);
             $params['doctors'] =  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors());
             $params['doctorForm'] = $doctorForm->createView();
-            $params['editForm'] = $editForm->createView();
-
-        } else {
-            $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
-            $params =  array(
-                'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-                'institutionForm' => $form->createView(),
-                'currentGlobalAwards' => $currentGlobalAwards,
-                'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),
-                'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
-            );
         }
 
         return $this->render('InstitutionBundle:Institution:profile.html.twig', $params);
@@ -175,137 +163,77 @@ class InstitutionAccountController extends InstitutionAwareController
      */
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
-        if (\is_null($this->institutionMedicalCenter)) {
-            $this->institutionMedicalCenter = new InstitutionMedicalCenter();
-        }
-        $propertyService = $this->get('services.institution_property');
-        $output = array();
         if ($request->isMethod('POST')) {
             try {
                 $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
-                
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
+
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
+
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-                
+
                 $formRequestData = $request->get($form->getName());
-                
-                if (isset($formRequestData['medicalProviderGroups']) ) {
-                    // we always expect 1 medical provider group
-                    // if it is empty remove it from the array
-                    if (isset($formRequestData['medicalProviderGroups'][0]) && '' == trim($formRequestData['medicalProviderGroups'][0]) ) {
-                        unset($formRequestData['medicalProviderGroups'][0]);
+
+                // we always expect 1 medical provider group. if it is empty remove it from the array
+                if (isset($formRequestData['medicalProviderGroups']) && !empty($formRequestData['medicalProviderGroups']) ) {
+                    $providerGroup = trim($formRequestData['medicalProviderGroups'][0]);  
+                    if ($providerGroup == '') { 
+                        unset($formRequestData['medicalProviderGroups']);
+                    } else {
+                        $formRequestData['medicalProviderGroups'][0] = str_replace(array("\\'", '\\"'), array("'", '"'), $providerGroup);
                     }
-                     else {
-                        $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
-                    }
-                } 
-                
+                }
+
                 $form->bind($formRequestData);
                 
                 if ($form->isValid()) {
-                    $this->institution = $form->getData();
-                    
-                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
-                    $this->get('services.institution.factory')->save($this->institution);
-                    if(!empty($form['services'])){
-                          $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
-                          $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
-                          $propertyService->addServicesForInstitution($this->institution, $form['services']->getData());
-                    }if(!empty($form['awards'])){
-                        $propertyService->addAwardsForInstitution($this->institution, $form['awards']->getData());
-                    }
-                    
-                    // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
-                    if ($this->institution->getType() == InstitutionTypes::SINGLE_CENTER) {
-                        $center = $this->get('services.institution')->getFirstMedicalCenter($this->institution);
-                        $center->setName($this->institution->getName());
-                        $center->setDescription($this->institution->getDescription());
-                        $center->setAddress($this->institution->getAddress1());
-                        //$center->setContactNumber($this->institution->getContactNumber());
-                        $center->setContactEmail($this->institution->getContactEmail());
-                        $center->setWebsites($this->institution->getWebsites());
-                        $center->setDateUpdated($this->institution->getDateModified());
+                    $propertyService = $this->get('services.institution_property');
+                    if(isset($form['services'])) {
+                        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
+                        $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
+                        $propertyService->addServicesForInstitution($this->institution, $form['services']->getData());                        
+                        $responseContent = array('services' => $form['services']);
 
-                        $this->get('services.institution_medical_center')->save($center);
-                    }
-                    $output['institution'] = array();
-                    foreach ($formVariables as $key => $v){
-                        if($key == 'services'){
+                    } else if($awardType = $request->get('awardTypeKey')) {
 
-                            $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
-                                'institution' => $this->institution,
-                                'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices()
-                            ));
-                            
-                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-                            
-                        }elseif($key == 'awards') {
-                            $html = array();
-                            $typeKey = $request->get('awardTypeKey');
-                            $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-                            $globalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
+                        $awardsData = isset($form['awards']) ? $form['awards']->getData() : array(); 
+                        $propertyService->addAwardsForInstitution($this->institution, $awardsData);
+                        $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitution($this->institution);
 
-                            foreach($globalAwards as $key => $global ) {
-                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
-                                    'institution' => $this->institution,
-                                    'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                                    'eachAward' => array('list' => $global),
-                                    'type' => $key.'s',
-                                    'toggleBtnId' => 'institution-edit-'.$key.'s-btn'
-                            ));
-                          }
-                             
-                            return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
-                        }
-                        elseif($key == 'medicalProviderGroups' ){
-                            $value = $this->institution->{'get'.$key}();
-                            $returnVal = ($value[0] != null ? $value[0]->getName() : '' );
+                        $responseContent['awardsType'] = $awardType;
+                        $responseContent['awardsHtml'] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
+                            'eachAward' => array('list' => $globalAwards[$awardType]),
+                            'type' => $awardType.'s',
+                            'toggleBtnId' => 'institution-edit-'.$awardType.'s-btn'
+                        ));
+
+                    } else {
+                        $this->institution = $form->getData();
+                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+                        $this->get('services.institution.factory')->save($this->institution);
                         
-                            $output['institution'][$key] = $returnVal;
+                        // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
+                        if ($this->isSingleCenter) {
+                            $this->syncInstitutionDataToClinicData($this->institution);
                         }
-                        elseif($key == 'contactDetails' ){
-                            $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institution->{'get'.$key}());
-                            $output['institution'][$key]['phoneNumber'] = $value;
+
+                        unset($formRequestData['_token']);
+ 
+                        if(isset($formRequestData['address1'])) {
+                            $formRequestData['stringAddress'] = $this->get('services.miscellaneous.twig.extension')->formatInstitutionAddressToString($this->institution);                            
                         }
-                        elseif($key == 'address1') {
-                            $value = $this->institution->{'get'.$key}();
-                            $value = json_decode($value, true);
-                            $output['institution'][$key] = $value;
+
+                        if(isset($formRequestData['contactDetails'])) {
+                            $formRequestData['contactDetails'] = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institution->getContactDetails());
                         }
-                        elseif( $key == 'socialMediaSites') {
-                            $value = $this->institution->{'get'.$key}();
-                            $value = json_decode($value, true);
-                            $output['institution'][$key] = $value;
-                        }
-                        elseif($key == 'country') {
-                            $output['institution'][$key] = $this->institution->getCountry()->getName();
-                        }
-                        elseif( $key == 'state' && $this->institution->getState()) {
-                            $output['institution'][$key] =  $this->institution->getState()->getName() ;
-                        }
-                        elseif( $key == 'city' && $this->institution->getCity()) {
-                            $output['institution'][$key] = $this->institution->getCity()->getName();
-                        }
-                       else{  
-                           $value = $this->institution->{'get'.$key}();
-                           $output['institution'][$key] = $value;
-                        }
+
+                        $responseContent = array('institution' => $formRequestData);
                     }
-                    
-                    $output['form_error'] = 0;
-                    
-                    /*
-                     * TODO: Needs to change the validation for awards and services
-                     * Always expects empty if form submitted are from awards or services
-                     */
-                    if(empty($output['institution'])){ 
-                        $errors[] = array('error' => 'Please select at least one.', 'field' => $key);
-                        return new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
-                    }
-                }
-                else {
+
+                    $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
+
+                } else {
                     $errors = array();
                     foreach ($form->getChildren() as $field){
                         if (\count($eachErrors = $field->getErrors())){
@@ -313,16 +241,15 @@ class InstitutionAccountController extends InstitutionAwareController
                         }
                     }
 
-                    $responseJson = \json_encode(array('errors' => $errors));
-
-                    return new Response($responseJson, 400, array('content-type' => 'application/json'));
+                    $response = new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
                 }
             }
             catch (\Exception $e) {
                 return new Response($e->getMessage(),500);
             }
         }
-        return new Response(\json_encode($output),200, array('content-type' => 'application/json'));
+
+        return $response;
     }
 
     /**
@@ -400,5 +327,21 @@ class InstitutionAccountController extends InstitutionAwareController
         $this->get('services.institution.media')->upload($fileBag->get('file'), $this->institution, $request->get('image_type'));
 
         return $this->redirect($this->generateUrl('institution_account_profile'));
+    }
+
+    /**
+     * Synchronized Institution Data to Clinic Data 
+     * @param Institution $institution
+     */
+    private function syncInstitutionDataToClinicData(Institution $institution)
+    {
+        $center = $this->get('services.institution')->getFirstMedicalCenter($institution);
+        $center->setName($institution->getName());
+        $center->setDescription($institution->getDescription());
+        $center->setAddress($institution->getAddress1());
+        $center->setContactEmail($institution->getContactEmail());
+        $center->setWebsites($institution->getWebsites());
+        $center->setDateUpdated($institution->getDateModified());
+        $this->get('services.institution_medical_center')->save($center);        
     }
 }

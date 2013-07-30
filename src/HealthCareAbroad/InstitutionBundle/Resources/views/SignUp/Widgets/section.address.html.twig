@@ -17,27 +17,27 @@
                     {{ form_widget(form.country , { attr: {class: 'span12'} } )}} 
                     {{ form_errors(form.country)}} 
                 </div>
-                   <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span6">
-                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
-                        {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
-                        {{ form_errors(form.city)}} 
+                <div class="state control-group span6 {{ (form.state.vars.valid ? '' : 'error') }}">
+                    <label>State / Province </label>
+                    {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
+                    {{ form_errors(form.state)}} 
+                </div>
+
+            </div>
+            <div class="row-fluid terms"> 
+                <div class="city control-group {{ (form.city.vars.valid ? '' : 'error') }}  span6">
+                    <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                    {{ form_widget(form.city, { attr: {class: 'span12'} } )}}
+                    {{ form_errors(form.city)}} 
+                </div>
+                <div class="zipCode control-group span6 {{ (form.zipCode.vars.valid ? '' : 'error') }}">
+                    <label for="{{ form.children.zipCode.vars.id }}">
+                     {{ form.children.zipCode.vars.label }}
+                    *</label>
+                    {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
+                    {{ form_errors(form.zipCode)}} 
                 </div>
             </div>
-             <div class="row-fluid terms">
-             
-                 <div class="state control-group span6 {{ (form.state.vars.valid ? '' : 'error') }}">
-                        <label>State / Province </label>
-                        {{ form_widget(form.state, { attr: {class: 'addressFields span12'} } )}}
-                        {{ form_errors(form.state)}} 
-                </div>
-                 <div class="zipCode control-group span6 {{ (form.zipCode.vars.valid ? '' : 'error') }}">
-                        <label for="{{ form.children.zipCode.vars.id }}">
-                         {{ form.children.zipCode.vars.label }}
-                        *</label>
-                        {{ form_widget(form.zipCode, { attr: {class: 'span6 addressFields'} } )}}
-                        {{ form_errors(form.zipCode)}} 
-                </div>
-             </div>
             <div class="control-group">
                 <div class="span12">
                     {{ form_label(form.addressHint )}}

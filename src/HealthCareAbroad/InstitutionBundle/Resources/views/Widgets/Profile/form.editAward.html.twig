@@ -5,7 +5,7 @@
         {{ form_widget(editGlobalAwardForm.extraValue) }}
         {{ form_widget(editGlobalAwardForm.value) }}
         {{ form_widget(editGlobalAwardForm._token) }}
-        <a href="javascript:void(0)" onclick="$(this).parent().submit()"><i class="icon-ok"></i></a>
+        <a href="javascript:void(0)" onclick="$('#_edit-award-form').submit()"><i class="icon-ok"></i></a>
         <a href="javascript:void(0)" onclick="$(this).parents('._edit-award-year-container').hide().prev().show()"><i class="icon-remove"></i></a>
     </form>
 </div>

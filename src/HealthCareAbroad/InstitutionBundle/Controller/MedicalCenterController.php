@@ -13,14 +13,11 @@ use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 
 use Mapping\Fixture\Xml\Status;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use HealthCareAbroad\PagerBundle\Pager;
-use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 use HealthCareAbroad\HelperBundle\Form\CommonDeleteFormType;
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardsSelectorFormType;
@@ -38,7 +35,6 @@ use HealthCareAbroad\InstitutionBundle\Event\InstitutionBundleEvents;
 use HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterRepository;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
-use HealthCareAbroad\MediaBundle\Services\MediaService;
 use Gaufrette\File;
 
 /**
@@ -205,108 +201,66 @@ class MedicalCenterController extends InstitutionAwareController
 
                 if ($form->isValid()) {
                     $institutionMedicalCenterService = $this->get('services.institution_medical_center');
-                    if (isset($formVariables['businessHours'])) {
-                        $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-                        foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
-                            $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
-                        }
-                    }
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
 
-                    $institutionMedicalCenterService->save($this->institutionMedicalCenter);
+                    if (isset($formVariables['businessHours'])) {
+                        $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
+                        foreach ($this->institutionMedicalCenter->getBusinessHours() as $hour ) {
+                            $hour->setInstitutionMedicalCenter($this->institutionMedicalCenter);
+                        }
 
-                    if(!empty($form['services']))
-                    {
+                    } else if (isset($form['services'])) {
                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+                        $responseContent = array('services' => $form['services']);
 
-                    }if(!empty($form['awards']))
-                    {
-//                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
-                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['awards']->getData(),InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
-                    }
+                    } else if ($awardType = $request->get('awardTypeKey')) {
 
-                    if ($this->isSingleCenter) {
-                        // also update the instituion name and description
-                        $this->institution->setName($this->institutionMedicalCenter->getName());
-                        $this->institution->setDescription($this->institutionMedicalCenter->getDescription());
-                        $this->get('services.institution.factory')->save($this->institution);
-                    }
+                        $awardsData = isset($form['awards']) ? $form['awards']->getData() : array();
+                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $awardsData,InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+                        $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
-                    $output['institutionMedicalCenter'] = array();
-                    foreach ($formVariables as $key => $v){
-
-                        if($key == 'services')
-                        {
-                            $html = $this->renderView('InstitutionBundle:Widgets/Profile:services.html.twig', array(
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                'ancillaryServicesData' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                            ));
-
-                            return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-
-                        }if($key == 'awards')
-                        {
-                            $html = array();
-                            $typeKey = $request->get('awardTypeKey');
-                            $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-                            $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
-                            foreach($globalAwards as $key => $global ) {
-                                $html['html'][$key][] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
-                                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                        'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-                                        'eachAward' => array('list' => $global),
-                                        'type' => $key.'s',
-                                        'toggleBtnId' => 'clinic-edit-'.$key.'s-btn'
-                                ));
-
-                            }
-                            return new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
+                        $responseContent['awardsType'] = $awardType;
+                        $responseContent['awardsHtml'] = $this->renderView('InstitutionBundle:Widgets/Profile:globalAwards.html.twig', array(
+                            'eachAward' => array('list' => $globalAwards[$awardType]),
+                            'type' => $awardType.'s',
+                            'toggleBtnId' => 'clinic-edit-'.$awardType.'s-btn'
+                        ));
+                    } else {
+                        $institutionMedicalCenterService->save($this->institutionMedicalCenter);
+                        
+                        if ($this->isSingleCenter) {
+                            // also update the instituion name and description
+                            $this->institution->setName($this->institutionMedicalCenter->getName());
+                            $this->institution->setDescription($this->institutionMedicalCenter->getDescription());
+                            $this->get('services.institution.factory')->save($this->institution);
                         }
-                         if($key == 'contactDetails' ){
-                             $value = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institutionMedicalCenter->{'get'.$key}());
-                             $output['institutionMedicalCenter'][$key]['phoneNumber'] = $value;
-                        }
-                        else{
 
-                            $value = $this->institutionMedicalCenter->{'get'.$key}();
-                            if($key == 'address') {
-                                $value = json_decode($value, true);
-                                $output['institutionMedicalCenter']['country']= $this->institution->getCountry()->getName();
-                                $output['institutionMedicalCenter']['city'] = $this->institution->getCity()->getName();
-                                $output['institutionMedicalCenter']['state'] = $this->institution->getState();
-                                $output['institutionMedicalCenter']['zipCode'] = $this->institution->getZipCode();
-                            }
-
-                            if( $key == 'socialMediaSites') {
-                                $value = json_decode($value, true);
-                            }
-                            $output['institutionMedicalCenter'][$key] = $value;
+                        if(isset($formVariables['address'])) {
+                            
+                            $formVariables['stringAddress'] = $this->get('services.institutionMedicalCenter.twig.extension')->getCompleteAddressAsString($this->institutionMedicalCenter);
                         }
+
+                        if(isset($formVariables['contactDetails'])) {
+                            $formVariables['contactDetails'] = $this->get('services.contact_detail')->getContactDetailsStringValue($this->institutionMedicalCenter->getContactDetails());
+                        }
+
+                        $responseContent = array('institutionMedicalCenter' => $formVariables);
                     }
 
-                    $output['form_error'] = 0;
+                    $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
 
-                    /*
-                     * TODO: Needs to change the validation for awards and services
-                    * Always expects empty if form submitted are from awards or services
-                    */
-                    if(empty($output['institutionMedicalCenter'])){
-                        $errors = array('error' => 'Please select at least one.');
-                        return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
-                    }
-
-                    $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
-
-                } else {
+                } else {                    
                     $errors = array();
-                    $formErrors = $this->get('validator')->validate($form);
-
-                    foreach ($formErrors as $err) {
-                        $errors[] = array('field' => str_replace(array('data.','children[', '].data'),'',$err->getPropertyPath()), 'error' => $err->getMessage());
+                    foreach ($form->getChildren() as $field){
+                        if (\count($eachErrors = $field->getErrors())){
+                            $errors[] = array('field' => $field->getName(), 'error' => $eachErrors[0]->getMessageTemplate());
+                        }
                     }
 
-                    return new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
+                    $response = new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
+                    
                 }
             }
             catch (\Exception $e) {

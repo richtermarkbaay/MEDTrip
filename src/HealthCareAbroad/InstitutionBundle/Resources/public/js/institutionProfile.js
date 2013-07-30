@@ -2,18 +2,11 @@
  * Handler for client-side functionalities in institution profile page
  */
 
-/**
- * Created a function to capitalize every first text return
- * @author: Chaztine Blance
- */
-function ucwords (str) {
-  return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
-    return $1.toUpperCase();
-  });
-}
-
 var InstitutionProfile = {
-		
+
+	/**
+	 * Currently Not Being Used!
+	 */
     removePropertyUri: '',
     
     ajaxUrls: {
@@ -22,193 +15,7 @@ var InstitutionProfile = {
         'loadInstitutionAwards': '',
         'updateCoordinates': ''
     },
-    
-    modals: {
-    	'name': null,
-    	'description': null,
-        'address': null,
-        'contact_number': null,
-        'contact_email': null,
-        'websites': null
-    },
-    
-    _commonDialogOptions: {
-        position: ['center', 100],
-        autoOpen: false,
-        width: 'auto',
-        height: 'auto',
-        modal: true,
-        resizable: false,
-        close: function() {}
-    },
-    
-    medicalCenterTabbedContentElement: null,
-    
-    servicesTabbedContentElement: null,
-    
-    awardsTabbedContentElement: null,
-    
-    // jQuery DOM element for the tabbed content
-    tabbedContentElement: null,
 
-    initializeModals: function(_options) {
-        $.each(_options, function(_key, _val){
-            InstitutionProfile.modals[_key] = _val;
-            InstitutionProfile.modals[_key].dialog(InstitutionProfile._commonDialogOptions);
-        });
-        
-        return this;
-    },
-    
-    openModal: function(_name) {
-        //InstitutionProfile.modals[_name].dialog("open");
-        return this;
-    },
-    
-    closeModal: function(_name) {
-        //InstitutionProfile.modals[_name].dialog('close');
-    	_name.reset();	
-    	_formId = $('#'+_name.id); 
-    	_formId.find('ul.text-error').remove();
-    		
-        return this;
-    },
-    
-    setAjaxUrls: function(_val){
-        this.ajaxUrls = _val;
-        
-        return this;
-    },
-    
-    setTabbedContentElement: function(_val) {
-        InstitutionProfile.tabbedContentElement = _val;
-        
-        return this;
-    },
-    
-    setMedicalCentersTabbedContentElement: function(_val) {
-        InstitutionProfile.medicalCenterTabbedContentElement = _val;
-        
-        return this;
-    },
-    
-    
-    setServicesTabbedContentElement: function(_val) {
-        InstitutionProfile.servicesTabbedContentElement = _val;
-        
-        return this;
-    },
-    
-    setAwardsTabbedContentElement: function(_val) {
-        InstitutionProfile.awardsTabbedContentElement = _val;
-        
-        return this;
-    },
-    
-    switchTab: function(_tab_element_key)
-    {
-    	
-        switch (_tab_element_key) {
-            case 'medical_centers':
-                InstitutionProfile.tabbedContentElement.html(InstitutionProfile.medicalCenterTabbedContentElement.html());
-                break;
-            case 'services':
-                InstitutionProfile.tabbedContentElement.html(InstitutionProfile.servicesTabbedContentElement.html());
-                break;
-            case 'awards':
-                InstitutionProfile.tabbedContentElement.html(InstitutionProfile.awardsTabbedContentElement.html());
-                break;
-        }
-        
-        return this;
-    },
-    
-    pagerMedicalCenter: function(_linkElement) {
-    	 var _linkElement = $(_linkElement);
-
-        _href = _linkElement.attr('href');
-        $.ajax({
-            url: _href,
-            type: 'GET',
-            success: function(response) {
-            	$('#medicalCenterListing').html(response.output.html);
-            },
-            error: function(response) {
-                console.log(response);
-            }
-        });
-        
-        return false;
-    },
-    
-    
-    loadTabbedContentsOfMultipleCenterInstitution: function() {
-        // medical centers content
-        $.ajax({
-            url: InstitutionProfile.ajaxUrls.loadActiveMedicalCenters,
-            type: 'get',
-            dataType: 'json',
-            success: function(response){
-                InstitutionProfile.medicalCenterTabbedContentElement.html(response.output.html);
-            }
-        });
-        
-//        // institution services content
-//        $.ajax({
-//            url: InstitutionProfile.ajaxUrls.loadInstitutionServices,
-//            type: 'get',
-//            dataType: 'json',
-//            success: function(response){
-//                InstitutionProfile.servicesTabbedContentElement.html(response.services.html);
-//            }
-//        });
-//        
-//        // awards content
-//        $.ajax({
-//            url: InstitutionProfile.ajaxUrls.loadInstitutionAwards,
-//            type: 'get',
-//            dataType: 'json',
-//            success: function(response){
-//                InstitutionProfile.awardsTabbedContentElement.html(response.awards.html);
-//            }
-//        });
-        
-        return this;
-    },
-    
-    /**
-     * set up dialog box for edit instituion name
-     * 
-     * @parameter jQuery DOM element
-     */
-    setUpInstitutionNameDialog: function (_dialogContentElement) {
-        this.institutionNameDialogElement = _dialogContentElement;
-        this.institutionNameDialogElement.dialog({
-            position: ['center', 100],
-            autoOpen: false,
-            width: 'auto',
-            modal: true,
-            resizable: false,
-            close: function() {}
-        });
-        
-        return this;
-    },
-    
-    setUpInstitutionDescriptionDialog: function(_dialogContentElement) {
-        this.institutionDescriptionDialogElement = _dialogContentElement;
-        this.institutionDescriptionDialogElement.dialog({
-            position: ['center', 100],
-            autoOpen: false,
-            width: 'auto',
-            modal: true,
-            resizable: false,
-            close: function() {}
-        });
-        
-        return this;
-    },
-    
     removeProperty: function(_propertyId, _container) {
         _container.find('a.delete').attr('disabled',true);
         $.ajax({
@@ -221,26 +28,10 @@ var InstitutionProfile = {
         });
         
     },
-    openProfileForm: function(_element){
-    	_element.toggle();
-    	_show = $(_element.attr('data-toggle'));
-    	_attr = _element.attr('href');
-    	$('#'+_show.selector + ', ' + _attr).toggle();
-    },
-    
-    openWebsiteFormButton: function(_element){
-    	_attr = _element.attr('href');
-    	_element.parents('div.show').hide();
-    	_element.parents('div.show').prev().hide();
-    	$(_attr).toggle();
-    },
-    
-    closeProfileForm: function(_element){
-    	_div = _element.parents('div.hca-edit-box').prev('div');
-    	_div.show();
-    	_div.prev().show();
-    	_element.parent().hide();
-    },
+	/**
+	 * End Of Currently Not Being Used!
+	 */
+
 
     /* Added by: Adelbert Silla toggle edit/view mode */
     toggleForm: function(elem) {
@@ -296,15 +87,6 @@ var InstitutionProfile = {
     	$($('#awardsForm').parent().attr('data-filter-list')).show();
     	$('#awardsForm h3.awards-heading').hide();
     },
-
-    submitModalForm: function(_formElement, _successCallback) {
-        $.ajax({
-           url: _formElement.attr('action'),
-           data: _formElement.serialize(),
-           type: 'POST',
-           success: _successCallback
-        });
-    },
     
     /**
      * Clicking on submit button of modal 
@@ -312,32 +94,31 @@ var InstitutionProfile = {
      * @param DOMElement button
      */
     submitForm: function(_form) {
-        
         tinyMCE.triggerSave();
+    	HCA.closeAlertMessage();
+    	$('.control-group').removeClass('error').children('ul.error').remove();
 
-    	$('.control-group').removeClass('error');
-    	$('.control-group > ul._error-list').remove();
-    	
-    	modalContainer = _form.parents('.modal:first'); 
-    	if(modalContainer.length) {
-    		_button = modalContainer.find('._submit-button:first');
+        if(_form.attr('id') == 'serviceForm') {
+        	if(!_form.find('ul.services-listing > li input:checked').length) {
+        		_form.find('.control-group').addClass('error');
+        		HCA.alertMessage('error', 'Please select at least one service.');
+            	return false;
+        	}
+        }
+
+    	if(_form.parents('.modal:first').length) {
+    		_button = _form.parents('.modal:first').find('._submit-button:first');
     	} else {
         	_button = _form.find('button[type=submit]:first');    		
+    	}
+
+        if(_form.attr('id') == 'awardsForm') {
+    		$("div[id^='show-']").animate({opacity: 0.25});
     	}
 
         _buttonHtml = _button.html();
         _button.html("Processing...").attr('disabled', true);
 
-        $('.control-group.ajax-field.error').removeClass('error').find('ul.error_list').remove();
-
-        if(_form.attr('id') == 'awardsForm'){
-    		$("div[id^='show-']").animate({
-    		    opacity: 0.25,
-    		  });
-    	}
-
-        _editButton = _button.parents('section.hca-main-profile').find('.btn-edit');
-        
         $.ajax({
             url: _form.attr('action'),
             data: _form.serialize(),
@@ -347,31 +128,23 @@ var InstitutionProfile = {
                 switch(_form.attr('id')){
                     case 'nameModalForm':
                         $('#institutionNameText').html(ucwords(response.institution.name));
-                        $('#networkName').html(ucwords(response.institution.medicalProviderGroups));
-                        _form.parents('div.modal').modal('hide');
+                        institutionGroup = typeof(response.institution.medicalProviderGroups) != 'undefined' ? response.institution.medicalProviderGroups[0] : ''; 
+                        $('#networkName').html(ucwords(institutionGroup));
+
+                        _form.parents('div.modal:first').modal('hide');
                     	break;
     
                     case 'descriptionModalForm':
                         $('#institutionDescriptionText').html(response.institution.description);
+                        if($.trim(response.institution.description)  == '') {
+                        	$('#institutionDescriptionText').siblings('.alert').show();                        	
+                        } else {
+                        	$('#institutionDescriptionText').siblings('.alert').hide();
+                        }
                         break;
     
                     case 'addressModalForm':
-                    	var address = [];
-                        $.each(response.institution.address1, function(key, value){
-                           if ($.trim(value) != '') {
-                               address.push(ucwords(value));
-                           } 
-                        });
-
-                        keys = ['city', 'state', 'country'];
-                        $.each(keys, function(dummy, key){
-                            if (response.institution[key]) {
-                                address.push(ucwords(response.institution[key]));
-                            }
-                        });
-
-                        zipCode = typeof(response.institution['zipCode']) != 'undefined' && response.institution['zipCode'] ? ' ' + response.institution['zipCode'] : '';
-                        $('.address_column').html(address.join(', ') + zipCode);
+                        $('.address_column').html(response.institution.stringAddress);
 
                         if(HCAGoogleMap.map) { 
                         	mapStaticUrl = 'http://maps.googleapis.com/maps/api/staticmap?center='+ response.institution.coordinates + '&zoom=15&size=260x200&sensor=false&markers=%7Alabel:S%7C' + response.institution.coordinates;
@@ -382,7 +155,7 @@ var InstitutionProfile = {
                     case 'numberModalForm':
                     	var emptyString = '<b>no <span>{FIELD_LABEL}</b> added. <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-contacts-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {FIELD_LABEL}';
 
-                    	if(response.institution.websites == null || response.institution.contactEmail == null || response.institution.contactDetails.phoneNumber == ''){                    		
+                    	if(!response.institution.websites == null || response.institution.contactEmail == null || !response.institution.contactDetails){                    		
                     		$("#alertDiv").addClass('alert alert-block');
                     	}else{
                     		$("#alertDiv").removeClass('alert alert-block');
@@ -400,8 +173,8 @@ var InstitutionProfile = {
                     		$('#profileEmailText').html(emptyString.replace(/{FIELD_LABEL}/g,'contact email'));
                     	}
 
-                     	if(response.institution.contactDetails.phoneNumber){
-                     		$('#PhoneNumberText').html('<b>'+response.institution.contactDetails.phoneNumber + '</b>');
+                     	if(response.institution.contactDetails){ 
+                     		$('#PhoneNumberText').html('<b>'+ response.institution.contactDetails + '</b>');
                     	}else{
                     		$('#PhoneNumberText').html(emptyString.replace(/{FIELD_LABEL}/g,'phone number'));
                     	}
@@ -409,9 +182,10 @@ var InstitutionProfile = {
                         break;
                     case 'socialMediaForm':
                     	var websites = response.institution.socialMediaSites;
-                    	$.each(websites, function(type) {
+                    	$.each(websites, function(type, value) {
                     		if($.trim(websites[type]) != '') {
-                				$('#institution-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+websites[type] +'</b>');
+                    			website = _form.find('.social-media ._'+type+'-prefix').html() + value;
+                				$('#institution-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ website +'</b>');
                     		} else{
                     			$('#institution-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                         	}
@@ -425,25 +199,31 @@ var InstitutionProfile = {
                     	
                     	break;
                     case 'serviceForm':
-                    	$('#serviesText').html(response.html);
+                    	liList = '';
+                    	$.each($('#' + _form.attr('id') + ' ul.services-listing > li input:checked'), function(){
+                    		liList += '<li>' + $(this).next().text() + '</li>';
+                    	});
+
+                    	$('#servicesText > ul:first').html(liList);
+
                     	break;
                     case 'awardsForm':
+            			$("div[id^='show-']").animate({opacity: 1});
 
-                    		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
-                    		$('#_edit-award-year-container').html($('#_edit-award-form'));
-                    		/* End of NOTE: DO NOT REMOVE this line */
+                		/* NOTE: DO NOT REMOVE this line. This is a temporary fix for edit award's year. */
+                		if(!$('#_edit-award-form-container').find('#_edit-award-form').length) {
+                			$('#_edit-award-form-container').html($('#_edit-award-form'));
+                		} /* End of NOTE: DO NOT REMOVE this line */
 
-	                		$("div[id^='show-']").animate({opacity: 1});
-	                    	 $.each(response.html, function(key, htmlContent){
-	                       		$('#listing-'+key).find("input[type=checkbox].old:not(:checked)").removeClass('old');
-	                    		$('#listing-'+key).find("input[type=checkbox]:checked:not(.old)").addClass('old');
-	                        	$('#'+key+'sText').html(htmlContent);
-	                         });
+                   		$('#listing-'+response.awardsType).find("input[type=checkbox].old:not(:checked)").removeClass('old');
+                		$('#listing-'+response.awardsType).find("input[type=checkbox]:checked:not(.old)").addClass('old');
+                    	$('#'+response.awardsType+'sText').html(response.awardsHtml);
                     	break;
-                } 
+                }
 
                 _button.html(_buttonHtml).attr('disabled', false);
-                _editButton.click();
+                _button.parents('section.hca-main-profile').find('.btn-edit').click();
+
                 HCA.alertMessage('success', 'Profile has been updated!');
             },
             error: function(response) {
@@ -454,7 +234,7 @@ var InstitutionProfile = {
                     if (responseText.errors.length) {
                         $.each(responseText.errors, function(i, each){
                         	$('.control-group.' + each.field).addClass('error');
-                        	$('<ul class="_error-list"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (each.field == 'city' ? '.fancy-dropdown-wrapper' : 'input')));
+                        	$('<ul class="error"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (each.field == 'city' ? '.fancy-dropdown-wrapper' : 'input')));
                         });
                     }
 
@@ -463,11 +243,5 @@ var InstitutionProfile = {
             }
         });
         return false;
-    },
-};
-
-var InstitutionProfileEvents = {
-    UPDATE_INSTITUTION_NAME_EVENT : $.Event('update_institution_name'),
-    
-    UPDATE_INSTITUTION_DESCRIPTION_EVENT : $.Event('update_institution_description')
+    }
 };

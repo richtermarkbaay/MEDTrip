@@ -1,4 +1,4 @@
-<form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" >
+<form id="{{ formId }}" action="{{ path('institution_medicalCenter_ajaxUpdateProfileByField', {'imcId': institutionMedicalCenter.id} ) }}" onsubmit="return InstitutionMedicalCenter.submitMedicalCenterForm($(this))" novalidate="novalidate">
     {% for each in fields %}
           {% if each == 'name' %}
             <section>
@@ -115,7 +115,7 @@
      {% if hideSubmitButton is not defined %}
         <div class="row"> 
             <div class="pull-right">
-                 <button class="btn btn-primary" onclick="return InstitutionMedicalCenter.submitMedicalCenterForm($(this));">Submit</button>
+                 <button class="btn btn-primary" type="submit">Submit</button>
         	</div>
         </div>
      {% endif %}
