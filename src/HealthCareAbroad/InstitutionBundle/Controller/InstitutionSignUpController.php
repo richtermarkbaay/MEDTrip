@@ -173,7 +173,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $institutionUser->setInstitution($institution);
                 $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
                 $this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);
-                
+
                 // dispatch event
                 $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION,
                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION,$institution,array('institutionUser' => $institutionUser)
@@ -211,7 +211,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         //reset for in InstitutionSignUpController signUpAction() this will be temporarily set to uniqid() as a workaround for slug error
         $this->institution->setName('');
 
-        
+
         switch ($this->institution->getType())
         {
             case InstitutionTypes::SINGLE_CENTER:
@@ -223,8 +223,8 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $response = $this->setupProfileMultipleCenter($request);
                 break;
         }
-         
-        
+
+
         return $response;
     }
 
@@ -243,7 +243,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $this->currentSignUpStep = $this->signUpService->getSingleCenterSignUpStepByRoute($request->attributes->get('_route'));
 
         $institutionMedicalCenter = $this->institutionService->getFirstMedicalCenter($this->institution);
-        
+
         if (\is_null($institutionMedicalCenter)) {
             $institutionMedicalCenter = new InstitutionMedicalCenter();
         }
@@ -252,7 +252,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
-        
+
         if ($this->request->isMethod('POST')) {
 
             $formRequestData = $this->request->get($form->getName());
@@ -464,7 +464,10 @@ class InstitutionSignUpController extends InstitutionAwareController
         $functionName = $this->isSingleCenter ? 'getSingleCenterSignUpStepByRoute' : 'getMultipleCenterSignUpStepByRoute';
         $this->currentSignUpStep = $this->signUpService->{$functionName}($request->attributes->get('_route'));
 
-        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        //Multiple centers of an institution with similar specializations are now allowed.
+        //Both functions will really return the same specializations as this is the first center for the institution
+        //$specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializations($this->institution);
+        $specializations = $this->get('services.institution_specialization')->getNotSelectedSpecializationsOfInstitutionMedicalCenter($this->institutionMedicalCenter);
 
         if ($request->isMethod('POST')) {
 

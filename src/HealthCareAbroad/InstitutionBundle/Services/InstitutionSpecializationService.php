@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecializationStatus;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -30,10 +32,10 @@ class InstitutionSpecializationService
         $this->doctrine = $doctrine;
         $this->repository = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization');
     }
-    
+
     public function prepareMultipleAdd()
     {
-        
+
     }
 
     public function save(InstitutionSpecialization $institutionSpecialization)
@@ -74,7 +76,7 @@ class InstitutionSpecializationService
 
         return $center;
     }
-    
+
     public function getSpecializationSearchResult(Institution $institution , $term){
         $ids = array();
         foreach ($this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializations($institution)  as $e) {
@@ -82,23 +84,33 @@ class InstitutionSpecializationService
         }
 
         $result = $this->doctrine->getRepository('TreatmentBundle:Specialization')->getSpecializationSearchByName(trim($term), $ids);
-        
+
         return $result;
     }
-    
+
     /**
      * Newley added service for updated markup
      * Get all unselected specializations in centers
-     * 
+     *
      * @param Institution $institution
      * @author Chaztine Blance
      */
     public function getNotSelectedSpecializations(Institution $institution){
         $specializations = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitution($institution);
-        
+
         $result = $this->doctrine->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($specializations);
-        
+
         return $result;
     }
-   
+
+    /**
+     *
+     * @param InstitutionMedicalCenter $center
+     */
+    public function getNotSelectedSpecializationsOfInstitutionMedicalCenter(InstitutionMedicalCenter $center)
+    {
+        $specializations = $this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($center);
+
+        return $this->doctrine->getRepository('TreatmentBundle:Specialization')->getAvailableSpecializations($specializations);
+    }
 }
