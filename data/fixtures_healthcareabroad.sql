@@ -1813,7 +1813,9 @@ INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slu
 (3, 1, 'test 3', 'test', 'test', 1),
 (4, 3, 'testing', 'test', 'test', 1),
 (5, 4, 'test treatment', 'test', 'test', 1),
-(6, 5, 'treat', 'ererer', 'resr', 1);
+(6, 5, 'treat', 'ererer', 'resr', 1),
+(7, 1, 'testest', 'tsetes', '', 1);
+
 
 -- --------------------------------------------------------
 

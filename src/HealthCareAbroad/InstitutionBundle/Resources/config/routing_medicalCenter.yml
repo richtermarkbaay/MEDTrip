@@ -49,28 +49,6 @@ institution_medicalCenter_add:
     requirements:
         _method: POST
         
-institution_medicalCenter_addSpecializations_save:
-    pattern: /medical-center/{imcId}/specializations/add
-    defaults: { _controller: InstitutionBundle:MedicalCenter:saveSpecializations }
-    requirements:
-        _method: POST
-        imcId: \d+
-        
-institution_medicalCenter_ajaxSaveSpecializations:
-    pattern: /medical-center/{imcId}/ajaxSaveSpecializations
-    defaults: { _controller: InstitutionBundle:MedicalCenter:saveSpecializations }
-    requirements:
-        _method: POST
-        imcId: \d+
-        
-institution_medicalCenter_ajaxRemoveSpecialization:
-    pattern: /medical-center/{imcId}/specializations/{isId}/ajaxRemove
-    defaults: { _controller: InstitutionBundle:MedicalCenter:ajaxRemoveSpecialization }
-    requirements:
-        _method: GET|POST
-        imcId: \d+
-        isId: \d+
-        
 institution_medicalCenter_addGlobalAwards:
     pattern: /medical-center/{imcId}/awards-certificates-and-affiliations/add
     defaults: { _controller: InstitutionBundle:MedicalCenter:addGlobalAwards, imcId: ~}

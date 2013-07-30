@@ -2,7 +2,7 @@
 /**
  * 
  * @author Chaztine Blance
- *
+ * NOTE: before running the test, CSRF token should be set to false
  */
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
@@ -18,18 +18,15 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
 {
     public function testAjaxRemoveSpecialization()
     {
-        
+
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('POST', '/medical-center/1/specializations/ajaxRemove');
+        $crawler = $client->request('POST', '/medical-center/1/specializations/345345/ajaxRemove');
         $this->assertEquals(404, $client->getResponse()->getStatusCode());     
            
         $client = $this->getBrowserWithActualLoggedInUser();
         $extra['common_delete_form'] = array ('extraInvalidField' => 'sdas');
         $crawler = $client->request('POST', '/medical-center/1/specializations/1/ajaxRemove', $extra);
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
-        
-        $crawler = $client->request('POST', '/medical-center/1/specializations/1/ajaxRemove');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('POST', '/medical-center/3/specializations/1/ajaxRemove');
@@ -38,6 +35,10 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('POST', '/medical-center/1/specializations/2/ajaxRemove');
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('POST', 'medical-center/1/specializations/1/ajaxRemove');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
     }
     public function testAjaxAddSpecialization()
@@ -51,19 +52,46 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
     
-    public function testAjaxLoadSpecializationTreatment()
+    public function testAjaxLoadSpecializationTreatments()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments?specializationId=3');
+        $extra['specializationId'] = '1';
+        $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/1', $extra);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
-//     public function testSaveSpecializations()
-//     {
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $extra['institutionSpecialization'] = array (5 => array( 'treatments' => array ( 0 => '6')));
-//         $crawler = $client->request('POST', '/medical-center/1/ajaxSave/Specializations', $extra);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//     }
 
+    /* NOTE: Before running the test, set CSRF token to true. */
+    public function testSaveSpecializations()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        $extra['institutionSpecialization'] = array (); // no treatment data
+        $crawler = $client->request('POST', '/medical-center/1/ajaxSave/Specializations', $extra);
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        
+        $extra['institutionSpecialization'] = array (5 => array( 'treatments' => array ( 0 => '6')));
+        $crawler = $client->request('POST', '/medical-center/1/ajaxSave/Specializations', $extra);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
+
+    public function testAjaxAddInstitutionSpecializationTreatments()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        
+        $invalidForm['institutionSpecialization'] = array (); // no treatment data
+        $crawler = $client->request('POST', 'medical-center/1/specializations/1/ajaxEditInstitutionSpecialization', $invalidForm);
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $form['institutionSpecialization'] = array (1 => array( 'treatments' => array ( 0 => '1')));;
+        $crawler = $client->request('POST', 'medical-center/1/specializations/1/ajaxEditInstitutionSpecialization', $form);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        //invalid specialization id
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $form['institutionSpecialization'] = array (1 => array( 'treatments' => array ( 0 => '1')));;
+        $crawler = $client->request('POST', 'medical-center/1/specializations/13232323/ajaxEditInstitutionSpecialization', $form);
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
+    /* End of NOTE */
 }

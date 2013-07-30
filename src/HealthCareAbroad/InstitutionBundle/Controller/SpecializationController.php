@@ -57,45 +57,6 @@ class SpecializationController extends InstitutionAwareController
         }
     }
     
-    /**
-     * Remove a Treatmnent from an institution specialization
-     * Expected parameters
-     *     
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function ajaxRemoveSpecializationTreatmentAction(Request $request)
-    {
-        $treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->find($request->get('tId'));
-        if (!$this->institutionSpecialization) {
-            throw $this->createNotFoundException("Invalid institution specialization {$this->institutionSpecialization->getId()}.");
-        }
-        if (!$treatment) {
-            throw $this->createNotFoundException("Invalid treatment {$treatment->getId()}.");
-        }
-
-        if ($request->isMethod('POST'))  {
-            
-            $this->institutionSpecialization->removeTreatment($treatment);
-            $form = $this->createForm(new CommonDeleteFormType(), $this->institutionSpecialization);
-            
-            $form->bind($request);
-            if ($form->isValid()) {
-                
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($this->institutionSpecialization);
-                $em->flush();
-                $responseContent = array('calloutView' => $this->_getEditMedicalCenterCalloutView(), 'id' => $treatment->getId());
-                $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
-            }
-            else {
-                $response = new Response("Invalid form", 400);
-            }
-        }
-
-        return $response;
-    }
-    
     private function _getEditMedicalCenterCalloutView()
     {
         $calloutParams = array(
@@ -205,9 +166,7 @@ class SpecializationController extends InstitutionAwareController
         }
     
         if ($request->isMethod('POST')) {
-    
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
-    
             if (\count($specializationsWithTreatments)) {
     
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
