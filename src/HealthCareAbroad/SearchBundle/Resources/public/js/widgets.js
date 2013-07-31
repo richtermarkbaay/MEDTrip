@@ -68,21 +68,6 @@ var BroadSearchWidget = {
 
     initializeComponents: function(){
 
-        var getLink = function(item) {
-            /*TODO: use classes to format the labels*/
-            var link;
-            if (item.type == 'destinations') {
-                link = item.id.slice(-2) == '-0' ?
-                    '<a data-value="'+item.id+'" data-type="'+item.type+'"><b>'+item.label+'<b/></a>':
-                    '<a data-value="'+item.id+'" data-type="'+item.type+'">&nbsp;&nbsp;'+item.label+'</a>'
-                ;
-            } else if (item.type == 'treatments') {
-                link = '<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>';
-            }
-
-            return link;
-        };
-
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
             componentOptions.dropdownButton.click(function(){
                 componentOptions.autocompleteField.autocomplete('search', '');
@@ -104,44 +89,8 @@ var BroadSearchWidget = {
 
                     source:  function(request, response) {
                         var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
-                        var matches = [];
-                        var submatches = [];
-                        $.each(componentOptions.dataSource, function(_i, _each){
-                            if (_each.value && ( !request.term || matcher.test(_each.label))) {
-                                var _eachLabel = _each.label;
+                        var matches = SearchWidgetUtils.getMatches(matcher, componentOptions.dataSource, type, request);
 
-                                if (type == 'destinations') {
-                                    var isCountry = _each.value.slice(-2) == '-0';
-
-                                    if (isCountry) {
-                                        if (typeof submatches[_eachLabel] != 'undefined') {
-                                            return true;
-                                        }
-                                        submatches[_eachLabel] = _each.value;
-                                        matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
-                                        return true;
-                                    }
-
-
-                                    for (var i = 0, l = componentOptions.dataSource; i < l; i++) {
-                                        var subeach = componentOptions.dataSource[i];
-
-                                        if (typeof submatches[subeach.label] == 'undefined') {
-                                            var subeachValue = subeach.value;
-                                            if (subeachValue == _each.value.split('-')[0] + '-0') {
-                                                submatches[subeach.label] = subeachValue;
-                                                matches.push({'value': subeach.label, 'id': subeach.value, 'label': subeach.label, 'type': type});
-                                                break;
-                                            }
-                                        }
-                                    }
-
-                                   _eachLabel = _eachLabel.split(',').reverse().splice(-1).join(',');
-                                }
-
-                                matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
-                            }
-                        });
                         response(matches);
                    },
                    select: function(event, ui) {
@@ -175,7 +124,7 @@ var BroadSearchWidget = {
 
             componentOptions.autocompleteField.data('ui-autocomplete')._renderItem = function(ul, item) {
                 /*var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');*/
-                var _itemLink = $(getLink(item));
+                var _itemLink = SearchWidgetUtils.getLink(item);
 
                 _itemLink.on('click', function(){
                     BroadSearchWidget.loadSourcesByType(item);
@@ -225,7 +174,7 @@ var BroadSearchWidget = {
 
         return this;
     }
-}/** end of BroadSearchWidget **/
+};/** end of BroadSearchWidget **/
 
 
 var NarrowSearchWidget = {
@@ -303,6 +252,7 @@ var NarrowSearchWidget = {
         // override _renderItem function of UI.autocomplete
         field.data('ui-autocomplete')._renderItem = function(ul, item) {
             var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+
             _itemLink.on('click', function(){
                 $(field.attr('data-value-container')).html(item.label); // update the label of the value container
                 var _searchInputName = NarrowSearchWidget.searchParameterName+'['+item.type+']';
@@ -356,4 +306,58 @@ var NarrowSearchWidget = {
             }
         };
     }
-}
+};
+
+var SearchWidgetUtils = {
+    getLink: function(item) {
+        /*TODO: use classes to format the labels*/
+        var link, isCountry = item.id.slice(-2) == '-0';
+        if (item.type == 'destinations') {
+            link = isCountry ?
+                '<a data-value="'+item.id+'" data-type="'+item.type+'"><b>'+item.label+'<b/></a>':
+                '<a data-value="'+item.id+'" data-type="'+item.type+'">&nbsp;&nbsp;'+item.label+'</a>';
+        } else if (item.type == 'treatments') {
+            link = '<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>';
+        }
+
+        return $(link);
+    },
+
+    getMatches: function(matcher, datasource, type, request) {
+        var matches = [];
+        var submatches = [];
+        $.each(datasource, function(_i, _each){
+            if (_each.value && ( !request.term || matcher.test(_each.label))) {
+                var _eachLabel = _each.label;
+                if (type == 'destinations') {
+                    var isCountry = _each.value.slice(-2) == '-0';
+                    if (isCountry) {
+                        if (typeof submatches[_eachLabel] != 'undefined') {
+                            return true;
+                        }
+                        submatches[_eachLabel] = _each.value;
+                        matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
+                        return true;
+                    }
+                    for (var i = 0, l = datasource.length; i < l; i++) {
+                        var subeach = datasource[i];
+                        if (typeof submatches[subeach.label] == 'undefined') {
+
+                            var subeachValue = subeach.value;
+                            if (subeachValue == _each.value.split('-')[0] + '-0') {
+                                submatches[subeach.label] = subeachValue;
+                                matches.push({'value': subeach.label, 'id': subeach.value, 'label': subeach.label, 'type': type});
+                                break;
+                            }
+                        }
+
+                    }
+                   _eachLabel = _eachLabel.split(',').reverse().splice(-1).join(',');
+                }
+                matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
+            }
+        });
+
+        return matches;
+    }
+};
