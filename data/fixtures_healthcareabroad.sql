@@ -1687,6 +1687,11 @@ CREATE TABLE IF NOT EXISTS `states` (
   UNIQUE KEY `country_id` (`country_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+--
+-- Dumping data for table `states`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`states` (`id`, `name`, `country_id`, `administrative_code`) VALUES ('1', 'test', '1', '01');
 
 -- --------------------------------------------------------
 

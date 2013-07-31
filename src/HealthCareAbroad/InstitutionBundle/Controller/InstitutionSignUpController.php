@@ -465,7 +465,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 //return $this->redirect($redirectUrl);
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
-
             } else {
                 $request->getSession()->setFlash('error', 'Please select at least one specialization.');
             }
