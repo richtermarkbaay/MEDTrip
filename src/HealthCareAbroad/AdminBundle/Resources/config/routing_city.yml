@@ -11,23 +11,22 @@ admin_city_add:
         _method:  GET
 
 admin_city_create:
-    pattern:  /admin/city/add
+    pattern:  /admin/cities
     defaults: { _controller: AdminBundle:City:save }
     requirements:
          _method: POST
 
 admin_city_edit:
-    pattern:  /admin/city/edit/{id}
+    pattern:  /admin/cities/{id}
     defaults: { _controller: AdminBundle:City:edit, id: ~ }
     requirements:
         id: \d+
         _method:  GET
 
 admin_city_update:
-    pattern:  /admin/city/edit/{id}
-    defaults: { _controller: AdminBundle:City:save}
+    pattern:  /admin/cities/update
+    defaults: { _controller: AdminBundle:City:update }
     requirements:
-         id: \d+
          _method: POST
 
 admin_city_updateStatus:

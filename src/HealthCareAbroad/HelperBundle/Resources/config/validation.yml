@@ -16,8 +16,8 @@ HealthCareAbroad\HelperBundle\Entity\City:
     properties:
         name:
             - NotBlank: ~
-        country: 
-            - NotBlank: ~
+        #country: 
+        #    - NotBlank: ~
             
 HealthCareAbroad\HelperBundle\Entity\FeedbackMessage:
     properties:

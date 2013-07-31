@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\CityNameFieldType;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
@@ -28,7 +30,8 @@ class CityController extends Controller
             ->add('name', 'text')
             ->getForm();
         return $this->render('AdminBundle:City:index.html.twig', array(
-            'filterForm' => $filterForm->createView()
+            'filterForm' => $filterForm->createView(),
+            'editCityNameForm' => $this->createForm(new CityFormType(),new City())->createView()
         ));
     }
 
@@ -63,6 +66,27 @@ class CityController extends Controller
         ));
     }
 
+    public function updateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $form = $this->createForm(new CityFormType(), new City());
+        $form->bind($request);
+        if($form->isValid()) {
+            // update global city data
+            $city = $em->getRepository('HelperBundle:City')->find($request->get('id',0));
+            if($city) {
+                $em->persist($city);
+                $em->flush();
+            }
+            
+            $cityData = $request->get('city');
+            $cityData['id'] = $request->get('id');
+            $city = $this->get('services.location')->saveGlobalCity($cityData);
+        }
+        
+        return new Response(\json_encode($city));
+    }
+    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
@@ -75,8 +99,6 @@ class CityController extends Controller
         $id = $request->get('id', null);
         $em = $this->getDoctrine()->getEntityManager();
 
-        $city = $id ? $em->getRepository('HelperBundle:City')->find($id) : new City();
-
         $form = $this->createForm(New CityFormType(), $city);
         $form->bind($request);
         
@@ -84,7 +106,6 @@ class CityController extends Controller
             
             if(!$id) {
                 $data = $request->get('city');
-                
             }
             else {
                 $data = array(

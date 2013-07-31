@@ -35,14 +35,33 @@
                 <thead>
                     <tr>
                        <th id="column-name">Name</th>
-                       <th id="column-country">Country</th>
-                       <th width="15%">Actions</th>
+                       <th width="35%">Actions</th>
                     </tr>
                 </thead>
                 
                 <tbody></tbody>
             
             </table>
+            
+            <!-- Modal Institution Medical Center Specialist -->
+            <div id="_editCityName" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                    <h3>Edit City Name</h3>
+                    
+                </div>
+                <div class="modal-body">
+                    <form id="_editCityNameForm" novalidate="novalidate" action="{{ get_update_cities_url() }}" method="PUT" class="basic-form">
+                        {{ form_row(editCityNameForm.name) }}
+                        {{ form_widget(editCityNameForm._token)  }}
+                        <input type="hidden" name="id" id="city_id" value=""/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
+                    <button data-loader-text="Processing..." id="_editCitySubmitBtn" class="btn btn-primary submit-button">Submit</button>
+                </div>
+            </div>
         {% endblock %}
             
         {% endembed %}
@@ -56,29 +75,63 @@
 (function($){
     $(function(){
         var LOAD_CITIES_API = '{{ get_load_cities_api_uri() }}';
+        var UPDATE_CITIES_URL = '{{ get_update_cities_url() }}';
         var loadingHtml = '<tr class="info"><td colspan="3">Loading...</td></tr>';
         var prototype = '{{ getTemplateContents("AdminBundle:City:itemView.city.html.twig") | raw }}';
         
         $('#{{ filterForm.vars.id }}').submit(function(e){
             e.preventDefault();
-
             $('#city-list tbody').html(loadingHtml);
-            
+
             $.ajax({
                 url: LOAD_CITIES_API,
-                data: {country_id: $('#{{ filterForm.country.vars.id }}').val(), state_id: $('#{{ filterForm.state.vars.id }}').val()},
+                data: {country_id: $('#{{ filterForm.country.vars.id }}').val(), state_id: $('#{{ filterForm.state.vars.id }}').val(), name: $('#{{ filterForm.name.vars.id }}').val()},
                 type: 'get',
                 dataType: 'json',
                 success: function(response){
                     $('#city-list tbody').html('');
                     $.each(response.cities, function(k, cityData){
                         var view = $(prototype);
-                        view.find('.data-name').html(cityData.name);
-                        //view.find('.data-countryName').html(cityData.country.name);
+                        view.find('.data-name').html(cityData.name).attr('id','_city'+cityData.id);
+                        
+                        view.find('a.edit').attr('data-cityId', cityData.id).attr('data-cityName', cityData.name);
                         $('#city-list tbody').append(view);
                     });
                 }
             });
+        });
+
+
+        $('a.edit').live('click',function(){
+        	$('div#_editCityName').modal('show');
+        	var cityId = $(this).attr('data-cityId');
+            var cityName = $('#_city'+cityId).html();    	
+            $('#city_name').val(cityName);
+            $('#city_id').val(cityId);
+            
+            return false;
+        });
+
+        $('#_editCitySubmitBtn').click(function() {
+            //update data on the list
+            $('#_editCitySubmitBtn').html('Processing...');
+            if($('#city_name').val()) {
+                var cityId = $('#city_id').val()
+                $.ajax({
+                    url: UPDATE_CITIES_URL,
+                    data: $('#_editCityNameForm').serialize(),
+                    type: 'post',
+                    dataType: 'json',
+                    success: function(response){
+                        $('#_city'+cityId).html(response.geo_city.name);
+                        $('#city_name').val(response.geo_city.name);
+                        $('div#_editCityName').modal('hide');
+                        $('#_editCitySubmitBtn').html('Submit');
+                        
+                    }
+                });
+            }
+            return false;
         });
     });
 })(jQuery);

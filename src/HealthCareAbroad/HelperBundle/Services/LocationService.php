@@ -79,14 +79,7 @@ class LocationService
         return $this->loadedGlobalCountryList[$id];
 	}
 	
-	public function saveGlobalCity(array $data)
-	{
-	    $city['data'] = $data; 
-	    $response = $this->request->post($this->chromediaApiUri.'/city/add', $city);
-	    $city = $this->createCityFromArray(\json_decode($response->getBody(true), true));
-	    
-	    return $city;
-	}
+	
 	
 	public function saveGlobalCountry(array $data)
 	{
@@ -381,6 +374,15 @@ class LocationService
 	    return \json_decode($response->getBody(true), true);
 	}
 	
+	public function saveGlobalCity($cityData)
+	{
+	    $response = $this->request->post($this->chromediaApiUri.'/cities/'.$cityData['id'], array('geoCity' => $cityData));
+	    $city = (\json_decode($response->getBody(true), true));
+	     
+	    return $city;
+	}
+	
+	//-------------------------------------
 	
 	//-------------------------------------
 	// Start state related functions
