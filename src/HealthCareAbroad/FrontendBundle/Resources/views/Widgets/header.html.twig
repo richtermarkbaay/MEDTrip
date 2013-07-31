@@ -1,24 +1,22 @@
 <header id="header-wrapper"> <!--Header-->
     <div class="container">
-    <a class="logo" href="{{ path('frontend_main_homepage') }}">
-        <h1 class="title">HealthcareAbroad</h1>
+    <a href="{{ path('frontend_main_homepage') }}">
+        <h1 class="logo">HealthcareAbroad</h1>
     </a>
 
-    <nav class="menu">
-        <ul>
-            <!-- li><a href="#">Search</a></li -->
-            <li class="{{ app.request.get('_route') == 'frontend_treatment_list' ? 'active' : '' }}">
-                <a href="{{ path('frontend_treatment_list') }}">Treatments</a>
-            </li>
+    <ul class="inline-list pull-right">
+        <!-- li><a href="#">Search</a></li -->
+        <li class="{{ app.request.get('_route') == 'frontend_treatment_list' ? 'active' : '' }}">
+            <a href="{{ path('frontend_treatment_list') }}">Treatments</a>
+        </li>
 
-            <li class="{{ app.request.get('_route') == 'frontend_destination_list' ? 'active' : '' }}">
-                <a href="{{ path('frontend_destination_list') }}">Destinations</a>
-            </li>
-            <li>
-                <a href="http://www.healthcareabroad.com/blog/">Blog</a>
-            </li>
-        </ul>
-    </nav>
+        <li class="{{ app.request.get('_route') == 'frontend_destination_list' ? 'active' : '' }}">
+            <a href="{{ path('frontend_destination_list') }}">Destinations</a>
+        </li>
+        <li>
+            <a href="http://www.healthcareabroad.com/blog/">Blog</a>
+        </li>
+    </ul>
     {#--
     <div class="beta-banner">
         <span class="message">Currently in BETA</span>
@@ -27,15 +25,15 @@
     </div>
 </header> <!--End of header-->
 {% if isHomePage is defined and isHomePage %}
-    <div id="top-content-wrapper" class="container"> <!--Hero Unit-->
-        <h1 class="welcome">welcome to <strong>healthcare</strong> abroad!<br>
-            <small>the resource for global <strong>healthcare</strong><br>a comprehensive, <strong>unbiased</strong> directory</small>
-        </h1>
-        {% block searchBox %}
-            {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
-            
-            {{ render_search_homepage_widget() | raw }}
-        {% endblock %}
-
+    <div id="top-content-wrapper"> <!--Hero Unit-->
+        <div class="container">
+            <h1>Welcome to HealthcareAbroad!</h1>
+            <h2>The resource for global <em>healthcare</em>. <br>A comprehensive, <em>unbiased</em> directory.</h2>
+            {% block searchBox %}
+                {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
+                
+                {{ render_search_homepage_widget() | raw }}
+            {% endblock %}
+        </div>
     </div>
 {% endif %}
