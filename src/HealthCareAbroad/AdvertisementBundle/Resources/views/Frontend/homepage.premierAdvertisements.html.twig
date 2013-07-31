@@ -13,13 +13,13 @@
     <!-- institution logo link -->
 
     <div class="header-wrapper">
-        <h3>
+        <h3 class="heading">
 			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     		        statisticsDataObject: highlight,
     		        link: { url: institutionUrl, html: highlight.institution.name }
 			} %}
         </h3>
-        <h5>{{ institution_address_to_string(highlight.institution, ['city', 'country']) }}</h5>
+        <span class="sub-heading">{{ institution_address_to_string(highlight.institution, ['city', 'country']) }}</span>
 
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,

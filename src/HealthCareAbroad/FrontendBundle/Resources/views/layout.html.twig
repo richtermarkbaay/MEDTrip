@@ -3,9 +3,9 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
-    <div id="top-background" class="hca-v-sprite stripe-bg blue">
+    <!-- <div id="top-background" class="hca-v-sprite stripe-bg blue">
         <div class="glow"></div>
-    </div>
+    </div> -->
     
     {% if isHomePage is defined and isHomePage %}
          {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
@@ -21,7 +21,7 @@
 
     {% block callout %}{% endblock %}
     
-    <div id="content-wrapper" class="container box-shadow {{ isHomePage is defined and isHomePage ? 'homepage': '' }}">
+    <div id="content-wrapper" class="container {{ isHomePage is defined and isHomePage ? 'homepage': '' }}">
         {% block content %}{% endblock %}
     </div>
 

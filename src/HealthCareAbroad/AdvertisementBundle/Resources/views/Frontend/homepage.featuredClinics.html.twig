@@ -26,13 +26,13 @@
     				</div>
     				<div class="description-box">
     				    
-				        <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
-				            <h3>{{ each.title }}</h3>
-			            </a>
+				            <h3 class="heading">
+                                <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} > {{ each.title }} </a>
+                            </h3>
 			            
-			            <a href="{{ get_institution_frontend_url(each.institution) }}">
-			                <h4>{{ each.institution.name }}</h4>
-			            </a>
+			                <h4 class="sub-heading">
+                                <a href="{{ get_institution_frontend_url(each.institution) }}">{{ each.institution.name }}</a>
+                            </h4>
     					
     					<p>{{ each.description | raw }}</p>
     				</div>
