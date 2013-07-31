@@ -1,43 +1,6 @@
-institution_medicalCenter_ajaxAddGlobalAward:
-    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxAdd
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxAddGlobalAward, imcId: ~}
-    requirements:
-        _method: POST
-        imcId: \d+
-        
 institution_medicalCenter_ajaxEditGlobalAward:
     pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxEdit
     defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxEditGlobalAward, imcId: ~}
     requirements:
         _method: POST
         imcId: \d+
-        
-institution_medicalCenter_ajaxRemoveGlobalAward:
-    pattern: /institution/medical-center/{imcId}/awards-certificates-and-affiliations/ajaxRemove
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemoveGlobalAward, imcId: ~}
-    requirements:
-        _method: GET|POST
-        imcId: \d+
-        
-institution_medicalCenter_ajaxRemovePropertyValue:
-    pattern: /institution/medical-center/{imcId}/ajaxRemovePropertyValue
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemovePropertyValue, id: ~}
-    requirements:
-        _method: GET|POST
-        imcId: \d+
-        
-institution_medicalCenter_ajaxAddAncillaryService:
-    pattern:  /{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxAddAncillaryService }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST
-        
-institution_medicalCenter_ajaxRemoveAncillaryService:
-    pattern:  /{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxRemoveAncillaryService }
-    requirements:
-        institutionId: \d+
-        imcId: \d+
-        _method: POST

@@ -1,11 +1,4 @@
 # institutionId is included in request parameters since this is an unsecured request
-institution_medicalCenter_ajaxGlobalAwardSource:
-    pattern: /ns-institution/{institutionId}/medical-center/{imcId}/awards-certificates-and-affiliations/search
-    defaults: { _controller: InstitutionBundle:MedicalCenterProperties:ajaxMedicalCenterGlobalAwardSource}
-    requirements:
-        imcId: \d+
-        _method: GET
-
         
 institution_medicalCenter_ajaxSpecializationSource:
     pattern: /ns-institution/{institutionId}/medical-center/{imcId}/specialization/search
