@@ -1,9 +1,6 @@
 {% set email = institution.contactEmail %}
 {% set number = institution.contactNumber  %}
 {% set number = json_decode(number) | join %}
-{% set websites = institution.websites %}
-{% set websites = json_decode(websites) %}
-{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
 
     <div class="profile-wrapper span8">
 		<div class="clinic-header-wrapper">
@@ -38,7 +35,7 @@
 
 	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
 
-	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
+	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: social_media_sites_to_array(institution.socialMediaSites) } %}
 
 	</aside> <!--End of aside_content-->
 	
