@@ -7,10 +7,10 @@
             Providing your complete address helps us push you to the right searches,
             and helps patients plan their travel better.
         </div>
-
             {{ form_widget(form.address1, { attr: {class: 'addressFields '} } )}}
+            
             <div class="row-fluid terms">
-               <div class="country span6 control-group {{ (form.address1.vars.valid ? '' : 'error') }}">
+               <div class="country span6 control-group {{ (form.country.vars.valid ? '' : 'error') }}">
                     <label for="{{ form.children.country.vars.id }}">
                         {{ form.children.country.vars.label }} *
                     </label>
