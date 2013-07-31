@@ -292,4 +292,16 @@
             </ul>
         </div>
     {% endspaceless %}
-{% endblock %}    
+{% endblock %}
+
+{% block field_errors %}
+{% spaceless %}
+    {% if errors|length > 0 %}
+    <ul class="error">
+        {% for error in errors %}
+            <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endspaceless %}
+{% endblock field_errors %}
