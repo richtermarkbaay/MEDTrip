@@ -47,9 +47,3 @@ institution_signup_ajax_deleteDoctor:
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxDeleteDoctor, id: 0}
     requirements:
         _method:  POST
-
-institution_signup_ajax_editDoctor:
-    pattern: /institution/ajax/editDoctor/{id}
-    defaults: {_controller: InstitutionBundle:InstitutionSignUp:ajaxEditDoctor, id: 0}
-    requirements:
-        _method:  GET|POST

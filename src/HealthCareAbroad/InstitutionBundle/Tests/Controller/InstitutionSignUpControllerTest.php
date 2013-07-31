@@ -14,7 +14,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
     private $signupFormValues = array(
         'institutionUserSignUp[firstName]' => 'testFirstName',
         'institutionUserSignUp[lastName]' => 'testLastName',
-        'institutionUserSignUp[email]' => 'testsisde@traaaa.com', //make sure to change the email before running the test
+        'institutionUserSignUp[email]' => 'testsisde@aaSa.com', //make sure to change the email before running the test
         'institutionUserSignUp[password]' => '123456',
         'institutionUserSignUp[confirm_password]' => '123456',
         'institutionUserSignUp[type]' => '1',
@@ -109,7 +109,6 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 
     public function testSetupProfileforMultipleType()
     {
-        
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $session = $client->getContainer()->get('session');
         $session->set('institutionSignupStepStatus', 1);
@@ -132,7 +131,6 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your country.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your city.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your postal code.")')->count());
-        
         
         $this->setupProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
         $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
@@ -185,29 +183,28 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $session->set('institutionSignupStepStatus', 2);
         $crawler = $client->request('GET', 'institution/setup-clinic-details/1');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
         
-        $formValues = array(
-            'institutionMedicalCenter[name]' => 'testFirstName',
-            'institutionMedicalCenter[description]' => 'testLastName',
-            'institutionMedicalCenter[contactEmail]' => '123456@mail.com',
-            'institutionMedicalCenter[address]' => array ( 'room_number' => 'test', 'building' => 'test', 'street' => 'test' ),
-            'institutionMedicalCenter[socialMediaSites]' => array ( 'facebook' => 'tttt' , 'twitter' => 'dsdf', 'googleplus' =>'')
-        );
-        
+        $invalidFormValues['institutionMedicalCenter[name]'] = null;
         $form = $crawler->selectButton('Continue to Adding Specializations')->form();
-        $crawler = $client->submit($form, $formValues);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        
-        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-	    $formValues['institutionMedicalCenter[name]'] = null;
-	    $crawler = $client->submit($form, $formValues);
+        $crawler = $client->submit($form, $invalidFormValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Clinic name is required.")')->count());
         
+        $formValues = array( 'institutionMedicalCenter' => array(
+                        'name' =>'new testdstsdf',
+                        'description' => 'testing2',
+                        'businessHours' =>  array('18a6a330-af4d-4371-a4e1-4ca50843847b' => '{"weekdayBitValue":16,"opening":"8:00 AM","closing":"5:00 PM","notes":""}'),
+                        'address' => array ( 'room_number' => 'test', 'building' => 'test', 'street' => 'test' ),
+                        '_token' => $csrf_token
+        ));
+        $client->request('POST', "/institution/setup-clinic-details/1", $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
     
     public function testSetupInstitutionMedicalCenterNoIdPassed()
     {
-    
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $session = $client->getContainer()->get('session');
         $session->set('institutionSignupStepStatus', 3);
@@ -255,13 +252,13 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
             
-             /* NOTE: this test only works if csrf token is set to fasle */
-             /*   Add new doctor */
-//                 $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-//                 $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
-//                 $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
-//                 $this->assertEquals(200, $client->getResponse()->getStatusCode());
-             /* end of NOTE */
+         /* NOTE: this test only works if csrf token is set to fasle */
+         /*   Add new doctor */
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
+        $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+         /* end of NOTE */
         
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formValues =  array( 'doctorId' => 43242); //add invalid doctor
@@ -276,15 +273,14 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
     }
 
     /* NOTE: this test only works if csrf token is set to fasle */
-//     public function testUpdateDoctor(){
+    public function testUpdateDoctor(){
     
-//         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-//         $formDoctorValues = array( 'editInstitutionMedicalCenterDoctorForm' => 
-//                            array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  '','specializations' => array ( 0 => '1'),
-//                                    ));
-//         $crawler = $client->request('POST', 'institution/medical-center/1/update-doctor/1', $formDoctorValues);
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//     }
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formDoctorValues = array( 'editInstitutionMedicalCenterDoctorForm' => 
+                           array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  '','specializations' => array ( 0 => '1'), ));
+        $crawler = $client->request('POST', 'institution/medical-center/1/update-doctor/1', $formDoctorValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+    }
     /* end of NOTE */
     
     public function testFinish(){

@@ -401,11 +401,10 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
             $form->bind($formRequestData);
             if ($form->isValid()) {
-                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
-                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
-
                 $this->institutionMedicalCenter = $form->getData();
+                $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
+                $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
                 foreach ($this->institutionMedicalCenter->getBusinessHours() as $_hour ) {
                     $_hour->setInstitutionMedicalCenter($this->institutionMedicalCenter );
                 }
@@ -427,7 +426,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
-            $form_errors = $this->get('validator')->validate($form);
             if($form_errors){
                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
@@ -532,37 +530,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
     }
 
-    public function editDoctorAction(Request $request)
-    {
-        $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('doctorId'));
-
-        $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
-
-        if ($request->isMethod('POST')) {
-            $form->bind($request);
-
-            if ($form->isValid()) {
-                $doctor = $form->getData();
-
-                $em = $this->getDoctrine()->getEntityManager();
-                $em->persist($doctor);
-                $em->flush($doctor);
-
-                $data = array(
-                    'status' => true,
-                    'message' => 'Doctor has been added to your clinic!',
-                    'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
-                );
-            } else {
-                $data = array('status' => false, 'message' => $form->getErrorsAsString());
-            }
-
-            return new Response(json_encode($data), 200, array('Content-Type'=>'application/json'));
-        }
-
-        return new Response(\json_encode($result),200, array('content-type' => 'application/json'));
-    }
-
     public function finishAction(Request $request)
     {
         if($this->institution->getInstitutionMedicalCenters()->count() && $this->institution->getInstitutionMedicalCenters()->first()->getDoctors()->count()) {
@@ -572,20 +539,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         }
 
         return $this->redirect($this->generateUrl('institution_homepage'));
-    }
-
-    private function getProxyMedicalCenter()
-    {
-        //This will have identical values with related institution
-        $center = $this->institutionMedicalCenter;
-
-        if ($this->request->isMethod('GET')) {
-            $center->setName('');
-            $center->setDescription('');
-            //and other fields which we may have to reset...
-        }
-
-        return $center;
     }
 
     private function getMedicalProviderGroupJSON()
