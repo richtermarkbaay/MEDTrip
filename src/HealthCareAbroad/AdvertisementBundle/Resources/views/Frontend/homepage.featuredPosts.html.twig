@@ -12,7 +12,7 @@
 		        {% set target = '' %}
 		    {% endif %}
 
-			<div class="item">
+			<article class="article-format">
 			    {% if each.media %}
 				    <a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
 				        {# media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw #}
@@ -21,7 +21,7 @@
 				{% endif %}
 				<h4 class="title"><a href="{{ link }}" target="{{ target }}">{{ each.title }}</a></h4>
 				<p>{{ each.description }}</p>
-			</div>
+			</article>
 		{% endfor %}
     </div>
 </div> <!--End of aside_scrollbar-->

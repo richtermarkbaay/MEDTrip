@@ -13,13 +13,16 @@
 	</div> <!--End Main Content -->
 
 	<!--Sidebar Content -->
-	<aside class="span4 aside-wrapper">
+	<aside class="span4">
+		<div class="widget-wrapper">
+			
+			{{ render_homepage_featured_posts_ads() }}
 
-	    {{ render_homepage_featured_posts_ads() }}
+	    	{{ render_homepage_common_treatments_ads() }}
 
-	    {{ render_homepage_common_treatments_ads() }}
+        	{{ render_homepage_featured_video_ad() }}
 
-        {{ render_homepage_featured_video_ad() }}
+		</div>
 
 	</aside> <!--End of Sidebar Content -->
 
