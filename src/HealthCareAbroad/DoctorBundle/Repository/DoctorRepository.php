@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use Doctrine\ORM\QueryBuilder;
+
 use HealthCareAbroad\DoctorBundle\DoctorBundle;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
@@ -94,6 +96,12 @@ class DoctorRepository extends EntityRepository
         return $stmt->fetchAll();
     }
     
+    /**
+     * Get all doctors of an institution
+     * 
+     * @param Mixed <Institution, int> $institution
+     * @return QueryBuilder
+     */
     public function getAllDoctorsByInstitution($institution)
     {
         
@@ -103,10 +111,10 @@ class DoctorRepository extends EntityRepository
         ->innerJoin('a.specializations', 'sp')
         ->innerJoin('a.institutionMedicalCenters', 'c')
         ->leftJoin('a.media', 'dm')
-        ->where('c.institution = :institutionId')
+        ->where('c.institution = :institution')
         ->andWhere('a.status = :status')
         ->orderBy('a.firstName')
-        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institution', $institution)
         ->setParameter('status', Doctor::STATUS_ACTIVE);
         
         return $qb;

@@ -69,7 +69,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
             'medical_center_complete_address_to_string' => new \Twig_Function_Method($this, 'getCompleteAddressAsString'),
-            'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
+            'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'renderInstitutionMedicalCenterLogo'),
             'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
             'render_institution_medical_center_contact_details' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_details'),
             'business_hours_to_view_data' => new \Twig_Function_Method($this, 'businessHoursToViewData'),
@@ -127,7 +127,23 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray;
     }
     
-    public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
+    private function _getLogoDependencies($institutionMedicalCenter)
+    {
+        $dependencies = array();
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $dependencies['logo'] = $institutionMedicalCenter->getLogo();
+        }
+        elseif (\is_array($institutionMedicalCenter)) {
+            //$dependencies['logo'] = $institutionMedicalCenter['logo'];
+        }
+    }
+    
+    /**
+     * 
+     * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
+     * @param array $options
+     */
+    public function renderInstitutionMedicalCenterLogo($institutionMedicalCenter, array $options = array())
     {
         $options['size'] = ImageSizes::MEDIUM;
 

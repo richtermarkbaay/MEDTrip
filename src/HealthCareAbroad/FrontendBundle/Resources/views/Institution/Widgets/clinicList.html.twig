@@ -5,7 +5,7 @@
     	    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
     				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-    				    {{ render_institution_medical_center_logo(each, {context: 2, attr: {class: 'logo'}}) | raw }}
+    				    {# render_institution_medical_center_logo(each, {context: 2, attr: {class: 'logo'}}) | raw #}
                         <span class="name">{{ each.name }}</span>
     				</a>
     			</li>

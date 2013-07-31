@@ -219,10 +219,10 @@ class InstitutionSpecializationRepository extends EntityRepository
     /**
      * Get all active institution specializations of an Institution
      * 
-     * @param Institution $institution
+     * @param mixed Institution|int $institution
      * @return multitype:
      */
-    public function getActiveSpecializationsByInstitution(Institution $institution)
+    public function getActiveSpecializationsByInstitution($institution, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('b, d, m')
@@ -235,7 +235,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->groupBy('b.specialization')
         ->orderBy('d.name');
         
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult($hydrationMode);
     }
 
 

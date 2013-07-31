@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -32,13 +34,14 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'contact_details_to_json' => new \Twig_Function_Method($this, 'contactDetailsToJSON'),
             'getClass' => new \Twig_Function_Method($this, 'getClass'),
             'getClassLabel' => new \Twig_Function_Method($this, 'getClassLabel'),
             'getClassLabels' => new \Twig_Function_Method($this, 'getClassLabels'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
-            'institution_address_to_array' => new \Twig_Function_Method($this, 'institution_address_to_array'),
-            'institution_address_to_string' => new \Twig_Function_Method($this, 'institution_address_to_string'),
+            'institution_address_to_array' => new \Twig_Function_Method($this, 'institutionAddressToArray'),
+            'institution_address_to_string' => new \Twig_Function_Method($this, 'institutionAddressToString'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
             'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
@@ -49,6 +52,36 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'get_website_from_array' => new \Twig_Function_Method($this, 'get_website_from_array'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
         );
+    }
+    
+    public function contactDetailsToJSON(array $contactDetails = array())
+    {
+        $byType = array();
+        foreach ($contactDetails as $contactDetailData) {
+            
+            if ($contactDetailData instanceof ContactDetail) {
+                $contactDetailInstance = $contactDetailData;
+            }
+            elseif (\is_array($contactDetailData)) {
+                // hydrated as array
+                $contactDetailInstance = new ContactDetail();
+                $contactDetailInstance->setCountryCode($contactDetailData['countryCode']);
+                $contactDetailInstance->setAreaCode($contactDetailData['areaCode']);
+                $contactDetailInstance->setNumber($contactDetailData['number']);
+                $contactDetailInstance->setType($contactDetailData['type']);
+            }
+            else {
+                // unknown type that we can't handle
+                continue;
+            }
+            
+            $byType[$contactDetailInstance->getType()] = array(
+                'type' => ContactDetailTypes::getTypeLabel($contactDetailInstance->getType()),
+                'number' => $contactDetailInstance->__toString()
+            );
+        }
+        
+        return \json_encode($byType);
     }
     
     public function contactDetailTypeHasExtension($contactDetailType)
@@ -185,14 +218,34 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      */
-    public function institution_address_to_array(Institution $institution, array $includedKeys=array())
+    public function institutionAddressToArray($institution, array $includedKeys=array())
     {
         $elements = array();
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : self::$institutionDefaultAddressKeys);
+        
+        if ($institution instanceof Institution){
+            $addressData = array(
+                'address1' => $institution->getAddress1(),
+                'city' => $institution->getCity() ? $institution->getCity()->getName() : null,
+                'state' => $institution->getState() ? $institution->getState()->getName() : null,
+                'country' => $institution->getCountry() ? $institution->getCountry()->getName() : null,
+                'zipCode' => \trim($institution->getZipCode())
+            );
+        }
+        elseif (\is_array($institution)) {
+            // hydrated with HYDRATE_ARRAY
+            $addressData = array(
+                'address1' => $institution['address1'],
+                'city' => isset($institution['city']) ? $institution['city']['name'] : null,
+                'state' => isset($institution['state']) ? $institution['state']['name'] : null,
+                'country' => isset($institution['country']) ? $institution['country']['name'] : null,
+                'zipCode' => isset($institution['zipCode']) ? \trim($institution['zipCode']) : null,
+            );
+        }
 
-        $street_address = \json_decode($institution->getAddress1(), true);
+        $street_address = \json_decode($addressData['address1'], true);
         if (isset($includedKeys['address1']) && !\is_null($street_address)) {
             $this->_removeEmptyValueInArray($street_address);
             if (\count($street_address)) {
@@ -200,20 +253,21 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             }
         }
         
-        if (isset($includedKeys['city']) && $institution->getCity()) {
-            $elements['city'] = $institution->getCity()->getName();
+        if (isset($includedKeys['city'])) {
+            $elements['city'] = $addressData['city'];
         }
 
-        if (isset($includedKeys['state']) && $institution->getState()) {
-            $elements['state'] = $institution->getState()->getName();
+        if (isset($includedKeys['state'])) {
+            $elements['state'] = $addressData['state'];
         }
 
-        if (isset($includedKeys['country']) && $institution->getCountry()) {
-            $elements['country'] = $institution->getCountry()->getName();
+        if (isset($includedKeys['country']) ) {
+            $elements['country'] = $addressData['country'];
         }
 
-        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
-            $elements['zipCode'] = $institution->getZipCode();
+        
+        if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
+            $elements['zipCode'] = $addressData['zipCode'];
         }
 
         return $elements;
@@ -227,11 +281,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      */
-    public function institution_address_to_string(Institution $institution, array $includedKeys=array(), $glue = ', ')
+    public function institutionAddressToString($institution, array $includedKeys=array(), $glue = ', ')
     {
-        $arrAddress = $this->institution_address_to_array($institution, $includedKeys);
+        $arrAddress = $this->institutionAddressToArray($institution, $includedKeys);
 
         $zipCode = '';
         if(isset($arrAddress['zipCode'])) {

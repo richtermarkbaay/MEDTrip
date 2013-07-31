@@ -1,0 +1,9 @@
+services:
+    services.api.institution:
+        class: HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+            
+    controller.api.institution:
+        class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
+        
