@@ -234,7 +234,8 @@ var InstitutionProfile = {
                     if (responseText.errors.length) {
                         $.each(responseText.errors, function(i, each){
                         	$('.control-group.' + each.field).addClass('error');
-                        	$('<ul class="error"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (each.field == 'city' ? '.fancy-dropdown-wrapper' : 'input')));
+                        	isLocationDropdown = each.field == 'city' || each.field == 'state' || each.field == 'country';
+                        	$('<ul class="error"><li>'+each.error+'</li></ul>').insertAfter(_form.find('.'+each.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input')));
                         });
                     }
 
