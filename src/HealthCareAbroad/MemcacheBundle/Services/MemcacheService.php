@@ -22,9 +22,8 @@ class MemcacheService
     public function __construct($servers=array())
     {
         $this->hasMemcache = \class_exists('Memcache');
-
+        
         if (!static::$setupMemcacheComplete && $this->hasMemcache) {
-            
             $this->memcache = new \Memcache();
             foreach ($servers as $key => $value) {
                 $this->memcache->addServer($value['host'], $value['port']);
@@ -33,7 +32,12 @@ class MemcacheService
         }
         
         // TEMPORARY only
-        $this->hasMemcache = false;
+        //$this->hasMemcache = false;
+    }
+    
+    public function flush()
+    {
+        $this->memcache->flush();
     }
     
     /**

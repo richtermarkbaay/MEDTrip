@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use Doctrine\ORM\Query;
@@ -22,9 +24,86 @@ class InstitutionApiService
      */
     private $doctrine;
     
+    /**
+     * @var MemcacheService
+     */
+    private $memcache;
+    
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
+    }
+    
+    public function setMemcache(MemcacheService $v)
+    {
+        $this->memcache = $v;
+    }
+    
+    /**
+     * Build an array of public data of an institution by slug
+     * 
+     * @param string $slug
+     */
+    public function buildInstitutionPublicDataBySlug($slug)
+    {
+        // we need to get the institution id first since this will be the key that we will use for caching
+        // we may need to reconsider this, but considering the speed of query and hydration, 
+        // this is an acceptable trade off with the consistency of using institution id in memcache 
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('inst.id')
+            ->from('InstitutionBundle:Institution', 'inst')
+            ->where('inst.slug = :slug')
+            ->setParameter('slug', $slug);
+        
+        $institutionId = (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        
+        return $this->buildInstitutionPublicDataById($institutionId);
+    }
+    
+    /**
+     * Build an array of public data of an institution by slug
+     *
+     * @param string $slug
+     */
+    public function buildInstitutionPublicDataById($institutionId)
+    {
+        if (!$institutionId){
+            return null;
+        }
+        
+        //TODO: check here for memcache value
+        $key = "api.institution_public_data.{$institutionId}";
+        $memcachedData = $this->memcache->get($key); 
+        if ($memcachedData){
+            $institution = $memcachedData;
+        }
+        else {
+            $qb = $this->getQueryBuilderForInstitution();
+            $qb->andWhere('inst.id = :institutionId')
+                ->setParameter('institutionId', $institutionId);
+            
+            $institution = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
+            if ($institution) {
+                // build the doctors data
+                $institution['doctors'] = $this->getAllDoctors($institutionId);
+            
+            
+                // build awards data
+                $institution['globalAwards'] = $this->doctrine->getRepository('InstitutionBundle:Institution')
+                ->getAllGlobalAwardsByInstitution($institutionId, Query::HYDRATE_ARRAY);
+            
+                //$start = \microtime(true);
+                $institution['offeredServices'] = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')
+                ->getAllServicesByInstitution($institutionId, Query::HYDRATE_ARRAY);
+            
+                //$end = \microtime(true); $diff = $end-$start; echo "{$diff}s"; exit;
+            }
+            
+            // TODO: store to memcache
+            $this->memcache->set($key, $institution);
+        }
+        
+        return $institution;
     }
     
     /**

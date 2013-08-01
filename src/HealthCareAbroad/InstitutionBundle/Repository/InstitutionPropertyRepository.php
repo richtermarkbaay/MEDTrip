@@ -29,15 +29,20 @@ class InstitutionPropertyRepository extends EntityRepository
     /**
      * Get all anicilliary services
      */
-    public function getAllServicesByInstitution($institution)
+    public function getAllServicesByInstitution($institution, $hydrationMode=Query::HYDRATE_OBJECT)
     {
+        $institutionId = $institution;
+        if ($institution instanceof Institution){
+            $institutionId = $institution->getId();
+        }
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT a.*, b.* FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.status = 1";
+        $query = "SELECT a.*, b.* FROM institution_properties a LEFT JOIN offered_services b ON b.id = a.value WHERE a.institution_id = :id AND b.status = 1 AND a.institution_property_type_id = :propertyType";
         $stmt = $connection->prepare($query);
-        $stmt->bindValue('id', $institution->getId());
+        $stmt->bindValue('id', $institutionId);
+        $stmt->bindValue('propertyType', InstitutionPropertyType::ANCILLIARY_SERVICE_ID);
         $stmt->execute();
         
-        return $stmt->fetchAll();
+        return $stmt->fetchAll($hydrationMode);
         
     }
     

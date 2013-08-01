@@ -13,6 +13,10 @@ class InstitutionPropertyType
     
     const TYPE_GLOBAL_AWARD = 'global_award_id';
     
+    const GLOBAL_AWARD_ID = 3;
+    
+    const ANCILLIARY_SERVICE_ID = 1;
+    
     /**
      * @var bigint $id
      */

@@ -150,16 +150,21 @@ class InstitutionRepository extends EntityRepository
      * @param Institution $institution
      * @return array GlobalAward
      */
-    public function getAllGlobalAwardsByInstitution(Institution $institution)
+    public function getAllGlobalAwardsByInstitution($institution, $hydrationMode=Query::HYDRATE_OBJECT)
     {
-        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
+        $institutionId = $institution;
+        if ($institution instanceof Institution ){
+            $institutionId = $institution->getId();
+        }
+        
+        //$globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
 
         $sql = "SELECT a.value  FROM institution_properties a ".
                         "WHERE a.institution_property_type_id = :propertyType AND a.institution_id = :institutionId";
         $statement = $this->getEntityManager()
         ->getConnection()->prepare($sql);
 
-        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'institutionId' => $institution->getId()));
+        $statement->execute(array('propertyType' => InstitutionPropertyType::GLOBAL_AWARD_ID, 'institutionId' => $institutionId));
 
         $result = array();
         if($statement->rowCount() > 0) {
@@ -172,7 +177,7 @@ class InstitutionRepository extends EntityRepository
             $query = $this->getEntityManager()->createQuery($dql)
             ->setParameter(1, $ids);
 
-            $result = $query->getResult();
+            $result = $query->getResult($hydrationMode);
         }
 
         return $result;
