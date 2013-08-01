@@ -405,7 +405,12 @@ var InstitutionMedicalCenter = {
                     		liList += '<li>' + $(this).next().text() + '</li>';
                     	});
 
-                    	$('#servicesTable > ul:first').html(liList);
+                    	if($('#servicesTable > ul.single-listing').length) {
+                    		$('#servicesTable > ul.single-listing:first').html(liList);                        	                    		
+                    	} else {
+                    		$('#servicesTable').html('<ul class="single-listing">' + liList + '</ul>');
+                    	}
+
                     	break;
                     case 'awardsForm':
                 		$("div[id^='show-']").animate({opacity: 1});
