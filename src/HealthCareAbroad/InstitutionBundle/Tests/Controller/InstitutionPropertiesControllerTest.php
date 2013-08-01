@@ -3,7 +3,7 @@
  * Functional test for InstitutionPropertiesController
  * 
  * @author Alnie Jacobe
- *
+ * Runs only when csrf_protection is set to false
  */
 
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
@@ -13,12 +13,12 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class InstitutionPropertiesControllerTest extends InstitutionBundleWebTestCase
 {
+    
 	public function testEditGlobalAward()
     {
-    
         $client = $this->getBrowserWithActualLoggedInUser();
         $uri = "/institution/awards-certificates-and-affiliations/ajaxEdit";
-        $client->request('POST', $uri, array('propertyId' => 1, 'globalAwardId' => 1));
+        $client->request('POST', $uri, array('propertyId' => 1, 'globalAwardId' => 1, ));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     
         $client = $this->getBrowserWithActualLoggedInUser();

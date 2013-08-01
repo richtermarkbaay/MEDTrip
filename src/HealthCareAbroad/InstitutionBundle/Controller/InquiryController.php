@@ -41,7 +41,7 @@ class InquiryController extends InstitutionAwareController
     public function viewInquiryAction(Request $request)
     {
         if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
-            throw $this->createNotFoundException('Invalid Inquiry Id');
+            throw $this->createNotFoundException('Invalid Inquiry');
         }
         $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_READ);
     
@@ -56,7 +56,7 @@ class InquiryController extends InstitutionAwareController
     {
         $institutionService = $this->get('services.institution');
         if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
-            throw $this->createNotFoundException('Invalid Inquiry Id');
+            throw $this->createNotFoundException('Invalid Inquiry');
         }
         
         $institutionService->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
@@ -75,7 +75,7 @@ class InquiryController extends InstitutionAwareController
         $institutionService = $this->get('services.institution');
         
         $inquiryStatus = InstitutionInquiry::STATUS_READ;
-        if($request->get('status') == '1') {
+        if($request->get('status') != InstitutionInquiry::STATUS_READ) {
             $inquiryStatus = InstitutionInquiry::STATUS_UNREAD;
         }
         

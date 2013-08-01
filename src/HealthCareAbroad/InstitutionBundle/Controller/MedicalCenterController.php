@@ -82,7 +82,7 @@ class MedicalCenterController extends InstitutionAwareController
             if($this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view') {
                 $this->institutionMedicalCenter = $this->service->findById($imcId, false);
 
-                if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId()) {
+                if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId() ) {
                     return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
                 }
             } else {
@@ -197,11 +197,12 @@ class MedicalCenterController extends InstitutionAwareController
                     InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => $removedFields
                 ));
                 $form->bind($request);
-
+    
                 if ($form->isValid()) {
                     $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
-                    
+    
+                    $responseContent = array();
                     if (isset($formVariables['businessHours'])) {
                         $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
                         foreach ($this->institutionMedicalCenter->getBusinessHours() as $hour ) {
@@ -211,10 +212,10 @@ class MedicalCenterController extends InstitutionAwareController
                     } else if (isset($form['services'])) {
                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
-                        $responseContent = array('services' => $form['services']);
+                        $responseContent['services'] = $form['services'];
 
                     } else if ($awardType = $request->get('awardTypeKey')) {
-
+                        
                         $awardsData = isset($form['awards']) ? $form['awards']->getData() : array();
                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $awardsData,InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
