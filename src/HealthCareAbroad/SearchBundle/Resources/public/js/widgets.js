@@ -236,12 +236,7 @@ var NarrowSearchWidget = {
                 minLength: 0,
                 source: function(request, response) {
                    var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i");
-                   var matches = [];
-                   $.each(NarrowSearchWidget.sources[widget_key], function(_i, _val) {
-                       if (_val.value && ( !request.term || matcher.test(_val.label))) {
-                           matches.push({value: _val.label, id: _val.value, label: _val.label, type: widget_key});
-                       }
-                   });
+                   var matches = SearchWidgetUtils.getMatches(matcher, NarrowSearchWidget.sources[widget_key], widget_key, request);
 
                    response(matches);
                 },
@@ -251,7 +246,8 @@ var NarrowSearchWidget = {
             });
         // override _renderItem function of UI.autocomplete
         field.data('ui-autocomplete')._renderItem = function(ul, item) {
-            var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');
+            /*var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');*/
+            var _itemLink = SearchWidgetUtils.getLink(item);
 
             _itemLink.on('click', function(){
                 $(field.attr('data-value-container')).html(item.label); // update the label of the value container
@@ -308,30 +304,26 @@ var NarrowSearchWidget = {
     }
 };
 
-var SearchWidgetUtils = {
-    getLink: function(item) {
-        /*TODO: use classes to format the labels*/
-        var link, isCountry = item.id.slice(-2) == '-0';
-        if (item.type == 'destinations') {
-            link = isCountry ?
-                '<a data-value="'+item.id+'" data-type="'+item.type+'"><b>'+item.label+'<b/></a>':
-                '<a data-value="'+item.id+'" data-type="'+item.type+'">&nbsp;&nbsp;'+item.label+'</a>';
-        } else if (item.type == 'treatments') {
-            link = '<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>';
-        }
+var SearchWidgetUtils = (function() {
+    var isCountry = function(id) {
+        return id.slice(-2) == '-0';
+    };
 
-        return $(link);
-    },
+    var getLink = function(item) {
+        var label = item.type == 'destinations' ? (isCountry(item.id) ? '<b>'+item.label+'<b/>' : '&nbsp;&nbsp;'+item.label) : item.label;
 
-    getMatches: function(matcher, datasource, type, request) {
+        return $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+label+'</a>');
+    };
+
+    var getMatches = function(matcher, datasource, type, request) {
         var matches = [];
         var submatches = [];
-        $.each(datasource, function(_i, _each){
+        $.each(datasource, function(_i, _each) {
+            /* TODO: why do we need request.term? */
             if (_each.value && ( !request.term || matcher.test(_each.label))) {
                 var _eachLabel = _each.label;
                 if (type == 'destinations') {
-                    var isCountry = _each.value.slice(-2) == '-0';
-                    if (isCountry) {
+                    if (isCountry(_each.value)) {
                         if (typeof submatches[_eachLabel] != 'undefined') {
                             return true;
                         }
@@ -339,10 +331,10 @@ var SearchWidgetUtils = {
                         matches.push({'value': _each.label, 'id': _each.value, 'label': _eachLabel, 'type': type});
                         return true;
                     }
+                    /* TODO: might be faster if we make a copy of the array then pop items off */
                     for (var i = 0, l = datasource.length; i < l; i++) {
                         var subeach = datasource[i];
                         if (typeof submatches[subeach.label] == 'undefined') {
-
                             var subeachValue = subeach.value;
                             if (subeachValue == _each.value.split('-')[0] + '-0') {
                                 submatches[subeach.label] = subeachValue;
@@ -350,7 +342,6 @@ var SearchWidgetUtils = {
                                 break;
                             }
                         }
-
                     }
                    _eachLabel = _eachLabel.split(',').reverse().splice(-1).join(',');
                 }
@@ -359,5 +350,10 @@ var SearchWidgetUtils = {
         });
 
         return matches;
-    }
-};
+    };
+
+    return {
+        getLink: getLink,
+        getMatches: getMatches
+    };
+})();

@@ -140,6 +140,60 @@ class DefaultSearchStrategy extends SearchStrategy
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * CAUTION:
+     *
+     * This has a slightly different algorithmn than the rest of the
+     * load**** methods. Don't expect that you can pass in the same
+     * parameters and this will just work.
+     *
+     *
+     * TODO: all load**** methods are vulnerable to sql injection
+     *
+     * @param array $parameters
+     */
+    public function loadDestinations($parameters)
+    {
+        $optionalWhereClause = ' ';
+        if (isset($parameters['searchParameter'])) {
+            $searchParameter = $parameters['searchParameter'];
+
+            if (isset($searchParameter['specialization'])) {
+                $optionalWhereClause .= " AND a.specialization_id = {$searchParameter['specialization']} ";
+            }
+
+            if (isset($searchParameter['subSpecialization'])) {
+                $optionalWhereClause .= " AND a.sub_specialization_id = {$searchParameter['subSpecialization']} ";
+            }
+
+            if (isset($searchParameter['treatment'])) {
+                $optionalWhereClause .= " AND a.treatment_id = {$searchParameter['treatment']} ";
+            }
+        }
+
+        $sql = "
+            SELECT a.country_name AS label, CONCAT(CAST(a.country_id AS CHAR), '-0') AS value, a.country_name as country, a.country_name AS orderedLabel
+            FROM search_terms AS a
+            WHERE a.status = {$this->searchTermActiveStatus}
+            $optionalWhereClause
+
+            UNION
+
+            SELECT CONCAT(a.city_name, ', ', a.country_name) AS label, CONCAT(CAST(a.country_id AS CHAR), '-', CAST(a.city_id AS CHAR)) AS value, a.country_name as country, CONCAT(a.country_name, a.city_name) AS orderedLabel
+            FROM search_terms AS a
+            WHERE a.city_id IS NOT NULL AND a.status = {$this->searchTermActiveStatus}
+            $optionalWhereClause
+        ";
+
+        $sql .= ' GROUP BY label ORDER BY orderedLabel ASC ';
+
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
     //TODO: should we compare on entries on the terms table?
     public function loadSpecializations($parameters)
     {
