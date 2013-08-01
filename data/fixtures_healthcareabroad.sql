@@ -1241,8 +1241,9 @@ CREATE TABLE IF NOT EXISTS `institution_user_password_tokens` (
 --
 
 INSERT INTO `institution_user_password_tokens` (`id`, `account_id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
-(1, 1, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1', '2013-04-11 01:48:48', '2013-04-18 01:48:48', 1);
-
+(1, 1, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1', '2013-08-11 01:48:48', '2013-08-18 01:48:48', 1),
+(2, 2, 'a2846338db37bb3cca03211ceb8910822a5bb7862c02efb211dce7859b426036', '2013-07-01 08:25:48', '2013-07-04 08:25:47', 1),
+(3, 34, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f6', '2013-08-11 01:48:48', '2013-08-18 01:48:48', 1);
 -- --------------------------------------------------------
 
 --

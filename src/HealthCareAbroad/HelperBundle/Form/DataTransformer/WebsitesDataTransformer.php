@@ -20,7 +20,8 @@ class WebsitesDataTransformer implements  DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (!\is_array($value)) {
+        if (!is_array($value)) {
+            //throw new \Exception(__CLASS__.' expects $value to be an array, '.\gettype($value).' given');
             $value = SocialMediaSites::getDefaultValues();
         }
 

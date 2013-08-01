@@ -426,6 +426,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
                 return $this->redirect($this->generateUrl($nextStepRoute, array('imcId' => $this->institutionMedicalCenter->getId())));
             }
+            $form_errors = $this->get('validator')->validate($form);
             if($form_errors){
                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
