@@ -377,7 +377,7 @@ CREATE TABLE IF NOT EXISTS `business_hours` (
   `notes` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4215 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 

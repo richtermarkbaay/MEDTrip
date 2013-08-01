@@ -201,7 +201,7 @@ class MedicalCenterController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
-
+                    
                     if (isset($formVariables['businessHours'])) {
                         $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
                         foreach ($this->institutionMedicalCenter->getBusinessHours() as $hour ) {
