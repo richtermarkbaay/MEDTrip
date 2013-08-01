@@ -167,11 +167,6 @@ hr {
     text-align: center;
 }
 
-#confirmation-message.fixed {
-    margin-top: 0;
-    position: fixed;
-}
-
 #confirmation-message .confirmation-box {
     float: left;
     position: relative;
@@ -183,6 +178,15 @@ hr {
     padding-bottom: 0;
     padding-right: 14px;
     border-radius: 0;
+}
+
+#confirmation-message.fixed {
+    margin-top: 0;
+    position: fixed;
+}
+
+#confirmation-message.fixed .confirmation-box {
+    margin-top: 0;
 }
 
 #topnav {
