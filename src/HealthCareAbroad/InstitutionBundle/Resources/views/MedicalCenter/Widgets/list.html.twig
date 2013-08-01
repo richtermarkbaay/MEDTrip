@@ -1,6 +1,6 @@
 <ul class="thumbnails">
 {% for institutionMedicalCenter in medicalCenters %}
-    {% set website = get_main_website(institutionMedicalCenter.websites) %}
+    {% set website = institutionMedicalCenter.websites %}
     <li class="thumbnail hca-clinic-listing">
         {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
         {% set imgSrc = institutionMedicalCenter.logo ? institution_media_src(institutionMedicalCenter.logo, logoSize) : imageplaceholder.imcDefaultLogo %}
