@@ -8,7 +8,7 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 {
-    public function testIndex()
+    /*public function testIndex()
     {
         $uri = "/institution/listings";
         
@@ -133,10 +133,10 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
         $client->request('POST', $uri, array('coordinates' => '10.3112791,123.89776089999998'));
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    
+    */
     public function testUpdateByField()
     {
-        $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+        $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/institution/listing/2');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
@@ -146,10 +146,6 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
                         'description' => 'testing2',
                         'businessHours' => array('18a6a330-af4d-4371-a4e1-4ca50843847b' => '{"weekdayBitValue":16,"opening":"8:00 AM","closing":"5:00 PM","notes":""}'),
                         'services' => array('1'),
-                        'contactDetails[0][country]' => '17',
-                        'contactDetails[0][area_code]' => '343',
-                        'contactDetails[0][number]' => '434',
-                        'contactDetails[0][ext]' => '3',
                         '_token' => $csrf_token
         ));
         $client->request('POST', "/institution/medical-center/2/ajax/update-by-field", $formValues);
