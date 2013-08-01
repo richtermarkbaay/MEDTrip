@@ -1,20 +1,12 @@
 institution_editAccount:
     pattern:  /manage-account-profile.html
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount, accountId: ~ }
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccount }
     requirements:
         _method:  GET|POST
-        accountId: \d+
         
 institution_editAccountPassword:
     pattern:  /manage-account-password.html
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccountPassword, accountId: ~ }
-    requirements:
-        _method:  GET|POST
-        accountId: \d+
-
-institution_invite_user:
-    pattern:  /invite-staff
-    defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccountPassword}
     requirements:
         _method:  GET|POST
 

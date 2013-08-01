@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Doctrine\Tests\DBAL\Types\VarDateTimeTest;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
@@ -125,8 +127,9 @@ class InstitutionPropertiesController extends InstitutionAwareController
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
-
+//         echo $this->request->get('globalAwardId');exit;
         $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
+        
         if (!$globalAward) {
             throw $this->createNotFoundException('Invalid global award.');
         }
@@ -154,7 +157,7 @@ class InstitutionPropertiesController extends InstitutionAwareController
                 }
             }
             else {
-                $response = new Response('Form error'.$e->getMessage(), 400);
+                $response = new Response('Invalid Form', 400);
             }
         }
         
