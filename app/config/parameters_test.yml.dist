@@ -8,6 +8,7 @@ parameters:
 
     couchDbBaseUrl: @COUCHDB_URL@
     couchDbAlert: @COUCHDB_DOCUMENT@
+    couchDbCities:  cities
 
     mailer_transport: smtp
     mailer_host: localhost
@@ -24,4 +25,12 @@ parameters:
 
     memcached.servers:
         - { host: 127.0.0.1, port: 11211 }
-    
+
+    notifications.enabled: false
+    notification.account_created.enabled: true
+    notification.hospital_profile_created.enabled: true
+    notification.clinic_created.enabled: true
+    notification.new_listings_approved.enabled: false
+    notification.inquiries.enabled: false
+    notification.password_reset.enabled: true
+    notification.password_confirm.enabled: true
