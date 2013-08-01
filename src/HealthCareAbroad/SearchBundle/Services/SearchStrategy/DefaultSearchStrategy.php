@@ -158,15 +158,19 @@ class DefaultSearchStrategy extends SearchStrategy
         if (isset($parameters['searchParameter'])) {
             $searchParameter = $parameters['searchParameter'];
 
-            if (isset($searchParameter['specialization'])) {
+            if (isset($searchParameter['country']) && $searchParameter['country']) {
+                $sql .= " AND a.country_id = {$searchParameter['country']} ";
+            }
+
+            if (isset($searchParameter['specialization']) && $searchParameter['specialization']) {
                 $optionalWhereClause .= " AND a.specialization_id = {$searchParameter['specialization']} ";
             }
 
-            if (isset($searchParameter['subSpecialization'])) {
+            if (isset($searchParameter['subSpecialization']) && $searchParameter['subSpecialization']) {
                 $optionalWhereClause .= " AND a.sub_specialization_id = {$searchParameter['subSpecialization']} ";
             }
 
-            if (isset($searchParameter['treatment'])) {
+            if (isset($searchParameter['treatment']) && $searchParameter['treatment']) {
                 $optionalWhereClause .= " AND a.treatment_id = {$searchParameter['treatment']} ";
             }
         }
