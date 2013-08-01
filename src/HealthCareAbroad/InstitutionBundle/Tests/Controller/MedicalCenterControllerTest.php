@@ -8,7 +8,6 @@ use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
 class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 {
-//         $uri = "/institution/listings";
 //     public function testIndex()
 //     {
 //         $uri = "/institution/listings";
