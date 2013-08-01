@@ -4,7 +4,8 @@ services:
         calls:
             - [setDoctrine, [@doctrine]]
             - [setMemcache, [@services.memcache]]
+            - [setMediaExtension, [@services.media.twig.extension]]
             
-    controller.api.institution:
-        class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
+    #controller.api.institution:
+    #    class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
         

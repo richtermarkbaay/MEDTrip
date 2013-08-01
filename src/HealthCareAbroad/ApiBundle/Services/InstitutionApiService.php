@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
+use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
+
 use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
@@ -29,6 +33,11 @@ class InstitutionApiService
      */
     private $memcache;
     
+    /**
+     * @var MediaExtension
+     */
+    private $mediaExtension;
+    
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
@@ -39,12 +48,59 @@ class InstitutionApiService
         $this->memcache = $v;
     }
     
+    public function setMediaExtension(MediaExtension $v)
+    {
+        $this->mediaExtension = $v;
+    }
+    
+    /**
+     * @return \HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
+     */
+    public function getMediaExtension()
+    {
+        return $this->mediaExtension;
+    }
+    
+    /**
+     * Build the cover photo source of an institution, if allowed
+     * 
+     * @param array $institution array data
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+     */
+    public function buildFeaturedMediaSource(&$institution)
+    {
+        // TODO: provide a more concise list of paying client flags
+        if (isset($institution['featuredMedia']) && $institution['payingClient']){
+            $institution['featuredMedia']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['featuredMedia'], ImageSizes::LARGE_BANNER);
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Build the logo source of an institution, if allowed
+     * 
+     * @param array array data of $institution
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+     */
+    public function buildLogoSource(&$institution)
+    {
+        // TODO: provide a more concise list of paying client flags
+        if (isset($institution['logo']) && $institution['payingClient']){
+            $institution['logo']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['logo'], ImageSizes::MEDIUM);
+        }
+        
+        return $this;
+    }
+    
+    
     /**
      * Build an array of public data of an institution by slug
      * 
      * @param string $slug
+     * @return array $institution data hydrated with HYDRATE_ARRAY
      */
-    public function buildInstitutionPublicDataBySlug($slug)
+    public function getInstitutionPublicDataBySlug($slug)
     {
         // we need to get the institution id first since this will be the key that we will use for caching
         // we may need to reconsider this, but considering the speed of query and hydration, 
@@ -57,15 +113,16 @@ class InstitutionApiService
         
         $institutionId = (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
         
-        return $this->buildInstitutionPublicDataById($institutionId);
+        return $this->getInstitutionPublicDataById($institutionId);
     }
     
     /**
      * Build an array of public data of an institution by slug
      *
      * @param string $slug
+     * @return array $institution data hydrated with HYDRATE_ARRAY
      */
-    public function buildInstitutionPublicDataById($institutionId)
+    public function getInstitutionPublicDataById($institutionId)
     {
         if (!$institutionId){
             return null;
@@ -78,7 +135,7 @@ class InstitutionApiService
             $institution = $memcachedData;
         }
         else {
-            $qb = $this->getQueryBuilderForInstitution();
+            $qb = $this->getQueryBuilderForInstitutionPublicProfileData();
             $qb->andWhere('inst.id = :institutionId')
                 ->setParameter('institutionId', $institutionId);
             
@@ -174,10 +231,10 @@ class InstitutionApiService
      * 
      * @return \Doctrine\ORM\QueryBuilder
      */
-    private function getQueryBuilderForInstitution()
+    private function getQueryBuilderForInstitutionPublicProfileData()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal')
+        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m, imc_sp, sp, imc_logo, sp_m')
             ->from('InstitutionBundle:Institution', 'inst')
             ->innerJoin('inst.institutionMedicalCenters', 'imc')
             ->leftJoin('inst.city', 'ct')
@@ -187,6 +244,11 @@ class InstitutionApiService
             ->leftJoin('inst.featuredMedia', 'fm')
             ->leftJoin('inst.logo', 'lg')
             ->leftJoin('inst.gallery', 'gal')
+            ->leftJoin('gal.media', 'gal_m')
+            ->leftJoin('imc.institutionSpecializations', 'imc_sp')
+            ->leftJoin('imc_sp.specialization', 'sp')
+            ->leftJoin('sp.media', 'sp_m')
+            ->leftJoin('imc.logo', 'imc_logo')
             ->where('1=1')
             ->andWhere('inst.status = :activeStatus')
                 ->setParameter('activeStatus', InstitutionStatus::getBitValueForApprovedStatus());
