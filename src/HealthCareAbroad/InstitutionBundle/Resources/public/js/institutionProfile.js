@@ -204,7 +204,11 @@ var InstitutionProfile = {
                     		liList += '<li>' + $(this).next().text() + '</li>';
                     	});
 
-                    	$('#servicesText > ul:first').html(liList);
+                    	if($('#servicesText > ul.single-listing').length) {
+                    		$('#servicesText > ul.single-listing:first').html(liList);                        	                    		
+                    	} else {
+                    		$('#servicesText').html('<ul class="single-listing">' + liList + '</ul>');
+                    	}
 
                     	break;
                     case 'awardsForm':

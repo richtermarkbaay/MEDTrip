@@ -466,12 +466,12 @@
 }
 
 .btn {
-    -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
     border-radius: 3px;
-    font-family: 'PT Sans';
     font-weight: 400;
     text-transform: capitalize;
+    font-family: 'PT Sans';
 }
 
 .btn.btn-top {
@@ -543,8 +543,8 @@
 }
 
 .btn.btn-link:hover {
-    color: #000;
     text-decoration: none;
+    color: #000;
 }
 
 .btn.btn-misc {
@@ -571,16 +571,16 @@ form label small {
 }
 
 form label.radio small,form label.checkbox small {
-    color: rgba(0,0,0,0.5);
     opacity: 1;
+    color: rgba(0,0,0,0.5);
 }
 
 form input[type=text],form input[type=password],form input[type=email],form select {
     border-radius: 0;
-    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
     display: block;
     height: 35px;
     margin-bottom: 0;
+    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
 }
 
 form input[type=text].error,form input[type=password].error,form input[type=email].error,form select.error {
@@ -589,14 +589,14 @@ form input[type=text].error,form input[type=password].error,form input[type=emai
 
 form textarea {
     border-radius: 0;
-    height: 270px;
     width: 96%;
+    height: 270px;
 }
 
 form select {
-    -webkit-appearance: none;
     background: #fff;
     border-radius: 0;
+    -webkit-appearance: none;
 }
 
 body {
@@ -615,17 +615,30 @@ a:hover {
 
 hr {
     background-color: rgba(0,0,0,0.1);
-    border: 0;
     color: #000;
+    border: 0;
     height: 1px;
 }
 
 #confirmation-message {
     float: left;
-    left: 50%;
     position: fixed;
-    text-align: center;
+    left: 50%;
     z-index: 2000;
+    text-align: center;
+}
+
+#confirmation-message .confirmation-box {
+    float: left;
+    position: relative;
+    left: -50%;
+    margin-top: 62px;
+}
+
+#confirmation-message .confirmation-box .alert {
+    padding-bottom: 0;
+    padding-right: 14px;
+    border-radius: 0;
 }
 
 #confirmation-message.fixed {
@@ -633,30 +646,21 @@ hr {
     position: fixed;
 }
 
-#confirmation-message .confirmation-box {
-    float: left;
-    left: -50%;
-    margin-top: 62px;
-    position: relative;
-}
-
-#confirmation-message .confirmation-box .alert {
-    border-radius: 0;
-    padding-bottom: 0;
-    padding-right: 14px;
+#confirmation-message.fixed .confirmation-box {
+	margin-top: 0;
 }
 
 #topnav {
     color: #a2a2a2;
-    font-family: 'PT Sans';
     font-size: 13px;
-    padding: 5px 0;
+    font-family: 'PT Sans';
     text-align: right;
+    padding: 5px 0;
 }
 
 #header {
-    background-color: rgba(0,0,0,0.03);
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,0.03);
     padding: 10px 0;
 }
 
@@ -669,47 +673,47 @@ hr {
 }
 
 #header .navbar .nav>li>a {
-    border: 1px solid transparent;
-    border-radius: 5px;
     font-family: 'PT Sans';
     font-weight: 700;
+    border: 1px solid transparent;
+    border-radius: 5px;
     padding: 10px 18px;
 }
 
 #header .navbar .nav .dropdown-menu {
+    min-width: 220px;
+    margin-top: -2px;
     border-radius: 5px;
     border-top-left-radius: 0;
     float: right;
-    margin-top: -2px;
-    min-width: 220px;
 }
 
 #header .navbar .nav .open>a {
-    background-color: #fff;
-    border: 1px solid rgba(0,0,0,0.3);
-    border-bottom: 1px solid #fff;
-    border-bottom-left-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: 0 -3px 5px 0 rgba(0,0,0,0.08);
-    color: #fe6500;
     position: relative;
     z-index: 10000;
+    background-color: #fff;
+    color: #fe6500;
+    border: 1px solid rgba(0,0,0,0.3);
+    border-bottom: 1px solid #fff;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    box-shadow: 0 -3px 5px 0 rgba(0,0,0,0.08);
 }
 
 #nav {
-    background-color: #eef5ed;
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    background-color: #eef5ed;
 }
 
 #content {
-    padding: 1em 0 3em;
     position: relative;
     word-wrap: break-word;
+    padding: 1em 0 3em;
 }
 
 #content .confirm-msg {
-    margin-bottom: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #content .confirm-msg .alert {
@@ -718,14 +722,14 @@ hr {
 }
 
 #content .span8 .tabbable {
-    margin-left: 0;
     margin-right: 0;
+    margin-left: 0;
 }
 
 #content h1 {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    margin: 15px;
     padding-bottom: 10px;
+    margin: 15px;
 }
 
 #content section.section {
@@ -743,8 +747,8 @@ hr {
 }
 
 #content section.section.inquiries .row {
-    margin-bottom: 20px;
     margin-left: 20px;
+    margin-bottom: 20px;
 }
 
 #content section.section.inquiries .row input {
@@ -785,14 +789,14 @@ hr {
 
 #content section.section.hca-clinic-heading h1,#content section.section.hca-doctor-heading h1 {
     border-bottom: none;
-    margin-bottom: 0;
     padding-bottom: 0;
+    margin-bottom: 0;
     padding-top: 55px;
 }
 
 #content section.section.hca-clinic-heading h4 small,#content section.section.hca-doctor-heading h4 small {
-    font-size: 70%;
     margin-right: 3px;
+    font-size: 70%;
 }
 
 #content section.section.hca-main-profile {
@@ -813,14 +817,14 @@ hr {
 
 #content section.section.hca-main-profile h3 {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    font-weight: 400;
     padding-bottom: 10px;
     padding-top: 5px;
+    font-weight: 400;
 }
 
 #content section.section.hca-main-profile .hca-profile-sublevel {
-    color: #6e6e6e;
     font-weight: 700;
+    color: #6e6e6e;
 }
 
 #content section.section.hca-main-profile .awards-listing {
@@ -833,24 +837,24 @@ hr {
 
 #content section.section .row>div .row-field>p.marker {
     display: block;
-    font-weight: 700;
-    line-height: 20px;
     margin-bottom: 5px;
+    line-height: 20px;
+    font-weight: 700;
 }
 
 #content section.section .row-fluid .description small {
-    color: #a2a2a2;
     display: block;
+    color: #a2a2a2;
 }
 
 #content section.section .row-fluid .website {
-    margin-bottom: 0;
     margin-left: 0;
+    margin-bottom: 0;
 }
 
 #content section.section .row-fluid .social-media {
-    margin-bottom: 0;
     margin-top: -10px;
+    margin-bottom: 0;
 }
 
 #content section.section .row-fluid .social-media .icon-twitter {
@@ -866,30 +870,30 @@ hr {
 }
 
 #content section.section .row-fluid .social-media span {
-    color: #888;
-    display: block;
     font-family: 'PT Sans';
     margin-right: 3px;
+    color: #888;
+    display: block;
     margin-top: 10px;
 }
 
 #content section.section .row-fluid .social-media label {
+    width: 100%;
     clear: both;
     margin-top: 10px;
-    width: 100%;
 }
 
 #content section.section .row-fluid .social-media .icon-2x {
-    font-weight: 500;
     line-height: 1.8em;
+    font-weight: 500;
     padding-left: 12px;
 }
 
 #content section.section .row-fluid .social-media .icon-2x span {
-    color: #888;
-    display: inline-block;
     font-family: 'PT Sans';
+    display: inline-block;
     margin-right: 5px;
+    color: #888;
 }
 
 #content section.section .row-fluid.hca-edit-box .control-group,#content section.section .row-fluid.hca-edit-box .row {
@@ -919,10 +923,10 @@ hr {
 }
 
 #content section.section .row-fluid.hca-edit-box .control-group.hca-edit-control-group p {
-    display: block;
-    margin-bottom: 0;
     margin-left: 20px;
     padding-top: 18px;
+    margin-bottom: 0;
+    display: block;
     position: absolute;
 }
 
@@ -951,8 +955,8 @@ hr {
 
 #content section.section .row-fluid.terms .specialization-edit-listing {
     background-color: #fff;
-    max-height: 218px;
     overflow: auto;
+    max-height: 218px;
 }
 
 #content section.section .row-fluid.terms .specialization-edit-listing input[type=radio],#content section.section .row-fluid.terms .specialization-edit-listing input[type=checkbox] {
@@ -960,8 +964,8 @@ hr {
 }
 
 #content section.section .row-fluid.terms .specialization-edit-listing ul li {
-    line-height: 2em;
     list-style: none;
+    line-height: 2em;
 }
 
 #content section.section .row-fluid>div.divider {
@@ -969,9 +973,9 @@ hr {
 }
 
 #footer {
+    margin-top: 40px;
     background-color: #eef5ed;
     border-top: 1px solid rgba(0,0,0,0.1);
-    margin-top: 40px;
     padding: 2em 0;
 }
 
@@ -981,19 +985,19 @@ hr {
 }
 
 .aside-box {
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     background-color: rgba(0,0,0,0.05);
-    border-radius: 5px;
     margin-bottom: 20px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
     padding: 10px;
 }
 
 .aside-box h1,.aside-box h2,.aside-box h3,.aside-box h4,.aside-box h5 {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    font-weight: 400;
-    margin-bottom: 14px;
     padding-bottom: 14px;
+    margin-bottom: 14px;
+    font-weight: 400;
 }
 
 .aside-box.map {
@@ -1032,13 +1036,13 @@ hr {
 }
 
 .aside-box.banner {
-    opacity: 1;
     word-wrap: break-word;
+    opacity: 1;
 }
 
 .aside-box.get-started {
-    border: 1px solid rgba(0,0,0,0.1);
     margin-top: 93px;
+    border: 1px solid rgba(0,0,0,0.1);
     opacity: 0.8;
 }
 
@@ -1047,18 +1051,18 @@ hr {
 }
 
 .aside-box .row-fluid .hca-gallery-upload .span6 {
-    margin-bottom: 5px;
     text-align: center;
+    margin-bottom: 5px;
 }
 
 .aside-box .row-fluid .hca-gallery-upload .span6 a:hover {
-    color: #a2a2a2;
     text-decoration: none;
+    color: #a2a2a2;
 }
 
 .aside-box .row-fluid .hca-gallery-upload .span6.hca-upload-media {
-    padding: 5px 0 15px;
     text-align: center;
+    padding: 5px 0 15px;
 }
 
 .aside-box .row-fluid .hca-gallery-upload .span6.hca-upload-media i {
@@ -1080,10 +1084,10 @@ hr {
 }
 
 .aside-box .steps .media {
-    margin-top: 5px;
-    padding: 10px;
-    position: relative;
     text-transform: capitalize;
+    margin-top: 5px;
+    position: relative;
+    padding: 10px;
 }
 
 .aside-box .steps .media.completed .main-step {
@@ -1098,16 +1102,16 @@ hr {
 }
 
 .aside-box .steps .media.active {
+    border-radius: 200px;
     background-color: #1489ff;
     border: 1px solid #0056ad;
-    border-radius: 200px;
     color: #fff;
 }
 
 .aside-box .steps .media.active .media.active {
+    border-radius: 200px;
     background-color: transparent!important;
     border: none;
-    border-radius: 200px;
     color: #fff;
 }
 
@@ -1133,8 +1137,8 @@ hr {
 }
 
 .aside-box .steps .media img {
-    height: 32px;
     width: 32px;
+    height: 32px;
 }
 
 .aside-box .steps .media span {
@@ -1143,8 +1147,8 @@ hr {
 }
 
 .aside-box .features .hca-profile-sublevel {
-    color: #414141;
     font-weight: 700;
+    color: #414141;
 }
 
 .aside-box .features .btn i {
@@ -1153,9 +1157,9 @@ hr {
 }
 
 .aside-box .features hr {
-    background-color: #fff;
-    border-top: 1px solid #fff;
     color: #fff;
+    border-top: 1px solid #fff;
+    background-color: #fff;
 }
 
 .aside-box .features ul.thumbnails li {
@@ -1163,33 +1167,33 @@ hr {
 }
 
 .hca-banner {
-    display: block;
-    height: 420px;
-    margin-bottom: 20px;
     margin-left: 20px;
+    height: 420px;
+    display: block;
+    margin-bottom: 20px;
 }
 
 .hca-banner .btn-banner {
-    background-color: rgba(0,0,0,0.9);
-    border: none;
-    border-radius: 0;
-    color: #d4d4d4;
     display: block;
-    opacity: 0.75;
     position: absolute;
     right: 11px;
-    text-decoration: none;
-    text-shadow: none;
     top: 393px;
+    background-color: rgba(0,0,0,0.9);
+    border: none;
+    color: #d4d4d4;
+    opacity: 0.75;
+    border-radius: 0;
+    text-shadow: none;
+    text-decoration: none;
 }
 
 .hca-banner .institution-details {
-    background-color: rgba(0,0,0,0.35);
     display: block;
-    min-height: 60px;
+    background-color: rgba(0,0,0,0.35);
     position: absolute;
-    top: 445px;
+    min-height: 60px;
     width: 100%;
+    top: 445px;
 }
 
 .hca-banner .institution-details .btn {
@@ -1202,12 +1206,12 @@ hr {
 }
 
 .hca-banner .institution-details h3 {
-    color: #e1e1e1;
-    display: block;
-    font-weight: 400;
     left: 185px;
     margin-top: 12px;
+    color: #e1e1e1;
+    display: block;
     position: absolute;
+    font-weight: 400;
 }
 
 .hca-banner .institution-details h3 i {
@@ -1215,12 +1219,12 @@ hr {
 }
 
 .hca-banner .hca-institution-name {
-    background-color: rgba(0,0,0,0.5);
     display: block;
-    min-height: 50px;
-    padding: 10px 10px 5px;
     position: absolute;
+    min-height: 50px;
     top: 90px;
+    background-color: rgba(0,0,0,0.5);
+    padding: 10px 10px 5px;
 }
 
 .hca-banner .hca-institution-name .btn-misc {
@@ -1238,9 +1242,9 @@ hr {
 
 .hca-banner .hca-institution-name h1 small {
     display: block;
+    position: relative;
     font-size: 18px;
     padding-top: 5px;
-    position: relative;
 }
 
 .hca-banner .hca-institution-name h1 a {
@@ -1253,15 +1257,15 @@ hr {
 }
 
 ul.hca-notifications,ul.hca-inquiries {
-    clear: both;
     list-style: none;
+    clear: both;
     margin: 0;
 }
 
 ul.hca-notifications input,ul.hca-inquiries input {
+    width: 20px;
     display: inline-block;
     position: absolute;
-    width: 20px;
 }
 
 ul.hca-notifications span,ul.hca-inquiries span {
@@ -1269,13 +1273,13 @@ ul.hca-notifications span,ul.hca-inquiries span {
 }
 
 ul.hca-notifications span.sender-details,ul.hca-inquiries span.sender-details {
-    display: inline-block;
     width: 200px;
+    display: inline-block;
 }
 
 ul.hca-notifications span.msg-details,ul.hca-inquiries span.msg-details {
-    display: inline-block;
     width: 550px;
+    display: inline-block;
 }
 
 ul.hca-notifications span.msg-details b,ul.hca-inquiries span.msg-details b {
@@ -1292,9 +1296,9 @@ ul.hca-notifications li,ul.hca-inquiries li {
 
 ul.hca-notifications li:hover ul.actions,ul.hca-inquiries li:hover ul.actions {
     display: block;
+    position: absolute;
     margin-left: 790px;
     margin-top: -34px;
-    position: absolute;
 }
 
 ul.hca-notifications li:hover ul.actions.msg,ul.hca-inquiries li:hover ul.actions.msg {
@@ -1340,8 +1344,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .messages-box a:hover {
-    border-bottom: 1px solid #d4d4d4;
     text-decoration: none;
+    border-bottom: 1px solid #d4d4d4;
 }
 
 .messages-box a>span {
@@ -1354,15 +1358,15 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .input-append.hca-clinic-status .btn,.popup-box.hca-clinic-status .btn {
-    border-radius: 0!important;
     height: 33px;
+    border-radius: 0!important;
     padding: 0 7px;
 }
 
 .input-append.hca-location input.hca-country,.popup-box.hca-location input.hca-country {
+    width: 235px;
     height: 25px;
     margin-bottom: 10px;
-    width: 235px;
 }
 
 .input-append.hca-location input.hca-country.hca-city,.popup-box.hca-location input.hca-country.hca-city {
@@ -1370,25 +1374,25 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .input-append.hca-location .btn,.popup-box.hca-location .btn {
-    border-radius: 0!important;
     height: 35px;
+    border-radius: 0!important;
     padding: 0 7px;
 }
 
 .input-append.hca-clinic-status input,.popup-box.hca-clinic-status input {
-    height: 23px;
     width: 192px;
+    height: 23px;
 }
 
 .input-append.dropdown-menu,.popup-box.dropdown-menu {
-    background-color: #959595;
     border: 1px solid #888;
     border-radius: 0;
+    background-color: #959595;
+    top: auto;
     left: auto;
+    width: 198px;
     margin: -10px 0 0;
     padding: 10px;
-    top: auto;
-    width: 198px;
 }
 
 .input-append.dropdown-menu ul,.popup-box.dropdown-menu ul {
@@ -1409,16 +1413,16 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .input-append.dropdown-menu li a,.popup-box.dropdown-menu li a {
     display: block;
-    white-space: normal;
     word-wrap: break-word;
+    white-space: normal;
 }
 
 .input-append.dropdown-menu li a:hover,.input-append.dropdown-menu li a:focus,.popup-box.dropdown-menu li a:hover,.popup-box.dropdown-menu li a:focus {
-    background-color: #fe6500!important;
-    background-image: none;
-    box-shadow: 0!important;
-    color: #fff!important;
     outline: none;
+    box-shadow: 0!important;
+    background-image: none;
+    background-color: #fe6500!important;
+    color: #fff!important;
 }
 
 .input-append.dropdown-menu li ul li a,.popup-box.dropdown-menu li ul li a {
@@ -1437,20 +1441,20 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .numbercircle {
-    -moz-border-radius: 30px;
     -webkit-border-radius: 30px;
-    background-color: #bbb;
+    -moz-border-radius: 30px;
     border-radius: 30px;
-    color: #fff;
-    display: block;
-    font-family: "PT Sans", sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-    padding: 5px 7px;
-    position: relative;
     text-align: center;
     width: 16px;
+    font-weight: 700;
+    font-size: 18px;
+    font-family: "PT Sans", sans-serif;
+    color: #fff;
     z-index: 2;
+    display: block;
+    position: relative;
+    background-color: #bbb;
+    padding: 5px 7px;
 }
 
 .numbercircle.termsofuse {
@@ -1458,11 +1462,11 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .numbercircle.sub-termsofuse {
-    -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
-    background-color: #fff;
+    -moz-border-radius: 20px;
     border-radius: 20px;
     color: #6e6e6e;
+    background-color: #fff;
     padding: 0 2px;
 }
 
@@ -1472,22 +1476,22 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .numbercircle.completed {
     background-color: #093;
-    padding: 12px 17px 9px 12px;
-    text-decoration: none;
     width: 16px;
+    text-decoration: none;
+    padding: 12px 17px 9px 12px;
 }
 
 .hca-countrycodes {
-    margin: 0;
     z-index: 1000;
+    margin: 0;
 }
 
 .hca-countrycodes .btn-group,.hca-countrycodes .btn {
+    outline: none;
     background: #fff;
-    border-radius: 0;
     box-shadow: none;
     height: 35px;
-    outline: none;
+    border-radius: 0;
 }
 
 .hca-countrycodes .btn-group.btn:first-child,.hca-countrycodes .btn.btn:first-child {
@@ -1506,8 +1510,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .activity-feeds {
-    padding: 10px!important;
     text-align: left;
+    padding: 10px!important;
 }
 
 .activity-feeds div.entry {
@@ -1516,9 +1520,9 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .activity-feeds div.entry img.img-circle {
-    border: 1px solid rgba(0,0,0,0.5);
     height: 50px;
     width: 50px;
+    border: 1px solid rgba(0,0,0,0.5);
 }
 
 .activity-feeds div.entry div.feed-details,.activity-feeds div.entry span.feed-details {
@@ -1527,60 +1531,60 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .services-listing {
-    background-color: #fff;
     border: 1px solid rgba(0,0,0,0.1);
     display: inline-block;
-    margin: 0 0 10px;
+    top: auto;
     max-height: 370px;
     overflow: auto;
+    background-color: #fff;
+    margin: 0 0 10px;
     padding: 10px 25px;
-    top: auto;
 }
 
 .services-listing li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    display: inline-block;
-    float: left;
     font-size: 14px;
-    line-height: 1.5em;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
     list-style-type: none;
+    line-height: 1.5em;
+    display: inline-block;
     margin-right: 4%;
-    padding: 7px 0;
+    float: left;
     width: 46%;
+    padding: 7px 0;
 }
 
 .specializations-listing-edit {
-    background-color: #fff;
     border: 0;
     display: inline-block;
+    top: auto;
+    background-color: #fff;
+    width: 100%;
     margin: 0;
     padding: 0;
-    top: auto;
-    width: 100%;
 }
 
 .specializations-listing-edit ul {
     border: 0;
     clear: both;
-    margin: -10px 0 10px;
     overflow: hidden;
+    margin: -10px 0 10px;
     padding: 0;
 }
 
 .specializations-listing-edit li {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    color: #6e6e6e;
-    line-height: 1.5em;
     list-style-type: none;
+    line-height: 1.5em;
     margin-right: 4%;
-    padding: 0 12px;
     width: 100%;
+    color: #6e6e6e;
+    padding: 0 12px;
 }
 
 .specializations-listing-edit li.sub-specialization {
     background-color: #fff;
-    border-top: 1px solid rgba(0,0,0,0.1);
     font-weight: 700;
+    border-top: 1px solid rgba(0,0,0,0.1);
     padding: 10px;
 }
 
@@ -1604,24 +1608,24 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .single-listing {
-    background-color: #fff;
     border: 0;
     display: inline-block;
+    top: auto;
+    background-color: #fff;
+    width: 100%;
     margin: 0 0 10px;
     padding: 0;
-    top: auto;
-    width: 100%;
 }
 
 .single-listing li {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    color: #6e6e6e;
-    display: inline-block;
-    line-height: 1.5em;
     list-style-type: none;
+    line-height: 1.5em;
+    display: inline-block;
     margin-right: 4%;
-    padding: 7px 12px;
     width: 100%;
+    color: #6e6e6e;
+    padding: 7px 12px;
 }
 
 .single-listing li form input[type=text],.single-listing li form input[type=password],.single-listing li form input[type=email],.single-listing li form select {
@@ -1641,8 +1645,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .single-listing li ul li {
-    background-color: #fff!important;
     border-bottom: 1px solid rgba(0,0,0,0.1);
+    background-color: #fff!important;
     margin: 0;
     padding: 0;
 }
@@ -1653,81 +1657,81 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .awards-listing {
-    background-color: #fff;
     border: 1px solid rgba(0,0,0,0.1);
     display: inline-block;
-    margin: 0 0 10px;
+    top: auto;
     max-height: 370px;
     overflow: auto;
-    padding: 10px 25px 0;
-    top: auto;
+    background-color: #fff;
     width: 570px;
+    margin: 0 0 10px;
+    padding: 10px 25px 0;
 }
 
 .awards-listing li {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    display: inline-block;
-    float: left;
-    line-height: 1.5em;
     list-style-type: none;
+    line-height: 1.5em;
+    display: inline-block;
     margin-right: 4%;
-    padding: 7px 0;
+    float: left;
     width: 100%;
+    padding: 7px 0;
 }
 
 .media-listing {
-    background-color: #fff;
     border: 1px solid rgba(0,0,0,0.1);
     display: inline-block;
-    height: 150px;
-    margin: 0 0 10px;
-    overflow-y: scroll;
-    padding: 10px 10px 10px 28px;
     top: auto;
+    height: 150px;
+    overflow-y: scroll;
+    background-color: #fff;
+    margin: 0 0 10px;
+    padding: 10px 10px 10px 28px;
 }
 
 .media-listing ul {
     border: 0;
     clear: both;
-    margin: 0 0 0 10px;
     overflow: hidden;
+    margin: 0 0 0 10px;
     padding: 0;
 }
 
 .media-listing li {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    display: inline-block;
-    float: left;
-    line-height: 18px;
     list-style-type: none;
+    display: inline-block;
     margin-right: 4%;
-    padding: 10px 0;
-    text-indent: 2px;
+    float: left;
     width: 46%;
+    text-indent: 2px;
+    line-height: 18px;
+    padding: 10px 0;
 }
 
 .media-listing li input[type=radio],.media-listing li input[type=checkbox] {
-    margin-bottom: 18px;
     margin-top: 2px;
+    margin-bottom: 18px;
 }
 
 .specializations-listing {
     border: 1px solid rgba(0,0,0,0.1);
     display: inline-block;
-    margin: 0;
+    top: auto;
     max-height: 170px;
     overflow: auto;
+    margin: 0;
     padding: 10px 25px;
-    top: auto;
 }
 
 .specializations-listing li {
+    list-style-type: none;
+    line-height: 1.5em;
     display: inline-block;
     float: left;
-    line-height: 1.5em;
-    list-style-type: none;
-    padding: 5px 0 0;
     width: 50%;
+    padding: 5px 0 0;
 }
 
 .specializations-listing li ul {
@@ -1736,8 +1740,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .specializations-listing li li {
     border-bottom: 1px solid rgba(0,0,0,0.1);
-    padding: 7px 0 2px;
     width: 95%;
+    padding: 7px 0 2px;
 }
 
 .clinictime .btn {
@@ -1754,15 +1758,15 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .clinictime .hca-workingday-details p i {
-    color: #bfc3be;
-    font-size: 14px;
     margin-left: 0;
+    font-size: 14px;
+    color: #bfc3be;
 }
 
 .clinictime .hca-workingday-details.hca-edit {
     background-color: #fff;
-    border-bottom: 1px solid #e1e1e1;
     border-top: 1px solid #e1e1e1;
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .clinictime .hca-workingday-details i {
@@ -1770,15 +1774,15 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .clinictime .hca-workingday-details span {
+    width: 300px;
     display: block;
     position: absolute;
-    width: 300px;
 }
 
 .clinictime .hca-workingday-details b {
     display: block;
-    margin-left: 220px;
     width: 200px;
+    margin-left: 220px;
 }
 
 .clinictime textarea {
@@ -1804,8 +1808,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .clinictime .hourbox {
     background-color: #f7f7f7;
-    display: block;
     height: 100%;
+    display: block;
     padding: 10px 20px;
 }
 
@@ -1818,9 +1822,9 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .clinictime .hourbox .span3,.clinictime .hourbox .span2 {
+    text-align: right;
     padding-right: 8px;
     padding-top: 10px;
-    text-align: right;
 }
 
 .clinictime .hourbox .row-fluid {
@@ -1843,46 +1847,46 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .clinictime .hourselectedbox td:last-child {
-    padding: 10px 15px;
     text-align: center;
     width: 15%;
+    padding: 10px 15px;
 }
 
 .clinictime .hourselectedbox td:nth-child(2) {
+    text-align: right;
     border-left: none;
     font-weight: 700;
     padding: 10px 15px;
-    text-align: right;
 }
 
 .clinictime .hourselectedbox td:first-child {
-    padding: 10px 15px;
     width: 40%;
+    padding: 10px 15px;
 }
 
 .captcha input[type=text] {
     border-radius: 0;
-    display: block;
-    margin-left: 210px!important;
     margin-top: -35px!important;
-    position: absolute!important;
+    display: block;
     width: 25%!important;
+    margin-left: 210px!important;
+    position: absolute!important;
 }
 
 .captcha label {
-    display: inline-block;
     float: left;
-    margin-left: 210px;
     margin-right: 10px;
-    margin-top: -10px!important;
+    display: inline-block;
+    margin-left: 210px;
     position: absolute;
+    margin-top: -10px!important;
 }
 
 .captcha img {
-    display: block;
-    height: 55px;
-    margin-top: 0;
     width: 200px;
+    height: 55px;
+    display: block;
+    margin-top: 0;
 }
 
 .captcha_reload {
@@ -1902,19 +1906,19 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .error-page h1 {
-    border-bottom: none!important;
-    border-right: 1px solid rgba(0,0,0,0.1);
-    color: #959595;
     font-size: 150px;
+    color: #959595;
+    border-right: 1px solid rgba(0,0,0,0.1);
+    border-bottom: none!important;
+    text-align: middle;
     margin-bottom: 0;
     padding: 0 5px 0 30px;
-    text-align: middle;
 }
 
 .error-page h2 {
     color: #a2a2a2;
-    font-size: 50px;
     font-weight: 400;
+    font-size: 50px;
     margin-bottom: 0;
     padding-top: 30px;
 }
@@ -1933,10 +1937,10 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .error-page p {
+    text-align: center;
     display: inline-block;
     font-size: 18px;
     margin: 20px 0 40px;
-    text-align: center;
 }
 
 .hca-yellow {
@@ -1957,35 +1961,35 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .tooltip {
+    display: none;
     background-color: #000;
+    font-size: 13px;
+    line-height: 1.35em;
+    position: absolute;
+    left: 10px;
     border-radius: 5px;
     color: #3a87ad;
-    display: none;
-    font-size: 13px;
-    left: 10px;
-    line-height: 1.35em;
     margin-left: -8px;
-    position: absolute;
     width: 290px;
     z-index: 1000;
 }
 
 .tooltip:after {
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #000;
-    border-top: 10px solid transparent;
+    width: 0;
+    height: 0;
     content: "";
     display: inline-block;
-    height: 0;
-    left: -10px;
-    position: absolute;
     top: 30%;
-    width: 0;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #000;
 }
 
 .tooltip-wrap {
-    margin-left: 0;
     position: relative;
+    margin-left: 0;
 }
 
 .tooltip-wrap.hca-edit {
@@ -1995,29 +1999,29 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .tooltip-wrap .tooltip-content {
-    background-color: #d9edf7;
-    border: 1px solid #a6bed9;
-    border-radius: 0;
-    color: #4470a2;
-    left: 640px;
-    line-height: 1.5em;
-    margin-top: -30px;
-    padding: 1.2em 1.35em;
     position: absolute;
     right: 5%;
-    width: 260px;
+    background-color: #d9edf7;
+    line-height: 1.5em;
+    color: #4470a2;
     z-index: 1000;
+    margin-top: -30px;
+    left: 640px;
+    border-radius: 0;
+    width: 260px;
+    border: 1px solid #a6bed9;
+    padding: 1.2em 1.35em;
 }
 
 .tooltip-wrap .tooltip-content.hca-edit {
-    background-color: #000;
-    color: #fff;
-    display: none;
     left: 32px;
+    display: none;
     margin-top: -50px;
-    padding: 1em 1.15em;
     width: 290px;
     z-index: 2000;
+    background-color: #000;
+    color: #fff;
+    padding: 1em 1.15em;
 }
 
 .tooltip-wrap .tooltip-content.hca-edit.list-specializations {
@@ -2025,41 +2029,41 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .tooltip-wrap .tooltip-content.hca-edit i {
-    color: #fff!important;
-    opacity: 1!important;
     width: 35px;
+    opacity: 1!important;
+    color: #fff!important;
 }
 
 .tooltip-wrap .tooltip-content.hca-edit:after {
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #000;
-    border-top: 10px solid transparent;
+    width: 0;
+    height: 0;
     content: "";
     display: inline-block;
-    height: 0;
-    left: -10px;
-    position: absolute;
     top: 25px;
-    width: 0;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #000;
 }
 
 .tooltip-wrap .tooltip-content i {
-    color: #2d6987;
     margin-bottom: 0;
     padding-top: 7px;
-    text-align: center;
     width: 32px;
+    text-align: center;
+    color: #2d6987;
 }
 
 .tooltip-wrap .tooltip-content.hca-main-profile {
-    display: none;
     left: 610px;
+    display: none;
     margin-top: -60px;
 }
 
 .tooltip-wrap .tooltip-content.hca-main-profile-awards-services {
-    display: none;
     left: 630px;
+    display: none;
     margin-top: -45px!important;
 }
 
@@ -2069,35 +2073,35 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .tooltip-wrap2:focus+.tooltip-content2:after {
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #000;
-    border-top: 10px solid transparent;
+    width: 0;
+    height: 0;
     content: "";
     display: inline-block;
-    height: 0;
-    left: -10px;
-    position: absolute;
     top: 23%;
-    width: 0;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #000;
 }
 
 .tooltip-wrap3:focus+.tooltip-content3:after {
-    border-bottom: 10px solid transparent;
-    border-right: 10px solid #000;
-    border-top: 10px solid transparent;
+    width: 0;
+    height: 0;
     content: "";
     display: inline-block;
-    height: 0;
-    left: -10px;
-    position: absolute;
     top: 16%;
-    width: 0;
+    position: absolute;
+    left: -10px;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    border-right: 10px solid #000;
 }
 
 .hca-sub-label {
     color: #888;
-    line-height: 1.75em;
     margin-bottom: 12px;
+    line-height: 1.75em;
 }
 
 .btn-code {
@@ -2105,14 +2109,14 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .backtotop {
+    text-transform: uppercase;
+    position: fixed;
     bottom: 15px;
+    right: 15px;
+    z-index: 1000;
+    text-align: center;
     font-weight: 700;
     margin: 20px 0 50px 20px;
-    position: fixed;
-    right: 15px;
-    text-align: center;
-    text-transform: uppercase;
-    z-index: 1000;
 }
 
 .backtotop .icon-white {
@@ -2120,15 +2124,15 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .backtotop.img-rounded {
-    -moz-border-radius: 40px;
-    -webkit-border-radius: 40px;
     background-color: #fff;
-    border: 1px solid #ff7419;
-    border-radius: 40px;
     box-shadow: 0 3px 3px #888;
-    height: 50px;
+    border: 1px solid #ff7419;
     opacity: .95;
     width: 50px;
+    height: 50px;
+    -moz-border-radius: 40px;
+    -webkit-border-radius: 40px;
+    border-radius: 40px;
 }
 
 .backtotop.img-rounded:hover {
@@ -2140,27 +2144,27 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .backtotop span {
-    display: block;
-    margin-bottom: -2px;
     margin-right: 5px;
-    opacity: .8;
+    display: block;
     padding-top: 5px;
+    margin-bottom: -2px;
+    opacity: .8;
 }
 
 .backtotop span:before {
-    content: "-";
     opacity: .05;
+    content: "-";
 }
 
 .progress.vertical.progress-xxlarge,.progress.vertical.progress-xxlarge .bar {
+    width: 80px;
     height: 100px;
     margin-bottom: 0;
-    width: 80px;
 }
 
 .progress.vertical.bottom .bar {
-    bottom: 0;
     position: absolute;
+    bottom: 0;
 }
 
 .progress .bar {
@@ -2174,15 +2178,15 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .hca-hidden-content.doctors-listing {
     background-color: #aeaeae;
-    border-bottom: 1px solid #aeaeae;
     max-height: 300px;
+    border-bottom: 1px solid #aeaeae;
     overflow: auto;
     padding: 20px 20px 5px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid {
-    padding: 5px 10px 0;
     width: 97%;
+    padding: 5px 10px 0;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid input.hca-country,.hca-hidden-content.doctors-listing .row-fluid input.hca-city {
@@ -2190,8 +2194,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .hca-hidden-content.doctors-listing .row-fluid input.hca-languages {
-    height: 25px;
     width: 200px;
+    height: 25px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.zipcode {
@@ -2200,31 +2204,31 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.location-select {
-    margin-left: -213px;
     max-height: 140px;
     width: 235px;
+    margin-left: -213px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.languages-select {
-    margin-left: -212px;
     max-height: 140px;
     width: 234px;
+    margin-left: -212px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid .dropdown-menu.suffix-select {
-    margin-left: -113px;
     max-height: 70px;
+    margin-left: -113px;
     width: 50px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid form {
-    margin-bottom: 8px;
     margin-top: 5px;
+    margin-bottom: 8px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid form .row-fluid {
-    padding: 0 20px!important;
     width: 92.85%;
+    padding: 0 20px!important;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid form .row-fluid ul {
@@ -2253,36 +2257,36 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .hca-logo {
+    display: block;
+    position: absolute;
+    margin-top: -155px;
     background-color: #fff;
     border: 5px solid #6e6e6e;
-    display: block;
-    height: 135px;
-    left: 10px;
-    margin-top: -155px;
-    position: absolute;
-    width: 135px;
     z-index: 1000;
+    left: 10px;
+    height: 135px;
+    width: 135px;
 }
 
 .hca-logo.hca-profile-photo {
-    border: none;
-    height: 135px;
-    left: 0;
     margin-top: 0;
     width: 135px;
+    left: 0;
+    height: 135px;
+    border: none;
 }
 
 span.rollover {
     background: url(/images/institution/upload-logo.png) center center no-repeat #000;
-    border-radius: 150px;
     cursor: pointer;
-    display: block;
     height: 85px;
-    margin: 30px;
-    opacity: 0;
-    position: absolute;
     width: 85px;
+    position: absolute;
     z-index: 1000;
+    opacity: 0;
+    display: block;
+    border-radius: 150px;
+    margin: 30px;
 }
 
 span.rollover.hca-profile-photo-rollover {
@@ -2290,38 +2294,38 @@ span.rollover.hca-profile-photo-rollover {
 }
 
 span.rollover b {
+    margin-top: 80px;
+    display: block;
+    margin-left: -20px;
+    width: 102px;
     background-color: #555;
     color: #fff;
-    display: block;
     font-weight: 400;
-    margin-left: -20px;
-    margin-top: 80px;
     padding: 2px 7px;
-    width: 102px;
 }
 
 span.rollover:hover {
-    box-shadow: 0 0 4px #000;
-    height: 75px;
     opacity: .65;
+    box-shadow: 0 0 4px #000;
     width: 75px;
+    height: 75px;
 }
 
 #uploadHCA {
     display: block;
-    margin-right: 5px;
     overflow: hidden;
+    margin-right: 5px;
     position: relative;
 }
 
 #uploadHCA input {
-    bottom: 0;
-    cursor: pointer;
-    opacity: 0;
     position: absolute;
-    right: 0;
     top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
     z-index: 2;
+    cursor: pointer;
 }
 
 #uploadHCA .btn {
@@ -2348,10 +2352,10 @@ span.rollover:hover {
 .doctors-new-listing .doctor-heading span.rollover,.doctors-new-listing .specializations-heading span.rollover,.specializations-profile-listing .doctor-heading span.rollover,.specializations-profile-listing .specializations-heading span.rollover {
     background-position: 10px;
     background-size: 55%;
+    width: 25px;
     height: 25px;
     margin: 6px;
     padding: 12px;
-    width: 25px;
 }
 
 .doctors-new-listing h4,.specializations-profile-listing h4 {
@@ -2365,8 +2369,8 @@ span.rollover:hover {
 }
 
 .doctors-new-listing p span,.specializations-profile-listing p span {
-    font-weight: 700;
     margin-left: 7px;
+    font-weight: 700;
 }
 
 .doctors-new-listing img,.specializations-profile-listing img {
@@ -2375,8 +2379,8 @@ span.rollover:hover {
 }
 
 .doctors-new-listing .icon-edit,.doctors-new-listing .icon-ok,.specializations-profile-listing .icon-edit,.specializations-profile-listing .icon-ok {
-    margin-right: 10px;
     margin-top: 10px;
+    margin-right: 10px;
 }
 
 .doctors-new-listing .icon-remove-sign,.specializations-profile-listing .icon-remove-sign {
@@ -2393,10 +2397,10 @@ span.rollover:hover {
 }
 
 ul.two-column:not(.items-count-1) {
-    -moz-column-count: 2;
-    -moz-column-gap: 10px;
     -webkit-column-count: 2;
     -webkit-column-gap: 10px;
+    -moz-column-count: 2;
+    -moz-column-gap: 10px;
 }
 
 ul.two-column:not(.items-count-1)>li {
@@ -2404,8 +2408,8 @@ ul.two-column:not(.items-count-1)>li {
 }
 
 ul.two-column>li {
-    border: none;
     margin-bottom: 20px;
+    border: none;
 }
 
 ul.two-column>li input[type=checkbox] {
@@ -2414,14 +2418,14 @@ ul.two-column>li input[type=checkbox] {
 }
 
 ul.two-column>li label {
-    display: inline-block;
     max-width: 235px;
+    display: inline-block;
 }
 
 .hca-contact-number {
-    clear: both;
-    margin-bottom: 0;
     margin-left: 0;
+    margin-bottom: 0;
+    clear: both;
 }
 
 .hca-contact-number label {
@@ -2430,21 +2434,21 @@ ul.two-column>li label {
 }
 
 .show_hide .btn {
+    margin-top: -5px;
     border-radius: 0;
     box-shadow: none;
-    margin-top: -5px;
 }
 
 .show_hide .btn i {
     background-color: #fff;
-    border-radius: 4px;
     color: #b94a48;
+    border-radius: 4px;
     padding: 2px 3px;
 }
 
 .dropdown-menu li>a:hover,.dropdown-menu li>a:focus,.dropdown-submenu:hover>a {
-    background-color: #fe6500;
     background-image: none;
+    background-color: #fe6500;
 }
 
 h1,h2,h3,h4,h5 {
@@ -2461,11 +2465,11 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav span.badge {
-    display: block;
-    margin-right: -5px;
-    margin-top: -35px;
     position: absolute;
+    display: block;
+    margin-top: -35px;
     right: 0;
+    margin-right: -5px;
 }
 
 .nav.nav-tabs {
@@ -2475,9 +2479,9 @@ h1,h2,h3,h4,h5 {
 
 .nav.nav-tabs span.badge {
     display: block;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     position: absolute;
     right: 5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .nav.nav-tabs.hca-tab {
@@ -2487,11 +2491,11 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav.nav-tabs>li>a {
-    -moz-border-radius: 0;
+    font-family: 'PT Sans', sans-serif;
     -webkit-border-radius: 0;
+    -moz-border-radius: 0;
     border-radius: 0;
     color: #555;
-    font-family: 'PT Sans', sans-serif;
     font-size: 16px;
     font-weight: 700;
     padding: 12px 29px 12px 27px;
@@ -2503,16 +2507,16 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav.nav-pills li a {
-    -moz-border-radius: 3px;
+    font-weight: 700;
     -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
     border-radius: 3px;
     color: #555;
-    font-weight: 700;
 }
 
 .nav.nav-pills li a:hover {
-    background-color: #eef5ed;
     color: #000;
+    background-color: #eef5ed;
     text-decoration: underline;
 }
 
@@ -2527,11 +2531,11 @@ h1,h2,h3,h4,h5 {
 }
 
 .dropdown-menu {
-    border-radius: 0;
     margin-top: -1px;
+    border-radius: 0;
     max-height: 295px;
-    overflow-x: hidden;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .dropdown-menu .text {
@@ -2540,8 +2544,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .dropdown-menu.zipcode {
-    margin: -1px 0;
     width: 264px;
+    margin: -1px 0;
 }
 
 .dropdown-menu.languages-select,.dropdown-menu.suffix-select,.dropdown-menu.location-select,.dropdown-menu.status-select {
@@ -2555,9 +2559,9 @@ h1,h2,h3,h4,h5 {
 }
 
 .dropdown-menu.languages-select.status-select,.dropdown-menu.suffix-select.status-select,.dropdown-menu.location-select.status-select,.dropdown-menu.status-select.status-select {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     margin-left: -205px;
     width: 227px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .accordion {
@@ -2644,16 +2648,16 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal .row-fluid .span12.roles label {
-    display: block;
     min-height: 28px;
+    display: block;
     padding: 12px 20px 0 40px;
 }
 
 .modal .row-fluid.hca-clinic-modal {
     background-color: #eee!important;
+    width: 97%;
     margin-bottom: 20px;
     padding: 20px 0 5px 20px;
-    width: 97%;
 }
 
 .modal .confirm-email {
@@ -2661,10 +2665,10 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal.message h3 {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
     color: #093;
-    margin: 0 30px;
     opacity: .75;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    margin: 0 30px;
     padding: 20px 50px 0 20px;
 }
 
@@ -2674,13 +2678,13 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal.message .btn {
-    margin-bottom: 15px;
     margin-top: 40px;
+    margin-bottom: 15px;
 }
 
 .modal .modal-body {
-    max-height: inherit;
     max-width: inherit;
+    max-height: inherit;
     overflow-x: hidden;
 }
 
@@ -2689,26 +2693,26 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal .modal-body .thumbnails li.thumbnail.hca-clinic-listing .btn {
-    margin-right: 10px;
     margin-top: 35px;
+    margin-right: 10px;
     width: 180px;
 }
 
 .modal .modal-body .btn-primary a:hover {
-    color: #e1e1e1;
     text-decoration: none;
+    color: #e1e1e1;
 }
 
 .modal .modal-body .dropdown-menu.suffix-select {
-    margin-left: -113px;
     max-height: 60px;
+    margin-left: -113px;
     width: 50px;
 }
 
 .modal .modal-body .dropbox.hca-main-edit {
     height: 200px;
-    padding-top: 100px;
     text-align: center;
+    padding-top: 100px;
 }
 
 .modal .modal-body.media-edit p {
@@ -2749,11 +2753,11 @@ h1,h2,h3,h4,h5 {
 
 .tab-content.media-tab-content {
     border-left: 1px solid #e1e1e1;
-    display: block;
     margin-bottom: 0;
     margin-left: 131px;
-    min-height: 500px;
+    display: block;
     position: relative;
+    min-height: 500px;
     width: 790px;
 }
 
@@ -2764,16 +2768,16 @@ h1,h2,h3,h4,h5 {
 
 .row-field.error ul.error,.control-group.error ul.error {
     color: #b94a48;
-    display: block;
-    font-weight: 700;
     list-style: none;
+    font-weight: 700;
+    display: block;
     margin: 0 0 7px;
     padding: 0;
 }
 
 .custom-select-list {
-    color: #555!important;
     font-weight: 400!important;
+    color: #555!important;
 }
 
 .tab-content.clinic-listing {
@@ -2790,13 +2794,13 @@ h1,h2,h3,h4,h5 {
 }
 
 .tabbable {
-    margin: 5px 20px;
     z-index: 0;
+    margin: 5px 20px;
 }
 
 .tabs-left .nav-tabs {
-    margin: 0;
     position: absolute;
+    margin: 0;
 }
 
 .dropzone {
@@ -2816,10 +2820,10 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-media {
-    color: #888;
     margin-left: -5px;
-    text-transform: capitalize;
+    color: #888;
     width: 99.25%;
+    text-transform: capitalize;
 }
 
 .table.hca-media i {
@@ -2833,8 +2837,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-media .btn a:hover {
-    color: #5a5a5a;
     text-decoration: none;
+    color: #5a5a5a;
 }
 
 .table.hca-media thead {
@@ -2842,21 +2846,21 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-media th {
-    color: #5a5a5a;
     text-transform: uppercase;
+    color: #5a5a5a;
 }
 
 .table.hca-media td:first-child {
-    vertical-align: top;
     width: 30%;
+    vertical-align: top;
 }
 
 .table.hca-media td:first-child i {
-    color: #595959;
-    display: block;
-    margin: 10px;
     position: absolute;
+    display: block;
+    color: #595959;
     text-shadow: 0 2px 2px #222;
+    margin: 10px;
 }
 
 .table.hca-media td:nth-child(2) {
@@ -2864,9 +2868,9 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-media td:nth-child(2) i {
+    margin-right: 10px;
     float: left;
     margin-bottom: 10px;
-    margin-right: 10px;
 }
 
 .table.hca-media td:nth-child(3) {
@@ -2875,19 +2879,19 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-media img {
-    display: block;
-    height: 55px;
     width: 55px;
+    height: 55px;
+    display: block;
 }
 
 .table.hca-media .media-body {
-    display: block;
     margin-left: 70px;
+    display: block;
 }
 
 .table.hca-media h4 {
-    color: #626262;
     font-size: 16px;
+    color: #626262;
     margin: 0;
 }
 
@@ -2922,8 +2926,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-alert-inquiry .hca-icon {
-    margin: 2px 5px 0 10px;
     text-shadow: 0 2px 0 #e5e5e5,0px 1px 0 #d1d0d0;
+    margin: 2px 5px 0 10px;
 }
 
 .table.hca-listing-awards-services td:last-child {
@@ -2945,72 +2949,72 @@ h1,h2,h3,h4,h5 {
 }
 
 .ribbon-wrapper-approved,.ribbon-wrapper-expired,.ribbon-wrapper-pending,.ribbon-wrapper-draft,.ribbon-wrapper-archived {
-    font: bold 13px Sans-Serif;
+    width: 120px;
     height: 120px;
     overflow: hidden;
     position: absolute;
-    right: -3px;
     top: -3px;
-    width: 120px;
+    right: -3px;
+    font: bold 13px Sans-Serif;
 }
 
 .ribbon-approved,.ribbon-expired,.ribbon-pending,.ribbon-draft,.ribbon-archived {
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    position: relative;
+    left: -5px;
+    width: 160px;
+    top: 30px;
+    -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
     -ms-transform: rotate(45deg);
     -o-transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    color: #fff;
-    left: -5px;
     padding: 7px 0;
-    position: relative;
-    text-align: center;
-    text-transform: uppercase;
-    top: 30px;
-    width: 160px;
 }
 
 .ribbon-approved.ribbon-approved,.ribbon-expired.ribbon-approved,.ribbon-pending.ribbon-approved,.ribbon-draft.ribbon-approved,.ribbon-archived.ribbon-approved {
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     background-color: #5e89bb;
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .ribbon-approved.ribbon-expired,.ribbon-expired.ribbon-expired,.ribbon-pending.ribbon-expired,.ribbon-draft.ribbon-expired,.ribbon-archived.ribbon-expired {
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     background-color: #dca5a4;
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .ribbon-approved.ribbon-pending,.ribbon-expired.ribbon-pending,.ribbon-pending.ribbon-pending,.ribbon-draft.ribbon-pending,.ribbon-archived.ribbon-pending {
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     background-color: #f89406;
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .ribbon-approved.ribbon-draft,.ribbon-expired.ribbon-draft,.ribbon-pending.ribbon-draft,.ribbon-draft.ribbon-draft,.ribbon-archived.ribbon-draft {
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     background-color: #dadada;
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .ribbon-approved.ribbon-archived,.ribbon-expired.ribbon-archived,.ribbon-pending.ribbon-archived,.ribbon-draft.ribbon-archived,.ribbon-archived.ribbon-archived {
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     background-color: #999;
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .ribbon-approved:before,.ribbon-approved:after,.ribbon-expired:before,.ribbon-expired:after,.ribbon-pending:before,.ribbon-pending:after,.ribbon-draft:before,.ribbon-draft:after,.ribbon-archived:before,.ribbon-archived:after {
+    content: "";
+    border-top: 3px solid #444;
     border-left: 3px solid transparent;
     border-right: 3px solid transparent;
-    border-top: 3px solid #444;
-    bottom: -3px;
-    content: "";
     position: absolute;
+    bottom: -3px;
 }
 
 .ribbon-approved:before,.ribbon-expired:before,.ribbon-pending:before,.ribbon-draft:before,.ribbon-archived:before {
@@ -3022,15 +3026,15 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails {
-    margin: 15px auto;
     text-align: left;
+    margin: 15px auto;
 }
 
 .thumbnails img.img-polaroid {
-    height: 61px;
-    margin: 10px;
     position: absolute;
+    height: 61px;
     width: 61px;
+    margin: 10px;
 }
 
 .thumbnails.clinics {
@@ -3055,16 +3059,16 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail {
-    background-color: #f3f3f3;
-    border-bottom: 1px solid #fff;
-    border-left: none;
-    border-radius: 0;
-    border-right: none;
-    border-top: none;
-    margin: 0;
-    min-height: 95px;
-    position: relative;
     width: 98.15%;
+    border-bottom: 1px solid #fff;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    min-height: 95px;
+    background-color: #f3f3f3;
+    position: relative;
+    border-radius: 0;
+    margin: 0;
 }
 
 .thumbnails li.thumbnail .hca-edit {
@@ -3072,21 +3076,21 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail .btn-group .btn-misc {
-    padding: 5px;
     width: 105px;
+    padding: 5px;
 }
 
 .thumbnails li.thumbnail .btn {
     font-weight: 700;
-    padding: 5px 0!important;
     position: relative;
     width: 200px;
+    padding: 5px 0!important;
 }
 
 .thumbnails li.thumbnail .btn.btn-misc {
+    text-transform: none;
     color: #e55b00;
     margin: 10px 0 20px;
-    text-transform: none;
 }
 
 .thumbnails li.thumbnail .btn.btn-misc a {
@@ -3094,8 +3098,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail.hca-clinic-listing {
-    min-height: 110px;
     width: 98.85%;
+    min-height: 110px;
 }
 
 .thumbnails li.thumbnail.hca-clinic-listing.hca-update {
@@ -3103,17 +3107,17 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail img.img-polaroid {
-    height: 64px;
-    margin: 10px;
     position: absolute;
+    height: 64px;
     width: 64px;
+    margin: 10px;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry {
-    background-color: #ffd11a;
-    border-bottom: 1px solid #fff;
-    margin: 0;
     min-height: 25px;
+    border-bottom: 1px solid #fff;
+    background-color: #ffd11a;
+    margin: 0;
     padding: 10px 5px;
 }
 
@@ -3124,15 +3128,15 @@ h1,h2,h3,h4,h5 {
 
 .thumbnails li.thumbnail.hca-alert-inquiry .icon-2x {
     display: block;
-    font-size: 2.25em;
     margin-top: 1px!important;
+    font-size: 2.25em;
     padding-bottom: 7px;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry .hca-red {
+    text-shadow: 0 2px 0 #e5e5e5,0px 1px 0 #d1d0d0;
     color: #b94a48;
     margin: 2px 5px 0 10px;
-    text-shadow: 0 2px 0 #e5e5e5,0px 1px 0 #d1d0d0;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry .hca-red i {
@@ -3143,17 +3147,17 @@ h1,h2,h3,h4,h5 {
 
 .thumbnails li.thumbnail.hca-alert-inquiry img {
     background-color: #fff;
-    margin: 5px 10px;
     width: 80px;
+    margin: 5px 10px;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry h3 {
-    color: #484848;
     display: block;
-    font-family: 'PT Sans', sans-serif;
     font-size: 24px;
-    margin-bottom: -3px;
+    font-family: 'PT Sans', sans-serif;
     margin-top: 12px;
+    margin-bottom: -3px;
+    color: #484848;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry a {
@@ -3167,10 +3171,10 @@ h1,h2,h3,h4,h5 {
 
 .thumbnails li div.medicalcenter-name,.thumbnails li span.medicalcenter-name,.thumbnails li a.medicalcenter-name {
     display: block;
-    margin-bottom: 5px;
+    opacity: 0.9;
     margin-left: 98px;
     margin-top: 13px;
-    opacity: 0.9;
+    margin-bottom: 5px;
     width: 500px;
 }
 
@@ -3188,17 +3192,17 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li div.medicalcenter-name .progress-box .progress,.thumbnails li span.medicalcenter-name .progress-box .progress,.thumbnails li a.medicalcenter-name .progress-box .progress {
-    border: 1px solid #c8c8c8;
-    float: left;
     height: 10px;
-    margin: 5px 10px;
     width: 150px;
+    float: left;
+    border: 1px solid #c8c8c8;
+    margin: 5px 10px;
 }
 
 .thumbnails li div.medicalcenter-name .progress-box .btn-link small,.thumbnails li span.medicalcenter-name .progress-box .btn-link small,.thumbnails li a.medicalcenter-name .progress-box .btn-link small {
     display: block;
-    margin: 0;
     position: relative;
+    margin: 0;
 }
 
 .thumbnails li div.medicalcenter-name h3,.thumbnails li span.medicalcenter-name h3,.thumbnails li a.medicalcenter-name h3 {
@@ -3216,29 +3220,29 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li div.medicalcenter-name form span,.thumbnails li span.medicalcenter-name form span,.thumbnails li a.medicalcenter-name form span {
-    display: block;
     margin-top: 15px;
+    display: block;
 }
 
 .thumbnails li div.listing-action-button,.thumbnails li span.listing-action-button,.thumbnails li a.listing-action-button {
     display: block;
-    font-size: 12px;
-    margin-top: 40px;
     position: relative;
+    margin-top: 40px;
     width: 270px;
+    font-size: 12px;
 }
 
 .thumbnails li div.listing-action-button span,.thumbnails li span.listing-action-button span,.thumbnails li a.listing-action-button span {
-    color: #35577e;
-    font-size: 14px;
     font-weight: 700;
     margin-left: 5px;
+    color: #35577e;
+    font-size: 14px;
 }
 
 .thumbnails li h4 {
+    margin-left: 100px;
     display: block;
     margin-bottom: 0;
-    margin-left: 100px;
     padding-top: 20px;
 }
 
@@ -3249,8 +3253,8 @@ h1,h2,h3,h4,h5 {
 
 .thumbnails li:hover ul.actions {
     display: block;
-    margin-left: 490px;
     position: absolute;
+    margin-left: 490px;
 }
 
 .thumbnails li:hover ul.actions.hca-listing-actions li .btn {
@@ -3260,9 +3264,9 @@ h1,h2,h3,h4,h5 {
 .thumbnails li:hover ul.actions.hca-listing-actions li a {
     color: #fff;
     font-weight: 700;
-    padding: 0;
     text-decoration: none;
     text-transform: capitalize;
+    padding: 0;
 }
 
 .thumbnails li:hover ul.actions.hca-listing-actions li a:hover {
@@ -3270,8 +3274,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li:hover ul.actions.hca-listing-services {
-    margin-left: 550px;
     margin-top: -25px;
+    margin-left: 550px;
 }
 
 .thumbnails li:hover ul.actions li a {
@@ -3359,8 +3363,8 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
 }
 
 #content section.section .row-fluid .website span,.hca-contact-number span {
-    color: #a2a2a2;
     margin-top: 10px;
+    color: #a2a2a2;
 }
 
 #content section.section .row-fluid.hca-edit-box,.input-append.dropdown-menu li ul li,.popup-box.dropdown-menu li ul li,.activity-feeds div.entry:last-child,.accordion .row-fluid ul.two-column li:last-child {
@@ -3454,8 +3458,8 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 .services-listing ul,.single-listing ul,.awards-listing ul,.specializations-listing ul {
     border: 0;
     clear: both;
-    margin: 0;
     overflow: hidden;
+    margin: 0;
     padding: 0;
 }
 
@@ -3493,16 +3497,16 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .tooltip-wrap2:focus+.tooltip-content2,.tooltip-wrap3:focus+.tooltip-content3 {
-    background-color: #000;
-    color: #fff;
     display: block;
-    height: auto;
-    left: 610px;
-    margin-top: -60px;
-    padding: 10px 20px;
-    position: absolute;
     width: 240px;
+    height: auto;
+    background-color: #000;
+    position: absolute;
+    left: 610px;
     z-index: 1000;
+    margin-top: -60px;
+    color: #fff;
+    padding: 10px 20px;
 }
 
 .tooltip-wrap2:focus+.tooltip-content2.hca-textarea,.tooltip-wrap3:focus+.tooltip-content3.hca-textarea {
@@ -3523,17 +3527,17 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .hca-hidden-content.doctors-listing .row-fluid input.hca-suffix,.modal .modal-body input.hca-suffix {
-    height: 25px;
     width: 100px;
+    height: 25px;
 }
 
 .hca-hidden-content.doctors-listing .row-fluid .dropbox,.modal .modal-body .dropbox {
+    height: 45px;
     background-color: #c8c8c8;
     border: 2px dashed #fff;
     color: #fff;
-    height: 45px;
-    padding: 20px 0 0;
     text-align: center;
+    padding: 20px 0 0;
 }
 
 .hca-hidden-content.specializations-profile-listing form label input[type=radio],.hca-hidden-content.specializations-profile-listing form label input[type=checkbox],.table.hca-media input[type=radio],.table.hca-media input[type=checkbox] {
@@ -3555,8 +3559,8 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .dropdown-menu.zipcode li span.flag16,.dropdown-menu.languages-select li span.flag16,.dropdown-menu.suffix-select li span.flag16,.dropdown-menu.location-select li span.flag16,.dropdown-menu.status-select li span.flag16 {
-    margin-left: 0;
     margin-top: 0;
+    margin-left: 0;
 }
 
 .accordion .row-fluid .span6 li input,.accordion .row-fluid .span6 h4 input {
@@ -3572,8 +3576,8 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .modal.hca-doctors-modal,.modal.hca-file-modal {
-    margin-left: -350px;
     width: 700px;
+    margin-left: -350px;
 }
 
 .control-group.error .checkbox,.control-group.error .radio,.tab-content .span9 h1 a:hover,.tab-content .span9 p a:hover {
