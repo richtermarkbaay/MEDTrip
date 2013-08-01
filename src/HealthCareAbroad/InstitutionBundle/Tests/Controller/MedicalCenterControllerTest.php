@@ -126,7 +126,6 @@ class MedicalCenterControllerTest extends InstitutionBundleWebTestCase
 //         $client->request('POST', $uri);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 //     }
-
 //     public function testajaxUpdateCoordinates()
 //     {
 //         $client = $this->getBrowserWithActualLoggedInUser();
