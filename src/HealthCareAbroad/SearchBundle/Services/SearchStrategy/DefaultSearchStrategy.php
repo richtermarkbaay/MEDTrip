@@ -159,7 +159,7 @@ class DefaultSearchStrategy extends SearchStrategy
             $searchParameter = $parameters['searchParameter'];
 
             if (isset($searchParameter['country']) && $searchParameter['country']) {
-                $sql .= " AND a.country_id = {$searchParameter['country']} ";
+                $optionalWhereClause .= " AND a.country_id = {$searchParameter['country']} ";
             }
 
             if (isset($searchParameter['specialization']) && $searchParameter['specialization']) {
