@@ -1,7 +1,7 @@
 {% if institution.institutionMedicalCenters | length %}
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Clinics', class: 'clinics'} %}
         {% block sectionContent %}
-    	<ul class="thumbnail-list thumbnails">
+    	<!-- <ul class="thumbnail-list thumbnails">
     	    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
     				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
@@ -10,7 +10,19 @@
     				</a>
     			</li>
     		{% endfor %}
-    	</ul>
+    	</ul> -->
+            {% for each in institution.institutionMedicalCenters %}
+                <div class="media">
+                    <!-- The logo should also be a link to the clinic profile -->
+                    <span class="thumbnail-wrapper ph-clinic default img-polaroid pull-left"></span>
+                    <div class="media-body">
+                        <h4>
+                            <a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">{{ each.name }}</a>
+                        </h4>
+                        <p>Specialization Name, Specialization Name, Specialization Name</p> 
+                    </div>
+                </div>
+            {% endfor %}
         {% endblock %}
     {% endembed %}
 {% endif %}

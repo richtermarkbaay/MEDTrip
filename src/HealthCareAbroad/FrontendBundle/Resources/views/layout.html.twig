@@ -21,7 +21,7 @@
 
     {% block callout %}{% endblock %}
     
-    <div id="content-wrapper" class="container {{ isHomePage is defined and isHomePage ? 'homepage': '' }}">
+    <div id="content-wrapper" class="container {{ isHomePage is defined and isHomePage ? 'homepage': 'box-shadow' }}">
         {% block content %}{% endblock %}
     </div>
 
