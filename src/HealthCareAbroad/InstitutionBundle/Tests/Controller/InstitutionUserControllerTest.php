@@ -19,7 +19,8 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
     /**
      * Functional test for login and logout flow
      */
-    public function testLoginFlow()
+    
+    public function testInvalidLoginFlow()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/institution/login');
@@ -28,13 +29,11 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/institution/login');
         
+        $invalidFormValues = array( '_username' => 'invalid@email.com', // case sensitive for the input e.g. name="_username"
+                   '_password' => '09322' // case sensitive for the input e.g. name="_password"
+            );
         $form = $crawler->selectButton('Login')->form();
-        $crawler = $client->submit(
-            $form,
-                array( '_username' => 'chrunchy@test.com', // case sensitive for the input e.g. name="_username"
-                       '_password' => '1234567' // case sensitive for the input e.g. name="_password"
-                )
-        );
+        $crawler = $client->submit($form, $invalidFormValues);
         $this->assertTrue($client->getResponse()->isRedirect(), 'The email address or password you entered is incorrect.');
         
     }
