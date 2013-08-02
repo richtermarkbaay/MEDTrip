@@ -1,7 +1,7 @@
 {% if institution.institutionMedicalCenters | length %}
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Clinics', class: 'clinics'} %}
         {% block sectionContent %}
-        
+
     	<!-- <ul class="thumbnail-list thumbnails">
     	    {% for each in institution.institutionMedicalCenters %}
     			<li class="thumbnail">
@@ -22,6 +22,7 @@
                         <h4>
                             <a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">{{ each.name }}</a>
                         </h4>
+                        <!-- Static markup for the clinic specializations -->
                         <p>Specialization Name, Specialization Name, Specialization Name</p> 
                     </div>
                 </div>
