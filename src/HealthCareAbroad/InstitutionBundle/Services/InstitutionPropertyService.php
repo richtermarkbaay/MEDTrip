@@ -419,9 +419,7 @@ class InstitutionPropertyService
 
     public function addServicesForInstitution(Institution $institution, $services = array())
     {
-        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
-
-        ->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
+        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
 
         
         if(empty($services)){

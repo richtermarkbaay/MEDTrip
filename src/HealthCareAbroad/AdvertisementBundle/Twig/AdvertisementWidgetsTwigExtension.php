@@ -124,8 +124,8 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         
         // https://github.com/chromedia/healthcareabroad/issues/510
         $featuredClinicIds = array();
-        foreach ($ads as $_ad) {
-            $featuredClinicIds[] = $_ad->getInstitutionMedicalCenter()->getId();
+        foreach ($ads as $ad) {
+            $featuredClinicIds[] = $ad->getInstitutionMedicalCenter()->getId();
         }
         $inSession = $this->session->get($this->getFeaturedClinicsSessionKey());
         $inSession[$this->generateSearchResultsParametersSessionKey($params)] = $featuredClinicIds;

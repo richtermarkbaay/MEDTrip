@@ -160,11 +160,10 @@ hr {
 }
 
 #confirmation-message {
-    float: left;
-    position: fixed;
     left: 50%;
     z-index: 2000;
     text-align: center;
+    position: absolute;
 }
 
 #confirmation-message .confirmation-box {

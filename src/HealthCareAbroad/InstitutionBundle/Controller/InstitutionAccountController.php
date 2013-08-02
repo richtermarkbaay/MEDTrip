@@ -189,6 +189,8 @@ class InstitutionAccountController extends InstitutionAwareController
                 
                 if ($form->isValid()) {
                     $propertyService = $this->get('services.institution_property');
+                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
+
                     if(isset($form['services'])) {
                         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
                         $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
@@ -210,7 +212,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
                     } else {
                         $this->institution = $form->getData();
-                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                         $this->get('services.institution.factory')->save($this->institution);
                         
                         // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
