@@ -46,6 +46,7 @@ class FrontendBreadcrumbService
             case 'frontend_single_center_institution_profile' :
             case 'frontend_multiple_center_institution_profile' :
                 $slug = $routeParams['institutionSlug'];
+                // FIXME: use currently set data in request. Be sure to check type
                 $institution = $this->container->get('services.institution')->getFullInstitutionBySlug($slug);
                 $country = $institution->getCountry();
 
@@ -59,6 +60,7 @@ class FrontendBreadcrumbService
             case 'frontend_institutionMedicaCenter_profile' :
                 $slug = $routeParams['imcSlug'];
 
+                // FIXME: use currently set data in request. Be sure to check type
                 $institutionMedicalCenter = $this->container->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
                 $institution = $institutionMedicalCenter->getInstitution();
     

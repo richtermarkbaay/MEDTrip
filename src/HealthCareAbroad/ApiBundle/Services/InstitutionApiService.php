@@ -105,13 +105,8 @@ class InstitutionApiService
         // we need to get the institution id first since this will be the key that we will use for caching
         // we may need to reconsider this, but considering the speed of query and hydration, 
         // this is an acceptable trade off with the consistency of using institution id in memcache 
-        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('inst.id')
-            ->from('InstitutionBundle:Institution', 'inst')
-            ->where('inst.slug = :slug')
-            ->setParameter('slug', $slug);
-        
-        $institutionId = (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        $institutionId = $this->doctrine->getRepository('InstitutionBundle:Institution')
+            ->getInstitutionIdBySlug($slug);
         
         return $this->getInstitutionPublicDataById($institutionId);
     }
@@ -128,13 +123,12 @@ class InstitutionApiService
             return null;
         }
         
-        //TODO: check here for memcache value
         $key = "api.institution_public_data.{$institutionId}";
-        $memcachedData = $this->memcache->get($key); 
-        if ($memcachedData){
-            $institution = $memcachedData;
-        }
-        else {
+//         $memcachedData = $this->memcache->get($key); 
+//         if ($memcachedData){
+//             $institution = $memcachedData;
+//         }
+//         else {
             $qb = $this->getQueryBuilderForInstitutionPublicProfileData();
             $qb->andWhere('inst.id = :institutionId')
                 ->setParameter('institutionId', $institutionId);
@@ -156,9 +150,9 @@ class InstitutionApiService
                 //$end = \microtime(true); $diff = $end-$start; echo "{$diff}s"; exit;
             }
             
-            // TODO: store to memcache
-            $this->memcache->set($key, $institution);
-        }
+//             // TODO: store to memcache
+//             $this->memcache->set($key, $institution);
+//         }
         
         return $institution;
     }

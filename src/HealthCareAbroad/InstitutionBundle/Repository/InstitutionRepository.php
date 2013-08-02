@@ -30,6 +30,22 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionRepository extends EntityRepository
 {
+    /**
+     * 
+     * @param string $slug
+     * @return int
+     */
+    public function getInstitutionIdBySlug($slug)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('inst.id')
+        ->from('InstitutionBundle:Institution', 'inst')
+        ->where('inst.slug = :slug')
+        ->setParameter('slug', $slug);
+        
+        return (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
+    
     public function search($term = '', $limit = 10)
     {
         $dql = "
