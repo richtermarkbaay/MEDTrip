@@ -126,7 +126,7 @@ class InstitutionMedicalCenterApiService
     private function getQueryBuilderForFullInstitutionMedicalCenterProfile()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, imc_m, imc_cd, imc_bh, inst_sp, sp, tr, sub_sp')
+        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, imc_m, imc_cd, imc_bh, inst_sp, sp, sp_lg, tr, sub_sp')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->innerJoin('imc.institution', 'inst')
             ->leftJoin('inst.country', 'co')
@@ -139,6 +139,7 @@ class InstitutionMedicalCenterApiService
             ->leftJoin('imc.businessHours', 'imc_bh')
             ->innerJoin('imc.institutionSpecializations', 'inst_sp')
             ->innerJoin('inst_sp.specialization', 'sp')
+            ->leftJoin('sp.media', 'sp_lg')
             ->leftJoin('sp.treatments', 'tr')
             ->leftJoin('tr.subSpecializations', 'sub_sp')
             ->where('1=1')
