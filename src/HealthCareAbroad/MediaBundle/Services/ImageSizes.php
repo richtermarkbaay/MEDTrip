@@ -23,7 +23,7 @@ final class ImageSizes {
     
     const GALLERY_LARGE_THUMBNAIL = '260x150';
 
-    const ADS_FEATURED_IMAGE = '130x95';
+    const ADS_FEATURED_IMAGE = '135x100';
     
     const DOCTOR_LOGO = '61x61';
     

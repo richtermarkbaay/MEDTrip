@@ -207,9 +207,11 @@ class DefaultController extends ResponseHeadersController
             'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $country->getName()),
             'country' => $country,
             'specialization' => $specialization,
+
             //'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'city'),
             'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'destinations'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
+            'featuredClinicParams' => array('countryId' => $country->getId(),'specializationId' => $specialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -252,7 +254,8 @@ class DefaultController extends ResponseHeadersController
             'subSpecialization' => $subSpecialization,
             //'includedNarrowSearchWidgets' => array('treatment', 'city'),
             'includedNarrowSearchWidgets' => array('treatment', 'destinations'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $subSpecialization->getSpecialization()->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $subSpecialization->getSpecialization()->getId()),
+            'featuredClinicParams' => array('countryId' => $country->getId(),'subSpecializationId' => $subSpecialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -272,6 +275,7 @@ class DefaultController extends ResponseHeadersController
         if (!$country = $em->getRepository('HelperBundle:Country')->find(isset($parameters['countryId']) ? $parameters['countryId'] : $parameters['country'])) {
             throw new NotFoundHttpException();
         }
+
         if (!$treatment = $em->getRepository('TreatmentBundle:Treatment')->find(isset($parameters['treatmentId']) ? $parameters['treatmentId'] : $parameters['treatment'])) {
             throw new NotFoundHttpException();
         }
@@ -296,7 +300,8 @@ class DefaultController extends ResponseHeadersController
             'treatment' => $treatment,
             //'includedNarrowSearchWidgets' => array('city'),
             'includedNarrowSearchWidgets' => array('destinations'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId()),
+            'featuredClinicParams' => array('countryId' => $country->getId(), 'treatmentId' => $treatment->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -336,7 +341,8 @@ class DefaultController extends ResponseHeadersController
                         'specialization' => $specialization,
                         'city' => $city,
                         'includedNarrowSearchWidgets' => array('sub-specialization', 'treatment'),
-                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+                        'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
+                        'featuredClinicParams' => array('cityId' => $city->getId(),'specializationId' => $specialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -382,7 +388,8 @@ class DefaultController extends ResponseHeadersController
             'subSpecialization' => $subSpecialization,
             'city' => $city,
             'includedNarrowSearchWidgets' => array('treatment'),
-            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId())
+            'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
+            'featuredClinicParams' => array('cityId' => $city->getId(),'subSpecializationId' => $subSpecialization->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(
@@ -426,7 +433,7 @@ class DefaultController extends ResponseHeadersController
             'treatment' => $treatment,
             'city' => $city,
             'includedNarrowSearchWidgets' => array(),
-                        // broaden search only
+            'featuredClinicParams' => array('cityId' => $city->getId(),'treatmentId' => $treatment->getId())
         ));
 
         $response->headers->setCookie($this->buildCookie(array(

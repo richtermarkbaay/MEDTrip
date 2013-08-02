@@ -12,7 +12,7 @@ var Location = {
         widget.prop('disabled', disabled);
         $(widget.data('autocomplete-trigger')).prop('disabled', disabled);
     },
-    
+
     resetWidgetValue: function(widget){
         widget.val('');
         widget.data('fancyAutocomplete').options.valueContainer.val(0);
@@ -39,9 +39,13 @@ var Location = {
     loadCities: function(countryId, stateId, widget, selectedCityId){
         Location.disableWidget(widget, true);
         Location.resetWidgetValue(widget);
+        var params = {};
+        if(countryId) { params.country_id = countryId; }
+        if(stateId) { params.state_id = stateId; }
+        
         $.ajax({
             url: Location.loadCitiesUrl,
-            data: {country_id: countryId, state_id: stateId},
+            data: params,
             type: 'get',
             dataType: 'json',
             success: function(response){

@@ -101,12 +101,21 @@ class Retriever
 
         if(isset($criteria['specializationId'])) {
             $criteria['advertisementType'] = 8;
+            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = isset($criteria['countryId']) ? 15 : 18;
+            }
 
         } else if(isset($criteria['subSpecializationId'])) {
             $criteria['advertisementType'] = 9;
-        
+            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = isset($criteria['countryId']) ? 16 : 19;
+            }
+
         } else if(isset($criteria['treatmentId'])) {
             $criteria['advertisementType'] = 10;
+            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = isset($criteria['countryId']) ? 17 : 20;
+            }
         }
 
         return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinicByCriteria($criteria, $limit);

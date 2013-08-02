@@ -42,7 +42,7 @@ class AdvertisementMediaService extends MediaService
         $this->uploadDirectory = $directory;
     }
 
-    function upload($file, Advertisement $advertisement, $imageType = self::LOGO_TYPE_IMAGE)
+    function upload($file, Advertisement $advertisement, $imageType = self::ICON_TYPE_IMAGE)
     {
         $result = parent::uploadFile($file);
 
