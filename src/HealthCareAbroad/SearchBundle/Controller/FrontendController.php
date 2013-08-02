@@ -163,6 +163,15 @@ class FrontendController extends ResponseHeadersController
             $searchParameters['subSpecialization'] = $searchParameters['sub-specialization'];
         }
 
+        //FIXME: this is just a patch to support combined country and city dropwdown in narrow search
+        // This patch is also present in SearchService::loadSuggestions
+        if (isset($searchParameters['destinations']) && $searchParameters['destinations']) {
+            list($searchParameters['country'], $searchParameters['city']) = explode('-', $searchParameters['destinations']);
+            if ((int) $searchParameters['city'] == 0) {
+                unset($searchParameters['city']);
+            }
+        }
+
         if (isset($searchParameters['specialization']) && isset($searchParameters['country'])) {
 
             $combinationPrefix = 'country';
@@ -444,7 +453,8 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
-            'includedNarrowSearchWidgets' => array('specialization', 'city'),
+            //'includedNarrowSearchWidgets' => array('specialization', 'city'),
+            'includedNarrowSearchWidgets' => array('specialization', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId()),
             'featuredClinicParams' => array('countryId' => $country->getId())
         );
@@ -452,7 +462,7 @@ class FrontendController extends ResponseHeadersController
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country));
-        
+
         return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
@@ -479,7 +489,7 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
             'featuredClinicParams' => array('cityId' => $city->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
@@ -516,11 +526,12 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
+            //'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
             'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
@@ -561,11 +572,12 @@ class FrontendController extends ResponseHeadersController
             'treatmentId' => $termId,
             'specialization' => $specialization,
             'subSpecialization' => $subSpecialization,
-            'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            //'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
+            'includedNarrowSearchWidgets' => array('treatment', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
             'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
@@ -582,7 +594,7 @@ class FrontendController extends ResponseHeadersController
         if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
             throw new NotFoundHttpException();
         }
-        
+
         if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'))) {
             throw new NotFoundHttpException();
         }
@@ -605,11 +617,12 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId,
             'treatment' => $treatment,
-            'includedNarrowSearchWidgets' => array('country', 'city'),
+            //'includedNarrowSearchWidgets' => array('country', 'city'),
+            'includedNarrowSearchWidgets' => array('destinations'),
             'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
             'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
@@ -691,8 +704,6 @@ class FrontendController extends ResponseHeadersController
      */
     public function ajaxLoadNarrowSearchAction(Request $request)
     {
-        //var_dump($request->request->all()); exit;
-
         $results = $this->get('services.search')->loadSuggestions($request->request->all());
 
         return new Response(\json_encode($results), 200, array('content-type' => 'application/json'));

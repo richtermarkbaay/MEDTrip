@@ -20,15 +20,10 @@ class WebsitesDataTransformer implements  DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (\is_null($value)) {
-            $value = $this->defaultValue;
-        }
-
-        if (!is_array($value)) {
-            //throw new \Exception(__CLASS__.' expects $value to be an array, '.\gettype($value).' given');
+        if (!\is_array($value)) {
             $value = SocialMediaSites::getDefaultValues();
         }
-        
+
         return \json_encode($value);
     }
 }
