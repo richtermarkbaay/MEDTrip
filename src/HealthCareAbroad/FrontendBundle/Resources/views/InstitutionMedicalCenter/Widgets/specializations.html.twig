@@ -2,40 +2,37 @@
 
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Specializations', class: 'specializations'} %}
         {% block sectionContent %}
-    	<div class="specializations-list-wrapper">
-
         {% for each in specializations %}
-    		<ul>
-    			<li class="first"><a>{{ each.specialization.name }}</a></li>
-                {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
-                
-                {% for _subName, _groupedData in _groupedTreatments %}
-                
-                    {% if _groupedData.treatments | length %}
-                    <li class="second">
-        				<ul>
-        				    {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
-        				    <li><a>{{ _groupedData.subSpecialization.name }}</a></li>
-        				    {% else %}
-        				    <li><a>Other treatments</a></li>
-        				    {% endif %}
-                        	    
-                    	    {% for treatment in _groupedData.treatments %}
-        			 	    <li class="third">
-        						<ul>
-        							<li><a>{{ treatment.name }}</a></li>
-        						</ul>
-        					</li>
-        			        {% endfor %}
-        					
-        				</ul>
-        			</li>
-                    {% endif %}
-                {% endfor %}
-    			
-    		</ul>
+            <div class="media">
+                 <div class="thumbnail-wrapper img-polaroid pull-left">
+                     <span class="hca-sprite clinic-default-logo mini"></span>
+                 </div>
+                 <div class="media-body">
+                     <h4>{{ each.specialization.name }}</h4>
+                    {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
+
+                    {% for _subName, _groupedData in _groupedTreatments %}
+                        {% if _groupedData.treatments | length %}
+                        <div class="media">
+                            {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
+                            <h5>{{ _groupedData.subSpecialization.name }}</h5>
+                            {% else %}
+                            <h5>Other Treatments</h5>
+                            {% endif %}
+                            <span><i class="icon-medkit pull-left"></i></span>
+                            <div class="media-body">
+                                <p>
+                                    {% for treatment in _groupedData.treatments %}
+                                        {{ treatment.name }},&nbsp;
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                 </div>
+            </div>
     	{% endfor %}
-    	</div>
         {% endblock %}
     {% endembed %}
 
