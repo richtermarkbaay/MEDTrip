@@ -52,7 +52,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             }
 
             $this->institution = $this->institutionMedicalCenter->getInstitution();
-
+            
             $twigService = $this->get('twig');
             $twigService->addGlobal('institution', $this->institution);
             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
