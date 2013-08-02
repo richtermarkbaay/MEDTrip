@@ -166,13 +166,10 @@ class InstitutionAccountController extends InstitutionAwareController
         if ($request->isMethod('POST')) {
                 $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
-//                 var_dump($formVariables); exit;
                 unset($formVariables['_token']);
 
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-
                 $formRequestData = $request->get($form->getName());
 
                 // we always expect 1 medical provider group. if it is empty remove it from the array
@@ -189,8 +186,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 
                 if ($form->isValid()) {
                     $propertyService = $this->get('services.institution_property');
-                    $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
-
                     if(isset($form['services'])) {
                         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
                         $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
@@ -212,6 +207,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
                     } else {
                         $this->institution = $form->getData();
+                        $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
                         $this->get('services.institution.factory')->save($this->institution);
                         
                         // Synchronized Institution and Clinic data IF InstitutionType is SINGLE_CENTER
@@ -241,7 +237,6 @@ class InstitutionAccountController extends InstitutionAwareController
                             $errors[] = array('field' => $field->getName(), 'error' => $eachErrors[0]->getMessageTemplate());
                         }
                     }
-
                     $response = new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
                 }
         }
@@ -265,65 +260,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
         }
-    }
-
-    /**
-     *
-     * @param unknown_type $institutionId
-     */
-    public function addGlobalAwardsAction()
-    {
-        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institution);
-
-        if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
-
-            if ($form->isValid()) {
-
-                $this->institution = $this->get('services.institution')
-                ->saveAsDraft($form->getData());
-
-                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
-
-                return $this->redirect($this->generateUrl('institution_medicalCenter_view',
-                                array('institutionId' => $this->institution->getId())));
-            }
-        }
-        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
-                        'form' => $form->createView(),
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institution' => $this->institution
-        ));
-    }
-
-
-    public function ajaxRemovePropertyValueAction(Request $request)
-    {
-        $property = $this->get('services.institution_property')->findById($request->get('id', 0));
-
-        if (!$property) {
-            throw $this->createNotFoundException('Invalid Institution property.');
-        }
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($property);
-        $em->flush();
-
-        return new Response("Property removed", 200);
-    }
-
-    /** 
-     * @deprecated
-     * Upload logo or featuredImage for Institution
-     * @param Request $request
-     */
-    public function uploadAction(Request $request)
-    {
-        $fileBag = $request->files;
-
-        $this->get('services.institution.media')->upload($fileBag->get('file'), $this->institution, $request->get('image_type'));
-
-        return $this->redirect($this->generateUrl('institution_account_profile'));
     }
 
     /**
