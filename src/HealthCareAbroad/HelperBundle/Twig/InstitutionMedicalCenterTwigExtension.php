@@ -173,7 +173,8 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
 
         if(isset($mediaSrc)) {
-            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
+            // $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
+            $html = '<img src="'.$mediaSrc.'" alt="">';
         }
 
         return $html;
