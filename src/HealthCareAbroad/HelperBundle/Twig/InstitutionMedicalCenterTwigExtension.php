@@ -202,16 +202,47 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return \array_key_exists($institutionMedicalCenter->getStatus(), $statuses) ?  $statuses[$institutionMedicalCenter->getStatus()] : '';
     }
     
-    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array() )
+    /**
+     * 
+     * @param  Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
+     * @param array $includedKeys
+     * @return array
+     */
+    public function getCompleteAddressAsArray($institutionMedicalCenter, array $includedKeys=array() )
     {
         $returnVal = array();
         $defaultIncludedKeys = array('address', 'city', 'state', 'country', 'zipCode');
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : $defaultIncludedKeys);
 
-        $institution = $institutionMedicalCenter->getInstitution();
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter){
+            $institution = $institutionMedicalCenter->getInstitution();
+            $addressData = array(
+                'address' => $institutionMedicalCenter->getAddress(),
+                'city' => $institution->getCity() ? $institution->getCity()->getName() : null,
+                'state' => $institution->getState() ? $institution->getState()->getName() : null,
+                'country' => $institution->getCountry() ? $institution->getCountry()->getName() : null,
+                'zipCode' => \trim($institution->getZipCode()),
+                'institutionAddress' => $institution->getAddress1()
+            );
+        }
+        elseif (\is_array($institutionMedicalCenter)) {
+            // hydrated with HYDRATE_ARRAY
+            $institution = $institutionMedicalCenter['institution'];
+            $addressData = array(
+                'address' => $institutionMedicalCenter['address'],
+                'city' => isset($institution['city']) ? $institution['city']['name'] : null,
+                'state' => isset($institution['state']) ? $institution['state']['name'] : null,
+                'country' => isset($institution['country']) ? $institution['country']['name'] : null,
+                'zipCode' => isset($institution['zipCode']) ? \trim($institution['zipCode']) : null,
+                'institutionAddress' => isset($institution['address1']) ? \trim($institution['address1']) : null,
+            );
+        }
+        else {
+            return null;
+        }
 
         if (isset($includedKeys['address'])) {
-            $street_address = \json_decode($institutionMedicalCenter->getAddress(), true);
+            $street_address = \json_decode($addressData['address'], true);
             
             $street_address = !\is_null($street_address)
                 ?  $this->_removeEmptyValueInArray($street_address)
@@ -221,7 +252,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             }
             else {
                 // try to fetch the institution adress
-                $street_address = \json_decode($institution->getAddress1(), true);
+                $street_address = \json_decode($addressData['institutionAddress'], true);
                 if (!\is_null($street_address)) {
                     $this->_removeEmptyValueInArray($street_address);
                     if (\count($street_address)) {
@@ -231,20 +262,21 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             }
         }
         
-        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
-            $returnVal['zipCode'] = $institution->getZipCode();
+        if (isset($includedKeys['city'])) {
+            $returnVal['city'] = $addressData['city'];
         }
-        
-        if (isset($includedKeys['city']) && $institution->getCity()) {
-            $returnVal['city'] = $institution->getCity()->getName();
+
+        if (isset($includedKeys['state'])) {
+            $returnVal['state'] = $addressData['state'];
         }
-        
-        if (isset($includedKeys['state']) && '' != $institution->getState()) {
-            $returnVal['state'] = $institution->getState()->getName();
+
+        if (isset($includedKeys['country']) ) {
+            $returnVal['country'] = $addressData['country'];
         }
+
         
-        if (isset($includedKeys['country']) && $institution->getCountry()) {
-            $returnVal['country'] = $institution->getCountry()->getName();
+        if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
+            $returnVal['zipCode'] = $addressData['zipCode'];
         }
 
         return $returnVal;
@@ -258,9 +290,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
      */
-    public function getCompleteAddressAsString(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
+    public function getCompleteAddressAsString($institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
     {
         $arrAddress = $this->getCompleteAddressAsArray($institutionMedicalCenter, $includedKeys);
 

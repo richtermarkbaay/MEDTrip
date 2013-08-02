@@ -1,7 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institution.contactEmail %}
-{% set number = render_institution_medical_center_contact_number(institutionMedicalCenter)  %}
 {% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
 {% set websites = json_decode(websites) %}
 {% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}

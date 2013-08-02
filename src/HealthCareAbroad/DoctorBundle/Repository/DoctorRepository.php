@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use Doctrine\ORM\Query;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use Doctrine\ORM\QueryBuilder;
 
 use HealthCareAbroad\DoctorBundle\DoctorBundle;
@@ -61,6 +65,35 @@ class DoctorRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
         
+    }
+    
+    /**
+     * Get doctors of a  medical center
+     * 
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
+     * @author acgvelarde
+     */
+    public function findByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
+    {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            if (\is_numeric($institutionMedicalCenter)) {
+                $institutionMedicalCenterId = $institutionMedicalCenter;
+            }
+        }
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, d_sp, dm')
+            ->from('DoctorBundle:Doctor', 'd')
+            ->innerJoin('d.institutionMedicalCenters', 'imc')
+            ->leftJoin('d.specializations', 'd_sp')
+            ->leftJoin('d.media', 'dm')
+            ->where('imc.id = :institutionMedicalCenterId')
+                ->setParameter('institutionMedicalCenterId', $institutionMedicalCenterId);
+        
+        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
     
     public function getSpecializationListByMedicalSpecialist($doctorId)

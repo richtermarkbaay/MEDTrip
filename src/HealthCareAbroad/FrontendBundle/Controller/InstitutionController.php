@@ -155,9 +155,7 @@ class InstitutionController extends ResponseHeadersController
             'formId' => 'institution_inquiry_form',
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
-        );
-
-        
+        );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);
         $response= $this->setResponseHeaders($content);
