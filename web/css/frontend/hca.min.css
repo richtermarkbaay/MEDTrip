@@ -1340,6 +1340,56 @@ form.home-search > button.btn:active {
   color: inherit;
 }
 
+.specializations-list-wrapper ul {
+  list-style: none;
+  margin: 0 0 0 0;
+  position: relative;
+  display: block;
+}
+.specializations-list-wrapper ul > li {
+  font-size: 14px;
+  font-weight: bold;
+}
+.specializations-list-wrapper ul > li > a {
+  display: block;
+  vertical-align: top;
+  color: #657174;
+  line-height: 1.3em;
+}
+.specializations-list-wrapper ul li.specialization {
+  margin-bottom: 10px;
+}
+.specializations-list-wrapper ul li.specialization > * {
+  margin-right: 20px;
+  display: block;
+}
+.specializations-list-wrapper ul li.specialization > a {
+  font-size: 16px;
+}
+.specializations-list-wrapper ul.sub-specialization {
+  padding-left: 70px;
+}
+.specializations-list-wrapper ul.sub-specialization > li {
+  vertical-align: top;
+  display: inline-block;
+  min-height: 50px;
+  width: 160px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+.specializations-list-wrapper ul.sub-specialization > li > * {
+  margin-right: 10px;
+  display: block;
+}
+.specializations-list-wrapper ul.sub-specialization > li > a {
+  font-weight: normal;
+}
+.specializations-list-wrapper ul.treatment > li > a {
+  margin-left: 10px;
+  font-weight: normal;
+  font-style: italic;
+}
+
 /* This styles the different tiers */
 .premier-type-wrapper {
   background-color: #fff;
@@ -2132,7 +2182,7 @@ div.register p a:hover {
 
 .newsletter-box {
   margin-left: -18px;
-  padding: 10px 20px;
+  padding: 10px;
   margin-bottom: 30px;
   border: #848783 solid 1px;
   background-color: #a3a7a2;
@@ -2163,17 +2213,17 @@ div.register p a:hover {
   line-height: 1em;
   font-weight: 400;
 }
-.newsletter-box > form input[type="email"] {
-  height: 35px;
+.newsletter-box > form input[type="text"] {
+  height: 30px;
   font-family: "PT Sans",sans-serif;
   font-size: 14px;
   border: #555555 solid 1px;
-  margin: 10px auto 25px;
+  margin: 20px auto 30px;
   -webkit-border-radius: 0px !important;
   -moz-border-radius: 0px !important;
   border-radius: 0px !important;
   display: block;
-  width: 100%;
+  width: 95%;
 }
 .newsletter-box > form input[type="checkbox"] {
   margin: 0;
@@ -2183,7 +2233,7 @@ div.register p a:hover {
 }
 .newsletter-box > form button.btn {
   float: right;
-  margin: -10px 0 10px;
+  margin: -20px 0 10px;
   height: 40px;
   width: 130px;
   text-transform: uppercase;
