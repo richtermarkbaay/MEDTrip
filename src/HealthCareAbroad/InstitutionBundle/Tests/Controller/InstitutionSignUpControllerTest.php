@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 use \HCA_DatabaseManager;
 use HealthCareAbroad\InstitutionBundle\Tests\InstitutionBundleWebTestCase;
 
@@ -59,10 +61,10 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $client = static::createClient();
         $crawler = $client->request('GET', '/institution/register.html');
         $invalidValues = array(
-                        'institutionUserSignUp[password]' => null,
-                        'institutionUserSignUp[firstName]' => null,
-                        'institutionUserSignUp[lastName]' => null,
-                        'institutionUserSignUp[email]' => null,
+            'institutionUserSignUp[password]' => null,
+            'institutionUserSignUp[firstName]' => null,
+            'institutionUserSignUp[lastName]' => null,
+            'institutionUserSignUp[email]' => null,
         );
     
         $form = $crawler->selectButton('Create Account')->form();
@@ -72,10 +74,44 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your first name.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your last name.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your email address.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please choose at least one type of Institution")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("You must agree to the Terms of Use")')->count());
+        
+        $invalidValues['institutionUserSignUp']['password'] = '1234567';
+        $invalidValues['institutionUserSignUp']['confirm_password'] = '7654321'; 
+        $invalidValues['institutionUserSignUp']['email'] = 'test.adminuser@chromedia.com'; //existing email
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists.")')->count());
+        
+        $invalidValues['institutionUserSignUp']['password'] = '123'; // password lenght validation should be 6
+        $invalidValues['institutionUserSignUp']['email'] = 'invalidEmal'; //invalid email
+        $crawler = $client->submit($form, $invalidValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is too short. Please enter at least 6 characters.")')->count());
+        
+    }
+    
+    public function testSignUpLinks()
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/institution/register.html');
+        $link = $crawler->filter('a:contains("Terms of Use")')->eq(1)->link();
+        $crawler = $client->click($link);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'no Terms of Use link redirected');
+        
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/institution/register.html');
+        $link = $crawler->filter('a:contains("Privacy Policy")')->eq(1)->link();
+        $crawler = $client->click($link);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'no Privacy Policy link redirected');
     }
 
 	public function testSignUp()
 	{
+	    /* Test Register for multiple type */
 		$client = static::createClient();
 		$crawler = $client->request('GET', 'institution/register.html');
 		$this->assertGreaterThan(0, $crawler->filter('html:contains("Your First Name *")')->count());
@@ -86,9 +122,23 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		
 		$form = $crawler->selectButton('Create Account')->form();
 		$crawler = $client->submit($form, $this->signupFormValues);
-		// test that it will redirect to institution homepagex
  		$this->assertEquals(302, $client->getResponse()->getStatusCode());
-		$client->followRedirect();
+		$crawler = $client->followRedirect();
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Set-up Hospital Profile")')->count());
+		/* END of Multitple Type Test Registration */
+		
+		/* Test Register for single type */
+		$client = static::createClient();
+		$crawler = $client->request('GET', 'institution/register.html');
+		$form = $crawler->selectButton('Create Account')->form();
+		$this->signupFormValues['institutionUserSignUp']['type'] = 3;
+		$this->signupFormValues['institutionUserSignUp']['email'] = 'newSetEmail@singletype.com';
+		
+		$crawler = $client->submit($form, $this->signupFormValues);
+		$this->assertEquals(302, $client->getResponse()->getStatusCode());
+		$crawler = $client->followRedirect();
+		$this->assertGreaterThan(0, $crawler->filter('html:contains("Set-up Clinic Profile")')->count()); 
+		/* END of Single Type Test Registration */
 	}
 
     private $setupProfileFormValues =  array( 'institution_profile_form' => array(
@@ -104,6 +154,8 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         'medicalProviderGroups' => array( '0' => 'group'),
         'coordinates' => '10.3112791,123.89776089999998',
         'socialMediaSites' => array ( 'facebook' => 'test', 'twitter' => 'test','googleplus' => 'test' ),
+        'awards' => array( ),
+        'services' => array( ),
         '_token' => '',
     ));
 
@@ -121,7 +173,6 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $invalidProfileFormValues['institution_profile_form']['name'] = null;
         $invalidProfileFormValues['institution_profile_form']['country'] = null;
         $invalidProfileFormValues['institution_profile_form']['city'] = null;
-        $invalidProfileFormValues['institution_profile_form']['state'] = 1;
         $invalidProfileFormValues['institution_profile_form']['zipCode'] = null;
         $invalidProfileFormValues['institution_profile_form']['medicalProviderGroups'] = array( '0' => '');
         $invalidProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
@@ -131,6 +182,23 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your country.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your city.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your postal code.")')->count());
+        
+        $invalidProfileFormValues['institution_profile_form']['name'] = 'Apollo Hospital, Bangalore'; //existing institution name
+        $invalidProfileFormValues['institution_profile_form']['contactEmail'] = 'invalidEmail';
+        $invalidProfileFormValues['institution_profile_form']['address1'] = array ( 'room_number' => 'test', 'building' => 'test', 'street' => null );
+        $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This institution already exists!")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please supply a valid contact email.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid address.")')->count());
+        
+        $invalidProfileFormValues['institution_profile_form']['country'] = 34543543; //invalid coutry value
+        $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
+        
+        $invalidProfileFormValues['institution_profile_form']['city'] = 1234556; //invalid city value
+        $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+        $this->assertEquals(500, $client->getResponse()->getStatusCode());
         
         $this->setupProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
         $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
@@ -145,6 +213,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 	    $client = $this->getBrowserWithActualLoggedInUserForSingleType();
 	    $session = $client->getContainer()->get('session');
 	    $session->set('institutionSignupStepStatus', 1);
+	    $session->set('institutionId', 5);
 	    $crawler = $client->request('GET', 'institution/setup-profile');
 	    
 	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Set-up Clinic Profile")')->count());
@@ -165,11 +234,38 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your city.")')->count());
 	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your postal code.")')->count());
 	    
+	    $invalidProfileFormValues['institution_profile_form']['name'] = 'Apollo Hospital, Bangalore'; //existing institution name
+	    $invalidProfileFormValues['institution_profile_form']['contactEmail'] = 'invalidEmail';
+	    $invalidProfileFormValues['institution_profile_form']['address1'] = array ( 'room_number' => 'test', 'building' => 'test', 'street' => null );
+	    $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+	    $this->assertEquals(200, $client->getResponse()->getStatusCode());
+	    $this->assertGreaterThan(0, $crawler->filter('html:contains("This institution already exists!")')->count());
+	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Please supply a valid contact email.")')->count());
+	    $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid address.")')->count());
+	    
+	    $invalidProfileFormValues['institution_profile_form']['country'] = 34543543; //invalid coutry value
+	    $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+	    $this->assertEquals(500, $client->getResponse()->getStatusCode());
+	    
+	    $invalidProfileFormValues['institution_profile_form']['city'] = 1234556; //invalid city value
+	    $crawler = $client->request('POST', '/institution/setup-profile', $invalidProfileFormValues);
+	    $this->assertEquals(500, $client->getResponse()->getStatusCode());
+	    
 	    $this->setupProfileFormValues['institution_profile_form']['name'] = 'dsfdsfdsfdssf';
 	    $this->setupProfileFormValues['institution_profile_form']['_token'] = $csrf_token;
 	    $crawler = $client->request('POST', '/institution/setup-profile', $this->setupProfileFormValues);
 	    $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
+    }
+    
+    public function testUploadsForSetUpProfile()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 1);
+        $file['logo'] = new UploadedFile('web/images/flags16.png', 'flags16.png', 'image/jpeg', 63,284);
+        $crawler = $client->request('POST', 'institution/uploadLogo',$file);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
     public function testSetupInstitutionMedicalCenter()
@@ -225,16 +321,18 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('POST', '/institution/setup-specializations/1', $invalidProfileFormValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please select at least one specialization.")')->count());
+
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formVal['specializationId'] = 1;
+        $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/1',$formVal);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         $formValues = array('institutionSpecialization' => array( 4 => array ('treatments' => array ( 0 => '5'))));
         $crawler = $client->request('POST', '/institution/setup-specializations/1', $formValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->followRedirect();
         
-        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-        $formVal['specializationId'] = 1;
-        $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/1',$formVal);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
     }
 
     public function testSetupDoctors()
