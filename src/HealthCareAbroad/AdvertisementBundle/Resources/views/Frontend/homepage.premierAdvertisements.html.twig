@@ -30,9 +30,10 @@
 
 	<div class="carousel slide" id="feature_carousel">
 		<div class="carousel-inner">
+		    {% set carouselImageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM_BANNER') %}
 		    {% for i, image in featuredImages %}
 			<div class="{{ i==0 ? 'active' : '' }} item">
-                <img alt="" src="{{ advertisement_media_src(image.name) }}">
+                <img alt="" src="{{ advertisement_media_src(image.name, carouselImageSize) }}">
 			</div> <!--End of slider_item 1-->
 		    {% endfor %}
 		</div>
