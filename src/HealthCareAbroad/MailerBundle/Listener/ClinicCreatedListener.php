@@ -28,11 +28,20 @@ class ClinicCreatedListener extends NotificationsListener
                 $inquiriesEmail = $this->container->get('services.institution')->getAccountOwner($institution)->getEmail();
             }
         }
+/**
+        Jason Coppage <jason.coppage@chromedia.com>,
+        Greg Mogab <greg.mogab@chromedia.com>
+        Kimberly Damlani <kimberly.damlani@heathcareabroad.com>
 
+
+(array('john@doe.com' => 'John Doe')
+
+ */
         $data = array(
             'clinic_name' => $institutionMedicalCenter->getName(),
             'institution_name' => $institution->getName(),
             'to' => $to,
+            'bcc' => array('haroldmodesto@gmail.com' => 'Harold Modesto', 'haroldmodesto@yahoo.com' => 'Ham'),
             'email' => array(
                 'inquiries' => $inquiriesEmail
             ),

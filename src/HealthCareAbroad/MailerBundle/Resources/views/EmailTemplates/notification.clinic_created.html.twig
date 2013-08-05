@@ -2,12 +2,13 @@
 RULES: This should be sent upon clinic listing submission/creation. Sent to email address of person who added the listing. Copy sent to account owner.
 Assumptions: Hospital profile has been created IF not a single clinic.
 Auto-notification subject line: #Clinic_Name# has been added to HealthcareAbroad.com
+    changed to: #Clinic_Name# is AWAITING APPROVAL on HealthcareAbroad.com
 Auto-notification From address: support@healthcareabroad.com
 #}
 
 {% block subject %}
     {% autoescape false %}
-{{ clinic_name }} has been added to HealthcareAbroad.com
+{{ clinic_name }} is AWAITING APPROVAL on HealthcareAbroad.com
     {% endautoescape %}
 {% endblock %}
 
@@ -16,7 +17,7 @@ Auto-notification From address: support@healthcareabroad.com
 
 Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on HealthcareAbroad.com!
 
-We've received the clinic information you submitted. For quality assurance purposes, your submission is subject to review and approval.
+AWAITING APPROVAL: For quality assurance purposes, your submission is subject to review. This process is usually completed in a few hours but may take up to 2 days.
 
 To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 - Review your clinic information (static list) {{ url.center }}
@@ -45,7 +46,7 @@ The Healthcare Abroad Team
 
 Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on HealthcareAbroad.com!
 <br/><br/>
-We've received the clinic information you submitted. For quality assurance purposes, your submission is subject to review and approval.
+AWAITING APPROVAL: For quality assurance purposes, your submission is subject to review. This process is usually completed in a few hours but may take up to 2 days.
 <br/><br/>
 To insure prospective patients find complete and relevant information about everything that your clinic has to offer, we suggest that you complete your clinic’s profile by insuring your profile includes:
 <ul>
