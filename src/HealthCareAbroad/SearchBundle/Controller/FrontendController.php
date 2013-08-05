@@ -452,7 +452,9 @@ class FrontendController extends ResponseHeadersController
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country));
-        
+        // for breadcrumbs
+        $request->attributes->set('country', array('name' => $country->getName(), 'slug' => $country->getSlug()));
+
         return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
 
@@ -479,13 +481,17 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
             'featuredClinicParams' => array('cityId' => $city->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
             SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
         ));
+        // for breadcrumbs
+        $country = $city->getCountry();
+        $request->attributes->set('country', array('name' => $country->getName(), 'slug' => $country->getSlug()));
+        $request->attributes->set('city', array('name' => $city->getName(), 'slug' => $city->getSlug()));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -520,12 +526,15 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
             'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
         ));
+
+        // for breadcrumbs
+        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -565,13 +574,16 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
             'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
         ));
+        // for breadcrumbs
+        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
+        $request->attributes->set('subSpecialization', array('name' => $subSpecialization->getName(), 'slug' => $subSpecialization->getSlug()));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -582,7 +594,7 @@ class FrontendController extends ResponseHeadersController
         if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
             throw new NotFoundHttpException();
         }
-        
+
         if (!$treatment = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')->getTreatment(isset($searchTerms['treatmentId']) ? $searchTerms['treatmentId'] : $request->get('treatment'))) {
             throw new NotFoundHttpException();
         }
@@ -609,13 +621,16 @@ class FrontendController extends ResponseHeadersController
             'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
             'featuredClinicParams' => array('treatmentId' => $treatment->getId())
         );
-        
+
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
         ));
+        // for breadcrumbs
+        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
+        $request->attributes->set('treatment', array('name' => $treatment->getName(), 'slug' => $treatment->getSlug()));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }

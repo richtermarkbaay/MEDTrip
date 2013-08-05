@@ -11,12 +11,12 @@ class BreadcrumbWidgetTwigExtension extends \Twig_Extension
     private $twig;
 
     private $breadcrumbService;
-    
+
     public function __construct(FrontendBreadcrumbService $service)
     {
         $this->breadcrumbService = $service;
-    }   
-     
+    }
+
     public function getFunctions()
     {
         return array(
@@ -29,9 +29,10 @@ class BreadcrumbWidgetTwigExtension extends \Twig_Extension
         $breadcrumbs = $this->breadcrumbService->generateBreadcrumbs();
 
         if(count($breadcrumbs)) {
+            //FIXME: inject twig to the extension rather than using breadcrumbService
             $twig = $this->breadcrumbService->container->get('twig');
             $twig->addGlobal('breadcrumbs', $breadcrumbs);
-            return $twig->display('FrontendBundle:Widgets:breadcrumbs.html.twig');            
+            return $twig->display('FrontendBundle:Widgets:breadcrumbs.html.twig');
         }
     }
 
