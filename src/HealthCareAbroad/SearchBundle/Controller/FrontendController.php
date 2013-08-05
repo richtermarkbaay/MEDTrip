@@ -452,8 +452,7 @@ class FrontendController extends ResponseHeadersController
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country));
-        // for breadcrumbs
-        $request->attributes->set('country', array('name' => $country->getName(), 'slug' => $country->getSlug()));
+        $this->setBreadcrumbRequestAttributes($request, array('country' => $country));
 
         return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -488,10 +487,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
             SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
         ));
-        // for breadcrumbs
-        $country = $city->getCountry();
-        $request->attributes->set('country', array('name' => $country->getName(), 'slug' => $country->getSlug()));
-        $request->attributes->set('city', array('name' => $city->getName(), 'slug' => $city->getSlug()));
+        $this->setBreadcrumbRequestAttributes($request, array('country' => $city->getCountry(), 'city' => $city));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -532,9 +528,7 @@ class FrontendController extends ResponseHeadersController
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
         ));
-
-        // for breadcrumbs
-        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -581,9 +575,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
         ));
-        // for breadcrumbs
-        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
-        $request->attributes->set('subSpecialization', array('name' => $subSpecialization->getName(), 'slug' => $subSpecialization->getSlug()));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization, 'subSpecialization' => $subSpecialization));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -628,9 +620,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
         ));
-        // for breadcrumbs
-        $request->attributes->set('specialization', array('name' => $specialization->getName(), 'slug' => $specialization->getSlug()));
-        $request->attributes->set('treatment', array('name' => $treatment->getName(), 'slug' => $treatment->getSlug()));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization, 'treatment' => $treatment));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -827,5 +817,13 @@ class FrontendController extends ResponseHeadersController
         }
 
         return $routeParams;
+    }
+
+    //TODO: move to service layer
+    private function setBreadcrumbRequestAttributes(Request $request, array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $request->attributes->set($key, array('name' => $value->getName(), 'slug' => $value->getSlug()));
+        }
     }
 }
