@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdminBundle\Form\InstitutionProfileFormType;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
@@ -78,7 +80,7 @@ class InstitutionMedicalCenterController extends Controller
     public function indexAction()
     {
         $institutionService = $this->get('services.institution');
-        $institutionStatusForm = $this->createForm(new InstitutionFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
+        $institutionStatusForm = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionFormType::OPTION_REMOVED_FIELDS => array('name','description','contactEmail','contactNumber','websites')));
         if($institutionService->isSingleCenter($this->institution)) {
             $firstMedicalCenter = $institutionService->getFirstMedicalCenter($this->institution);
             if ($firstMedicalCenter) {
@@ -108,7 +110,7 @@ class InstitutionMedicalCenterController extends Controller
                             'ancillaryServicesData' => $ancillaryServicesData,
                             'pager' => $this->pager,
                             'isSingleCenter' => false,
-                            'institutionStatusForm' =>$institutionStatusForm->createView()
+                            'institutionStatusForm' => $institutionStatusForm->createView()
             );
 
             $response = $this->render('AdminBundle:InstitutionMedicalCenter:index.html.twig', $params);
