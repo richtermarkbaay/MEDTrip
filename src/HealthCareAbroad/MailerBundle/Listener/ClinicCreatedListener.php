@@ -28,8 +28,8 @@ class ClinicCreatedListener extends NotificationsListener
 
         $bcc = array(
             'jason.coppage@chromedia.com' => 'Jason Coppage',
-            'greg.mogab@chromedia.com' => 'Greg Mogab',
-            'kimberly.damlani@heathcareabroad.com' => 'Kimberly Damlani',
+            'greg.mogab@healthcareabroad.com' => 'Greg Mogab',
+            'kimberly.damlani@healthcareabroad.com' => 'Kimberly Damlani',
             'harold.modesto@chromedia.com' => 'Harold Modesto'
         );
 
