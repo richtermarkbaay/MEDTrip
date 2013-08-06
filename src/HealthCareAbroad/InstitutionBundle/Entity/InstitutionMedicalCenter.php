@@ -65,7 +65,7 @@ class InstitutionMedicalCenter
      * @var string
      */
     private $websites;
-    
+
     /**
      * @var string
      */
@@ -94,18 +94,23 @@ class InstitutionMedicalCenter
     /**
      * @var integer
      */
+    private $isFromInternalAdmin;
+
+    /**
+     * @var integer
+     */
     private $status;
+
+    /**
+     * @var integer
+     */
+    private $payingClient;
 
     /**
      * @var integer
      */
     private $rankingPoints;
 
-    /**
-     * @var integer
-     */
-    private $payingClient;
-    
     /**
      * @var string
      */
@@ -403,7 +408,7 @@ class InstitutionMedicalCenter
     {
         return $this->websites;
     }
-    
+
     /**
      * Set websiteBackUp
      *
@@ -416,11 +421,11 @@ class InstitutionMedicalCenter
     
         return $this;
     }
-    
+
     /**
      * Get websiteBackUp
      *
-     * @return string
+     * @return string 
      */
     public function getWebsiteBackUp()
     {
@@ -520,6 +525,29 @@ class InstitutionMedicalCenter
     }
 
     /**
+     * Set isFromInternalAdmin
+     *
+     * @param integer $isFromInternalAdmin
+     * @return InstitutionMedicalCenter
+     */
+    public function setIsFromInternalAdmin($isFromInternalAdmin)
+    {
+        $this->isFromInternalAdmin = $isFromInternalAdmin;
+    
+        return $this;
+    }
+
+    /**
+     * Get isFromInternalAdmin
+     *
+     * @return integer 
+     */
+    public function getIsFromInternalAdmin()
+    {
+        return $this->isFromInternalAdmin;
+    }
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -540,6 +568,29 @@ class InstitutionMedicalCenter
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set payingClient
+     *
+     * @param integer $payingClient
+     * @return InstitutionMedicalCenter
+     */
+    public function setPayingClient($payingClient)
+    {
+        $this->payingClient = $payingClient;
+    
+        return $this;
+    }
+
+    /**
+     * Get payingClient
+     *
+     * @return integer 
+     */
+    public function getPayingClient()
+    {
+        return $this->payingClient;
     }
 
     /**
@@ -565,29 +616,6 @@ class InstitutionMedicalCenter
         return $this->rankingPoints;
     }
 
-    /**
-     * Set payingClient
-     *
-     * @param smallint $payingClient
-     * @return InstitutionMedicalCenter
-     */
-    public function setPayingClient($payingClient)
-    {
-        $this->payingClient = $payingClient;
-        return $this;
-    }
-    
-    /**
-     * Get payingClient
-     *
-     * @return smallint
-     */
-    public function getPayingClient()
-    {
-        return $this->payingClient;
-    }
-    
-    
     /**
      * Set slug
      *

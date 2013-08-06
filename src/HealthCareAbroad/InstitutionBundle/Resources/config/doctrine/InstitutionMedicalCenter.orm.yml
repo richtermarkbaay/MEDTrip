@@ -87,6 +87,10 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             type: datetime
             nullable: false
             column: date_updated
+        isFromInternalAdmin:
+            type: smallint
+            nullable: true
+            column: is_from_internal_admin
         status:
             type: smallint
             nullabe: false
