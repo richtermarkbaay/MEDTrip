@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\ApiBundle\Services\InstitutionApiService;
@@ -53,6 +55,11 @@ class InstitutionController extends ResponseHeadersController
      * @var InstitutionApiService
      */
     private $apiInstitutionService;
+    
+    /**
+     * @var InstitutionMedicalCenterApiService
+     */
+    private $apiInstitutionMedicalCenterService;
 
 //     public function preExecute()
 //     {
@@ -88,10 +95,10 @@ class InstitutionController extends ResponseHeadersController
     public function profileAction(Request $request)
     {
         $start = \microtime(true);
-        
         $slug = $request->get('institutionSlug', null);
         $institutionId = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getInstitutionIdBySlug($slug);
         $this->apiInstitutionService = $this->get('services.api.institution');
+        $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
         $memcacheService = $this->get('services.memcache');
         $memcacheKey = 'frontend.controller.institution_profile.'.$institutionId;
         $cachedData = $memcacheService->get($memcacheKey);
@@ -99,42 +106,65 @@ class InstitutionController extends ResponseHeadersController
         if (!$cachedData) {
             
             $mediaExtensionService = $this->apiInstitutionService->getMediaExtension();
+            
             $this->institution = $this->apiInstitutionService->getInstitutionPublicDataById($institutionId);
             
-            // build logo
-            $this->apiInstitutionService
-            ->buildFeaturedMediaSource($this->institution)
-            ->buildLogoSource($this->institution);
+            $isSingleCenterInstitution = $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']);
             
-            // build logos of the medical centers of this institution
-            // TODO: I'm hesitant on placing this on a service,
-            // Also hesitant on modifying the twig extension since it is used in many contexts
-            $canDisplayImcLogo = $this->institution['payingClient'] == 1;
-            foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
-                // client is allowed to display logo, and there is a logo
-                if ($canDisplayImcLogo && $imcData['logo']) {
-                    $imcData['logo']['src'] = $mediaExtensionService->getInstitutionMediaSrc($imcData['logo'], ImageSizes::MEDIUM);
-                }
-                else {
-                    // not allowed to display logo, or clinic has no logo
-                    // we get the logo of the first specialization
-                    $firstSpecialization = \count($imcData['institutionSpecializations'])
-                    ? (isset($imcData['institutionSpecializations'][0]['specialization']) ? $imcData['institutionSpecializations'][0]['specialization'] : null)
+            if ($isSingleCenterInstitution) {
+                $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
+                    ? $this->institution['institutionMedicalCenters'][0]
                     : null;
-            
-                    // first specialization has a media
-                    if ($firstSpecialization && $firstSpecialization['media']){
-                        $imcData['logo']['src'] = $mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
-                    }
+                if (!$firstMedicalCenter) {
+                    // no medical center
+                    // FIXME: right now throw an exception since this should not happen
+                    throw $this->createNotFoundException('Invalid single center clinic');
+                }
+                
+                // build awards from the first clinic
+                $this->institution['globalAwards'] = $this->apiInstitutionMedicalCenterService->getGlobalAwardsByInstitutionMedicalCenterId($firstMedicalCenter['id']); 
+                
+                // build offered services from first clinic
+                $this->institution['offeredServices'] = $this->apiInstitutionMedicalCenterService->getOfferedServicesByInstitutionMedicalCenterId($firstMedicalCenter['id']);
+                
+                // build doctors from first clinic
+                $this->institution['doctors'] = $this->apiInstitutionMedicalCenterService->getDoctorsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
+                
+                $this->apiInstitutionMedicalCenterService->buildLogoSource($firstMedicalCenter)
+                    ->buildInstitutionSpecializations($firstMedicalCenter)
+                    ->buildBusinessHours($firstMedicalCenter);
+                
+                $this->institution['institutionMedicalCenters'][0] = $firstMedicalCenter;
+            } 
+            // multiple center institution
+            else {
+                
+                $this->apiInstitutionService
+                    ->buildDoctors($this->institution) // build doctors data
+                    ->buildGlobalAwards($this->institution) // build global awards data
+                    ->buildOfferedServices($this->institution) // build anciliary services data
+                    ->buildFeaturedMediaSource($this->institution) // build cover photo source
+                    ->buildLogoSource($this->institution) // build logo
+                ;
+                
+                // Hesitant on modifying the twig extension since it is used in many contexts
+                foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
+                    $this->apiInstitutionMedicalCenterService->buildLogoSource($imcData);
                 }
             }
+            
             $this->institution['specializationsList'] = $this->apiInstitutionService->listActiveSpecializations($this->institution['id']); 
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institution);
         }
         else {
             $this->institution = $cachedData;
+            $isSingleCenterInstitution = $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']);
         }
+        
+        $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
+            ? $this->institution['institutionMedicalCenters'][0]
+            : null;
         
         // set request variables to be used by page meta components
         $this->getRequest()->attributes->add(array(
@@ -149,8 +179,9 @@ class InstitutionController extends ResponseHeadersController
         
         $params = array(
             'institution' => $this->institution,
-            'isSingleCenterInstitution' => $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']),
+            'isSingleCenterInstitution' => $isSingleCenterInstitution,
             'institutionDoctors' => $this->institution['doctors'],
+            'institutionMedicalCenter' => $firstMedicalCenter, // will only be used in single center 
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'formId' => 'institution_inquiry_form',
             'institutionAwards' => $this->institution['globalAwards'],
@@ -158,6 +189,7 @@ class InstitutionController extends ResponseHeadersController
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);
+        //exit;
         $response= $this->setResponseHeaders($content);
         
         return $response;

@@ -83,6 +83,10 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             );
         }
         
+        if (!\count($byType)) {
+            return null;
+        }
+        
         return \json_encode($byType);
     }
     
@@ -274,7 +278,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *
      * @param Mixed <Institution, array> $institution
      */
-    public function formatInstitutionAddressToString(Institution $institution, array $includedKeys=array(), $glue = ', ')
+    public function formatInstitutionAddressToString($institution, array $includedKeys=array(), $glue = ', ')
     {
         $arrAddress = $this->institutionAddressToArray($institution, $includedKeys);
 

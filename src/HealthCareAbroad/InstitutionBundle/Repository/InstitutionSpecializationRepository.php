@@ -130,9 +130,10 @@ class InstitutionSpecializationRepository extends EntityRepository
         
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('a, b, c, sub')
+        $qb->select('a, b, sp_lg, c, sub')
         ->from('InstitutionBundle:InstitutionSpecialization', 'a')
         ->leftJoin('a.specialization', 'b')
+        ->leftJoin('b.media', 'sp_lg')
         ->leftJoin('a.treatments', 'c')
         ->leftJoin('c.subSpecializations', 'sub')
         ->where('a.institutionMedicalCenter = :institutionMedicalCenter')

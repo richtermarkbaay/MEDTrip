@@ -36,6 +36,11 @@ class InstitutionMedicalCenterApiService
         $this->mediaExtensionService = $v;
     }
     
+    /**
+     * 
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
     public function buildLogoSource(&$institutionMedicalCenter)
     {
         $canDisplayImcLogo = $institutionMedicalCenter['institution']['payingClient'];
@@ -57,7 +62,7 @@ class InstitutionMedicalCenterApiService
             }
         }
         
-        
+        return $this;
     }
     
     public function getInstitutionMedicalCenterPublicDataById($institutionMedicalCenterId)
@@ -66,25 +71,87 @@ class InstitutionMedicalCenterApiService
         $qb->andWhere('imc.id = :id')
             ->setParameter('id', $institutionMedicalCenterId);
         
-//         $institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_OBJECT);
         $institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
         
-        if ($institutionMedicalCenter) {
-            // build doctors
-            $institutionMedicalCenter['doctors'] = $this->getDoctorsByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
-            
-            // build awards
-            $institutionMedicalCenter['globalAwards'] = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')
-                ->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter['id'], Query::HYDRATE_ARRAY);
-            
-            // build anciliary services
-            $institutionMedicalCenter['offeredServices'] = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')
-                ->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter['id'], Query::HYDRATE_ARRAY);
-            
-        }
-        
-        
         return $institutionMedicalCenter;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildDoctors(&$institutionMedicalCenter)
+    {
+        $institutionMedicalCenter['doctors'] = $this->getDoctorsByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildGlobalAwards(&$institutionMedicalCenter)
+    {
+        $institutionMedicalCenter['globalAwards'] = $this->getGlobalAwardsByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildOfferedServices(&$institutionMedicalCenter)
+    {
+        $institutionMedicalCenter['offeredServices'] = $this->getOfferedServicesByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildInstitutionSpecializations(&$institutionMedicalCenter)
+    {
+        $institutionMedicalCenter['institutionSpecializations'] = $this->getInstitutionSpecializationsByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildBusinessHours(&$institutionMedicalCenter)
+    {
+        $institutionMedicalCenter['businessHours'] = $this->getBusinessHoursByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        return $this;
+    }
+    
+    public function getBusinessHoursByInstitutionMedicalCenterId($institutionMedicalCenterId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:BusinessHour')
+            ->getByInstitutionMedicalCenter($institutionMedicalCenterId, Query::HYDRATE_ARRAY);
+    }
+    
+    public function getOfferedServicesByInstitutionMedicalCenterId($institutionMedicalCenterId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')
+            ->getAllServicesByInstitutionMedicalCenter($institutionMedicalCenterId, Query::HYDRATE_ARRAY);
+    }
+    
+    public function getGlobalAwardsByInstitutionMedicalCenterId($institutionMedicalCenterId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenterProperty')
+            ->getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenterId, Query::HYDRATE_ARRAY);
     }
     
     public function getDoctorsByInstitutionMedicalCenterId($institutionMedicalCenterId)

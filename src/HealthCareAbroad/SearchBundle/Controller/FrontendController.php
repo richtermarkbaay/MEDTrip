@@ -159,8 +159,12 @@ class FrontendController extends ResponseHeadersController
         $searchParameters = $requestParams['searchParameter'];
 
         //FIXME: to be compatible with the search widget which uses a dash
-        if (isset($searchParameters['sub-specialization']) && !isset($searchParameters['subSpecialization'])) {
-            $searchParameters['subSpecialization'] = $searchParameters['sub-specialization'];
+        if ((isset($searchParameters['sub-specialization']) || isset($searchParameters['sub_specialization'])) && !isset($searchParameters['subSpecialization'])) {
+            if (isset($searchParameters['sub-specialization'])) {
+                $searchParameters['subSpecialization'] = $searchParameters['sub-specialization'];
+            } elseif (isset($searchParameters['sub_specialization'])) {
+                $searchParameters['subSpecialization'] = $searchParameters['sub_specialization'];
+            }
         }
 
         //FIXME: this is just a patch to support combined country and city dropwdown in narrow search

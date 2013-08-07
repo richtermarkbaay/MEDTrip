@@ -1,5 +1,5 @@
 
-{% set number = contact_details_to_json(institution, true) %}
+{% set number = contact_details_to_json(institution.contactDetails, true) %}
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
     
@@ -23,16 +23,16 @@
                 </li>
             {% endif %}
 
-                <li>
-                    <a class="btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">
-                        <span class="hca-sprite email-icon"></span> Email
-                    </a>
-                    <!-- Modal Multiple Institution Inquiry -->
-                	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-                	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
-                	%}
-                   <!-- end Modal Multiple Institution Inquiry -->
-                </li>
+            <li>
+                <a class="btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">
+                    <span class="hca-sprite email-icon"></span> Email
+                </a>
+                <!-- Modal Multiple Institution Inquiry -->
+            	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+            	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+            	%}
+               <!-- end Modal Multiple Institution Inquiry -->
+            </li>
 
             {% if institution.websites %}
                 <!--li><a class="btn orange" href="{{ institution.websites }}" target="_blank"><span class="hca-sprite link-icon"></span> Visit Website</a></li-->

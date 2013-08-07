@@ -7,7 +7,7 @@
         {% for each in specializations %}
     		<ul>
     			<li class="first"><a>{{ each.specialization.name }}</a></li>
-    			{% set _groupedTreatments = group_treatments_by_subspecialization(each.specialization.treatments) %}
+    			{% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
                 
                 {% for _subName, _groupedData in _groupedTreatments %}
                     

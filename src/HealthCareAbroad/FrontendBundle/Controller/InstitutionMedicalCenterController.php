@@ -82,8 +82,15 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 // redirect to hospital page
             }
             
-            // build logo
-            $this->apiInstitutionMedicalCenterService->buildLogoSource($this->institutionMedicalCenter);
+            // build optional data
+            $this->apiInstitutionMedicalCenterService
+                ->buildLogoSource($this->institutionMedicalCenter)
+                ->buildBusinessHours($this->institutionMedicalCenter)
+                ->buildDoctors($this->institutionMedicalCenter)
+                ->buildGlobalAwards($this->institutionMedicalCenter)
+                ->buildOfferedServices($this->institutionMedicalCenter)
+                ->buildInstitutionSpecializations($this->institutionMedicalCenter)
+            ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
             $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
