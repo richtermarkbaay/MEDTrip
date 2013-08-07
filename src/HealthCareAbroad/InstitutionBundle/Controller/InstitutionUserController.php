@@ -161,7 +161,6 @@ class InstitutionUserController extends Controller
                 'form' => $form->createView(),
                 'institutionUser' => $institutionUser,
                 'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-        ));
     }
     
     public function editAccountEmailAction(Request $request){
