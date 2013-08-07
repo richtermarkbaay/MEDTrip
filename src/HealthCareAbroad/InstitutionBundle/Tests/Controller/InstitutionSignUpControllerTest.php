@@ -341,7 +341,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $session = $client->getContainer()->get('session');
         $session->set('institutionSignupStepStatus', 5);
         
-        $crawler = $client->request('GET', 'institution/setup-doctors/1');
+        $crawler1 = $crawler = $client->request('GET', 'institution/setup-doctors/1');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
@@ -350,13 +350,30 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
             
-         /* NOTE: this test only works if csrf token is set to fasle */
          /*   Add new doctor */
+        //test for invalid form
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
         $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-         /* end of NOTE */
+        
+        //$client = $this->getBrowserWithActualLoggedInUser();
+        //$crawler = $client->request('GET', '/institution/setup-doctors/1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $extract = $crawler1->filter('input[name="institutionMedicalCenterDoctor[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
+        
+        $uri = "/institution/medical-center/2/add-doctor";
+        $formValues =  array('institutionMedicalCenterDoctor' => array(
+                        'lastName' => 'last',
+                        'firstName' => 'first',
+                        'middleName' => 'middle',
+                        'suffix' => 'Jr.',
+                        '_token' => $csrf_token
+        ));
+        
+        $client->request('POST', '/institution/setup-doctors/1', $formValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formValues =  array( 'doctorId' => 43242); //add invalid doctor

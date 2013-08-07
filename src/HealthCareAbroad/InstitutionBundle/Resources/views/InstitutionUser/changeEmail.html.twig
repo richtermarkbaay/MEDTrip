@@ -1,0 +1,53 @@
+{% extends 'InstitutionBundle::layout.html.twig' %}
+{% set mainNavigation = {selected: 'users',  label : 'Manage Account Email'} %}
+{% block content %}
+{% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+ {% block wrappedContent %}
+    <h1><i class="icon-envelope"></i> Manage Account Email</h1>
+		<div class=span8>
+		     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccountEmail') }}" method="POST" {{ form_enctype(form) }} class="user">
+                 <section class="section account-info manage-data">
+                   <div class="row-fluid">
+                        <div class="span12">
+                            <div class="control-group row-field {{ (form.current_email.vars.valid ? '' : 'error') }}">
+                                <label for="institutionUserChangeEmail_current_email">
+                                    Current Email
+                                </label>
+                               {{ form_widget(form.current_email, { 'attr': {'class': 'span6'} }) }}
+                               {{ form_errors(form.current_email) }}
+                            </div>
+                             <div class="control-group row-field {{ (form.new_email.vars.valid ? '' : 'error') }}">
+                                <label for="institutionUserChangeEmail_new_email">
+                                    Set your new email <small>( Must be atleast 6 characters long ) </small>
+                                </label>
+                               {{ form_widget(form.new_email, { 'attr': {'class': 'span6'} }) }}
+                               {{ form_errors(form.new_email) }}
+                            </div>
+                             <div class="control-group row-field {{ (form.confirm_email.vars.valid ? '' : 'error') }}">
+                                <label for="institutionUserChangeEmail_confirmemail"> Re-type your email </label>
+                                   {{ form_widget(form.confirm_email, { 'attr': {'class': 'span6'} }) }}
+                                   {{ form_errors(form.confirm_email) }}
+                            </div>
+                            <a href="{{ path('institution_editAccountPassword') }}" class="btn btn-link">Update Account Password</a>
+                        </div>
+                    </div>
+		         </section>
+                 <section class="section footer">
+                    <div class="row-fluid terms">
+                        <div class="span12">
+                             {{ form_rest(form) }}
+                            <button type="submit" class="btn pull-right btn-primary btn-large" >Save Changes</button>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+	    <aside class="span4">
+            <section class="aside-box info dashboard-side">
+                <p>This is the email address you use to login to the HealthcareAbroad.com system. The NEXT TIME YOU LOGIN YOU WILL NEED TO USE THIS EMAIL ADDRESS. It is also the email address we send all internal account communications from the HealthcareAbroad.com admin team to your organization.</p>
+           </section>
+        </aside>
+    	<!--End of row-->
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

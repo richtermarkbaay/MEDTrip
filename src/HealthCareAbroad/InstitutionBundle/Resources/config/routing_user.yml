@@ -6,7 +6,19 @@ institution_editAccount:
         
 institution_editAccountPassword:
     pattern:  /manage-account-password.html
-    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccountPassword}
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccountPassword }
+    requirements:
+        _method:  GET|POST
+
+institution_editAccountEmail:
+    pattern:  /manage-account-email.html
+    defaults: { _controller: InstitutionBundle:InstitutionUser:editAccountEmail}
+    requirements:
+        _method:  GET|POST        
+        
+institution_invite_user:
+    pattern:  /invite-staff
+    defaults: { _controller: InstitutionBundle:InstitutionUser:invite }
     requirements:
         _method:  GET|POST
 
