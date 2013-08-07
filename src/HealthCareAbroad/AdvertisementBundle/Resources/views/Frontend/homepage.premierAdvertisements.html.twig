@@ -30,9 +30,10 @@
 
 	<div class="carousel slide" id="feature_carousel">
 		<div class="carousel-inner">
+		    {% set carouselImageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM_BANNER') %}
 		    {% for i, image in featuredImages %}
 			<div class="{{ i==0 ? 'active' : '' }} item">
-                <img alt="" src="{{ advertisement_media_src(image.name) }}">
+                <img alt="" src="{{ advertisement_media_src(image.name, carouselImageSize) }}">
 			</div> <!--End of slider_item 1-->
 		    {% endfor %}
 		</div>
@@ -57,10 +58,11 @@
 
 	<div class="ad-highlights-wrapper hca-v-sprite stripe-bg orange row-fluid">		
         {% set highlights = json_decode(highlight.highlights) %}
+        {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
         {% for each in highlights %}
             <div class="item-wrapper span6">
                 {% if each.icon %}
-                    <img class="img-circle pull-left" src="{{ each.icon.src is defined ? each.icon.src : advertisement_media_src(each.icon.name) }}" alt="" width="50"/>
+                    <img class="img-circle pull-left" src="{{ each.icon.src_thumbnail is defined ? each.icon.src_thumbnail : advertisement_media_src(each.icon, iconSize) }}" alt="" width="50"/>
                 {% else %}
                     <span class="{{ ad_highlight_placeholder_class(each.type) }} orange img-circle pull-left default"></span>
                 {% endif %}

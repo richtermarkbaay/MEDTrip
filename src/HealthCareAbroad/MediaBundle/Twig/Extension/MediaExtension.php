@@ -54,10 +54,14 @@ class MediaExtension extends \Twig_Extension
         } else {
             $filename = $media;
         }
-    
-        if($size)
-            $filename = $size . '_' . $filename;
-    
+
+        if($size) {
+            $filenameWithSize = $size . '_' . $filename;
+            if($this->filesystemMapper->get($filesystemName)->getAdapter()->exists($filenameWithSize)) {
+                $filename = $filenameWithSize;
+            }
+        }
+
         return $this->filesystemMapper->get($filesystemName)->getAdapter()->getUrl() . '/' . $filename;
     }
 

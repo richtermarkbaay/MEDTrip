@@ -102,17 +102,6 @@ class InstitutionProfileFormType extends AbstractType
         if (!$this->institution instanceof Institution ) {
             throw InstitutionFormException::nonInstitutionFormData(__CLASS__, $this->institution);
         }
-
-//         $cityId = 0;
-//         if ($city = $this->institution->getCity()) {
-//             $cityId = $city->getId();
-//         }
-//         // only add load cities subscriber if country is not hidden
-//         if (!$this->_isRemoved('country')) {
-//             $subscriber = new LoadCitiesSubscriber($builder->getFormFactory());
-//             $builder->addEventSubscriber($subscriber);
-//         }
-
         
         $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea', array('required' => false));
@@ -149,7 +138,6 @@ class InstitutionProfileFormType extends AbstractType
     {
         
         if ($this->_isRemoved($fieldName)) {
-
             // this field is flagged as removed, don't add this to builder
             return;
         }

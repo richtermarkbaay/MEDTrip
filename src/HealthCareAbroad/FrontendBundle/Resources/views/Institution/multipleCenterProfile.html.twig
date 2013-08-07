@@ -30,7 +30,7 @@
 
     {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
 
-    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
+    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: social_media_sites_to_array(institution.socialMediaSites) } %}
 </aside> <!--End of aside_content-->
 
 

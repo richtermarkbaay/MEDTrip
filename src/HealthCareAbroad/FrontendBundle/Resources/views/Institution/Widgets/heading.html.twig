@@ -1,9 +1,5 @@
 
-{% set number = contact_details_to_json(institution.contactDetails, true) %}
-{% set websites = institution.websites %}
-{% set websites = json_decode(websites) %}
-{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
-
+{% set number = contact_details_to_json(institution, true) %}
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
     
@@ -38,8 +34,8 @@
                    <!-- end Modal Multiple Institution Inquiry -->
                 </li>
 
-            {% if mainWebsites %}
-                <!--li><a class="btn orange" href="{{ mainWebsites }}" target="_blank"><span class="hca-sprite link-icon"></span> Visit Website</a></li-->
+            {% if institution.websites %}
+                <!--li><a class="btn orange" href="{{ institution.websites }}" target="_blank"><span class="hca-sprite link-icon"></span> Visit Website</a></li-->
             {% endif %}
         </ul>
         <div class="address">

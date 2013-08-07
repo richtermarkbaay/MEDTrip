@@ -173,11 +173,8 @@ class InstitutionPropertyService
         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
 
         $criteria = array(
-
             'institution' => $institution,
-
             'institutionPropertyType' => $propertyType
-
         );
 
         // get the properties
@@ -422,9 +419,7 @@ class InstitutionPropertyService
 
     public function addServicesForInstitution(Institution $institution, $services = array())
     {
-        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')
-
-        ->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
+        $propertyType = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->find(InstitutionPropertyTypeRepository::ANCILLIARY_SERVICE);
 
         
         if(empty($services)){

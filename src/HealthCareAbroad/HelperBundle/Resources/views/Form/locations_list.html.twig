@@ -3,7 +3,14 @@
         {% set valueContainerId = form.vars.id %}
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
-        <div class="fancy-dropdown-wrapper">
+
+    	{% if form.parent.vars.value.country is defined %}
+            {% set countryFormValue = form.parent.vars.value.country %}
+        {% elseif (strpos(getClass(form.parent.vars.value), 'AdvertisementPropertyValue') is not sameas(false)) %}
+            {% set countryFormValue = form.parent.vars.value.value %}
+        {% endif %}
+
+        <div class="fancy-dropdown-wrapper _country-autocomplete">
             <input type="hidden" id="{{ valueContainerId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
             <input required="required" type="text" id="{{ widgetId }}" placeholder="Select Country" data-autocomplete-trigger="#{{ triggerId }}" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
             <button id="{{ triggerId }}" class="btn hca-location-btn show_list_btn" type="button">
@@ -32,12 +39,10 @@
                     });
                 	
                 	{# there is a data for current country #}
-                    {% if form.parent.vars.value.country %}
-                        _valueContainer.val('{{ form.parent.vars.value.country.id }}');
-                        _inputElem.val('{{ form.parent.vars.value.country.name }}');
-                        
+                    {% if countryFormValue %}
+                        _valueContainer.val('{{ countryFormValue.id }}');
+                        _inputElem.val('{{ countryFormValue.name }}');
                     {% endif %}
-                    
                 });
             })(jQuery);
             </script>
@@ -51,7 +56,13 @@
         {% set valueContainerId = form.vars.id %}
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
-        
+
+    	{% if form.parent.vars.value.city is defined %}
+            {% set cityFormValue = form.parent.vars.value.city %}
+        {% elseif (strpos(getClass(form.parent.vars.value), 'AdvertisementPropertyValue') is not sameas(false)) %}
+            {% set cityFormValue = form.parent.vars.value.value %}
+        {% endif %}
+
         <div class="fancy-dropdown-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
             <input id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" type="text" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}  data-elem="input" disabled="disabled" data-city-autocomplete="">
@@ -66,6 +77,19 @@
             $(function(){
                 var _inputElem = $('#{{ widgetId }}')
             	var _valueContainer = $('#{{ valueContainerId }}');
+                var countryDependencyElement;
+
+            	{% if form.parent.country is defined and form.parent.country %}
+                    countryDependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
+                    countryValueElem = $('#{{ form.parent.country.vars.id }}');
+                {% endif %}
+
+                // Finds "country input widget" className within the form.
+                if(!countryDependencyElement) {
+                	countryDependencyElement = _inputElem.parents('form:first').find('._country-autocomplete input[data-autocomplete-trigger]:first');
+                	countryValueElem = $('#' + countryDependencyElement.attr('id').replace('_widget', ''));
+                }
+
                 Location.loadCitiesUrl = '{{ get_load_cities_api_uri() }}';
                 _inputElem.fancyAutocomplete({
                     source: [],
@@ -74,43 +98,42 @@
                     autocomplete: {minLength: 0}
                 });
 
-                {% if form.parent.country %}
-                    var dependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
-                    dependencyElement.on('selectedCountry', function(e){
+
+                {% if form.parent.state is defined and form.parent.state %}
+                    countryDependencyElement.on('selectedCountry', function(e){
                         var cityWidget = $('#{{ widgetId }}');
                         Location.disableWidget(cityWidget, true);
-
+    
                         // we should reset the source here to empty
                         Location.resetWidgetValue(cityWidget);
                     });
-                {% endif %}
 
-                {% if form.parent.state %}
                     var dependencyElement = $('#{{ form.parent.state.vars.id }}_widget');
                     var dependencyElementValueContainer = $('#{{ form.parent.state.vars.id }}');
                     
                     dependencyElement.on('selectedState', function(e){
                         var stateWidget = $(e.target);
-                        var countryValue = $('#{{ form.parent.country.vars.id }}').val();
-                        Location.loadCities(countryValue, $('#{{ form.parent.state.vars.id }}').val(), $('#{{ widgetId }}'), 0);
+                        Location.loadCities(countryValueElem.val(), $('#{{ form.parent.state.vars.id }}').val(), $('#{{ widgetId }}'), 0);
                         
                     });
     
                     if (parseInt(dependencyElementValueContainer.val())){
                         dependencyElement.trigger('selectedState');
                     }
-    
-                    {% if form.parent.vars.value.city %}
-                        {#-- there is city value in form data --#}
-                        /**_inputElem.on('reloadedDataSource', function(e){
-                            
-                        });**/
 
-                        $('#{{ widgetId }}').val('{{ form.parent.vars.value.city.name }}');
-                        $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.city.id }}');
-                    {% endif %}
-                
+                {% else %}
+                    countryDependencyElement.on('selectedCountry', function(e){
+                        Location.loadCities(countryValueElem.val(), 0, $('#{{ widgetId }}'), 0);
+                    });
+                    Location.loadCities(countryValueElem.val(), 0, $('#{{ widgetId }}'), 0);
                 {% endif %}
+
+                {% if cityFormValue %}
+                    {#-- there is city value in form data --#}
+                    $('#{{ widgetId }}').val('{{ cityFormValue.name }}');
+                    $('#{{ valueContainerId }}').val('{{ cityFormValue.id }}');
+                {% endif %}
+
             });
         })(jQuery);
         </script>

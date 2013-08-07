@@ -42,8 +42,6 @@
                         </div>
     				</div>
     				<div class="description-box">
-
-			            
                         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
             			        statisticsDataObject: each,
             			        link: {url: primaryUrl, html: '<h3>' ~ each.title ~ '</h3>'}
@@ -55,30 +53,31 @@
                 			        link: {url: primaryUrl, html: '<h4>' ~ each.institution.name ~ '</h4>'}
                 			} %}
             			{% endif %}
-    					
+
     					<p>{{ each.description | raw }}</p>
     				</div>
 
                     {% if each.media %}
-					    <div class="hca-sprite thumbnail-frame pull-right">
-    				        {# media(each.media, each, 'default', {class: 'img-polaroid', alt: 'clinic media'}) | raw #}
-    				        <img src="{{ advertisement_media_src(each.media) }}" class="img-polaroid" alt=""/>
-					    </div>
+                        {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE') %}
+                        <div class="hca-sprite thumbnail-frame pull-right">
+                            <img src="{{ advertisement_media_src(each.media, thumbnailSize) }}" class="img-polaroid" alt=""/>
+                        </div>
                     {% endif %}
 
-				    
                     {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
         			        statisticsDataObject: each,
         			        link: {url: primaryUrl, class: 'btn green pull-right', html: '<span class="white-icon-search"></span> Learn More'}
         			} %}
     			</div>
-     			<div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
-                    {% set clinicHighlights = json_decode(each.highlights) %}    
+                <div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
+                    {% set clinicHighlights = json_decode(each.highlights) %}
+                    {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
                     {% for clinicHighlight in clinicHighlights %}
+                        {% if clinicHighlight.label %}
                         <div class="item-wrapper span6">
-
                             {% if clinicHighlight.icon %}
-                                <img class="media-object img-circle pull-left" src="{{ clinicHighlight.icon.src }}" alt="logo" width="50"/>
+                                {% set imageSrc = clinicHighlight.icon.src_thumbnail is defined ? clinicHighlight.icon.src_thumbnail : advertisement_media_src(clinicHighlight.icon, iconSize) %}
+                                <img class="media-object img-circle pull-left" src="{{ imageSrc }}" alt="logo" width="50"/>
                             {% else %}
                                 <span class="{{ ad_highlight_placeholder_class(clinicHighlight.type) }} img-circle pull-left default"></span>
                             {% endif %}
@@ -88,6 +87,7 @@
                             {% endif %}
                             <span class="title">{{ clinicHighlight.label }}</span>
                         </div>
+                        {% endif %}
                     {% endfor %}
     		    </div>
             </div><!--End of featured_item 1-->

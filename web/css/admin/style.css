@@ -1099,6 +1099,7 @@ background-color: #cccccc;
   margin-top: -1px;
   border-radius: 0;
   max-height: 295px;
+  min-width: 200px;
   overflow-y: auto;
   overflow-x: hidden; }
   .dropdown-menu .text {
@@ -1159,24 +1160,6 @@ background-color: #cccccc;
         width: 700px;
         margin-left:0;
     } */
-    .fancy-country-wrapper > button.btn,
-    .custom-select > button.btn {
-        border-radius: 0;
-        border-top: 0;
-        border-bottom: 0;
-        height: inherit;
-        padding: 0 5px;
-        right: inherit;
-        margin-left: -26px;
-    }
-    
-    .fancy-country-wrapper > button.btn {
-        height: 33px;
-    }
-    .fancy-country-wrapper {
-        height: 35px;
-        postition: relative;
-    }
     .basic-form .span12{
         margin-left: 0;
     }
@@ -1184,7 +1167,18 @@ background-color: #cccccc;
     {
         width:500px;
     }
-    .fancy-country-wrapper > input[type=text] {
+    .btn {
+	  -webkit-border-radius: 3px;
+	  -moz-border-radius: 3px;
+	  border-radius: 3px;
+	  font-family: 'PT Sans'sans-serif; }
+
+    .fancy-dropdown-wrapper {
+        height: 35px;
+        postition: relative;
+    }
+
+    .fancy-dropdown-wrapper > input[type=text] {
         display:inline-block;
         margin: 0;
         padding-top: 0;
@@ -1192,167 +1186,165 @@ background-color: #cccccc;
         height: inherit;
     }
 
-    .fancy-country-wrapper .combolist-wrapper > .ui-menu > li > a > .flag16 {
+    .fancy-dropdown-wrapper .combolist-wrapper > .ui-menu > li > a > .flag16 {
         top: 3px;
         margin: 0 7px 0 0;
         position: relative;
     }
-    .btn {
-	  -webkit-border-radius: 3px;
-	  -moz-border-radius: 3px;
-	  border-radius: 3px;
-	  font-family: 'PT Sans'sans-serif; }
-
  
-            /** CUSTOM SELECT STYLES **/
-            .custom-select {
-                margin-left: 0 !important;
-                height: 35px;
-                position: relative;
-                display: inline-block;
-            }
-        
-            .fancy-country-wrapper > button.btn,
-            .custom-select > button.btn {
-                border-radius: 0;
-                border-top: 0;
-                border-bottom: 0;
-                height: inherit;
-                padding: 0 5px;
-                right: inherit;
-                margin-left: -26px;
-            }
-            
-            .fancy-country-wrapper > button.btn {
-                height: 33px;
-            }
-            
-            .custom-select > input[type=text] {
-                display:inline-block;
-                margin: 0;
-                padding-top: 0;
-                padding-bottom: 0;
-                height: inherit;
-            }
-            
-            .custom-select:after {
-                content: attr(data-button);
-            }
+          /** CUSTOM SELECT STYLES **/
+          .custom-select {
+              margin-left: 0 !important;
+              height: 35px;
+              position: relative;
+              display: inline-block;
+          }
+      
+          .fancy-dropdown-wrapper > button.btn,
+          .custom-select > button.btn {
+              border-radius: 0;
+              border-top: 0;
+              border-bottom: 0;
+              height: inherit;
+              padding: 0 5px;
+              right: inherit;
+              margin-left: -26px;
+          }
 
-            
-            .custom-select > input[readonly] {
-                background-color: #FFF;
-                cursor: default;
-            }
+	    .fancy-dropdown-wrapper > button.btn {
+	        height: 35px;
+	        margin-left: -23px;
+	        border-top-right-radius: 3px;
+	        border-bottom-right-radius: 3px;
+	    }
 
-            .custom-select > input[disabled] {
-                background-color: #EEEEEE !important;
-            }
-            
-            .custom-select > input[disabled] + button.btn {
-                background: none;
-                cursor: default;
-                box-shadow: none;
-            }
 
-            .custom-select > input[type=text]:hover {
-                cursor: default;
-            }
-            
-            .custom-select > ul {
-                top: 35px;
-                z-index: 1;
-                margin: 0;
-                display:none;
-                overflow: auto;
-                list-style: none;
-                max-height: 312px;
-                position: absolute;
-                border: 1px solid #CCCCCC;
-                background-color: #FFFFFF;
-                border-top: 0;
-                width:210px;
-            }
-            
-            .custom-select > ul > li {
-                padding: 3px 10px;
-            }
-            
-            .custom-select > ul > li.selected {
-                background-color: #DDD;
-            }     
-            .social-media [class^="icon-"]:before, [class*=" icon-"]:before , .social-media label{
-                display: none;
-            }
-            .social-media input {
-                margin: 3px;
-            }
-            .address-fields .terms{
-                display: block;
-			    float: left;
-			    width: 940px;
-            }
-            .clinictime .hourbox{
-                background-color: #F7F7F7;
-	            display: block;
-			    height: 100%;
-			    padding: 11px 40px;
-            }
-            .clinictime table {
-			    margin-bottom: 0 !important;
-			}
-			.clinictime .hourbox .span3, .clinictime .hourbox .span2 {
-			    padding-right: 8px;
-			    padding-top: 10px;
-			    text-align: right;
-			}
-			.row-fluid .span6 {
-			    width: 48.9362%;
-			}   
-			.clinictime textarea {
-			    display: block;
-			    height: 40px !important;
-			    width: 567px;
-			}
-			#content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
-			    margin: 10px 20px 15px;
-			}
-			.clinictime .hca-workingday-details {
-			    background-color: white;
-			    padding: 10px 15px 5px;
-			}
-			.clinictime .hca-workingday-details span {
-			    display: block;
-			    position: absolute;
-			    width: 300px;
-			}
-			.clinictime .hca-workingday-details b {
-			    display: block;
-			    margin-left: 220px;
-			    width: 200px;
-			}
-			.clinictime .hca-workingday-details i {
-			    margin: 3px 10px;
-			}
-			#fancy_businessHours_form h4 {
-				border: 1px solid #EEEEEE;
-				padding: 10px;
-				background-color: #F2F2F2;
-				color:#002A5C;
-			}
-			.table .pull-right{
-			 margin-left: 0;
-			}
-			ul.table-action {
-				margin: 0 0 5px 5px;
-				list-style: none outside none;
-			}
-			.social-media span{
-			     margin: 10px;
-			}
-		   .contact-add {
-             margin-left:0 !important;
-             }
+          .custom-select > input[type=text] {
+              display:inline-block;
+              margin: 0;
+              padding-top: 0;
+              padding-bottom: 0;
+              height: inherit;
+          }
+          
+          .custom-select:after {
+              content: attr(data-button);
+          }
+
+          
+          .custom-select > input[readonly] {
+              background-color: #FFF;
+              cursor: default;
+          }
+
+          .custom-select > input[disabled] {
+              background-color: #EEEEEE !important;
+          }
+          
+          .custom-select > input[disabled] + button.btn {
+              background: none;
+              cursor: default;
+              box-shadow: none;
+          }
+
+          .custom-select > input[type=text]:hover {
+              cursor: default;
+          }
+          
+          .custom-select > ul {
+              top: 35px;
+              z-index: 1;
+              margin: 0;
+              display:none;
+              overflow: auto;
+              list-style: none;
+              max-height: 312px;
+              position: absolute;
+              border: 1px solid #CCCCCC;
+              background-color: #FFFFFF;
+              border-top: 0;
+              width:210px;
+          }
+          
+          .custom-select > ul > li {
+              padding: 3px 10px;
+          }
+          
+          .custom-select > ul > li.selected {
+              background-color: #DDD;
+          }     
+          .social-media [class^="icon-"]:before, [class*=" icon-"]:before , .social-media label{
+              display: none;
+          }
+          .social-media input {
+              margin: 3px;
+          }
+          .address-fields .terms{
+              display: block;
+	    float: left;
+	    width: 940px;
+          }
+          .clinictime .hourbox{
+              background-color: #F7F7F7;
+           display: block;
+	    height: 100%;
+	    padding: 11px 40px;
+          }
+          .clinictime table {
+	    margin-bottom: 0 !important;
+	}
+	.clinictime .hourbox .span3, .clinictime .hourbox .span2 {
+	    padding-right: 8px;
+	    padding-top: 10px;
+	    text-align: right;
+	}
+	.row-fluid .span6 {
+	    width: 48.9362%;
+	}   
+	.clinictime textarea {
+	    display: block;
+	    height: 40px !important;
+	    width: 567px;
+	}
+	#content section.section .row-fluid.hca-edit-box .control-group, #content section.section .row-fluid.hca-edit-box .row {
+	    margin: 10px 20px 15px;
+	}
+	.clinictime .hca-workingday-details {
+	    background-color: white;
+	    padding: 10px 15px 5px;
+	}
+	.clinictime .hca-workingday-details span {
+	    display: block;
+	    position: absolute;
+	    width: 300px;
+	}
+	.clinictime .hca-workingday-details b {
+	    display: block;
+	    margin-left: 220px;
+	    width: 200px;
+	}
+	.clinictime .hca-workingday-details i {
+	    margin: 3px 10px;
+	}
+	#fancy_businessHours_form h4 {
+		border: 1px solid #EEEEEE;
+		padding: 10px;
+		background-color: #F2F2F2;
+		color:#002A5C;
+	}
+	.table .pull-right{
+	 margin-left: 0;
+	}
+	ul.table-action {
+		margin: 0 0 5px 5px;
+		list-style: none outside none;
+	}
+	.social-media span{
+	     margin: 10px;
+	}
+   .contact-add {
+    margin-left:0 !important;
+    }
 /*
 ================== End of Custom CSS fixed ======================
 */

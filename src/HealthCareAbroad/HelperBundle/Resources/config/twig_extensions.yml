@@ -4,7 +4,7 @@ services:
         calls:
             - [setClassLabels, [%class_labels%]]
             - [setClassKeys, [%class_keys%]]
-        public: false
+        public: true
         tags:
             - { name: twig.extension }
 
@@ -79,7 +79,7 @@ services:
 
     services.institutionMedicalCenter.twig.extension:
         class: HealthCareAbroad\HelperBundle\Twig\InstitutionMedicalCenterTwigExtension
-        public: false
+        public: true
         calls:
             - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
             - [setMediaExtension, [@services.media.twig.extension]]
