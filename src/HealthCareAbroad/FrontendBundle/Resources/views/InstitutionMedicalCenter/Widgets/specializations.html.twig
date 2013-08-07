@@ -2,7 +2,7 @@
 
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Specializations', class: 'specializations'} %}
         {% block sectionContent %}
-        {# {% for each in specializations %}
+        {% for each in specializations %}
             <div class="media">
                  <div class="thumbnail-wrapper img-polaroid pull-left">
                      <span class="hca-sprite clinic-default-logo mini"></span>
@@ -32,8 +32,8 @@
                     {% endfor %}
                  </div>
             </div>
-    	{% endfor %} #}
-        <div class="specializations-list-wrapper">
+    	{% endfor %}
+        {# <div class="specializations-list-wrapper">
             <ul>
             {% for each in specializations %}
                 <li class="specialization">
@@ -43,9 +43,12 @@
                     <ul class="sub-specialization">
                     {% for _subName, _groupedData in _groupedTreatments %}
                         {% if _groupedData.treatments | length %}
-                            {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
                             <li>
+                            {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
                                 <a>{{ _groupedData.subSpecialization.name }}</a>
+                            {% else %}
+                                <a>Other Treatments</a>
+                            {% endif %}
                                 <ul class="treatment">
                                     {% for treatment in _groupedData.treatments %}
                                     <li>
@@ -54,18 +57,13 @@
                                     {% endfor %}
                                 </ul>
                             </li>
-                            {% else %}
-                            <li>
-                                <a>Other Treatments</a>
-                            </li>
-                            {% endif %}
                         {% endif %}
                     {% endfor %}
                     </ul>
                 </li> 
             {% endfor %}
             </ul>
-        </div>
+        </div> #}
         {% endblock %}
     {% endembed %}
 
