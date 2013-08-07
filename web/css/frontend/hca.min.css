@@ -1697,7 +1697,6 @@ form.home-search > button.btn:active {
 }
 .item-wrapper:last-child {
   border-bottom: none;
-  padding-bottom: 0;
 }
 .item-wrapper .btn {
   font-size: 14px;

@@ -8,7 +8,7 @@
         {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
     	        'link': { url: searchResultItem.url, html: searchResultItem.logo, class: 'small-logo-wrapper' }
         } %}
-        <strong>{{ searchResultItem.mainAddress }}</strong>
+        {#<strong>{{ searchResultItem.mainAddress }}</strong>#}
     </div>
 
     <div class="right-column-wrapper">
@@ -20,12 +20,21 @@
 
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
             {% set _escapedDescription =  searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0,200) | trim)~'...' : searchResultItem.description %}
-            <p class="description">{{ _escapedDescription | raw}}</p>
+            <p class="description">{{ _escapedDescription | raw}}
+                {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+                        'link': {
+                            url: searchResultItem.url,
+                            html: 'More Info',
+                            class: ''
+                        }
+                    }
+                %}
+            </p>
         {% endif %}
 
-        <div class="align-right">
+        {#<div class="align-right">#}
             {#-- more info link --#}
-            {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+            {#{% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
         	        'link': {
         	            url: searchResultItem.url,
         			    html: '<span class="white-icon-search"></span> More Info',
@@ -33,7 +42,31 @@
         	        }
         	    }
         	%}
-    	</div>
+    	</div>#}
+    </div>
+
+    <div class="tag-box">
+        <span class="location"><i class="icon-map-marker"></i> {{ searchResultItem.mainAddress }}</span>
+        <div class="link-box">
+            <a href="">
+                <span data-toggle="tooltip" title="Visit G+" class="icon-google-plus"></span>
+            </a>
+            <a href="">
+                <span data-toggle="tooltip" title="Visit Twitter" class="icon-twitter"></span>
+            </a>
+            <a href="">
+                <span data-toggle="tooltip" title="Visit Facebook" class="icon-facebook"></span>
+            </a>
+            <a href="">
+                <span data-toggle="tooltip" title="Visit Website" class="icon-globe"></span>
+            </a>
+            <a href="">
+                <span data-toggle="tooltip" title="Call Us" class="icon-phone"></span>
+            </a>
+            <a href="">
+                <span data-toggle="tooltip" title="Email Us" class="icon-envelope"></span>
+            </a>
+        </div>
     </div>
 </article>
 {% endif %}

@@ -2,7 +2,7 @@
 
     {#-- Render treatment widgets --#}
     {% if treatmentWidgets is not empty %}
-        <label>Specific Treatment</label>
+        {#<label>Specific Treatment</label>#}
         {% for _type, _widget in treatmentWidgets %}
             {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget | merge({type: _type}) } %}
         {% endfor %}
@@ -10,7 +10,7 @@
     
     {#-- Render destination widgets --#}
     {% if destinationWidgets is not empty %}
-        <label><strong>Specific Location</strong></label>
+        {#<label><strong>Specific Location</strong></label>#}
         {% for _type, _widget in destinationWidgets %}
             {% include 'SearchBundle:SearchForms/Partials:autocomplete.narrowsearch.html.twig' with {'searchWidget': _widget| merge({type: _type}) } %}
         {% endfor %}
@@ -23,7 +23,7 @@
     {% endfor %}
     
     <div class="align-right">
-        <button class="btn orange" type="submit"> <i class="white-icon-refresh"></i> Filter Results </button>
+        <button class="btn green" type="submit"> <i class="white-icon-refresh"></i> Filter Results </button>
     </div>
 </form>
 
