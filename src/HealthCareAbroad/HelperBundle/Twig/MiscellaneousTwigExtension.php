@@ -83,6 +83,10 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             );
         }
         
+        if (!\count($byType)) {
+            return null;
+        }
+        
         return \json_encode($byType);
     }
     
