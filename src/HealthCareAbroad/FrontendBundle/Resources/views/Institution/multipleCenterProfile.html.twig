@@ -19,6 +19,46 @@
         </div>
     {% endif %}
     <!-- End of Tabs Content -->
+    <div class="profile-widget-wrapper contact">
+        <h5>Contact Information</h5>
+        <div class="row-fluid">
+            <div class="span5">
+                <div class="media">
+                    <i class="icon-map-marker icon-2x pull-left orange"></i>
+                    <div class="media-body">
+                        Sdn.Bhd. 282 JalanAmpang, Kuala Lumpur, Malaysia
+                    </div>
+                </div>
+            </div>
+            <div class="span7">
+                <ul class="unstyled inline-list pull-right">
+                    <li>
+                        <a href="#" id="example1" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
+
+                    </li>
+                    <li>
+                        <a class="btn orange" href="#form_feedback" role="button"><i class="icon-envelope-alt"></i>  Email Us</a>
+                    </li>
+                    <li>
+                        <a id="visit_website" class="btn orange" href="#" role="button" data-toggle="modal"><i class="icon-globe"></i> Visit Website</a>
+                    </li>
+                </ul>
+                <ul class="unstyled inline-list pull-right">
+
+                    <li>
+                        <a id="hospital-contact" class="btn orange" href="#">Visit <i class="icon-facebook"></i></a>
+                    </li>
+                    <li>
+                        <a id="email_multiple" class="btn orange" href="#modal_multiple_institution_inquiry_form"
+                        role="button" data-toggle="modal">Visit <i class="icon-twitter"></i></a>
+                    </li>
+                    <li>
+                        <a id="visit_website" class="btn orange" href="#" role="button" data-toggle="modal">Visit <i class="icon-google-plus"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 
 <aside class="span4 aside-wrapper">
@@ -30,7 +70,164 @@
 
     {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
 
-    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}
+    {#{% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: json_decode(institution.websites) } %}#}
+
+    <section id="form_feedback" class="widget-wrapper">
+        <h4 class="widget-heading">
+                Email this Institution
+            </h4>
+        <form class="form-horizontal">
+            <div class="control-group">
+                <label class="pull-left" for="inputFullName">Your Name</label>
+                <input type="text" id="inputFullName" placeholder="John Doe">
+            </div>
+            <div class="control-group">
+                <label for="Country">Your Country</label>
+                <div class="input-append hca-location">
+                    <input class="hca-country pull-left" id="appendedDropdownButton" type="text">
+                    <div class="btn-group">
+                        <a href="#" class="btn dropdown-toggle hca-location-btn" data-toggle="dropdown">
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu country-select pull-left">
+                            <li>
+                                <span class="flag16 ad"></span>
+                                <span>Andorra</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ae"></span>
+                                <span>United Arab Emirates</span>
+                            </li>
+                            <li>
+                                <span class="flag16 af"></span>
+                                <span>Afghanistan</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ag"></span>
+                                <span>Antigua and Barbuda</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ai"></span>
+                                <span>Anguilla</span>
+                            </li>
+                            <li>
+                                <span class="flag16 al"></span>
+                                <span>Albania</span>
+                            </li>
+                            <li>
+                                <span class="flag16 am"></span>
+                                <span>Armenia</span>
+                            </li>
+                            <li>
+                                <span class="flag16 an"></span>
+                                <span>Netherlands Antilles</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ao"></span>
+                                <span>Angola</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ar"></span>
+                                <span>Argentina</span>
+                            </li>
+                            <li>
+                                <span class="flag16 as"></span>
+                                <span>American Samoan</span>
+                            </li>
+                            <li>
+                                <span class="flag16 at"></span>
+                                <span>Austria</span>
+                            </li>
+                            <li>
+                                <span class="flag16 au"></span>
+                                <span>Australia</span>
+                            </li>
+                            <li>
+                                <span class="flag16 aw"></span>
+                                <span>Aruba</span>
+                            </li>
+                            <li>
+                                <span class="flag16 az"></span>
+                                <span>Azerbaiijan</span>
+                            </li>
+                            <li>
+                                <span class="flag16 ba"></span>
+                                <span>Bosnia and Herzegovina</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bb"></span>
+                                <span>Barbados</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bd"></span>
+                                <span>Bangladesh</span>
+                            </li>
+                            <li>
+                                <span class="flag16 be"></span>
+                                <span>Belgium</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bf"></span>
+                                <span>Burkina Faso</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bg"></span>
+                                <span>Bulgaria</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bh"></span>
+                                <span>Bahrain</span>
+                            </li>
+                            <li>
+                                <span class="flag16 bi"></span>
+                                <span>Burundi</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="pull-left" for="inputEmail">Your Email Address</label>
+                <input type="text" id="inputEmail" placeholder="you@domain.com">
+                <br><small>Don't worry! We hate SPAM as much as you do!</small>
+            </div>
+            <div class="control-group">
+                <label for="inputMessage">Enter your message</label>
+                <textarea id="inputMessage" rows="4" class="error"></textarea>
+            </div>
+            <div class="control-group">
+                <div class="captcha control-group row-field">
+
+                    <img id="captcha_513d6fd354d28" src="/generate-captcha/gcb_captcha" alt="" title="captcha"
+                    width="220" height="50">
+                    <script type="text/javascript">
+                        function reload_captcha_513d6fd354d28() {
+                            var img = document.getElementById('captcha_513d6fd354d28');
+                            img.src = '/generate-captcha/gcb_captcha?n=' + (new Date()).getTime();
+                        }
+                    </script>
+                    <a class="captcha_reload profile" href="javascript:reload_captcha_513d6fd354d28();">Refresh</a>
+                    <label for="inquire_captcha">Please type the code *</label>
+                    <input type="text" id="inquire_captcha" name="inquire[captcha]" style="position:relative; top:0; left:0; background-attachment: local; background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAAAoCAYAAAAIeF9DAAAAn0lEQVRoQ+3TQREAAAiEQK9/aWvsAxMw4O06ysAommCuINgTFKQgmAEMp4UUBDOA4bSQgmAGMJwWUhDMAIbTQgqCGcBwWkhBMAMYTgspCGYAw2khBcEMYDgtpCCYAQynhRQEM4DhtJCCYAYwnBZSEMwAhtNCCoIZwHBaSEEwAxhOCykIZgDDaSEFwQxgOC2kIJgBDKeFFAQzgOG0ECzIA0NnAClFhq+SAAAAAElFTkSuQmCC); background-position: 6px 23px; background-repeat: no-repeat no-repeat;"
+                    spellcheck="false" greditor="true">
+                </div>
+
+            </div>
+            <div class="row-fluid">
+                <div class="span12 control-group row-field">
+                    <label class="checkbox">
+                        <input type="checkbox">Yes I'd like to hear from similar Doctors and Clinics in <a href="#">ClinicCountry</a></label>
+                    <label class="checkbox">
+                        <input type="checkbox">Yes, I'd like to subscribe to the HealthcareAbroad newsletter.</label>
+                    <span class="row">  </span> 
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary orange" data-toggle="modal">Send Message</a>
+            <p><small>We do not sell, trade, share nor otherwise transfer to outside parties your personally identifiable information without your full consent. By submitting this you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</small>
+            </p>
+        </form>
+
+    </section>
 </aside> <!--End of aside_content-->
 
 
