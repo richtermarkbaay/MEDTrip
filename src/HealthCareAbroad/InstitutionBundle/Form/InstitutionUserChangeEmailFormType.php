@@ -1,8 +1,6 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use HealthCareAbroad\HelperBundle\Validator\Constraints\CorrectCurrentEmail;
-
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use HealthCareAbroad\HelperBundle\Validator\Constraints\ValidAccountEmail;
