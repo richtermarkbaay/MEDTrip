@@ -1,6 +1,10 @@
 <div class="clinic-header-wrapper">
     <div class="logo-wrapper pull-left">
-        {{ render_institution_medical_center_logo(institutionMedicalCenter, {attr: {class: 'clinic-logo default', alt: 'clinic logo'}, 'context' : 1}) | raw }}
+        {% if institutionMedicalCenter.logo and institutionMedicalCenter.logo.src %}
+            <img src="{{ institutionMedicalCenter.logo.src }}" class="clinic-logo" />
+        {% else %}
+            <span class="hca-sprite clinic-default-logo logo"></span>
+        {% endif %}
     </div>
     
     <div class="right-column-wrapper">

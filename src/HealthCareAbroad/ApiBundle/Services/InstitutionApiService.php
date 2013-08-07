@@ -122,37 +122,11 @@ class InstitutionApiService
         if (!$institutionId){
             return null;
         }
+        $qb = $this->getQueryBuilderForInstitutionPublicProfileData();
+        $qb->andWhere('inst.id = :institutionId')
+            ->setParameter('institutionId', $institutionId);
         
-        $key = "api.institution_public_data.{$institutionId}";
-//         $memcachedData = $this->memcache->get($key); 
-//         if ($memcachedData){
-//             $institution = $memcachedData;
-//         }
-//         else {
-            $qb = $this->getQueryBuilderForInstitutionPublicProfileData();
-            $qb->andWhere('inst.id = :institutionId')
-                ->setParameter('institutionId', $institutionId);
-            
-            $institution = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
-            if ($institution) {
-                // build the doctors data
-                $institution['doctors'] = $this->getAllDoctors($institutionId);
-            
-            
-                // build awards data
-                $institution['globalAwards'] = $this->doctrine->getRepository('InstitutionBundle:Institution')
-                ->getAllGlobalAwardsByInstitution($institutionId, Query::HYDRATE_ARRAY);
-            
-                //$start = \microtime(true);
-                $institution['offeredServices'] = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')
-                ->getAllServicesByInstitution($institutionId, Query::HYDRATE_ARRAY);
-            
-                //$end = \microtime(true); $diff = $end-$start; echo "{$diff}s"; exit;
-            }
-            
-//             // TODO: store to memcache
-//             $this->memcache->set($key, $institution);
-//         }
+        $institution = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
         
         return $institution;
     }
@@ -187,6 +161,29 @@ class InstitutionApiService
         $qb = $this->doctrine->getRepository('DoctorBundle:Doctor')->getAllDoctorsByInstitution($institutionId);
         
         return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+    }
+    
+    /**
+     * Get all global awards by institution id
+     * 
+     * @param int $institutionId
+     * @return array globalAwards hydrated with HYDRATE_ARRAY
+     */
+    public function getAllGlobalAwards($institutionId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:Institution')
+            ->getAllGlobalAwardsByInstitution($institutionId, Query::HYDRATE_ARRAY);
+    }
+    
+    /**
+     * 
+     * @param int $institutionId
+     * @return array offeredServices 
+     */
+    public function getOfferedServices($institutionId)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')
+            ->getAllServicesByInstitution($institutionId, Query::HYDRATE_ARRAY);
     }
     
     /**
@@ -228,7 +225,7 @@ class InstitutionApiService
     private function getQueryBuilderForInstitutionPublicProfileData()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m, imc_sp, sp, imc_logo, sp_m')
+        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m, imc_logo, imc_inst')
             ->from('InstitutionBundle:Institution', 'inst')
             ->innerJoin('inst.institutionMedicalCenters', 'imc')
             ->leftJoin('inst.city', 'ct')
@@ -239,14 +236,49 @@ class InstitutionApiService
             ->leftJoin('inst.logo', 'lg')
             ->leftJoin('inst.gallery', 'gal')
             ->leftJoin('gal.media', 'gal_m')
-            ->leftJoin('imc.institutionSpecializations', 'imc_sp')
-            ->leftJoin('imc_sp.specialization', 'sp')
-            ->leftJoin('sp.media', 'sp_m')
+            // results to too many function calls if removed and working with medical centers
+            ->innerJoin('imc.institution', 'imc_inst') 
             ->leftJoin('imc.logo', 'imc_logo')
             ->where('1=1')
             ->andWhere('inst.status = :activeStatus')
                 ->setParameter('activeStatus', InstitutionStatus::getBitValueForApprovedStatus());
         
         return $qb;
+    }
+    
+    /**
+     * Build the doctors data of an institution
+     * 
+     *
+     * @param array $institution
+     */
+    public function buildDoctors(array &$institution)
+    {
+        $institution['doctors'] = $this->getAllDoctors($institution['id']);
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * 
+     * @param array $institution
+     */
+    public function buildGlobalAwards(array &$institution)
+    {
+        $institution['globalAwards'] = $this->getAllGlobalAwards($institution['id']);
+        
+        return $this;
+    }
+    
+    /**
+     * 
+     * @param array $institution
+     */
+    public function buildOfferedServices(array &$institution)
+    {
+        $institution['offeredServices'] = $this->getOfferedServices($institution['id']);
+        
+        return $this;
     }
 }
