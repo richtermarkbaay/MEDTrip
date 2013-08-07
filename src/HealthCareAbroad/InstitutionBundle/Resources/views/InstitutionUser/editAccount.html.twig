@@ -2,69 +2,73 @@
 {% set mainNavigation = {selected: 'users',  label : 'Manage Account Profile'} %}
 {% block content %}
 {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
- {% block wrappedContent %}
+{% block wrappedContent %}
     <h1><i class="icon-user"></i> Manage Account Profile</h1>
-		<div class=span8>
-	     <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
-             <section class="section account-info manage-data">
-                <h2> Personal Contact Information </h2>
-               <div class="row-fluid">
-                    <div class="span12">
-                        <div class="span6">
-                            <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
-                                <label for="account-firstname">  Your First Name  </label>
-                                {{ form_widget(form.firstName, { 'attr': {class: 'span12'} })  }}
-                                {{ form_errors(form.firstName) }}
-                            </div>
+	<div class=span8>
+        <form id ="editProfile" novalidate="novalidate" action="{{ path('institution_editAccount') }}" method="POST" {{ form_enctype(form) }} class="user">
+
+        <section class="section account-info manage-data">
+            <h2> Personal Contact Information </h2>
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="span6">
+                        <div class="control-group row-field {{ (form.firstName.vars.valid ? '' : 'error') }}">
+                            <label for="account-firstname">  Your First Name  </label>
+                            {{ form_widget(form.firstName, { 'attr': {class: 'span12'} })  }}
+                            {{ form_errors(form.firstName) }}
                         </div>
-                        <div class="span6">
-                            <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
-                                <label for="account-lastname">  Your Last Name  </label>
-                                 {{ form_widget(form.lastName, { 'attr': {class: 'span12'} })  }}
-                                 {{ form_errors(form.lastName) }}
-                            </div>
+                    </div>
+                    <div class="span6">
+                        <div class="control-group row-field {{ (form.lastName.vars.valid ? '' : 'error') }}">
+                            <label for="account-lastname">  Your Last Name  </label>
+                             {{ form_widget(form.lastName, { 'attr': {class: 'span12'} })  }}
+                             {{ form_errors(form.lastName) }}
                         </div>
-                         {{ form_row(form.jobTitle, { 'attr': {class: 'span6'} })  }}
-                                               <div class="row-fluid terms">
-                            {% for _widget in form.contactDetails %}
-                                <div class="span12" style="margin-left:0;">
-                                    {{ form_widget(_widget) }}
-                                </div>
-                            {% endfor %}
                     </div>
-                    </div>
+                     {{ form_row(form.jobTitle, { 'attr': {class: 'span6'} })  }}
+                                           <div class="row-fluid terms">
+                        {% for _widget in form.contactDetails %}
+                            <div class="span12" style="margin-left:0;">
+                                {{ form_widget(_widget) }}
+                            </div>
+                        {% endfor %}
                 </div>
-	         </section>
-	         <section class="section account-info manage-contact">
-                <h2>How you will sign in to your HealthcareAbroad account</h2>
-                <div class="row-fluid">
+                </div>
+            </div>
+        </section>
+
+        <section class="section account-info manage-contact">
+            <h2>How you will sign in to your HealthcareAbroad account</h2>
+            <div class="row-fluid">
+                <div class="span12">
                     <div class="control-group row-field ">
-                    <label for="email"> Email address <small> (Your personal email.) </small> </label>
-                    <input type="email" class="span6 tooltip-wrap2" required="required" disabled="disabled" id="institutionUserSignUp_email" value="{{ app.session.get('userEmail') }}">
-                    <div class="tooltip-content2 hca-email">
-                        Your email address will be your username when you log in.
+                        <label for="email"> Email address <small> (Your personal email.) </small> </label>
+                        <input type="email" class="span6 tooltip-wrap2" required="required" disabled="disabled" id="institutionUserSignUp_email" value="{{ app.session.get('userEmail') }}">
+                        <a href="{{ path('institution_editAccountEmail') }}" class="btn btn-misc">Update Account Email Address</a>
                     </div>
-
-                    <a href="{{ path('institution_editAccountEmail') }}" class="btn btn-link">Update Account Email Address</a>
-                  </div>
-              </div>
-
-            </section>
-             <section class="section footer">
-                <div class="row-fluid terms">
-                    <div class="span12">
-                         {{ form_rest(form) }}
-                        <button type="submit" class="btn pull-right btn-primary btn-large" >Save Changes</button>
+                    <div class="control-group row-field">
+                        <label for="password">Password</label>
+                        <input type="password" class="span6" required="required" disabled="disabled" id="institutionUserSignUp_email" value="***********">
+                        <a href="{{ path('institution_editAccountPassword') }}" class="btn btn-misc">Update Account Password</a>
                     </div>
                 </div>
-            </section>
-        </form>
-        </div>
+            </div>
+        </section>
+
+        <section class="section footer">
+            <div class="row-fluid terms">
+                <div class="span12">
+                     {{ form_rest(form) }}
+                    <button type="submit" class="btn pull-right btn-primary btn-large" >Save Changes</button>
+                </div>
+            </div>
+        </section>
+    </form>
+    </div>
 	    <aside class="span4">
             <section class="aside-box default dashboard-side">
-                <h2>
-                    Privacy</h2>
-                   <p>None of the Account Manager details will be published on our site. This data is used only for internal communications between your organization and <b>HEALTHCARE ABROAD</b> </p>
+                <h2>Privacy</h2>
+                <p>None of the Account Manager details will be published on our site. This data is used only for internal communications between your organization and <b>HEALTHCARE ABROAD</b> </p>
             </section>
         </aside>
     	<!--End of row-->

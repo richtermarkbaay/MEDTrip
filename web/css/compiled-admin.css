@@ -1283,6 +1283,7 @@ background-color: #cccccc;
   margin-top: -1px;
   border-radius: 0;
   max-height: 295px;
+  min-width: 200px;
   overflow-y: auto;
   overflow-x: hidden; }
   .dropdown-menu .text {

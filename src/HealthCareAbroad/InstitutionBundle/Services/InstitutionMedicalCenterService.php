@@ -458,34 +458,7 @@ class InstitutionMedicalCenterService
     
         return $stmt->fetchAll();
     }
-    /**
-     * @deprecated
-     */
-    public function checkIfOpenTwentyFourHours($businessHours)
-    {
-        $days = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-        $isOpen = true;
 
-        foreach ($days as $day)
-        {
-            if(isset($businessHours[$day]['isOpen'], $businessHours))
-            {
-                if($businessHours[$day]['isOpen'] != true) {
-                    $isOpen = false;
-                    break;
-                }
-                elseif ($businessHours[$day]['isOpen'] == "")
-                {
-                    $isOpen = false;
-                    break;
-                }
-            }
-            else {
-                return false;
-            }
-        }
-        return $isOpen;
-    }
     static public function getFirstInstitutionSpecialization($institutionMedicalCenter)
     {
         $specialization = null;

@@ -2,7 +2,9 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangeEmailFormType;
 
 use Symfony\Component\Form\Exception\NotValidException;
@@ -161,6 +163,68 @@ class InstitutionUserController extends Controller
                 'form' => $form->createView(),
                 'institutionUser' => $institutionUser,
                 'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
+        ));
+    }
+    
+    public function editAccountEmailAction(Request $request){
+        $session = $request->getSession();
+        $accountId = $session->get('accountId');
+        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+        $this->get('twig')->addGlobal('institution', $this->institution);
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
+        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
+        $institutionUserService = $this->get('services.institution_user');
+        $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
+    
+        if(!$institutionUser){
+            throw new AccessDeniedHttpException();
+        }
+    
+        $form = $this->createForm(new InstitutionUserChangeEmailFormType(), $institutionUser);
+        $em = $this->getDoctrine()->getManager();
+    
+        if($request->isMethod('POST')){
+            $form->bind($request);
+            if ($form->isValid()) {
+                $institutionUser = $form->getData();
+    
+                // encrypt password here
+                $institutionUser->setEmail($form->get('new_email')->getData());
+    
+                $institutionUserService->update($institutionUser);
+                $institutionUserService->setSessionVariables($institutionUser);
+                $this->get('session')->setFlash('success', 'You have successfuly changed your email address');
+            }else{
+                $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
+            }
+        }
+    
+        return $this->render('InstitutionBundle:InstitutionUser:changeEmail.html.twig', array(
+                        'form' => $form->createView(),
+                        'institutionUser' => $institutionUser,
+        ));
+    }
+
+    public function inviteAction()
+    {
+        $institutionUserInvitation = new InstitutionUserInvitation();
+        $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
+
+        if ($this->getRequest()->isMethod('POST')) {
+
+            $form->bind($this->getRequest());
+            if ($form->isValid()){
+                $sendingResult = $this->get('services.invitation')->sendInstitutionUserInvitation($this->institution, $institutionUserInvitation);
+                // dispatch event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER_INVITATION, $institutionUserInvitation));
+                $this->get('session')->setFlash('success', "Invitation sent to {$institutionUserInvitation->getEmail()}");
+
+                return $this->redirect($this->generateUrl('institution_view_all_staff'));
+            }
+        }
+
+        return $this->render('InstitutionBundle:InstitutionUser:invite.html.twig', array(
+            'form' => $form->createView(),
         ));
     }
     

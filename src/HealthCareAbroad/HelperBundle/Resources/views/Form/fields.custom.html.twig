@@ -132,6 +132,11 @@
     {% else %}
         {% set selected = get_selected_AnciliaryServices(form.parent.vars.value) %}
     {% endif %}
+
+    {% if form.vars.data is not empty %}
+        {% set selected = array_flip(form.vars.data) %}
+    {% endif %}
+
     <ul class="services-listing">
         {% for choice in form.vars.choices %}
              <li>
@@ -195,26 +200,32 @@
 
 {% block institutionGlobalAwards_list_widget %}
     {% spaceless %}
-    {% if centers %}
-        {% set selected = get_selected_medicalCenterGlobalAwards(form.parent.vars.value) %}
-    {% else %}
-        {% set selected = get_selected_GlobalAwards(form.parent.vars.value) %}
-    {% endif%}
-            {% for key,typeChoice in form.vars.choices %}
-                <h3 class="awards-heading">{{key | capitalize }}s</h3>
-                <div class="awards-listing" id="listing-{{key}}">
-                    <ul class="unstyled">
-                         {% for choice in typeChoice %}
-                            <li >
-                                 <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}"  {% if selected[choice.value] is defined %} class="old" checked {% endif %}>
-                                 <label for="{{ form.vars.full_name ~ choice.value }}">{{ choice.label | raw }} </label>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                 </div>
-            {% endfor %}
+        {% if centers %}
+            {% set selected = get_selected_medicalCenterGlobalAwards(form.parent.vars.value) %}
+        {% else %}
+            {% set selected = get_selected_GlobalAwards(form.parent.vars.value) %}
+        {% endif %}
+
+        {% if form.vars.data is not empty %}
+            {% set selected = array_flip(form.vars.data) %}
+        {% endif %}
+
+        {% for key,typeChoice in form.vars.choices %}
+            <h3 class="awards-heading">{{key | capitalize }}s</h3>
+            <div class="awards-listing" id="listing-{{key}}">
+                <ul class="unstyled">
+                     {% for choice in typeChoice %}
+                        <li>
+                             <input type="checkbox" id="{{ form.vars.full_name ~ choice.value }}" name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}"  {% if selected[choice.value] is defined %} class="old" checked {% endif %}>
+                             <label for="{{ form.vars.full_name ~ choice.value }}">{{ choice.label | raw }} </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+             </div>
+        {% endfor %}
     {% endspaceless %}
 {% endblock %}
+
 {#
 {% block fancy_country_widget %}
     {% spaceless %}
