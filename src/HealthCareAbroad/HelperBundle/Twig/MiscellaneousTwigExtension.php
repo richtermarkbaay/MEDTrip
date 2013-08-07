@@ -53,6 +53,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'get_social_media_site_url' => new \Twig_Function_Method($this, 'getSocialMediaSiteUrl'),
             'get_social_media_site_label' => new \Twig_Function_Method($this, 'getSocialMediaSiteLabel'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
+            'array_flip' => new \Twig_Function_Method($this, 'arrayFlip'),
         );
     }
     
@@ -323,6 +324,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function getSocialMediaSiteLabel($type)
     {
         return SocialMediaSites::getLabelByType($type);
+    }
+    
+    public function arrayFlip(array $arrayData)
+    {
+        return array_flip($arrayData);
     }
     
     private function _removeEmptyValueInArray(&$array = array())
