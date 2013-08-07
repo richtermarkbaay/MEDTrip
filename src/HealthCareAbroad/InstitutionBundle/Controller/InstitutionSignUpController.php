@@ -372,6 +372,7 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
+
         $error_message = false;
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
@@ -402,6 +403,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $form->bind($formRequestData);
             if ($form->isValid()) {
                 $this->institutionMedicalCenter = $form->getData();
+                
                 $institutionMedicalCenterService = $this->get('services.institution_medical_center');
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                 $institutionMedicalCenterService->clearBusinessHours($this->institutionMedicalCenter);
