@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangeEmailFormType;
+
 use Symfony\Component\Form\Exception\NotValidException;
 
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -83,7 +85,6 @@ class InstitutionUserController extends Controller
     }
     
     public function editAccountPasswordAction(Request $request){
-        $error_message = false;
         $session = $request->getSession();
         $accountId = $session->get('accountId');
         $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
@@ -121,12 +122,8 @@ class InstitutionUserController extends Controller
         ));
     }
 
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_INSTITUTIONS')")
-     */
     public function editAccountAction(Request $request)
     {
-        $error_message = false;
         $session = $request->getSession();
         
         $accountId = $session->get('accountId');
@@ -155,10 +152,7 @@ class InstitutionUserController extends Controller
                     $institutionUserService->setSessionVariables($institutionUser);
                     $this->get('session')->setFlash('success', 'You have successfuly edit your account.');
             }else{
-                $form_errors = $this->get('validator')->validate($form);
-                if($form_errors){
-                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
-                }
+                    $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
             }
         }
 
@@ -166,7 +160,45 @@ class InstitutionUserController extends Controller
                 'form' => $form->createView(),
                 'institutionUser' => $institutionUser,
                 'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-                'error_message' => $error_message
+        ));
+    }
+    
+    public function editAccountEmailAction(Request $request){
+        $session = $request->getSession();
+        $accountId = $session->get('accountId');
+        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
+        $this->get('twig')->addGlobal('institution', $this->institution);
+        $loggedUser = $this->get('security.context')->getToken()->getUser();
+        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
+        $institutionUserService = $this->get('services.institution_user');
+        $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
+    
+        if(!$institutionUser){
+            throw new AccessDeniedHttpException();
+        }
+    
+        $form = $this->createForm(new InstitutionUserChangeEmailFormType(), $institutionUser);
+        $em = $this->getDoctrine()->getManager();
+    
+        if($request->isMethod('POST')){
+            $form->bind($request);
+            if ($form->isValid()) {
+                $institutionUser = $form->getData();
+    
+                // encrypt password here
+                $institutionUser->setEmail($form->get('new_email')->getData());
+    
+                $institutionUserService->update($institutionUser);
+                $institutionUserService->setSessionVariables($institutionUser);
+                $this->get('session')->setFlash('success', 'You have successfuly changed your email address');
+            }else{
+                $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
+            }
+        }
+    
+        return $this->render('InstitutionBundle:InstitutionUser:changeEmail.html.twig', array(
+                        'form' => $form->createView(),
+                        'institutionUser' => $institutionUser,
         ));
     }
 
