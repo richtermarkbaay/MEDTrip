@@ -130,9 +130,11 @@ class InstitutionController extends ResponseHeadersController
                 // build doctors from first clinic
                 $this->institution['doctors'] = $this->apiInstitutionMedicalCenterService->getDoctorsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
                 
-                $this->apiInstitutionMedicalCenterService->buildLogoSource($firstMedicalCenter)
+                $this->apiInstitutionMedicalCenterService
                     ->buildInstitutionSpecializations($firstMedicalCenter)
-                    ->buildBusinessHours($firstMedicalCenter);
+                    ->buildBusinessHours($firstMedicalCenter)
+                    ->buildLogoSource($firstMedicalCenter)
+                ;
                 
                 $this->institution['institutionMedicalCenters'][0] = $firstMedicalCenter;
             } 
@@ -149,7 +151,9 @@ class InstitutionController extends ResponseHeadersController
                 
                 // Hesitant on modifying the twig extension since it is used in many contexts
                 foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
-                    $this->apiInstitutionMedicalCenterService->buildLogoSource($imcData);
+                    $this->apiInstitutionMedicalCenterService
+                        ->buildInstitutionSpecializations($imcData)
+                        ->buildLogoSource($imcData);
                 }
             }
             
