@@ -77,9 +77,7 @@ class FrontendBreadcrumbService
                 'label' => $data['treatment']['name'],
                 'url' => $this->generateUrl('frontend_search_results_treatments', array('specialization' => $data['specialization']['slug'], 'treatment' => $data['treatment']['slug'])));
         }
-        if ($data['institutionMedicalCenter']) {
-            //TODO
-        } elseif ($data['institution']) {
+        if ($data['institution']) {
             switch ($data['institution']['type']) {
                 case InstitutionTypes::MULTIPLE_CENTER:
                     $routeName = 'frontend_multiple_center_institution_profile';
@@ -92,6 +90,9 @@ class FrontendBreadcrumbService
                 'label' => $data['institution']['name'],
                 'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
             );
+            if ($data['institutionMedicalCenter']) {
+                $breadcrumbs[] = array('label' => $data['institutionMedicalCenter']['name']);
+            }
         }
 
         return $breadcrumbs;
@@ -101,10 +102,13 @@ class FrontendBreadcrumbService
     {
         $institution = array();
         $institutionMedicalCenter = array();
-        if ($institution = $requestAttribs->get('institution', null)) {// Institution and medical center profiles
+        if ($institutionMedicalCenter = $requestAttribs->get('institutionMedicalCenter', null)) {
+            $institution = $institutionMedicalCenter['institution'];
             $country = $institution['country'];
             $city = isset($institution['city']) ? $institution['city'] : array();
-            $institutionMedicalCenter = $requestAttribs->get('institutionMedicalCenter', array());
+        } elseif ($institution = $requestAttribs->get('institution', null)) {
+            $country = $institution['country'];
+            $city = isset($institution['city']) ? $institution['city'] : array();
         } else {
             $country = $requestAttribs->get('country', array());
             $city = $requestAttribs->get('city', array());
