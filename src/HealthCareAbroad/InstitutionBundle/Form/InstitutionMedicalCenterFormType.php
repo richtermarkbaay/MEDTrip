@@ -36,6 +36,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
     private static $fieldNames = array(
         'name',
         'description',
+        'isAlwaysOpen',
         'businessHours',
         'city',
         'zipCode',
@@ -81,6 +82,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $imcProperty = new InstitutionMedicalCenterProperty();
         $this->_add($builder, 'name','text', array('label' => 'Clinic Name'));
         $this->_add($builder, 'description', 'textarea', array('label' => 'Short description of the clinic', 'attr' => array('rows' => 4) , 'required' => false));
+        $this->_add($builder, 'isAlwaysOpen', 'choice', array('choices' => array(1 => 'Open 24 hours a day 7 days a week', 0 => 'Specific Schedule'), 'expanded' => true));
         $this->_add($builder, 'businessHours', 'fancy_business_hours');
 
         $this->_add($builder, 'city', 'text', array('disabled' => 'disabled', 'virtual' => true,'attr' => array('value' => $this->institution->getCity())));
