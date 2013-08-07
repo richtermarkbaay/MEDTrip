@@ -36,6 +36,11 @@ class MemcacheService
         }
     }
     
+    public function getMemcache()
+    {
+        return $this->memcache;
+    }
+    
     public function getExtendedStats()
     {
         return $this->memcache->getExtendedStats();

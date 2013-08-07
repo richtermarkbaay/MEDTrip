@@ -22,7 +22,9 @@ class MemcacheStatsCommand extends ContainerAwareCommand
         $stats = $memcache->getExtendedStats();
         
         foreach ($stats as $server => $data){
-            $output->writeln("Memcache stats for {$server}:");
+            list($host, $port) = \explode(':', $server);
+            $output->writeln("Memcache stats for {$host}:");
+            $output->writeln("    STATUS: ".(0 ===$memcache->getMemcache()->getServerStatus($host, $port)?'NOT OK':'OK'));
             foreach ($data as $key => $value){
                 $output->writeln("    {$key}: {$value}");
             }
