@@ -844,6 +844,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `signup_step_status` smallint(1) unsigned NOT NULL DEFAULT '1',
   `total_clinic_ranking_points` int(11) DEFAULT NULL COMMENT 'temporary field. this is the sum all ranking points of clinics of this institution',
+  `is_from_internal_admin` smallint(1) unsigned,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
@@ -990,6 +991,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` varchar(250) CHARACTER SET latin1 NOT NULL,
+  `is_from_internal_admin` smallint(1) unsigned,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `institution_id` (`institution_id`,`name`),
@@ -1957,11 +1959,11 @@ ALTER TABLE `doctors`
 
 --
 -- Constraints for table `doctor_contact_details`
---  
+--
 ALTER TABLE `doctor_contact_details` ADD FOREIGN KEY ( `doctor_id` ) REFERENCES `fixtures_healthcareabroad`.`doctors` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 ALTER TABLE `doctor_contact_details` ADD FOREIGN KEY ( `contact_detail_id` ) REFERENCES `fixtures_healthcareabroad`.`contact_details` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
-  
+
 --
 -- Constraints for table `doctor_specializations`
 --
@@ -1994,7 +1996,7 @@ ALTER TABLE `global_awards`
 ALTER TABLE `institutions` ADD FOREIGN KEY ( `logo_id` ) REFERENCES `fixtures_healthcareabroad`.`media` ( `id` ) ON DELETE SET NULL ON UPDATE CASCADE ;
 
 ALTER TABLE `institutions` ADD FOREIGN KEY ( `featured_media_id` ) REFERENCES `fixtures_healthcareabroad`.`media` ( `id` ) ON DELETE SET NULL ON UPDATE CASCADE ;
-  
+
 --
 -- Constraints for table `institution_users`
 --
@@ -2006,9 +2008,8 @@ ALTER TABLE `institution_users`
 -- Constraints for table `term_documents`
 --
 ALTER TABLE `term_documents` ADD FOREIGN KEY ( `term_id` ) REFERENCES `fixtures_healthcareabroad`.`terms` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
-  
+
 --
 -- Constraints for table `states`
 --
 ALTER TABLE `states` ADD CONSTRAINT `states_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;
-  
