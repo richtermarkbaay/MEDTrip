@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "34a9215efbfb23b89bfaf463baa996e8",
+    "hash": "796f0a04d9976ca6bc527fd5e633fca9",
     "packages": [
         {
             "name": "chromedia/utilities",
@@ -384,17 +384,17 @@
         },
         {
             "name": "gregwar/captcha",
-            "version": "v1.0.5",
+            "version": "v1.0.7",
             "target-dir": "Gregwar/Captcha",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gregwar/Captcha.git",
-                "reference": "v1.0.5"
+                "reference": "v1.0.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/v1.0.5",
-                "reference": "v1.0.5",
+                "url": "https://api.github.com/repos/Gregwar/Captcha/zipball/v1.0.7",
+                "reference": "v1.0.7",
                 "shasum": ""
             },
             "require": {
@@ -413,7 +413,7 @@
             ],
             "authors": [
                 {
-                    "name": "Gr\u00e9goire Passault",
+                    "name": "Grégoire Passault",
                     "email": "g.passault@gmail.com",
                     "homepage": "http://www.gregwar.com/"
                 },
@@ -429,7 +429,7 @@
                 "captcha",
                 "spam"
             ],
-            "time": "2013-04-24 16:00:57"
+            "time": "2013-06-19 13:56:05"
         },
         {
             "name": "gregwar/captcha-bundle",
@@ -438,16 +438,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Gregwar/CaptchaBundle.git",
-                "reference": "c21bbf13c5576b4a40093ad10060c08b8f580894"
+                "reference": "v1.0.7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Gregwar/CaptchaBundle/zipball/c21bbf13c5576b4a40093ad10060c08b8f580894",
-                "reference": "c21bbf13c5576b4a40093ad10060c08b8f580894",
+                "url": "https://api.github.com/repos/Gregwar/CaptchaBundle/zipball/v1.0.7",
+                "reference": "v1.0.7",
                 "shasum": ""
             },
             "require": {
-                "gregwar/captcha": "v1.0.5",
+                "gregwar/captcha": "v1.0.7",
                 "php": ">=5.3.0"
             },
             "type": "captcha-bundle",
@@ -462,7 +462,7 @@
             ],
             "authors": [
                 {
-                    "name": "Gr\u00e9goire Passault",
+                    "name": "Grégoire Passault",
                     "email": "g.passault@gmail.com",
                     "homepage": "http://www.gregwar.com/"
                 },
@@ -482,7 +482,7 @@
                 "spam",
                 "visual"
             ],
-            "time": "2013-04-24 16:11:08"
+            "time": "2013-07-24 20:54:51"
         },
         {
             "name": "guzzle/guzzle",
@@ -577,17 +577,17 @@
             "time": "2012-12-19 23:06:35"
         },
         {
-            "name": "imagine/Imagine",
+            "name": "imagine/imagine",
             "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/avalanche123/Imagine.git",
-                "reference": "v0.4.1"
+                "reference": "v0.5.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/v0.4.1",
-                "reference": "v0.4.1",
+                "url": "https://api.github.com/repos/avalanche123/Imagine/zipball/v0.5.0",
+                "reference": "v0.5.0",
                 "shasum": ""
             },
             "require": {
@@ -595,6 +595,11 @@
             },
             "require-dev": {
                 "sami/sami": "dev-master"
+            },
+            "suggest": {
+                "ext-gd": "to use the GD implementation",
+                "ext-gmagick": "to use the Gmagick implementation",
+                "ext-imagick": "to use the Imagick implementation"
             },
             "type": "library",
             "autoload": {
@@ -621,7 +626,7 @@
                 "image manipulation",
                 "image processing"
             ],
-            "time": "2012-12-13 18:31:18"
+            "time": "2013-07-10 17:25:36"
         },
         {
             "name": "jdorn/sql-formatter",
@@ -695,6 +700,7 @@
                     "JMS\\AopBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -711,7 +717,7 @@
                 "annotations",
                 "aop"
             ],
-            "time": "2012-01-01 12:50:26"
+            "time": "2012-01-02 12:50:26"
         },
         {
             "name": "jms/cg",
@@ -736,6 +742,7 @@
                     "CG\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -743,7 +750,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -751,7 +758,7 @@
             "keywords": [
                 "code generation"
             ],
-            "time": "2012-01-01 12:40:52"
+            "time": "2012-01-02 12:40:52"
         },
         {
             "name": "jms/debugging-bundle",
@@ -760,17 +767,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/JMSDebuggingBundle.git",
-                "reference": "06db389dee9882b5e0cfb9a13438930d8481d959"
+                "reference": "fe3f24654208582766d565560f97e702fb46b943"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/JMSDebuggingBundle/zipball/06db389dee9882b5e0cfb9a13438930d8481d959",
-                "reference": "06db389dee9882b5e0cfb9a13438930d8481d959",
+                "url": "https://api.github.com/repos/schmittjoh/JMSDebuggingBundle/zipball/fe3f24654208582766d565560f97e702fb46b943",
+                "reference": "fe3f24654208582766d565560f97e702fb46b943",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.0,<2.3-dev"
+                "symfony/framework-bundle": "~2.0"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -786,7 +793,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -795,7 +802,7 @@
             "keywords": [
                 "debugging"
             ],
-            "time": "2013-01-21 11:18:22"
+            "time": "2013-07-09 08:59:11"
         },
         {
             "name": "jms/di-extra-bundle",
@@ -808,7 +815,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/schmittjoh/JMSDiExtraBundle/zipball/1.0.1",
+                "url": "https://github.com/schmittjoh/JMSDiExtraBundle/archive/1.0.1.zip",
                 "reference": "1.0.1",
                 "shasum": ""
             },
@@ -822,6 +829,7 @@
                     "JMS\\DiExtraBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -829,7 +837,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -838,7 +846,7 @@
                 "annotations",
                 "dependency injection"
             ],
-            "time": "2012-02-27 05:01:54"
+            "time": "2012-02-27 21:01:54"
         },
         {
             "name": "jms/metadata",
@@ -863,6 +871,7 @@
                     "Metadata\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -881,7 +890,7 @@
                 "xml",
                 "yaml"
             ],
-            "time": "2012-01-01 13:32:49"
+            "time": "2012-01-02 13:32:49"
         },
         {
             "name": "jms/security-extra-bundle",
@@ -909,6 +918,7 @@
                     "JMS\\SecurityExtraBundle": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "Apache"
             ],
@@ -916,7 +926,7 @@
                 {
                     "name": "Johannes M. Schmitt",
                     "email": "schmittjoh@gmail.com",
-                    "homepage": "https://github.com/schmittjoh",
+                    "homepage": "http://jmsyst.com",
                     "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
@@ -925,7 +935,7 @@
                 "annotations",
                 "authorization"
             ],
-            "time": "2012-01-01 13:38:12"
+            "time": "2012-01-02 13:38:12"
         },
         {
             "name": "knplabs/gaufrette",
@@ -933,12 +943,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/KnpLabs/Gaufrette.git",
-                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115"
+                "reference": "cde6149b2cf021b728eb33e7d8f819e6fb3cb508"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
-                "reference": "6f9260ddf10c9cba9aea66ac92b8f38a13a86115",
+                "url": "https://api.github.com/repos/KnpLabs/Gaufrette/zipball/cde6149b2cf021b728eb33e7d8f819e6fb3cb508",
+                "reference": "cde6149b2cf021b728eb33e7d8f819e6fb3cb508",
                 "shasum": ""
             },
             "require": {
@@ -950,7 +960,7 @@
                 "dropbox-php/dropbox-php": "*",
                 "herzult/php-ssh": "*",
                 "phpseclib/phpseclib": "dev-master",
-                "phpspec/phpspec2": "dev-master",
+                "phpspec/phpspec": "2.0.*",
                 "phpunit/phpunit": "3.7.*",
                 "rackspace/php-cloudfiles": "*",
                 "rackspace/php-opencloud": "dev-master"
@@ -965,7 +975,7 @@
                 "ext-mbstring": "*",
                 "ext-mongo": "*",
                 "ext-zip": "to use the Zip adapter",
-                "knplabs/knp-gaufrette-bundle": "*",
+                "knplabs/knp-gaufrette-bundle": "to use with Symfony2",
                 "phpseclib/phpseclib": "to use the SFTP",
                 "rackspace/php-opencloud": "to use Opencloud adapter"
             },
@@ -1002,7 +1012,7 @@
                 "filesystem",
                 "media"
             ],
-            "time": "2013-06-17 09:36:44"
+            "time": "2013-07-01 17:35:01"
         },
         {
             "name": "knplabs/knp-gaufrette-bundle",
@@ -1045,7 +1055,7 @@
             ],
             "authors": [
                 {
-                    "name": "Antoine H\u00e9rault",
+                    "name": "Antoine Hérault",
                     "email": "antoine.herault@gmail.com",
                     "homepage": "https://github.com/Herzult"
                 },
@@ -1221,7 +1231,7 @@
             ],
             "authors": [
                 {
-                    "name": "S\u00e9bastien HOUZ\u00c9",
+                    "name": "Sébastien HOUZÉ",
                     "email": "s@verylastroom.com"
                 }
             ],
@@ -1241,12 +1251,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rezzza/MailChimpBundle.git",
-                "reference": "dc7427354c0d09b721d729eedba57c1c17ca1cdf"
+                "reference": "v1.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rezzza/MailChimpBundle/zipball/dc7427354c0d09b721d729eedba57c1c17ca1cdf",
-                "reference": "dc7427354c0d09b721d729eedba57c1c17ca1cdf",
+                "url": "https://api.github.com/repos/rezzza/MailChimpBundle/zipball/v1.0.0",
+                "reference": "v1.0.0",
                 "shasum": ""
             },
             "require": {
@@ -1333,6 +1343,54 @@
                 "distribution"
             ],
             "time": "2013-02-04 19:54:42"
+        },
+        {
+            "name": "sensio/generator-bundle",
+            "version": "v2.1.10",
+            "target-dir": "Sensio/Bundle/GeneratorBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sensiolabs/SensioGeneratorBundle.git",
+                "reference": "v2.1.11"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sensiolabs/SensioGeneratorBundle/zipball/v2.1.11",
+                "reference": "v2.1.11",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/console": "2.1.*",
+                "symfony/framework-bundle": "2.1.*"
+            },
+            "require-dev": {
+                "doctrine/orm": ">=2.1,<2.4-dev",
+                "symfony/doctrine-bridge": "2.1.*",
+                "twig/twig": ">=1.8,<2.0-dev"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Sensio\\Bundle\\GeneratorBundle": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "This bundle generates code for you",
+            "time": "2013-04-01 18:11:18"
         },
         {
             "name": "stfalcon/tinymce-bundle",
@@ -1564,24 +1622,24 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/SwiftmailerBundle.git",
-                "reference": "v2.3.1"
+                "reference": "6b52e41483561a6c8594077f9e6a7d60236e67d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/v2.3.1",
-                "reference": "v2.3.1",
+                "url": "https://api.github.com/repos/symfony/SwiftmailerBundle/zipball/6b52e41483561a6c8594077f9e6a7d60236e67d7",
+                "reference": "6b52e41483561a6c8594077f9e6a7d60236e67d7",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.2",
                 "swiftmailer/swiftmailer": ">=4.2.0,<5.1-dev",
-                "symfony/swiftmailer-bridge": ">=2.1,<3.0"
+                "symfony/swiftmailer-bridge": "~2.1"
             },
             "require-dev": {
-                "symfony/config": ">=2.1,<3.0",
-                "symfony/dependency-injection": ">=2.1,<3.0",
-                "symfony/http-kernel": ">=2.1,<3.0",
-                "symfony/yaml": ">=2.1,<3.0"
+                "symfony/config": "~2.1",
+                "symfony/dependency-injection": "~2.1",
+                "symfony/http-kernel": "~2.1",
+                "symfony/yaml": "~2.1"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1610,7 +1668,7 @@
             ],
             "description": "Symfony SwiftmailerBundle",
             "homepage": "http://symfony.com",
-            "time": "2013-05-15 08:38:58"
+            "time": "2013-07-26 11:55:32"
         },
         {
             "name": "symfony/symfony",
@@ -1805,8 +1863,6 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "twig/extensions": 15,
-        "kriswallsmith/assetic": 15,
         "jms/debugging-bundle": 20,
         "rezzza/mailchimp-bundle": 20,
         "knplabs/gaufrette": 20,

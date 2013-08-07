@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 class TreatmentsTwigExtension extends \Twig_Extension
@@ -9,7 +11,7 @@ class TreatmentsTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'group_treatments_by_subspecialization' => new \Twig_Function_Method($this, 'group_treatments_by_subspecialization')
+            'group_treatments_by_subspecialization' => new \Twig_Function_Method($this, 'groupTreatmentsBySubspecialization')
         );
     }
     
@@ -19,19 +21,31 @@ class TreatmentsTwigExtension extends \Twig_Extension
     } 
     
     
-    public function group_treatments_by_subspecialization($treatments)
+    public function groupTreatmentsBySubspecialization($treatments)
     {
         $grouped = array();
         $noSubspecializations = array('treatments' => array(), 'subSpecialization' => null);
         foreach ($treatments as $_treatment) {
-            if (!$_treatment instanceof Treatment) {
+            if ($_treatment instanceof Treatment) {
+                $subSpecializations = $_treatment->getSubSpecializations();
+            }
+            elseif (\is_array($_treatment)){
+                // hydrated with HYDRATE_ARRAY
+                $subSpecializations = $_treatment['subSpecializations'];
+            }
+            else {
                 continue;
             }
             
-            $subSpecializations = $_treatment->getSubSpecializations();
             if (count($subSpecializations)) {
                 foreach ($subSpecializations as $_subSpecialization) {
-                    $_key = $_subSpecialization->getName();
+                    if ($_subSpecialization instanceof SubSpecialization){
+                        $_key = $_subSpecialization->getName();
+                    }
+                    else {
+                        $_key = $_subSpecialization['name'];
+                    }
+                    
                     if (!\array_key_exists($_key, $grouped)) {
                         $grouped[$_key] = array('treatments' => array(), 'subSpecialization' => $_subSpecialization);
                     }

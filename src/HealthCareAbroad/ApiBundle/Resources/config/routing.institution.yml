@@ -1,0 +1,5 @@
+api_institution_getBySlug:
+    pattern: /institutions/{slug}
+    defaults: {_controller: ApiBundle:InstitutionApi:getBySlug }
+    requirements:
+        _method: GET

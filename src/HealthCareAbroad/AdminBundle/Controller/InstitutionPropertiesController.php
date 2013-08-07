@@ -625,10 +625,9 @@ class InstitutionPropertiesController extends Controller
                     $em->persist($imcProperty);
                     $em->flush();
                     $extraValue = \json_decode($imcProperty->getExtraValue(), true);
-                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
                     $output = array(
                                     'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
-                                    'html' => $yearAcquired
+                                    'html' => $imcProperty->getExtraValue()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
@@ -640,7 +639,7 @@ class InstitutionPropertiesController extends Controller
                 $response = new Response('Form error'.$e->getMessage(), 400);
             }
         }
-    
+
         return $response;
     }
     

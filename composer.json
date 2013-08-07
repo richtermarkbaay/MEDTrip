@@ -15,6 +15,7 @@
         "doctrine/dbal": "2.3.2",
         "monolog/monolog": "1.2.1",
         "symfony/monolog-bundle": "v2.1.8",
+        "sensio/generator-bundle": "v2.1.10",
         "doctrine/doctrine-bundle": "v1.1.0",
         "jdorn/sql-formatter": "v1.2.0",
         "gedmo/doctrine-extensions": "v2.3.5",
