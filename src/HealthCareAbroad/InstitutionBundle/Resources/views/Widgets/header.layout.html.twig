@@ -36,10 +36,13 @@
                                 
                                 {# % if not is_internal_admin_user(app.user) %}
                                 <li>
-                                    <a href="{{ path('institution_editAccount' , {accountId: app.session.get('accountId')} ) }}" ><i class="icon-edit"></i> Manage Account</a>
+                                    <a href="{{ path('institution_editAccount') }}" ><i class="icon-edit"></i> Manage Account</a>
                                 </li>
                                 <li>
-                                    <a href="{{ path('institution_editAccountPassword' , {accountId: app.session.get('accountId')} ) }}" ><i class="icon-lock"></i> Change Password</a>
+                                    <a href="{{ path('institution_editAccountEmail') }}" ><i class="icon-envelope"></i> Manage Email Address</a>
+                                </li>
+                                <li>
+                                    <a href="{{ path('institution_editAccountPassword' ) }}" ><i class="icon-lock"></i> Change Password</a>
                                 </li>
                                 {% endif % #}
                                 <li class="divider">
