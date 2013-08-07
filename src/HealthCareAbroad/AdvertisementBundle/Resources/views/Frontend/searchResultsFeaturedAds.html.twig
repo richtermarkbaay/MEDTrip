@@ -37,25 +37,28 @@
     					<!-- User Ratings Temporarily Commented -->
                         {# include 'FrontendBundle:Widgets:ratings.html.twig' #}
     
-                        <div class="location">
-                            <strong>{{ institution_address_to_string(each.institution, ['city', 'country']) }}</strong>
-                        </div>
     				</div>
     				<div class="description-box">
 
-			            
-                        {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
-            			        statisticsDataObject: each,
-            			        link: {url: primaryUrl, html: '<h3>' ~ each.title ~ '</h3>'}
-            			} %}
-
-            			{% if secondaryUrl is defined %}
+			            <h3 class="heading">
                             {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
-                			        statisticsDataObject: each,
-                			        link: {url: primaryUrl, html: '<h4>' ~ each.institution.name ~ '</h4>'}
-                			} %}
-            			{% endif %}
+                                    statisticsDataObject: each,
+                                    link: {url: primaryUrl, html: each.title }
+                            } %}
+                        </h3>
+                        {% if secondaryUrl is defined %}
+                        <h4 class="sub-heading">
+                            {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+                                    statisticsDataObject: each,
+                                    link: {url: primaryUrl, html: each.institution.name }
+                            } %}
+                        </h4>
+                        {% endif %}
     					
+                        <span class="location">
+                            {{ institution_address_to_string(each.institution, ['city', 'country']) }}
+                        </span>
+
     					<p>{{ each.description | raw }}</p>
     				</div>
 
