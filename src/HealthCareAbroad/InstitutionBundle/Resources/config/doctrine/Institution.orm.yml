@@ -87,6 +87,10 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                 separator: -
                 fields:
                   - name
+        isFromInternalAdmin:
+            type: smallint
+            nullable: true
+            column: is_from_internal_admin
         status:
             type: smallint
             nullable: false

@@ -310,6 +310,11 @@ class InstitutionMedicalCenterController extends Controller
                 if ($form->isValid()) {
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                     $form->getData()->setAddress('');
+                    
+                    // Temporary Code to mark a newly added clinic as added internally.
+                    // Added By: Adelbert Silla
+                    $this->institutionMedicalCenter->setIsFromInternalAdmin(1);
+
                     $this->institutionMedicalCenter = $service->saveAsDraft($form->getData());
 
 
