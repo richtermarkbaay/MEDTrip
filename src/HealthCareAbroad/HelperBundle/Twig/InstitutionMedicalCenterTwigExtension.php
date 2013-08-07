@@ -326,9 +326,30 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         return $array;
     }
     
-    public function businessHoursToViewData(BusinessHour $businessHour)
+    /**
+     * 
+     * @param Mixed <BusinessHour, array> $businessHour
+     * @return 
+     */
+    public function businessHoursToViewData($businessHour)
     {
-        $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($businessHour->getWeekdayBitValue());
+        if ($businessHour instanceof BusinessHour){
+            $data = array(
+                'weekdayBitValue' => $businessHour->getWeekdayBitValue(),
+                'startTime' => $businessHour->getOpening()->format('h:i A'),
+                'endTime' => $businessHour->getClosing()->format('h:i A'),
+                'notes' => $businessHour->getNotes()
+            );
+        }
+        else {
+            $data = array(
+                'weekdayBitValue' => $businessHour['weekdayBitValue'],
+                'startTime' => $businessHour['opening']->format('h:i A'),
+                'endTime' => $businessHour['closing']->format('h:i A'),
+                'notes' => $businessHour['notes']
+            );
+        }
+        $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($data['weekdayBitValue']);
         $daysLabel = '';
         if (count($days) > 1 ) {
             $currentDay = null;
@@ -359,14 +380,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $daysLabel = $days[0]['short'];
         }
         
-        $viewData = array(
-            'daysLabel' => $daysLabel,
-            'startTime' => $businessHour->getOpening()->format('h:i A'),
-            'endTime' => $businessHour->getClosing()->format('h:i A'),
-            'notes' => $businessHour->getNotes()
-        );
+        $data['daysLabel'] = $daysLabel;
         
-        return $viewData;
+        return $data;
     }
     
     private function _concatenateDays($startDay, $endDay) 
