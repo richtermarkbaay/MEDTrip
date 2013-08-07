@@ -34,7 +34,7 @@
             'input_property_id': 'input.propertyId', // identifier of the hidden input element that will hold the value of the property id
             'input_award_id': 'input.globalAwardId', // identifier of the hidden input element that will hold the value of the award id 
             'input_extraValueAutocomplete_json': 'input.extraValueAutocomplete_json', // identifier of the hidden input element that will hold the JSON value of the extraValue field
-            'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete', // identifier of the input text element that will hold the  value of the extraValue
+            'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValue', //prev:institution_global_award_form_extraValueAutocomplete identifier of the input text element that will hold the  value of the extraValue
             'submit_button': 'button.submit', // identifier of the submit button
             'year_acquired_column': '.yearAcquired'
         },
