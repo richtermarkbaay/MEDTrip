@@ -426,7 +426,6 @@ class InstitutionController extends Controller
         $output = array();
         if ($request->isMethod('POST')) {
             $formVariables = $request->get(InstitutionProfileFormType::NAME);
-            var_dump($formVariables);exit;
             $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
             $formRequestData = $request->get($form->getName());
