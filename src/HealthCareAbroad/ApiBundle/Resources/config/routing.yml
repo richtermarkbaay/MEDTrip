@@ -1,0 +1,3 @@
+ApiBundle_institution:
+    resource: "@ApiBundle/Resources/config/routing.institution.yml"
+    prefix:   /api

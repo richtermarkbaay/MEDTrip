@@ -58,9 +58,8 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'render_institution_logo' => new \Twig_Function_Method($this, 'render_institution_logo'),
-            'render_institution_contact_number' => new \Twig_Function_Method($this, 'render_institution_contact_number'),
-            'render_institution_contact_details' => new \Twig_Function_Method($this, 'render_institution_contact_details'),
+            'render_institution_logo' => new \Twig_Function_Method($this, 'renderInstitutionLogo'),
+            'render_institution_contact_details' => new \Twig_Function_Method($this, 'renderInstitutionContactDetails'),
             'render_institution_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_suggestions'),
             'render_institution_single_center_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_single_center_suggestions'),
             'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile'),
@@ -186,43 +185,10 @@ class InstitutionTwigExtension extends \Twig_Extension
         return $read_inquiries;
     }
     
-    public function render_institution_contact_number(Institution $institution)
+    
+    public function renderInstitutionContactDetails(Institution $institution, $asJSON=false)
     {
-        $contactNumber = \json_decode($institution->getContactNumber(), true);
         
-        if (\is_null($contactNumber) || $contactNumber == '') {
-            return null;
-        }
-        else {
-            if (isset($contactNumber['country_code'])) {
-                if (\preg_match('/^\+/', $contactNumber['country_code'])) {
-                    $contactNumber['country_code'] = \preg_replace('/^\++/','+', $contactNumber['country_code']);
-                }
-                else {
-                    // append + to country code
-                    $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
-                }
-                
-                $result = \implode('-', $contactNumber);
-                
-            }else{
-                if (isset($contactNumber['phone_number'])) {
-                    if (\preg_match('/^\+/', $contactNumber['phone_number']['number'])) {
-                            $result = \preg_replace('/^\++/','+', $contactNumber['phone_number']['number']);
-                        }
-                        else {
-                            // append + to country code
-                            $result = '+'.$contactNumber['phone_number']['number'];
-                        }
-                    }
-            }
-        }
-        //var_dump($result); exit;
-        
-        return $result;
-    }
-    public function render_institution_contact_details(Institution $institution, $asJSON=false)
-    {
         $contactDetails = $institution->getContactDetails();
         $contactDetailsArray = array();
 
@@ -239,12 +205,18 @@ class InstitutionTwigExtension extends \Twig_Extension
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray ;
     }
     
-    public function render_institution_logo(Institution $institution, array $options = array())
+    /**
+     * Render institution logo as an img tag
+     * 
+     * @param Mixed <Institution, array> $institution
+     * @param array $options
+     */
+    public function renderInstitutionLogo($institution, array $options = array())
     {
         $defaultOptions = array(
-                        'attr' => array(),
-                        'media_format' => 'default',
-                        'placeholder' => ''
+            'attr' => array(),
+            'media_format' => 'default',
+            'placeholder' => ''
         );
         $options = \array_merge($defaultOptions, $options);
         $html = '';
@@ -252,7 +224,17 @@ class InstitutionTwigExtension extends \Twig_Extension
         // TODO - Institution Logo for non-paying client is temporarily enabled in ADS section.
         $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
         
-        if (($institutionLogo = $institution->getLogo()) && ($institution->getPayingClient() || $isAdsContext)) {
+        if ($institution instanceof Institution) {
+            $isPayingClient = $institution->getPayingClient();
+            $institutionLogo = $institution->getLogo();
+        }
+        elseif (\is_array($institution)){
+            // hydrated with HYDRATE_ARRAY
+            $institutionLogo = $institution['logo'];
+            $isPayingClient = $institution['payingClient'];
+        }
+        
+        if ($institutionLogo && ($isPayingClient || $isAdsContext)) {
             if(isset($options['attr']['class']))
                 $options['attr']['class'] .= ' hospital-logo';
             else 
@@ -262,7 +244,7 @@ class InstitutionTwigExtension extends \Twig_Extension
                 $options['size'] = ImageSizes::MEDIUM;
             }    
 
-            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), $options['size']);
+            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institutionLogo, $options['size']);
             $html = '<img src="'.$mediaSrc.'" class="hospital-logo">';
 
         } else {

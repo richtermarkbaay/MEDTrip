@@ -1,6 +1,5 @@
 {% set email = institution.contactEmail %}
-{% set number = institution.contactNumber  %}
-{% set number = json_decode(number) | join %}
+{% set number = contact_details_to_json(institution.contactDetails, true) %}
 
     <div class="profile-wrapper span8">
 		<div class="clinic-header-wrapper">

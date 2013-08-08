@@ -466,6 +466,7 @@ class FrontendController extends ResponseHeadersController
         // set total results for page metas
         $request->attributes->set('pageMetaVariables', array(PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE => $pager->getTotalResults()));
         $request->attributes->set('searchObjects', array(SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $country));
+        $this->setBreadcrumbRequestAttributes($request, array('country' => $country));
 
         return  $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -500,6 +501,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_COUNTRY => $city->getCountry(),
             SearchUrlGenerator::SEARCH_URL_PARAMETER_CITY => $city
         ));
+        $this->setBreadcrumbRequestAttributes($request, array('country' => $city->getCountry(), 'city' => $city));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsDestinations.html.twig', $parameters));
     }
@@ -541,6 +543,7 @@ class FrontendController extends ResponseHeadersController
         $request->attributes->set('searchObjects', array(
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
         ));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -588,6 +591,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION => $subSpecialization,
         ));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization, 'subSpecialization' => $subSpecialization));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -633,6 +637,7 @@ class FrontendController extends ResponseHeadersController
             SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION => $specialization,
             SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT => $treatment,
         ));
+        $this->setBreadcrumbRequestAttributes($request, array('specialization' => $specialization, 'treatment' => $treatment));
 
         return $this->setResponseHeaders($this->render('SearchBundle:Frontend:resultsTreatments.html.twig', $parameters));
     }
@@ -827,5 +832,13 @@ class FrontendController extends ResponseHeadersController
         }
 
         return $routeParams;
+    }
+
+    //TODO: move to service layer
+    private function setBreadcrumbRequestAttributes(Request $request, array $attributes)
+    {
+        foreach ($attributes as $key => $value) {
+            $request->attributes->set($key, array('name' => $value->getName(), 'slug' => $value->getSlug()));
+        }
     }
 }

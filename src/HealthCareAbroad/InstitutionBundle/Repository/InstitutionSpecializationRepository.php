@@ -116,24 +116,33 @@ class InstitutionSpecializationRepository extends EntityRepository
     /**
      * Get active institution specializations of an institution medical center/ clinic
      * 
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
      * @return array InstitutionSpecialization
      */
-    public function getActiveSpecializationsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
     {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            $institutionMedicalCenterId = $institutionMedicalCenter;
+        }
+        
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('a','b', 'c')
+        $qb->select('a, b, sp_lg, c, sub')
         ->from('InstitutionBundle:InstitutionSpecialization', 'a')
         ->leftJoin('a.specialization', 'b')
+        ->leftJoin('b.media', 'sp_lg')
         ->leftJoin('a.treatments', 'c')
+        ->leftJoin('c.subSpecializations', 'sub')
         ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
         ->andWhere('a.status = :status')
         ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
         ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE)
         ->orderBy('b.name','ASC');
         
-        $result = $qb->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult($hydrationMode);
         
         return $result;
     }
@@ -219,10 +228,10 @@ class InstitutionSpecializationRepository extends EntityRepository
     /**
      * Get all active institution specializations of an Institution
      * 
-     * @param Institution $institution
+     * @param mixed Institution|int $institution
      * @return multitype:
      */
-    public function getActiveSpecializationsByInstitution(Institution $institution)
+    public function getActiveSpecializationsByInstitution($institution, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('b, d, m')
@@ -235,7 +244,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->groupBy('b.specialization')
         ->orderBy('d.name');
         
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult($hydrationMode);
     }
 
 

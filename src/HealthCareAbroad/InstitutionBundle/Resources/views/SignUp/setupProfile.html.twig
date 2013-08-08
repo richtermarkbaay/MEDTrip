@@ -1,137 +1,116 @@
-    <div class="row">
-         {% if app.session.flashbag.get('callout') %}
-            <div class="span12 confirm-msg">
-                <div class="alert alert-info">
-                    <h4>Congratulations, <b> Your personal account was successfully created!</b></h4>
-                    <p>Next, please add details about the {{ label }} that you wish to add to HealthcareAbroad.com</p>
+<div class="row">
+     {% if app.session.flashbag.get('callout') %}
+        <div class="span12 confirm-msg">
+            <div class="alert alert-info">
+                <h4>Congratulations, <b> Your personal account was successfully created!</b></h4>
+                <p>Next, please add details about the {{ label }} that you wish to add to HealthcareAbroad.com</p>
+            </div>
+        </div>
+    {% endif %}
+    <h1>Set-up {{ label }} Profile</h1>
+    <div class="span8">
+        <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }}>
+            {% include 'InstitutionBundle:SignUp/Widgets:section.basicInfo.html.twig' %}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.address.html.twig' %}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.contactDetails.html.twig' %}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.socialMedia.html.twig' %}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.services.html.twig' %}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.awards.html.twig' %}
+
+            {{ form_widget(form.coordinates) }}
+            {{ form_widget(form._token) }}
+
+            {% include 'InstitutionBundle:SignUp/Widgets:section.addressMap.html.twig' %}
+        </form>
+        
+        {% include 'InstitutionBundle:SignUp/Widgets:section.mediaUpload.html.twig' %}
+    
+        <section class="section footer">
+            <div class="row-fluid terms">
+                <div class="span12">
+                    <div class="span6"><label>* <small>Required Fields</small></label></div>
+                    <div class="span6">
+                        <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
+                        <!-- <input type="submit" /> -->
+                    </div>
+                    
                 </div>
             </div>
-        {% endif %}
-        <h1>Set-up {{ label }} Profile</h1>
-        <div class="span8">
-            <form name="institutionProfileForm" id="institutionProfileForm" action="{{ path('institution_signup_setup_profile') }}" method="post" {{ form_enctype(form) }} novalidate>
-                {% include 'InstitutionBundle:SignUp/Widgets:section.basicInfo.html.twig' %}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.address.html.twig' %}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.contactDetails.html.twig' %}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.socialMedia.html.twig' %}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.services.html.twig' %}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.awards.html.twig' %}
-
-                {{ form_widget(form.coordinates) }}
-                {{ form_widget(form._token) }}
-
-                {% include 'InstitutionBundle:SignUp/Widgets:section.addressMap.html.twig' %}
-
-            </form>
-            
-            {% include 'InstitutionBundle:SignUp/Widgets:section.mediaUpload.html.twig' %}
-        
-            <section class="section footer">
-                <div class="row-fluid terms">
-                    <div class="span12">
-                        <div class="span6"><label>* <small>Required Fields</small></label></div>
-                        <div class="span6">
-                            <a href="#confirmMap" class="btn btn-primary btn-large pull-right" data-toggle="modal">Save and Continue</a>
-                            <!-- <input type="submit" /> -->
-                        </div>
-                        
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <aside class="span4">
-            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
-        </aside>
-        
+        </section>
     </div>
 
+    <aside class="span4">
+        {{ render_signup_steps_by_route(app.request.attributes.get('_route'), isSingleCenter is defined and isSingleCenter) | raw}}
+    </aside>    
+</div>
+
 {% block inlineJavascriptCode %}
-<script src="{{ asset('js/jquery/timepicker.js') }}"></script>
-<script src="{{ asset('js/jquery/globalize.js') }}"></script>
-<script src="{{ asset('js/jquery/jquery.ui.mask.js') }}"></script>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/HCAGoogleMap.js') }}"></script>
-<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionMedicalCenter.js') }}" ></script>
-<script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
-<script  type="text/javascript" src="{{ asset('bundles/helper/js/Location.js') }}"></script>
+
 <script type="text/javascript">
-
-$(function(){
-
-	var formElem;
-	$('form.ajaxUploadLogoForm').ajaxForm({
-    /* beforeSend: function(e) {},
-       uploadProgress: function(event, position, total, percentComplete) {},*/
-
-       success: function(response) {
-           if(response.status) {
-        	   $(formElem).find('img').attr('src',response.mediaSrc);
-           } else {
-               alert('ERROR: Unable to upload Logo!');
+    $(function(){
+    	var formElem;
+    	$('form.ajaxUploadLogoForm').ajaxForm({
+           success: function(response) {
+               if(response.status) {
+            	   $(formElem).find('img').attr('src',response.mediaSrc);
+               } else {
+                   HCA.alertMessage('Unable to upload Logo.');
+               }
            }
-       },
-       complete: function(xhr) {
-
-       }
-   }).submit(function(){
-	   formElem = $(this);
-       $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
-   });
-	var formName = "{{ form.vars.name }}";
-	HCAGoogleMap.initialize({
-		mapOnChangeCallback: function() {
-			$('#' + formName + '_coordinates').val(HCAGoogleMap.latLngString);
-		}
-	});
-
-    $('#confirmMap').on('shown', function() {
-        HCAGoogleMap.updateMap(getAddress());
-    });
-
-    $('#confirmMapSubmit').click(function(){
-        $('#confirmMap').modal('hide');
-        $('#institutionProfileForm').submit();
-    });
-
-    function getAddress() {
-
-        var address = '';
-    	var building = $('#' + formName + '_address1_building').val();
-    	var street = $('#' + formName + '_address1_street').val();
-    	var city = $('#input-' + formName + '_city').val(); 
-        var country = $('#input-' + formName + '_country').val();
-
-        if(country) {
-        	HCAGoogleMap.defaultAddress = country; 
+        }).submit(function(){
+            formElem = $(this);
+            $(this).find('.hca-profile-photo-rollover').hide().prev().css('opacity', 0.5);
+        });
+    
+    	HCAGoogleMap.initialize({
+    		mapOnChangeCallback: function() {
+    			$('#{{ form.getChild("coordinates").vars.id }}').val(HCAGoogleMap.latLngString);
+    		}
+    	});
+    
+        $('#confirmMap').on('shown', function() {
+            HCAGoogleMap.updateMap(getAddress());
+        });
+    
+        $('#confirmMapSubmit').click(function(){
+            $('#confirmMap').modal('hide');
+            $('#institutionProfileForm').submit();
+        });
+    
+        function getAddress() {
+            var address = '';
+        	var street = $('#{{ form.getChild("address1").vars.id }}_street').val();
+        	var city = $('#{{ form.getChild("city").vars.id }}_widget').val(); 
+            var country = $('#{{ form.getChild("country").vars.id }}_widget').val();
+    
+            if(country) {
+            	HCAGoogleMap.defaultAddress = country; 
+            }
+    
+            if(city) {
+            	HCAGoogleMap.defaultAddress = city + ', ' + HCAGoogleMap.defaultAddress; 
+            }
+    
+            //if(building != '') { address += building + ', '; }
+            if(street != '') { address += street + ', '; }
+            if(city != '') { address += city + ', '; }
+            if(country != '') { address += country; }
+            console.log(address);
+            
+            return address;
         }
-
-        if(city) {
-        	HCAGoogleMap.defaultAddress = city + ', ' + HCAGoogleMap.defaultAddress; 
-        }
-        
-        if(building != '') { address += building + ', '; }
-        if(street != '') { address += street + ', '; }
-        if(city != '' && $('#' + formName + '_city').val() != '') { address += city + ', '; }
-        if(country != '') { address += country; }
-
-        return address;
-    }
-    var availableTags = $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}');
-
-    var instututionGroupInput = $('input[name="institution_profile_form[medicalProviderGroups][0]"]');
     
-    instututionGroupInput.autocomplete({
-        appendTo: "#autoDiv",
-        source: availableTags,
+        $('#{{ form.getChild("medicalProviderGroups").vars.id }}_0').autocomplete({
+            appendTo: "#autoDiv",
+            source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
+        });
     });
-    
-    
-});
 </script>
 {% endblock %}

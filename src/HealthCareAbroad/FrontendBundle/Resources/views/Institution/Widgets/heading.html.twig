@@ -1,17 +1,18 @@
 
-{% set number = render_institution_contact_details(institution, true) %}
+{% set number = contact_details_to_json(institution.contactDetails, true) %}
 <div class="hospital-header-wrapper">
     <h3>{{ institution.name }}</h3>
-    {% if institution.featuredMedia and institution.payingClient %}
-        {% set size = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
-        <img src="{{ institution_media_src(institution.featuredMedia, size) }}" class="featured-image" alt=""/>
-    {% else %}
-        <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>
-    {% endif %}
+    
+    {% set featuredMediaSrc = institution.featuredMedia and institution.featuredMedia.src ? institution.featuredMedia.src : imageplaceholder.institutionFeaturedImage %}
+    <img class="featured-image" src="{{ featuredMediaSrc }}" />
 
     <div class="info-wrapper hca-v-sprite stripe-bg-dark">
         <div class="logo-wrapper">
-            {{ render_institution_logo(institution, {attr: {alt: 'hospital logo'}}) | raw }}
+            {% if institution.logo and institution.logo.src %}
+                <img src="{{ institution.logo.src }}" class="hospital-logo" />
+            {% else %}
+                <span class="hca-sprite hospital-default-logo"></span>
+            {% endif %}
         </div>
         <ul class="unstyled inline-list pull-right">
             {% if number %}
@@ -22,16 +23,16 @@
                 </li>
             {% endif %}
 
-                <li>
-                    <a class="btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">
-                        <span class="hca-sprite email-icon"></span> Email
-                    </a>
-                    <!-- Modal Multiple Institution Inquiry -->
-                	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
-                	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
-                	%}
-                   <!-- end Modal Multiple Institution Inquiry -->
-                </li>
+            <li>
+                <a class="btn orange" data-toggle="modal" id="email_multiple" href="#modal_multiple_institution_inquiry_form">
+                    <span class="hca-sprite email-icon"></span> Email
+                </a>
+                <!-- Modal Multiple Institution Inquiry -->
+            	{% include 'FrontendBundle:Institution/Widgets:inquire.institution.html.twig' 
+            	     with { modalId: 'modal_multiple_institution_inquiry_form', modalTitle: 'Email ' ~ institution.name } 
+            	%}
+               <!-- end Modal Multiple Institution Inquiry -->
+            </li>
 
             {% if institution.websites %}
                 <!--li><a class="btn orange" href="{{ institution.websites }}" target="_blank"><span class="hca-sprite link-icon"></span> Visit Website</a></li-->

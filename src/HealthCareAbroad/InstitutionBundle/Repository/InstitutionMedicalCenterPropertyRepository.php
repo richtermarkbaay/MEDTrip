@@ -31,11 +31,18 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
     /**
      * Get all ancillary services by institution medical center
      * 
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
      * @return array OfferedService
      */
-    public function getAllServicesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getAllServicesByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
     {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter){
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            $institutionMedicalCenterId = $institutionMedicalCenter;
+        }
+        
         $rsm = new ResultSetMapping();
         $rsm->addEntityResult('AdminBundle:OfferedService', 'b');
         $rsm->addFieldResult('b', 'id', 'id');
@@ -43,37 +50,41 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
         $rsm->addFieldResult('b', 'status', 'status');
         $rsm->addFieldResult('b', 'date_created', 'dateCreated');
         
-        $propertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE));
-        
         $sql = "SELECT b.* FROM institution_medical_center_properties a JOIN offered_services b ON b.id = a.value 
-        WHERE a.institution_id = :id and a.institution_medical_center_id = :imcId
+        WHERE a.institution_medical_center_id = :imcId
         AND a.institution_property_type_id = :propertyType
         AND b.status = 1
         ORDER BY b.name ASC";
         $query = $this->getEntityManager()->createNativeQuery($sql, $rsm)
-            ->setParameter('id', $institutionMedicalCenter->getInstitution()->getId())
-            ->setParameter('imcId', $institutionMedicalCenter->getId())
-            ->setParameter('propertyType', $propertyType->getId());
+            ->setParameter('imcId', $institutionMedicalCenterId)
+            ->setParameter('propertyType', InstitutionPropertyType::ANCILLIARY_SERVICE_ID);
         
-        return $query->getResult();
+        return $query->getResult($hydrationMode);
     }
     
     /**
      * Get global awards of an institution medical center
      * 
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
      * @return array GlobalAward
      */
-    public function getAllGlobalAwardsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getAllGlobalAwardsByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
     {
-        $globalAwardPropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_GLOBAL_AWARD));
-
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            $institutionMedicalCenterId = $institutionMedicalCenter;
+        }
         $sql = "SELECT a.value  FROM institution_medical_center_properties a ".
             "WHERE a.institution_property_type_id = :propertyType AND a.institution_medical_center_id = :imcId";
         $statement = $this->getEntityManager()
             ->getConnection()->prepare($sql);
  
-        $statement->execute(array('propertyType' => $globalAwardPropertyType->getId(), 'imcId' => $institutionMedicalCenter->getId()));
+        $statement->execute(array(
+            'propertyType' => InstitutionPropertyType::GLOBAL_AWARD_ID,
+            'imcId' => $institutionMedicalCenterId
+        ));
         
         $result = array();
         if($statement->rowCount() > 0) {
@@ -86,7 +97,7 @@ class InstitutionMedicalCenterPropertyRepository extends EntityRepository
             $query = $this->getEntityManager()->createQuery($dql)
             ->setParameter(1, $ids);
              
-            $result = $query->getResult();
+            $result = $query->getResult($hydrationMode);
         }
    
         return $result;

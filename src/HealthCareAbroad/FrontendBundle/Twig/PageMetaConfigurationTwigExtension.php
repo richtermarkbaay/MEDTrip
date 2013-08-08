@@ -55,7 +55,7 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
                 $this->pageMetaConfigurationService->save($metaConfig);
             }
             // institution/hospital page
-            elseif(($institution = $request->attributes->get('institution', null)) && $institution instanceof Institution && PageMetaConfiguration::PAGE_TYPE_INSTITUTION == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
+            elseif(($institution = $request->attributes->get('institution', null))  && PageMetaConfiguration::PAGE_TYPE_INSTITUTION == $request->attributes->get('pageMetaContext', PageMetaConfiguration::PAGE_TYPE_STATIC)) {
                 $metaConfig = $this->pageMetaConfigurationService->buildForInstitutionPage($institution);
                 $metaConfig->setUrl($url);
                 
