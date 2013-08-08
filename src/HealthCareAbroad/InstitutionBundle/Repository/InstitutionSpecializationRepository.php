@@ -145,46 +145,19 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $count;
     }
-
-    public function updateTreatments($institutionSpecializationId, $treatmentIds = array(), $deleletedTreatmentIds = array())
-    {
-        $conn = $this->_em->getConnection();
-
-        if(count($treatmentIds)){
-            $valuesHolder = "";
-            $params = array("instSpecId" => $institutionSpecializationId);
-            foreach($treatmentIds as $i => $treatmentId) {
-                $valuesHolder .= ",(:instSpecId, :treatment_$i)";
-                $params["treatment_$i"] = $treatmentId;
-            }
-
-            $qry = "INSERT INTO institution_treatments(institution_specialization_id, treatment_id) " .
-                   "VALUES ". substr($valuesHolder, 1) .
-                   "ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
-            $result = $conn->executeQuery($qry, $params);
-        }
-
-        if(count($deleletedTreatmentIds)) {
-            // TODO - bind $deletedSpecializationId
-            $deleteQry = "DELETE FROM institution_treatments " .
-                         "WHERE institution_specialization_id = :institutionSpecializationId " .
-                         "AND treatment_id IN (" . implode(',', $deleletedTreatmentIds) . ")";
-
-            $deleteParams = array('institutionSpecializationId' => $institutionSpecializationId);
-
-            $result = $conn->executeQuery($deleteQry, $deleteParams);
-        }
-
-        return $result;
-    }
     
-    public function deleteTreatmentsBySpecializationId($institutionSpecializationId)
+    public function deleteBySpecializationIdAndTreatmentIds($institutionSpecializationId, $deleteTreatmentIds)
     {
         $conn = $this->_em->getConnection();
-        
+
+        if(is_array($deleteTreatmentIds)) {
+            $deleteTreatmentIds = implode(',', $deleteTreatmentIds);
+        }
+
         $deleteQry = "DELETE FROM institution_treatments " .
-                        "WHERE institution_specialization_id = :institutionSpecializationId ";
-        
+                        "WHERE institution_specialization_id = :institutionSpecializationId " .
+                        "AND treatment_id IN ($deleteTreatmentIds)";
+
         $deleteParams = array('institutionSpecializationId' => $institutionSpecializationId);
         
         $result = $conn->executeQuery($deleteQry, $deleteParams);
