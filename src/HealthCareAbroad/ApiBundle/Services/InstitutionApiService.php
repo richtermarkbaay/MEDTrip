@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
+use Doctrine\ORM\Query\Expr\Join;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
@@ -233,7 +237,8 @@ class InstitutionApiService
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
         $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m, imc_logo, imc_inst')
             ->from('InstitutionBundle:Institution', 'inst')
-            ->innerJoin('inst.institutionMedicalCenters', 'imc')
+            ->innerJoin('inst.institutionMedicalCenters', 'imc', Join::WITH, 'imc.status = :imcActiveStatus')
+                ->setParameter('imcActiveStatus', InstitutionMedicalCenterStatus::APPROVED)
             ->leftJoin('inst.city', 'ct')
             ->leftJoin('inst.country', 'co')
             ->leftJoin('inst.state', 'st')
