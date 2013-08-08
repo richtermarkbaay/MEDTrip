@@ -64,7 +64,7 @@
 
                     {% if each.media %}
                         {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE') %}
-                        <div class="hca-sprite thumbnail-frame pull-right">
+                        <div class="thumbnail-frame pull-right">
                             <img src="{{ advertisement_media_src(each.media, thumbnailSize) }}" class="img-polaroid" alt=""/>
                         </div>
                     {% endif %}
