@@ -53,7 +53,7 @@ class InstitutionController extends InstitutionAwareController
 	
 	public function uploadLogoAction()
 	{
-	    $data = array();
+	    $data = array('status' => false);
 	    if($this->getRequest()->files->get('logo')) {
 	        $file = $this->getRequest()->files->get('logo');
 	        $media = $this->get('services.institution.media')->uploadLogo($file, $this->institution);
@@ -72,11 +72,10 @@ class InstitutionController extends InstitutionAwareController
 	
 	public function uploadFeaturedImageAction()
 	{
-	    $data = array();
+	    $data = array('status' => false);
 	    if($this->getRequest()->files->get('featuredImage')) {
 	        $file = $this->getRequest()->files->get('featuredImage');
 	        $media = $this->get('services.institution.media')->uploadFeaturedImage($file, $this->institution);
-	        $data['status'] = true;
 	        if($media->getName()) {
 	            $imageSize = ImageSizes::LARGE_BANNER;
 	            
@@ -86,6 +85,7 @@ class InstitutionController extends InstitutionAwareController
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
 	        }
+	        $data['status'] = true;
 	    }
 	    
 	    return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));

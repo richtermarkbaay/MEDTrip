@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Tests\Controller;
 
+use Gaufrette\Adapter\file_exists;
+
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use \HCA_DatabaseManager;
@@ -16,7 +18,8 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
     private $signupFormValues = array(
         'institutionUserSignUp[firstName]' => 'testFirstName',
         'institutionUserSignUp[lastName]' => 'testLastName',
-        'institutionUserSignUp[email]' => 'testsisde@aaSa.com', //make sure to change the email before running the test
+        'institutionUserSignUp[email]' => 'tests@aagfSaa.com', //make sure to change the email before running the test
+        'institutionUserSignUp[confirm_email]' => 'tests@aagfSaa.com',
         'institutionUserSignUp[password]' => '123456',
         'institutionUserSignUp[confirm_password]' => '123456',
         'institutionUserSignUp[type]' => '1',
@@ -65,6 +68,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
             'institutionUserSignUp[firstName]' => null,
             'institutionUserSignUp[lastName]' => null,
             'institutionUserSignUp[email]' => null,
+            'institutionUserSignUp[confirm_email]' => null,
         );
     
         $form = $crawler->selectButton('Create Account')->form();
@@ -80,10 +84,12 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $invalidValues['institutionUserSignUp']['password'] = '1234567';
         $invalidValues['institutionUserSignUp']['confirm_password'] = '7654321'; 
         $invalidValues['institutionUserSignUp']['email'] = 'test.adminuser@chromedia.com'; //existing email
+        $invalidValues['institutionUserSignUp']['confirm_email'] = null;
         $crawler = $client->submit($form, $invalidValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid data has been created!');
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Email already exists.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address do not match")')->count());
         
         $invalidValues['institutionUserSignUp']['password'] = '123'; // password lenght validation should be 6
         $invalidValues['institutionUserSignUp']['email'] = 'invalidEmal'; //invalid email
@@ -133,6 +139,7 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 		$form = $crawler->selectButton('Create Account')->form();
 		$this->signupFormValues['institutionUserSignUp']['type'] = 3;
 		$this->signupFormValues['institutionUserSignUp']['email'] = 'newSetEmail@singletype.com';
+		$this->signupFormValues['institutionUserSignUp']['confirm_email'] = 'newSetEmail@singletype.com';
 		
 		$crawler = $client->submit($form, $this->signupFormValues);
 		$this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -258,13 +265,38 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
 
     }
     
-    public function testUploadsForSetUpProfile()
+    public function testUploadLogoForSetUpProfile()
     {
+        $client = $this->getBrowserWithActualLoggedInUser();
+	    $crawler = $client->request('GET', 'institution/uploadLogo');
+	    $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+	    $client = $this->getBrowserWithActualLoggedInUser();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 1);
+        
+        $filename = dirname($client->getContainer()->get('kernel')->getRootDir()) . '/web/images/flags16.png';
+        $file['logo'] = new UploadedFile($filename, 'flags16.png', 'image/png', 63);
+        $crawler = $client->request('POST', 'institution/uploadLogo', array('logoSize' => '100x100'), $file);
+        $this->assertRegExp('/true/', $client->getResponse()->getContent());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+    }
+    
+    public function testUploadCoverPhotoForSetUpProfile()
+    {
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', 'institution/uploadFeaturedImage');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    
         $client = $this->getBrowserWithActualLoggedInUser();
         $session = $client->getContainer()->get('session');
         $session->set('institutionSignupStepStatus', 1);
-        $file['logo'] = new UploadedFile('web/images/flags16.png', 'flags16.png', 'image/jpeg', 63,284);
-        $crawler = $client->request('POST', 'institution/uploadLogo',$file);
+    
+        $filename = dirname($client->getContainer()->get('kernel')->getRootDir()) . '/web/images/default-hospital-featured-image.png';
+        $file['featuredImage'] = new UploadedFile($filename, 'default-hospital-featured-image.png', 'image/png', 96);
+        $crawler = $client->request('POST', 'institution/uploadFeaturedImage', array('logoSize' => '100x100'), $file);
+        $this->assertRegExp('/true/', $client->getResponse()->getContent());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
     
@@ -314,11 +346,34 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $formValues = array( 'institutionMedicalCenter' => array(
             'name' =>'new testdstsdf',
             'description' => 'testing2',
-            'businessHours' =>  array('18a6a330-af4d-4371-a4e1-4ca50843847b' => '{"weekdayBitValue":16,"opening":"8:00 AM","closing":"5:00 PM","notes":""}'),
+            'isAlwaysOpen' => 1,
             '_token' => $csrf_token
         ),'isSameAddress' => 1);
+        $form = $crawler->selectButton('Continue to Adding Specializations')->form();
+        $form['institutionMedicalCenter[isAlwaysOpen]']->select('1');
         $client->request('POST', "/institution/setup-clinic-details/1", $formValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $session = $client->getContainer()->get('session');
+        $session->set('institutionSignupStepStatus', 2);
+        $crawler = $client->request('GET', 'institution/setup-clinic-details/1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $extract = $crawler->filter('input[name="institutionMedicalCenter[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
+        
+        $formValues = array( 'institutionMedicalCenter' => array(
+            'name' =>'new testdstsdf',
+            'description' => 'testing2',
+            'contactEmail' => 'test@mail.com',
+            'address' => array ( 'room_number' => null, 'building' => 'test', 'street' => 'test' ),
+            'businessHours' =>  array('18a6a330-af4d-4371-a4e1-4ca50843847b' => '{"weekdayBitValue":16,"opening":"8:00 AM","closing":"5:00 PM","notes":""}'),
+            '_token' => $csrf_token
+        ));
+        $client->request('POST', "/institution/setup-clinic-details/1", $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $crawler = $client->followRedirect();
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add Specializations")')->count()); //check if redirects to add specializations
     }
     
     public function testSetupInstitutionMedicalCenterNoIdPassed()
@@ -348,13 +403,14 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $formVal['specializationId'] = 1;
         $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/1',$formVal);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        // Assert that the response content matches a regexp.
+        $this->assertRegExp('/html/', $client->getResponse()->getContent());
         
         $formValues = array('institutionSpecialization' => array( 4 => array ('treatments' => array ( 0 => '5'))));
         $crawler = $client->request('POST', '/institution/setup-specializations/1', $formValues);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $client->followRedirect();
-        
-
+        $crawler = $client->followRedirect();
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
     }
 
     public function testSetupDoctors()
@@ -364,47 +420,41 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $session->set('institutionSignupStepStatus', 5);
         
         $crawler1 = $crawler = $client->request('GET', 'institution/setup-doctors/1');
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Add New Doctor")')->count());
+        $this->assertGreaterThan(0, $crawler1->filter('html:contains("Add New Doctor")')->count());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // Search for Doctor
-        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
-        $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
+        $extract = $crawler1->filter('input[name="institutionMedicalCenterDoctor[_token]"]')->extract(array('value'));
+        $csrf_token = $extract[0];
+        
+        $formValues =  array('institutionMedicalCenterDoctor' => array( //add doctor
+                        'lastName' => 'lasts',
+                        'firstName' => 'firsts',
+                        'middleName' => 'middles',
+                        'suffix' => 'Jr.',
+                        '_token' => $csrf_token
+        ));
+        $client->request('POST', '/institution/setup-doctors/1', $formValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-            
-         /*   Add new doctor */
-        //test for invalid form
+        
+        /* Add invalid doctor */
+        // test for invalid form
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formDoctorValues =  array( 'institutionMedicalCenterDoctor' => array ('lastName' =>'chazzzi','firstName' => 'test', 'middleName' => '', 'suffix' =>  ''));
         $crawler = $client->request('POST', 'institution/setup-doctors/1', $formDoctorValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
-        //$client = $this->getBrowserWithActualLoggedInUser();
-        //$crawler = $client->request('GET', '/institution/setup-doctors/1');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $extract = $crawler1->filter('input[name="institutionMedicalCenterDoctor[_token]"]')->extract(array('value'));
-        $csrf_token = $extract[0];
-        
-        $uri = "/institution/medical-center/2/add-doctor";
-        $formValues =  array('institutionMedicalCenterDoctor' => array(
-                        'lastName' => 'last',
-                        'firstName' => 'first',
-                        'middleName' => 'middle',
-                        'suffix' => 'Jr.',
-                        '_token' => $csrf_token
-        ));
-        
-        $client->request('POST', '/institution/setup-doctors/1', $formValues);
+        // Search for Doctor
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $crawler = $client->request('GET', 'search_doctors?criteria[lastName]=test&criteria[firstName]=test');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
         $formValues =  array( 'doctorId' => 43242); //add invalid doctor
         $crawler = $client->request('POST', 'institution/medical-center/1/add-existing-doctor', $formValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+
         //Add existing Doctor
-        $formValues =  array( 'doctorId' => 1);
+        $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
+        $formValues =  array( 'doctorId' => 1, '_token' => $csrf_token);
         $crawler = $client->request('POST', 'institution/medical-center/1/add-existing-doctor', $formValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }

@@ -227,9 +227,6 @@ class InstitutionUserController extends Controller
         ));
     }
     
-
-
-
     public function resetPasswordAction(Request $request)
     {
         $institutionUserService = $this->get('services.institution_user');

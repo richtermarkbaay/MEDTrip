@@ -123,7 +123,7 @@ abstract class MediaService
             $this->entityManager->remove($media);
             try {
                 $this->entityManager->flush();
-                $this->filesystem->delete($mediaName);
+                //$this->filesystem->delete($mediaName);
                 
                 foreach($sizes as $each) {
                     $key = $each .'_'. $mediaName;

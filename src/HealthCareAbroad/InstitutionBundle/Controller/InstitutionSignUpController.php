@@ -372,7 +372,6 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     public function setupInstitutionMedicalCenterAction(Request $request)
     {
-
         $error_message = false;
         if ($this->institutionService->isSingleCenter($this->institution)){
             // this is not part of the sign up flow of  single center institution
@@ -394,7 +393,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         if ($this->request->isMethod('POST')) {
             $formRequestData = $request->get($form->getName());
-
             if((bool)$request->get('isSameAddress')) {
                 $formRequestData['address'] = json_decode($this->institution->getAddress1(), true);
                 $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
