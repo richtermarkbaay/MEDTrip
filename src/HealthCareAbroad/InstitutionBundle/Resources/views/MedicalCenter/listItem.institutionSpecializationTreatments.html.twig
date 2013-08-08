@@ -15,7 +15,9 @@
         <h4>{{ each.specialization.name }}</h4>
     </div>
     <div class="hca-hidden-content specializations-profile-listing">
-       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_medicalCenter_ajaxEditSpecialization', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post"></form>
+       <form name="specializationsForm" id="panel{{each.specialization.id }}"  action="{{ path('institution_medicalCenter_ajaxEditSpecialization', { imcId: institutionMedicalCenter.id, isId: each.id, specializationId: each.specialization.id }) }}" method="post">
+           <input type="hidden" name="deleteTreatments">
+       </form>
     </div>
 
 </div>
