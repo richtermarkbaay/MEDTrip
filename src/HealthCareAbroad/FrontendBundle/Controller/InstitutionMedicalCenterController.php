@@ -77,6 +77,11 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
         $cachedData = $memcacheService->get($memcacheKey);
         if (!$cachedData) {
             $this->institutionMedicalCenter = $this->apiInstitutionMedicalCenterService->getInstitutionMedicalCenterPublicDataById($institutionMedicalCenterId);
+            
+            if (!$this->institutionMedicalCenter) {
+                throw $this->createNotFoundException('Invalid medical center');
+            }
+            
             $this->institution = $this->institutionMedicalCenter['institution'];
             
             if ($this->get('services.api.institution')->isSingleCenterInstitutionType($this->institution)) {
