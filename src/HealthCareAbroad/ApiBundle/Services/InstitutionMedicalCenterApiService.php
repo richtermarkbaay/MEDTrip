@@ -43,6 +43,7 @@ class InstitutionMedicalCenterApiService
      */
     public function buildLogoSource(&$institutionMedicalCenter)
     {
+//         var_dump($institutionMedicalCenter); exit;
         $canDisplayImcLogo = $institutionMedicalCenter['institution']['payingClient'];
         
         // client is allowed to display logo, and there is a logo

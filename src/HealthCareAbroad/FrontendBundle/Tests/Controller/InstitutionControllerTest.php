@@ -21,7 +21,7 @@ class InstitutionControllerTest extends FrontendBundleWebTestCase
         //clinics section details
         $this->assertGreaterThan(0,$crawler->filter('h5:contains("Clinics")')->count());
         $this->assertGreaterThan(0,$crawler->filter('span:contains("Audiology Services")')->count());
-        $this->assertGreaterThan(0,$crawler->filter('span:contains("Pre-Admission Counselling and Evaluation (PACE) Clinic")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('span:contains("Pre-Admission")')->count());
         
         //services section details
         $this->assertGreaterThan(0,$crawler->filter('h5:contains("Services")')->count());
@@ -38,21 +38,40 @@ class InstitutionControllerTest extends FrontendBundleWebTestCase
         $this->assertGreaterThan(0,$crawler->filter('strong:contains("Dr. test  test")')->count());
         $this->assertGreaterThan(0,$crawler->filter('p:contains("Allergy and Immunology")')->count());
         
+        //test invalid institutionSlug
+        $uri = "/hospital/test-singlasde-hospital";
+        $client = static::createClient();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(500,$client->getResponse()->getStatusCode());
+    }
+    
+    public function testSingleInstitutionProfile()
+    {
         
         $uri = "/hospital/test-single-hospital";
         $client = static::createClient();
         $crawler = $client->request('GET', $uri);
         $this->assertGreaterThan(0,$crawler->filter('h3:contains("Test Single Hospital")')->count());
         $this->assertGreaterThan(0,$crawler->filter('address:contains("Apollo Gleneagles Hospital, No. 58, Canal Circular Road 700054")')->count());
-        $this->assertGreaterThan(0,$crawler->filter('html:contains("1 3323 203 040")')->count());
         $this->assertGreaterThan(0,$crawler->filter('span.clinic-default-logo')->count());
         
+        //specializations section details
+        $this->assertGreaterThan(0,$crawler->filter('h5:contains("Specializations")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('a:contains("test")')->count());
+        
+        //services section details
+        $this->assertGreaterThan(0,$crawler->filter('h5:contains("Services")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('li:contains("Booking for Hotel Accommodation")')->count());
+        
+        //awards section details
+        $this->assertGreaterThan(0,$crawler->filter('h5:contains("Awards")')->count());
+        $this->assertGreaterThan(0,$crawler->filter('li:contains("testetest")')->count());
         
         //test invalid institutionSlug
         $uri = "/hospital/test-singlasde-hospital";
         $client = static::createClient();
         $crawler = $client->request('GET', $uri);
-        $this->assertEquals(404,$client->getResponse()->getStatusCode());
+        $this->assertEquals(500,$client->getResponse()->getStatusCode());
     }
     
 }

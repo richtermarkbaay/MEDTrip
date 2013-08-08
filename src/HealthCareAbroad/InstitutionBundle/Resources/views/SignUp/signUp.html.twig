@@ -135,7 +135,6 @@
                             <div class="span6">
                             <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -155,4 +154,15 @@
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/institution/js/institutionValidation.js') }}"></script>
+<script type="text/javascript">
+
+    $(function(){
+        
+    	$.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_medicalCenter_ajaxAddGlobalAward", {"institutionId": institution.id, "imcId": institutionMedicalCenter.id}) }}');
+    
+    });
+
+</script>
+
 {% endblock %}

@@ -1088,8 +1088,9 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_properties` (
 
 INSERT INTO `institution_medical_center_properties` (`id`, `institution_id`, `institution_medical_center_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
 (1, 1, 1, 1, '1', NULL),
-(2, 2, 2, 1, '2', NULL),
-(3, 1, 1, 3, '1', NULL);
+(2, 2, 3, 1, '2', NULL),
+(3, 2, 3, 3, '2', NULL),
+(4, 1, 1, 3, '1', NULL);
 
 -- --------------------------------------------------------
 
@@ -1107,14 +1108,17 @@ CREATE TABLE IF NOT EXISTS `institution_properties` (
   PRIMARY KEY (`id`),
   KEY `institution_property_type_id` (`institution_property_type_id`),
   KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `institution_properties`
 --
 
-INSERT INTO `institution_properties` (`id`, `institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
-(1, 1, 3, '1', 'test2');
+INSERT INTO `institution_properties` (`institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
+(1, 1, '1', 'test2'),
+( 1, 3, '1', 'test23'),
+( 2, 3, '2', 'test123'),
+( 2, 1, '2', 'test1223');
 -- --------------------------------------------------------
 
 --
@@ -1170,7 +1174,7 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
 INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
 (1, 1, 1, '<p>asdfsdf asdf asdf asdf</p>', '2012-12-08 17:31:05', '2012-12-08 17:31:05', 1),
 (2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1),
-(3, 1, 3, 'test 3', '2013-02-22 07:23:45', '0000-00-00 00:00:00', 1);
+(3, 3, 3, 'test 3', '2013-02-22 07:23:45', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
