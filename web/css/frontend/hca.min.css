@@ -10,9 +10,6 @@
   margin-bottom: 20px;
   background-color: transparent;
 }
-#content-wrapper.homepage > .span8 {
-  margin-left: 0;
-}
 #content-wrapper .search-results-wrapper {
   margin: 20px 0 20px 20px;
 }
@@ -700,7 +697,7 @@ ul.nav-tabs li.active a:hover {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
-  background-image: url("/images/glyphicons-halflings.png");
+  background-image: url("/images/frontend/glyphicons-halflings.png");
 }
 
 .white-icon-search {
