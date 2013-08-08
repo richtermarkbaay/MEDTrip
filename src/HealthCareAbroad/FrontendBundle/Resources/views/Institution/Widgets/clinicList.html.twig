@@ -1,27 +1,14 @@
 {% if institution.institutionMedicalCenters | length %}
     {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Clinics', class: 'clinics'} %}
         {% block sectionContent %}
-
-    	{# <ul class="thumbnail-list thumbnails">
-    	    {% for each in institution.institutionMedicalCenters %}
-    			<li class="thumbnail">
-    				<a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-    				    {# render_institution_medical_center_logo(each, {context: 2, attr: {class: 'logo'}}) | raw #}
-    				    {% if each.logo and each.logo.src %}
+            {% for each in institution.institutionMedicalCenters %}
+                <div class="media">
+                    <a class="thumbnail-wrapper img-polaroid pull-left" href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
+                        {% if each.logo and each.logo.src %}
     				        <img src="{{ each.logo.src }}" alt="{{ each.name }}" class="logo" />
     				    {% else %}
     				        <span class="hca-sprite clinic-default-logo logo"></span>
     				    {% endif %}
-                        <span class="name">{{ each.name }}</span>
-    				</a>
-    			</li>
-    		{% endfor %}
-    	</ul> #}
-
-            {% for each in institution.institutionMedicalCenters %}
-                <div class="media">
-                    <a class="thumbnail-wrapper img-polaroid pull-left" href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
-                        {{ render_institution_medical_center_logo(each, {context: 2, attr: {class: 'mini'}}) | raw }}
                     </a>
                     <div class="media-body">
                         <h4>
