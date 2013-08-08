@@ -187,8 +187,7 @@ class InstitutionUserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $institutionUser = $form->getData();
-    
-                // encrypt password here
+
                 $institutionUser->setEmail($form->get('new_email')->getData());
     
                 $institutionUserService->update($institutionUser);
@@ -204,7 +203,7 @@ class InstitutionUserController extends Controller
                         'institutionUser' => $institutionUser,
         ));
     }
-
+    
     public function inviteAction()
     {
         $institutionUserInvitation = new InstitutionUserInvitation();
@@ -228,44 +227,7 @@ class InstitutionUserController extends Controller
         ));
     }
     
-    public function editAccountEmailAction(Request $request){
-        $session = $request->getSession();
-        $accountId = $session->get('accountId');
-        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($session->get('institutionId'));
-        $this->get('twig')->addGlobal('institution', $this->institution);
-        $loggedUser = $this->get('security.context')->getToken()->getUser();
-        $this->get('twig')->addGlobal('userName', $loggedUser instanceof SiteUser ? $loggedUser->getFullName() : $loggedUser->getUsername());
-        $institutionUserService = $this->get('services.institution_user');
-        $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
-    
-        if(!$institutionUser){
-            throw new AccessDeniedHttpException();
-        }
-    
-        $form = $this->createForm(new InstitutionUserChangeEmailFormType(), $institutionUser);
-        $em = $this->getDoctrine()->getManager();
-    
-        if($request->isMethod('POST')){
-            $form->bind($request);
-            if ($form->isValid()) {
-                $institutionUser = $form->getData();
-    
-                // encrypt password here
-                $institutionUser->setEmail($form->get('new_email')->getData());
-    
-                $institutionUserService->update($institutionUser);
-                $institutionUserService->setSessionVariables($institutionUser);
-                $this->get('session')->setFlash('success', 'You have successfuly changed your email address');
-            }else{
-                $this->get('session')->setFlash('error', 'We need you to correct some of your input. Please check the fields in red.');
-            }
-        }
-    
-        return $this->render('InstitutionBundle:InstitutionUser:changeEmail.html.twig', array(
-                        'form' => $form->createView(),
-                        'institutionUser' => $institutionUser,
-        ));
-    }
+
 
 
     public function resetPasswordAction(Request $request)
