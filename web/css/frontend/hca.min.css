@@ -2505,13 +2505,13 @@ div.register p a:hover {
 .hca-v-sprite.stripe-bg-dark {
   background-position: 0 -396px;
 }
-.hca-v-sprite.stripe-bg.blue {
+.bg-blue {
   background-color: #bcd9e4;
 }
-.hca-v-sprite.stripe-bg.orange {
+.bg-orange {
   background-color: #FC771F;
 }
-.hca-v-sprite.stripe-bg.green {
+.bg-green {
   background-color: #72807D;
 }
 
