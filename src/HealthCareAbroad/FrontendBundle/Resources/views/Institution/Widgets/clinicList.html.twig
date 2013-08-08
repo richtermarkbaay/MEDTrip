@@ -15,7 +15,7 @@
                             <a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">{{ each.name }}</a>
                         </h4>
                         <!-- Static markup for the clinic specializations -->
-                        <p>Specialization Name, Specialization Name, Specialization Name</p> 
+                        <p>{{ each.specializationsList | join(', ')}}</p> 
                     </div>
                 </div>
             {% endfor %}

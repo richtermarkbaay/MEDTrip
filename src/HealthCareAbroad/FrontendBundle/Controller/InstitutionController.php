@@ -154,6 +154,14 @@ class InstitutionController extends ResponseHeadersController
                     $this->apiInstitutionMedicalCenterService
                         ->buildInstitutionSpecializations($imcData)
                         ->buildLogoSource($imcData);
+                    
+                    // flatten specializations list for displaying list
+                    // do this here so we will have no processing in twig template and so this will be cached
+                    $imcData['specializationsList'] = array();
+                    foreach ($imcData['institutionSpecializations'] as $instSpecialization) {
+                        // we always assume this since this is eagerly loaded in buildInstitutionSpecializations
+                        $imcData['specializationsList'][$instSpecialization['specialization']['id']] = $instSpecialization['specialization']['name'];
+                    }
                 }
             }
             
