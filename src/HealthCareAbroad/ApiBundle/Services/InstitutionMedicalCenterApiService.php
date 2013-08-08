@@ -41,13 +41,13 @@ class InstitutionMedicalCenterApiService
      * @param array $institutionMedicalCenter
      * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
      */
-    public function buildLogoSource(&$institutionMedicalCenter)
+    public function buildLogoSource(&$institutionMedicalCenter, $size=ImageSizes::MINI)
     {
         $canDisplayImcLogo = $institutionMedicalCenter['institution']['payingClient'];
         
         // client is allowed to display logo, and there is a logo
         if ($canDisplayImcLogo && $institutionMedicalCenter['logo']) {
-            $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($institutionMedicalCenter['logo'], ImageSizes::MEDIUM);
+            $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($institutionMedicalCenter['logo'], $size);
         }
         else {
             // not allowed to display logo, or clinic has no logo

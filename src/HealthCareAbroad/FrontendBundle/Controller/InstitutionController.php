@@ -187,7 +187,6 @@ class InstitutionController extends ResponseHeadersController
             'institutionDoctors' => $this->institution['doctors'],
             'institutionMedicalCenter' => $firstMedicalCenter, // will only be used in single center 
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
-            'formId' => 'institution_inquiry_form',
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
         );        
