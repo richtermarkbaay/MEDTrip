@@ -60,6 +60,9 @@ class InstitutionMedicalCenterApiService
             if ($firstSpecialization && $firstSpecialization['media']){
                 $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
             }
+            else {
+                $institutionMedicalCenter['logo']['src'] = null;
+            }
         }
         
         return $this;

@@ -73,6 +73,9 @@ class InstitutionApiService
         if (isset($institution['featuredMedia']) && $institution['payingClient']){
             $institution['featuredMedia']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['featuredMedia'], ImageSizes::LARGE_BANNER);
         }
+        else {
+            $institution['featuredMedia']['src'] = null;
+        }
         
         return $this;
     }
@@ -88,6 +91,9 @@ class InstitutionApiService
         // TODO: provide a more concise list of paying client flags
         if (isset($institution['logo']) && $institution['payingClient']){
             $institution['logo']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['logo'], ImageSizes::MEDIUM);
+        }
+        else {
+            $institution['logo']['src'] = null;
         }
         
         return $this;
