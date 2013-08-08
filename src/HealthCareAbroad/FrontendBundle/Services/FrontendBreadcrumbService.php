@@ -1,294 +1,143 @@
 <?php
+namespace HealthCareAbroad\FrontendBundle\Services;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use Symfony\Component\HttpFoundation\ParameterBag;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Generates Frontend Breadcrumbs based on route name
  * @author Adelbert D. Silla
+ *
+ * Refactored code (Ham)
  */
-
-namespace HealthCareAbroad\FrontendBundle\Services;
-
-use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
-
-use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
-
-use Doctrine\ORM\Query\Expr\Join;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use HealthCareAbroad\HelperBundle\Entity\City;
-use HealthCareAbroad\HelperBundle\Entity\Country;
-
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
 class FrontendBreadcrumbService
 {
+    //FIXME: BreadcrumbWidgetTwigExtension is accessing this but this should
+    //be made private.
     public $container;
-    public $doctrine;
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->doctrine = $container->get('doctrine');
     }
 
     public function generateBreadcrumbs()
     {
         $request = $this->container->get('request');
-        $route = $request->attributes->get('_route');
 
         $routeParams = $request->attributes->get('_route_params');
-        $breadcrumbs = array();
-        //var_dump($route, $routeParams);
+        if (isset($routeParams['breadcrumbLabel'])) {
+            return array(array('label' => $routeParams['breadcrumbLabel']));
+        }
 
-        switch($route) {
-            case 'frontend_single_center_institution_profile' :
-            case 'frontend_multiple_center_institution_profile' :
-                $slug = $routeParams['institutionSlug'];
-                $institution = $this->container->get('services.institution')->getFullInstitutionBySlug($slug);
-                $country = $institution->getCountry();
-
-                $breadcrumbs[] = $this->_getCountryBreadcrumb($country);
-                if($city = $institution->getCity()) {
-                    $breadcrumbs[] = $this->_getCityBreadcrumb($city);
-                }
-                $breadcrumbs[] = array('label' => $institution->getName());
-                break;
-
-            case 'frontend_institutionMedicaCenter_profile' :
-                $slug = $routeParams['imcSlug'];
-
-                $institutionMedicalCenter = $this->container->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
-                $institution = $institutionMedicalCenter->getInstitution();
-    
-                $breadcrumbs[] = $this->_getCountryBreadcrumb($institution->getCountry());
-                if($city = $institution->getCity()) {
-                    $breadcrumbs[] = $this->_getCityBreadcrumb($city);
-                }
-                $breadcrumbs[] = $this->_getInstitionBreadcrumb($institution);
-                $breadcrumbs[] = array('label' => $institutionMedicalCenter->getName());
-                break;
-
-            case 'frontend_search_results_countries' :
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['country']));
-                break;
-
-            case 'frontend_search_results_cities' :
-                $breadcrumbs[] = $this->_getCountryBreadcrumb($routeParams['country']);
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['city']));
-                break;
-
-            case 'frontend_search_results_specializations' :
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['specialization']));
-                break;
-
-            case 'frontend_search_results_subSpecializations' :
-                $breadcrumbs[] = $this->_getSpecializationBreadcrumb($routeParams['specialization']);
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['subSpecialization']));
-                break;
-
-            case 'frontend_search_results_treatments' :
-                $breadcrumbs[] = $this->_getSpecializationBreadcrumb($routeParams['specialization']);
-                
-                $treatment = $this->doctrine->getManager()->getRepository('TreatmentBundle:Treatment')->findOneBySlug($routeParams['treatment']);
-
-                if($treatment) {
-                    $subSpecializations = $treatment->getSubSpecializations();
-                    if(count($subSpecializations) === 1) {
-                        $breadcrumbs[] = $this->_getSubSpecializationBreadcrumb($subSpecializations[0], $routeParams['specialization']);
-                    }
-                }
-
-                $breadcrumbs[] = array('label' => $treatment->getName());
-                break;
-
-            case FrontendRouteService::COMBINED_SEARCH_ROUTE_NAME :
-                $em = $this->doctrine->getManager();
-                
-                $country = $em->getRepository('HelperBundle:Country')->find($routeParams['countryId']);
-                if($country) {
-                    $breadcrumbs[] = $this->_getCountryBreadcrumb($country->getSlug());                        
-                }
-
-                if(isset($routeParams['cityId']) && $routeParams['cityId']) {
-                    $city = $em->getRepository('HelperBundle:City')->find($routeParams['cityId']);
-                    if($city) {
-                        if(!isset($country)) {
-                            $breadcrumbs[] = $this->_getCountryBreadcrumb($city->getCountry()->getSlug());
-                        }
-                        $breadcrumbs[] = $this->_getCityBreadcrumb($city);                        
-                    }
-                }
-
-                $specialization = $em->getRepository('TreatmentBundle:Specialization')->find($routeParams['specializationId']);
-                if($specialization) {
-                    $citySlug = isset($city) ? $city->getSlug() : '';
-                    $breadcrumbs[] = $this->_getSpecializationWithDestinationBreadcrumb($specialization, $country->getSlug(), $citySlug);
-                }
-
-                if(isset($routeParams['subSpecializationId']) && $routeParams['subSpecializationId']) {
-                    $subSpecialization = $em->getRepository('TreatmentBundle:SubSpecialization')->find($routeParams['subSpecializationId']);
-                    if($subSpecialization) {
-                        $breadcrumbs[] = $this->_getSubSpecializationWithDestinationBreadcrumb($subSpecialization, $specialization->getSlug(), $country->getSlug(), $citySlug);                  
-                    }
-                }
-
-                if(isset($routeParams['treatmentId']) && $routeParams['treatmentId']) {
-                    $treatment = $em->getRepository('TreatmentBundle:Treatment')->find($routeParams['treatmentId']);
-                    if($treatment) {
-                        $subSpecializations = $treatment->getSubSpecializations();
-                        if(count($subSpecializations) === 1) {
-                            $citySlug = isset($city) ? $city->getSlug() : '';
-                            $breadcrumbs[] = $this->_getSubSpecializationWithDestinationBreadcrumb($subSpecializations[0], $specialization->getSlug(), $country->getSlug(), $citySlug);
-                        }
-                        $breadcrumbs[] = array('label' => $treatment->getName());
-                    }
-                }
-                break;
-
-            /* TODO - Removed when ready */
+        switch ($request->attributes->get('_route', '')) {
             case 'frontend_search_results_keywords' :
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['keywords']));
-                break;
+                return array(array('label' => $this->slugToName($routeParams['keywords'])));
 
-            /* TODO - Add Country and City */
             case 'frontend_search_results_related' :
-                $breadcrumbs[] = array('label' => $this->_slugToName($routeParams['tag']));
-                break;
+                return array(array('label' => $this->slugToName($routeParams['tag'])));
+        }
 
-            default :
-                if(isset($routeParams['breadcrumbLabel'])) {
-                    $breadcrumbs = array(array('label' => $routeParams['breadcrumbLabel']));
-                }
-                break;
+        return $this->doGenerateBreadcrumbs($this->normalizeData($request->attributes));
+    }
+
+    /**
+     * Breadcrumbs will be shown according to insertion order in the $breadcrumbs array
+     *
+     * @param array $data
+     * @return array
+     */
+    private function doGenerateBreadcrumbs(array $data)
+    {
+        $breadcrumbs = array();
+
+        if ($data['country']) {
+            $breadcrumbs[] = array(
+                'label' => $data['country']['name'],
+                'url' => $this->generateUrl('frontend_search_results_countries', array('country' => $data['country']['slug'])));
+        }
+        if ($data['city']) {
+            $breadcrumbs[] = array(
+                'label' => $data['city']['name'],
+                'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $data['country']['slug'], 'city' => $data['city']['slug'])));
+        }
+        if ($data['specialization']) {
+            $breadcrumbs[] = array(
+                'label' => $data['specialization']['name'],
+                'url' => $this->generateUrl('frontend_search_results_specializations', array('specialization' => $data['specialization']['slug'])));
+        }
+        if ($data['subSpecialization']) {
+            $breadcrumbs[] = array(
+                'label' => $data['subSpecialization']['name'],
+                'url' => $this->generateUrl('frontend_search_results_subSpecializations', array('specialization' => $data['specialization']['slug'], 'subSpecialization' => $data['specialization']['slug'])));
+        }
+        if ($data['treatment']) {
+            $breadcrumbs[] = array(
+                'label' => $data['treatment']['name'],
+                'url' => $this->generateUrl('frontend_search_results_treatments', array('specialization' => $data['specialization']['slug'], 'treatment' => $data['treatment']['slug'])));
+        }
+        if ($data['institution']) {
+            switch ($data['institution']['type']) {
+                case InstitutionTypes::MULTIPLE_CENTER:
+                    $routeName = 'frontend_multiple_center_institution_profile';
+                    break;
+                case InstitutionTypes::SINGLE_CENTER:
+                    $routeName = 'frontend_single_center_institution_profile';
+                    break;
+            }
+            $breadcrumbs[] = array(
+                'label' => $data['institution']['name'],
+                'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
+            );
+            if ($data['institutionMedicalCenter']) {
+                $breadcrumbs[] = array('label' => $data['institutionMedicalCenter']['name']);
+            }
         }
 
         return $breadcrumbs;
     }
 
-
-    /** 
-     * @param Institution $institution
-     * @return multitype
-     */
-    private function _getInstitionBreadcrumb(Institution $institution)
+    private function normalizeData(ParameterBag $requestAttribs)
     {
-        $routeName = $this->container->get('services.institution')->getInstitutionRouteName($institution);
-
-        return array(
-            'label' => $institution->getName(),
-            'url' => $this->_generateUrl($routeName, array('institutionSlug' => $institution->getSlug())),
-        );
-    }
-
-    /** 
-     * @param String slug or Country object $country
-     * @return multitype
-     */
-    private function _getCountryBreadcrumb($country)
-    {
-        $name = is_object($country) ? $country->getName(): $this->_slugToName($country);
-
-        return array(
-            'label' => $name,
-            'url' => $this->_generateUrl('frontend_search_results_countries', array('country' => $country))
-        );       
-    }
-
-    /**
-     * 
-     * @param City $city
-     * @return multitype
-     */
-    private function _getCityBreadcrumb(City $city)
-    {
-        $routeParams = array('country' => $city->getCountry()->getSlug(),'city' => $city->getSlug());
-
-        return array(
-            'label' => $city->getName(),
-            'url' => $this->_generateUrl('frontend_search_results_cities', $routeParams)
-        );
-    }
-
-    /**
-     * @param String slug or Specialization object $specialization
-     * @return multitype
-     */
-    private function _getSpecializationBreadcrumb($specialization)
-    {
-        $name = is_object($specialization) ? $specialization->getName(): $this->_slugToName($specialization);
-    
-        return array(
-            'label' => $name,
-            'url' => $this->_generateUrl('frontend_search_results_specializations', array('specialization' => $specialization))
-        );
-    }
-
-    /**
-     * Breadcrumb for Combined Search
-     * @param String slug or Specialization object, countrySlug, citySlug
-     * @return multitype
-     */
-    private function _getSpecializationWithDestinationBreadcrumb(Specialization $specialization, $country, $city)
-    {
-        $params = array( 'specialization' => $specialization->getSlug(), 'country' => $country);
-        if($city) {
-            $params['city'] = $city;
-            $routeName = 'frontend_search_combined_countries_cities_specializations';
+        $institution = array();
+        $institutionMedicalCenter = array();
+        if ($institutionMedicalCenter = $requestAttribs->get('institutionMedicalCenter', null)) {
+            $institution = $institutionMedicalCenter['institution'];
+            $country = $institution['country'];
+            $city = isset($institution['city']) ? $institution['city'] : array();
+        } elseif ($institution = $requestAttribs->get('institution', null)) {
+            $country = $institution['country'];
+            $city = isset($institution['city']) ? $institution['city'] : array();
         } else {
-            $routeName = 'frontend_search_combined_countries_specializations';
+            $country = $requestAttribs->get('country', array());
+            $city = $requestAttribs->get('city', array());
         }
 
-        return array('label' => $specialization->getName(), 'url' => $this->_generateUrl($routeName, $params));
-    }
-
-    /**
-     * @param String slug or SubSpecialization object, String slug or Specialization object
-     * @return multitype
-     */
-    private function _getSubSpecializationBreadcrumb($subSpecialization, $specialization = '')
-    {
-        if(is_object($subSpecialization)) {
-            $name = $subSpecialization->getName();
-            $specialization = $subSpecialization->getSpecialization()->getSlug();
-            $subSpecialization = $subSpecialization->getSlug();
-            
-        } else {
-            $name = $this->_slugToName($subSpecialization);
-        }
-        
-        $params = array('specialization' => $specialization, 'subSpecialization' => $subSpecialization);
         return array(
-            'label' => $name,
-            'url' => $this->_generateUrl('frontend_search_results_subSpecializations', $params)
+            'country' => $country,
+            'city' => $city,
+            'specialization' => $requestAttribs->get('specialization', array()),
+            'subSpecialization' => $requestAttribs->get('subSpecialization', array()),
+            'treatment' => $requestAttribs->get('treatment', array()),
+            'institution' => $institution,
+            'institutionMedicalCenter' => $institutionMedicalCenter
         );
     }
 
     /**
-     * Breadcrumb for Combined Search
-     * @param SubSpecialization object, specializationSlug, countrySlug, citySlug
-     * @return multitype
+     * Should be used sparingly. There are irreversible changes when slugifying
+     * so sometimes we won't get back the original name.
+     *
+     * @param string $slug
+     * @return string
      */
-    private function _getSubSpecializationWithDestinationBreadcrumb(SubSpecialization $subSpecialization, $specialization, $country, $city)
+    private function slugToName($slug)
     {
-        $params = array('specialization' => $specialization, 'subSpecializations' => $subSpecialization->getSlug(), 'country' => $country);
-        if($city) {
-            $params['city'] = $city;
-            $routeName = 'frontend_search_combined_countries_cities_specializations__subSpecializations';
-        } else {
-            $routeName = 'frontend_search_combined_countries_specializations__subSpecializations';
-        }
-    
-        return array('label' => $subSpecialization->getName(), 'url' => $this->_generateUrl($routeName, $params));
+        return ucwords(str_replace('-', ' ', $slug));
     }
 
-    private function _slugToName($slug)
-    {
-        return ucwords(str_replace('-', ' ', $slug));        
-    }
-
-    private function _generateUrl($routeName, array $params = array())
+    private function generateUrl($routeName, array $params = array())
     {
         return $this->container->get('router')->generate($routeName, $params);
     }

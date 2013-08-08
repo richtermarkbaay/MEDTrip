@@ -198,32 +198,46 @@ class InstitutionService
     /**
      * Check if $institution is of type SINGLE_CENTER
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return boolean
      */
     public function isSingleCenter(Institution $institution)
     {
-        return InstitutionTypes::SINGLE_CENTER == $institution->getType();
+        if ($institution instanceof Institution) {
+            $type = $institution->getType();
+        }
+        else {
+            $type = $institution['type'];
+        }
+        
+        return InstitutionTypes::SINGLE_CENTER == $type;
     }
 
     /**
      * Check if $institution is of type MULTIPLE_CENTER
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return boolean
      */
-    public function isMultipleCenter(Institution $institution)
+    public function isMultipleCenter($institution)
     {
-        return InstitutionTypes::MULTIPLE_CENTER == $institution->getType();
+        if ($institution instanceof Institution) {
+            $type = $institution->getType();
+        }
+        else {
+            $type = $institution['type'];
+        }
+        
+        return InstitutionTypes::MULTIPLE_CENTER == $type;
     }
 
     /**
      * Get Institution Route Name
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return route name
      */
-    public function getInstitutionRouteName(Institution $institution)
+    public function getInstitutionRouteName( $institution)
     {
         return $this->isMultipleCenter($institution)
             ? 'frontend_multiple_center_institution_profile'

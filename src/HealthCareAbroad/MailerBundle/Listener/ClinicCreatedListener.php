@@ -1,12 +1,9 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
-use Symfony\Component\EventDispatcher\GenericEvent;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -29,10 +26,18 @@ class ClinicCreatedListener extends NotificationsListener
             }
         }
 
+        $bcc = array(
+            'jason.coppage@chromedia.com' => 'Jason Coppage',
+            'greg.mogab@healthcareabroad.com' => 'Greg Mogab',
+            'kimberly.damlani@healthcareabroad.com' => 'Kimberly Damlani',
+            'harold.modesto@chromedia.com' => 'Harold Modesto'
+        );
+
         $data = array(
             'clinic_name' => $institutionMedicalCenter->getName(),
             'institution_name' => $institution->getName(),
             'to' => $to,
+            'bcc' => $bcc,
             'email' => array(
                 'inquiries' => $inquiriesEmail
             ),

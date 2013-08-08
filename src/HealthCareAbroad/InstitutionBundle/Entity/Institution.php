@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-    
+
     /**
      * @var integer
      */
@@ -39,7 +39,7 @@ class Institution
      * @var string
      */
     private $websites;
-    
+
     /**
      * @var string
      */
@@ -76,7 +76,12 @@ class Institution
     private $payingClient;
 
     /**
-     * @var smallint $signupStepStatus
+     * @var integer
+     */
+    private $totalClinicRankingPoints;
+
+    /**
+     * @var integer
      */
     private $signupStepStatus;
 
@@ -98,12 +103,22 @@ class Institution
     /**
      * @var integer
      */
+    private $isFromInternalAdmin;
+
+    /**
+     * @var integer
+     */
     private $status;
 
     /**
      * @var integer
      */
     private $type;
+
+    /**
+     * @var string
+     */
+    private $stateBak;
 
     /**
      * @var \HealthCareAbroad\MediaBundle\Entity\Gallery
@@ -131,6 +146,11 @@ class Institution
     private $city;
 
     /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\State
+     */
+    private $state;
+
+    /**
      * @var \HealthCareAbroad\MediaBundle\Entity\Media
      */
     private $logo;
@@ -149,11 +169,6 @@ class Institution
      * @var \Doctrine\Common\Collections\Collection
      */
     private $contactDetails;
-    
-    /**
-     * @var integer
-     */
-    private $totalClinicRankingPoints;
 
     /**
      * Constructor
@@ -290,7 +305,7 @@ class Institution
     {
         return $this->websites;
     }
-    
+
     /**
      * Set websiteBackUp
      *
@@ -303,11 +318,11 @@ class Institution
     
         return $this;
     }
-    
+
     /**
      * Get websiteBackUp
      *
-     * @return string
+     * @return string 
      */
     public function getWebsiteBackUp()
     {
@@ -432,23 +447,47 @@ class Institution
     /**
      * Set payingClient
      *
-     * @param smallint $payingClient
+     * @param integer $payingClient
      * @return Institution
      */
     public function setPayingClient($payingClient)
     {
         $this->payingClient = $payingClient;
+    
         return $this;
     }
-    
+
     /**
      * Get payingClient
      *
-     * @return smallint
+     * @return integer 
      */
     public function getPayingClient()
     {
         return $this->payingClient;
+    }
+
+    /**
+     * Set totalClinicRankingPoints
+     *
+     * @param integer $totalClinicRankingPoints
+     * @return Institution
+     */
+    public function setTotalClinicRankingPoints($totalClinicRankingPoints)
+    {
+        $this->totalClinicRankingPoints = $totalClinicRankingPoints;
+    
+        return $this;
+    }
+
+    /**
+     * Get totalClinicRankingPoints
+     *
+     * @return integer 
+     */
+    public function getTotalClinicRankingPoints()
+    {
+        return $this->totalClinicRankingPoints;
     }
 
     /**
@@ -544,6 +583,29 @@ class Institution
     }
 
     /**
+     * Set isFromInternalAdmin
+     *
+     * @param integer $isFromInternalAdmin
+     * @return Institution
+     */
+    public function setIsFromInternalAdmin($isFromInternalAdmin)
+    {
+        $this->isFromInternalAdmin = $isFromInternalAdmin;
+    
+        return $this;
+    }
+
+    /**
+     * Get isFromInternalAdmin
+     *
+     * @return integer 
+     */
+    public function getIsFromInternalAdmin()
+    {
+        return $this->isFromInternalAdmin;
+    }
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -587,6 +649,29 @@ class Institution
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set stateBak
+     *
+     * @param string $stateBak
+     * @return Institution
+     */
+    public function setStateBak($stateBak)
+    {
+        $this->stateBak = $stateBak;
+    
+        return $this;
+    }
+
+    /**
+     * Get stateBak
+     *
+     * @return string 
+     */
+    public function getStateBak()
+    {
+        return $this->stateBak;
     }
 
     /**
@@ -725,6 +810,29 @@ class Institution
     }
 
     /**
+     * Set state
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\State $state
+     * @return Institution
+     */
+    public function setState(\HealthCareAbroad\HelperBundle\Entity\State $state = null)
+    {
+        $this->state = $state;
+    
+        return $this;
+    }
+
+    /**
+     * Get state
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\State 
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
      * Set logo
      *
      * @param \HealthCareAbroad\MediaBundle\Entity\Media $logo
@@ -812,9 +920,9 @@ class Institution
     public function addContactDetail(\HealthCareAbroad\HelperBundle\Entity\ContactDetail $contactDetails)
     {
         $this->contactDetails[] = $contactDetails;
-        
+    
         return $this;
-    }    
+    }
 
     /**
      * Remove contactDetails
@@ -825,7 +933,7 @@ class Institution
     {
         $this->contactDetails->removeElement($contactDetails);
     }
-    
+
     /**
      * Get contactDetails
      *
@@ -834,85 +942,5 @@ class Institution
     public function getContactDetails()
     {
         return $this->contactDetails;
-    }
-     
-    
-    /**
-     * Set totalClinicRankingPoints
-     *
-     * @param integer $totalClinicRankingPoints
-     * @return Institution
-     */
-    public function setTotalClinicRankingPoints($totalClinicRankingPoints)
-    {
-        $this->totalClinicRankingPoints = $totalClinicRankingPoints;
-    
-        return $this;
-    }
-    
-   /**
-    * Get totalClinicRankingPoints
-    *
-    * @return integer
-    */
-    public function getTotalClinicRankingPoints()
-    {
-        return $this->totalClinicRankingPoints;
-    }
-    /**
-     * @var \HealthCareAbroad\HelperBundle\Entity\State
-     */
-    private $state;
-
-
-    /**
-     * Set state
-     *
-     * @param \HealthCareAbroad\HelperBundle\Entity\State $state
-     * @return Institution
-     */
-    public function setState(\HealthCareAbroad\HelperBundle\Entity\State $state = null)
-    {
-        $this->state = $state;
-    
-        return $this;
-    }
-
-    /**
-     * Get state
-     *
-     * @return \HealthCareAbroad\HelperBundle\Entity\State 
-     */
-    public function getState()
-    {
-        return $this->state;
-    }
-    /**
-     * @var string
-     */
-    private $stateBak;
-
-
-    /**
-     * Set stateBak
-     *
-     * @param string $stateBak
-     * @return Institution
-     */
-    public function setStateBak($stateBak)
-    {
-        $this->stateBak = $stateBak;
-    
-        return $this;
-    }
-
-    /**
-     * Get stateBak
-     *
-     * @return string 
-     */
-    public function getStateBak()
-    {
-        return $this->stateBak;
     }
 }

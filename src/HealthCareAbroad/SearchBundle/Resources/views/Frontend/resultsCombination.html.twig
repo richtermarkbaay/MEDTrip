@@ -6,7 +6,6 @@
 
 {% block content %}
     <div class="search-results-wrapper span8">
-        {#<h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2> #}
 
         <div class="content-profile-widget-wrapper">
             <h3 class="heading">
@@ -17,6 +16,7 @@
             {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
         </div>
 
+        {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
         {% for searchResult in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResult.institutionMedicalCenter is defined ? searchResult.institutionMedicalCenter : searchResult %}

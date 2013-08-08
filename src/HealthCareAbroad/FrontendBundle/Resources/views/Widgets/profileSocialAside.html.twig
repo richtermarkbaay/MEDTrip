@@ -1,23 +1,22 @@
-{% set hasGoogleSite = (urls.google is defined) and urls.google %}
-{% set hasFbSite = (urls.facebook is defined) and urls.facebook %}
-{% set hasTwitterSite = (urls.twitter is defined) and urls.twitter %}
+{% set hasSocialMediaSite = false %}
 
-{% if hasGoogleSite or hasFbSite or hasTwitterSite %}
+{% for type, each in urls if(not hasSocialMediaSite) %}
+    {% if each.value %}
+        {% set hasSocialMediaSite = true %}
+    {% endif %}
+{% endfor %}
+
+{% if hasSocialMediaSite %}
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Social', class: 'heading', headingClass: 'align-left'} %}
-
         {% block asideContent %}
     		<ul class="socials-nav pull-right inline-list">
-    		    {% if hasGoogleSite %}
-    			    <li><a href="{{ urls.google }}" target="_blank" class="hca-sprite social-icon google-plus-dark"></a></li>
-    		    {% endif %}
-    		    {% if hasFbSite %}
-    			    <li><a href="{{ urls.facebook }}" class="hca-sprite social-icon facebook-dark" target="_blank"></a></li>
-    		    {% endif %}
-    		    {% if hasTwitterSite %}
-    			    <li><a href="{{ urls.twitter }}" class="hca-sprite social-icon twitter-dark" target="_blank"></a></li>
-    		    {% endif %}
-    		</ul>
-    	{% endblock %}
-
+                {% for type, each in urls %}
+                    {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
+                    {% if each.value %}
+                        <li><a href="{{ each.value }}" target="_blank" class="hca-sprite social-icon {{ iconClass }}-dark"></a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        {% endblock %}
     {% endembed %}
 {% endif %}

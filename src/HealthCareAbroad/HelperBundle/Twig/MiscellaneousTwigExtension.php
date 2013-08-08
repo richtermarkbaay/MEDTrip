@@ -6,6 +6,10 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
+
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -32,25 +36,61 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'contact_details_to_json' => new \Twig_Function_Method($this, 'contactDetailsToJSON'),
             'getClass' => new \Twig_Function_Method($this, 'getClass'),
             'getClassLabel' => new \Twig_Function_Method($this, 'getClassLabel'),
             'getClassLabels' => new \Twig_Function_Method($this, 'getClassLabels'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
-            'institution_address_to_array' => new \Twig_Function_Method($this, 'institution_address_to_array'),
-            'institution_address_to_string' => new \Twig_Function_Method($this, 'institution_address_to_string'),
+            'institution_address_to_array' => new \Twig_Function_Method($this, 'institutionAddressToArray'),
+            'institution_address_to_string' => new \Twig_Function_Method($this, 'formatInstitutionAddressToString'),
+            'social_media_sites_to_array' => new \Twig_Function_Method($this, 'socialMedialSitesToArray'),
             'json_decode' => new  \Twig_Function_Method($this, 'json_decode'),
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
-            'institution_websites_to_array' => new \Twig_Function_Method($this, 'institution_websites_to_array'),
             'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
-            'json_websites_to_array' => new \Twig_Function_Method($this, 'json_websites_to_array'),
-            'institutionMedicalCenter_websites_to_array' => new \Twig_Function_Method($this, 'institutionMedicalCenter_websites_to_array'),
-            'get_website_from_array' => new \Twig_Function_Method($this, 'get_website_from_array'),
+            'get_main_website' => new \Twig_Function_Method($this, 'getMainWebsite'),
+            'get_social_media_site_url' => new \Twig_Function_Method($this, 'getSocialMediaSiteUrl'),
+            'get_social_media_site_label' => new \Twig_Function_Method($this, 'getSocialMediaSiteLabel'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
+            'array_flip' => new \Twig_Function_Method($this, 'arrayFlip'),
         );
     }
-    
+
+    public function contactDetailsToJSON(array $contactDetails = array())
+    {
+        $byType = array();
+        foreach ($contactDetails as $contactDetailData) {
+
+            if ($contactDetailData instanceof ContactDetail) {
+                $contactDetailInstance = $contactDetailData;
+            }
+            elseif (\is_array($contactDetailData)) {
+                // hydrated as array
+                $contactDetailInstance = new ContactDetail();
+                $contactDetailInstance->setCountryCode($contactDetailData['countryCode']);
+                $contactDetailInstance->setAreaCode($contactDetailData['areaCode']);
+                $contactDetailInstance->setNumber($contactDetailData['number']);
+                $contactDetailInstance->setType($contactDetailData['type']);
+            }
+            else {
+                // unknown type that we can't handle
+                continue;
+            }
+
+            $byType[$contactDetailInstance->getType()] = array(
+                'type' => ContactDetailTypes::getTypeLabel($contactDetailInstance->getType()),
+                'number' => $contactDetailInstance->__toString()
+            );
+        }
+
+        if (!\count($byType)) {
+            return null;
+        }
+
+        return \json_encode($byType);
+    }
+
     public function contactDetailTypeHasExtension($contactDetailType)
     {
         // as of now we only know of mobile number that has no ext
@@ -69,7 +109,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             $class = explode('\\', $class);
             $class = array_pop($class);
         }
-        
+
         return $class;
     }
 
@@ -140,7 +180,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
                         unset($returnVal[$k]);
                     }
                 }
-            }    
+            }
         }
         else {
             // invalid JSON string
@@ -150,31 +190,20 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         return $returnVal;
     }
 
-    public function json_websites_to_array($jsonString)
+    public function getMainWebsite($jsonString)
     {
-        $websites = \json_decode($jsonString, true);
-        if (!\is_null($websites)) {
-            \array_walk($websites, function(&$v, $key){
-                // if it matches http or https
-                $prefix = MiscellaneousTwigExtension::_getPrefix($key);
-                if ($v !='' && ! \preg_match($prefix, $v) ) {
-                    if(\preg_match('/^https?:\/\//i', $v)){
-                        $value = preg_replace('/^https?:\/\//i', '', $v);
-                        if($key == 'googleplus'){
-                            $v = 'http://plus.google.com/'.$value;
-                        }else{
-                            $v = 'http://'.$key.'.com/'.$value;
-                        }
-                    }
-                }
-                
-            });
+        $arrWebsites = \json_decode($jsonString, true);
+
+        if(!\is_array($arrWebsites)) {
+            $siteName = $jsonString;
+        } else {
+            $siteName = isset($arrWebsites['main']) ? $arrWebsites['main'] : '';
+
         }
-        else {
-            // invalid JSON string
-            $websites = array();
-        }
-        return $websites;
+
+        $siteName = \str_replace('http://', '', $siteName);
+
+        return $siteName;
     }
 
     /**
@@ -185,40 +214,60 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      */
-    public function institution_address_to_array(Institution $institution, array $includedKeys=array())
+    public function institutionAddressToArray($institution, array $includedKeys=array())
     {
         $elements = array();
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : self::$institutionDefaultAddressKeys);
 
-        $street_address = \json_decode($institution->getAddress1(), true);
+        if ($institution instanceof Institution){
+            $addressData = array(
+                'address1' => $institution->getAddress1(),
+                'city' => $institution->getCity() ? $institution->getCity()->getName() : null,
+                'state' => $institution->getState() ? $institution->getState()->getName() : null,
+                'country' => $institution->getCountry() ? $institution->getCountry()->getName() : null,
+                'zipCode' => \trim($institution->getZipCode())
+            );
+        }
+        elseif (\is_array($institution)) {
+            // hydrated with HYDRATE_ARRAY
+            $addressData = array(
+                'address1' => $institution['address1'],
+                'city' => isset($institution['city']) ? $institution['city']['name'] : null,
+                'state' => isset($institution['state']) ? $institution['state']['name'] : null,
+                'country' => isset($institution['country']) ? $institution['country']['name'] : null,
+                'zipCode' => isset($institution['zipCode']) ? \trim($institution['zipCode']) : null,
+            );
+        }
+
+        $street_address = \json_decode($addressData['address1'], true);
         if (isset($includedKeys['address1']) && !\is_null($street_address)) {
             $this->_removeEmptyValueInArray($street_address);
             if (\count($street_address)) {
                 $elements['address1'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
             }
         }
-        
-        if (isset($includedKeys['city']) && $institution->getCity()) {
-            $elements['city'] = $institution->getCity()->getName();
+
+        if (isset($includedKeys['city']) && $addressData['city']) {
+            $elements['city'] = $addressData['city'];
         }
 
-        if (isset($includedKeys['state']) && $institution->getState()) {
-            $elements['state'] = $institution->getState()->getName();
+        if (isset($includedKeys['state']) && $addressData['state']) {
+            $elements['state'] = $addressData['state'];
         }
 
-        if (isset($includedKeys['country']) && $institution->getCountry()) {
-            $elements['country'] = $institution->getCountry()->getName();
+        if (isset($includedKeys['country']) && $addressData['country']) {
+            $elements['country'] = $addressData['country'];
         }
 
-        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
-            $elements['zipCode'] = $institution->getZipCode();
+        if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
+            $elements['zipCode'] = $addressData['zipCode'];
         }
 
         return $elements;
     }
-    
+
     /**
      * Convert institution address to string
      *     - address1
@@ -227,11 +276,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      */
-    public function institution_address_to_string(Institution $institution, array $includedKeys=array(), $glue = ', ')
+    public function formatInstitutionAddressToString($institution, array $includedKeys=array(), $glue = ', ')
     {
-        $arrAddress = $this->institution_address_to_array($institution, $includedKeys);
+        $arrAddress = $this->institutionAddressToArray($institution, $includedKeys);
 
         $zipCode = '';
         if(isset($arrAddress['zipCode'])) {
@@ -239,7 +288,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             unset($arrAddress['zipCode']);
         }
 
-        return ucwords(implode($glue, $arrAddress)) . $zipCode;        
+        return ucwords(implode($glue, $arrAddress)) . $zipCode;
     }
 
     public function unset_array_key($key, $arr)
@@ -251,48 +300,36 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         return $arr;
     }
 
-    public function institution_websites_to_array(Institution $institution)
+    public function institutionWebsitesToArray(Institution $institution)
     {
-        $socialMedia = \json_decode($institution->getSocialMediaSites(), true);
-
-        if(!is_array($socialMedia)) {
-           return $socialMedia = array(
-                'facebook' => '',
-                'twitter' => '',
-                'googleplus' => ''
-            );
-        }
-
-        \array_walk($socialMedia, function(&$v, $key){
-            // if it matches http or https
-            if (! \preg_match('/^https?:\/\//i', $v)) {
-                $v = 'http://'.$v;
-            }
-        });
-
-        return $this->json_websites_to_array($institution->getSocialMediaSites());
+        return $this->jsonWebsitesToArray($institution->getSocialMediaSites());
     }
-    
-    public function institutionMedicalCenter_websites_to_array(InstitutionMedicalCenter $institutionMedicalCenter)
+
+    public function institutionMedicalCenterWebsitesToArray(InstitutionMedicalCenter $institutionMedicalCenter)
     {
-        $socialMedia = \json_decode($institutionMedicalCenter->getSocialMediaSites(), true);
-    
-        if(!is_array($socialMedia)) {
-           return $socialMedia = array(
-                'facebook' => '',
-                'twitter' => '',
-                'googleplus' => ''
-            );
-        }
-    
-        \array_walk($socialMedia, function(&$v, $key){
-         if (! \preg_match('/^https?:\/\//i', $v)) {
-                $v = 'http://'.$v;
-            }
-        });
-        return $this->json_websites_to_array($institutionMedicalCenter->getSocialMediaSites());
+        return $this->jsonWebsitesToArray($institutionMedicalCenter->getSocialMediaSites());
     }
-    
+
+    public function socialMedialSitesToArray($jsonString)
+    {
+        return SocialMediaSites::formatSites($jsonString);
+    }
+
+    public function getSocialMediaSiteUrl($type)
+    {
+        return SocialMediaSites::getUrlByType($type);
+    }
+
+    public function getSocialMediaSiteLabel($type)
+    {
+        return SocialMediaSites::getLabelByType($type);
+    }
+
+    public function arrayFlip(array $arrayData)
+    {
+        return array_flip($arrayData);
+    }
+
     private function _removeEmptyValueInArray(&$array = array())
     {
         foreach ($array as $k => $v) {
@@ -301,30 +338,4 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             }
         }
     }
-    static function _getPrefix($key)
-    {
-        $prefixes = array(
-            'facebook' => '~^https?://(?:www\.)?facebook.com//?~',
-            'twitter' => '~^https?://(?:www\.)?twitter.com//?~',
-            'googleplus' => '~^https?://(?:www\.)?plus.google.com//?~'
-        );
-    
-        return $prefixes[$key];
-    }
-    public function get_website_from_array($websiteJson)
-    {
-        $website = \json_decode($websiteJson, true);
-        
-        if(!is_array($website)) {
-            return $websiteJson;
-        }
-        
-        foreach($website as $key => $v){
-            if ($key == 'main') {
-                $string = preg_replace('~^http?://(?:www\.)?~','', $v);
-            }
-        }
-        return $string;
-    }
-    
 }

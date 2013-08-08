@@ -1,6 +1,12 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use Doctrine\ORM\Query;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
+use Doctrine\ORM\QueryBuilder;
+
 use HealthCareAbroad\DoctorBundle\DoctorBundle;
 
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
@@ -61,6 +67,35 @@ class DoctorRepository extends EntityRepository
         
     }
     
+    /**
+     * Get doctors of a  medical center
+     * 
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
+     * @author acgvelarde
+     */
+    public function findByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
+    {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            if (\is_numeric($institutionMedicalCenter)) {
+                $institutionMedicalCenterId = $institutionMedicalCenter;
+            }
+        }
+        
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('d, d_sp, dm')
+            ->from('DoctorBundle:Doctor', 'd')
+            ->innerJoin('d.institutionMedicalCenters', 'imc')
+            ->leftJoin('d.specializations', 'd_sp')
+            ->leftJoin('d.media', 'dm')
+            ->where('imc.id = :institutionMedicalCenterId')
+                ->setParameter('institutionMedicalCenterId', $institutionMedicalCenterId);
+        
+        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+    }
+    
     public function getSpecializationListByMedicalSpecialist($doctorId)
     {
         $connection = $this->getEntityManager()->getConnection();
@@ -94,19 +129,25 @@ class DoctorRepository extends EntityRepository
         return $stmt->fetchAll();
     }
     
+    /**
+     * Get all doctors of an institution
+     * 
+     * @param Mixed <Institution, int> $institution
+     * @return QueryBuilder
+     */
     public function getAllDoctorsByInstitution($institution)
     {
         
         $qb = $this->getEntityManager()->createQueryBuilder()
-        ->select('a, c, sp, dm')
+        ->select('a, sp, dm')
         ->from('DoctorBundle:Doctor', 'a')
         ->innerJoin('a.specializations', 'sp')
         ->innerJoin('a.institutionMedicalCenters', 'c')
         ->leftJoin('a.media', 'dm')
-        ->where('c.institution = :institutionId')
+        ->where('c.institution = :institution')
         ->andWhere('a.status = :status')
         ->orderBy('a.firstName')
-        ->setParameter('institutionId', $institution->getId())
+        ->setParameter('institution', $institution)
         ->setParameter('status', Doctor::STATUS_ACTIVE);
         
         return $qb;

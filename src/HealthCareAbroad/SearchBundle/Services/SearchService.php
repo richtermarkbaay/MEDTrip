@@ -86,33 +86,59 @@ class SearchService
 
     public function loadSuggestions($parameters)
     {
+        //FIXME: this is just a patch to support combined country and city dropwdown in narrow search
+        // This patch is also present in FrontendController::searchProcessNarrowAction
+        $searchParameters = $parameters['searchParameter'];
+        if (isset($searchParameters['destinations']) && $searchParameters['destinations']) {
+            list($searchParameters['country'], $searchParameters['city']) = explode('-', $searchParameters['destinations']);
+            if ((int) $searchParameters['city'] == 0) {
+                unset($searchParameters['city']);
+            }
+        }
+
+        $results = array();
         switch ($parameters['filter']) {
-            case 'country';
-                $results = $this->searchStrategy->loadCountries($parameters);
+            case 'country':
+//                 $results = $this->searchStrategy->loadCountries($parameters);
+//                 break;
+            case 'city':
+//                 $results = $this->searchStrategy->loadCities($parameters);
+//                 break;
+            case 'destinations':
+                $results = $this->searchStrategy->loadDestinations($parameters);
                 break;
-
-            case 'city';
-                $results = $this->searchStrategy->loadCities($parameters);
-                break;
-
             case 'treatment':
                 $results = $this->searchStrategy->loadTreatments($parameters);
                 break;
-
             case 'subSpecialization':
             case 'sub_specialization':
             case 'sub-specialization':
                 $results = $this->searchStrategy->loadSubSpecializations($parameters);
                 break;
-
             case 'specialization':
                 $results = $this->searchStrategy->loadSpecializations($parameters);
                 break;
-
             default:
         }
 
         return $results;
+    }
+
+    private function getSearchParams(Request $request, $isAutoComplete = false)
+    {
+        $parameters = array(
+                        'destination' => $request->get('destination_id'),
+                        'treatment' => $request->get('treatment_id'),
+                        'destinationLabel' => $request->get('sb_destination', ''),
+                        'treatmentLabel' => $request->get('sb_treatment', ''),
+                        'filter' => $request->get('filter', '')
+        );
+
+        if ($isAutoComplete) {
+            $parameters['term'] = $request->get('term');
+        }
+
+        return new SearchParameterBag($parameters);
     }
 
     public function getSearchTermsWithUniqueDocumentsFilteredOn(array $filters)

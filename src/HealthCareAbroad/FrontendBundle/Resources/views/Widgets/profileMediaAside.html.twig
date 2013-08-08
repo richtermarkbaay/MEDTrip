@@ -3,11 +3,12 @@
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Photos'} %}
     
         {% block asideContent %}
+            {% set firstMedia = media[0] %}
             <div class="gallery-wrapper">
                 {# media(media.first, institution, 'frontendGallery', {class: 'large-thumbnail thumbnail'}) | raw #}
                 {% set bigThumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::GALLERY_LARGE_THUMBNAIL') %}
-                <a class="fancybox large-thumbnail thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(media.first) }}" title="{{ media.first.caption }}">
-                    <img src="{{ institution_media_src(media.first, bigThumbnailSize) }}" alt=""/>
+                <a class="fancybox large-thumbnail thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(firstMedia) }}" title="{{ firstMedia.caption }}">
+                    <img src="{{ institution_media_src(firstMedia, bigThumbnailSize) }}" alt=""/>
                 </a>
         		<ul class="small-thumbnail-list thumbnails">
         		    {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}

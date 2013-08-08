@@ -1,10 +1,19 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% set email = institutionMedicalCenter.contactEmail ? institutionMedicalCenter.contactEmail : institution.contactEmail %}
-{% set number = render_institution_medical_center_contact_number(institutionMedicalCenter)  %}
-{% set websites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
-{% set websites = json_decode(websites) %}
-{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
+{% set mainWebsites = institutionMedicalCenter.websites ? institutionMedicalCenter.websites : institution.websites %}
+
+{% block callout %}
+    {% embed 'FrontendBundle:Embed:callout.base.html.twig' %}
+        {% block calloutContent %}
+            <a href="{{ get_institution_frontend_url(institution) }}" class="mini-logo-wrapper">
+                {{ render_institution_logo(institution, {attr: {class: 'mini', alt: 'logo'}}) | raw }}
+            </a>
+            <h2 class="heading"><a href="{{ get_institution_frontend_url(institution) }}">{{ institution.name }}</a></h2>
+            <a class="btn green" href="{{ get_institution_frontend_url(institution) }}"><span class="hca-sprite list-icon"></span> Hospital Page</a>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
 
 {% block content %}
 
@@ -46,7 +55,7 @@
             {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' 
                 with { media: institutionMedicalCenter.media, institution: institutionMedicalCenter.institution, logo: institutionMedicalCenter.logo } %}
 
-            {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: websites } %}
+            {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: social_media_sites_to_array(institutionMedicalCenter.socialMediaSites) } %}
 
         </aside> <!--End of aside_content-->
      

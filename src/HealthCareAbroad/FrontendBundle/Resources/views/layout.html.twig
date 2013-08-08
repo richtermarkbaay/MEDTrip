@@ -8,16 +8,14 @@
     </div> -->
     
     {% if isHomePage is defined and isHomePage %}
-         {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
-     {% endif %}
+        {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
+    {% endif %}
 
     {% block header %}
         {% include 'FrontendBundle:Widgets:header.html.twig' %}
     {% endblock %}
 
-    <!-- Show Breadcrumbs -->
     {{ render_frontend_breadcrumb() }}
-    <!-- End of Breadcrumbs -->
 
     {% block callout %}{% endblock %}
     
@@ -31,11 +29,11 @@
 
 
     {{ outputInlineJavascript() | raw }}
-    
+
     {# -- stats tracker stuff -- #}
     {{ render_frontend_statistics_tracker_form() |raw }}
     <script type="text/javascript">
-    <!-- 
+    <!--
     (function($){
         $(function(){
 
@@ -44,7 +42,7 @@
                 .setImpressionTrackerForm('form#{{ get_impression_tracker_form_id() }}')
                 .setClickthroughTrackerForm('form#{{ get_clickthrough_tracker_form_id() }}');
             FrontendStatsTracker.clickthroughTrackerClass = '{{ get_clickthrough_tracker_class() }}';
-            
+
             {# -- track impressions --#}
             FrontendStatsTracker.trackImpressions();
 
@@ -55,6 +53,6 @@
     //-->
     </script>
     {# -- end stats tracker stuff -- #}
-    
+
     {{ render_javascript_files() | raw }}
 {% endblock %}

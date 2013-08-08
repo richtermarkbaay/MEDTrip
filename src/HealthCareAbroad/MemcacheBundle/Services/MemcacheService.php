@@ -5,11 +5,6 @@ namespace HealthCareAbroad\MemcacheBundle\Services;
 class MemcacheService
 {
     /**
-     * @var boolean if setup for Memcache client is already done
-     */
-    private static $setupMemcacheComplete = false;
-
-    /**
      * @var boolean if Memcache exists
      */
     private $hasMemcache = false;
@@ -21,19 +16,39 @@ class MemcacheService
     
     public function __construct($servers=array())
     {
-        $this->hasMemcache = \class_exists('Memcache');
-
-        if (!static::$setupMemcacheComplete && $this->hasMemcache) {
-            
+        if (\class_exists('Memcache')){
             $this->memcache = new \Memcache();
             foreach ($servers as $key => $value) {
                 $this->memcache->addServer($value['host'], $value['port']);
+                // try connecting to server
+                try {
+                    $this->memcache->connect($value['host'], $value['port']);
+                    $this->hasMemcache = true;
+                }
+                catch (\Exception $e){
+                    // failed to connect to this memcache server
+                }
             }
-            static::$setupMemcacheComplete = true;
         }
-        
-        // TEMPORARY only
-        $this->hasMemcache = false;
+        else {
+            // no Memcache class
+            $this->hasMemcache = false;
+        }
+    }
+    
+    public function getMemcache()
+    {
+        return $this->memcache;
+    }
+    
+    public function getExtendedStats()
+    {
+        return $this->memcache->getExtendedStats();
+    }
+    
+    public function flush()
+    {
+        $this->memcache->flush();
     }
     
     /**

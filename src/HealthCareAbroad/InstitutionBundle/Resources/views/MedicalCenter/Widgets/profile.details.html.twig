@@ -10,18 +10,18 @@
     } %}
 
     {% block viewContent %}
-        <p><span id="clinicDescriptionText"> {{ institutionMedicalCenter.description != '' ? institutionMedicalCenter.description | raw : '' }} </span></p>
-        {% if institutionMedicalCenter.description is empty %}
-            <div class="alert alert-block">
-                <div class="hca-profile-sublevel">
-                    Here you can showcase description about your clinic.
-                </div>
-                <p class="hca-helptext">
-                    You haven't yet added any description about your clinic yet.
-                </p>
-                <a type="button" class="btn btn-primary" onclick="$('#clinic-edit-description-btn').click()"> <i class="icon-plus">  </i> Add Entry </a>
+        <div id="clinicDescriptionText">
+            {{ institutionMedicalCenter.description|raw }} 
+        </div>
+        <div class="alert alert-block" style="display:{{ institutionMedicalCenter.description is empty ? 'block' : 'none' }}">
+            <div class="hca-profile-sublevel">
+                Here you can showcase description about your clinic.
             </div>
-        {% endif %}
+            <p class="hca-helptext">
+                You haven't yet added any description about your clinic yet.
+            </p>
+            <a type="button" class="btn btn-primary" onclick="$('#clinic-edit-description-btn').click()"> <i class="icon-plus">  </i> Add Entry </a>
+        </div>
     {% endblock %}
 {% endembed %}
 
@@ -72,8 +72,8 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set website = get_website_from_array(institutionMedicalCenter.websites)  %}
-          <div id="alertDiv" class="{{ website == '' or institutionMedicalCenter.contactEmail == '' or not institutionMedicalCenter.contactDetails.first.number ? 'alert alert-block' : '' }}">
+        {% set website = get_main_website(institutionMedicalCenter.websites)  %}
+          <div id="_view-contacts-content" class="{{ website == '' or institutionMedicalCenter.contactEmail == '' or not institutionMedicalCenter.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p><i class="icon-globe"></i> Website:
                 <span id="profileWebsitesText">
                     {% if website %}
@@ -132,16 +132,16 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set social = institutionMedicalCenter_websites_to_array(institutionMedicalCenter) %}
-        <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
+        {% set social = social_media_sites_to_array(institutionMedicalCenter.socialMediaSites) %}
+        <div class="{{ social.facebook.value == '' or social.twitter.value == '' or  social.googleplus.value == '' ? 'alert alert-block' : '' }}">
             {% for type, site in social %}
                 <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
                  <span class="_{{ type }}-wrapper _social-media-sites">
-                  {% if site %}
-                     <b>{{ site }}</b>
+                  {% if site.value %}
+                     <b>{{ site.value }}</b>
                      {% else %}
-                         <b>no {{ type == 'googleplus' ? 'google-plus' : type }} account</b> added.
-                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ type == 'googleplus' ? 'google plus' : type }} account</a>
+                         <b>no {{ site.label|lower }} account</b> added.
+                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ site.label }} account</a>
                   {% endif %}
                  </span>
                 </p>

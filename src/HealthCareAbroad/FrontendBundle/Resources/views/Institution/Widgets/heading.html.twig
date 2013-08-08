@@ -1,20 +1,18 @@
 
-{% set number = render_institution_contact_details(institution, true) %}
-{% set websites = institution.websites %}
-{% set websites = json_decode(websites) %}
-{% set mainWebsites = (websites.main is defined) and websites.main ? websites.main : false %}
+{% set number = contact_details_to_json(institution.contactDetails, true) %}
 <div class="cover-photo-wrapper">
     <h1>{{ institution.name }}</h1>
-    {% if institution.featuredMedia and institution.payingClient %}
-        {% set size = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::LARGE_BANNER') %}
-        <img src="{{ institution_media_src(institution.featuredMedia, size) }}" class="featured-image" alt=""/>
-    {% else %}
-        <img class="featured-image" src="{{ imageplaceholder.institutionFeaturedImage }}" alt=" "/>
-    {% endif %}
+    
+    {% set featuredMediaSrc = institution.featuredMedia and institution.featuredMedia.src ? institution.featuredMedia.src : imageplaceholder.institutionFeaturedImage %}
+    <img class="featured-image" src="{{ featuredMediaSrc }}" />
 
     <div class="info-wrapper hca-v-sprite stripe-bg-dark">
         <div class="logo-wrapper">
-            {{ render_institution_logo(institution, {attr: {alt: 'hospital logo'}}) | raw }}
+            {% if institution.logo and institution.logo.src %}
+                <img src="{{ institution.logo.src }}" class="hospital-logo" />
+            {% else %}
+                <span class="hca-sprite hospital-default-logo"></span>
+            {% endif %}
         </div>
         <div class="span5 pull-right">
             <ul class="unstyled inline-list pull-right">
@@ -54,6 +52,7 @@
                 </li>
             </ul>
         </div>
+
         <div class="address">
             <span class="hca-sprite address-icon pull-left"></span>
             <address>
