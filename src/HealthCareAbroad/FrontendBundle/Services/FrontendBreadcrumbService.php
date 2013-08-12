@@ -26,17 +26,21 @@ class FrontendBreadcrumbService
     {
         $request = $this->container->get('request');
 
+        //Default breadcrumbs (for static pages etc)
         $routeParams = $request->attributes->get('_route_params');
         if (isset($routeParams['breadcrumbLabel'])) {
             return array(array('label' => $routeParams['breadcrumbLabel']));
         }
 
+        //Special cases
         switch ($request->attributes->get('_route', '')) {
+            //TODO: this route needs to be check if it is still valid or in use
             case 'frontend_search_results_keywords' :
                 return array(array('label' => $this->slugToName($routeParams['keywords'])));
-
-            case 'frontend_search_results_related' :
-                return array(array('label' => $this->slugToName($routeParams['tag'])));
+//             case 'frontend_search_results_related_terms_city':
+//             case 'frontend_search_results_related_terms_country':
+//             case 'frontend_search_results_related_terms' :
+//                 break;
         }
 
         return $this->doGenerateBreadcrumbs($this->normalizeData($request->attributes));
@@ -62,6 +66,30 @@ class FrontendBreadcrumbService
                 'label' => $data['city']['name'],
                 'url' => $this->generateUrl('frontend_search_results_cities', array('country' => $data['country']['slug'], 'city' => $data['city']['slug'])));
         }
+        if ($data['tag']) {
+            $breadcrumbs[] = array('label' => $data['tag']);
+
+            return $breadcrumbs;
+        }
+        if ($data['institution']) {
+            switch ($data['institution']['type']) {
+                case InstitutionTypes::MULTIPLE_CENTER:
+                    $routeName = 'frontend_multiple_center_institution_profile';
+                    break;
+                case InstitutionTypes::SINGLE_CENTER:
+                    $routeName = 'frontend_single_center_institution_profile';
+                    break;
+            }
+            $breadcrumbs[] = array(
+                            'label' => $data['institution']['name'],
+                            'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
+            );
+            if ($data['institutionMedicalCenter']) {
+                $breadcrumbs[] = array('label' => $data['institutionMedicalCenter']['name']);
+            }
+
+            return $breadcrumbs;
+        }
         if ($data['specialization']) {
             $breadcrumbs[] = array(
                 'label' => $data['specialization']['name'],
@@ -76,23 +104,6 @@ class FrontendBreadcrumbService
             $breadcrumbs[] = array(
                 'label' => $data['treatment']['name'],
                 'url' => $this->generateUrl('frontend_search_results_treatments', array('specialization' => $data['specialization']['slug'], 'treatment' => $data['treatment']['slug'])));
-        }
-        if ($data['institution']) {
-            switch ($data['institution']['type']) {
-                case InstitutionTypes::MULTIPLE_CENTER:
-                    $routeName = 'frontend_multiple_center_institution_profile';
-                    break;
-                case InstitutionTypes::SINGLE_CENTER:
-                    $routeName = 'frontend_single_center_institution_profile';
-                    break;
-            }
-            $breadcrumbs[] = array(
-                'label' => $data['institution']['name'],
-                'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
-            );
-            if ($data['institutionMedicalCenter']) {
-                $breadcrumbs[] = array('label' => $data['institutionMedicalCenter']['name']);
-            }
         }
 
         return $breadcrumbs;
@@ -109,14 +120,19 @@ class FrontendBreadcrumbService
         } elseif ($institution = $requestAttribs->get('institution', null)) {
             $country = $institution['country'];
             $city = isset($institution['city']) ? $institution['city'] : array();
-        } else {
-            $country = $requestAttribs->get('country', array());
-            $city = $requestAttribs->get('city', array());
+        }
+
+        if (empty($country)) {
+            $country = $requestAttribs->get('countryAttrib', $requestAttribs->get('country', array()));
+        }
+        if (empty($city)) {
+            $city = $requestAttribs->get('cityAttrib', $requestAttribs->get('city', array()));
         }
 
         return array(
             'country' => $country,
             'city' => $city,
+            'tag' => $requestAttribs->get('tag', array()),
             'specialization' => $requestAttribs->get('specialization', array()),
             'subSpecialization' => $requestAttribs->get('subSpecialization', array()),
             'treatment' => $requestAttribs->get('treatment', array()),
