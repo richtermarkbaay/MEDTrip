@@ -19,7 +19,6 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
     /**
      * Functional test for login and logout flow
      */
-    
     public function testInvalidLoginFlow()
     {
         $client = $this->getBrowserWithActualLoggedInUser();
@@ -54,18 +53,17 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Manage Account Password")')->count());
 
         $formValues =  array( 'institutionUserChangePasswordType' => array(
-                                'current_password' => $this->userPassword,
-                                'new_password' => $this->userPassword .'1',
-                                'confirm_password' => $this->userPassword .'1',
-                                )
-                        );
+                            'current_password' => $this->userPassword,
+                            'new_password' => $this->userPassword .'1',
+                            'confirm_password' => $this->userPassword .'1',
+                            )
+                    );
         $form = $crawler->selectButton('Save Changes')->form();
         $crawler = $client->submit($form, $formValues);
         \HCA_DatabaseManager::getInstance()->restoreGlobalAccountsDatabaseState();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        $client = $this->getBrowserWithActualLoggedInUser();
         
+        //test empty fields
         $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
                         'current_password' => null,
                         'new_password' => null,
@@ -76,8 +74,34 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $form = $crawler->selectButton('Save Changes')->form();
         $crawler = $client->submit($form, $invalidFormValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Incorrect password.")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required.")')->count());
+        
+        //test incorrect current password
+        $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
+                        'current_password' => '123456',
+                        'new_password' => '1234567',
+                        'confirm_password' => '7654321')
+        );
+        
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+        
+        //test short entered value
+        $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
+                        'current_password' => '123',
+                        'new_password' => '123',
+                        'confirm_password' => '123')
+        );
+        
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Incorrect password.")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is too short. Please enter at least 6 characters.")')->count());
 
         $client = $this->getBrowserWithActualLoggedInUser();
         $session = $client->getContainer()->get('session');
@@ -97,8 +121,10 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         
         $formValues = array(
             'institutionUserSignUp[firstName]' => 'tset resr',
-            'institutionUserSignUp[email]' => 'rseresres@mail.com',
+            'institutionUserSignUp[contactDetails]' => array ( '0' =>  array ( 'country' => '1', 'area_code' => '343','number' => '434','ext' => '3' ),
+                                                '1' =>  array ( 'country' => '1', 'area_code' => '343','number' => '434')),
             'institutionUserSignUp[lastName]' => 'rsersr',
+            'institutionUserSignUp[jobTitle]' => 'tester'
         );
         $form = $crawler->selectButton('Save Changes')->form();
         $crawler = $client->submit($form, $formValues);
@@ -107,7 +133,6 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         
         $invalidFormValues = array(
             'institutionUserSignUp[firstName]' => null,
-            'institutionUserSignUp[email]' => 'rseresres.com',
             'institutionUserSignUp[lastName]' => null,
         );
 
@@ -116,12 +141,59 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your first name. ")')->count());
         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your last name.")')->count());
-        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
         
         $client = $this->getBrowserWithActualLoggedInUser();
         $session = $client->getContainer()->get('session');
         $session->set('accountId', 234);
         $crawler = $client->request('GET', $editAccountUrl);
+        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+    }
+
+    public function testChangeEmailAddress()
+    {
+        $uri = '/institution/manage-account-email.html';
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Manage Account Email")')->count());
+        
+        $formValues = array(
+            'institutionUserChangeEmail[new_email]' => 'test@new.mail.com',
+            'institutionUserChangeEmail[confirm_email]' => 'test@new.mail.com',
+        );
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+        //test invalid email
+        $invalidFormValues = array(
+            'institutionUserChangeEmail[new_email]' => 'test',
+            'institutionUserChangeEmail[confirm_email]' => 'test@new.com',
+        );
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address do not match")')->count());
+        
+        // test existing email
+        $invalidFormValues = array( 'institutionUserChangeEmail[new_email]' => 'test.adminuser@chromedia.com');
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address already exists.")')->count());
+        
+        // test empty email
+        $invalidFormValues = array('institutionUserChangeEmail[new_email]' => null );
+        $form = $crawler->selectButton('Save Changes')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address is required.")')->count());
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $session = $client->getContainer()->get('session');
+        $session->set('accountId', 234);
+        $crawler = $client->request('GET', $uri);
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
     
@@ -142,6 +214,7 @@ class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
         $invalidFormValues = array('email' => 'invalid@email.com');
         $crawler = $client->submit($form, $invalidFormValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid Email');
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("The email address you entered does not exist. Please check and try again.")')->count());
     }
     
     public function testChangePassword()
