@@ -192,8 +192,8 @@ class InstitutionController extends ResponseHeadersController
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);
-        $end = \microtime(true); $diff = $end-$start; echo "{$diff}s";
-        //exit;
+        $end = \microtime(true); $diff = $end-$start;
+        //echo "{$diff}s"; exit;
         $response= $this->setResponseHeaders($content);
         
         return $response;
