@@ -138,6 +138,24 @@ class InstitutionApiService
         
         $institution = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
         
+        // build the medical centers data, based on the displayed elements in the medical centers list
+        $qb = $this->doctrine->getManager()->createQueryBuilder();
+        $qb->select('imc, inst, imc_sp, sp, sp_m')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
+            ->leftJoin('imc.institution', 'inst')
+            ->leftJoin('imc.institutionSpecializations', 'imc_sp')
+            ->leftJoin('imc_sp.specialization', 'sp')
+            ->leftJoin('sp.media', 'sp_m')
+            ->where('imc.institution = :institutionId')
+            ->setParameter('institutionId', $institutionId)
+            // this criteria is a duplicate in the builder for institution
+            // but we will replace the entry for institutionMedicalCenters so we have to ensure this
+            ->andWhere('imc.status = :imcActiveStatus')
+            ->setParameter('imcActiveStatus', InstitutionMedicalCenterStatus::APPROVED)
+        ;
+        $institution['institutionMedicalCenters'] = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        
+        
         return $institution;
     }
     
@@ -235,7 +253,7 @@ class InstitutionApiService
     private function getQueryBuilderForInstitutionPublicProfileData()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m, imc_logo, imc_inst')
+        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m')
             ->from('InstitutionBundle:Institution', 'inst')
             ->innerJoin('inst.institutionMedicalCenters', 'imc', Join::WITH, 'imc.status = :imcActiveStatus')
                 ->setParameter('imcActiveStatus', InstitutionMedicalCenterStatus::APPROVED)
@@ -247,9 +265,6 @@ class InstitutionApiService
             ->leftJoin('inst.logo', 'lg')
             ->leftJoin('inst.gallery', 'gal')
             ->leftJoin('gal.media', 'gal_m')
-            // results to too many function calls if removed and working with medical centers
-            ->innerJoin('imc.institution', 'imc_inst') 
-            ->leftJoin('imc.logo', 'imc_logo')
             ->where('1=1')
             ->andWhere('inst.status = :activeStatus')
                 ->setParameter('activeStatus', InstitutionStatus::getBitValueForApprovedStatus());
