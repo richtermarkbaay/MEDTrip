@@ -459,7 +459,6 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    /* NOTE: this test only works if csrf token is set to fasle */
     public function testUpdateDoctor(){
     
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
@@ -468,7 +467,6 @@ class InstitutionSignUpControllerTest extends InstitutionBundleWebTestCase
         $crawler = $client->request('POST', 'institution/medical-center/1/update-doctor/1', $formDoctorValues);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
-    /* end of NOTE */
     
     public function testFinish(){
         $client = $this->getBrowserWithActualLoggedInUserForMultitpleType();
