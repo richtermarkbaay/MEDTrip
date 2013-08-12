@@ -1,0 +1,31 @@
+{% form_theme form 'FrontendBundle:Form:form.horizontal.html.twig' %}
+<form class="form-horizontal">
+    {{ form_row(form.inquirer_name) }}
+    
+    <div class="control-group">
+        <label for="Country">Your Country</label>
+        {{ form_widget(form.country) }}
+    </div>
+
+    {{ form_row(form.inquirer_email, {help: 'Don\'t worry! We hate SPAM as much as you do!'}) }}
+    {{ form_row(form.message) }}
+    {{ form_row(form.captcha) }}
+
+    <div class="control-group">
+        <label class="checkbox">
+            <input type="checkbox">Yes I'd like to hear from similar Doctors and Clinics in <a href="#">ClinicCountry</a>
+        </label>
+    </div>
+    <div class="control-group">
+        <label class="checkbox">
+            <input type="checkbox">Yes, I'd like to subscribe to the HealthcareAbroad newsletter.
+        </label> 
+    </div>
+
+    <button class="btn btn-primary orange" type="submit">Send Message</button>
+
+    <p>
+        <small>We do not sell, trade, share nor otherwise transfer to outside parties your personally identifiable information without your full consent. 
+        By submitting this you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</small>
+    </p>
+</form>
