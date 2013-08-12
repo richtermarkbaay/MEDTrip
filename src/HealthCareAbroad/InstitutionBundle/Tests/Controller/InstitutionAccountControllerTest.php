@@ -70,7 +70,7 @@ class InstitutionAccountControllerTest extends InstitutionBundleWebTestCase
         $profileFormValues =  array('institution_profile_form' => array('_token' => $csrf_token, 'name' => 'Audiology Services', 'medicalProviderGroups' => array( 0 => '')));
         $crawler = $client->request('POST', '/institution/ajax/update-profile-by-field', $profileFormValues);
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ), '{"field":"name","error":"Please provide your hosipital name."}');
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ), '{"field":"name","error":"This institution already exists!"}');
         $this->assertRegExp('/errors/', $client->getResponse()->getContent());
     }
     
