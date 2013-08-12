@@ -87,3 +87,9 @@ admin_error_reports:
     defaults: { _controller: AdminBundle:ErrorReport:index }
     requirements:    
         _method:  GET
+        
+admin_clear_cache:
+    pattern: /admin/flush-cache
+    defaults: { _controller: AdminBundle:Default:flushCache }
+    requirements:
+        _method: GET|POST
