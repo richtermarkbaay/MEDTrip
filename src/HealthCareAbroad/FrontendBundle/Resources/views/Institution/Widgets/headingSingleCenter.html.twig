@@ -19,8 +19,11 @@
 
     	<div>
         	{% if number %}
-        	    <a id="institution-call" href="javascript:void(0)" class="btn green"><span class="white-icon-search"></span> Call Us</a>
+        	    <a id="institution-call" href="#" class="btn green" rel="tooltip" data-contact-number="{{ number }}">
+        	        <span class="white-icon-search"></span> Call Us
+    	        </a>
         	{% endif %}
+        	
         	<a id="email-single" class="btn green" title="send email to {{email}}"><span class="hca-sprite email-icon"></span> Email</a>
         	{# if institutionMedicalCenter.websites %}<a href="{{ institutionMedicalCenter.websites }}" class="website btn green" target="_blank">Visit Website</a>{% endif #}
         	
@@ -36,10 +39,7 @@
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/frontend/js/institution.js') }}"></script>
     <script type="text/javascript">
-    	$('#institution-call').tooltip({
-    		title: '<h5><small>Landline: </small>{{ number }}</h5>',
-    		html: true, delay: 0, animation: true, trigger: 'click'
-    	});
+    	
     	
         $('#email-single').click(function(){
         	$('div#modal_single_institution_inquiry_form').modal('show');

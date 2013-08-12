@@ -641,8 +641,12 @@ hr {
   height: 1px;
 }
 
-#main-wrap {
-  background-color: white;
+#confirmation-message {
+    left: 50%;
+    float: left;
+    z-index: 2000;
+    position: absolute;
+    text-align: center;
 }
 
 #confirmation-message {
@@ -665,9 +669,6 @@ hr {
   padding-bottom: 0px;
   padding-right: 14px;
   border-radius: 0;
-}
-#confirmation-message .confirmation-box .alert p {
-  text-align: center;
 }
 
 #topnav {
@@ -2706,13 +2707,9 @@ ul.two-column > li input[type=checkbox] {
   vertical-align: top;
 }
 
-ul.two-column > li label {
-  max-width: 235px;
-  display: inline-block;
-}
-
-.accordion .row-fluid ul.two-column li:last-child {
-  border: none;
+ul.two-column>li {
+    margin-bottom: 20px;
+    border: none;
 }
 
 /*for contact form*/
@@ -3153,18 +3150,14 @@ h1, h2, h3, h4, h5 {
 .tab-content.media-tab-content .span12 {
   padding: 0 20px;
 }
-.tab-content.media-tab-content .span12 h2 {
-  padding: 0;
-  margin: 0;
-}
 
-.row-field.error ul, .control-group.error ul {
-  color: #b94a48;
-  list-style: none;
-  font-weight: bold;
-  margin: 0px 0 7px 0;
-  padding: 0;
-  display: block;
+.row-field.error ul.error,.control-group.error ul.error {
+    color: #b94a48;
+    list-style: none;
+    font-weight: 700;
+    display: block;
+    margin: 0 0 7px;
+    padding: 0;
 }
 
 .custom-select-list {
@@ -3452,11 +3445,9 @@ h1, h2, h3, h4, h5 {
   text-align: left;
   margin: 15px auto;
 }
-.thumbnails.hca-media {
-  margin-top: 40px;
-}
-.thumbnails.hca-listing-services {
-  margin-left: 0px;
+
+#confirmation-message .confirmation-box .alert p,.modal.message,.modal .modal-body.center {
+    text-align: center;
 }
 .thumbnails img.img-polaroid {
   position: absolute;
@@ -3546,15 +3537,9 @@ h1, h2, h3, h4, h5 {
   border-bottom: 1px solid white;
   background-color: #ffd11a;
 }
-.thumbnails li.thumbnail.hca-alert-inquiry p {
-  margin: 7px 15px 7px 0;
-  color: #5a5a5a;
-}
-.thumbnails li.thumbnail.hca-alert-inquiry .icon-2x {
-  display: block;
-  margin-top: 1px !important;
-  font-size: 2.25em;
-  padding-bottom: 7px;
+
+.aside-box textarea,.hca-hidden-content.doctors-listing .row-fluid textarea,.modal .modal-body textarea {
+    height: 150px;
 }
 .thumbnails li.thumbnail.hca-alert-inquiry .hca-red {
   margin: 2px 5px 0 10px;
@@ -3733,6 +3718,7 @@ h1, h2, h3, h4, h5 {
     display: inline;
     margin: 0;
 }
+<<<<<<< HEAD
 @import url("http://fonts.googleapis.com/css?family=PT+Sans:400,700");
 .btn-group.open .btn-primary.dropdown-toggle {
   background-color: #6AB0F7;
@@ -4009,15 +3995,14 @@ hr {
   border-bottom-left-radius: 0;
   box-shadow: 0 -3px 5px 0 rgba(0, 0, 0, 0.08);
 }
+=======
+>>>>>>> develop
 
-#nav {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #eef5ed;
-}
-#nav .nav-menu {
-  border-bottom: none;
+#confirmation-message.fixed .confirmation-box,#confirmation-message .confirmation-box.fixed,#content section.section .row-fluid.hca-edit-box.specializations,#content section.section .row-fluid.terms .tooltip-content,.aside-box.dashboard-side h2,.thumbnails.doctors,.thumbnails.hca-alert-inquiry {
+    margin-top: 0;
 }
 
+<<<<<<< HEAD
 #content {
   position: relative;
   padding: 1em 0 3em 0;
@@ -7002,3 +6987,9 @@ h1, h2, h3, h4, h5 {
 .thumbnails li:hover ul.actions li a:hover {
   color: #555555;
 }
+=======
+.tab-content.media-tab-content .span12 h2,#content section.section .row-fluid>div.media,.single-listing li ul {
+    margin: 0;
+    padding: 0;
+}
+>>>>>>> develop

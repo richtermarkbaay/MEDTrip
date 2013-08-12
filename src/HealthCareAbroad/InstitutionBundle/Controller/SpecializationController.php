@@ -160,28 +160,30 @@ class SpecializationController extends InstitutionAwareController
      * Edit Specialization treatments under clinic profile page
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
-     * @author Chaztine Blance
      */
     public function ajaxAddInstitutionSpecializationTreatmentsAction(Request $request)
     {
-        $institutionSpecialization = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->find($request->get('isId'));
+        $institutionSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
+        $institutionSpecialization = $institutionSpecializationRepo->find($request->get('isId'));
         if (!$institutionSpecialization ) {
             throw $this->createNotFoundException('Invalid institution specialization');
         }
 
         if ($request->isMethod('POST')) {
+
             $specializationsWithTreatments = $request->get(InstitutionSpecializationFormType::NAME);
+
+            // Delete Treatments
+            if($deleteTreatmentIds = $request->get('deleteTreatments')) {
+                $institutionSpecializationRepo->deleteBySpecializationIdAndTreatmentIds($institutionSpecialization->getId(), $deleteTreatmentIds);
+            }
             if (\count($specializationsWithTreatments)) {
 
                 $this->get('services.institution_medical_center')->addMedicalCenterSpecializationsWithTreatments($this->institutionMedicalCenter, $specializationsWithTreatments);
 
-                $output['html'] = $this->renderView('InstitutionBundle:MedicalCenter:list.treatments.html.twig', array(
-                                'each' => $institutionSpecialization,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView()
-                ));
+                $responseContent = \json_encode(array('specializations' =>$specializationsWithTreatments));
 
-                $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+                $response = new Response($responseContent, 200, array('content-type' => 'application/json'));
 
             } else {
                 $response = new Response('Unable top edit Treatments', 404);

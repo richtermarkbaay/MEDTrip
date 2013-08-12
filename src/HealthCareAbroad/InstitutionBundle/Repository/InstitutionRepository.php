@@ -177,11 +177,11 @@ class InstitutionRepository extends EntityRepository
 
         $sql = "SELECT a.value  FROM institution_properties a ".
                         "WHERE a.institution_property_type_id = :propertyType AND a.institution_id = :institutionId";
-        $statement = $this->getEntityManager()
-        ->getConnection()->prepare($sql);
-
-        $statement->execute(array('propertyType' => InstitutionPropertyType::GLOBAL_AWARD_ID, 'institutionId' => $institutionId));
-
+        $statement = $this->getEntityManager()->getConnection()->prepare($sql);
+        $statement->bindValue('propertyType', InstitutionPropertyType::GLOBAL_AWARD_ID);
+        $statement->bindValue('institutionId', $institutionId);
+        $statement->execute();
+        
         $result = array();
         if($statement->rowCount() > 0) {
             $ids = array();

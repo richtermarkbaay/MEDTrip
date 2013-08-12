@@ -45,7 +45,7 @@ var InstitutionSpecialization = {
         _divToggle = parentElem.find('.hca-hidden-content:first');
         HCA.closeAlertMessage();
 
-        if(accordionContent.html() == '' ) {
+        if(!accordionContent.find('ul.specialization-wrapper:first').length) {
         	_divToggle.show();
         	accordionContent.hide();
             $('#specialization_list_block').children('div').addClass('disabled');
@@ -55,7 +55,7 @@ var InstitutionSpecialization = {
                 type: 'GET',
                 dataType: 'json',
                 success: function(response){
-                	accordionContent.html(response.html).slideDown('slow');
+                	accordionContent.append(response.html).slideDown('slow');
                 	parentElem.removeClass('disabled process');
                     $.each(parentElem.find('.sub-specialization-wrapper'), function(){
                         if($(this).find('input[type=checkbox].treatments:checked').length) {
@@ -83,6 +83,13 @@ var InstitutionSpecialization = {
         	_buttonElement.prev().prev().click();
         	return;
         }
+        
+        deleteTreatments = [];
+        $.each(_form.find('input[type=checkbox].treatments.old:not(:checked)'), function(){
+        	deleteTreatments.push($(this).val());
+        });
+
+        _form.find('input[name=deleteTreatments]').val(deleteTreatments.join(','));
 
         $.ajax({
             url: _form.attr('action'),
@@ -91,12 +98,15 @@ var InstitutionSpecialization = {
             dataType: 'json',
             success: function (response) {
                 $('#new_specializationButton').removeAttr('disabled');
-                _buttonElement.hide();
-                HCA.alertMessage('success', 'You have successfully updated treatments.');
-                _divToggle.prev('#treatment_list').html(response.html);
-                _buttonElement.prev().show();
+
+                _form.find('input[type=checkbox].treatments:checked:not(.old)').addClass('old');
+                _form.find('input[type=checkbox].treatments.old:not(:checked)').removeClass('old');
+                
+                _buttonElement.hide().prev().show();
                 $('#specialization_list_block').children().removeClass('disabled process');
                 _divToggle.slideUp('slow');
+
+                HCA.alertMessage('success', 'You have successfully updated treatments.');
             },
             error: function (response) {
             	$('#specialization_list_block').children().removeClass('disabled process');
@@ -110,17 +120,14 @@ var InstitutionSpecialization = {
      * 
      * @param DOMElement button
      */
-    submitAddSpecialization: function(domButtonElement) {
-        _button = $(domButtonElement);
+    submitAddSpecialization: function(_button) {
         _buttonHtml = _button.html();
         _button.html('Processing...').attr('disabled', true);
         _form = _button.parents('form:first');
-//        _formdata = _form.find('div.in :input');
 
-        _data = _form.serialize();
         $.ajax({
             url: _form.attr('action'),
-            data: _data,
+            data: _form.serialize(),
             type: 'POST',
             dataType: 'json',
             success: function(response) {

@@ -61,6 +61,9 @@ class InstitutionMedicalCenterApiService
             if ($firstSpecialization && $firstSpecialization['media']){
                 $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
             }
+            else {
+                $institutionMedicalCenter['logo']['src'] = null;
+            }
         }
         
         return $this;
@@ -205,8 +208,8 @@ class InstitutionMedicalCenterApiService
             ->leftJoin('imc.media', 'imc_m')
             ->leftJoin('imc.contactDetails', 'imc_cd')
             ->leftJoin('imc.businessHours', 'imc_bh')
-            ->innerJoin('imc.institutionSpecializations', 'inst_sp')
-            ->innerJoin('inst_sp.specialization', 'sp')
+            ->leftJoin('imc.institutionSpecializations', 'inst_sp')
+            ->leftJoin('inst_sp.specialization', 'sp')
             ->leftJoin('sp.media', 'sp_lg')
             ->leftJoin('sp.treatments', 'tr')
             ->leftJoin('tr.subSpecializations', 'sub_sp')

@@ -324,6 +324,23 @@ var SearchWidgetUtils = (function() {
         return str;
     };
 
+    //This is sometimes faster in other browsers
+    var stripAccents2 = function (str) {
+        var stripped = '';
+        for (var i = 0; i < str.length; i++) {
+            var char = str[i];
+            var charIndex = char.charCodeAt(0) - 192;
+            if (charIndex >= 0 && charIndex < stripString.length) {
+                var outChar = stripString.charAt(charIndex);
+                if (outChar != '.') {
+                    char = outChar;
+                }
+            }
+            stripped += char;
+        }
+        return stripped;
+    };
+
     var isCountry = function(id) {
         return id.slice(-2) == '-0';
     };
