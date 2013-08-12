@@ -9537,6 +9537,12 @@ function tinymceSetup(ed, e)
 	}
 }
 
+function ucwords (str) {
+	return (str + '').replace(/^([a-z\u00E0-\u00FC])|\s+([a-z\u00E0-\u00FC])/g, function ($1) {
+		return $1.toUpperCase();
+	});
+}
+
 
 HCA.autocomplete = {
 
@@ -9604,6 +9610,12 @@ $(function(){
 
 	// Initialize HCA autocomplete object.
 	HCA.autocomplete.init();
+	
+	// Confirmation Close button 
+    $('#_close-confirmation-message').live('click', function(e) {
+        $("#confirmation-message").fadeOut();
+    });
+
 
 	// activate/deactivate status of current record 
 	$('a.update-status').click(function(){

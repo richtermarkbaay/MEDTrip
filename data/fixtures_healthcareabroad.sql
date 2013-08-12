@@ -721,9 +721,10 @@ CREATE TABLE IF NOT EXISTS `global_awards` (
 --
 
 INSERT INTO `global_awards` (`id`, `type`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
-(1, 2, 'test', 'test', 1, 1, 1),
-(2, 3, 'testetest', 'gsgdg', 1, 1, 1);
-
+(1, 1, 'test', 'test', 1, 1, 1),
+(2, 2, 'certificate', 'gsgdg', 1, 1, 1),
+(3, 3, 'affiliation', NULL, 1, 1, 1),
+(4, 4, 'accreditation', NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1042,7 +1043,8 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
 
 INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
 (1, 1),
-(2,2);
+(2, 2),
+(3, 1);
 
 -- --------------------------------------------------------
 

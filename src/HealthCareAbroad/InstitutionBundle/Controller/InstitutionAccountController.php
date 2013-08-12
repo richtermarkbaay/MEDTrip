@@ -95,11 +95,6 @@ class InstitutionAccountController extends InstitutionAwareController
         }
     }
 
-    public function ajaxAddInstitutionUserAction(Request $request)
-    {
-        
-    }
-    
     /**
      * Action page for Institution Profile Page
      *
@@ -171,7 +166,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
                 $formRequestData = $request->get($form->getName());
-
                 // we always expect 1 medical provider group. if it is empty remove it from the array
                 if (isset($formRequestData['medicalProviderGroups']) && !empty($formRequestData['medicalProviderGroups']) ) {
                     $providerGroup = trim($formRequestData['medicalProviderGroups'][0]);  
