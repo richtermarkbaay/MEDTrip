@@ -136,15 +136,18 @@ class InstitutionFactory
     public function findById($id)
     {
         // get namespace key for institution with id $id
-        $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $id), array('institutionId' => $id));
-        //$result = $this->memcache->get($memcacheKey);
-        $result = false;
-        if (!$result) {
-            $result = $this->repository->find($id);
+//         $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $id), array('institutionId' => $id));
+//         //$result = $this->memcache->get($memcacheKey);
+//         $result = false;
+//         if (!$result) {
+//             $result = $this->repository->find($id);
             
-            // save this to memcache
-            $this->memcache->set($memcacheKey, $result);
-        }
+//             // save this to memcache
+//             $this->memcache->set($memcacheKey, $result);
+//         }
+
+        // no caching here
+        $result = $this->repository->find($id);
         
         return $result;
     }
@@ -161,9 +164,9 @@ class InstitutionFactory
         $em->flush();
         
         // get the memcache key for this institution
-        $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $institution->getId()), array('institutionId' => $institution->getId()));
+//         $memcacheKey = $this->memcacheKeyFactory->generate('institution_entity', array('id' => $institution->getId()), array('institutionId' => $institution->getId()));
         
-        // delete this from memcache
-        $this->memcache->delete($memcacheKey);
+//         // delete this from memcache
+//         $this->memcache->delete($memcacheKey);
     }
 }
