@@ -660,6 +660,7 @@ class FrontendController extends ResponseHeadersController
             $request->getSession()->set($session_key, $searchTerms);
         }
 
+        $this->setBreadcrumbRequestAttributesForRelatedSearch($request, $searchTerms);
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
@@ -838,7 +839,26 @@ class FrontendController extends ResponseHeadersController
     private function setBreadcrumbRequestAttributes(Request $request, array $attributes)
     {
         foreach ($attributes as $key => $value) {
-            $request->attributes->set($key, array('name' => $value->getName(), 'slug' => $value->getSlug()));
+            if (is_object($value)) {
+                $request->attributes->set($key, array('name' => $value->getName(), 'slug' => $value->getSlug()));
+            } elseif (is_array($value)) {
+                $request->attributes->set($key, $value);
+            }
         }
+    }
+
+    private function setBreadcrumbRequestAttributesForRelatedSearch(Request $request, array $searchTerms)
+    {
+        $attributes['tag'] = $request->get('tag', '');
+
+        // The route may already have route parameters named country and city so we set different attribute names
+        if (isset($searchTerms['cityId'])) {
+            $attributes['cityAttrib'] = $this->getDoctrine()->getRepository('HelperBundle:City')->find($searchTerms['cityId']);
+            $attributes['countryAttrib'] = $attributes['cityAttrib']->getCountry();
+        } elseif (isset($searchTerms['countryId'])) {
+            $attributes['countryAttrib'] = $this->getDoctrine()->getRepository('HelperBundle:Country')->find($searchTerms['countryId']);
+        }
+
+        $this->setBreadcrumbRequestAttributes($request, $attributes);
     }
 }

@@ -196,4 +196,12 @@ class DefaultController extends Controller
     
         return $response;
     }
+    
+    public function flushCacheAction()
+    {
+        $this->get('services.memcache')->flush();
+        
+        echo "Memcache Flushed";
+    }
+
 }
