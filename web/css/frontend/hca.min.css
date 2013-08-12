@@ -37,13 +37,9 @@
   width: 226px;
 }
 #content-wrapper .aside-wrapper form input[type="checkbox"] {
-  margin-right: 2px;
-  margin-bottom: 0px;
   width: 20px;
-  margin-top: 2px;
 }
 #content-wrapper .aside-wrapper form .btn-primary {
-  margin-top: -10px;
   margin-bottom: 20px;
 }
 #content-wrapper .aside-wrapper form p {
