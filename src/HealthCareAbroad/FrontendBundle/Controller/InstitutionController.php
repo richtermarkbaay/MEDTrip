@@ -152,7 +152,6 @@ class InstitutionController extends ResponseHeadersController
                 // Hesitant on modifying the twig extension since it is used in many contexts
                 foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
                     $this->apiInstitutionMedicalCenterService
-                        ->buildInstitutionSpecializations($imcData)
                         ->buildLogoSource($imcData);
                 }
             }
@@ -193,6 +192,7 @@ class InstitutionController extends ResponseHeadersController
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);
+        $end = \microtime(true); $diff = $end-$start; echo "{$diff}s";
         //exit;
         $response= $this->setResponseHeaders($content);
         
