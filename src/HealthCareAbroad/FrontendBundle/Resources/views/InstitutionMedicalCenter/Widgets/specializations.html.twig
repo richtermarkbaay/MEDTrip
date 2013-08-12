@@ -1,70 +1,41 @@
-{% if specializations | length %}
-
-    {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Specializations', class: 'specializations'} %}
-        {% block sectionContent %}
-        {% for each in specializations %}
-            <div class="media">
-                 <div class="thumbnail-wrapper img-polaroid pull-left">
-                     <span class="hca-sprite clinic-default-logo mini"></span>
-                 </div>
-                 <div class="media-body">
-                     <h4>{{ each.specialization.name }}</h4>
-                    {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
-
-                    {% for _subName, _groupedData in _groupedTreatments %}
-                        {% if _groupedData.treatments | length %}
-                        <div class="media">
-                            {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
-                            <h5>{{ _groupedData.subSpecialization.name }}</h5>
-                            {% else %}
-                            <h5>Other Treatments</h5>
-                            {% endif %}
-                            <span><i class="icon-medkit pull-left"></i></span>
-                            <div class="media-body">
-                                <p>
-                                    {% for treatment in _groupedData.treatments %}
-                                        {{ treatment.name }},&nbsp;
-                                    {% endfor %}
-                                </p>
-                            </div>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
-                 </div>
-            </div>
-    	{% endfor %}
-        {# <div class="specializations-list-wrapper">
-            <ul>
-            {% for each in specializations %}
+<div class="profile-widget-wrapper specializations">
+    <h5>Specializations</h5>
+    <div class="specializations-list-wrapper">
+        <ul>
+            {% for each in institutionSpecializations %}
+                {% set specialization = each.specialization %}
                 <li class="specialization">
+                
                     <span class="thumbnail-wrapper ph-cardiology default img-polaroid pull-left"></span>
-                    <a>{{ each.specialization.name }}</a>
+                    
+                    <a>{{ specialization.name }}</a>
+                    
                     {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
-                    <ul class="sub-specialization">
+
                     {% for _subName, _groupedData in _groupedTreatments %}
                         {% if _groupedData.treatments | length %}
-                            <li>
-                            {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
-                                <a>{{ _groupedData.subSpecialization.name }}</a>
-                            {% else %}
-                                <a>Other Treatments</a>
+                            <ul class="sub-specialization">
+                                <li>
+                                    {% if _groupedData.subSpecialization is defined and _groupedData.subSpecialization | length%}
+                                    <a>{{ _groupedData.subSpecialization.name }}</a>
+                                    {% else %}
+                                    <a>Other Treatments</a>
+                                    {% endif %}
+                                    <ul class="treatment">
+                                        {% for treatment in _groupedData.treatments %}
+                                        <li>
+                                            <a>{{ treatment.name }}</a>
+                                        </li>
+                                        {% endfor %}
+                                    </ul><!-- .treatment -->
+                                </li>
+                            </ul><!-- .sub-specialization -->
+                            <span><i class="icon-medkit pull-left"></i></span>
                             {% endif %}
-                                <ul class="treatment">
-                                    {% for treatment in _groupedData.treatments %}
-                                    <li>
-                                        <a>{{ treatment.name }}</a>
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                            </li>
-                        {% endif %}
                     {% endfor %}
-                    </ul>
-                </li> 
+                    
+                </li><!-- .specialization -->
             {% endfor %}
-            </ul>
-        </div> #}
-        {% endblock %}
-    {% endembed %}
-
-{% endif %}
+        </ul>
+    </div><!-- .specializations-list-wrapper -->
+</div><!-- .profile-widget-wrapper -->
