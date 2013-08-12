@@ -21,6 +21,7 @@
                                     {% else %}
                                     <a>Other Treatments</a>
                                     {% endif %}
+                                    <span><i class="icon-medkit pull-left"></i></span>
                                     <ul class="treatment">
                                         {% for treatment in _groupedData.treatments %}
                                         <li>
@@ -30,7 +31,6 @@
                                     </ul><!-- .treatment -->
                                 </li>
                             </ul><!-- .sub-specialization -->
-                            <span><i class="icon-medkit pull-left"></i></span>
                             {% endif %}
                     {% endfor %}
                     

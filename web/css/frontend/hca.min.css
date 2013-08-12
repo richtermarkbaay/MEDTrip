@@ -37,9 +37,13 @@
   width: 226px;
 }
 #content-wrapper .aside-wrapper form input[type="checkbox"] {
+  margin-right: 2px;
+  margin-bottom: 0px;
   width: 20px;
+  margin-top: 2px;
 }
 #content-wrapper .aside-wrapper form .btn-primary {
+  margin-top: -10px;
   margin-bottom: 20px;
 }
 #content-wrapper .aside-wrapper form p {
@@ -693,7 +697,7 @@ ul.nav-tabs li.active a:hover {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
-  background-image: url("/images/glyphicons-halflings.png");
+  background-image: url("/images/frontend/glyphicons-halflings.png");
 }
 
 .white-icon-search {
@@ -1333,10 +1337,68 @@ form.home-search > button.btn:active {
   color: inherit;
 }
 
+.specializations-list-wrapper ul {
+  list-style: none;
+  margin: 0 0 0 0;
+  position: relative;
+  display: block;
+}
+.specializations-list-wrapper ul > li {
+  font-size: 14px;
+  font-weight: bold;
+}
+.specializations-list-wrapper ul > li > a {
+  display: block;
+  vertical-align: top;
+  color: #657174;
+  line-height: 1.3em;
+}
+.specializations-list-wrapper ul li.specialization {
+  margin-bottom: 10px;
+}
+.specializations-list-wrapper ul li.specialization > * {
+  margin-right: 10px;
+  display: block;
+}
+.specializations-list-wrapper ul li.specialization > a {
+  font-size: 16px;
+}
+.specializations-list-wrapper ul.sub-specialization {
+  padding-left: 70px;
+}
+.specializations-list-wrapper ul.sub-specialization > li {
+  vertical-align: top;
+  display: block;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+.specializations-list-wrapper ul.sub-specialization > li > * {
+  margin-right: 10px;
+  display: block;
+}
+.specializations-list-wrapper ul.sub-specialization > li > a {
+  font-weight: normal;
+}
+.specializations-list-wrapper ul.treatment > li {
+  display: inline;
+}
+.specializations-list-wrapper ul.treatment > li > a {
+  display: inline;
+  margin-left: 2px;
+  font-weight: normal;
+  font-style: italic;
+}
+.specializations-list-wrapper ul.treatment > li:after {
+  content: ",";
+}
+.specializations-list-wrapper ul.treatment > li:last-child:after {
+  content: "";
+}
+
 /* This styles the different tiers */
 .premier-type-wrapper {
   background-color: #fff;
-  margin: 0px 0px 45px;
+  margin: 0px 0px 20px;
   -webkit-border-radius: 1px !important;
   -moz-border-radius: 1px !important;
   border-radius: 1px !important;
@@ -1454,8 +1516,6 @@ form.home-search > button.btn:active {
   color: #657174;
 }
 .featured-type-wrapper .featured-item .content .thumbnail-frame {
-  width: 154px;
-  height: 123px;
   position: relative;
 }
 .featured-type-wrapper .featured-item .content .thumbnail-frame .img-polaroid {
@@ -1607,6 +1667,10 @@ form.home-search > button.btn:active {
   padding-top: 8px;
   min-height: 40px;
   text-align: center;
+  background: url("/images/frontend/sprite.png") -215px -51px no-repeat;
+}
+.widget-wrapper.wide > h3.widget-heading {
+  background-position: -171px -101px;
 }
 .widget-wrapper > h4.widget-heading {
   display: block;
@@ -2499,13 +2563,13 @@ div.register p a:hover {
 .hca-v-sprite.stripe-bg-dark {
   background-position: 0 -396px;
 }
-.bg-blue {
+.hca-v-sprite.stripe-bg.blue {
   background-color: #bcd9e4;
 }
-.bg-orange {
+.hca-v-sprite.stripe-bg.orange {
   background-color: #FC771F;
 }
-.bg-green {
+.hca-v-sprite.stripe-bg.green {
   background-color: #72807D;
 }
 
