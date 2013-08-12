@@ -1938,10 +1938,6 @@ ul.two-column:not(.items-count-1) {
     -moz-column-gap: 10px;
 }
 
-ul.two-column:not(.items-count-1)>li {
-    float: left;
-}
-
 ul.two-column>li {
     margin-bottom: 20px;
     border: none;
