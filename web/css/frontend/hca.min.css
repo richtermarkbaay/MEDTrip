@@ -1364,7 +1364,7 @@ form.home-search > button.btn:active {
   font-size: 16px;
 }
 .specializations-list-wrapper ul.sub-specialization {
-  padding-left: 70px;
+  padding-left: 60px;
 }
 .specializations-list-wrapper ul.sub-specialization > li {
   vertical-align: top;
@@ -1377,7 +1377,7 @@ form.home-search > button.btn:active {
   display: block;
 }
 .specializations-list-wrapper ul.sub-specialization > li > a {
-  font-weight: normal;
+  font-weight: bold;
 }
 .specializations-list-wrapper ul.treatment > li {
   display: inline;
@@ -1386,7 +1386,7 @@ form.home-search > button.btn:active {
   display: inline;
   margin-left: 2px;
   font-weight: normal;
-  font-style: italic;
+  font-style: normal;
 }
 .specializations-list-wrapper ul.treatment > li:after {
   content: ",";
