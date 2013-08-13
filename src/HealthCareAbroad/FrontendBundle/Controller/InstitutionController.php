@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -111,6 +113,17 @@ class InstitutionController extends ResponseHeadersController
             
             $isSingleCenterInstitution = $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']);
             
+            $contactDetailService = $this->get('services.contact_detail');
+            // add a string representation for each contactDetail
+            foreach ($this->institution['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $contactDetailService->contactDetailToString($contactDetail);
+            }
+            
+            // set the main contact number
+            $this->institution['mainContactNumber'] = isset($this->institution['contactDetails'][0])
+            ? $this->institution['contactDetails'][0]
+            : null;
+            
             if ($isSingleCenterInstitution) {
                 $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
                     ? $this->institution['institutionMedicalCenters'][0]
@@ -126,7 +139,6 @@ class InstitutionController extends ResponseHeadersController
                 
                 // build offered services from first clinic
                 $this->institution['offeredServices'] = $this->apiInstitutionMedicalCenterService->getOfferedServicesByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-                
                 // build doctors from first clinic
                 $this->institution['doctors'] = $this->apiInstitutionMedicalCenterService->getDoctorsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
                 
@@ -140,7 +152,7 @@ class InstitutionController extends ResponseHeadersController
             } 
             // multiple center institution
             else {
-                
+                $socialMedia =  SocialMediaSites::formatSites($this->institution['socialMediaSites']);
                 $this->apiInstitutionService
                     ->buildDoctors($this->institution) // build doctors data
                     ->buildGlobalAwards($this->institution) // build global awards data
@@ -196,6 +208,7 @@ class InstitutionController extends ResponseHeadersController
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
+            'socialMediaArray' => $socialMedia
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);

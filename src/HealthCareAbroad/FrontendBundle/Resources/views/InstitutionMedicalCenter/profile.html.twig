@@ -4,7 +4,8 @@
 
 {% block content %}
     {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
-            headerText: institution.name,
+            headerHospitalText: institution.name,
+            headerText: institutionMedicalCenter.name,
             featuredMediaSource: institutionMedicalCenter.featuredMedia is defined and institution.featuredMedia.src 
                 ? institutionMedicalCenter.featuredMedia.src 
                 : imageplaceholder.institutionFeaturedImage,
@@ -17,6 +18,7 @@
             institutionInquiryLink: '#form',
             social: socialMediaArray,
             contactEmail:institutionMedicalCenter.contactEmail,
+            website:institutionMedicalCenter.websites,
         }}
     %}
     
@@ -39,10 +41,18 @@
         {% endif %}
         
         {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress } 
+            with { streetAddress: streetAddress, mainAddress: mainAddress,social: socialMediaArray,
+            contactEmail:institutionMedicalCenter.contactEmail,contactNumber: institutionMedicalCenter.mainContactNumber,website:institutionMedicalCenter.websites, } 
         %}
         
     </div>
+   <div class="span12">
+            <p>Copyright 2013, <b>{{ institutionMedicalCenter.name }}</b> 
+            </p>
+        </div>
+   {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:inquire.imc.html.twig' 
+	     with { modalId: 'modal_imc_inquiry_form', modalTitle: 'Email ' ~ institutionMedicalCenter.name } 
+	%}
 
 {% endblock %}
 

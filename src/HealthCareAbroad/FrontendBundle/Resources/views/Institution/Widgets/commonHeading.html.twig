@@ -8,7 +8,11 @@
 {% endif %}
 
 <div class="cover-photo-wrapper">
-    <h1>{{ viewData.headerText }}</h1>
+
+    <h1>{{ viewData.headerText }}
+       {% if viewData.headerHospitalText is defined %} <span><a href="#">{{ viewData.headerHospitalText }}</a></span> {% endif %}
+    </h1>
+    
     <img class="featured-image" src="{{ viewData.featuredMediaSource }}" />
 
     <div class="info-wrapper hca-v-sprite stripe-bg-dark">
@@ -28,7 +32,12 @@
                 {% endif %}
                 {% if viewData.contactEmail %}
                 <li>
-                    <a class="btn orange" href="#modal_multiple_institution_inquiry_form" role="button" data-toggle="modal"><i class="icon-envelope-alt"></i>  Email Us</a>
+                    <a class="btn orange" href="#modal_imc_inquiry_form" role="button" data-toggle="modal"><i class="icon-envelope-alt"></i>  Email Us</a>
+                </li>
+                {% endif %}
+                {% if viewData.website %}
+                <li>
+                     <a id="visit_website" class="btn orange" href="http://{{ viewData.website }}"><i class="icon-globe"></i> Visit Website</a>
                 </li>
                 {% endif %}
             </ul>
@@ -40,7 +49,7 @@
                 {% endif %}
                 {% if viewData.social.twitter.value %}
                     <li>
-                        <a class="btn orange" href="{{ viewData.social.facebook.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
+                        <a class="btn orange" href="{{ viewData.social.twitter.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
                     </li>
                 {% endif %}
                 {% if viewData.social.googleplus.value %}

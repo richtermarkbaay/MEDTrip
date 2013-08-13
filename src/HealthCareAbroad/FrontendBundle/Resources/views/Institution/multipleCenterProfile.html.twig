@@ -9,10 +9,12 @@
         logoSource: institution.logo and institution.logo.src
             ? institution.logo.src
             : null,
-        contactNumber: contact_details_to_json(institution.contactDetails, true),
+        contactNumber: institution.mainContactNumber,
         streetAddress: streetAddress,
         mainAddress: mainAddress,
-        institutionInquiryLink: '#form'
+        institutionInquiryLink: '#form',
+        social: socialMediaArray,
+        contactEmail:institutionMedicalCenter.contactEmail,
     }}
 %}
 
