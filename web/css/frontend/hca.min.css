@@ -624,10 +624,10 @@ ul.nav-tabs li.active a:hover {
   overflow-x: hidden;
 }
 .modal .modal-body form select {
-  /*height: 40px; */
+  height: 40px;
 }
 .modal .modal-body form input {
-  /*height: 40px; */
+  height: 40px;
 }
 .modal .modal-body form input.error {
   border: 1px solid #cc0000;
@@ -2220,7 +2220,7 @@ div.register p a:hover {
   font-weight: 400;
 }
 .newsletter-box > form input[type="email"] {
-  height: 35px;
+  height: 40px;
   font-family: "PT Sans",sans-serif;
   font-size: 14px;
   border: #555555 solid 1px;
@@ -3040,7 +3040,7 @@ ul.ui-autocomplete.ui-menu li ul li a:before {
 }
 
 .hca-location-btn {
-  background-color: #FFFFFF;
+  background-color: #d4d4d4;
   border: 1px solid #cccccc;
   border-radius: 0px !important;
   box-shadow: 0px 2px 2px 0px #e5e5e5 inset;
@@ -3080,7 +3080,7 @@ ul.ui-autocomplete.ui-menu li ul li a:before {
 }
 
 .custom-select .btn:hover, .hca-location-btn:hover {
-  background-color: #F3F3F3;
+  background-color: #EEEEEE;
 }
 
 .custom-select {
