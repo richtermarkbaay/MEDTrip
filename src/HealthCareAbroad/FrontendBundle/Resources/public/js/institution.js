@@ -15,18 +15,18 @@ var InstitutionInquiry = {
     
     clearErrors: function() {
         InstitutionInquiry.institutionInquiryComponents.form.find('.error').removeClass('error');
-        InstitutionInquiry.institutionInquiryComponents.form.children('ul.error').remove();
+        InstitutionInquiry.institutionInquiryComponents.form.find('ul').remove();
         return this;
     },
     
     resetAlertBox: function(){
         InstitutionInquiry.institutionInquiryComponents.form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+        InstitutionInquiry.institutionInquiryComponents.form.find('ul').remove();
         return this;
     },
     
     showAlertError: function(_errorString) {
         InstitutionInquiry
-            .resetAlertBox()
             .institutionInquiryComponents.form.find('.alert-box')
             .addClass('alert alert-error')
             .html(_errorString);
@@ -36,7 +36,6 @@ var InstitutionInquiry = {
     
     showAlertSuccess: function() {
         InstitutionInquiry
-        .resetAlertBox()
         .institutionInquiryComponents.form.find('.alert-box')
         .addClass('alert alert-success')
         .html('Your message has been sent! Thank you.');
@@ -44,7 +43,7 @@ var InstitutionInquiry = {
     },
     
     saveInquiry: function(){
-        InstitutionInquiry.clearErrors();
+    	InstitutionInquiry.restoreInitialState();
         $.ajax({
             url: this.institutionInquiryComponents.path,
             data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
@@ -72,7 +71,8 @@ var InstitutionInquiry = {
                     	var _errorString = 'We need you to correct some of your input. Please check the fields in red.';
                         $.each(errors, function(key, item){
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
-                            $('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field+' > input'));
+                            isLocationDropdown = item.field == 'country';
+                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input')));
                         });
                         InstitutionInquiry.showAlertError(_errorString);
                     }
@@ -98,7 +98,7 @@ var InstitutionInquiry = {
 //        InstitutionInquiry.institutionInquiryComponents.form.live('show', function(){
 //        	//console.log();
 //        	$('body').append($(this));
-//            InstitutionInquiry.restoreInitialState();
+//            
 //        });
 //        
         // initialize submit submitButton
@@ -112,7 +112,6 @@ var InstitutionInquiry = {
             return false;
         });
         InstitutionInquiry.institutionInquiryComponents.form.submit(function(){
-            
             InstitutionInquiry.saveInquiry();
             
             return false;
