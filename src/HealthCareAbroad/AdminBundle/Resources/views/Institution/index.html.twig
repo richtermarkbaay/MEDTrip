@@ -31,8 +31,10 @@
                 {% for institution in institutions %}
                     <tr id="institution-{{institution.id}}">
                         <td style="text-align: center;padding: 0">
-                            <input type="checkbox" value="1" {{ institution.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_updatePayingClient', {institutionId: institution.id}) }}">
-                            <div style="display:none">updating...</div>
+                            {#--- 
+                            ----- new rule: paying_client will be updated every time the clinic paying_client field is changed
+                            #}
+                            <b>{{ institution.payingClient ? 'Yes' : 'No' }}</b>
                         </td>
                         <td>
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" target="_blank" title="View {{ institution.name }}">{{ institution.name }}</a> 

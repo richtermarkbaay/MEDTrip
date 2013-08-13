@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
 use HealthCareAbroad\AdminBundle\Form\InstitutionProfileFormType;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -98,19 +100,21 @@ class InstitutionMedicalCenterController extends Controller
             $institutionMedicalCenters = $this->filteredResult;
 
             $ancillaryServicesData = array(
-                            'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
-                            'selectedAncillaryServices' => array()
+                'globalList' => $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
+                'selectedAncillaryServices' => array()
             );
+            
             $params = array(
-                            'institution' => $this->institution,
-                            'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
-                            'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
-                            'institutionMedicalCenters' => $institutionMedicalCenters,
-                            'institutionSpecializationsData' => array(),
-                            'ancillaryServicesData' => $ancillaryServicesData,
-                            'pager' => $this->pager,
-                            'isSingleCenter' => false,
-                            'institutionStatusForm' => $institutionStatusForm->createView()
+                'institution' => $this->institution,
+                'centerStatusList' => InstitutionMedicalCenterStatus::getStatusList(),
+                'updateCenterStatusOptions' => InstitutionMedicalCenterStatus::getUpdateStatusOptions(),
+                'institutionMedicalCenters' => $institutionMedicalCenters,
+                'institutionSpecializationsData' => array(),
+                'ancillaryServicesData' => $ancillaryServicesData,
+                'pager' => $this->pager,
+                'isSingleCenter' => false,
+                'institutionStatusForm' => $institutionStatusForm->createView(),
+                'payingClientStatusChoices' => PayingStatus::all(),
             );
 
             $response = $this->render('AdminBundle:InstitutionMedicalCenter:index.html.twig', $params);
@@ -182,7 +186,8 @@ class InstitutionMedicalCenterController extends Controller
                         'ancillaryServicesData' => $ancillaryServicesData,
                         'sideBarUsed' => 'AdminBundle:InstitutionMedicalCenter/Widgets:sidebar.html.twig',
                         //'isOpen24hrs' => $this->get('services.institution_medical_center')->checkIfOpenTwentyFourHours(\json_decode($this->institutionMedicalCenter->getBusinessHours(),true)),
-                        'institutionMedicalCenterMedia' => $institutionMedicalCenterMedia
+                        'institutionMedicalCenterMedia' => $institutionMedicalCenterMedia,
+                        'payingClientStatusChoices' => PayingStatus::all(),
         );
 
         return $this->render('AdminBundle:InstitutionMedicalCenter:view.html.twig', $params);
@@ -508,11 +513,22 @@ class InstitutionMedicalCenterController extends Controller
         $request = $this->getRequest();
         $this->institutionMedicalCenter->setPayingClient((int)$request->get('payingClient'));
 
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institutionMedicalCenter);
-        $em->flush($this->institutionMedicalCenter);
+        try {
+            $em = $this->getDoctrine()->getEntityManager();
+            $em->persist($this->institutionMedicalCenter);
+            $em->flush($this->institutionMedicalCenter);
+            
+            $this->get('services.institution')
+                ->updatePayingClientStatus($this->institutionMedicalCenter->getInstitution());
+            
+            $response = new Response(\json_encode(array('message' => 'ok')),200, array('content-type' => 'application/json'));
+            
+        }
+        catch (\Exception $e) {
+            $response = new Response(\json_encode(array('message' => $e->getMessage())),500, array('content-type' => 'application/json'));
+        }
 
-        return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
+        return $response;
     }
 
 }

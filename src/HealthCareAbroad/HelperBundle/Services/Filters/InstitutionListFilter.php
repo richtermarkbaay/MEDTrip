@@ -23,14 +23,26 @@ class InstitutionListFilter extends DoctrineOrmListFilter
         $this->addValidCriteria('country');
         $this->addValidCriteria('type');
         $this->addValidCriteria('payingClient');
+        $this->addValidCriteria('name');
     }
     function setFilterOptions()
     {
         $statusOptions = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL) + InstitutionStatus::getBitValueLabels();
+        
+        $this->setNameFilterOption();
         $this->setPayingClientOption();
         $this->setCountryFilterOption();
         $this->setTypeFilterOption();
         $this->setStatusFilterOption($statusOptions);
+    }
+    
+    function setNameFilterOption()
+    {
+        if($this->queryParams['name'] == 'all') {
+            $this->queryParams['name'] = '';
+        }
+        
+        $this->filterOptions['name'] = array('label' => 'Institution Name', 'value' => isset($this->queryParams['name']) ? $this->queryParams['name'] : '' );
     }
     
     function setCountryFilterOption()
@@ -99,12 +111,19 @@ class InstitutionListFilter extends DoctrineOrmListFilter
             $this->queryBuilder->setParameter('payingClient', $this->queryParams['payingClient']);
         }
         
+        if (trim($this->queryParams['name'])) {
+            $this->queryBuilder->andWhere('a.name LIKE :name');
+            $this->queryBuilder->setParameter('name', "%" . $this->queryParams['name'] . "%");
+        }
+        
         $sortBy = $this->sortBy ? $this->sortBy : 'name';
         $sort = "a.$sortBy " . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
         
         $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
+        
+        $this->pager->setLimit(50);
         
         $this->filteredResult = $this->pager->getResults();
     }

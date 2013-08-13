@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -83,6 +87,22 @@ class InstitutionService
     public function setTimeAgoExtension(\HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension $timeAgoExt)
     {
         $this->timeAgoExt = $timeAgoExt;
+    }
+    
+    public function updatePayingClientStatus(Institution $institution)
+    {
+        $dql = "SELECT COUNT(imc) as cnt FROM InstitutionBundle:InstitutionMedicalCenter imc WHERE imc.institution = :institutionId AND imc.payingClient != :freeListingStatus";
+        $cntCurrentPayingClinic = (int)$this->doctrine->getEntityManager()->createQuery($dql)
+            ->setParameter('institutionId', $institution->getId())
+            ->setParameter('freeListingStatus', PayingStatus::FREE_LISTING)
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        
+        $isPaying = $cntCurrentPayingClinic > 0;
+        $institution->setPayingClient($isPaying);
+        $em = $this->doctrine->getManager();
+        $em->persist($institution);
+        $em->flush();
+        
     }
 
     /**
