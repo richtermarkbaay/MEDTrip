@@ -4,7 +4,7 @@
 
 {% block content %}
     {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
-            headerHospitalText: institution.name,
+            subHeader: { text: institution.name, url: get_institution_frontend_url(institution)},
             headerText: institutionMedicalCenter.name,
             featuredMediaSource: institutionMedicalCenter.featuredMedia is defined and institution.featuredMedia.src 
                 ? institutionMedicalCenter.featuredMedia.src 

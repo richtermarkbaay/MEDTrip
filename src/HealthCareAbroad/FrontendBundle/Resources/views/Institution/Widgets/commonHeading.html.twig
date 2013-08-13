@@ -10,7 +10,9 @@
 <div class="cover-photo-wrapper">
 
     <h1>{{ viewData.headerText }}
-       {% if viewData.headerHospitalText is defined %} <span><a href="#">{{ viewData.headerHospitalText }}</a></span> {% endif %}
+       {% if viewData.subHeader is defined %} 
+           <span><a href="{{ viewData.subHeader.url }}">{{ viewData.subHeader.text }}</a></span> 
+       {% endif %}
     </h1>
     
     <img class="featured-image" src="{{ viewData.featuredMediaSource }}" />
