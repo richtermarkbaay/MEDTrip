@@ -22,6 +22,28 @@
   
             {% block sectionContent %}
                 <div id="scroll-pane" data-spy="scroll" data-offset-top="0" data-target="#navbar-side">
+                    
+                    <div id="clinic-status" class="treatmentbox">
+                        <h5 style="padding: 10px; border: 1px solid #EEEEEE" >
+                            Paying Status
+                        </h5>
+                        <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
+                            <form class="paying-client-status-form" action="{{ path('admin_institution_medicalCenter_updatePayingClient', { institutionId: institutionMedicalCenter.institution.id }) }}" method="post">
+                                <div class="control-group">
+                                    <label>Update paying status</label>
+                                    <select class="paying-client-field" name="payingClient">
+                                        {% for _key, _label in payingClientStatusChoices %}
+                                        <option value="{{ _key }}" {{ institutionMedicalCenter.payingClient == _key ? 'selected':''}}>{{ _label }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                
+                                <input type="hidden" name="imcId" value="{{ institutionMedicalCenter.id}}" />
+                            </form>
+                        </div>
+                    </div>
+                
+                    
                     {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
                     {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig' %}
@@ -97,6 +119,30 @@
     <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+
+            $('select.paying-client-field').change(function(){
+                $(this).parents('form.paying-client-status-form').submit();
+            });
+
+            $('form.paying-client-status-form').submit(function(e){
+                e.preventDefault();
+                var _form = $(this);
+                var _msgElem = $('<div></div>').html('Processing...');
+                _form.append(_msgElem);
+                $.ajax({
+                    url: _form.attr('action'),
+                    data: _form.serialize(),
+                    type: 'put',
+                    dataType: 'json',
+                    success: function(response){
+                        _msgElem.html('Done!');
+                        setTimeout(function(){
+                            _msgElem.fadeOut();
+                        }, 1000);
+                    }
+                });
+            });
+            
         	$('.ajax_loader').hide();
         	$(".hour").timepicker({ seconds: false  });
 

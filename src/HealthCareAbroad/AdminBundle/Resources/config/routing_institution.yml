@@ -108,9 +108,9 @@ admin_institution_doctors:
         institutionId: \d+
         
 admin_institution_updatePayingClient:
-    pattern: /admin/institution/{institutionId}/update-paying-client
+    pattern: /admin/institution/payingClientStatus
     defaults: { _controller: AdminBundle:Institution:updatePayingClient }
     requirements:
         institutionId: \d+
         payingClient: \d+
-        _method: POST
+        _method: PUT

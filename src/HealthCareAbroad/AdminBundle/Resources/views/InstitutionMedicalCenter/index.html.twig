@@ -31,8 +31,14 @@
                     {% for center in institutionMedicalCenters %}
                     <tr>
                         <td style="text-align: center;padding: 0">
-                            <input type="checkbox" value="1" {{ center.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_medicalCenter_updatePayingClient', {institutionId: institution.id, imcId: center.id }) }}">
-                            <div style="display:none">updating...</div>
+                            <form class="paying-client-status-form" action="{{ path('admin_institution_medicalCenter_updatePayingClient', { institutionId:center.institution.id }) }}" method="post">
+                                <select class="paying-client-field" name="payingClient">
+                                    {% for _key, _label in payingClientStatusChoices %}
+                                    <option value="{{ _key }}" {{ center.payingClient == _key ? 'selected':''}}>{{ _label }}</option>
+                                    {% endfor %}
+                                </select>
+                                <input type="hidden" name="imcId" value="{{ center.id}}" />
+                            </form>
                         </td>
                         <td>{{ center.name }}</td>
                         <td style="width: 425px";>{{ center.description  | raw  }}</td>
@@ -66,18 +72,26 @@
 <script type="text/javascript">
     $(function(){
         $(".collapse").collapse();
-        
-       $('input.update-paying-client').change(function(){
-            msgElem = $(this).next().html('updating...').show(); 
-            var params = {
-                payingClient: $(this).prop('checked') ? '1' : '0' 
-            };
+        $('select.paying-client-field').change(function(){
+            $(this).parents('form.paying-client-status-form').submit();
+        });
 
-            $.post($(this).attr('data-update-url'), params, function(response){
-            	msgElem.html('done!');
-            	setTimeout(function(){
-            		msgElem.fadeOut();
-                }, 1000);
+        $('form.paying-client-status-form').submit(function(e){
+            e.preventDefault();
+            var _form = $(this);
+            var _msgElem = $('<div></div>').html('Processing...');
+            _form.append(_msgElem);
+            $.ajax({
+                url: _form.attr('action'),
+                data: _form.serialize(),
+                type: 'put',
+                dataType: 'json',
+                success: function(response){
+                    _msgElem.html('Done!');
+                    setTimeout(function(){
+                        _msgElem.fadeOut();
+                    }, 1000);
+                }
             });
         });
        
