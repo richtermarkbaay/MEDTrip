@@ -1,5 +1,12 @@
 {# this file will be shared with medical centers profile page #}
 
+{% if viewData.contactNumber %}
+<div id="_call-content-wrapper" style="display: none">
+    <h2><small><i class="icon-phone"></i>Call</small><span>{{ viewData.headerText }}</span></h2>
+    <h1>{{ viewData.contactNumber.__toString }}</h1>
+</div>
+{% endif %}
+
 <div class="cover-photo-wrapper">
     <h1>{{ viewData.headerText }}</h1>
     <img class="featured-image" src="{{ viewData.featuredMediaSource }}" />
@@ -16,28 +23,31 @@
             <ul class="unstyled inline-list pull-right">
                 {% if viewData.contactNumber %}
                 <li>
-                    <a href="#" id="hospital-contact" rel="popover" class="btn orange" data-contact-number="{{ viewData.contactNumber }}">
-                        <i class="icon-phone"></i> Call Us
-                    </a>
+                    <a href="#" id="hospital-contact" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
                 </li>
                 {% endif %}
-
+                {% if viewData.contactEmail %}
                 <li>
-                    <a class="btn orange" href="#form_feedback" role="button"><i class="icon-envelope-alt"></i>  Email Us</a>
+                    <a class="btn orange" href="#modal_multiple_institution_inquiry_form" role="button" data-toggle="modal"><i class="icon-envelope-alt"></i>  Email Us</a>
                 </li>
+                {% endif %}
             </ul>
             <ul class="unstyled inline-list pull-right">
-                <li>
-                    <a id="hospital_contact" class="btn orange" href="#">Visit <i class="icon-facebook"></i></a>
-                </li>
-                <li>
-                    <a id="email_multiple" class="btn orange" href="#modal_multiple_institution_inquiry_form" role="button" data-toggle="modal">
-                        Visit <i class="icon-twitter"></i>
-                    </a>
-                </li>
-                <li>
-                    <a id="visit_website" class="btn orange" href="#" role="button" data-toggle="modal">Visit <i class="icon-google-plus"></i></a>
-                </li>
+                {% if viewData.social.facebook.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.facebook.value }}">Visit <i class="icon-facebook"></i></a>
+                    </li>
+                {% endif %}
+                {% if viewData.social.twitter.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.facebook.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
+                    </li>
+                {% endif %}
+                {% if viewData.social.googleplus.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.googleplus.value }}" role="button" >Visit <i class="icon-google-plus"></i></a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
 

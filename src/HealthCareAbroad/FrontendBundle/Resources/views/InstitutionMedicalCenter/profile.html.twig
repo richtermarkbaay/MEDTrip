@@ -3,7 +3,6 @@
 {% set mainAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode']) %}
 
 {% block content %}
-
     {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
             headerText: institution.name,
             featuredMediaSource: institutionMedicalCenter.featuredMedia is defined and institution.featuredMedia.src 
@@ -12,10 +11,12 @@
             logoSource: institutionMedicalCenter.logo and institutionMedicalCenter.logo.src
                 ? institutionMedicalCenter.logo.src
                 : null,
-            contactNumber: contact_details_to_json(institutionMedicalCenter.contactDetails, true),
+            contactNumber: institutionMedicalCenter.mainContactNumber,
             streetAddress: streetAddress,
             mainAddress: mainAddress,
-            institutionInquiryLink: '#form'
+            institutionInquiryLink: '#form',
+            social: socialMediaArray,
+            contactEmail:institutionMedicalCenter.contactEmail,
         }}
     %}
     
@@ -51,7 +52,16 @@
 <!--
 (function($){
     $(function(){
-
+         $('[rel=popover]').popover({
+             placement: 'top',
+             html: true,
+             trigger: 'click',
+             content: function() {
+                 return $('#_call-content-wrapper').html();
+             }
+         }).click(function(e) {
+             e.preventDefault();
+         });
     });
 })(jQuery);
 //-->

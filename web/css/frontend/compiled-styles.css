@@ -734,7 +734,7 @@ ul.nav-tabs li.active a:hover {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
-  background-image: url("/images/frontend/glyphicons-halflings.png");
+  background-image: url("/../images/frontend/glyphicons-halflings.png");
 }
 
 .white-icon-search {
@@ -1435,7 +1435,7 @@ form.home-search > button.btn:active {
 /* This styles the different tiers */
 .premier-type-wrapper {
   background-color: #fff;
-  margin: 0px 0px 20px;
+  margin: 0px 0px 45px;
   -webkit-border-radius: 1px !important;
   -moz-border-radius: 1px !important;
   border-radius: 1px !important;
@@ -1553,6 +1553,8 @@ form.home-search > button.btn:active {
   color: #657174;
 }
 .featured-type-wrapper .featured-item .content .thumbnail-frame {
+  height: 123px;
+  width: 154px;
   position: relative;
 }
 .featured-type-wrapper .featured-item .content .thumbnail-frame .img-polaroid {
@@ -2600,13 +2602,16 @@ div.register p a:hover {
 .hca-v-sprite.stripe-bg-dark {
   background-position: 0 -396px;
 }
-.hca-v-sprite.stripe-bg.blue {
+
+.bg-blue {
   background-color: #bcd9e4;
 }
-.hca-v-sprite.stripe-bg.orange {
+
+.bg-orange {
   background-color: #FC771F;
 }
-.hca-v-sprite.stripe-bg.green {
+
+.bg-green {
   background-color: #72807D;
 }
 

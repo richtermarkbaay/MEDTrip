@@ -697,7 +697,7 @@ ul.nav-tabs li.active a:hover {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
-  background-image: url("/images/glyphicons-halflings.png");
+  background-image: url("/../images/frontend/glyphicons-halflings.png");
 }
 
 .white-icon-search {

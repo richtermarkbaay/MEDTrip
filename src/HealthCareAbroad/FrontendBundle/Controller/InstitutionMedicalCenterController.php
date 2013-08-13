@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
@@ -101,6 +103,18 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
             $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
             
+            $contactDetailService = $this->get('services.contact_detail');
+            // add a string representation for each contactDetail
+            foreach ($this->institutionMedicalCenter['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $contactDetailService->contactDetailToString($contactDetail);
+            }
+            
+            // set the main contact number
+            $this->institutionMedicalCenter['mainContactNumber'] = isset($this->institutionMedicalCenter['contactDetails'][0])
+                ? $this->institutionMedicalCenter['contactDetails'][0]
+                : null;
+            
+            $socialMedia =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institutionMedicalCenter);
         }
@@ -116,7 +130,8 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institution' => $this->institution,
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
-            'formId' => 'imc_inquiry_form'
+            'formId' => 'imc_inquiry_form',
+            'socialMediaArray' => $socialMedia
         );
         
         // set request variables to be used by page meta components
