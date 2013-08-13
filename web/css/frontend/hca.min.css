@@ -1363,7 +1363,7 @@ form.home-search > button.btn:active {
   display: block;
 }
 .specializations-list-wrapper ul li.specialization > a {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.5em;
 }
 .specializations-list-wrapper ul.sub-specialization {
