@@ -661,7 +661,9 @@ ul.nav-tabs li.active a:hover {
   margin: 2px 0;
 }
 .media .icon-map-marker {
+  display: block;
   color: #fe6500;
+  margin: 2px 0.3em;
 }
 .media .media {
   margin-top: 0;
@@ -1362,6 +1364,7 @@ form.home-search > button.btn:active {
 }
 .specializations-list-wrapper ul li.specialization > a {
   font-size: 16px;
+  line-height: 1.5em;
 }
 .specializations-list-wrapper ul.sub-specialization {
   padding-left: 60px;
