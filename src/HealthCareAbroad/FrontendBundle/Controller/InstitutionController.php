@@ -47,6 +47,7 @@ class InstitutionController extends ResponseHeadersController
         $request = $this->getRequest();
 
         if($slug = $request->get('institutionSlug')) {
+            
             $this->institution = $this->get('services.institution')->getFullInstitutionBySlug($slug);
 
             if(!$this->institution) {

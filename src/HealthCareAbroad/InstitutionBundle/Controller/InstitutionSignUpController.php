@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Twig\UrlGeneratorTwigExtension;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -194,7 +196,6 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $request->getSession()->setFlash('error', "We need you to correct some of your input. Please check the fields in red.");
             }
         }
-
         return $this->render('InstitutionBundle:SignUp:signUp.html.twig', array(
             'form' => $form->createView(),
             'institutionTypes' => InstitutionTypes::getFormChoices()
@@ -549,7 +550,6 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         $params['editForm'] = $editForm->createView();
-
 
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
     }

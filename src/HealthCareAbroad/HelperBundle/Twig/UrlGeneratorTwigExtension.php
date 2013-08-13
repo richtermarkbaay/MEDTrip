@@ -20,11 +20,18 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
     
     private $chromediaApiUrl;
     
+    private $chromediaAccountUrl;
+    
     public function setChromediaApiUrl($url)
     {
         $this->chromediaApiUrl=$url;
     }
 
+    public function setChromediaAccountUrl($url)
+    {
+        $this->chromediaAccountUrl = $url; 
+    }
+    
     public function __construct(UrlGeneratorInterface $generator)
     {
         $this->generator = $generator;
@@ -38,6 +45,7 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
             'get_city_url' => new \Twig_Function_Method($this, 'get_city_url'),
             'get_load_states_api_uri' => new \Twig_Function_Method($this, 'getLoadStatesApiUri'),
             'get_load_cities_api_uri' => new \Twig_Function_Method($this, 'getLoadCitiesApiUri'),
+            'get_validate_email_uri' => new \Twig_Function_Method($this, 'getValidateEmailUri')         
         );
     }
 
@@ -61,6 +69,11 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
         $params = array('country' => $city->getCountry()->getSlug(), 'city' => $city->getSlug());
 
         return $this->generator->generate('frontend_search_results_cities', $params, true);
+    }
+    
+    public function getValidateEmailUri()
+    {
+        return $this->chromediaAccountUrl.'/validate';
     }
     
     public function getLoadStatesApiUri()

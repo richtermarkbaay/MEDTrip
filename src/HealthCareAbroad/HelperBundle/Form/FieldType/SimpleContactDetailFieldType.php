@@ -43,8 +43,8 @@ class SimpleContactDetailFieldType extends AbstractType
             ->addModelTransformer(new CountryTransformer($this->locationService));
         
         $builder->add($countryList);
-        $builder->add('area_code', 'text', array('attr' => array('placeholder' => 'Area Code')));
-        $builder->add('number', 'text', array('attr' => array( 'placeholder' => 'Phone Number')));
+        $builder->add('area_code', 'text', array('required' => false, 'attr' => array('placeholder' => 'Area Code')));
+        $builder->add('number', 'text', array('required' => false, 'attr' => array( 'placeholder' => 'Phone Number')));
         $builder->add('ext', 'text', array('required' => false));
     }
     
