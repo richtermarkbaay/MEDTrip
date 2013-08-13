@@ -1,19 +1,42 @@
 {% form_theme form 'FrontendBundle:Form:form.horizontal.html.twig' %}
-<form class="form-horizontal">
-    {{ form_row(form.inquirer_name) }}
-    
-    <div class="control-group">
-        <label for="Country">Your Country</label>
-        {{ form_widget(form.country) }}
+<form class="form-horizontal"  {{ form_enctype(form) }} action="" id="inquiryForm">
+    <div class="alert-box"></div>
+    <div class="inquirer_name control-group">
+        <label for="{{ form.children.inquirer_name.vars.id }}">
+           {{ form.children.inquirer_name.vars.label }}
+        </label>
+        {{ form_widget(form.inquirer_name, {attr: {class: 'span9'}}) }}    
     </div>
-
-    {{ form_row(form.inquirer_email, {help: 'Don\'t worry! We hate SPAM as much as you do!'}) }}
-    {{ form_row(form.message) }}
-    {{ form_row(form.captcha) }}
+    <div class="country control-group">
+        <label for="{{ form.children.country.vars.id }}" >
+            {{ form.children.country.vars.label }}
+        </label>
+        {{ form_widget(form.country, {attr: {class: 'span9'}}) }}
+    </div>
+    <div class="inquirer_email control-group">
+        <label for="{{ form.children.inquirer_email.vars.id }}">
+            {{ form.children.inquirer_email.vars.label }}
+        </label>
+        {{ form_widget(form.inquirer_email, {attr: {class: 'span9'}}) }}    
+        <small>Don't worry! We hate SPAM as much as you do!</small>
+    </div>
+    <div class="message control-group row-fluid">
+        <label for="{{ form.children.message.vars.id }}" >
+            {{ form.children.message.vars.label }}
+        </label>
+        {{ form_widget(form.message, {attr: {rows: 5, class: 'span9'} }) }}
+    </div>
+    
+    <div class="captcha control-group">
+        <label for="{{ form.children.captcha.vars.id }}" >
+            {{ form.children.captcha.vars.label }}
+        </label>
+            {{ form_widget(form.captcha) }}
+    </div>
 
     <div class="control-group">
         <label class="checkbox">
-            <input type="checkbox">Yes I'd like to hear from similar Doctors and Clinics in <a href="#">ClinicCountry</a>
+            <input type="checkbox">Yes I'd like to hear from similar Doctors and Clinics in <a href="#">Clinic Country</a>
         </label>
     </div>
     <div class="control-group">
@@ -22,7 +45,7 @@
         </label> 
     </div>
 
-    <button class="btn btn-primary orange" type="submit">Send Message</button>
+    <button class="btn btn-primary orange" data-loader-text="Processing..." id="inquiry_submitButton" type="submit">Send Message</button>
 
     <p>
         <small>We do not sell, trade, share nor otherwise transfer to outside parties your personally identifiable information without your full consent. 

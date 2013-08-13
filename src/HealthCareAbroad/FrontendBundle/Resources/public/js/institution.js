@@ -15,18 +15,19 @@ var InstitutionInquiry = {
     
     clearErrors: function() {
         InstitutionInquiry.institutionInquiryComponents.form.find('.error').removeClass('error');
+        InstitutionInquiry.institutionInquiryComponents.form.children('ul.error').remove();
         return this;
     },
     
     resetAlertBox: function(){
-        InstitutionInquiry.institutionInquiryComponents.modal.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+        InstitutionInquiry.institutionInquiryComponents.form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         return this;
     },
     
     showAlertError: function(_errorString) {
         InstitutionInquiry
             .resetAlertBox()
-            .institutionInquiryComponents.modal.find('.alert-box')
+            .institutionInquiryComponents.form.find('.alert-box')
             .addClass('alert alert-error')
             .html(_errorString);
             //.html('Please fill up the form properly.');
@@ -36,7 +37,7 @@ var InstitutionInquiry = {
     showAlertSuccess: function() {
         InstitutionInquiry
         .resetAlertBox()
-        .institutionInquiryComponents.modal.find('.alert-box')
+        .institutionInquiryComponents.form.find('.alert-box')
         .addClass('alert alert-success')
         .html('Your message has been sent! Thank you.');
         return this;
@@ -45,7 +46,7 @@ var InstitutionInquiry = {
     saveInquiry: function(){
         InstitutionInquiry.clearErrors();
         $.ajax({
-            url: InstitutionInquiry.institutionInquiryComponents.form.attr('action'),
+            url: this.institutionInquiryComponents.path,
             data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
             type: 'POST',
             dataType: 'json',
@@ -68,10 +69,10 @@ var InstitutionInquiry = {
                     var errors = $.parseJSON(response.responseText).html;
                     $('#institutionInquiry_captcha').val('');
                     if (errors.length) {
-                    	var _errorString = '';
+                    	var _errorString = 'We need you to correct some of your input. Please check the fields in red.';
                         $.each(errors, function(key, item){
-                    		_errorString += item.error+"<br>";
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
+                            $('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field+' > input'));
                         });
                         InstitutionInquiry.showAlertError(_errorString);
                     }
@@ -89,17 +90,17 @@ var InstitutionInquiry = {
     $.fn.institutionInquiryModalForm = function(_components){
         
         InstitutionInquiry.institutionInquiryComponents = {
-            'modal': this,
             'submitButton': _components.submitButton,
-            'form': _components.form
+            'form': _components.form,
+            'path': _components.path
         };
-        
-        InstitutionInquiry.institutionInquiryComponents.modal.live('show', function(){
-        	//console.log();
-        	$('body').append($(this));
-            InstitutionInquiry.restoreInitialState();
-        });
-        
+//        
+//        InstitutionInquiry.institutionInquiryComponents.form.live('show', function(){
+//        	//console.log();
+//        	$('body').append($(this));
+//            InstitutionInquiry.restoreInitialState();
+//        });
+//        
         // initialize submit submitButton
         InstitutionInquiry.institutionInquiryComponents.submitButton.click(function(){
             $(this).attr('data-html', $(this).html())

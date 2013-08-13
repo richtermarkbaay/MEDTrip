@@ -81,6 +81,12 @@
          }).click(function(e) {
              e.preventDefault();
          });
+
+         $('#inquiry_submitButton').institutionInquiryModalForm({
+             submitButton: $('#inquiry_submitButton'),
+             form: $('form#inquiryForm') ,
+             path: "{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}"
+         });
     });
 })(jQuery);
 //-->
