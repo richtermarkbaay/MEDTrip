@@ -46,13 +46,22 @@
         %}
         
     </div>
+    <aside class="span4 aside-wrapper">
+        {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institutionMedicalCenter.coordinates }%}
+    
+        {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.gallery.media|length : [], logo: institutionMedicalCenter.logo } %}
+    
+        <section id="form_feedback" class="widget-wrapper">
+            <h4 class="widget-heading">
+                Email this Clinic
+            </h4>
+            {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {form: form} %}
+        </section>
+    </aside> <!--End of aside_content-->
    <div class="span12">
             <p>Copyright 2013, <b>{{ institutionMedicalCenter.name }}</b> 
             </p>
         </div>
-   {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:inquire.imc.html.twig' 
-	     with { modalId: 'modal_imc_inquiry_form', modalTitle: 'Email ' ~ institutionMedicalCenter.name } 
-	%}
 
 {% endblock %}
 
