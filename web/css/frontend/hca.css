@@ -1754,6 +1754,10 @@ form.home-search > button.btn:active {
   vertical-align: top;
   display: inline-block;
   color: #657174;
+  min-width: 70px;
+}
+.item-wrapper > .left-column-wrapper + .right-column-wrapper {
+	width: 500px;
 }
 .item-wrapper > .right-column-wrapper {
   display: inline-block;
@@ -1787,70 +1791,20 @@ form.home-search > button.btn:active {
 .item-wrapper > .right-column-wrapper p a:after {
   content: " →";
 }
+.item-wrapper > .right-column-wrapper .listing-photo > a.btn {
+    margin: 25px 5px 0 0;
+}
+.item-wrapper > .right-column-wrapper .listing-photo + h3,
+.item-wrapper > .right-column-wrapper .listing-photo + h3 + h4,
+.item-wrapper > .right-column-wrapper .listing-photo + h3 + h4 + p {
+	max-width: 340px;
+}
 .item-wrapper > .tag-box {
-  position: relative;
   height: 20px;
-  margin: 0;
   padding: 5px 0 0;
-}
-.item-wrapper.logo-listing .small-logo-wrapper {
-  float: left;
-  margin-bottom: 5px;
-}
-.item-wrapper.logo-listing > .left-column-wrapper {
-  margin: 0 10px 0 0;
-  min-width: 70px;
-  text-align: center;
-  vertical-align: top;
-  display: inline-block;
-}
-.item-wrapper.logo-listing > .right-column-wrapper {
-  width: 500px;
-  display: inline-block;
-}
-.item-wrapper.photo-listing {
-  margin: 0px 0px 15px;
-  padding-bottom: 15px;
+  margin-top: 10px;
   position: relative;
 }
-.item-wrapper.photo-listing p {
-  margin: 10px 0 !important;
-}
-.item-wrapper.photo-listing .small-logo-wrapper {
-  float: left;
-  margin-bottom: 5px;
-}
-.item-wrapper.photo-listing > .left-column-wrapper {
-  margin: 0 10px 0 0;
-  min-width: 70px;
-  text-align: center;
-  vertical-align: top;
-  display: inline-block;
-}
-.item-wrapper.photo-listing > .right-column-wrapper {
-  display: inline-block;
-  width: 500px;
-}
-.item-wrapper.photo-listing > .right-column-wrapper div.description-box {
-  z-index: 2;
-  float: left;
-  width: 345px;
-  position: relative;
-  min-height: 140px;
-  color: #657174;
-}
-.item-wrapper.photo-listing > .right-column-wrapper .thumbnail-frame {
-  position: relative;
-}
-.item-wrapper.photo-listing > .right-column-wrapper .thumbnail-frame .img-polaroid {
-  width: 135px;
-  height: 100px;
-  margin: 0px 0px 20px;
-}
-.item-wrapper.photo-listing > .right-column-wrapper a.btn {
-  margin: 0 15px 0 20px;
-}
-
 /* This styles the carousel */
 .destination-carousel {
   padding: 0;
