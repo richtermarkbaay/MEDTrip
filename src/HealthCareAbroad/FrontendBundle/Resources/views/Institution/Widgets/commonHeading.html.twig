@@ -25,8 +25,8 @@
                 <span class="hca-sprite hospital-default-logo"></span>
             {% endif %}
         </div>
-        <div class="span5 pull-right">
-            <ul class="unstyled inline-list pull-right">
+        <div class="span5 pull-right btn-contact-list">
+            <ul class="unstyled inline-list">
                 {% if viewData.contactNumber %}
                 <li>
                     <a href="#" id="hospital-contact" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
@@ -41,7 +41,7 @@
                 </li>
                 {% endif %}
             </ul>
-            <ul class="unstyled inline-list pull-right">
+            <ul class="unstyled inline-list">
                 {% if viewData.social.facebook.value %}
                     <li>
                         <a class="btn orange" href="{{ viewData.social.facebook.value }}">Visit <i class="icon-facebook"></i></a>

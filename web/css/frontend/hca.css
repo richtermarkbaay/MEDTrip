@@ -798,6 +798,7 @@ header#header-wrapper .inline-list li a:hover {
 /* List styles */
 ul.inline-list {
   list-style: none;
+  display:block;
 }
 ul.inline-list li {
   display: inline-block;
@@ -3103,6 +3104,9 @@ ul.error {
   margin:0;
   list-style-type:none;
 }
+.modal ul.error {
+  margin:0 0 0 133px;
+}
 /*for clinic schedule*/
 #content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule {
   box-shadow: 0 0 0 1px #d8d8d8 !important;
@@ -3133,4 +3137,8 @@ ul.error {
 }
 #content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li:last-child {
   border-bottom: none;
+}
+/*fixed inline list when only one data for social media account located in the banner and contact details at the bottom of the main content*/
+.btn-contact-list {
+  text-align:right;
 }
