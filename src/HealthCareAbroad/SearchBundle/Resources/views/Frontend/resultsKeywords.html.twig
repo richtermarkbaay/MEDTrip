@@ -34,6 +34,8 @@
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
+        {{ render_search_results_featured_posts() }}
+    
         {% include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } %}
         
         {{ render_search_results_image_ad() }}

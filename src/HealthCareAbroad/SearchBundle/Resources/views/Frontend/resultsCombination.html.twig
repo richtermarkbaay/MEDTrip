@@ -36,6 +36,8 @@
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
+        {{ render_search_results_featured_posts() }}
+    
         {% if includedNarrowSearchWidgets %}
             {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
         {% else %}
