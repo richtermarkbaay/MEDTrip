@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Twig;
 
+use HealthCareAbroad\ApiBundle\Services\HcaBlogApiService;
+
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use HealthCareAbroad\AdvertisementBundle\Services\Retriever;
@@ -14,15 +16,18 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     protected $retrieverService;
     
+    protected $hcaBlogApiService;
+    
     /**
      * @var Session
      */
     protected $session;
     
-    public function __construct(\Twig_Environment $twig, Retriever $retriever)
+    public function __construct(\Twig_Environment $twig, Retriever $retriever, HcaBlogApiService $hcaBlogApiService)
     {
         $this->twig = $twig;
         $this->retrieverService = $retriever;
+        $this->hcaBlogApiService = $hcaBlogApiService;
     }
     
     public function setSessionService(Session $v)
@@ -77,8 +82,9 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function render_homepage_featured_posts_ads()
     {
-        $this->twig->addGlobal('featuredPostsAds', $this->retrieverService->getHomepageFeaturedPosts());
-    
+        //$this->twig->addGlobal('featuredPostsAds', $this->retrieverService->getHomepageFeaturedPosts());
+        $this->twig->addGlobal('featuredPostsAds', $this->hcaBlogApiService->getBlogs());
+
         return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredPosts.html.twig');
     }
 
