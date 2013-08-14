@@ -33,7 +33,7 @@ institution_signup_finish:
     defaults: {_controller: InstitutionBundle:InstitutionSignUp:finish }
     requirements:
         _method: GET
-        
+
 # AJAX
 institution_ajax_addExistingDoctor:
     pattern: /institution/ajax/addDoctor/{imcId}

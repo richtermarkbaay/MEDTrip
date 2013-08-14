@@ -100,6 +100,7 @@ services:
         public: false
         calls:
             - [setChromediaApiUrl, [%chromedia_api_uri%]]
+            - [setChromediaAccountUrl, [%chromedia_accounts_uri%]]
         arguments: [@router]
         tags:
             - { name: twig.extension }
