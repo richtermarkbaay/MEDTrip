@@ -20,7 +20,7 @@ final class PayingStatus
             self::FREE_LISTING => 'Free Listing',
             self::LINKED_LISTING => 'Linked Listing',
             self::LOGO_LISTING => 'Logo Listing',
-            self::PHOTO_LISTING => 'Linked Listing',
+            self::PHOTO_LISTING => 'Photo Listing',
         );
     }
 }
