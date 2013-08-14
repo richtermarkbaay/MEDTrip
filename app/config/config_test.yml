@@ -66,6 +66,14 @@ doctrine:
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
+            hca_blog:
+                driver: %database_driver%
+                host: %hca_blog_db_host%
+                port: %database_port%
+                dbname: %hca_blog_db_name%
+                user: %hca_blog_db_user%
+                password: %hca_blog_db_password%
+                charset: UTF8
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         #auto_mapping: true
