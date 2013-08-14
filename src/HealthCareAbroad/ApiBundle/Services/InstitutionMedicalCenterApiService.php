@@ -47,6 +47,21 @@ class InstitutionMedicalCenterApiService
         $this->mediaExtensionService = $v;
     }
     
+    public function buildFeaturedMediaSource(&$institutionMedicalCenter)
+    {
+        $canDisplayFeaturedMedia = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        
+        // temporarily pull the institution featured media
+        $featuredMedia = isset($institutionMedicalCenter['institution']['featuredMedia']) ? $institutionMedicalCenter['institution']['featuredMedia'] : null;
+        
+        if($canDisplayFeaturedMedia && $featuredMedia){
+            $featuredMedia['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($featuredMedia, ImageSizes::LARGE_BANNER);;
+            $institutionMedicalCenter['featuredMedia'] = $featuredMedia;
+        } 
+        
+        return $this;
+    }
+    
     /**
      * 
      * @param array $institutionMedicalCenter
@@ -221,13 +236,14 @@ class InstitutionMedicalCenterApiService
     private function getQueryBuilderForFullInstitutionMedicalCenterProfile()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, imc_m, imc_cd, imc_bh, inst_sp, sp, sp_lg, tr, sub_sp')
+        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, inst_fm, imc_m, imc_cd, imc_bh, inst_sp, sp, sp_lg, tr, sub_sp')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->innerJoin('imc.institution', 'inst')
             ->leftJoin('inst.country', 'co')
             ->leftJoin('inst.state', 'st')
             ->leftJoin('inst.city', 'ct')
             ->leftJoin('inst.logo', 'inst_lg')
+            ->leftJoin('inst.featuredMedia', 'inst_fm')
             ->leftJoin('imc.logo', 'imc_lg')
             ->leftJoin('imc.media', 'imc_m')
             ->leftJoin('imc.contactDetails', 'imc_cd')

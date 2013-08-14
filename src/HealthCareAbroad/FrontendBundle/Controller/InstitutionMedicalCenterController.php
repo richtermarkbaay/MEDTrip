@@ -43,30 +43,6 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
      */
     protected $apiInstitutionMedicalCenterService;
 
-//     public function preExecute()
-//     {
-//         $request = $this->getRequest();
-
-//         if($request->get('imcSlug', null)) {
-
-//             $slug = $request->get('imcSlug');
-//             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
-
-//             if(!$this->institutionMedicalCenter) {
-//                 throw $this->createNotFoundException('Invalid institutionMedicalCenter');
-//             }
-
-//             $this->institution = $this->institutionMedicalCenter->getInstitution();
-
-//             $twigService = $this->get('twig');
-//             $twigService->addGlobal('institution', $this->institution);
-//             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
-//         }
-//         else {
-//             throw $this->createNotFoundException('Medical center slug required.');
-//         }
-//     }
-
     public function profileAction(Request $request)
     {
         $start = \microtime(true);
@@ -98,7 +74,10 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 ->buildGlobalAwards($this->institutionMedicalCenter)
                 ->buildOfferedServices($this->institutionMedicalCenter)
                 ->buildInstitutionSpecializations($this->institutionMedicalCenter)
+                // build logo src
                 ->buildLogoSource($this->institutionMedicalCenter, ImageSizes::MEDIUM)
+                // build cover photo src
+                ->buildFeaturedMediaSource($this->institutionMedicalCenter)
             ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
