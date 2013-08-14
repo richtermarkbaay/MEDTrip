@@ -15,14 +15,13 @@ var InstitutionInquiry = {
     },
     
     clearErrors: function() {
+    	InstitutionInquiry.institutionInquiryComponents.form.find('ul.error').remove();
         InstitutionInquiry.institutionInquiryComponents.form.find('.error').removeClass('error');
-        InstitutionInquiry.institutionInquiryComponents.form.find('ul').remove();
         return this;
     },
     
     resetAlertBox: function(){
         InstitutionInquiry.institutionInquiryComponents.form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
-        InstitutionInquiry.institutionInquiryComponents.form.find('ul').remove();
         return this;
     },
     
@@ -44,7 +43,8 @@ var InstitutionInquiry = {
     },
     
     saveInquiry: function(){
-    	InstitutionInquiry.clearErrors();
+    	InstitutionInquiry.resetAlertBox();
+    	InstitutionInquiry.clearErrors()
         $.ajax({
             url: this.institutionInquiryComponents.path,
             data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
@@ -72,7 +72,7 @@ var InstitutionInquiry = {
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
                             isLocationDropdown = item.field == 'country';
                             isTextBox = item.field == 'message';
-                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input' && isTextBox ? 'textarea' : 'input')));
+                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input' || isTextBox ? 'textarea' : 'input')));
                         });
                         InstitutionInquiry.showAlertError(_errorString);
                     }
