@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
@@ -16,6 +18,15 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class InstitutionMedicalCenterApiService
 {
+    // possible contexts to consider when building the data
+    const CONTEXT_FULL_PAGE_VIEW = 1; // Full page
+    
+    const CONTEXT_HOSPITAL_CLINICS_LIST = 2; // Clinic list
+    
+    const CONTEXT_SEARCH_RESULT_ITEM = 3; // Search results
+    
+    const CONTEXT_ADS = 4; // Ads results
+    
     /**
      * @var Registry
      */
@@ -41,29 +52,42 @@ class InstitutionMedicalCenterApiService
      * @param array $institutionMedicalCenter
      * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
      */
-    public function buildLogoSource(&$institutionMedicalCenter, $size=ImageSizes::MINI)
+    public function buildLogoSource(&$institutionMedicalCenter, $size=ImageSizes::MINI, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
     {
-//         var_dump($institutionMedicalCenter); exit;
-        $canDisplayImcLogo = $institutionMedicalCenter['institution']['payingClient'];
+        $canDisplayImcLogo = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient']; // default
+        $canDefaultToSpecializationLogo = false;
+        switch ($context){
+            case InstitutionMedicalCenterApiService::CONTEXT_ADS:
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_SEARCH_RESULT_ITEM:
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_HOSPITAL_CLINICS_LIST:
+                $canDefaultToSpecializationLogo = true;
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW:
+                break;
+        }
+        
         
         // client is allowed to display logo, and there is a logo
         if ($canDisplayImcLogo && $institutionMedicalCenter['logo']) {
             $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($institutionMedicalCenter['logo'], $size);
         }
         else {
-            // not allowed to display logo, or clinic has no logo
-            // we get the logo of the first specialization
-            $firstSpecialization = \count($institutionMedicalCenter['institutionSpecializations'])
-            ? (isset($institutionMedicalCenter['institutionSpecializations'][0]['specialization']) ? $institutionMedicalCenter['institutionSpecializations'][0]['specialization'] : null)
-            : null;
-        
-            // first specialization has a media
-            if ($firstSpecialization && $firstSpecialization['media']){
-                $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
+            $src = null;
+            if ($canDefaultToSpecializationLogo) {
+                // not allowed to display logo, or clinic has no logo
+                // we get the logo of the first specialization
+                $firstSpecialization = \count($institutionMedicalCenter['institutionSpecializations'])
+                ? (isset($institutionMedicalCenter['institutionSpecializations'][0]['specialization']) ? $institutionMedicalCenter['institutionSpecializations'][0]['specialization'] : null)
+                : null;
+                
+                // first specialization has a media
+                if ($firstSpecialization && $firstSpecialization['media']){
+                    $src = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
+                }
             }
-            else {
-                $institutionMedicalCenter['logo']['src'] = null;
-            }
+            $institutionMedicalCenter['logo']['src'] = $src;
         }
         
         return $this;

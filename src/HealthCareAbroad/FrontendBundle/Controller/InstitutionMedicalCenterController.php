@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
 use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -96,7 +98,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 ->buildGlobalAwards($this->institutionMedicalCenter)
                 ->buildOfferedServices($this->institutionMedicalCenter)
                 ->buildInstitutionSpecializations($this->institutionMedicalCenter)
-                ->buildLogoSource($this->institutionMedicalCenter)
+                ->buildLogoSource($this->institutionMedicalCenter, ImageSizes::MEDIUM)
             ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
