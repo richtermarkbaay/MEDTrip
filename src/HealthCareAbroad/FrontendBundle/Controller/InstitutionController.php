@@ -119,13 +119,8 @@ class InstitutionController extends ResponseHeadersController
                 $contactDetail['__toString'] = $contactDetailService->contactDetailToString($contactDetail);
             }
             
-            // set the main contact number
-            $this->institution['mainContactNumber'] = isset($this->institution['contactDetails'][0])
-            ? $this->institution['contactDetails'][0]
-            : null;
-            
             if ($isSingleCenterInstitution) {
-                $this->institution['socialMediaSites'] =  SocialMediaSites::formatSites($this->institution['socialMediaSites']);
+                
                 $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
                     ? $this->institution['institutionMedicalCenters'][0]
                     : null;
@@ -134,6 +129,12 @@ class InstitutionController extends ResponseHeadersController
                     // FIXME: right now throw an exception since this should not happen
                     throw $this->createNotFoundException('Invalid single center clinic');
                 }
+                
+                // set the main contact number
+                $firstMedicalCenter['mainContactNumber'] = isset($firstMedicalCenter['contactDetails'][0])
+                ? $firstMedicalCenter['contactDetails'][0]
+                : null;
+                $firstMedicalCenter['socialMediaSites'] =  SocialMediaSites::formatSites($firstMedicalCenter['socialMediaSites']);
                 
                 // build awards from the first clinic
                 $this->institution['globalAwards'] = $this->apiInstitutionMedicalCenterService->getGlobalAwardsByInstitutionMedicalCenterId($firstMedicalCenter['id']); 
@@ -153,6 +154,11 @@ class InstitutionController extends ResponseHeadersController
             } 
             // multiple center institution
             else {
+                // set the main contact number
+                $this->institution['mainContactNumber'] = isset($this->institution['contactDetails'][0])
+                ? $this->institution['contactDetails'][0]
+                : null;
+                
                 $this->institution['socialMediaSites'] =  SocialMediaSites::formatSites($this->institution['socialMediaSites']);
                 $this->apiInstitutionService
                     ->buildDoctors($this->institution) // build doctors data

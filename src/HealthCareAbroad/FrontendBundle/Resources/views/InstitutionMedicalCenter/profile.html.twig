@@ -16,7 +16,7 @@
             streetAddress: streetAddress,
             mainAddress: mainAddress,
             institutionInquiryLink: '#form',
-            social: socialMediaArray,
+            social: institutionMedicalCenter.socialMediaSites,
             contactEmail:institutionMedicalCenter.contactEmail,
             website:institutionMedicalCenter.websites,
         }}
@@ -41,7 +41,7 @@
         {% endif %}
         
         {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress,social: socialMediaArray,
+            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institutionMedicalCenter.socialMediaSites,
             contactEmail:institutionMedicalCenter.contactEmail,contactNumber: institutionMedicalCenter.mainContactNumber,website:institutionMedicalCenter.websites, } 
         %}
         

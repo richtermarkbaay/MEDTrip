@@ -114,7 +114,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 ? $this->institutionMedicalCenter['contactDetails'][0]
                 : null;
             
-            $socialMedia =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
+            $this->institutionMedicalCenter['socialMediaSites'] =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institutionMedicalCenter);
         }
@@ -131,7 +131,6 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             'institution' => $this->institution,
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
             'formId' => 'imc_inquiry_form',
-            'socialMediaArray' => $socialMedia
         );
         
         // set request variables to be used by page meta components
