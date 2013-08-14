@@ -125,7 +125,7 @@ class InstitutionController extends ResponseHeadersController
             : null;
             
             if ($isSingleCenterInstitution) {
-                $this->institution['socialMediaSites'] =  SocialMediaSites::formatsites($this->institution['socialMediaSites']);
+                $this->institution['socialMediaSites'] =  SocialMediaSites::formatSites($this->institution['socialMediaSites']);
                 $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
                     ? $this->institution['institutionMedicalCenters'][0]
                     : null;
