@@ -1,0 +1,5 @@
+api_hcaBlog_all:
+    pattern: /hca-blog/latest
+    defaults: {_controller: ApiBundle:HcaBlogApi:getLatestBlogs }
+    requirements:
+        _method: GET

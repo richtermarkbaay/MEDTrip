@@ -11,7 +11,12 @@ services:
         calls:
             - [setDoctrine, [@doctrine]]
             - [setMediaExtension, [@services.media.twig.extension]]
-            
+        
+    services.api.hcaBlog:
+        class: HealthCareAbroad\ApiBundle\Services\HcaBlogApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+
     #controller.api.institution:
     #    class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
         
