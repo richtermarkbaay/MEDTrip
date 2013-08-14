@@ -140,10 +140,11 @@ class InstitutionApiService
         
         // build the medical centers data, based on the displayed elements in the medical centers list
         $qb = $this->doctrine->getManager()->createQueryBuilder();
-        $qb->select('imc, inst, imc_lg, imc_sp, sp, sp_m')
+        $qb->select('imc, inst, imc_lg, imc_md, imc_sp, sp, sp_m')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->leftJoin('imc.institution', 'inst')
             ->leftJoin('imc.logo', 'imc_lg')
+            ->leftJoin('imc.media', 'imc_md')
             ->leftJoin('imc.institutionSpecializations', 'imc_sp')
             ->leftJoin('imc_sp.specialization', 'sp')
             ->leftJoin('sp.media', 'sp_m')

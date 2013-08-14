@@ -206,7 +206,6 @@ class InstitutionController extends ResponseHeadersController
                 // get the first 10 as list
                 PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($this->institution['specializationsList'],0, 10, true))
         )));        
-        
         $params = array(
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $isSingleCenterInstitution,

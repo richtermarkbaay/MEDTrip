@@ -32,6 +32,10 @@
         <div>
             {{ institutionMedicalCenter.description | raw }}
         </div>
+        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+            with { institutionSpecializations: institutionMedicalCenter.institutionSpecializations } 
+        %}
+        
         {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
     </div>
 
@@ -50,8 +54,7 @@
 
 <aside class="span4 aside-wrapper">
     {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
-     {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
-    
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
     <section id="form_feedback" class="widget-wrapper">
         <h4 class="widget-heading">
             Email this Institution
