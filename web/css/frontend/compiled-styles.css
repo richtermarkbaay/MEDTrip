@@ -93,9 +93,9 @@
   font-weight: normal;
   color: #657174;
 }
-#content-wrapper .aside-wrapper form .captcha.control-group {
+/*#content-wrapper .aside-wrapper form .captcha.control-group {
   margin-bottom: 0;
-}
+}*/
 #content-wrapper .aside-wrapper iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.025);
   border: 1px solid #dddddd;
@@ -736,7 +736,7 @@ ul.nav-tabs li.active a:hover {
   display: inline-block;
   vertical-align: top;
   background-repeat: no-repeat;
-  background-image: url("/../images/frontend/glyphicons-halflings.png");
+  background-image: url("/images/glyphicons-halflings.png");
 }
 
 .white-icon-search {
@@ -1400,7 +1400,7 @@ form.home-search > button.btn:active {
   display: block;
 }
 .specializations-list-wrapper ul li.specialization > a {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.5em;
 }
 .specializations-list-wrapper ul.sub-specialization {
@@ -2331,11 +2331,11 @@ div.register p a:hover {
   margin: 0 !important;
 }
 .captcha input[type="text"] {
-  top: 20px;
-  left: 190px;
-  width: 140px !important;
+  /*top: 20px;*/
+  /*left: 190px;*/
+  width: 200px !important;
   border-radius: 0;
-  position: absolute;
+  /*position: relative;*/
   height: 30px !important;
 }
 .captcha img {
@@ -2346,8 +2346,8 @@ div.register p a:hover {
 .captcha .captcha_reload {
   top: -2px;
   left: 190px;
-  position: absolute;
-  display: inline-block;
+  /*position: absolute;*/
+  display:block;
   color: #468199 !important;
 }
 .captcha .captcha_reload.profile {
@@ -3185,4 +3185,10 @@ ul.ui-autocomplete.ui-menu li ul li a:before {
 }
 .custom-select > ul > li.selected {
   background-color: #DDDDDD;
+}
+/* error form */
+ul.error {
+  color:#B94A48;
+  margin:0;
+  list-style-type:none;
 }
