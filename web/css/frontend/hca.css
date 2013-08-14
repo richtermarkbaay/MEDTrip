@@ -26,37 +26,20 @@
 #content-wrapper .aside-wrapper .widget-wrapper {
   margin: 0 20px 25px 0;
 }
-#content-wrapper .aside-wrapper form {
+
+#content-wrapper .aside-wrapper .widget-wrapper form {
   background-color: rgba(120, 120, 120, 0.1);
   padding: 18px;
   border: 1px solid #dddddd;
 }
-#content-wrapper .aside-wrapper form input[type="text"], #content-wrapper .aside-wrapper form input[type="password"], #content-wrapper .aside-wrapper form input[type="email"], #content-wrapper .aside-wrapper form select, #content-wrapper .aside-wrapper form textarea {
+
+#content-wrapper .aside-wrapper .widget-wrapper form input[type="text"],  
+#content-wrapper .aside-wrapper .widget-wrapper form input[type="email"], 
+#content-wrapper .aside-wrapper .widget-wrapper form select, 
+#content-wrapper .aside-wrapper .widget-wrapper form textarea {
   width: 226px;
 }
-#content-wrapper .aside-wrapper form input[type="checkbox"] {
-  margin-right: 2px;
-  margin-bottom: 0px;
-  width: 20px;
-  margin-top: 2px;
-}
-#content-wrapper .aside-wrapper form .btn-primary {
-  margin-top: -10px;
-  margin-bottom: 20px;
-}
-#content-wrapper .aside-wrapper form p {
-  text-align: justify;
-}
-#content-wrapper .aside-wrapper form .row-fluid .control-group {
-  margin: 0;
-}
-#content-wrapper .aside-wrapper form .row-fluid .control-group label {
-  font-weight: normal;
-  color: #657174;
-}
-/*#content-wrapper .aside-wrapper form .captcha.control-group {
-  margin-bottom: 0;
-}*/
+
 #content-wrapper .aside-wrapper iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.025);
   border: 1px solid #dddddd;
@@ -1987,6 +1970,10 @@ a.carousel-control.next {
   text-align: center;
 }
 
+.align-justify {
+  text-align: justify;
+}
+
 .box-shadow {
   box-shadow: 0 0 0px 1px #c0c6c0, 0 0 0 4px rgba(0, 37, 85, 0.09);
 }
@@ -2313,6 +2300,18 @@ div.register p a:hover {
   left: 0;
   position: relative;
   top: 0;
+}
+.aside-wrapper form .control-group.captcha > label {
+    bottom: 50px;
+	position: absolute;
+}
+.aside-wrapper form .control-group.captcha > img{
+	margin-bottom: 30px;
+}
+.aside-wrapper form .control-group.captcha > a.captcha_reload {
+	position: relative;
+	top: -25px;
+	left: 0;
 }
 
 .backtotop {
