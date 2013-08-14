@@ -3150,3 +3150,34 @@ ul.error {
   margin:0;
   list-style-type:none;
 }
+/*for clinic schedule*/
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule {
+  box-shadow: 0 0 0 1px #d8d8d8 !important;
+  color: #657174;
+  list-style-type: none;
+  margin: 0;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li {
+  padding: 10px 10px 1px 13px;
+  border-bottom: #e5e5e5 solid 1px;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li span {
+  width: 90px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li b {
+  text-transform: uppercase;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li p {
+  margin-left: -3px;
+  display: block;
+  color: #bbb;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li p i {
+  color: #919191;
+  font-size: 13px;
+}
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li:last-child {
+  border-bottom: none;
+}

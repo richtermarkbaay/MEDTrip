@@ -50,7 +50,38 @@
         {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institutionMedicalCenter.coordinates }%}
     
         {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
-    
+        <section class="widget-wrapper">
+            <h4 class="widget-heading">
+                Clinic Schedule
+            </h4>
+                    <ul class="clinic-schedule">
+                                <li>
+                                    <span>SUn - TUE</span>
+                                    <b>01:00 PM - 02:00 PM</b>
+                                    <p></p>
+                                </li>
+                                <li>
+                                    <span>mon - Thu</span>
+                                    <b>01:00 PM - 02:00 PM</b>
+                                    <p><i class="icon-file-alt"></i>No Work</p>
+                                </li>
+                                <li>
+                                    <span>SUn - TUE</span>
+                                    <b>01:00 PM - 02:00 PM</b>
+                                    <p></p>
+                                </li>
+                                <li>
+                                    <span>SUn - TUE</span>
+                                    <b>01:00 PM - 02:00 PM</b>
+                                    <p></p>
+                                </li>
+                                <li>
+                                    <span>mon - Thu</span>
+                                    <b>01:00 PM - 02:00 PM</b>
+                                    <p><i class="icon-file-alt"></i>Loreim ipsum tranferua.</p>
+                                </li>
+                            </ul>
+        </section>
         <section id="form_feedback" class="widget-wrapper">
             <h4 class="widget-heading">
                 Email this Clinic
