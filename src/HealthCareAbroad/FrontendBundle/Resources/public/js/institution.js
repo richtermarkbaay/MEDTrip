@@ -52,10 +52,8 @@ var InstitutionInquiry = {
             success: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
-                .attr('disabled', false)
-                .hide();
+                .attr('disabled', false);
                 InstitutionInquiry.showAlertSuccess();
-                
             },
             error: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton
