@@ -96,6 +96,9 @@
 /*#content-wrapper .aside-wrapper form .captcha.control-group {
   margin-bottom: 0;
 }*/
+#content-wrapper .aside-wrapper ul.ui-autocomplete.ui-menu {
+  width:238px !important;
+}
 #content-wrapper .aside-wrapper iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.025);
   border: 1px solid #dddddd;
@@ -354,10 +357,26 @@
 }
 
 .popover {
-  width: 650px;
+  width: 590px;
   background-color: #333333;
   color: #FFFFFF;
   text-align: center;
+}
+@media (max-width: 1000px) {
+  .popover {
+  width: 370px;
+  background-color: #333333;
+  color: #FFFFFF;
+  text-align: center;
+  }
+}
+@media (max-width: 1200px) {
+  .popover {
+  width: 550px;
+  background-color: #333333;
+  color: #FFFFFF;
+  text-align: center;
+  }
 }
 .popover h1, .popover h2 {
   display: inline-block;
