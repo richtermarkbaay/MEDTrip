@@ -657,23 +657,6 @@ INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`)
 INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(15, '/philippines/bariatric-surgery/roux-en-y-gastric-bypass/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":206,"specializationId":23,"treatmentId":1342}', 1);
 INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(16, '/philippines/bariatric-surgery/bertsubspectest2', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":206,"specializationId":23,"subSpecializationId":192}', 1);
 
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(1, '/philippines/cebu/dentistry', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":23654,"specializationId":59}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(2, '/philippines/loyola/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":107087,"specializationId":23}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(3, '/singapore/cardiothoracic-surgery/adult-cardiac-surgery', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":84,"specializationId":8,"subSpecializationId":128}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(4, '/singapore/bukit-timah/cardiothoracic-surgery/abdominal-aortic-aneurysm-aaa-surgery/treatment', 'FrontendBundle:Default:listCityTreatment', '{"countryId":84,"cityId":109057,"specializationId":8,"treatmentId":499}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(5, '/brazil/minas-gerais/cardiology', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":90,"cityId":49034,"specializationId":3}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(6, '/brazil/cardiology', 'FrontendBundle:Default:listCountrySpecialization', '{"countryId":90,"specializationId":3}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(7, '/turkey/etiler/cardiology', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":44,"cityId":341860,"specializationId":3}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(8, '/india/orthopedic-surgery/ankle-arthroplasty/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":6,"specializationId":27,"treatmentId":283}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(9, '/turkey/dentistry/dental-implants-1/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":44,"specializationId":59,"treatmentId":785}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(10, '/albania/cardiothoracic-surgery/adult-cardiac-surgery', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":7,"specializationId":8,"subSpecializationId":128}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(11, '/philippines/cebu-city/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":206,"cityId":1862103,"specializationId":23}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(12, '/philippines/bariatric-surgery', 'FrontendBundle:Default:listCountrySpecialization', '{"countryId":206,"specializationId":23}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(13, '/philippines/amaga/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":206,"cityId":1869528,"specializationId":23}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(14, '/philippines/amaga/bariatric-surgery/roux-en-y-gastric-bypass/treatment', 'FrontendBundle:Default:listCityTreatment', '{"countryId":206,"cityId":1869528,"specializationId":23,"treatmentId":1342}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(15, '/philippines/bariatric-surgery/roux-en-y-gastric-bypass/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":206,"specializationId":23,"treatmentId":1342}', 1);
-INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(16, '/philippines/bariatric-surgery/bertsubspectest2', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":206,"specializationId":23,"subSpecializationId":192}', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -1479,11 +1462,6 @@ CREATE TABLE IF NOT EXISTS `media` (
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(1, '1358214261', '1358214261.jpg', 'hussein.jpg', '0', 'image/jpeg', NULL, 104, 104, '2013-01-15 01:44:21', '2013-01-15 01:44:21');
-INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(2, '1358998235', '135899823585.png', 'Screen Shot 2013-01-22 at 1.09.37 PM.png', '0', 'image/png', NULL, 276, 164, '2013-01-24 03:30:35', '2013-01-24 03:30:35');
-INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(3, '1358998362', '1358998362100.jpg', '1 (1).jpg', '0', 'image/jpeg', NULL, 750, 344, '2013-01-24 03:32:43', '2013-01-24 03:32:43');
-INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(4, '1359079896', '135907989669.jpg', '1 (1).jpg', '0', 'image/jpeg', NULL, 750, 344, '2013-01-25 02:11:36', '2013-01-25 02:11:36');
 
 INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(1, '1358214261', '1358214261.jpg', 'hussein.jpg', '0', 'image/jpeg', NULL, 104, 104, '2013-01-15 01:44:21', '2013-01-15 01:44:21');
 INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(2, '1358998235', '135899823585.png', 'Screen Shot 2013-01-22 at 1.09.37 PM.png', '0', 'image/png', NULL, 276, 164, '2013-01-24 03:30:35', '2013-01-24 03:30:35');
