@@ -44,7 +44,7 @@ var InstitutionInquiry = {
     
     saveInquiry: function(){
     	InstitutionInquiry.resetAlertBox();
-    	InstitutionInquiry.clearErrors()
+    	InstitutionInquiry.clearErrors();
         $.ajax({
             url: this.institutionInquiryComponents.path,
             data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
@@ -72,7 +72,7 @@ var InstitutionInquiry = {
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
                             isLocationDropdown = item.field == 'country';
                             isTextBox = item.field == 'message';
-                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input' || isTextBox ? 'textarea' : 'input')));
+                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input' && isTextBox ? 'textarea' : 'input')));
                         });
                         InstitutionInquiry.showAlertError(_errorString);
                     }
