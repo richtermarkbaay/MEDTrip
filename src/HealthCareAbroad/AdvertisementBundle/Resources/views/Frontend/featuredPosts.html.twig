@@ -4,7 +4,7 @@
 	<div class="widget-content-wrapper articles-type box-shadow">
 	    {% for each in featuredPosts %}
 
-			<div class="item">
+			<article class="article-format">
 			    {% if each.thumbnail_url %}
 				    <a class="pull-left thumbnail-wrapper" href="{{ each.url }}" target="_target">
 				        <img src="{{ each.thumbnail_url }}" class="featured-icon img-circle">
@@ -12,7 +12,7 @@
 				{% endif %}
 				<h4 class="title"><a href="{{ each.url }}" target="_blank">{{ each.title }}</a></h4>
 				<p>{{ each.description }}</p>
-			</div>
+			</article>
 		{% endfor %}
     </div>
 </div> <!--End of aside_scrollbar-->
