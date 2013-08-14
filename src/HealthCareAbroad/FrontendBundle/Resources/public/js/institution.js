@@ -9,7 +9,8 @@ var InstitutionInquiry = {
     
     resetForm: function() {
         this.institutionInquiryComponents.form.show().find('input[type="text"],input[type="email"], textarea').val('');
-        this.institutionInquiryComponents.submitButton.attr('disabled', false).show();
+        this.institutionInquiryComponents.submitButton.attr('disabled', false);
+        $('#institutionInquiry_captcha').val('');
         return this;
     },
     
@@ -54,6 +55,8 @@ var InstitutionInquiry = {
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false);
                 InstitutionInquiry.showAlertSuccess();
+                InstitutionInquiry.resetForm();
+                window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
             },
             error: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton

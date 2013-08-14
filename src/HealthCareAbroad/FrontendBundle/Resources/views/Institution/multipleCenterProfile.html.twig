@@ -87,11 +87,28 @@
         }).click(function(){
             return false;
         });
+
+        $('[rel=popover]').popover({
+            placement: 'top',
+            html: true,
+            trigger: 'click',
+            content: function() {
+                return $('#_call-content-wrapper').html();
+            }
+        }).click(function(e) {
+            e.preventDefault();
+        });
 		
         $('#institutionTab a').click(function (e) {
       	  e.preventDefault();
       	  $(this).tab('show');
       	});
+
+        $('#inquiry_submitButton').institutionInquiryModalForm({
+            submitButton: $('#inquiry_submitButton'),
+            form: $('form#inquiryForm') ,
+            path: "{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}"
+        });
     });
 })(jQuery);
 //-->
