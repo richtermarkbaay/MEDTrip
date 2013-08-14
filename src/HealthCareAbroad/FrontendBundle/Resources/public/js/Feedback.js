@@ -14,6 +14,7 @@ var Feedback = {
     },
     
     clearErrors: function() {
+    	Feedback.feedbackComponents.form.find('ul.error').remove();
     	Feedback.feedbackComponents.form.find('.error').removeClass('error');
         return this;
     },
@@ -43,6 +44,7 @@ var Feedback = {
     
     submitFeedbackMessageForm: function(){
         Feedback.clearErrors();
+        Feedback.resetAlertBox();
         $.ajax({
             url: Feedback.feedbackComponents.form.attr('action'),
             data: Feedback.feedbackComponents.form.serialize(),
@@ -65,11 +67,16 @@ var Feedback = {
                 if (response.status==400) {
                     var errors = $.parseJSON(response.responseText).html;
                     if (errors.length) {
-                        var _errorString = "";
                         $('#feedbackMessage_captcha').val('');
                         $.each(errors, function(key, item){
-                        	_errorString += item.error+"<br>";
-                            Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
+                        	_errorString = 'We need you to correct some of your input. Please check the fields in red.';
+                        	Feedback.feedbackComponents.form.find('div.'+item.field).addClass('error');
+                            isLocationDropdown = item.field == 'country';
+                            isTextBox = item.field == 'message';
+                            isCaptcha = item.field == 'captcha';
+                        	$('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(Feedback.feedbackComponents.form.find('.'+item.field+' > ' + 
+                        			(isLocationDropdown ? 'div .fancy-dropdown-wrapper' : 'input' && isTextBox ? 'textarea' : 'input' && isCaptcha ? 'div > input' : 'input')));
+                            
                         });
                         Feedback.showAlertError(_errorString);
                     }
