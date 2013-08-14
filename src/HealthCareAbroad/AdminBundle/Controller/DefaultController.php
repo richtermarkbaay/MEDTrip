@@ -201,7 +201,7 @@ class DefaultController extends Controller
     {
         $this->get('services.memcache')->flush();
         
-        echo "Memcache Flushed";
+        return new Response("Memcache Flushed", 200);
     }
 
 }

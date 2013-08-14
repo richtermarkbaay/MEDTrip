@@ -89,10 +89,10 @@ admin_institution_medicalCenter_ajaxAddBusinessHours:
         _method: GET|POST
         
 admin_institution_medicalCenter_updatePayingClient:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/ajaxUpdatePayingClient
+    pattern: /admin/institution/{institutionId}/medical-center/payingClientStatus
     defaults: { _controller: AdminBundle:InstitutionMedicalCenter:ajaxUpdatePayingClient }
     requirements:
         institutionId: \d+
         imcId: \d+
         payingClient: \d+
-        _method: POST
+        _method: PUT
