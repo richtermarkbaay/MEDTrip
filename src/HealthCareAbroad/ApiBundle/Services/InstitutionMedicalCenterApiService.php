@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Services\ContactDetailService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -19,6 +21,8 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 class InstitutionMedicalCenterApiService
 {
     // possible contexts to consider when building the data
+    const CONTEXT_FULL_API = 0; // not implemented, but maybe used for api with no restrictions
+    
     const CONTEXT_FULL_PAGE_VIEW = 1; // Full page
     
     const CONTEXT_HOSPITAL_CLINICS_LIST = 2; // Clinic list
@@ -26,6 +30,8 @@ class InstitutionMedicalCenterApiService
     const CONTEXT_SEARCH_RESULT_ITEM = 3; // Search results
     
     const CONTEXT_ADS = 4; // Ads results
+    
+    
     
     /**
      * @var Registry
@@ -37,6 +43,11 @@ class InstitutionMedicalCenterApiService
      */
     private $mediaExtensionService;
     
+    /**
+     * @var ContactDetailService
+     */
+    private $contactDetailService;
+    
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
@@ -47,6 +58,48 @@ class InstitutionMedicalCenterApiService
         $this->mediaExtensionService = $v;
     }
     
+    public function setContactDetailService(ContactDetailService $v)
+    {
+        $this->contactDetailService = $v;
+    }
+    
+    /**
+     * 
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildContactDetails(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplayContactDetails = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        if ($canDisplayContactDetails) {
+            // add a string representation for each contactDetail
+            $hasSetMainContact = false;
+            foreach ($institutionMedicalCenter['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $this->contactDetailService->contactDetailToString($contactDetail);
+                if (!$hasSetMainContact) {
+                    $institutionMedicalCenter['mainContactNumber'] = $contactDetail;
+                    $hasSetMainContact = true;
+                }
+            }   
+        }
+        else {
+            // not yet used, but could be helpful
+            if (self::CONTEXT_FULL_API != $context) {
+                // TODO: Note to self: do we really have to clear this?  
+                $institutionMedicalCenter['contactDetails'] = array();
+            }
+            $institutionMedicalCenter['mainContactNumber'] = null;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
     public function buildFeaturedMediaSource(&$institutionMedicalCenter)
     {
         $canDisplayFeaturedMedia = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];

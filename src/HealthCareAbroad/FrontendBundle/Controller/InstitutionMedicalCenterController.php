@@ -78,21 +78,11 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 ->buildLogoSource($this->institutionMedicalCenter, ImageSizes::MEDIUM)
                 // build cover photo src
                 ->buildFeaturedMediaSource($this->institutionMedicalCenter)
+                ->buildContactDetails($this->institutionMedicalCenter)
             ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
             $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
-            
-            $contactDetailService = $this->get('services.contact_detail');
-            // add a string representation for each contactDetail
-            foreach ($this->institutionMedicalCenter['contactDetails'] as &$contactDetail) {
-                $contactDetail['__toString'] = $contactDetailService->contactDetailToString($contactDetail);
-            }
-            
-            // set the main contact number
-            $this->institutionMedicalCenter['mainContactNumber'] = isset($this->institutionMedicalCenter['contactDetails'][0])
-                ? $this->institutionMedicalCenter['contactDetails'][0]
-                : null;
             
             $this->institutionMedicalCenter['socialMediaSites'] =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
             // cache this processed data
