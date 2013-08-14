@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -143,7 +147,7 @@ class MedicalCenterController extends InstitutionAwareController
     public function viewAction(Request $request)
     {
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
-        
+
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
@@ -229,7 +233,7 @@ class MedicalCenterController extends InstitutionAwareController
                         ));
                     } else {
                         $institutionMedicalCenterService->save($this->institutionMedicalCenter);
-                        
+
                         if ($this->isSingleCenter) {
                             // also update the instituion name and description
                             $this->institution->setName($this->institutionMedicalCenter->getName());
@@ -238,7 +242,7 @@ class MedicalCenterController extends InstitutionAwareController
                         }
 
                         if(isset($formVariables['address'])) {
-                            
+
                             $formVariables['stringAddress'] = $this->get('services.institutionMedicalCenter.twig.extension')->getCompleteAddressAsString($this->institutionMedicalCenter);
                         }
 
@@ -251,7 +255,7 @@ class MedicalCenterController extends InstitutionAwareController
 
                     $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
 
-                } else {                    
+                } else {
                     $errors = array();
                     foreach ($form->getChildren() as $field){
                         if (\count($eachErrors = $field->getErrors())){
@@ -260,7 +264,7 @@ class MedicalCenterController extends InstitutionAwareController
                     }
 
                     $response = new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
-                    
+
                 }
             }
             catch (\Exception $e) {
@@ -326,13 +330,9 @@ class MedicalCenterController extends InstitutionAwareController
                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')->saveAsDraft($form->getData());
                 $output =  $this->generateUrl('institution_medicalCenter_view', array('imcId' => $this->institutionMedicalCenter->getId()));
 
-                // TODO: Update this when we have formulated a strategy for our events system
-                // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
-                /*
                 $this->get('event_dispatcher')->dispatch(
                     MailerBundleEvents::NOTIFICATIONS_CLINIC_CREATED,
                     new GenericEvent($this->institutionMedicalCenter, array('userEmail' => $request->getSession()->get('userEmail'))));
-                */
                 $response = new Response(\json_encode(array('redirect' => $output)), 200, array('content-type' => 'application/json'));
             }
             else {

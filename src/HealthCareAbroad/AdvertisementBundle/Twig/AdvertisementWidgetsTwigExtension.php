@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Twig;
 
+use HealthCareAbroad\ApiBundle\Services\HcaBlogApiService;
+
 use Symfony\Component\HttpFoundation\Session\Session;
 
 use HealthCareAbroad\AdvertisementBundle\Services\Retriever;
@@ -14,15 +16,18 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     protected $retrieverService;
     
+    protected $hcaBlogApiService;
+    
     /**
      * @var Session
      */
     protected $session;
     
-    public function __construct(\Twig_Environment $twig, Retriever $retriever)
+    public function __construct(\Twig_Environment $twig, Retriever $retriever, HcaBlogApiService $hcaBlogApiService)
     {
         $this->twig = $twig;
         $this->retrieverService = $retriever;
+        $this->hcaBlogApiService = $hcaBlogApiService;
     }
     
     public function setSessionService(Session $v)
@@ -40,6 +45,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             'render_homepage_common_treatments_ads' => new \Twig_Function_Method($this, 'render_homepage_common_treatments_ads'),
             'render_homepage_featured_video_ad' => new \Twig_Function_Method($this, 'render_homepage_featured_video_ad'),
 
+            'render_search_results_featured_posts' => new \Twig_Function_Method($this, 'render_search_results_featured_posts'),
             'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_institution_ad'),
             'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad'),
             'render_search_results_image_ad' => new \Twig_Function_Method($this, 'render_search_results_image_ad'),
@@ -78,7 +84,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     public function render_homepage_featured_posts_ads()
     {
         $this->twig->addGlobal('featuredPostsAds', $this->retrieverService->getHomepageFeaturedPosts());
-    
+
         return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredPosts.html.twig');
     }
 
@@ -96,6 +102,13 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         $this->twig->addGlobal('featuredVideoAd', $this->retrieverService->getHomepageFeaturedVideo());
         
         return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig');
+    }
+
+    public function render_search_results_featured_posts()
+    {
+        $this->twig->addGlobal('featuredPosts', $this->hcaBlogApiService->getBlogs());
+    
+        return $this->twig->display('AdvertisementBundle:Frontend:featuredPosts.html.twig');
     }
 
     public function render_search_results_featured_institution_ad($params)

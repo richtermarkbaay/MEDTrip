@@ -19,30 +19,31 @@
             <div>
                 <table class="table table-bordered sortable-list">
                 <tr>
-                    <th width="50" align="center">Paying</a></th>
+                    <th width="30" align="center">Paying</a></th>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                    <th id="column-description"><a href="{{ app.request.uri }}" class="{{ sortBy == 'description' ? 'sort-' ~ sortOrder : '' }}">Description</a></th>
-                     <th width="200">Insititution Type</th>
+                    <th width="200">Insititution Type</th>
                     <th width="100">Country</th>
-                  {#  <th width="100">Status</th> #}
+                    <th width="100" id="column-dateCreated"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateCreated' ? 'sort-' ~ sortOrder : '' }}">Date Created</a></th>
+                    <th width="100" id="column-dateModified"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateModified' ? 'sort-' ~ sortOrder : '' }}">Date Modified</a></th>
                     <th width="130">Actions</th>
                 </tr>
 
                 {% for institution in institutions %}
                     <tr id="institution-{{institution.id}}">
                         <td style="text-align: center;padding: 0">
-                            <input type="checkbox" value="1" {{ institution.payingClient ? 'checked' : '' }} class="update-paying-client" data-update-url="{{ path('admin_institution_updatePayingClient', {institutionId: institution.id}) }}">
-                            <div style="display:none">updating...</div>
+                            {#--- 
+                            ----- new rule: paying_client will be updated every time the clinic paying_client field is changed
+                            #}
+                            <b>{{ institution.payingClient ? 'Yes' : 'No' }}</b>
                         </td>
                         <td>
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" target="_blank" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
-                        <td>{{ substr(institution.description, 0, 100) }}</td>
-
                          {% set institutionTypeLabel = get_institution_type(institution.type)%}
                         <td>{{ institutionTypeLabel}}</td>
-                        <td>{{ institution.country ? institution.country.name : '' }}</td>
-                       {# <td class="status">{{ statusList[institution.status] }}</td> #}
+                        <td>{{ institution.country }}</td>
+                        <td>{{ institution.dateCreated|date('m-d-Y h:iA') }}</td>
+                        <td>{{ institution.dateModified|date('m-d-Y h:iA') }}</td>
 
                         <td>
                             <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 

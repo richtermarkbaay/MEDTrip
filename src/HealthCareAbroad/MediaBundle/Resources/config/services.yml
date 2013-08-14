@@ -1,7 +1,7 @@
 services:
     services.media.twig.extension:
         class: HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
-        public: false
+        public: true
         calls:
             - [setFilesystemMapper, [@knp_gaufrette.filesystem_map]]
             - [setMediaContext, [%media_context%]]

@@ -6,6 +6,14 @@ admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
 
+admin_institution_newlyRegisteredInstitution:
+    pattern:  /admin/newly-registered-institutions
+    defaults: { _controller: AdminBundle:Institution:viewNewlyRegisteredInstitution }
+    
+admin_institution_newlyAddedClinics:
+    pattern:  /admin/newly-added-clinics
+    defaults: { _controller: AdminBundle:Institution:viewNewlyAddedClinics }
+
 admin_institution_add:
     pattern:  /admin/institution/add
     defaults: { _controller: AdminBundle:Institution:add }
@@ -100,9 +108,9 @@ admin_institution_doctors:
         institutionId: \d+
         
 admin_institution_updatePayingClient:
-    pattern: /admin/institution/{institutionId}/update-paying-client
+    pattern: /admin/institution/payingClientStatus
     defaults: { _controller: AdminBundle:Institution:updatePayingClient }
     requirements:
         institutionId: \d+
         payingClient: \d+
-        _method: POST
+        _method: PUT

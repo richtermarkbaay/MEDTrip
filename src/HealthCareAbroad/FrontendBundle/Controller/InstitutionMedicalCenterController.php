@@ -6,11 +6,15 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
+use Symfony\Component\HttpFoundation\Request;
+
+use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
+
 use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
 
 use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
-
-use Guzzle\Http\Message\Request;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
@@ -28,58 +32,106 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InstitutionMedicalCenterController extends ResponseHeadersController
 {
-    /**
-     * @var InstitutionMedicalCenter
-     */
     protected $institutionMedicalCenter;
 
-    /**
-     * @var Institution
-     */
     protected $institution;
+    
+    /**
+     * @var InstitutionMedicalCenterApiService
+     */
+    protected $apiInstitutionMedicalCenterService;
 
-    public function preExecute()
+//     public function preExecute()
+//     {
+//         $request = $this->getRequest();
+
+//         if($request->get('imcSlug', null)) {
+
+//             $slug = $request->get('imcSlug');
+//             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
+
+//             if(!$this->institutionMedicalCenter) {
+//                 throw $this->createNotFoundException('Invalid institutionMedicalCenter');
+//             }
+
+//             $this->institution = $this->institutionMedicalCenter->getInstitution();
+
+//             $twigService = $this->get('twig');
+//             $twigService->addGlobal('institution', $this->institution);
+//             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
+//         }
+//         else {
+
+//             throw $this->createNotFoundException('Medical center slug required.');
+//         }
+//     }
+
+    public function profileAction(Request $request)
     {
-        $request = $this->getRequest();
-
-        if($request->get('imcSlug', null)) {
-
-            $slug = $request->get('imcSlug');
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
-
-            if(!$this->institutionMedicalCenter) {
-                throw $this->createNotFoundException('Invalid institutionMedicalCenter');
-            }
-
-            $this->institution = $this->institutionMedicalCenter->getInstitution();
+        $start = \microtime(true);
+        $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
+        $slug = $request->get('imcSlug', null);
+        $institutionMedicalCenterId = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
+            ->getInstitutionMedicalCenterIdBySlug($slug);
+        
+        $memcacheKey = 'frontend.controller.institutionMedicalCenter:profile.'.$institutionMedicalCenterId;
+        $memcacheService = $this->get('services.memcache');
+        $cachedData = $memcacheService->get($memcacheKey);
+        if (!$cachedData) {
+            $this->institutionMedicalCenter = $this->apiInstitutionMedicalCenterService->getInstitutionMedicalCenterPublicDataById($institutionMedicalCenterId);
             
-            $twigService = $this->get('twig');
-            $twigService->addGlobal('institution', $this->institution);
-            $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
+            if (!$this->institutionMedicalCenter) {
+                throw $this->createNotFoundException('Invalid medical center');
+            }
+            
+            $this->institution = $this->institutionMedicalCenter['institution'];
+            
+            if ($this->get('services.api.institution')->isSingleCenterInstitutionType($this->institution)) {
+                // redirect to hospital page
+            }
+            
+            // build optional data
+            $this->apiInstitutionMedicalCenterService
+                ->buildBusinessHours($this->institutionMedicalCenter)
+                ->buildDoctors($this->institutionMedicalCenter)
+                ->buildGlobalAwards($this->institutionMedicalCenter)
+                ->buildOfferedServices($this->institutionMedicalCenter)
+                ->buildInstitutionSpecializations($this->institutionMedicalCenter)
+                ->buildLogoSource($this->institutionMedicalCenter)
+            ;
+            
+            $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
+            $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
+            
+            $contactDetailService = $this->get('services.contact_detail');
+            // add a string representation for each contactDetail
+            foreach ($this->institutionMedicalCenter['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $contactDetailService->contactDetailToString($contactDetail);
+            }
+            
+            // set the main contact number
+            $this->institutionMedicalCenter['mainContactNumber'] = isset($this->institutionMedicalCenter['contactDetails'][0])
+                ? $this->institutionMedicalCenter['contactDetails'][0]
+                : null;
+            
+            $this->institutionMedicalCenter['socialMediaSites'] =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
+            // cache this processed data
+            $memcacheService->set($memcacheKey, $this->institutionMedicalCenter);
         }
         else {
-
-            throw $this->createNotFoundException('Medical center slug required.');
+            $this->institutionMedicalCenter = $cachedData;
+            $this->institution = $this->institutionMedicalCenter['institution'];
+            $specializationsList = $this->institutionMedicalCenter['specializationsList'];
         }
-    }
-
-    public function profileAction($institutionSlug)
-    {
-
-        if ($this->get('services.institution')->isSingleCenter($this->institution)) {
-            // this should redirect to institution profile page if medical center's institution is a single center type
-        }
-
-        $centerService = $this->get('services.institution_medical_center');
-        $params = array(
-            'awards' => $centerService->getMedicalCenterGlobalAwards($this->institutionMedicalCenter),
-            'services' => $centerService->getMedicalCenterServices($this->institutionMedicalCenter),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
-            'formId' => 'imc_inquiry_form'
-        );
         
-        $specializationsList = $centerService->listActiveSpecializations($this->institutionMedicalCenter);
+        $params = array(
+            'awards' => $this->institutionMedicalCenter['globalAwards'],
+            'services' => $this->institutionMedicalCenter['offeredServices'],
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'institution' => $this->institution,
+            'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
+            'formId' => 'imc_inquiry_form',
+        );
         
         // set request variables to be used by page meta components
         $this->getRequest()->attributes->add(array(
@@ -90,7 +142,10 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             // get the first 10 as list
             PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($specializationsList,0, 10, true))
         )));
+        
+        $content = $this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params);
+        //$end = \microtime(true); $diff = $end-$start; echo "{$diff}s"; exit;
 
-        return $this->setResponseHeaders($this->render('FrontendBundle:InstitutionMedicalCenter:profile.html.twig', $params));
+        return $this->setResponseHeaders($content);
     }
 }

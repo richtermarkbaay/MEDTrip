@@ -1,60 +1,122 @@
-{% set email = institution.contactEmail %}
-{% set number = institution.contactNumber  %}
-{% set number = json_decode(number) | join %}
+{% set streetAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['address']) %}
+{% set mainAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode']) %}
 
-    <div class="profile-wrapper span8">
-		<div class="clinic-header-wrapper">
-            {% include 'FrontendBundle:Institution/Widgets:headingSingleCenter.html.twig' %}
-            <p>{{ institution.description | raw }}</p>
-		</div>
+{% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
+        headerText: institutionMedicalCenter.name,
+        featuredMediaSource: institutionMedicalCenter.featuredMedia is defined and institution.featuredMedia.src 
+            ? institutionMedicalCenter.featuredMedia.src 
+            : imageplaceholder.institutionFeaturedImage,
+        logoSource: institutionMedicalCenter.logo and institutionMedicalCenter.logo.src
+            ? institutionMedicalCenter.logo.src
+            : null,
+        contactNumber: institutionMedicalCenter.mainContactNumber,
+        streetAddress: streetAddress,
+        mainAddress: mainAddress,
+        institutionInquiryLink: '#form',
+        social: institutionMedicalCenter.socialMediaSites,
+        contactEmail:institutionMedicalCenter.contactEmail,
+        website: institutionMedicalCenter.websites,
+    }}
+%}
 
-        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
-            with { specializations: institutionMedicalCenter ? institutionMedicalCenter.institutionSpecializations : [] } %}
-
-    	{% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' 
-    	    with { awards: institutionAwards, services: institutionServices} %}
-
-
-        {% if institutionDoctors|length %}
-            {% embed 'FrontendBundle:Embed:profileSection.html.twig' 
-                with {title: 'DOCTORS', class: 'doctors' } %}
-                {% block sectionContent %}
-                    {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionDoctors } %}
-                {% endblock %}
-            {% endembed %}
+<div class="profile-wrapper tab-content span8">
+	<ul class="nav nav-tabs" id="institutionTab">
+	  	<li class="active"><a href="#overview">OVERVIEW</a></li>
+	  	{% if institutionDoctors|length %}
+	  	    <li><a href="#doctors">DOCTORS</a></li>
         {% endif %}
+	</ul> <!--Twitter bootstrap Tabs-->
 
-	</div>
+	<!-- Tabs Content -->
+	<div id="overview" class="tab-pane active">
+        <div>
+            {{ institutionMedicalCenter.description | raw }}
+        </div>
+        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+            with { institutionSpecializations: institutionMedicalCenter.institutionSpecializations } 
+        %}
+        
+        {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
+    </div>
 
-	<aside class="aside-wrapper span4">
+    {% if institutionDoctors|length %}
+        <div id="doctors" class="tab-pane">
+            {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with {doctors: institutionDoctors} %}
+        </div>
+    {% endif %}
+    <!-- End of Tabs Content -->
+    
+    {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
+            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institutionMedicalCenter.socialMediaSites,
+            contactEmail: institutionMedicalCenter.contactEmail,contactNumber: institutionMedicalCenter.mainContactNumber,website: institutionMedicalCenter.websites, } 
+        %}
+</div>
 
-	    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+<aside class="span4 aside-wrapper">
+    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
+    <section id="form_feedback" class="widget-wrapper">
+        <h4 class="widget-heading">
+            Email this Institution
+        </h4>
+        {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {form: form} %}
+    </section>
+</aside> <!--End of aside_content-->
+<div class="span12">
+    <p>Copyright 2013, <b>{{ institutionMedicalCenter.name }}</b> 
+    </p>
+</div>
 
-	    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:scheduleAside.html.twig' 
-	        with { businessHours: institutionMedicalCenter ? institutionMedicalCenter.businessHours : '' } %}
 
-	    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
-
-	    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: social_media_sites_to_array(institution.socialMediaSites) } %}
-
-	</aside> <!--End of aside_content-->
-	
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{asset('bundles/frontend/js/institution.js')}}"></script>
 <script type="text/javascript">
 <!--
 (function($){
     $(function(){
+        $('#hospital-contact[rel="tooltip"]').tooltip({
+            title: function(){
 
-        $('#modal_single_institution_inquiry_form').institutionInquiryModalForm({
-            submitButton: $('#modal_institution_inquiry_submitButton'),
-            form: $('form#{{ formId }}') 
+                var _titleContainer = $('<h5></h5>');
+                var _contactDetails = window.JSON.parse($(this).attr('data-contact-number')); 
+                $.each(_contactDetails, function(_key, _item){
+                    _titleContainer.append('<small>'+_item.type.toUpperCase()+': </small>'+_item.number);
+                });
+                return _titleContainer;
+            },
+            html: true,
+            delay: 0,
+            trigger: 'click',
+            animation: false,
+            placement: 'top'
+        }).click(function(){
+            return false;
         });
-        
+
+        $('[rel=popover]').popover({
+            placement: 'top',
+            html: true,
+            trigger: 'click',
+            content: function() {
+                return $('#_call-content-wrapper').html();
+            }
+        }).click(function(e) {
+            e.preventDefault();
+        });
+		
+        $('#institutionTab a').click(function (e) {
+      	  e.preventDefault();
+      	  $(this).tab('show');
+      	});
+
+        $('#inquiry_submitButton').institutionInquiryModalForm({
+            submitButton: $('#inquiry_submitButton'),
+            form: $('form#inquiryForm') ,
+            path: "{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}"
+        });
     });
 })(jQuery);
 //-->
 </script>
 {% endblock %}
-	
 

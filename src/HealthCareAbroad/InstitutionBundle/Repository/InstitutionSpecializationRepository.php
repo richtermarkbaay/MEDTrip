@@ -116,24 +116,33 @@ class InstitutionSpecializationRepository extends EntityRepository
     /**
      * Get active institution specializations of an institution medical center/ clinic
      * 
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, int> $institutionMedicalCenter
      * @return array InstitutionSpecialization
      */
-    public function getActiveSpecializationsByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter, $hydrationMode=Query::HYDRATE_OBJECT)
     {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $institutionMedicalCenterId = $institutionMedicalCenter->getId();
+        }
+        else {
+            $institutionMedicalCenterId = $institutionMedicalCenter;
+        }
+        
         $qb = $this->getEntityManager()->createQueryBuilder();
         
-        $qb->select('a','b', 'c')
+        $qb->select('a, b, sp_lg, c, sub')
         ->from('InstitutionBundle:InstitutionSpecialization', 'a')
         ->leftJoin('a.specialization', 'b')
+        ->leftJoin('b.media', 'sp_lg')
         ->leftJoin('a.treatments', 'c')
+        ->leftJoin('c.subSpecializations', 'sub')
         ->where('a.institutionMedicalCenter = :institutionMedicalCenter')
         ->andWhere('a.status = :status')
         ->setParameter('institutionMedicalCenter', $institutionMedicalCenter)
         ->setParameter('status', InstitutionSpecialization::STATUS_ACTIVE)
         ->orderBy('b.name','ASC');
         
-        $result = $qb->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult($hydrationMode);
         
         return $result;
     }
@@ -145,46 +154,19 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $count;
     }
-
-    public function updateTreatments($institutionSpecializationId, $treatmentIds = array(), $deleletedTreatmentIds = array())
-    {
-        $conn = $this->_em->getConnection();
-
-        if(count($treatmentIds)){
-            $valuesHolder = "";
-            $params = array("instSpecId" => $institutionSpecializationId);
-            foreach($treatmentIds as $i => $treatmentId) {
-                $valuesHolder .= ",(:instSpecId, :treatment_$i)";
-                $params["treatment_$i"] = $treatmentId;
-            }
-
-            $qry = "INSERT INTO institution_treatments(institution_specialization_id, treatment_id) " .
-                   "VALUES ". substr($valuesHolder, 1) .
-                   "ON DUPLICATE KEY UPDATE treatment_id = treatment_id";
-            $result = $conn->executeQuery($qry, $params);
-        }
-
-        if(count($deleletedTreatmentIds)) {
-            // TODO - bind $deletedSpecializationId
-            $deleteQry = "DELETE FROM institution_treatments " .
-                         "WHERE institution_specialization_id = :institutionSpecializationId " .
-                         "AND treatment_id IN (" . implode(',', $deleletedTreatmentIds) . ")";
-
-            $deleteParams = array('institutionSpecializationId' => $institutionSpecializationId);
-
-            $result = $conn->executeQuery($deleteQry, $deleteParams);
-        }
-
-        return $result;
-    }
     
-    public function deleteTreatmentsBySpecializationId($institutionSpecializationId)
+    public function deleteBySpecializationIdAndTreatmentIds($institutionSpecializationId, $deleteTreatmentIds)
     {
         $conn = $this->_em->getConnection();
-        
+
+        if(is_array($deleteTreatmentIds)) {
+            $deleteTreatmentIds = implode(',', $deleteTreatmentIds);
+        }
+
         $deleteQry = "DELETE FROM institution_treatments " .
-                        "WHERE institution_specialization_id = :institutionSpecializationId ";
-        
+                        "WHERE institution_specialization_id = :institutionSpecializationId " .
+                        "AND treatment_id IN ($deleteTreatmentIds)";
+
         $deleteParams = array('institutionSpecializationId' => $institutionSpecializationId);
         
         $result = $conn->executeQuery($deleteQry, $deleteParams);
@@ -219,10 +201,10 @@ class InstitutionSpecializationRepository extends EntityRepository
     /**
      * Get all active institution specializations of an Institution
      * 
-     * @param Institution $institution
+     * @param mixed Institution|int $institution
      * @return multitype:
      */
-    public function getActiveSpecializationsByInstitution(Institution $institution)
+    public function getActiveSpecializationsByInstitution($institution, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->_em->createQueryBuilder();
         $qb->select('b, d, m')
@@ -235,7 +217,7 @@ class InstitutionSpecializationRepository extends EntityRepository
         ->groupBy('b.specialization')
         ->orderBy('d.name');
         
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getResult($hydrationMode);
     }
 
 

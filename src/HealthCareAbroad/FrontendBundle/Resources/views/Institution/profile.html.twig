@@ -11,15 +11,11 @@
 
 
     {% if isSingleCenterInstitution %}
-
         {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
-            with { institutionMedicalCenter: institution.institutionMedicalCenters.first } 
+            with { institutionMedicalCenter: institutionMedicalCenter } 
         %}
-        
     {% else %}
-    
         {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
-
     {% endif %}
 
 {% endblock %}

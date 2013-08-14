@@ -7,6 +7,10 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 
 use Symfony\Component\Validator\Constraints\DateTime;
@@ -83,6 +87,22 @@ class InstitutionService
     public function setTimeAgoExtension(\HealthCareAbroad\HelperBundle\Twig\TimeAgoTwigExtension $timeAgoExt)
     {
         $this->timeAgoExt = $timeAgoExt;
+    }
+    
+    public function updatePayingClientStatus(Institution $institution)
+    {
+        $dql = "SELECT COUNT(imc) as cnt FROM InstitutionBundle:InstitutionMedicalCenter imc WHERE imc.institution = :institutionId AND imc.payingClient != :freeListingStatus";
+        $cntCurrentPayingClinic = (int)$this->doctrine->getEntityManager()->createQuery($dql)
+            ->setParameter('institutionId', $institution->getId())
+            ->setParameter('freeListingStatus', PayingStatus::FREE_LISTING)
+            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        
+        $isPaying = $cntCurrentPayingClinic > 0;
+        $institution->setPayingClient($isPaying);
+        $em = $this->doctrine->getManager();
+        $em->persist($institution);
+        $em->flush();
+        
     }
 
     /**
@@ -198,32 +218,46 @@ class InstitutionService
     /**
      * Check if $institution is of type SINGLE_CENTER
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return boolean
      */
     public function isSingleCenter(Institution $institution)
     {
-        return InstitutionTypes::SINGLE_CENTER == $institution->getType();
+        if ($institution instanceof Institution) {
+            $type = $institution->getType();
+        }
+        else {
+            $type = $institution['type'];
+        }
+        
+        return InstitutionTypes::SINGLE_CENTER == $type;
     }
 
     /**
      * Check if $institution is of type MULTIPLE_CENTER
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return boolean
      */
-    public function isMultipleCenter(Institution $institution)
+    public function isMultipleCenter($institution)
     {
-        return InstitutionTypes::MULTIPLE_CENTER == $institution->getType();
+        if ($institution instanceof Institution) {
+            $type = $institution->getType();
+        }
+        else {
+            $type = $institution['type'];
+        }
+        
+        return InstitutionTypes::MULTIPLE_CENTER == $type;
     }
 
     /**
      * Get Institution Route Name
      *
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return route name
      */
-    public function getInstitutionRouteName(Institution $institution)
+    public function getInstitutionRouteName( $institution)
     {
         return $this->isMultipleCenter($institution)
             ? 'frontend_multiple_center_institution_profile'

@@ -33,7 +33,29 @@
         <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/favicon.ico') }}">
         
         <style type="text/css">
+
+            /* Temporary styles for medicalCenter schedule*/
+            .clinic-schedule-options {
+                position: relative;
+            }
+
+            .clinic-schedule-options > input[type=radio] {
+                display: block;
+                margin: 20px 0;
+            }
+
+            .clinic-schedule-options > label {
+                top: -5px;
+                left: 10px;
+                margin-left: 10px;
+                position: absolute;
+            }
             
+            .clinic-schedule-options > label:nth-child(4) {
+                top: 27px;
+            }
+            /* END OF Temporary styles for medicalCenter schedule */
+
             table.mceLayout {
                 width: 100% !important;
             }

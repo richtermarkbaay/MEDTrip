@@ -19,49 +19,49 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
-{	
+{
     const FULL_PAGE_CONTEXT = 1; // Full page
     const LIST_CONTEXT = 2; // Clinic list
     const SEARCH_RESULTS_CONTEXT = 3; // Search results
     const ADS_CONTEXT = 4; // Ads results
 
     private static $businessHoursBitValueLabel = array(
-        1 => 'Monday', 
-        2 => 'Tuesday', 
-        4 => 'Wednesday', 
-        8 => 'Thursday', 
-        16 => 'Friday', 
-        32 => 'Saturday', 
+        1 => 'Monday',
+        2 => 'Tuesday',
+        4 => 'Wednesday',
+        8 => 'Thursday',
+        16 => 'Friday',
+        32 => 'Saturday',
         64 => 'Sunday'
     );
-    
+
     /**
      * @var InstitutionMedicalCenterService
      */
     private $institutionMedicalCenterService;
-    
+
     public function setInstitutionMedicalCenterService(InstitutionMedicalCenterService $s)
     {
         $this->institutionMedicalCenterService = $s;
     }
-    
+
     /**
      * @var MediaExtension
      */
     private $mediaExtension;
-    
+
     private $imagePlaceHolders = array();
-    
+
     public function setMediaExtension(MediaExtension $media)
     {
         $this->mediaExtension = $media;
     }
-    
+
     public function setImagePlaceHolders($v)
     {
         $this->imagePlaceHolders = $v;
     }
-    
+
     public function getFunctions()
     {
         return array(
@@ -69,13 +69,13 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             'get_medical_center_status_label' => new \Twig_Function_Method($this, 'getStatusLabel'),
             'medical_center_complete_address_to_array' => new \Twig_Function_Method($this, 'getCompleteAddressAsArray'),
             'medical_center_complete_address_to_string' => new \Twig_Function_Method($this, 'getCompleteAddressAsString'),
-            'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'render_institution_medical_center_logo'),
+            'render_institution_medical_center_logo' => new \Twig_Function_Method($this, 'renderInstitutionMedicalCenterLogo'),
             'render_institution_medical_center_contact_number' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_number'),
             'render_institution_medical_center_contact_details' => new \Twig_Function_Method($this, 'render_institution_medical_center_contact_details'),
             'business_hours_to_view_data' => new \Twig_Function_Method($this, 'businessHoursToViewData'),
         );
     }
-    
+
     public function render_institution_medical_center_contact_number(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $contactNumber = \json_decode($institutionMedicalCenter->getContactNumber(), true);
@@ -91,9 +91,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                     // append + to country code
                     $contactNumber['country_code'] = '+'.$contactNumber['country_code'];
                 }
-                
+
                 $result = \implode('-', $contactNumber);
-                
+
             }else{
                 if (isset($contactNumber['phone_number'])) {
                     if (\preg_match('/^\+/', $contactNumber['phone_number']['number'])) {
@@ -106,13 +106,13 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                     }
             }
         }
-        
+
         return $result;
     }
-    
+
     public function render_institution_medical_center_contact_details(InstitutionMedicalCenter $center, $asJSON=false)
     {
-        $contactDetails = $center->getContactDetails();        
+        $contactDetails = $center->getContactDetails();
         $contactDetailsArray = array();
 
         foreach($contactDetails as $each) {
@@ -123,22 +123,38 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         if (!\count($contactDetailsArray)) {
             return null;
         }
-        
+
         return $asJSON ? \json_encode($contactDetailsArray) : $contactDetailsArray;
     }
-    
-    public function render_institution_medical_center_logo(InstitutionMedicalCenter $institutionMedicalCenter, array $options = array())
+
+    private function _getLogoDependencies($institutionMedicalCenter)
+    {
+        $dependencies = array();
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $dependencies['logo'] = $institutionMedicalCenter->getLogo();
+        }
+        elseif (\is_array($institutionMedicalCenter)) {
+            //$dependencies['logo'] = $institutionMedicalCenter['logo'];
+        }
+    }
+
+    /**
+     *
+     * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
+     * @param array $options
+     */
+    public function renderInstitutionMedicalCenterLogo($institutionMedicalCenter, array $options = array())
     {
         $options['size'] = ImageSizes::MEDIUM;
 
         if(!isset($options['context'])) {
             $options['context'] = self::SEARCH_RESULTS_CONTEXT;
         }
-        
+
         if(!isset($options['attr']['class'])) {
             $options['attr']['class'] = '';
         }
-        
+
         $institution = $institutionMedicalCenter->getInstitution();
 
         // Default image
@@ -173,30 +189,62 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
 
         if(isset($mediaSrc)) {
-            $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
+            // $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
+            $html = '<img src="'.$mediaSrc.'" alt="">';
         }
 
         return $html;
     }
-    
+
     public function getStatusLabel(InstitutionMedicalCenter $institutionMedicalCenter)
     {
         $statuses = InstitutionMedicalCenterStatus::getStatusList();
-        
+
         return \array_key_exists($institutionMedicalCenter->getStatus(), $statuses) ?  $statuses[$institutionMedicalCenter->getStatus()] : '';
     }
-    
-    public function getCompleteAddressAsArray(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array() )
+
+    /**
+     *
+     * @param  Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
+     * @param array $includedKeys
+     * @return array
+     */
+    public function getCompleteAddressAsArray($institutionMedicalCenter, array $includedKeys=array() )
     {
         $returnVal = array();
         $defaultIncludedKeys = array('address', 'city', 'state', 'country', 'zipCode');
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : $defaultIncludedKeys);
 
-        $institution = $institutionMedicalCenter->getInstitution();
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter){
+            $institution = $institutionMedicalCenter->getInstitution();
+            $addressData = array(
+                'address' => $institutionMedicalCenter->getAddress(),
+                'city' => $institution->getCity() ? $institution->getCity()->getName() : null,
+                'state' => $institution->getState() ? $institution->getState()->getName() : null,
+                'country' => $institution->getCountry() ? $institution->getCountry()->getName() : null,
+                'zipCode' => \trim($institution->getZipCode()),
+                'institutionAddress' => $institution->getAddress1()
+            );
+        }
+        elseif (\is_array($institutionMedicalCenter)) {
+            // hydrated with HYDRATE_ARRAY
+            $institution = $institutionMedicalCenter['institution'];
+            $addressData = array(
+                'address' => $institutionMedicalCenter['address'],
+                'city' => isset($institution['city']) ? $institution['city']['name'] : null,
+                'state' => isset($institution['state']) ? $institution['state']['name'] : null,
+                'country' => isset($institution['country']) ? $institution['country']['name'] : null,
+                'zipCode' => isset($institution['zipCode']) ? \trim($institution['zipCode']) : null,
+                'institutionAddress' => isset($institution['address1']) ? \trim($institution['address1']) : null,
+            );
+        }
+        else {
+            return null;
+        }
 
         if (isset($includedKeys['address'])) {
-            $street_address = \json_decode($institutionMedicalCenter->getAddress(), true);
-            
+            $street_address = \json_decode($addressData['address'], true);
+
             $street_address = !\is_null($street_address)
                 ?  $this->_removeEmptyValueInArray($street_address)
                 : array();
@@ -205,7 +253,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             }
             else {
                 // try to fetch the institution adress
-                $street_address = \json_decode($institution->getAddress1(), true);
+                $street_address = \json_decode($addressData['institutionAddress'], true);
                 if (!\is_null($street_address)) {
                     $this->_removeEmptyValueInArray($street_address);
                     if (\count($street_address)) {
@@ -214,26 +262,27 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 }
             }
         }
-        
-        if (isset($includedKeys['zipCode']) && (0 != $institution->getZipCode() || '' != $institution->getZipCode())) {
-            $returnVal['zipCode'] = $institution->getZipCode();
+
+        if (isset($includedKeys['city']) && $addressData['city']) {
+            $returnVal['city'] = $addressData['city'];
         }
-        
-        if (isset($includedKeys['city']) && $institution->getCity()) {
-            $returnVal['city'] = $institution->getCity()->getName();
+
+        if (isset($includedKeys['state']) && $addressData['state']) {
+            $returnVal['state'] = $addressData['state'];
         }
-        
-        if (isset($includedKeys['state']) && '' != $institution->getState()) {
-            $returnVal['state'] = $institution->getState()->getName();
+
+        if (isset($includedKeys['country'])  && $addressData['country']) {
+            $returnVal['country'] = $addressData['country'];
         }
-        
-        if (isset($includedKeys['country']) && $institution->getCountry()) {
-            $returnVal['country'] = $institution->getCountry()->getName();
+
+
+        if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
+            $returnVal['zipCode'] = $addressData['zipCode'];
         }
 
         return $returnVal;
     }
-    
+
     /**
      * Convert InstitutionMedicalCenter address to string
      *     - address
@@ -242,9 +291,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
      *     - country
      *     - zip code
      *
-     * @param InstitutionMedicalCenter $institutionMedicalCenter
+     * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
      */
-    public function getCompleteAddressAsString(InstitutionMedicalCenter $institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
+    public function getCompleteAddressAsString($institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
     {
         $arrAddress = $this->getCompleteAddressAsArray($institutionMedicalCenter, $includedKeys);
 
@@ -266,7 +315,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     {
         return 'institutionMedicalCenterExtension';
     }
-    
+
     private function _removeEmptyValueInArray(&$array = array())
     {
         foreach ($array as $k => $v) {
@@ -274,13 +323,34 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 unset($array[$k]);
             }
         }
-        
+
         return $array;
     }
-    
-    public function businessHoursToViewData(BusinessHour $businessHour)
+
+    /**
+     *
+     * @param Mixed <BusinessHour, array> $businessHour
+     * @return
+     */
+    public function businessHoursToViewData($businessHour)
     {
-        $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($businessHour->getWeekdayBitValue());
+        if ($businessHour instanceof BusinessHour){
+            $data = array(
+                'weekdayBitValue' => $businessHour->getWeekdayBitValue(),
+                'startTime' => $businessHour->getOpening()->format('h:i A'),
+                'endTime' => $businessHour->getClosing()->format('h:i A'),
+                'notes' => $businessHour->getNotes()
+            );
+        }
+        else {
+            $data = array(
+                'weekdayBitValue' => $businessHour['weekdayBitValue'],
+                'startTime' => $businessHour['opening']->format('h:i A'),
+                'endTime' => $businessHour['closing']->format('h:i A'),
+                'notes' => $businessHour['notes']
+            );
+        }
+        $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($data['weekdayBitValue']);
         $daysLabel = '';
         if (count($days) > 1 ) {
             $currentDay = null;
@@ -301,7 +371,7 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                     $previousDay = $currentDay;
                 }
             }
-            
+
             if (null != $leastDay) {
                 $groupedWeekdaysLabel[] = $this->_concatenateDays($leastDay, $previousDay);
             }
@@ -310,18 +380,13 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         elseif (count($days) == 1) {
             $daysLabel = $days[0]['short'];
         }
-        
-        $viewData = array(
-            'daysLabel' => $daysLabel,
-            'startTime' => $businessHour->getOpening()->format('h:i A'),
-            'endTime' => $businessHour->getClosing()->format('h:i A'),
-            'notes' => $businessHour->getNotes()
-        );
-        
-        return $viewData;
+
+        $data['daysLabel'] = $daysLabel;
+
+        return $data;
     }
-    
-    private function _concatenateDays($startDay, $endDay) 
+
+    private function _concatenateDays($startDay, $endDay)
     {
         $label = $startDay['day'] != $endDay['day']
             ? $startDay['short'].' - '.$endDay['short']

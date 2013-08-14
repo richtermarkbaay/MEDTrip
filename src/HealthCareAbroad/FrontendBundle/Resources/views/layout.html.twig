@@ -3,25 +3,19 @@
 {% block title %}{{ parent() }} &raquo; Healthcare Abroad{% endblock %}
 
 {% block body %}
-    <div id="top-background" class="hca-v-sprite stripe-bg blue">
+    <!-- <div id="top-background" class="hca-v-sprite stripe-bg blue">
         <div class="glow"></div>
-    </div>
-    
-    {% if isHomePage is defined and isHomePage %}
-         {% include 'FrontendBundle:Widgets:persistent_search_widget.html.twig' %}
-     {% endif %}
+    </div> -->
 
     {% block header %}
         {% include 'FrontendBundle:Widgets:header.html.twig' %}
     {% endblock %}
 
-    <!-- Show Breadcrumbs -->
     {{ render_frontend_breadcrumb() }}
-    <!-- End of Breadcrumbs -->
 
     {% block callout %}{% endblock %}
     
-    <div id="content-wrapper" class="container box-shadow {{ isHomePage is defined and isHomePage ? 'homepage': '' }}">
+    <div id="content-wrapper" class="container {{ isHomePage is defined and isHomePage ? 'homepage': 'box-shadow' }}">
         {% block content %}{% endblock %}
     </div>
 
@@ -31,11 +25,11 @@
 
 
     {{ outputInlineJavascript() | raw }}
-    
+
     {# -- stats tracker stuff -- #}
     {{ render_frontend_statistics_tracker_form() |raw }}
     <script type="text/javascript">
-    <!-- 
+    <!--
     (function($){
         $(function(){
 
@@ -44,7 +38,7 @@
                 .setImpressionTrackerForm('form#{{ get_impression_tracker_form_id() }}')
                 .setClickthroughTrackerForm('form#{{ get_clickthrough_tracker_form_id() }}');
             FrontendStatsTracker.clickthroughTrackerClass = '{{ get_clickthrough_tracker_class() }}';
-            
+
             {# -- track impressions --#}
             FrontendStatsTracker.trackImpressions();
 
@@ -55,6 +49,6 @@
     //-->
     </script>
     {# -- end stats tracker stuff -- #}
-    
+
     {{ render_javascript_files() | raw }}
 {% endblock %}

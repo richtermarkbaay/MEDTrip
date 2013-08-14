@@ -132,6 +132,34 @@ class InstitutionController extends Controller
     }
     
     /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+
+    public function viewNewlyRegisteredInstitutionAction()
+    {
+        $criteria = array('isFromInternalAdmin' => null, 'status' => InstitutionStatus::INACTIVE);
+        $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($criteria);
+
+        $params = array('institutions' => $institutions, 'statusList' => InstitutionStatus::getBitValueLabels());
+
+        return $this->render('AdminBundle:Institution:newlyRegisteredInstitutions.html.twig', $params);
+    }
+    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+    public function viewNewlyAddedClinicsAction()
+    {
+        $criteria = array('isFromInternalAdmin' => null, 'status' => InstitutionMedicalCenterStatus::DRAFT);
+        $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy($criteria);
+        
+        
+        $params = array('institutionMedicalCenters' => $centers, 'statusList' => InstitutionMedicalCenterStatus::getStatusList());
+
+        return $this->render('AdminBundle:Institution:newlyAddedClinics.html.twig', $params);
+    }
+    
+    /**
      * Add new User and Institution
      * @author Chaztine Blance
      */
@@ -163,6 +191,11 @@ class InstitutionController extends Controller
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
 	    			$institution->setSignupStepStatus(0);
+
+	    			// Temporary Code to mark a newly added institution as added internally.
+	    			// Added By: Adelbert Silla
+	    			$institution->setIsFromInternalAdmin(1);
+	    			
 	    			
 	    			$factory->save($institution);
 	    			 
@@ -426,7 +459,6 @@ class InstitutionController extends Controller
         $output = array();
         if ($request->isMethod('POST')) {
             $formVariables = $request->get(InstitutionProfileFormType::NAME);
-            var_dump($formVariables);exit;
             $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
             $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
             $formRequestData = $request->get($form->getName());

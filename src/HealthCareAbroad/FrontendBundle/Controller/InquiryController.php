@@ -78,7 +78,6 @@ class InquiryController extends Controller
     {
         $institutionInquiry = new InstitutionInquiry();
         $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
-
         $form->bindRequest($request);
         if ($form->isValid()) {
             if($request->get('imcId')) {
@@ -106,21 +105,19 @@ class InquiryController extends Controller
                 //ignored for now
             }
 
-            $this->get('session')->setFlash('notice', "Successfully saved!");
             $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
         }
         else {
+            
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
             foreach ($form_errors as $_err) {
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
-
             $captchaError = $form->get('captcha')->getErrors();
             if(count($captchaError)) {
                 $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
-
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
 

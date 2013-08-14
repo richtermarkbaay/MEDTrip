@@ -1,0 +1,71 @@
+{# this file will be shared with medical centers profile page #}
+
+{% if viewData.contactNumber %}
+<div id="_call-content-wrapper" style="display: none">
+    <h2><small><i class="icon-phone"></i>Call</small><span>{{ viewData.headerText }}</span></h2>
+    <h1>{{ viewData.contactNumber.__toString }}</h1>
+</div>
+{% endif %}
+
+<div class="cover-photo-wrapper">
+
+    <h1>{{ viewData.headerText }}
+       {% if viewData.subHeader is defined %} 
+           <span><a href="{{ viewData.subHeader.url }}">{{ viewData.subHeader.text }}</a></span> 
+       {% endif %}
+    </h1>
+    
+    <img class="featured-image" src="{{ viewData.featuredMediaSource }}" />
+
+    <div class="info-wrapper hca-v-sprite stripe-bg-dark">
+        <div class="logo-wrapper">
+            {% if viewData.logoSource %}
+                <img src="{{ viewData.logoSource }}" class="hospital-logo" />
+            {% else %}
+                <span class="hca-sprite hospital-default-logo"></span>
+            {% endif %}
+        </div>
+        <div class="span5 pull-right">
+            <ul class="unstyled inline-list pull-right">
+                {% if viewData.contactNumber %}
+                <li>
+                    <a href="#" id="hospital-contact" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
+                </li>
+                {% endif %}
+                <li>
+                    <a class="btn orange" href="#form_feedback" role="button" ><i class="icon-envelope-alt"></i>  Email Us</a>
+                </li>
+                {% if viewData.website %}
+                <li>
+                     <a id="visit_website" class="btn orange" href="http://{{ viewData.website }}"><i class="icon-globe"></i> Visit Website</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="unstyled inline-list pull-right">
+                {% if viewData.social.facebook.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.facebook.value }}">Visit <i class="icon-facebook"></i></a>
+                    </li>
+                {% endif %}
+                {% if viewData.social.twitter.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.twitter.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
+                    </li>
+                {% endif %}
+                {% if viewData.social.googleplus.value %}
+                    <li>
+                        <a class="btn orange" href="{{ viewData.social.googleplus.value }}" role="button" >Visit <i class="icon-google-plus"></i></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="address">
+            <span class="hca-sprite address-icon pull-left"></span>
+            <address>
+                {{ viewData.streetAddress }}, {{ viewData.mainAddress }}
+            </address>
+        </div>
+    </div>    
+</div>
+

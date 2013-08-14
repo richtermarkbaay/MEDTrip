@@ -159,20 +159,28 @@ class PageMetaConfigurationService
     /**
      * Create PageMetaConfiguration for hospital page
      * 
-     * @param Institution $institution
+     * @param Mixed <Institution, array> $institution
      * @return \HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration
      */
-    public function buildForInstitutionPage(Institution $institution)
+    public function buildForInstitutionPage($institution)
     {
         $metaConfig = new PageMetaConfiguration();
         
-        $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
+        if ($institution instanceof Institution){
+            $institutionName = $institution->getName();
+            $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
+        }
+        else {
+            $institutionName = $institution['name'];
+            $location = (isset($institution['city']) ? $institution['city']['name'].', ' : '').$institution['country']['name'];
+        }
+        
         // title: #HospitalName #city, #country - HealthcareAbroad.com
-        $metaConfig->setTitle("{$institution->getName()} {$location} - HealthcareAbroad.com");
+        $metaConfig->setTitle("{$institutionName} {$location} - HealthcareAbroad.com");
         // description: #HospitalName in #city, #country offers treatments in #NumberOfSubSpecialities Specialities at #NumberOfClinics Clinics. Find your treatment at HealthcareAbroad.com
-        $metaConfig->setDescription("{$institution->getName()} in {$location} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE."} Specialties at {".PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE."} Clinics. Find your treatment at HealthcareAbroad.com");
+        $metaConfig->setDescription("{$institutionName} in {$location} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE."} Specialties at {".PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE."} Clinics. Find your treatment at HealthcareAbroad.com");
         // keywords: #HospitalName, #City, #Country,  (up to 10) #Speciality, medical tourism, Doctor, Dentist
-        $metaConfig->setKeywords("{$institution->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
+        $metaConfig->setKeywords("{$institutionName}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
         $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION);
         
         return $metaConfig;

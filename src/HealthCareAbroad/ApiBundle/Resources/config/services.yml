@@ -1,0 +1,22 @@
+services:
+    services.api.institution:
+        class: HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+            - [setMemcache, [@services.memcache]]
+            - [setMediaExtension, [@services.media.twig.extension]]
+            
+    services.api.institutionMedicalCenter:
+        class: HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+            - [setMediaExtension, [@services.media.twig.extension]]
+        
+    services.api.hcaBlog:
+        class: HealthCareAbroad\ApiBundle\Services\HcaBlogApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+
+    #controller.api.institution:
+    #    class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
+        

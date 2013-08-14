@@ -41,7 +41,7 @@ services:
                 
     twig.advertisement_widgets:
         class: HealthCareAbroad\AdvertisementBundle\Twig\AdvertisementWidgetsTwigExtension
-        arguments: [@twig, @services.advertisement.retriever]
+        arguments: [@twig, @services.advertisement.retriever, @services.api.hcaBlog]
         calls:
             - [setSessionService, [@session]]
         tags:

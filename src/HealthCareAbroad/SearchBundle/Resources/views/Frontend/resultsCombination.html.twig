@@ -1,12 +1,20 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% block callout %}
+{#{% block callout %}
     {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' with { 'isArraySearchLabel': true } %}
-{% endblock %}
+{% endblock %}#}
 
 {% block content %}
     <div class="search-results-wrapper span8">
-        <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
+
+        <div class="content-profile-widget-wrapper">
+            <h3 class="heading">
+                We found <em>{{ searchResults.getTotalResults }}</em> {{ searchResults.getTotalResults > 1 ? 'results' : 'result' }}.
+            </h3>
+            <h3 class="heading">Refine your results.</h3>
+            {# Refine results form #}
+            {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+        </div>
 
         {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
         {% for searchResult in searchResults %}
@@ -30,14 +38,146 @@
 
         {% endfor %}
 
+        {# for PHOTO LISTING #}
+        <div class="photo-listing item-wrapper">
+            <div class="content row">
+                <div class="clinic-box">
+                    <a href="" class="small-logo-wrapper"><span class="hca-sprite clinic-default-logo small"></span></a>
+                </div>
+                <div class="description-box">
+                    <h3 class="heading">
+                        <a href="">Diagnostic Center of Noninvasive Cardiology</a>
+                    </h3>
+                    <p>
+                        Memorial Healthcare Group (MHG) is serving both local and international patients with its network of hospitals and satellite clinics in Istanbul, Antalya, Diyarbakir and Kayseri. Memorial Hospital is also the first hospital in Turkey that brought in the AESOP robotic arm - a surgical robot used in coronary bypass surgeries.
+                    </p>
+                </div>
+                <div class="hca-sprite thumbnail-frame pull-right">
+                    <img class="img-polaroid" alt="" src="http://placeimg.com/135/100/tech">
+                </div>
+                <a class="btn green pull-right hca_statistics_clickthroughs">
+                    <span class="white-icon-search"></span>
+                    Learn More
+                </a>
+            </div>
+            <div class="tag-box">
+                <span class="location">
+                    <i class="icon-map-marker"></i> Bangalore, Karnataka, India
+                </span>
+                <div class="link-box">
+                    <a href="">
+                        <span data-toggle="tooltip" title="Visit G+" class="icon-google-plus"></span>
+                    </a>
+                    <a href="">
+                        <span data-toggle="tooltip" title="Visit Twitter" class="icon-twitter"></span>
+                    </a>
+                    <a href="">
+                        <span data-toggle="tooltip" title="Visit Facebook" class="icon-facebook"></span>
+                    </a>
+                    <a href="">
+                        <span data-toggle="tooltip" title="Visit Website" class="icon-globe"></span>
+                    </a>
+                    <a href="">
+                        <span data-toggle="tooltip" title="Call Us" class="icon-phone"></span>
+                    </a>
+                    <a href="">
+                        <span data-toggle="tooltip" title="Email Us" class="icon-envelope"></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {# for LOGO LISTING (modeled the resultItem after this...) for now #}
+        <div class="logo-listing item-wrapper">
+              <div class="left-column-wrapper">
+                  <a href="" class="small-logo-wrapper"><span class="hca-sprite clinic-default-logo small"></span></a>     
+              </div>
+              <div class="right-column-wrapper">
+                  <h3 class="heading"><a href="">Apollo Transplant Institute</a></h3>
+                  <h4 class="heading"><a href="">Apollo Hospital, Bangalore</a></h4>
+                  <p>
+                      The Apollo Transplant Institutes (ATI) is one of the world’s largest and most comprehensive solid transplant programs. ATI offers a host
+                      <a href="">More Info</a>
+                  </p>
+              </div>
+              <div class="tag-box">
+                  <span class="location"><i class="icon-map-marker"></i> Bangalore, Karnataka, India</span>
+                  <div class="link-box">
+                      <a href="">
+                          <span data-toggle="tooltip" title="Visit Twitter" class="icon-twitter"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Visit Facebook" class="icon-facebook"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Visit Website" class="icon-globe"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Call Us" class="icon-phone"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Email Us" class="icon-envelope"></span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+
+          {# for LINKED LISTING (almost same layout as FREE LISTING except for the "Visit Website" and "Call Us" links) #}
+          <div class="item-wrapper">
+              <div class="right-column-wrapper">
+                  <h3 class="heading"><a href="">Pediatric Surgery Unit</a></h3>
+                  <h4 class="heading"><a href="">Apollo Hospital, Bangalore</a></h4>
+                  <p>
+                      Children are not ‘little adults’, more so when they require surgical interventions. Paediatric Surgery is the Specialty that treats any child with a surgical problem and provides holistic
+                      <a href="">More Info</a>
+                  </p>
+              </div>
+              <div class="tag-box">
+                  <span class="location"><i class="icon-map-marker"></i> Bangalore, Karnataka, India</span>
+                  <div class="link-box">
+                      <a href="">
+                          <span data-toggle="tooltip" title="Visit Website" class="icon-globe"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Call Us" class="icon-phone"></span>
+                      </a>
+                      <a href="">
+                          <span data-toggle="tooltip" title="Email Us" class="icon-envelope"></span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+
+          {# for FREE LISTING #}
+          <div class="item-wrapper">
+              <div class="right-column-wrapper">
+                  <h3 class="heading"><a href="">Cardiology</a></h3>
+                  <h4 class="heading"><a href="">Fortis Hospital, Bangalore - Bannerghatta Road</a></h4>
+                  <p>
+                      Minimal Access Surgery is also known as keyhole surgery. Minimal Invasive Surgery helps patients recover faster with fewer post-surgical complications, surgical trauma, minimized pain,
+                      <a href="">More Info</a>
+                  </p>
+              </div>
+              <div class="tag-box">
+                  <span class="location"><i class="icon-map-marker"></i> Bangalore, Karnataka, India</span>
+                  <div class="link-box">
+                      <a href="">
+                          <span data-toggle="tooltip" title="Email Us" class="icon-envelope"></span>
+                      </a>
+                  </div>
+              </div>
+          </div>
+
         {% if searchResults.isPaginable %}
             {{ paginate(searchResults, app.request.uri, {hasNoRouteName: 1}, 'PagerBundle:Pager:paginate_frontend_search.html.twig') }}
         {% endif %}
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
+        {{ render_search_results_featured_posts() }}
+    
         {% if includedNarrowSearchWidgets %}
-            {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+            {# include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' #}
         {% else %}
             {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' #}
         {% endif %}

@@ -88,7 +88,7 @@ var BroadSearchWidget = {
                     },
 
                     source:  function(request, response) {
-                        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+                        var matcher = new RegExp(SearchWidgetUtils.stripAccents($.ui.autocomplete.escapeRegex(request.term)), "i" );
                         var matches = SearchWidgetUtils.getMatches(matcher, componentOptions.dataSource, type, request);
 
                         response(matches);
@@ -235,7 +235,7 @@ var NarrowSearchWidget = {
                 delay: 0,
                 minLength: 0,
                 source: function(request, response) {
-                   var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i");
+                   var matcher = new RegExp(SearchWidgetUtils.stripAccents($.ui.autocomplete.escapeRegex(request.term)), "i");
                    var matches = SearchWidgetUtils.getMatches(matcher, NarrowSearchWidget.sources[widget_key], widget_key, request);
 
                    response(matches);
@@ -305,6 +305,42 @@ var NarrowSearchWidget = {
 };
 
 var SearchWidgetUtils = (function() {
+    // String containing replacement characters for stripping accents
+    var stripString = 'AAAAAAACEEEEIIII' + 'DNOOOOO.OUUUUY..' + 'aaaaaaaceeeeiiii' + 'dnooooo.ouuuuy.y' + 'AaAaAaCcCcCcCcDd' + 'DdEeEeEeEeEeGgGg' + 'GgGgHhHhIiIiIiIi' + 'IiIiJjKkkLlLlLlL' + 'lJlNnNnNnnNnOoOo' + 'OoOoRrRrRrSsSsSs' + 'SsTtTtTtUuUuUuUu' + 'UuUuWwYyYZzZzZz.';
+
+    var stripAccents = function(str) {
+        for (var i = 0; i < str.length; i++) {
+            var char = str[i];
+            var charIndex = char.charCodeAt(0) - 192; // Index of character code in the strip string
+            if (charIndex >= 0 && charIndex < stripString.length) {
+                // Character is within our table, so we can strip the accent...
+                var outChar = stripString.charAt(charIndex);
+                // ...unless it was shown as a '.'
+                if (outChar != '.') {
+                    str = str.substring(0, i) + outChar + str.substring(i + 1, str.length);
+                }
+            }
+        }
+        return str;
+    };
+
+    //This is sometimes faster in other browsers
+    var stripAccents2 = function (str) {
+        var stripped = '';
+        for (var i = 0; i < str.length; i++) {
+            var char = str[i];
+            var charIndex = char.charCodeAt(0) - 192;
+            if (charIndex >= 0 && charIndex < stripString.length) {
+                var outChar = stripString.charAt(charIndex);
+                if (outChar != '.') {
+                    char = outChar;
+                }
+            }
+            stripped += char;
+        }
+        return stripped;
+    };
+
     var isCountry = function(id) {
         return id.slice(-2) == '-0';
     };
@@ -319,8 +355,8 @@ var SearchWidgetUtils = (function() {
         var matches = [];
         var submatches = [];
         $.each(datasource, function(_i, _each) {
-            /* TODO: why do we need request.term? */
-            if (_each.value && ( !request.term || matcher.test(_each.label))) {
+            /* TODO: why do we need to test request.term? */
+            if (_each.value && ( !request.term || matcher.test(stripAccents(_each.label)))) {
                 var _eachLabel = _each.label;
                 if (type == 'destinations') {
                     if (isCountry(_each.value)) {
@@ -354,6 +390,7 @@ var SearchWidgetUtils = (function() {
 
     return {
         getLink: getLink,
-        getMatches: getMatches
+        getMatches: getMatches,
+        stripAccents: stripAccents
     };
 })();

@@ -9,10 +9,10 @@ class WebsitesDataTransformer implements  DataTransformerInterface
 {   
     public function transform($value)
     {
-        if(!$value) {
-            $value = SocialMediaSites::getDefaultValues();
-        } else {
-            $value = \json_decode($value, true);
+        $value = \json_decode($value, true);
+
+        if(!\is_array($value) || empty($value)) {
+            $value = SocialMediaSites::getDefaultValues();                
         }
 
         return $value;
@@ -20,7 +20,7 @@ class WebsitesDataTransformer implements  DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (!\is_array($value)) {
+        if (!\is_array($value) || empty($value)) {
             $value = SocialMediaSites::getDefaultValues();
         }
 

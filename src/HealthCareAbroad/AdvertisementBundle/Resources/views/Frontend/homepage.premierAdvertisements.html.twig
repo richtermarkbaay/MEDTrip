@@ -13,13 +13,13 @@
     <!-- institution logo link -->
 
     <div class="header-wrapper">
-        <h3>
+        <h3 class="heading">
 			{% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     		        statisticsDataObject: highlight,
     		        link: { url: institutionUrl, html: highlight.institution.name }
 			} %}
         </h3>
-        <h5>{{ institution_address_to_string(highlight.institution, ['city', 'country']) }}</h5>
+        <span class="sub-heading">{{ institution_address_to_string(highlight.institution, ['city', 'country']) }}</span>
 
         {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
     	        statisticsDataObject: highlight,
@@ -30,9 +30,10 @@
 
 	<div class="carousel slide" id="feature_carousel">
 		<div class="carousel-inner">
+		    {% set carouselImageSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM_BANNER') %}
 		    {% for i, image in featuredImages %}
 			<div class="{{ i==0 ? 'active' : '' }} item">
-                <img alt="" src="{{ advertisement_media_src(image.name) }}">
+                <img alt="" src="{{ advertisement_media_src(image.name, carouselImageSize) }}">
 			</div> <!--End of slider_item 1-->
 		    {% endfor %}
 		</div>
@@ -48,14 +49,14 @@
 		        link: {
 		            url: institutionUrl,
     			    class: 'btn white feature-btn',
-    			    html: '<span class="orange-icon-search icon-search"></span> Learn More'
+    			    html: '<span class="orange-icon-search"></span> Learn More'
 		        }
 		    }
 		%}
 
 	</div> <!--End of carousel slide-->
 
-	<div class="ad-highlights-wrapper hca-v-sprite stripe-bg orange row-fluid">		
+	<div class="ad-highlights-wrapper bg-orange row-fluid">		
         {% set highlights = json_decode(highlight.highlights) %}
         {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
         {% for each in highlights %}

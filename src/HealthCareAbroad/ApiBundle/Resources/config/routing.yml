@@ -1,0 +1,7 @@
+ApiBundle_institution:
+    resource: "@ApiBundle/Resources/config/routing.institution.yml"
+    prefix:   /api
+    
+ApiBundle_hcaBlog:
+    resource: "@ApiBundle/Resources/config/routing.hcaBlog.yml"
+    prefix:   /api

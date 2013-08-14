@@ -1,6 +1,7 @@
 parameters:
     database_driver: pdo_mysql
     database_host:     @DATABASE_HOST@
+    database_blog_host:     @DATABASE_BLOG_HOST@
     database_port:     ~
     database_name:     @DATABASE_NAME@
     database_user:     @DATABASE_USER@

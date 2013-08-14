@@ -33,7 +33,8 @@ frontend_search_process:
 
 frontend_search_results_related_terms:
     pattern: /related-search/{tag}/{page}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
+    #defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
 

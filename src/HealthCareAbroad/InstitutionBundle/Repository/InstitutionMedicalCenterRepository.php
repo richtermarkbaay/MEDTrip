@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -28,6 +30,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionMedicalCenterRepository extends EntityRepository
 {
+    /**
+     * Get id by slug
+     * @param string $slug
+     * @return int
+     */
+    public function getInstitutionMedicalCenterIdBySlug($slug)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('imc.id')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
+            ->where('imc.slug = :slug')
+                ->setParameter('slug', $slug);
+        
+        return (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+    }
     
     /**
      * Create query builder for finding a medical center with relationships eagerly loaded
