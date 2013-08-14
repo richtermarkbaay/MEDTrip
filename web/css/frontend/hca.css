@@ -1775,33 +1775,33 @@ form.home-search > button.btn:active {
 .item-wrapper > .right-column-wrapper {
   display: inline-block;
 }
-.item-wrapper > .right-column-wrapper > .heading {
+.item-wrapper > .right-column-wrapper .heading {
   margin: 0;
 }
-.item-wrapper > .right-column-wrapper > .heading a {
+.item-wrapper > .right-column-wrapper .heading a {
   color: #657174;
 }
-.item-wrapper > .right-column-wrapper > .heading a:hover {
+.item-wrapper > .right-column-wrapper .heading a:hover {
   color: #4D5659;
 }
-.item-wrapper > .right-column-wrapper > h4.heading {
+.item-wrapper > .right-column-wrapper h4.heading {
   font-size: 16px;
   margin-top: 5px;
 }
-.item-wrapper > .right-column-wrapper > .description {
+.item-wrapper > .right-column-wrapper .description {
   margin-top: 10px;
 }
-.item-wrapper > .right-column-wrapper > p {
+.item-wrapper > .right-column-wrapper p {
   margin: 10px 0 0;
 }
-.item-wrapper > .right-column-wrapper > p a {
+.item-wrapper > .right-column-wrapper p a {
   color: #fe6500;
   cursor: pointer;
 }
-.item-wrapper > .right-column-wrapper > p a:hover {
+.item-wrapper > .right-column-wrapper p a:hover {
   color: #ff8432;
 }
-.item-wrapper > .right-column-wrapper > p a:after {
+.item-wrapper > .right-column-wrapper p a:after {
   content: " →";
 }
 .item-wrapper > .tag-box {
@@ -1833,42 +1833,39 @@ form.home-search > button.btn:active {
 .item-wrapper.photo-listing p {
   margin: 10px 0 !important;
 }
-.item-wrapper.photo-listing > .content {
-  color: #657174;
-  padding: 15px 0 0;
-  margin-left: 0;
-}
-.item-wrapper.photo-listing > .content div.clinic-box {
-  z-index: 1;
+.item-wrapper.photo-listing .small-logo-wrapper {
   float: left;
-  width: 103px;
-  text-align: center;
-  position: relative;
-}
-.item-wrapper.photo-listing > .content .clinic-box .small-logo-wrapper {
   margin-bottom: 5px;
-  display: inline-block;
-  border: 1px solid #dddddd !important;
 }
-.item-wrapper.photo-listing .content div.description-box {
+.item-wrapper.photo-listing > .left-column-wrapper {
+  margin: 0 10px 0 0;
+  min-width: 70px;
+  text-align: center;
+  vertical-align: top;
+  display: inline-block;
+}
+.item-wrapper.photo-listing > .right-column-wrapper {
+  display: inline-block;
+  width: 500px;
+}
+.item-wrapper.photo-listing > .right-column-wrapper div.description-box {
   z-index: 2;
   float: left;
-  width: 330px;
-  margin-left: 15px;
+  width: 345px;
   position: relative;
   min-height: 140px;
   color: #657174;
 }
-.item-wrapper.photo-listing .content .thumbnail-frame {
+.item-wrapper.photo-listing > .right-column-wrapper .thumbnail-frame {
   position: relative;
 }
-.item-wrapper.photo-listing .content .thumbnail-frame .img-polaroid {
+.item-wrapper.photo-listing > .right-column-wrapper .thumbnail-frame .img-polaroid {
   width: 135px;
   height: 100px;
-  margin: 8px 0px 30px;
+  margin: 0px 0px 20px;
 }
-.item-wrapper.photo-listing .content a.btn {
-  margin: 20px 15px 0 0;
+.item-wrapper.photo-listing > .right-column-wrapper a.btn {
+  margin: 0 15px 0 20px;
 }
 
 /* This styles the carousel */
