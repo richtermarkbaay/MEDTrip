@@ -128,14 +128,15 @@ class InstitutionMedicalCenterPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        static $isLoadedAvailableTypes = false;
-        if (!$isLoadedAvailableTypes) {
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoadedAvailableTypes = false;
+        //if (!$isLoadedAvailableTypes) {
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
-        }
-        if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
-            throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
-        }
+        //}
+//         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
+//             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
+//         }
         
         return $this->activePropertyTypes[$propertyTypeName];
     }
@@ -182,13 +183,13 @@ class InstitutionMedicalCenterPropertyService
             $returnVal = array();
             // get the property from the stored list
             foreach ($globalAwards as $_award) {
-                if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
-                    foreach ($propertiesByValue[$_award->getId()] as $imp) {
-                        // set the value object to GlobalAward
-                        $imp->setValueObject($_award);
-                        $returnVal[] = $imp;
-                    }
-                }
+//                 if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
+//                     foreach ($propertiesByValue[$_award->getId()] as $imp) {
+//                         // set the value object to GlobalAward
+//                         $imp->setValueObject($_award);
+//                         $returnVal[] = $imp;
+//                     }
+//                 }
             }
         }
 

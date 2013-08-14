@@ -535,7 +535,7 @@
 
 .btn.btn-default {
     background: #c4c4c4;
-    border-color: rgba(0,0,0,0.3);
+    border-color: rgba(0,0,0,.3);
 }
 
 .btn.btn-default:hover {
@@ -549,7 +549,7 @@
 
 .btn.btn-misc {
     background: #e5e5e5;
-    border-color: rgba(0,0,0,0.1);
+    border-color: rgba(0,0,0,.1);
 }
 
 .btn.btn-misc:hover {
@@ -567,12 +567,12 @@ form label {
 
 form label small {
     font-weight: 400;
-    opacity: 0.5;
+    opacity: .5;
 }
 
 form label.radio small,form label.checkbox small {
     opacity: 1;
-    color: rgba(0,0,0,0.5);
+    color: rgba(0,0,0,.5);
 }
 
 form input[type=text],form input[type=password],form input[type=email],form select {
@@ -580,7 +580,7 @@ form input[type=text],form input[type=password],form input[type=email],form sele
     display: block;
     height: 35px;
     margin-bottom: 0;
-    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,.1);
 }
 
 form input[type=text].error,form input[type=password].error,form input[type=email].error,form select.error {
@@ -614,7 +614,7 @@ a:hover {
 }
 
 hr {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,.1);
     color: #000;
     border: 0;
     height: 1px;
@@ -655,8 +655,8 @@ hr {
 }
 
 #header {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    background-color: rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    background-color: rgba(0,0,0,.03);
     padding: 10px 0;
 }
 
@@ -689,15 +689,15 @@ hr {
     z-index: 10000;
     background-color: #fff;
     color: #fe6500;
-    border: 1px solid rgba(0,0,0,0.3);
+    border: 1px solid rgba(0,0,0,.3);
     border-bottom: 1px solid #fff;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    box-shadow: 0 -3px 5px 0 rgba(0,0,0,0.08);
+    box-shadow: 0 -3px 5px 0 rgba(0,0,0,.08);
 }
 
 #nav {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     background-color: #eef5ed;
 }
 
@@ -723,7 +723,7 @@ hr {
 }
 
 #content h1 {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     padding-bottom: 10px;
     margin: 15px;
 }
@@ -784,7 +784,7 @@ hr {
 }
 
 #content section.section.hca-clinic-heading h1,#content section.section.hca-doctor-heading h1 {
-    border-bottom: none;
+    border-bottom: 0;
     padding-bottom: 0;
     margin-bottom: 0;
     padding-top: 55px;
@@ -812,7 +812,7 @@ hr {
 }
 
 #content section.section.hca-main-profile h3 {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     padding-bottom: 10px;
     padding-top: 5px;
     font-weight: 400;
@@ -928,7 +928,7 @@ hr {
 
 #content section.section .row-fluid.terms {
     background-color: transparent;
-    border: none;
+    border: 0;
 }
 
 #content section.section .row-fluid.terms .btn-signup {
@@ -965,13 +965,13 @@ hr {
 }
 
 #content section.section .row-fluid>div.divider {
-    border-left: 1px solid rgba(0,0,0,0.1);
+    border-left: 1px solid rgba(0,0,0,.1);
 }
 
 #footer {
     margin-top: 40px;
     background-color: #eef5ed;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0,0,0,.1);
     padding: 2em 0;
 }
 
@@ -981,7 +981,7 @@ hr {
 }
 
 .aside-box {
-    background-color: rgba(0,0,0,0.05);
+    background-color: rgba(0,0,0,.05);
     margin-bottom: 20px;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
@@ -990,7 +990,7 @@ hr {
 }
 
 .aside-box h1,.aside-box h2,.aside-box h3,.aside-box h4,.aside-box h5 {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     padding-bottom: 14px;
     margin-bottom: 14px;
     font-weight: 400;
@@ -1002,7 +1002,7 @@ hr {
 
 .aside-box.info {
     background-color: #ffa;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
 }
 
 .aside-box.info p {
@@ -1038,8 +1038,8 @@ hr {
 
 .aside-box.get-started {
     margin-top: 93px;
-    border: 1px solid rgba(0,0,0,0.1);
-    opacity: 0.8;
+    border: 1px solid rgba(0,0,0,.1);
+    opacity: .8;
 }
 
 .aside-box .row-fluid .hca-gallery-upload .alert {
@@ -1107,7 +1107,7 @@ hr {
 .aside-box .steps .media.active .media.active {
     border-radius: 200px;
     background-color: transparent!important;
-    border: none;
+    border: 0;
     color: #fff;
 }
 
@@ -1119,12 +1119,12 @@ hr {
 }
 
 .aside-box .steps .media.substeps.active {
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0,0,0,.7);
     color: #fff;
 }
 
 .aside-box .steps .media.substeps.completed {
-    color: rgba(0,0,0,0.3);
+    color: rgba(0,0,0,.3);
     font-weight: 700;
 }
 
@@ -1174,10 +1174,10 @@ hr {
     position: absolute;
     right: 11px;
     top: 393px;
-    background-color: rgba(0,0,0,0.9);
-    border: none;
+    background-color: rgba(0,0,0,.9);
+    border: 0;
     color: #d4d4d4;
-    opacity: 0.75;
+    opacity: .75;
     border-radius: 0;
     text-shadow: none;
     text-decoration: none;
@@ -1185,7 +1185,7 @@ hr {
 
 .hca-banner .institution-details {
     display: block;
-    background-color: rgba(0,0,0,0.35);
+    background-color: rgba(0,0,0,.35);
     position: absolute;
     min-height: 60px;
     width: 100%;
@@ -1219,7 +1219,7 @@ hr {
     position: absolute;
     min-height: 50px;
     top: 90px;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,.5);
     padding: 10px 10px 5px;
 }
 
@@ -1229,7 +1229,7 @@ hr {
 }
 
 .hca-banner .hca-institution-name h1 {
-    border-bottom: none!important;
+    border-bottom: 0!important;
     color: #fff;
     display: inline-block;
     margin: 0!important;
@@ -1308,7 +1308,7 @@ ul.hca-notifications li:hover ul.actions li,ul.hca-inquiries li:hover ul.actions
 
 ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actions li a {
     color: #fe6500;
-    font-family: "PT Sans", sans-serif;
+    font-family: "PT Sans",sans-serif;
     font-size: 13px;
     font-weight: 700;
 }
@@ -1393,7 +1393,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .input-append.dropdown-menu ul,.popup-box.dropdown-menu ul {
     background-color: #fff;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     margin: 0;
     padding: 0;
 }
@@ -1414,7 +1414,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .input-append.dropdown-menu li a:hover,.input-append.dropdown-menu li a:focus,.popup-box.dropdown-menu li a:hover,.popup-box.dropdown-menu li a:focus {
-    outline: none;
+    outline: 0;
     box-shadow: 0!important;
     background-image: none;
     background-color: #fe6500!important;
@@ -1424,7 +1424,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 .input-append.dropdown-menu li ul li a,.popup-box.dropdown-menu li ul li a {
     font-size: 14px!important;
     font-weight: 700;
-    opacity: 0.8;
+    opacity: .8;
     padding: 5px 20px;
 }
 
@@ -1433,7 +1433,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .input-append.dropdown-menu a:hover,.input-append.dropdown-menu a:focus,.popup-box.dropdown-menu a:hover,.popup-box.dropdown-menu a:focus {
-    background-color: rgba(255,255,255,0.3)!important;
+    background-color: rgba(255,255,255,.3)!important;
 }
 
 .numbercircle {
@@ -1444,7 +1444,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
     width: 16px;
     font-weight: 700;
     font-size: 18px;
-    font-family: "PT Sans", sans-serif;
+    font-family: "PT Sans",sans-serif;
     color: #fff;
     z-index: 2;
     display: block;
@@ -1483,7 +1483,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .hca-countrycodes .btn-group,.hca-countrycodes .btn {
-    outline: none;
+    outline: 0;
     background: #fff;
     box-shadow: none;
     height: 35px;
@@ -1511,14 +1511,14 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .activity-feeds div.entry {
-    border-bottom: 1px dashed rgba(0,0,0,0.1);
+    border-bottom: 1px dashed rgba(0,0,0,.1);
     padding: 10px;
 }
 
 .activity-feeds div.entry img.img-circle {
     height: 50px;
     width: 50px;
-    border: 1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0,0,0,.5);
 }
 
 .activity-feeds div.entry div.feed-details,.activity-feeds div.entry span.feed-details {
@@ -1527,7 +1527,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .services-listing {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     display: inline-block;
     top: auto;
     max-height: 370px;
@@ -1539,7 +1539,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .services-listing li {
     font-size: 14px;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     list-style-type: none;
     line-height: 1.5em;
     display: inline-block;
@@ -1568,7 +1568,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .specializations-listing-edit li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     list-style-type: none;
     line-height: 1.5em;
     margin-right: 4%;
@@ -1580,7 +1580,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 .specializations-listing-edit li.sub-specialization {
     background-color: #fff;
     font-weight: 700;
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-top: 1px solid rgba(0,0,0,.1);
     padding: 10px;
 }
 
@@ -1614,7 +1614,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .single-listing li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     list-style-type: none;
     line-height: 1.5em;
     display: inline-block;
@@ -1641,7 +1641,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .single-listing li ul li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     background-color: #fff!important;
     margin: 0;
     padding: 0;
@@ -1653,7 +1653,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .awards-listing {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     display: inline-block;
     top: auto;
     max-height: 370px;
@@ -1665,7 +1665,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .awards-listing li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     list-style-type: none;
     line-height: 1.5em;
     display: inline-block;
@@ -1676,7 +1676,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .media-listing {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     display: inline-block;
     top: auto;
     height: 150px;
@@ -1695,7 +1695,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .media-listing li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     list-style-type: none;
     display: inline-block;
     margin-right: 4%;
@@ -1712,7 +1712,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .specializations-listing {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     display: inline-block;
     top: auto;
     max-height: 170px;
@@ -1735,7 +1735,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .specializations-listing li li {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     width: 95%;
     padding: 7px 0 2px;
 }
@@ -1825,12 +1825,12 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .clinictime .hourbox .row-fluid {
     background-color: #eee!important;
-    border: none!important;
+    border: 0!important;
     padding: 0!important;
 }
 
 .clinictime .hourbox .row-fluid .span6 {
-    padding: 15px 25px 5px 20px !important;
+    padding: 15px 25px 5px 20px!important;
 }
 
 .clinictime .hourbox .row-fluid .span6 .span2 {
@@ -1850,7 +1850,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 
 .clinictime .hourselectedbox td:nth-child(2) {
     text-align: right;
-    border-left: none;
+    border-left: 0;
     font-weight: 700;
     padding: 10px 15px;
 }
@@ -1892,7 +1892,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .error-page {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
     margin: 45px auto 50px;
     padding: 30px 0;
 }
@@ -1904,8 +1904,8 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 .error-page h1 {
     font-size: 150px;
     color: #959595;
-    border-right: 1px solid rgba(0,0,0,0.1);
-    border-bottom: none!important;
+    border-right: 1px solid rgba(0,0,0,.1);
+    border-bottom: 0!important;
     text-align: middle;
     margin-bottom: 0;
     padding: 0 5px 0 30px;
@@ -2116,7 +2116,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .backtotop .icon-white {
-    opacity: 0.35;
+    opacity: .35;
 }
 
 .backtotop.img-rounded {
@@ -2132,7 +2132,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .backtotop.img-rounded:hover {
-    opacity: 0.85;
+    opacity: .85;
 }
 
 .backtotop.img-rounded a {
@@ -2269,7 +2269,7 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
     width: 135px;
     left: 0;
     height: 135px;
-    border: none;
+    border: 0;
 }
 
 span.rollover {
@@ -2401,11 +2401,11 @@ ul.two-column:not(.items-count-1) {
 
 ul.two-column>li {
     margin-bottom: 20px;
-    border: none;
+    border: 0;
 }
 
 ul.two-column>li input[type=checkbox] {
-    border: none;
+    border: 0;
     vertical-align: top;
 }
 
@@ -2444,7 +2444,7 @@ ul.two-column>li label {
 }
 
 h1,h2,h3,h4,h5 {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'PT Sans',sans-serif;
     line-height: 1.2em;
 }
 
@@ -2453,7 +2453,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav.hca-tab li>a {
-    padding: 12px 36px 12px 34px !important;
+    padding: 12px 36px 12px 34px!important;
 }
 
 .nav span.badge {
@@ -2473,7 +2473,7 @@ h1,h2,h3,h4,h5 {
     display: block;
     position: absolute;
     right: 5px;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .nav.nav-tabs.hca-tab {
@@ -2483,7 +2483,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav.nav-tabs>li>a {
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'PT Sans',sans-serif;
     -webkit-border-radius: 0;
     -moz-border-radius: 0;
     border-radius: 0;
@@ -2494,7 +2494,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .nav.nav-tabs>li>a:hover {
-    background-color: rgba(215,215,215,0.25);
+    background-color: rgba(215,215,215,.25);
     color: #fe6500;
 }
 
@@ -2570,7 +2570,7 @@ h1,h2,h3,h4,h5 {
 
 .accordion .row-fluid {
     background-color: #fff!important;
-    border: none!important;
+    border: 0!important;
     margin: 0;
     padding: 0!important;
 }
@@ -2598,7 +2598,7 @@ h1,h2,h3,h4,h5 {
 
 .accordion .accordion-heading {
     background-color: #eee;
-    border-bottom: none;
+    border-bottom: 0;
 }
 
 .accordion .accordion-heading .icon-plus-sign {
@@ -2626,12 +2626,12 @@ h1,h2,h3,h4,h5 {
 
 .modal .row-fluid {
     background-color: #fff!important;
-    border: none!important;
+    border: 0!important;
 }
 
 .modal .row-fluid .span12.roles {
     background-color: #eee!important;
-    border: 1px solid rgba(0,0,0,0.1)!important;
+    border: 1px solid rgba(0,0,0,.1)!important;
     padding: 0!important;
 }
 
@@ -2659,13 +2659,13 @@ h1,h2,h3,h4,h5 {
 .modal.message h3 {
     color: #093;
     opacity: .75;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
     margin: 0 30px;
     padding: 20px 50px 0 20px;
 }
 
 .modal.message h2 {
-    border-bottom: 2px solid rgba(0,0,0,0.1);
+    border-bottom: 2px solid rgba(0,0,0,.1);
     padding: 20px 70px 0;
 }
 
@@ -2725,7 +2725,7 @@ h1,h2,h3,h4,h5 {
 
 .alert.alert-notify {
     background-color: #fffae5;
-    border: none;
+    border: 0;
     color: #737373;
 }
 
@@ -2900,7 +2900,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .table th {
-    border-top: none;
+    border-top: 0;
 }
 
 .table tr:last-child {
@@ -2913,7 +2913,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .table.hca-alert-inquiry .hca-icon {
-    text-shadow: 0 2px 0 #e5e5e5,0px 1px 0 #d1d0d0;
+    text-shadow: 0 2px 0 #e5e5e5,0 1px 0 #d1d0d0;
     margin: 2px 5px 0 10px;
 }
 
@@ -2942,7 +2942,7 @@ h1,h2,h3,h4,h5 {
     position: absolute;
     top: -3px;
     right: -3px;
-    font: bold 13px Sans-Serif;
+    font: 700 13px Sans-Serif;
 }
 
 .ribbon-approved,.ribbon-expired,.ribbon-pending,.ribbon-draft,.ribbon-archived {
@@ -2962,37 +2962,37 @@ h1,h2,h3,h4,h5 {
 
 .ribbon-approved.ribbon-approved,.ribbon-expired.ribbon-approved,.ribbon-pending.ribbon-approved,.ribbon-draft.ribbon-approved,.ribbon-archived.ribbon-approved {
     background-color: #5e89bb;
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 }
 
 .ribbon-approved.ribbon-expired,.ribbon-expired.ribbon-expired,.ribbon-pending.ribbon-expired,.ribbon-draft.ribbon-expired,.ribbon-archived.ribbon-expired {
     background-color: #dca5a4;
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 }
 
 .ribbon-approved.ribbon-pending,.ribbon-expired.ribbon-pending,.ribbon-pending.ribbon-pending,.ribbon-draft.ribbon-pending,.ribbon-archived.ribbon-pending {
     background-color: #f89406;
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 }
 
 .ribbon-approved.ribbon-draft,.ribbon-expired.ribbon-draft,.ribbon-pending.ribbon-draft,.ribbon-draft.ribbon-draft,.ribbon-archived.ribbon-draft {
     background-color: #dadada;
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 }
 
 .ribbon-approved.ribbon-archived,.ribbon-expired.ribbon-archived,.ribbon-pending.ribbon-archived,.ribbon-draft.ribbon-archived,.ribbon-archived.ribbon-archived {
     background-color: #999;
-    -webkit-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    -moz-box-shadow: 0 0 3px rgba(0,0,0,0.5);
-    box-shadow: 0 0 3px rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    -moz-box-shadow: 0 0 3px rgba(0,0,0,.5);
+    box-shadow: 0 0 3px rgba(0,0,0,.5);
 }
 
 .ribbon-approved:before,.ribbon-approved:after,.ribbon-expired:before,.ribbon-expired:after,.ribbon-pending:before,.ribbon-pending:after,.ribbon-draft:before,.ribbon-draft:after,.ribbon-archived:before,.ribbon-archived:after {
@@ -3048,9 +3048,9 @@ h1,h2,h3,h4,h5 {
 .thumbnails li.thumbnail {
     width: 98.15%;
     border-bottom: 1px solid #fff;
-    border-top: none;
-    border-left: none;
-    border-right: none;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
     min-height: 95px;
     background-color: #f3f3f3;
     position: relative;
@@ -3121,7 +3121,7 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry .hca-red {
-    text-shadow: 0 2px 0 #e5e5e5,0px 1px 0 #d1d0d0;
+    text-shadow: 0 2px 0 #e5e5e5,0 1px 0 #d1d0d0;
     color: #b94a48;
     margin: 2px 5px 0 10px;
 }
@@ -3141,7 +3141,7 @@ h1,h2,h3,h4,h5 {
 .thumbnails li.thumbnail.hca-alert-inquiry h3 {
     display: block;
     font-size: 24px;
-    font-family: 'PT Sans', sans-serif;
+    font-family: 'PT Sans',sans-serif;
     margin-top: 12px;
     margin-bottom: -3px;
     color: #484848;
@@ -3158,7 +3158,7 @@ h1,h2,h3,h4,h5 {
 
 .thumbnails li div.medicalcenter-name,.thumbnails li span.medicalcenter-name,.thumbnails li a.medicalcenter-name {
     display: block;
-    opacity: 0.9;
+    opacity: .9;
     margin-left: 98px;
     margin-top: 13px;
     margin-bottom: 5px;
@@ -3281,11 +3281,11 @@ h1,h2,h3,h4,h5 {
 }
 
 form input[type=text]::-webkit-input-placeholder,form input[type=password]::-webkit-input-placeholder,form input[type=email]::-webkit-input-placeholder,form select::-webkit-input-placeholder,form input[type=text]:-moz-placeholder,form input[type=password]:-moz-placeholder,form input[type=email]:-moz-placeholder,form select:-moz-placeholder,form input[type=text]::-moz-placeholder,form input[type=password]::-moz-placeholder,form input[type=email]::-moz-placeholder,form select::-moz-placeholder,form input[type=text]:-ms-input-placeholder,form input[type=password]:-ms-input-placeholder,form input[type=email]:-ms-input-placeholder,form select:-ms-input-placeholder {
-    color: rgba(0,0,0,0.2)!important;
+    color: rgba(0,0,0,.2)!important;
 }
 
 form input[type=text]:focus,form input[type=password]:focus,form input[type=email]:focus,form select:focus,form textarea:focus,form select:focus {
-    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,0.1);
+    box-shadow: inset 0 2px 2px 0 rgba(0,0,0,.1);
 }
 
 form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull-right,ul.hca-notifications li i,ul.hca-inquiries li i,.doctors-new-listing p i,.specializations-profile-listing p i,.modal i,.thumbnails li div.medicalcenter-name .progress-box .hca-progress-bar span,.thumbnails li span.medicalcenter-name .progress-box .hca-progress-bar span,.thumbnails li a.medicalcenter-name .progress-box .hca-progress-bar span,.thumbnails li div.medicalcenter-name form select,.thumbnails li span.medicalcenter-name form select,.thumbnails li a.medicalcenter-name form select {
@@ -3321,7 +3321,7 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
 }
 
 #nav .nav-menu,.messages-box a.active:hover,.specializations-listing-edit li:last-child,.hca-hidden-content.doctors-listing .row-fluid form .row-fluid .specializations-listing li:last-child {
-    border-bottom: none;
+    border-bottom: 0;
 }
 
 #content section,.nav.nav-tabs>li.vertical-hca-tabs {
@@ -3342,7 +3342,7 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
 
 #content section.section .row-fluid,.aside-box .row-fluid {
     background-color: #eee;
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,.1);
 }
 
 #content section.section .row-fluid .website span,.hca-contact-number span {
@@ -3351,7 +3351,7 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
 }
 
 #content section.section .row-fluid.hca-edit-box,.input-append.dropdown-menu li ul li,.popup-box.dropdown-menu li ul li,.activity-feeds div.entry:last-child,.accordion .row-fluid ul.two-column li:last-child {
-    border: none;
+    border: 0;
 }
 
 #content section.section .row-fluid.hca-edit-box .alert,#content section.section .row-fluid.hca-edit-box .control-group,.aside-box .features ul.thumbnails,.single-listing li form,.nav,.modal.hca-doctors-modal form,.modal.hca-file-modal form,.modal .modal-body .alert.results,.table.hca-media ul,.table.hca-incomplete {
@@ -3416,7 +3416,7 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .input-append.dropdown-menu li,.popup-box.dropdown-menu li,.accordion .row-fluid ul li:last-child {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
 .input-append.dropdown-menu li ul,.popup-box.dropdown-menu li ul,.activity-feeds div {
@@ -3426,7 +3426,7 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .hca-countrycodes .open .btn,.dropdown-menu.zipcode li:hover,.dropdown-menu.languages-select li:hover,.dropdown-menu.suffix-select li:hover,.dropdown-menu.location-select li:hover,.dropdown-menu.status-select li:hover {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0,0,0,.1);
 }
 
 .services-listing h3,.specializations-listing-edit h3,.single-listing h3,.awards-listing h3,.specializations-listing h3,.breadcrumb a {
@@ -3446,7 +3446,7 @@ ul.hca-notifications li:hover ul.actions li a:hover,ul.hca-inquiries li:hover ul
 }
 
 .services-listing li:last-child,.single-listing li:last-child,.awards-listing li:last-child,.media-listing li:last-child,.specializations-listing li:last-child {
-    border-bottom: none;
+    border-bottom: 0;
     margin-bottom: 20px;
 }
 

@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.1
+-- version 3.4.10.1deb1
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 30, 2012 at 11:28 AM
--- Server version: 5.1.63
--- PHP Version: 5.3.3
+-- Generation Time: Jul 18, 2013 at 04:54 PM
+-- Server version: 5.5.24
+-- PHP Version: 5.3.10-1ubuntu3.2
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `fixtures_healthcareabroad`
@@ -33,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `admin_actions` (
   `description` varchar(250) NOT NULL,
   `status` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `admin_actions`
@@ -81,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `admin_user_roles` (
   `status` smallint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `admin_user_roles`
@@ -120,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `admin_user_types` (
   `status` smallint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `admin_user_types`
@@ -151,7 +145,6 @@ CREATE TABLE IF NOT EXISTS `admin_user_type_roles` (
 INSERT INTO `admin_user_type_roles` (`admin_user_type_id`, `admin_user_role_id`) VALUES
 (1, 1);
 
-
 -- --------------------------------------------------------
 
 --
@@ -172,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `advertisements` (
   PRIMARY KEY (`id`),
   KEY `institution_id` (`institution_id`),
   KEY `advertisement_type_id` (`advertisement_type_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='advertisement table';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='advertisement table' AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `advertisements`
@@ -247,8 +240,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_property_names` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `data_type_id` (`data_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
 
 --
 -- Dumping data for table `advertisement_property_names`
@@ -268,7 +260,6 @@ INSERT INTO `advertisement_property_names` (`id`, `name`, `label`, `data_type_id
 (13, 'institution_medical_center_id', 'Clinic', 5, 'HealthCareAbroad\\InstitutionBundle\\Entity\\InstitutionMedicalCenter', '{"type":"HealthCareAbroad\\\\InstitutionBundle\\\\Form\\\\ListType\\\\InstitutionMedicalCenterListType","isClass":true, "hasParams":true,"config":{"virtual": false,"multiple":false,"attr":{}}}', 0),
 (14, 'vide', 'Video Url', 3, '', '', 0);
 
-
 -- --------------------------------------------------------
 
 --
@@ -282,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_property_values` (
   `advertisement_property_name_id` smallint(3) unsigned NOT NULL,
   `value` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -297,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `advertisement_types` (
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `advertisement_types`
@@ -310,7 +301,6 @@ INSERT INTO `advertisement_types` (`id`, `name`, `status`) VALUES
 (4, 'Home Page Featured Service', 1),
 (5, 'Home Page Featured Video', 1),
 (6, 'News', 1);
-
 
 -- --------------------------------------------------------
 
@@ -332,12 +322,6 @@ CREATE TABLE IF NOT EXISTS `advertisement_type_configurations` (
 -- Table structure for table `awarding_bodies`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `awarding_bodies`
---
-
 DROP TABLE IF EXISTS `awarding_bodies`;
 CREATE TABLE IF NOT EXISTS `awarding_bodies` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -346,7 +330,7 @@ CREATE TABLE IF NOT EXISTS `awarding_bodies` (
   `website` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` smallint(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `awarding_bodies`
@@ -354,7 +338,7 @@ CREATE TABLE IF NOT EXISTS `awarding_bodies` (
 
 INSERT INTO `awarding_bodies` (`id`, `name`, `details`, `website`, `status`) VALUES
 (1, 'Join Commission International (JCI)', 'Joint Commission International (JCI) is Healthcare Accreditation Body that is established in 1994. W', 'http://www.jointcommissio', 1),
-(2, 'International Organization for Standardization (IS', 'ISO (International Organization for Standardization) which is founded in 1947 has become the world’s', 'http://www.iso.org/iso/ho', 1);
+(2, 'International Organization for Standardization (IS', 'ISO (International Organization for Standardization) which is founded in 1947 has become the world', 'http://www.iso.org/iso/ho', 1);
 
 -- --------------------------------------------------------
 
@@ -375,12 +359,14 @@ CREATE TABLE IF NOT EXISTS `breadcrumb_tree` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `route` (`route`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `business_hours`
 --
+
 DROP TABLE IF EXISTS `business_hours`;
 CREATE TABLE IF NOT EXISTS `business_hours` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
@@ -391,14 +377,10 @@ CREATE TABLE IF NOT EXISTS `business_hours` (
   `notes` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4215 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
---
--- Dumping data for table `business_hours`
---
-
-INSERT INTO `business_hours` (`id`, `institution_medical_center_id`, `weekday_bit_value`, `opening`, `closing`, `notes`) VALUES (1, 1, 12, '10:00:00', '10:00:00', NULL);
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `cities`
 --
@@ -407,8 +389,10 @@ DROP TABLE IF EXISTS `cities`;
 CREATE TABLE IF NOT EXISTS `cities` (
   `id` int(10) unsigned NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
-  `name` varchar(250) NOT NULL,
+  `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `slug` char(100) NOT NULL,
+  `geo_city_id` bigint(20) unsigned DEFAULT NULL,
+  `old_id` int(10) unsigned DEFAULT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `country_id_2` (`country_id`,`name`),
@@ -419,7 +403,9 @@ CREATE TABLE IF NOT EXISTS `cities` (
 -- Dumping data for table `cities`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`cities` (`id`, `country_id`, `name`, `slug`, `status`) VALUES ('1', '1', 'test', 'test', '1');
+INSERT INTO `cities` (`id`, `country_id`, `name`, `slug`, `geo_city_id`, `old_id`, `status`) VALUES
+(1, 1, 'test', 'test', 1, 1, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -435,7 +421,7 @@ CREATE TABLE IF NOT EXISTS `command_script_logs` (
   `last_run_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -443,10 +429,12 @@ CREATE TABLE IF NOT EXISTS `command_script_logs` (
 -- Table structure for table `contact_details`
 --
 
+DROP TABLE IF EXISTS `contact_details`;
 CREATE TABLE IF NOT EXISTS `contact_details` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `type` tinyint(4) DEFAULT NULL,
   `number` varchar(25) NOT NULL,
+  `country_id` int(10) DEFAULT NULL,
   `country_code` int(11) DEFAULT NULL,
   `area_code` varchar(25) DEFAULT NULL,
   `abbr` varchar(25) DEFAULT NULL,
@@ -455,6 +443,7 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
   `is_invalid` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2731 ;
+
 
 -- --------------------------------------------------------
 
@@ -469,16 +458,19 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `abbr` varchar(10) DEFAULT NULL,
   `code` char(11) DEFAULT NULL,
   `slug` char(100) NOT NULL,
+  `geo_country_id` int(10) unsigned DEFAULT NULL,
+  `old_id` int(10) unsigned DEFAULT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
 
 --
 -- Dumping data for table `countries`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`countries` (`id`, `name`, `abbr`, `code`, `slug`, `status`) VALUES ('1', 'test', 'test', 'test', 'test', '1');
+INSERT INTO `countries` (`id`, `name`, `abbr`, `code`, `slug`, `geo_country_id`, `old_id`, `status`) VALUES
+(1, 'test', 'test', 'test', 'test', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -493,7 +485,7 @@ CREATE TABLE IF NOT EXISTS `data_types` (
   `form_field` char(30) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `column_type` (`column_type`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `data_types`
@@ -507,7 +499,6 @@ INSERT INTO `data_types` (`id`, `column_type`, `form_field`) VALUES
 (5, 'entity', 'entity'),
 (6, 'collection', 'entity'),
 (7, 'bool', 'radio');
-
 
 -- --------------------------------------------------------
 
@@ -533,17 +524,29 @@ CREATE TABLE IF NOT EXISTS `doctors` (
   PRIMARY KEY (`id`),
   KEY `media_id` (`media_id`),
   KEY `country_id` (`country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `doctors`
 --
 
 INSERT INTO `doctors` (`id`, `first_name`, `middle_name`, `last_name`, `suffix`, `gender`, `contact_email`, `contact_number`, `details`, `country_id`, `media_id`, `date_created`, `status`) VALUES
-(1, 'Arihant', NULL, 'Surana', NULL, NULL, NULL, '[{"number":"13241234324","type":"phone"}]', 'Dr Arihant Surana is a senior practicing cosmetic dermatologist and minimal invasive hair transplant surgeon. After his post graduate degree in dermatology, he has been practicing in the field of cosmetic dermatology and trichology and is the most sought after hair transplant surgeon in India.\r\nSurgical Expertise: Dr. Surana has done extensive research in the field of hair transplant and was first one to introduce customized hair transplant to all his clients.\r\nHonors &amp; Expertise: He specializes in minimal invasive painless hair transplant and many dermatological procedures like lasers, fillers, etc.', 1, NULL, '2013-01-17 03:43:25', 1),
+(1, 'test', NULL, 'test', NULL, NULL, NULL, '[{"number":"13241234324","type":"phone"}]', 'Dr Arihant Surana is a senior practicing cosmetic dermatologist and minimal invasive hair transplant surgeon. After his post graduate degree in dermatology, he has been practicing in the field of cosmetic dermatology and trichology and is the most sought after hair transplant surgeon in India.\r\nSurgical Expertise: Dr. Surana has done extensive research in the field of hair transplant and was first one to introduce customized hair transplant to all his clients.\r\nHonors &amp; Expertise: He specializes in minimal invasive painless hair transplant and many dermatological procedures like lasers, fillers, etc.', 1, NULL, '2013-01-17 03:43:25', 1),
 (2, 'Pankaj', NULL, 'Chaturvedi', NULL, NULL, NULL, '[{"number":"","type":"phone"}]', 'Surgical Expertise: He is known widely for his acne and acne scar treatments, laser treatments, Botox&reg;, filler and anti-ageing treatments and state of the art hair transplantation procedures. He currently holds the position of senior consultant and co-director of dermatology at Adiva aesthetics.\r\nHonors &amp; Expertise: He has an excellent academic career and has achieved many prestigious awards nationally and internationally for his path breaking researches on hair disorders and baldness treatments.\r\n&nbsp;', 1, NULL, '2013-01-17 03:43:25', 1);
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `doctor_contact_details`
+--
+
+DROP TABLE IF EXISTS `doctor_contact_details`;
+CREATE TABLE IF NOT EXISTS `doctor_contact_details` (
+  `doctor_id` bigint(20) unsigned NOT NULL,
+  `contact_detail_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`doctor_id`,`contact_detail_id`),
+  KEY `contact_detail_id` (`contact_detail_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Table structure for table `doctor_specializations`
@@ -556,6 +559,7 @@ CREATE TABLE IF NOT EXISTS `doctor_specializations` (
   PRIMARY KEY (`doctor_id`,`specialization_id`),
   KEY `specialization_id` (`specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 --
 -- Dumping data for table `doctor_specializations`
 --
@@ -581,8 +585,7 @@ CREATE TABLE IF NOT EXISTS `error_logs` (
   `server_json` text NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -599,12 +602,14 @@ CREATE TABLE IF NOT EXISTS `error_reports` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `status` smallint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `feedback_messages`
 --
+
 DROP TABLE IF EXISTS `feedback_messages`;
 CREATE TABLE IF NOT EXISTS `feedback_messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -617,7 +622,6 @@ CREATE TABLE IF NOT EXISTS `feedback_messages` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COMMENT='feedback messages' AUTO_INCREMENT=2 ;
-
 
 -- --------------------------------------------------------
 
@@ -634,8 +638,24 @@ CREATE TABLE IF NOT EXISTS `frontend_routes` (
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uri` (`uri`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='frontend dynamic routes';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='frontend dynamic routes' AUTO_INCREMENT=1 ;
 
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(1, '/philippines/cebu/dentistry', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":23654,"specializationId":59}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(2, '/philippines/loyola/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":107087,"specializationId":23}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(3, '/singapore/cardiothoracic-surgery/adult-cardiac-surgery', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":84,"specializationId":8,"subSpecializationId":128}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(4, '/singapore/bukit-timah/cardiothoracic-surgery/abdominal-aortic-aneurysm-aaa-surgery/treatment', 'FrontendBundle:Default:listCityTreatment', '{"countryId":84,"cityId":109057,"specializationId":8,"treatmentId":499}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(5, '/brazil/minas-gerais/cardiology', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":90,"cityId":49034,"specializationId":3}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(6, '/brazil/cardiology', 'FrontendBundle:Default:listCountrySpecialization', '{"countryId":90,"specializationId":3}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(7, '/turkey/etiler/cardiology', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":44,"cityId":341860,"specializationId":3}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(8, '/india/orthopedic-surgery/ankle-arthroplasty/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":6,"specializationId":27,"treatmentId":283}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(9, '/turkey/dentistry/dental-implants-1/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":44,"specializationId":59,"treatmentId":785}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(10, '/albania/cardiothoracic-surgery/adult-cardiac-surgery', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":7,"specializationId":8,"subSpecializationId":128}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(11, '/philippines/cebu-city/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":206,"cityId":1862103,"specializationId":23}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(12, '/philippines/bariatric-surgery', 'FrontendBundle:Default:listCountrySpecialization', '{"countryId":206,"specializationId":23}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(13, '/philippines/amaga/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":206,"cityId":1869528,"specializationId":23}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(14, '/philippines/amaga/bariatric-surgery/roux-en-y-gastric-bypass/treatment', 'FrontendBundle:Default:listCityTreatment', '{"countryId":206,"cityId":1869528,"specializationId":23,"treatmentId":1342}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(15, '/philippines/bariatric-surgery/roux-en-y-gastric-bypass/treatment', 'FrontendBundle:Default:listCountryTreatment', '{"countryId":206,"specializationId":23,"treatmentId":1342}', 1);
+INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(16, '/philippines/bariatric-surgery/bertsubspectest2', 'FrontendBundle:Default:listCountrySubSpecialization', '{"countryId":206,"specializationId":23,"subSpecializationId":192}', 1);
 
 INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(1, '/philippines/cebu/dentistry', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":23654,"specializationId":59}', 1);
 INSERT INTO `frontend_routes` (`id`, `uri`, `controller`, `variables`, `status`) VALUES(2, '/philippines/loyola/bariatric-surgery', 'FrontendBundle:Default:listCitySpecialization', '{"countryId":11,"cityId":107087,"specializationId":23}', 1);
@@ -667,14 +687,15 @@ CREATE TABLE IF NOT EXISTS `gallery` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `gallery`
 --
 
 INSERT INTO `gallery` (`id`, `institution_id`, `date_created`) VALUES
-(1, 1, '2013-02-14 06:50:55');
+(1, 1, '2013-02-14 06:50:55'),
+(2, 2, '2013-02-14 06:50:55');
 
 -- --------------------------------------------------------
 
@@ -690,7 +711,6 @@ CREATE TABLE IF NOT EXISTS `gallery_media` (
   KEY `gallery_id` (`gallery_id`),
   KEY `media_id` (`media_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -711,14 +731,17 @@ CREATE TABLE IF NOT EXISTS `global_awards` (
   KEY `country_id` (`country_id`),
   KEY `type` (`type`),
   KEY `awarding_body_id` (`awarding_body_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='awards, certificates and affiliations data';
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='awards, certificates and affiliations data' AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `global_awards`
 --
 
 INSERT INTO `global_awards` (`id`, `type`, `name`, `details`, `awarding_body_id`, `country_id`, `status`) VALUES
-(1, 2, 'test', 'test', 1, 1, 1);
+(1, 1, 'test', 'test', 1, 1, 1),
+(2, 2, 'certificate', 'gsgdg', 1, 1, 1),
+(3, 3, 'affiliation', NULL, 1, 1, 1),
+(4, 4, 'accreditation', NULL, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -733,7 +756,7 @@ CREATE TABLE IF NOT EXISTS `helper_text` (
   `details` text NOT NULL,
   `status` smallint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `helper_text`
@@ -770,16 +793,17 @@ CREATE TABLE IF NOT EXISTS `inquiries` (
   KEY `inquiry_subject_id` (`inquiry_subject_id`),
   KEY `country_id` (`country_id`),
   KEY `city_id` (`city_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `inquiries`
 --
 
-INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(1, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'this is test', 1, NULL, NULL, NULL, '2012-08-15 02:10:21', '', '', 1);
-INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(3, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'sad', 2, NULL, NULL, NULL, '2012-08-15 02:15:27', '', '', 1);
-INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(4, 'alnie', 'jaocbe', 'alnite@yahoo.com', NULL, 'adasd asd asdas', 2, NULL, NULL, NULL, '2012-08-30 01:35:42', '', '', 1);
-INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `http_user_agent`, `remote_address`, `status`) VALUES(5, 'sdfsdfsdf', 'sdfsdfdsf', 'sdfsdf@yahoo.com', 'sdfsdfsd', 'sdf sdf dsfsdf sdf', NULL, NULL, 9, 281344, '2013-03-07 03:10:18', '', '127.0.0.1', 1);
+INSERT INTO `inquiries` (`id`, `first_name`, `last_name`, `email`, `contact_number`, `message`, `inquiry_subject_id`, `clinic_name`, `country_id`, `city_id`, `date_created`, `remote_address`, `http_user_agent`, `status`) VALUES
+(1, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'this is test', 1, NULL, NULL, NULL, '2012-08-15 02:10:21', '', '', 1),
+(3, 'alnie', 'jacobe', 'alniejacobe@yahoo.com', NULL, 'sad', 2, NULL, NULL, NULL, '2012-08-15 02:15:27', '', '', 1),
+(4, 'alnie', 'jaocbe', 'alnite@yahoo.com', NULL, 'adasd asd asdas', 2, NULL, NULL, NULL, '2012-08-30 01:35:42', '', '', 1),
+(5, 'sdfsdfsdf', 'sdfsdfdsf', 'sdfsdf@yahoo.com', 'sdfsdfsd', 'sdf sdf dsfsdf sdf', NULL, NULL, 9, 281344, '2013-03-07 03:10:18', '127.0.0.1', '', 1);
 
 -- --------------------------------------------------------
 
@@ -794,14 +818,15 @@ CREATE TABLE IF NOT EXISTS `inquiry_subjects` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
 --
 -- Dumping data for table `inquiry_subjects`
 --
 
-INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(1, 'membership', 'test', 1);
-INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES(2, 'fees', 'saf', 1);
-
+INSERT INTO `inquiry_subjects` (`id`, `name`, `slug`, `status`) VALUES
+(1, 'membership', 'test', 1),
+(2, 'fees', 'saf', 1);
 
 -- --------------------------------------------------------
 
@@ -827,7 +852,9 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `city_id` int(10) unsigned DEFAULT NULL,
   `country_id` int(10) unsigned DEFAULT NULL,
   `zip_code` char(10) DEFAULT NULL,
+  `state_id` bigint(20) DEFAULT NULL,
   `state` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `state_bak` varchar(225) DEFAULT NULL,
   `coordinates` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `paying_client` smallint(1) unsigned DEFAULT NULL,
   `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
@@ -835,6 +862,7 @@ CREATE TABLE IF NOT EXISTS `institutions` (
   `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `signup_step_status` smallint(1) unsigned NOT NULL DEFAULT '1',
   `total_clinic_ranking_points` int(11) DEFAULT NULL COMMENT 'temporary field. this is the sum all ranking points of clinics of this institution',
+  `is_from_internal_admin` smallint(1) unsigned DEFAULT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
@@ -848,18 +876,20 @@ CREATE TABLE IF NOT EXISTS `institutions` (
 -- Dumping data for table `institutions`
 --
 
-INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo_id`, `featured_media_id`, `contact_email`, `contact_number`, `websites`, `website_back_up`, `social_media_sites`, `address1`, `address_hint`, `city_id`, `country_id`, `zip_code`, `state_id`, `state`, `state_bak`, `coordinates`, `paying_client`, `date_modified`, `date_created`, `slug`, `signup_step_status`, `total_clinic_ranking_points`, `status`) VALUES
-(1, 1, 'Ahalia Eye Hospital', 'Ahalia Foundation Eye Hospital, a unit of Ahalia International Foundation which started in 2005 stands tall on a rock solid reputation of reliability, affordability, quality and innovation. Now it has added one more feather to its cap-accreditation by the prestigious Joint Commission International, USA. JCI accreditation is the ultimate recognition in the field of health care and is awarded after a strenuous quality audit conducted by a team of international healthcare experts. \r\n\r\nWith this recognition, Ahalia is proud to herald the arrival of international standard health care to Kerala with special focus on quality improvement, patient safety and infection control. \r\n\r\nEquipped with six operation theaters and state of the art equipments, AFEH has the expertise in all the areas of ophthalmology including advanced Phaco surgery for cataract, latest Lasik treatment for refractive errors and specialty services for Retina, Glaucoma, Pediatric Ophthalmology, Low Vision Aids etc - all this at very affordable rates.', NULL, NULL, 'mail@afeh.org', '{"country_code":"1","area_code":"4923","number":"225 000"}', '{"main":"http://www.ahaliafoundationeyehospital.org","facebook":"https://www.facebook.com/pages/Ahalia-foundation-eye-hospitals/387889344602118","twitter":"http://"}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"","street":"Kanal Pirivu"}', NULL, 1, 1, '1', NULL, 'Kerala', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 06:29:26', 'ahalia-eye-hospital', 0, NULL, 9),
-(2, 3, 'Test Single Hospital', 'Apollo Gleneagles Hospitals Kolkata, a 510-bedded multispecialty tertiary care hospital, is a perfect blend of technological excellence, complete infrastructure, competent care and heartfelt hospitality.\r\n\r\nApollo Gleneagles Hospitals is a joint venture of Apollo Group of Hospitals, India and Parkway Health of Singapore.\r\n\r\nThe Parkway Group is a leading healthcare group in Asia. It provides more than 70% of private healthcare in Singapore. Its subsidiaries include Parkway Group Healthcare, which owns a network of regional hospitals and medical centers in Malaysia, India and Brunei; and Parkway Hospitals Singapore, which owns three hospitals in Singapore - East Shore, Gleneagles, Mount Elizabeth Hospitals and Parkway Health Day surgery Centre.', NULL, NULL, 'hospital@apollogleneagles.in', '{"country_code":"1","area_code":" 3323","number":" 203 040"}', '{"main":"http:\\/\\/kolkata.apollohospitals.com\\/","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"Apollo Gleneagles Hospital","street":"No. 58, Canal Circular Road"}', NULL, NULL, NULL, '700054', NULL, 'West Bengal', NULL, '', 1, '2013-01-16 05:08:04', '2012-12-06 06:49:56', 'test-single-hospital', 0, NULL, 9),
-(3, 1, 'Apollo Hospital, Bangalore', 'Apollo Hospitals, Bangalore ', NULL, NULL, 'customercare_bangalore@apollohospitals.com', '{"country_code":"1","area_code":"8026","number":"304 050"}', '{"main":"http:\\/\\/www.apollohospitalsbangalore.com\\/","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"Apollo Hospitals - Bangalore","street":"154\\/11, Opp. IIM B, Bannerghatta Road"}', NULL, 1, 1, '560076', NULL, 'Karnataka', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:01:40', 'apollo-hospital-bangalore', 1, NULL, 9),
-(4, 1, 'Apollo Hospital, Chennai', 'The flagship hospital of the Apollo Group, Apollo Hospitals Chennai, was established in 1983. Today it is one of the most respected hospitals in the world, and is also amongst the most preferred destinations for both patients from several parts of India, as well as for medical tourism and medical value travel. The hospital specializes in cutting-edge medical procedures. It has over 60 departments spearheaded by internationally trained doctors who are skillfully supported by dedicated patient-care personnel. It is one of the few hospitals in Chennai that have state of the art facilities for various health disorders.\r\n\r\nIt has been a pioneer among the hospitals in Chennai, and even in India, in many different treatments and procedures.', NULL, NULL, 'enquiry@apollohospitals.com', '{"country_code":"","area_code":"","number":""}', '{"main":"","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"","street":"Apollo Hospitals - Chennai No. 21, Greams Lane, Off. Greams Road, Chennai 600006 India"}', NULL, 1, 1, '600006', NULL, 'Tammil Nadu', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:46:49', 'apollo-hospital-chennai', 0, NULL, 9),
-(5, 1, 'Apollo Hospital, Hyderabad', 'Today, Apollo Hospitals, Hyderabad has risen to be on par with the best in the world, in terms of technical expertise, deliverables and outcomes. It has now evolved into a one of a kind institution , the Apollo Health City, Hyderabad, which is the first health city in Asia and a perfect example of an integrated healthcare system offering solutions across the healthcare space. A 350 bedded multi-specialty hospital with over 50 specialties and super-specialties, 10 Centers of Excellence, education, research, information technology, all in one sprawling campus creates an environment dedicated to healing.\r\n\r\nApollo Health City , Hyderabad covers the entire spectrum from illness to wellness and is thus a health city and not a medical city. Institutes for Heart Diseases, Cancer, Joint Diseases, Emergency, Renal Diseases, Neurosciences, Eye and Cosmetic Surgery are all centers of excellence and are positioned to offer the best care in the safest manner to every patient.\r\n\r\nApart from patient care, each of these Centers of Excellence spend a significant amount of time in training and research essentially aimed at preventing disease and improving outcomes when the disease does occur.\r\n\r\nMost of the consultants at the Health city have international experience either educational, work experience - related or observational. The average staff to patient ratio for the hospital is 3:1 with a 1:1 ratio prevailing in priority areas like the Intensive Care Unit and the Cardiac Care Unit.\r\n\r\nApollo Healthcity, Hyderabad handles close to 100,000 patients a year. International patients from Tanzania, the USA, the UAE, Kenya, Oman and neighbouring Asian countries are treated by the hospital every year.', NULL, NULL, 'apollohealthcity@apollohospitals.com', '', '', NULL, '{facebook:"",twitter:"",googleplus:""}', 'Apollo Hospitals Jubilee Hills Hyderabad Andhra Pradesh 500033 India', NULL, 1, 1, '500033', NULL, 'Andra Pradesh', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:56:18', 'apollo-hospital-hyderabad', 0, NULL, 9);
+INSERT INTO `institutions` (`id`, `institution_type`, `name`, `description`, `logo_id`, `featured_media_id`, `contact_email`, `contact_number`, `websites`, `website_back_up`, `social_media_sites`, `address1`, `address_hint`, `city_id`, `country_id`, `zip_code`, `state_id`, `state`, `state_bak`, `coordinates`, `paying_client`, `date_modified`, `date_created`, `slug`, `signup_step_status`, `total_clinic_ranking_points`, `is_from_internal_admin`, `status`) VALUES
+
+(1, 1, 'Ahalia Eye Hospital', 'Ahalia Foundation Eye Hospital, a unit of Ahalia International Foundation which started in 2005 stands tall on a rock solid reputation of reliability, affordability, quality and innovation. Now it has added one more feather to its cap-accreditation by the prestigious Joint Commission International, USA. JCI accreditation is the ultimate recognition in the field of health care and is awarded after a strenuous quality audit conducted by a team of international healthcare experts. \r\n\r\nWith this recognition, Ahalia is proud to herald the arrival of international standard health care to Kerala with special focus on quality improvement, patient safety and infection control. \r\n\r\nEquipped with six operation theaters and state of the art equipments, AFEH has the expertise in all the areas of ophthalmology including advanced Phaco surgery for cataract, latest Lasik treatment for refractive errors and specialty services for Retina, Glaucoma, Pediatric Ophthalmology, Low Vision Aids etc - all this at very affordable rates.', 1, NULL, 'mail@afeh.org', '{"country_code":"1","area_code":"4923","number":"225 000"}', '{"main":"http://www.ahaliafoundationeyehospital.org","facebook":"https://www.facebook.com/pages/Ahalia-foundation-eye-hospitals/387889344602118","twitter":"http://"}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"","street":"Kanal Pirivu"}', NULL, 1, 1, '1344', 1, 'Kerala', NULL, '', 1, '2013-01-16 05:08:04', '2012-12-06 06:29:26', 'ahalia-eye-hospital', 0, NULL,NULL, 9),
+(2, 3, 'Test Single Hospital', 'Apollo Gleneagles Hospitals Kolkata, a 510-bedded multispecialty tertiary care hospital, is a perfect blend of technological excellence, complete infrastructure, competent care and heartfelt hospitality.\r\n\r\nApollo Gleneagles Hospitals is a joint venture of Apollo Group of Hospitals, India and Parkway Health of Singapore.\r\n\r\nThe Parkway Group is a leading healthcare group in Asia. It provides more than 70% of private healthcare in Singapore. Its subsidiaries include Parkway Group Healthcare, which owns a network of regional hospitals and medical centers in Malaysia, India and Brunei; and Parkway Hospitals Singapore, which owns three hospitals in Singapore - East Shore, Gleneagles, Mount Elizabeth Hospitals and Parkway Health Day surgery Centre.', NULL, NULL, 'hospital@apollogleneagles.in', '{"country_code":"1","area_code":" 3323","number":" 203 040"}', '{"main":"http:\\/\\/kolkata.apollohospitals.com\\/","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"Apollo Gleneagles Hospital","street":"No. 58, Canal Circular Road"}', NULL, NULL, NULL, '700054', NULL, 'West Bengal', NULL, '', 1, '2013-01-16 05:08:04', '2012-12-06 06:49:56', 'test-single-hospital', 0, NULL,NULL, 9),
+(3, 1, 'Apollo Hospital, Bangalore', 'Apollo Hospitals, Bangalore ', NULL, NULL, 'customercare_bangalore@apollohospitals.com', '{"country_code":"1","area_code":"8026","number":"304 050"}', '{"main":"http:\\/\\/www.apollohospitalsbangalore.com\\/","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"Apollo Hospitals - Bangalore","street":"154\\/11, Opp. IIM B, Bannerghatta Road"}', NULL, 1, 1, '560076', NULL, 'Karnataka', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:01:40', 'apollo-hospital-bangalore', 1, NULL,NULL, 9),
+(4, 1, 'Apollo Hospital, Chennai', 'The flagship hospital of the Apollo Group, Apollo Hospitals Chennai, was established in 1983. Today it is one of the most respected hospitals in the world, and is also amongst the most preferred destinations for both patients from several parts of India, as well as for medical tourism and medical value travel. The hospital specializes in cutting-edge medical procedures. It has over 60 departments spearheaded by internationally trained doctors who are skillfully supported by dedicated patient-care personnel. It is one of the few hospitals in Chennai that have state of the art facilities for various health disorders.\r\n\r\nIt has been a pioneer among the hospitals in Chennai, and even in India, in many different treatments and procedures.', NULL, NULL, 'enquiry@apollohospitals.com', '{"country_code":"","area_code":"","number":""}', '{"main":"","facebook":"","twitter":""}', NULL, '{facebook:"",twitter:"",googleplus:""}', '{"room_number":"","building":"","street":"Apollo Hospitals - Chennai No. 21, Greams Lane, Off. Greams Road, Chennai 600006 India"}', NULL, 1, 1, '600006', NULL, 'Tammil Nadu', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:46:49', 'apollo-hospital-chennai', 0, NULL,NULL, 9),
+(5, 3, 'Apollo Hospital, Hyderabad', 'Today, Apollo Hospitals, Hyderabad has risen to be on par with the best in the world, in terms of technical expertise, deliverables and outcomes. It has now evolved into a one of a kind institution , the Apollo Health City, Hyderabad, which is the first health city in Asia and a perfect example of an integrated healthcare system offering solutions across the healthcare space. A 350 bedded multi-specialty hospital with over 50 specialties and super-specialties, 10 Centers of Excellence, education, research, information technology, all in one sprawling campus creates an environment dedicated to healing.\r\n\r\nApollo Health City , Hyderabad covers the entire spectrum from illness to wellness and is thus a health city and not a medical city. Institutes for Heart Diseases, Cancer, Joint Diseases, Emergency, Renal Diseases, Neurosciences, Eye and Cosmetic Surgery are all centers of excellence and are positioned to offer the best care in the safest manner to every patient.\r\n\r\nApart from patient care, each of these Centers of Excellence spend a significant amount of time in training and research essentially aimed at preventing disease and improving outcomes when the disease does occur.\r\n\r\nMost of the consultants at the Health city have international experience either educational, work experience - related or observational. The average staff to patient ratio for the hospital is 3:1 with a 1:1 ratio prevailing in priority areas like the Intensive Care Unit and the Cardiac Care Unit.\r\n\r\nApollo Healthcity, Hyderabad handles close to 100,000 patients a year. International patients from Tanzania, the USA, the UAE, Kenya, Oman and neighbouring Asian countries are treated by the hospital every year.', NULL, NULL, 'apollohealthcity@apollohospitals.com', '', '', NULL, '{facebook:"",twitter:"",googleplus:""}', 'Apollo Hospitals Jubilee Hills Hyderabad Andhra Pradesh 500033 India', NULL, 1, 1, '500033', NULL, 'Andra Pradesh', NULL, '', NULL, '2013-01-16 05:08:04', '2012-12-06 07:56:18', 'apollo-hospital-hyderabad', 0, NULL,NULL, 9);
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `institution_contact_details`
 --
+
 DROP TABLE IF EXISTS `institution_contact_details`;
 CREATE TABLE IF NOT EXISTS `institution_contact_details` (
   `institution_id` int(10) unsigned NOT NULL,
@@ -869,6 +899,7 @@ CREATE TABLE IF NOT EXISTS `institution_contact_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `institution_global_awards`
 --
@@ -884,8 +915,7 @@ CREATE TABLE IF NOT EXISTS `institution_global_awards` (
   KEY `institution_id` (`institution_id`),
   KEY `institution_medical_center_id` (`institution_medical_center_id`),
   KEY `global_award_id` (`global_award_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -925,6 +955,12 @@ CREATE TABLE IF NOT EXISTS `institution_inquiries` (
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='inquiries for an institution or a medical center' AUTO_INCREMENT=3 ;
 
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(1, 1, NULL, 'Hazel', 'hazel.caballero@chromedia.com', 'Test inquiry', '2013-07-05 07:34:46', NULL, NULL, NULL, 2);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(2, 1, 617, 'Kim Kieu', 'kieuk1@msn.com', 'How much (in US dollars) would a toal facelift and facial contouring costs including lodging? I am from USA. How long is the downtime? I ma 56 years old 114 lbs  5 feet 3. Also what can stem cell do for me? Thanks.', '2013-03-01 18:21:21', NULL, NULL, NULL, 1);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(3, 1, NULL, 'test from HCA', 'sdfsdf@yahoo.com', 'sadfsdf sdf dfsad fsd f', '2013-07-05 07:31:31', NULL, NULL, NULL, 1);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(4, 1, NULL, 'Alnie Jacobe', 'asldni@uahoo.com', 'kjahs jahsd', '2013-07-17 01:49:26', NULL, NULL, NULL, 2);
+INSERT INTO `institution_inquiries` (`id`, `institution_id`, `institution_medical_center_id`, `inquirer_name`, `inquirer_email`, `message`, `date_created`, `country_id`, `remote_address`, `http_user_agent`, `status`) VALUES(5, 1, NULL, 'jer jacobe', 'kajsd@ayka.com', 'kal lahsdkjh', '2013-06-17 08:41:49', NULL, NULL, NULL, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -942,8 +978,7 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `invitation_token_id` (`invitation_token_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -951,16 +986,16 @@ CREATE TABLE IF NOT EXISTS `institution_invitations` (
 -- Table structure for table `institution_medical_centers`
 --
 
-DROP TABLE IF EXISTS `institution_medical_centers`;
 CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `institution_id` int(10) unsigned NOT NULL,
   `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+  `address_hint` varchar(250) COLLATE ucs2_unicode_ci DEFAULT NULL,
   `coordinates` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `business_hours` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `old_business_hours` varchar(500) COLLATE ucs2_unicode_ci DEFAULT NULL,
-  `s_always_open` tinyint(1) DEFAULT NULL,
+  `is_always_open` tinyint(1) DEFAULT NULL,
   `contact_number` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact_email` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `websites` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
@@ -974,6 +1009,7 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_updated` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `slug` varchar(250) CHARACTER SET latin1 NOT NULL,
+  `is_from_internal_admin` smallint(1) unsigned DEFAULT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `institution_id` (`institution_id`,`name`),
@@ -984,10 +1020,10 @@ CREATE TABLE IF NOT EXISTS `institution_medical_centers` (
 -- Dumping data for table `institution_medical_centers`
 --
 
-INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `address_hint`, `coordinates`, `business_hours`, `old_business_hours`, `is_always_open`, `contact_number`, `contact_email`, `websites`, `website_back_up`, `social_media_sites`, `description_highlight`, `description`, `logo_id`, `paying_client`, `ranking_points`, `date_created`, `date_updated`, `slug`, `status`) VALUES
-(1, 1, 'Pre-Admission Counselling and Evaluation (PACE) Clinic', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, NULL, NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic', 2),
-(2, 1, 'Audiology Services', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, NULL, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services', 2),
-(3, 2, 'test single', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, 1, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'test-single', 2);
+INSERT INTO `institution_medical_centers` (`id`, `institution_id`, `name`, `address`, `address_hint`, `coordinates`, `business_hours`, `old_business_hours`, `is_always_open`, `contact_number`, `contact_email`, `websites`, `website_back_up`, `social_media_sites`, `description_highlight`, `description`, `logo_id`, `paying_client`, `ranking_points`, `date_created`, `date_updated`, `slug`, `is_from_internal_admin`, `status`) VALUES
+(1, 1, 'Pre-Admission', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', 'Location: Level B2, TTSH Medical Center\nContact Information: 6357 2244\nFax: 6357 2244\nRelated Departments and Clinics: Department of Anaesthesiology, Intensive Care and Pain Medicine\n&nbsp;\n\n&nbsp;', NULL, NULL, NULL, '2012-12-07 06:12:50', '2012-12-07 03:24:30', 'pre-admission-counselling-and-evaluation-pace-clinic',NULL, 2),
+(2, 1, 'Audiology Services', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, NULL, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'audiology-services',NULL, 2),
+(3, 2, 'test single', NULL, NULL, '', NULL, NULL, NULL, '', '', '', NULL, NULL, 'test', '&nbsp;Location: Clinic 1 B, Level 1, TTSH Medical Center\nContact Information: 6357 8007 (Inquiry), 6357 8384\nFax: 6357 8384\nRelated Department: ENT (Audiology Services)&nbsp;', NULL, 1, NULL, '2012-12-07 06:14:47', '2012-12-07 03:30:59', 'test-single',NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -1021,8 +1057,12 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_doctors` (
 --
 -- Dumping data for table `institution_medical_center_doctors`
 --
+
 INSERT INTO `institution_medical_center_doctors` (`institution_medical_center_id`, `doctor_id`) VALUES
-(1, 1);
+(1, 1),
+(2, 2),
+(3, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -1041,7 +1081,6 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_media` (
 INSERT INTO `institution_medical_center_media` (`institution_medical_center_id`, `media_id`) VALUES(1, 1);
 INSERT INTO `institution_medical_center_media` (`institution_medical_center_id`, `media_id`) VALUES(2, 2);
 INSERT INTO `institution_medical_center_media` (`institution_medical_center_id`, `media_id`) VALUES(3, 3);
-
 -- --------------------------------------------------------
 
 --
@@ -1060,14 +1099,18 @@ CREATE TABLE IF NOT EXISTS `institution_medical_center_properties` (
   KEY `institution_property_type_id` (`institution_property_type_id`),
   KEY `institution_id` (`institution_id`),
   KEY `institution_medical_center_id` (`institution_medical_center_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `institution_medical_center_properties`
 --
+
 INSERT INTO `institution_medical_center_properties` (`id`, `institution_id`, `institution_medical_center_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
 (1, 1, 1, 1, '1', NULL),
-(2, 2, 2, 1, '2', NULL);
+(2, 2, 3, 1, '2', NULL),
+(3, 2, 3, 3, '2', NULL),
+(4, 1, 1, 3, '1', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -1084,15 +1127,17 @@ CREATE TABLE IF NOT EXISTS `institution_properties` (
   PRIMARY KEY (`id`),
   KEY `institution_property_type_id` (`institution_property_type_id`),
   KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `institution_properties`
 --
 
-INSERT INTO `institution_properties` (`id`, `institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
-(1, 1, 1, '1', 'test');
-
+INSERT INTO `institution_properties` (`institution_id`, `institution_property_type_id`, `value`, `extra_value`) VALUES
+(1, 1, '1', 'test2'),
+( 1, 3, '1', 'test23'),
+( 2, 3, '2', 'test123'),
+( 2, 1, '2', 'test1223');
 -- --------------------------------------------------------
 
 --
@@ -1110,7 +1155,7 @@ CREATE TABLE IF NOT EXISTS `institution_property_types` (
   `status` tinyint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `data_type_id` (`data_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `institution_property_types`
@@ -1120,7 +1165,6 @@ INSERT INTO `institution_property_types` (`id`, `name`, `label`, `data_type_id`,
 (1, 'ancilliary_service_id', 'Ancilliary Service', 5, 'HealthCareAbroad\\AdminBundle\\Entity\\OfferedService', '{"type":"\\\\HealthCareAbroad\\\\InstitutionBundle\\\\Form\\\\ListType\\\\InstitutionOfferedServiceListType","multiple":"true","expanded":"true"}', 1),
 (2, 'language_id', 'Language Spoken', 5, 'HealthCareAbroad\\AdminBundle\\Entity\\Language', '{"multiple":true,"expanded":true,"type":"InstitutionLanguageSpokenFormType"}', 1),
 (3, 'global_award_id', 'Global Award', 5, 'HealthCareAbroad\\HelperBundle\\Entity\\GlobalAward', '', 1);
-
 
 -- --------------------------------------------------------
 
@@ -1140,7 +1184,7 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `institution_medical_center_id` (`institution_medical_center_id`,`specialization_id`),
   KEY `specialization_id` (`specialization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `institution_specializations`
@@ -1149,7 +1193,7 @@ CREATE TABLE IF NOT EXISTS `institution_specializations` (
 INSERT INTO `institution_specializations` (`id`, `institution_medical_center_id`, `specialization_id`, `description`, `date_created`, `date_modified`, `status`) VALUES
 (1, 1, 1, '<p>asdfsdf asdf asdf asdf</p>', '2012-12-08 17:31:05', '2012-12-08 17:31:05', 1),
 (2, 2, 1, '<p>etc etc</p>', '2012-12-08 17:34:18', '2012-12-08 17:34:18', 1),
-(3, 1, 3, 'test 3', '2013-02-22 07:23:45', '0000-00-00 00:00:00', 1);
+(3, 3, 3, 'test 3', '2013-02-22 07:23:45', '0000-00-00 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -1166,6 +1210,11 @@ CREATE TABLE IF NOT EXISTS `institution_treatments` (
   KEY `institution_specialization_id` (`institution_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Dumping data for table `institution_treatments`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`institution_treatments` (`institution_specialization_id`, `treatment_id`) VALUES ('1', '1');
 
 -- --------------------------------------------------------
 
@@ -1191,8 +1240,9 @@ CREATE TABLE IF NOT EXISTS `institution_users` (
 --
 
 INSERT INTO `institution_users` (`account_id`, `institution_id`, `institution_user_type_id`, `job_title`, `date_created`, `status`) VALUES
-(1, 1, 1,'job title test','2013-02-13 02:12:02', 1),(2, 1, 1, 'admin','2013-02-15 02:02:39', 1),
-(3, 2, 2,'coder', '2013-02-15 05:59:58', 1);
+(1, 1, 1, 'job title test', '2013-02-13 02:12:02', 1),
+(2, 1, 1, 'admin', '2013-02-15 02:02:39', 1),
+(3, 2, 2, 'coder', '2013-02-15 05:59:58', 1);
 
 -- --------------------------------------------------------
 
@@ -1215,7 +1265,7 @@ CREATE TABLE IF NOT EXISTS `institution_user_invitations` (
   PRIMARY KEY (`id`),
   KEY `invitation_token_id` (`invitation_token_id`),
   KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1223,6 +1273,7 @@ CREATE TABLE IF NOT EXISTS `institution_user_invitations` (
 -- Table structure for table `institution_user_password_tokens`
 --
 
+DROP TABLE IF EXISTS `institution_user_password_tokens`;
 CREATE TABLE IF NOT EXISTS `institution_user_password_tokens` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `account_id` bigint(20) NOT NULL,
@@ -1231,14 +1282,16 @@ CREATE TABLE IF NOT EXISTS `institution_user_password_tokens` (
   `expiration_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `institution_user_password_tokens`
 --
 
-INSERT INTO `institution_user_password_tokens` (`id`, `account_id`, `token`, `date_created`, `expiration_date`, `status`) VALUES(1, 1, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1', '2013-04-11 01:48:48', '2013-04-18 01:48:48', 1);
-
+INSERT INTO `institution_user_password_tokens` (`id`, `account_id`, `token`, `date_created`, `expiration_date`, `status`) VALUES
+(1, 1, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1', '2013-08-11 01:48:48', '2013-08-18 01:48:48', 1),
+(2, 2, 'a2846338db37bb3cca03211ceb8910822a5bb7862c02efb211dce7859b426036', '2013-07-01 08:25:48', '2013-07-04 08:25:47', 1),
+(3, 34, '25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f6', '2013-08-11 01:48:48', '2013-08-18 01:48:48', 1);
 -- --------------------------------------------------------
 
 --
@@ -1246,19 +1299,6 @@ INSERT INTO `institution_user_password_tokens` (`id`, `account_id`, `token`, `da
 --
 
 DROP TABLE IF EXISTS `institution_user_roles`;
-CREATE TABLE IF NOT EXISTS `institution_user_roles` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `description` varchar(250) NOT NULL,
-  `status` smallint(1) unsigned NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
-
---
--- Table structure for table `institution_user_roles`
---
-
 CREATE TABLE IF NOT EXISTS `institution_user_roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
@@ -1297,7 +1337,7 @@ CREATE TABLE IF NOT EXISTS `institution_user_types` (
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `institution_user_types`
@@ -1344,8 +1384,7 @@ CREATE TABLE IF NOT EXISTS `invitation_tokens` (
   `expiration_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1360,13 +1399,14 @@ CREATE TABLE IF NOT EXISTS `languages` (
   `name` char(100) NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `languages`
 --
-INSERT INTO `languages` (`id`, `iso_code`, `name`, `status`) VALUES(1, 'en', 'English', 1);
 
+INSERT INTO `languages` (`id`, `iso_code`, `name`, `status`) VALUES
+(1, 'en', 'English', 1);
 
 -- --------------------------------------------------------
 
@@ -1385,8 +1425,7 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `log_class_id` (`log_class_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1400,8 +1439,7 @@ CREATE TABLE IF NOT EXISTS `log_classes` (
   `name` varchar(500) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1418,52 +1456,7 @@ CREATE TABLE IF NOT EXISTS `mail_queue` (
   `failed_attempts` int(10) unsigned DEFAULT '0' COMMENT 'number of failed attempts for this message',
   `status` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `search_terms`
---
-
-CREATE TABLE IF NOT EXISTS `search_terms` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `term_id` bigint(20) unsigned NOT NULL,
-  `institution_id` int(10) unsigned NOT NULL,
-  `institution_medical_center_id` int(10) unsigned NOT NULL,
-  `term_document_id` bigint(20) unsigned NOT NULL COMMENT 'term_documents.id',
-  `document_id` int(10) unsigned NOT NULL,
-  `type` tinyint(1) unsigned NOT NULL COMMENT '1-SPECIALIZATION, 2-SUBSPECIALIZATION, 3-TREATMENT',
-  `status` tinyint(1) unsigned NOT NULL,
-  `specialization_id` int(10) unsigned DEFAULT NULL,
-  `sub_specialization_id` int(10) unsigned DEFAULT NULL,
-  `treatment_id` int(10) unsigned DEFAULT NULL,
-  `country_id` int(10) unsigned NOT NULL,
-  `city_id` int(10) unsigned DEFAULT NULL,
-  `specialization_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `sub_specialization_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `treatment_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `country_name` varchar(250) COLLATE utf8_unicode_ci NOT NULL,
-  `city_name` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `institution_id` (`institution_id`),
-  KEY `institution_medical_center_id` (`institution_medical_center_id`),
-  KEY `document_id` (`document_id`),
-  KEY `type` (`type`),
-  KEY `specialization_id` (`specialization_id`),
-  KEY `sub_specialization_id` (`sub_specialization_id`),
-  KEY `treatment_id` (`treatment_id`),
-  KEY `country_id` (`country_id`),
-  KEY `city_id` (`city_id`),
-  KEY `specialization_name` (`specialization_name`),
-  KEY `sub_specialization_name` (`sub_specialization_name`),
-  KEY `treatment_name` (`treatment_name`),
-  KEY `country_name` (`country_name`),
-  KEY `city_name` (`city_name`),
-  KEY `term_id` (`term_id`),
-  KEY `term_document_id` (`term_document_id`),
-  KEY `status` (`status`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1485,8 +1478,12 @@ CREATE TABLE IF NOT EXISTS `media` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `date_modified` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(1, '1358214261', '1358214261.jpg', 'hussein.jpg', '0', 'image/jpeg', NULL, 104, 104, '2013-01-15 01:44:21', '2013-01-15 01:44:21');
+INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(2, '1358998235', '135899823585.png', 'Screen Shot 2013-01-22 at 1.09.37 PM.png', '0', 'image/png', NULL, 276, 164, '2013-01-24 03:30:35', '2013-01-24 03:30:35');
+INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(3, '1358998362', '1358998362100.jpg', '1 (1).jpg', '0', 'image/jpeg', NULL, 750, 344, '2013-01-24 03:32:43', '2013-01-24 03:32:43');
+INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(4, '1359079896', '135907989669.jpg', '1 (1).jpg', '0', 'image/jpeg', NULL, 750, 344, '2013-01-25 02:11:36', '2013-01-25 02:11:36');
 
 INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(1, '1358214261', '1358214261.jpg', 'hussein.jpg', '0', 'image/jpeg', NULL, 104, 104, '2013-01-15 01:44:21', '2013-01-15 01:44:21');
 INSERT INTO `media` (`id`, `uuid`, `name`, `caption`, `context`, `content_type`, `metadata`, `width`, `height`, `date_created`, `date_modified`) VALUES(2, '1358998235', '135899823585.png', 'Screen Shot 2013-01-22 at 1.09.37 PM.png', '0', 'image/png', NULL, 276, 164, '2013-01-24 03:30:35', '2013-01-24 03:30:35');
@@ -1507,14 +1504,14 @@ CREATE TABLE IF NOT EXISTS `medical_provider_groups` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `status` smallint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `medical_provider_groups`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES
-('18', 'test', 'test', CURRENT_TIMESTAMP, '1');
+INSERT INTO `medical_provider_groups` (`id`, `name`, `description`, `date_created`, `status`) VALUES
+(18, 'test', 'test', '2013-07-18 07:54:53', 1);
 
 -- --------------------------------------------------------
 
@@ -1529,7 +1526,7 @@ CREATE TABLE IF NOT EXISTS `medical_term_suggestions` (
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `institution_id` (`institution_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1547,7 +1544,7 @@ CREATE TABLE IF NOT EXISTS `medical_term_suggestion_details` (
   `status` smallint(1) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `medical_term_suggestion_id` (`medical_term_suggestion_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1564,7 +1561,7 @@ CREATE TABLE IF NOT EXISTS `news` (
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1579,8 +1576,7 @@ CREATE TABLE IF NOT EXISTS `newsletters_subscribers` (
   `ip_address` varchar(20) NOT NULL,
   `date_created` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1595,7 +1591,7 @@ CREATE TABLE IF NOT EXISTS `offered_services` (
   `status` tinyint(1) NOT NULL DEFAULT '1',
   `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
 
 --
 -- Dumping data for table `offered_services`
@@ -1642,6 +1638,70 @@ INSERT INTO `offered_services` (`id`, `name`, `status`, `date_created`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `page_meta_configurations`
+--
+
+DROP TABLE IF EXISTS `page_meta_configurations`;
+CREATE TABLE IF NOT EXISTS `page_meta_configurations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `keywords` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `page_type` tinyint(2) unsigned NOT NULL COMMENT '1=static pages;2=institution pages;3=search results pages',
+  `url` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'page url',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `url` (`url`)
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=155 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `search_terms`
+--
+
+DROP TABLE IF EXISTS `search_terms`;
+CREATE TABLE IF NOT EXISTS `search_terms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `term_id` bigint(20) unsigned NOT NULL,
+  `institution_id` int(10) unsigned NOT NULL,
+  `institution_medical_center_id` int(10) unsigned NOT NULL,
+  `term_document_id` bigint(20) unsigned NOT NULL COMMENT 'term_documents.id',
+  `document_id` int(10) unsigned NOT NULL,
+  `type` tinyint(1) unsigned NOT NULL COMMENT '1-SPECIALIZATION, 2-SUBSPECIALIZATION, 3-TREATMENT',
+  `status` tinyint(1) unsigned NOT NULL,
+  `specialization_id` int(10) unsigned DEFAULT NULL,
+  `sub_specialization_id` int(10) unsigned DEFAULT NULL,
+  `treatment_id` int(10) unsigned DEFAULT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `city_id` int(10) unsigned DEFAULT NULL,
+  `specialization_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sub_specialization_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `treatment_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `country_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `city_name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `institution_id` (`institution_id`),
+  KEY `institution_medical_center_id` (`institution_medical_center_id`),
+  KEY `document_id` (`document_id`),
+  KEY `type` (`type`),
+  KEY `specialization_id` (`specialization_id`),
+  KEY `sub_specialization_id` (`sub_specialization_id`),
+  KEY `treatment_id` (`treatment_id`),
+  KEY `country_id` (`country_id`),
+  KEY `city_id` (`city_id`),
+  KEY `specialization_name` (`specialization_name`),
+  KEY `sub_specialization_name` (`sub_specialization_name`),
+  KEY `treatment_name` (`treatment_name`),
+  KEY `country_name` (`country_name`),
+  KEY `city_name` (`city_name`),
+  KEY `term_id` (`term_id`),
+  KEY `term_document_id` (`term_document_id`),
+  KEY `status` (`status`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `specializations`
 --
 
@@ -1657,7 +1717,7 @@ CREATE TABLE IF NOT EXISTS `specializations` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `media_id` (`media_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `specializations`
@@ -1667,7 +1727,31 @@ INSERT INTO `specializations` (`id`, `name`, `description`, `media_id`, `date_cr
 (1, 'Allergy and Immunology', 'Medical center or department specializing in immunological disorders (autoimmune diseases, hypersensitivities, immune deficiency, transplant rejection, etc.)', NULL, '2012-09-03 03:50:10', 'allergy-and-immunology', 1),
 (2, 'Pathology', 'Medical centers specialized in the diagnosis and characterization of disease in living patients by examining biopsies or bodily fluids.', NULL, '2012-09-03 06:54:38', 'pathology', 1),
 (3, 'test', 'test', NULL, '2013-02-19 05:26:06', 'test', 1),
-(4, 'dermatology', 'test', NULL, '2013-02-22 07:00:50', 'test', 1);
+(4, 'dermatology', 'test', NULL, '2013-02-22 07:00:50', 'test', 1),
+(5, 'test1', 'test1', NULL, '2013-02-19 05:26:06', 'test2', 1);
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `states`
+--
+
+DROP TABLE IF EXISTS `states`;
+CREATE TABLE IF NOT EXISTS `states` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(225) NOT NULL,
+  `country_id` int(10) unsigned NOT NULL,
+  `administrative_code` varchar(3) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `country_id` (`country_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+--
+-- Dumping data for table `states`
+--
+
+INSERT INTO `fixtures_healthcareabroad`.`states` (`id`, `name`, `country_id`, `administrative_code`) VALUES ('1', 'test', '1', '01');
 
 -- --------------------------------------------------------
 
@@ -1688,7 +1772,7 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
   KEY `specialization_id` (`specialization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments';
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='treatments' AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `sub_specializations`
@@ -1697,7 +1781,8 @@ CREATE TABLE IF NOT EXISTS `sub_specializations` (
 INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `description`, `date_modified`, `date_created`, `slug`, `status`) VALUES
 (1, 1, 'test ', 'test', '2013-02-20 00:39:04', '0000-00-00 00:00:00', 'test', 1),
 (2, 2, 'sub specialization', 'test', '2013-02-20 00:39:30', '0000-00-00 00:00:00', 'test', 1),
-(3, 3, 'sub specialization test', 'test', '2013-02-22 07:08:56', '0000-00-00 00:00:00', 'test', 1);
+(3, 3, 'sub specialization test', 'test', '2013-02-22 07:08:56', '0000-00-00 00:00:00', 'test1', 1),
+(4, 5, 'sub specialization test1', 'test1', '2013-02-22 07:08:56', '0000-00-00 00:00:00', 'test1', 1);
 
 -- --------------------------------------------------------
 
@@ -1705,6 +1790,7 @@ INSERT INTO `sub_specializations` (`id`, `specialization_id`, `name`, `descripti
 -- Table structure for table `tags`
 --
 
+DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
@@ -1712,7 +1798,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `slug` char(100) NOT NULL,
   `status` smallint(1) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1720,6 +1806,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
 -- Table structure for table `terms`
 --
 
+DROP TABLE IF EXISTS `terms`;
 CREATE TABLE IF NOT EXISTS `terms` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -1727,7 +1814,7 @@ CREATE TABLE IF NOT EXISTS `terms` (
   `internal` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `term` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -1735,6 +1822,7 @@ CREATE TABLE IF NOT EXISTS `terms` (
 -- Table structure for table `term_documents`
 --
 
+DROP TABLE IF EXISTS `term_documents`;
 CREATE TABLE IF NOT EXISTS `term_documents` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `term_id` bigint(20) unsigned NOT NULL,
@@ -1744,7 +1832,22 @@ CREATE TABLE IF NOT EXISTS `term_documents` (
   PRIMARY KEY (`id`),
   KEY `term_id` (`term_id`,`document_id`,`type`),
   KEY `document_id` (`document_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `timezones`
+--
+
+DROP TABLE IF EXISTS `timezones`;
+CREATE TABLE IF NOT EXISTS `timezones` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL,
+  `name` varchar(250) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
 
 -- --------------------------------------------------------
 
@@ -1763,7 +1866,7 @@ CREATE TABLE IF NOT EXISTS `treatments` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `specialization_id_2` (`specialization_id`,`name`),
   KEY `specialization_id` (`specialization_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `treatments`
@@ -1774,7 +1877,10 @@ INSERT INTO `treatments` (`id`, `specialization_id`, `name`, `description`, `slu
 (2, 2, 'test', 'test', 'test', 1),
 (3, 1, 'test 3', 'test', 'test', 1),
 (4, 3, 'testing', 'test', 'test', 1),
-(5, 4, 'test treatment', 'test', 'test', 1);
+(5, 4, 'test treatment', 'test', 'test', 1),
+(6, 5, 'treat', 'ererer', 'resr', 1),
+(7, 1, 'testest', 'tsetes', '', 1);
+
 
 -- --------------------------------------------------------
 
@@ -1790,6 +1896,8 @@ CREATE TABLE IF NOT EXISTS `treatment_sub_specializations` (
   KEY `sub_specialization_id` (`sub_specialization_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='association table for treatment and sub_specializations';
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `user_contact_details`
 --
@@ -1801,7 +1909,6 @@ CREATE TABLE IF NOT EXISTS `user_contact_details` (
   PRIMARY KEY (`account_id`,`contact_detail_id`),
   KEY `contact_detail_id` (`contact_detail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
 
 -- --------------------------------------------------------
 
@@ -1820,8 +1927,7 @@ CREATE TABLE IF NOT EXISTS `version_entries` (
   `username` varchar(250) DEFAULT NULL,
   `data` text,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1;
-
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables
@@ -1867,18 +1973,24 @@ ALTER TABLE `advertisement_type_configurations`
 ALTER TABLE `business_hours`
   ADD CONSTRAINT `business_hours_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
-
 --
 -- Constraints for table `cities`
 --
 ALTER TABLE `cities`
-  ADD CONSTRAINT `cities_ibfk_2` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cities_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `doctors`
 --
 ALTER TABLE `doctors`
   ADD CONSTRAINT `doctors_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `doctor_contact_details`
+--
+ALTER TABLE `doctor_contact_details` ADD FOREIGN KEY ( `doctor_id` ) REFERENCES `fixtures_healthcareabroad`.`doctors` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+ALTER TABLE `doctor_contact_details` ADD FOREIGN KEY ( `contact_detail_id` ) REFERENCES `fixtures_healthcareabroad`.`contact_details` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 --
 -- Constraints for table `doctor_specializations`
@@ -1907,144 +2019,25 @@ ALTER TABLE `global_awards`
   ADD CONSTRAINT `global_awards_ibfk_5` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `inquiries`
---
-ALTER TABLE `inquiries`
-  ADD CONSTRAINT `inquiries_ibfk_1` FOREIGN KEY (`inquiry_subject_id`) REFERENCES `inquiry_subjects` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `inquiries_ibfk_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `inquiries_ibfk_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
-
---
 -- Constraints for table `institutions`
 --
-ALTER TABLE `institutions`
-  ADD CONSTRAINT `institutions_ibfk_1` FOREIGN KEY (`logo_id`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE `institutions` ADD FOREIGN KEY ( `logo_id` ) REFERENCES `fixtures_healthcareabroad`.`media` ( `id` ) ON DELETE SET NULL ON UPDATE CASCADE ;
 
---
--- Constraints for table `institution_contact_details`
---
-ALTER TABLE `institution_contact_details`
-  ADD CONSTRAINT `institution_contact_details_ibfk_1` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_contact_details_ibfk_2` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
-
---
--- Constraints for table `institution_invitations`
---
-ALTER TABLE `institution_invitations`
-  ADD CONSTRAINT `institution_invitations_ibfk_1` FOREIGN KEY (`invitation_token_id`) REFERENCES `invitation_tokens` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_medical_centers`
---
-ALTER TABLE `institution_medical_centers`
-  ADD CONSTRAINT `institution_medical_centers_ibfk_2` FOREIGN KEY (`logo_id`) REFERENCES `media` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_centers_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_medical_center_contact_details`
---
-ALTER TABLE `institution_medical_center_contact_details`
-  ADD CONSTRAINT `institution_medical_center_contact_details_ibfk_2` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_center_contact_details_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_medical_center_media`
---
-ALTER TABLE `institution_medical_center_media`
-  ADD CONSTRAINT `institution_medical_center_media_ibfk_2` FOREIGN KEY (`media_id`) REFERENCES `media` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_center_media_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_medical_center_properties`
---
-ALTER TABLE `institution_medical_center_properties`
-  ADD CONSTRAINT `institution_medical_center_properties_ibfk_3` FOREIGN KEY (`institution_property_type_id`) REFERENCES `institution_property_types` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_center_properties_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_medical_center_properties_ibfk_2` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_property_types`
---
-ALTER TABLE `institution_property_types`
-  ADD CONSTRAINT `institution_property_types_ibfk_1` FOREIGN KEY (`data_type_id`) REFERENCES `data_types` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_specializations`
---
-ALTER TABLE `institution_specializations`
-  ADD CONSTRAINT `institution_specializations_ibfk_1` FOREIGN KEY (`institution_medical_center_id`) REFERENCES `institution_medical_centers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_specializations_ibfk_4` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_treatments`
---
-ALTER TABLE `institution_treatments`
-  ADD CONSTRAINT `institution_treatments_ibfk_1` FOREIGN KEY (`institution_specialization_id`) REFERENCES `institution_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_treatments_ibfk_4` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `institutions` ADD FOREIGN KEY ( `featured_media_id` ) REFERENCES `fixtures_healthcareabroad`.`media` ( `id` ) ON DELETE SET NULL ON UPDATE CASCADE ;
 
 --
 -- Constraints for table `institution_users`
 --
 ALTER TABLE `institution_users`
-  ADD CONSTRAINT `institution_users_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_users_ibfk_2` FOREIGN KEY (`institution_user_type_id`) REFERENCES `institution_user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `institution_users_ibfk_2` FOREIGN KEY (`institution_user_type_id`) REFERENCES `institution_user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `institution_users_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `institution_user_invitations`
+-- Constraints for table `term_documents`
 --
-ALTER TABLE `institution_user_invitations`
-  ADD CONSTRAINT `institution_user_invitations_ibfk_2` FOREIGN KEY (`invitation_token_id`) REFERENCES `invitation_tokens` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_user_invitations_ibfk_3` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `term_documents` ADD FOREIGN KEY ( `term_id` ) REFERENCES `fixtures_healthcareabroad`.`terms` ( `id` ) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 --
--- Constraints for table `institution_user_types`
+-- Constraints for table `states`
 --
-ALTER TABLE `institution_user_types`
-  ADD CONSTRAINT `institution_user_types_ibfk_1` FOREIGN KEY (`institution_id`) REFERENCES `institutions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `institution_user_type_roles`
---
-ALTER TABLE `institution_user_type_roles`
-  ADD CONSTRAINT `institution_user_type_roles_ibfk_1` FOREIGN KEY (`institution_user_type_id`) REFERENCES `institution_user_types` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `institution_user_type_roles_ibfk_2` FOREIGN KEY (`institution_user_role_id`) REFERENCES `institution_user_roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `logs`
---
-ALTER TABLE `logs`
-  ADD CONSTRAINT `logs_ibfk_1` FOREIGN KEY (`log_class_id`) REFERENCES `log_classes` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `medical_term_suggestion_details`
---
-ALTER TABLE `medical_term_suggestion_details`
-  ADD CONSTRAINT `medical_term_suggestion_details_ibfk_1` FOREIGN KEY (`medical_term_suggestion_id`) REFERENCES `medical_term_suggestions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `sub_specializations`
---
-ALTER TABLE `sub_specializations`
-  ADD CONSTRAINT `sub_specializations_ibfk_3` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `treatments`
---
-ALTER TABLE `treatments`
-  ADD CONSTRAINT `treatments_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `treatment_sub_specializations`
---
-ALTER TABLE `treatment_sub_specializations`
-  ADD CONSTRAINT `treatment_sub_specializations_ibfk_1` FOREIGN KEY (`treatment_id`) REFERENCES `treatments` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `treatment_sub_specializations_ibfk_2` FOREIGN KEY (`sub_specialization_id`) REFERENCES `sub_specializations` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
---
--- Constraints for table `user_contact_details`
---
-ALTER TABLE `user_contact_details`
-  ADD CONSTRAINT `user_contact_details_ibfk_1` FOREIGN KEY (`contact_detail_id`) REFERENCES `contact_details` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
+ALTER TABLE `states` ADD CONSTRAINT `states_ibfk_1` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON UPDATE CASCADE;

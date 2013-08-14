@@ -24355,6 +24355,12 @@ $(function(){
 
 	// Initialize HCA autocomplete object.
 	HCA.autocomplete.init();
+	
+	// Confirmation Close button 
+    $('#_close-confirmation-message').live('click', function(e) {
+        $("#confirmation-message").fadeOut();
+    });
+
 
 	// activate/deactivate status of current record 
 	$('a.update-status').click(function(){

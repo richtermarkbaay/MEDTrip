@@ -61,7 +61,6 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
 //             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
 //         }
 //         else {
-
 //             throw $this->createNotFoundException('Medical center slug required.');
 //         }
 //     }

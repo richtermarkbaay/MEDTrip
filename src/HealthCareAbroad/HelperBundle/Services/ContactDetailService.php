@@ -85,6 +85,7 @@ class ContactDetailService
 	
 	public function setContactDetail(ContactDetail $contactDetail, $contactsArray)
 	{
+	    $contactDetail->setType($contactsArray['type']);
 	    $contactDetail->setCountryCode($contactsArray['country_code']);
 	    $contactDetail->setNumber($contactsArray['number']);
 	    $contactDetail->setAbbr($contactsArray['abbr']);
