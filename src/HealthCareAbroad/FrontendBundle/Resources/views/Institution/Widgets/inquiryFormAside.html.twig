@@ -36,10 +36,10 @@
 
     <div class="control-group">
         <label class="checkbox">
-            <input type="checkbox">Yes I'd like to hear from similar Doctors and Clinics in <a href="#">Clinic Country</a>
+            <input type="checkbox" name="addClinicInquiry">Yes I'd like to hear from similar Doctors and Clinics in <a href="{{ path('frontend_search_results_countries', {country: institution.country.slug}) }}"> {{ institution.country.name }}</a>
         </label>
          <label class="checkbox">
-            <input type="checkbox">Yes, I'd like to subscribe to the HealthcareAbroad newsletter.
+            <input type="checkbox" name="subscribe">Yes, I'd like to subscribe to the HealthcareAbroad newsletter.
         </label> 
     </div>
 

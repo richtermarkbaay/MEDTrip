@@ -13,7 +13,7 @@
         streetAddress: streetAddress,
         mainAddress: mainAddress,
         institutionInquiryLink: '#form',
-        social: socialMediaArray,
+        social: institution.socialMediaSites,
         contactEmail:institutionMedicalCenter.contactEmail,
         website: institution.websites,
     }}
@@ -40,7 +40,7 @@
     <!-- End of Tabs Content -->
     
     {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress,social: socialMediaArray,
+            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institution.socialMediaSites,
             contactEmail: institution.contactEmail,contactNumber: institution.mainContactNumber,website: institution.websites, } 
         %}
 </div>

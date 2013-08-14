@@ -125,7 +125,7 @@ class InstitutionController extends ResponseHeadersController
             : null;
             
             if ($isSingleCenterInstitution) {
-                $socialMedia =  socialmediasites::formatsites($this->institution['socialMediaSites']);
+                $this->institution['socialMediaSites'] =  SocialMediaSites::formatsites($this->institution['socialMediaSites']);
                 $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
                     ? $this->institution['institutionMedicalCenters'][0]
                     : null;
@@ -153,7 +153,7 @@ class InstitutionController extends ResponseHeadersController
             } 
             // multiple center institution
             else {
-                $socialMedia =  socialmediasites::formatsites($this->institution['socialMediaSites']);
+                $this->institution['socialMediaSites'] =  SocialMediaSites::formatSites($this->institution['socialMediaSites']);
                 $this->apiInstitutionService
                     ->buildDoctors($this->institution) // build doctors data
                     ->buildGlobalAwards($this->institution) // build global awards data
@@ -209,7 +209,6 @@ class InstitutionController extends ResponseHeadersController
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
-            'socialMediaArray' => $socialMedia
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);
