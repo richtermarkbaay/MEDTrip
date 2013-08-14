@@ -243,10 +243,19 @@ var InstitutionSpecializationAutocomplete = {
         
         InstitutionSpecializationAutocomplete.autocompleteOptions.target.autocomplete({
             minLength: 2,
-            source: InstitutionSpecializationAutocomplete.autocompleteOptions.source,
+            source: function (request, res) {
+	        		InstitutionSpecializationAutocomplete._loaderElement.fadeIn();
+	    			$.ajax({
+	    				url: InstitutionSpecializationAutocomplete.autocompleteOptions.source,
+	    				data: {term: request.term},
+	    				success: function(response){
+	    					res(response);
+	    					InstitutionSpecializationAutocomplete._loaderElement.hide();
+	    				}
+	    			});
+              },
             select: function( event, ui) {
                 InstitutionSpecializationAutocomplete._loadSpecializationForm(ui.item.id);
-                
                 return false;
             }
         });
