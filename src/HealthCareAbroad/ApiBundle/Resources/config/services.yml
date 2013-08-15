@@ -5,6 +5,7 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setMemcache, [@services.memcache]]
             - [setMediaExtension, [@services.media.twig.extension]]
+            - [setContactDetailService, [@services.contact_detail]]
             
     services.api.institutionMedicalCenter:
         class: HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService

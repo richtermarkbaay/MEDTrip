@@ -1,70 +1,90 @@
-{% set streetAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['address']) %}
-{% set mainAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode']) %}
+{% set streetAddress = institution_address_to_string(institution, ['address1']) %}
+{% set mainAddress = institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode']) %}
 
 {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
-        headerText: institutionMedicalCenter.name,
-        featuredMediaSource: institutionMedicalCenter.featuredMedia is defined and institution.featuredMedia.src 
-            ? institutionMedicalCenter.featuredMedia.src 
+        headerText: institution.name,
+        featuredMediaSource: institution.featuredMedia and institution.featuredMedia.src 
+            ? institution.featuredMedia.src 
             : imageplaceholder.institutionFeaturedImage,
-        logoSource: institutionMedicalCenter.logo and institutionMedicalCenter.logo.src
-            ? institutionMedicalCenter.logo.src
+        logoSource: institution.logo and institution.logo.src
+            ? institution.logo.src
             : null,
         defaultLogoClass: 'clinic-default-logo',
-        contactNumber: institutionMedicalCenter.mainContactNumber,
+        contactNumber: institution.mainContactNumber,
         streetAddress: streetAddress,
         mainAddress: mainAddress,
         institutionInquiryLink: '#form',
-        social: institutionMedicalCenter.socialMediaSites,
-        contactEmail:institutionMedicalCenter.contactEmail,
-        website: institutionMedicalCenter.websites,
+        social: institution.socialMediaSites,
+        contactEmail:institution.contactEmail,
+        website: institution.websites
     }}
 %}
 
-<div class="profile-wrapper tab-content span8">
-	<ul class="nav nav-tabs" id="institutionTab">
-	  	<li class="active"><a href="#overview">OVERVIEW</a></li>
-	  	{% if institutionDoctors|length %}
-	  	    <li><a href="#doctors">DOCTORS</a></li>
-        {% endif %}
-	</ul> <!--Twitter bootstrap Tabs-->
-
-	<!-- Tabs Content -->
-	<div id="overview" class="tab-pane active">
-        <div>
-            {{ institutionMedicalCenter.description | raw }}
-        </div>
-        {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
-            with { institutionSpecializations: institutionMedicalCenter.institutionSpecializations } 
-        %}
-        
-        {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
-    </div>
-
+<div class="profile-wrapper span8">
+    {{ institution.description | raw }}
+    
+    {% include 'FrontendBundle:InstitutionMedicalCenter/Widgets:specializations.html.twig' 
+        with { institutionSpecializations: institutionMedicalCenter.institutionSpecializations } 
+    %}
+    
+    {% include 'FrontendBundle:Widgets:profileAwardsAndServicesSection.html.twig' with { awards: institutionAwards, services: institutionServices} %}
+    
     {% if institutionDoctors|length %}
-        <div id="doctors" class="tab-pane">
-            {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with {doctors: institutionDoctors} %}
-        </div>
+        {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors' } %}
+            {% block sectionContent %}
+                {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionDoctors } %}
+            {% endblock %}                
+        {% endembed %}
     {% endif %}
-    <!-- End of Tabs Content -->
     
     {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institutionMedicalCenter.socialMediaSites,
-            contactEmail: institutionMedicalCenter.contactEmail,contactNumber: institutionMedicalCenter.mainContactNumber,website: institutionMedicalCenter.websites, } 
-        %}
+        with { 
+            streetAddress: streetAddress, 
+            mainAddress: mainAddress,
+            contactNumber: institution.mainContactNumber,
+            social: institution.socialMediaSites,
+            contactEmail:institution.contactEmail,
+            website: institution.websites
+        } 
+    %}
 </div>
 
 <aside class="span4 aside-wrapper">
     {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
-    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
+
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
+    
+    {% if institutionMedicalCenter.businessHours %}
+    <section class="widget-wrapper">
+        <h4 class="widget-heading">
+            Clinic Schedule
+        </h4>
+        <ul class="single-listing" id="businessHoursView" >
+    		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
+                <li>Open 24/7</li>
+    		{% else %}
+    		    {% for each in institutionMedicalCenter.businessHours %}
+        		   <li>
+        		        {% set _bhData =  business_hours_to_view_data(each) %}
+                        <span class="fbh_selected_days_label">{{ _bhData.daysLabel | upper }}</span>
+                        <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
+                        <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
+                    </li>
+    			{% endfor %}
+    		{% endif %}
+        </ul>
+    </section>
+    {% endif %}
     <section id="form_feedback" class="widget-wrapper">
         <h4 class="widget-heading">
-            Email this Institution
+            Email this Clinic
         </h4>
         {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {form: form} %}
     </section>
 </aside> <!--End of aside_content-->
+
 <div class="span12">
-    <p>Copyright 2013, <b>{{ institutionMedicalCenter.name }}</b> 
+    <p>Copyright 2013, <b>{{ institution.name }}</b> 
     </p>
 </div>
 

@@ -110,6 +110,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             mappedBy: institution
             cascade:
                 - "persist"
+            orderBy: {"id": "ASC"}
         institutionUsers:
             targetEntity: HealthCareAbroad\UserBundle\Entity\InstitutionUser
             mappedBy: institution
