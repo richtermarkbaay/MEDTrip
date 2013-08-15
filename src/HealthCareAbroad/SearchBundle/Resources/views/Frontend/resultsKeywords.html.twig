@@ -12,9 +12,12 @@
             <h3 class="heading">
                 We found <em>{{ searchResults.getTotalResults }}</em> {{ searchResults.getTotalResults > 1 ? 'results' : 'result' }}.
             </h3>
-            <h3 class="heading">Refine your results.</h3>
-            {# Refine results form #}
-            {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+
+            {% if searchResults.isPaginable %}
+                <h3 class="heading">Refine your results.</h3>
+                {# Refine results form #}
+                {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+            {% endif %}
         </div>
 
         {% for searchResultVo in searchResults %}
@@ -36,7 +39,7 @@
                }
            %}
         {% endfor %}
-        
+
         {# for PHOTO LISTING #}
         <div class="photo-listing item-wrapper">
             <div class="left-column-wrapper">
@@ -81,7 +84,7 @@
         {# for LOGO LISTING (modeled the resultItem after this...) for now #}
         <div class="logo-listing item-wrapper">
               <div class="left-column-wrapper">
-                  <a href="" class="small-logo-wrapper"><span class="hca-sprite clinic-default-logo small"></span></a>     
+                  <a href="" class="small-logo-wrapper"><span class="hca-sprite clinic-default-logo small"></span></a>
               </div>
               <div class="right-column-wrapper">
                 <div class="description-box">
@@ -174,7 +177,7 @@
         {{ render_search_results_featured_posts() }}
 
         {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } #}
-        
+
         {{ render_search_results_image_ad() }}
     </aside>
 {% endblock %}

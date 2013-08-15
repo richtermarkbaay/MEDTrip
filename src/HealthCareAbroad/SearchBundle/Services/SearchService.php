@@ -1,5 +1,7 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
 
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy;
@@ -196,20 +198,23 @@ class SearchService
 
     public function searchBySpecialization($specialization)
     {
-        return $this->searchStrategy
-            ->searchMedicalCentersBySpecialization($specialization);
+        $results = $this->searchStrategy->searchMedicalCentersBySpecialization($specialization);
+
+        return $results;
     }
 
     public function searchBySubSpecialization($subSpecialization)
     {
-        return $this->searchStrategy
-            ->searchMedicalCentersBySubSpecialization($subSpecialization);
+        $results = $this->searchStrategy->searchMedicalCentersBySubSpecialization($subSpecialization);
+
+        return $results;
     }
 
     public function searchByTreatment($treatment)
     {
-        return $this->searchStrategy
-            ->searchMedicalCentersByTreatment($treatment);
+        $results = $this->searchStrategy->searchMedicalCentersByTreatment($treatment);
+
+        return $results;
     }
 
     /**
