@@ -104,7 +104,6 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $medicalProviderGroupArr = array();
-        
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
