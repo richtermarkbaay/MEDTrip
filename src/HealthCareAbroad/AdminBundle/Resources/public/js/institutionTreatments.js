@@ -123,3 +123,98 @@ var InstitutionSpecialization = {
         return false;
     },
 };
+var InstitutionSpecializationAutocomplete = {
+	    removePropertyUri: '',
+	    singleSelectionOnly: false,
+	    _loadSpecializationFormUri : '',
+	    _loaderElement: null, // jQuery DOM element loader
+	    autocompleteOptions: {
+	        source: '',
+	        target: null, // autocomplete target jQuery DOM element
+	        selectedDataContainer: null // jQuery DOM element container of selected data
+	    },
+	    
+	    // set InstitutionSpecializationAutocomplete.autocompleteOptions
+	    setAutocompleteOptions: function (_val) {
+	        this.autocompleteOptions = _val;
+	        
+	        return this;
+	    },
+	    
+	    setLoaderElement: function (_el) {
+	        this._loaderElement = _el;
+	        
+	        return this;
+	    },
+	    
+	    setLoadSpecializationFormUri: function(_val) {
+	        this._loadSpecializationFormUri = _val;
+	        
+	        return this;
+	    },
+	    removeProperty: function(_treatmentId, _container) {
+	        _container.find('a.delete').attr('disabled',true);
+	        $.ajax({
+	            type: 'POST',
+	            url: InstitutionSpecializationAutocomplete.removePropertyUri,
+	            data: {'id': _treatmentId},
+	            success: function(response) {
+	                _container.remove();
+	            }
+	        });
+	        
+	    },
+	    
+	    autocomplete: function(){
+	        
+	        // initialize accordion for data container
+	        //InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer.accordion({active: false, collapsible: true, heightStyle: "content"});
+	        
+	        InstitutionSpecializationAutocomplete.autocompleteOptions.target.autocomplete({
+	            minLength: 2,
+	            source: function (request, res) {
+		        		InstitutionSpecializationAutocomplete._loaderElement.fadeIn();
+		    			$.ajax({
+		    				url: InstitutionSpecializationAutocomplete.autocompleteOptions.source,
+		    				data: {term: request.term},
+		    				success: function(response){
+		    					res(response);
+		    					InstitutionSpecializationAutocomplete._loaderElement.hide();
+		    				}
+		    			});
+	              },
+	            select: function( event, ui) {
+	                InstitutionSpecializationAutocomplete._loadSpecializationForm(ui.item.id);
+	                return false;
+	            }
+	        });
+	        
+	        return this;
+	    },
+	    
+	    _loadSpecializationForm: function (_val) {
+	        
+	        InstitutionSpecializationAutocomplete._loaderElement.fadeIn();
+	        if (InstitutionSpecializationAutocomplete.singleSelectionOnly) {
+	            InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer.html("");
+	        }
+	        
+	        $.ajax({
+	            url: InstitutionSpecializationAutocomplete._loadSpecializationFormUri,
+	            data: {'specializationId':_val},
+	            type: 'GET',
+	            dataType: 'json',
+	            success: function(response) {
+	                InstitutionSpecializationAutocomplete.autocompleteOptions.target.val("");
+	                InstitutionSpecializationAutocomplete._loaderElement.hide();
+	                InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer
+	                    .prepend(response.html);
+	                InstitutionSpecializationAutocomplete.autocompleteOptions.target.find('option[value='+_val+']').hide();
+	            },
+	            error: function(response) {
+	                InstitutionSpecializationAutocomplete._loaderElement.hide();
+	            }
+	        });
+	    }
+	    
+	};
