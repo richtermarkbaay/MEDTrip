@@ -14,6 +14,7 @@ class WidgetController extends Controller
 {
     public function ajaxLoadSearchSourcesAction(Request $request)
     {
+        $start = \microtime(true);
         $responseData = array();
         $defaultParameters = array(
             'destination' => null,
@@ -40,6 +41,8 @@ class WidgetController extends Controller
                     'destinations' => $this->get('services.search')->getAllDestinations(),
                 );
         }
+        $end = \microtime(true); $diff=$end-$start;
+        $responseData['executionTime'] = $diff;
         
         return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }

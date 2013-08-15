@@ -1,5 +1,5 @@
 frontend_search_ajaxLoadAllSearchOptions:
-    pattern: /search/ajaxLoadAllSearchOptions
+    pattern: /search/search-terms
     defaults: { _controller: SearchBundle:Widget:ajaxLoadSearchSources }
 
 
