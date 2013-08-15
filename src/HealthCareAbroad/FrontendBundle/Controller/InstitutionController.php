@@ -112,7 +112,6 @@ class InstitutionController extends ResponseHeadersController
             
             // process common data for both single and multiple center
             $this->apiInstitutionService
-                ->buildDoctors($this->institution) // build doctors data
                 ->buildGlobalAwards($this->institution) // build global awards data
                 ->buildOfferedServices($this->institution) // build anciliary services data
                 ->buildFeaturedMediaSource($this->institution) // build cover photo source
@@ -184,24 +183,22 @@ class InstitutionController extends ResponseHeadersController
             throw $this->createNotFoundException('Invalid single center clinic');
         }
         
-        // build awards from the first clinic
-        $this->institution['globalAwards'] = $this->apiInstitutionMedicalCenterService->getGlobalAwardsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-        
-        // build offered services from first clinic
-        $this->institution['offeredServices'] = $this->apiInstitutionMedicalCenterService->getOfferedServicesByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-        // build doctors from first clinic
-        $this->institution['doctors'] = $this->apiInstitutionMedicalCenterService->getDoctorsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-        
         $this->apiInstitutionMedicalCenterService
             ->buildInstitutionSpecializations($firstMedicalCenter)
             ->buildBusinessHours($firstMedicalCenter)
+            ->buildDoctors($firstMedicalCenter)
         ;
         
+        // build doctors from first clinic
+        $this->institution['doctors'] = $firstMedicalCenter['doctors'];
         $this->institution['institutionMedicalCenters'][0] = $firstMedicalCenter;
     }
     
     private function processMultipleCenterInstitution()
     {
+        // build doctors data
+        $this->apiInstitutionService->buildDoctors($this->institution); 
+        
         // Hesitant on modifying the twig extension since it is used in many contexts
         foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
             $this->apiInstitutionMedicalCenterService
