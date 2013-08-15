@@ -7,7 +7,7 @@
             <div class="gallery-wrapper">
                 {# media(media.first, institution, 'frontendGallery', {class: 'large-thumbnail thumbnail'}) | raw #}
                 {% set bigThumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::GALLERY_LARGE_THUMBNAIL') %}
-                <a class="fancybox large-thumbnail thumbnail" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(firstMedia) }}" title="{{ firstMedia.caption }}">
+                <a class="fancybox large-thumbnail thumbnail" rel="gallery" href="{{ institution_media_src(firstMedia) }}" title="{{ firstMedia.caption }}">
                     <img src="{{ institution_media_src(firstMedia, bigThumbnailSize) }}" alt=""/>
                 </a>
         		<ul class="small-thumbnail-list thumbnails">
@@ -17,7 +17,7 @@
         		        {% if  each.id != _currLogoId %}
                 			<li class="thumbnail">
                 				{# media(each, institution, 'frontendGallery') | raw #}
-                                <a class="fancybox" rel="gallery" data-fancybox-type="iframe" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
+                                <a class="fancybox" rel="gallery" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
                                     <img src="{{ institution_media_src(each, thumbnailSize) }}" alt="" width="60">
                                 </a>
                 			</li>
