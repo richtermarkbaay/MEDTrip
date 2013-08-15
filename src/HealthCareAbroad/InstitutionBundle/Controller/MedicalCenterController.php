@@ -112,7 +112,6 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function indexAction(Request $request)
     {
-        echo "asd";exit;
         // Medical Centers Group By Status
         $medicalCenters = $this->service->groupMedicalCentersByStatus($this->institution->getInstitutionMedicalCenters());
 
