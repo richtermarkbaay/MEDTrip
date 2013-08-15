@@ -136,12 +136,12 @@
 
 {% if isSingleCenter %}
 <!-- InstitutionMedicalCenter businessHours Section -->
-{% set editFormTemplate = 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig' %}
 {% embed 'InstitutionBundle:Embed:profileSection.html.twig'
     with {
         title: 'Clinic Schedule', toggleBtnId: 'clinic-edit-businessHours-btn', viewElemId: 'view-businessHours', editElemId: 'edit-businessHours',
         formParams: {formId: 'businessHoursForm', fields: ['businessHours']},
-        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token)
+        _csrf_token_widget: form_widget(institutionMedicalCenterForm._token),
+        editFormTemplate: 'InstitutionBundle:MedicalCenter/Widgets:inlineEditForm.html.twig'
     } %}
 
     {% block viewContent %}
