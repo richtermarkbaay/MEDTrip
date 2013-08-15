@@ -50,6 +50,7 @@
         {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institutionMedicalCenter.coordinates }%}
     
         {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
+        {% if institutionMedicalCenter.businessHours %}
         <section class="widget-wrapper">
             <h4 class="widget-heading">
                 Clinic Schedule
@@ -65,17 +66,11 @@
                             <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
                             <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
                         </li>
-                	{% else %}
-                        <div class="alert alert-block">
-                            <p class="hca-helptext">		
-                                You haven't yet added business hours schedule for your Clinic.
-                            </p>
-                            <button type="button" class="btn btn-primary edit-awards"  onclick="$('#clinic-edit-businessHours-btn').click()"><i class="icon-plus"></i> Add Entry</button>
-                        </div>
         			{% endfor %}
         		{% endif %}
             </ul>
         </section>
+        {% endif %}
         <section id="form_feedback" class="widget-wrapper">
             <h4 class="widget-heading">
                 Email this Clinic
