@@ -75,6 +75,32 @@
                        %}
                    <!-- end Modal Institution Ancillary Services -->
                    
+                   <!-- Modal Institution Awards / Certifications-->
+                        <div id="_institutionAwardsModalForm" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-header">
+                                <button class="Closed" aria-hidden="true" data-dismiss="modal" type="button">x</button>
+                                <h3 id="myModalLabel">Port Institution GlobalAwards</h3>
+                            </div>
+                            <div class="modal-body">
+                                <table id="_awardsTable" class="table table-striped table-bordered specialist_table">
+                                    <thead>
+                                        <tr>
+                                		    <th>Name</th>
+                                		    <th>Type</th>
+                                		</tr>
+                                    </thead>
+                                    <th></th>
+                                    <th></th>
+                                </table>
+                            </div>
+                            <div class="modal-footer">
+                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                            	    <button id="_btnInstitutionAwards" data-path="{{ path('admin_institution_medicalCenter_portGlobalAwards', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}" data-loader-text="Processing..." onclick="InstitutionMedicalCenter.portInstitutionGlobalAwards(this); return false;" class="btn btn-primary submit-button">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                   <!-- end Modal Institution Ancillary Services -->
+                   
                    <!-- Modal Institution Medical Center Specialist -->
                        <div id="_specialistModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header">

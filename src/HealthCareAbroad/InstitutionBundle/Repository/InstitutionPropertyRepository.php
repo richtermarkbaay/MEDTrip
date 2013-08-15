@@ -49,7 +49,6 @@ class InstitutionPropertyRepository extends EntityRepository
     /**
      * Get available institution ancillary services that is still not assigned to institutionMedicalCenter
      */
-    
     public function getUnAssignedInstitutionServicesToInstitutionMedicalCenter(Institution $institution, $assignedServices)
     {
         $ancillaryServicePropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE));
@@ -75,6 +74,29 @@ class InstitutionPropertyRepository extends EntityRepository
         //$stmt->bindValue('propertyType', $ancillaryServicePropertyType->getId());
         $stmt->execute();
         
+        return $stmt->fetchAll();
+    }
+    
+    /**
+     * Get available institution globalAwards that is still not assigned to institutionMedicalCenter
+     */
+    public function getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter(Institution $institution, $assignedGlobalAwards)
+    {
+        $ancillaryServicePropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::GLOBAL_AWARD_ID));
+    
+        $ids = array();
+        foreach ($assignedGlobalAwards as $each) {
+            $ids[] = $each->getId();
+        }
+    
+        $idsNotIn = "'".\implode("', '",$ids)."'";
+        $connection = $this->getEntityManager()->getConnection();
+        $query = "SELECT a.* ,b.* FROM institution_properties a LEFT JOIN global_awards b ON b.id = a.value WHERE a.institution_id = :id AND a.institution_property_type_id = :propertyType AND a.value NOT IN ({$idsNotIn})";
+        $stmt = $connection->prepare($query);
+        $stmt->bindValue('id', $institution->getId());
+        $stmt->bindValue('propertyType', InstitutionPropertyType::GLOBAL_AWARD_ID);
+        $stmt->execute();
+    
         return $stmt->fetchAll();
     }
     
