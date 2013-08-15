@@ -1,3 +1,52 @@
+body {
+  font-family: "PT Sans", "Helvetica Nueue", Arial, sans-serif;
+  word-wrap: break-word;
+  background-color: #EEF5ED;
+  color: #657174;
+}
+body ::-webkit-input-placeholder {
+  color: rgba(70, 129, 153, 0.2);
+}
+body :-moz-placeholder {
+  color: rgba(70, 129, 153, 0.2);
+}
+body :-ms-input-placeholder {
+  color: rgba(70, 129, 153, 0.2);
+}
+
+h1, h2, h3, h4 {
+  margin: 10px 0 0;
+  line-height: 1.2em;
+  text-shadow: 1px 1px 0 rgba(245, 245, 245, 0.5);
+  text-rendering: optimizeLegibility;
+}
+
+p, span {
+  line-height: 1.3em;
+}
+
+em, strong {
+  color: #fe6500;
+}
+
+h1.logo {
+  display: inline-block;
+  margin-top: 15px;
+  text-indent: -100000px;
+  background: url("/images/frontend/sprite.png") no-repeat scroll -492px -150px transparent;
+  font-size: 25px;
+  line-height: 1em;
+  height: 31px;
+  width: 275px;
+}
+
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 #header-wrapper {
   height: 56px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -1285,12 +1334,12 @@ form.home-search > button.btn:active {
   color: #FE6500;
 }
 .article-format p {
-  margin: 10px 0 0;
+  margin: 5px 0 0;
 }
 .article-format .thumbnail-wrapper {
   width: 52px;
   height: 52px;
-  margin: 10px 10px 10px 5px;
+  margin: 10px 12px 10px 5px;
 }
 .article-format .thumbnail-wrapper .featured-icon {
   width: 52px;
@@ -1299,6 +1348,11 @@ form.home-search > button.btn:active {
   vertical-align: baseline;
   box-shadow: 0 0 0 5px rgba(183, 188, 182, 0.5);
 }
+
+.article-format .thumbnail-wrapper span.featured-icon.specialization-icon {
+    background-position: 0 -327px;
+}
+
 .article-format:last-child {
   border-bottom: none;
 }
@@ -2693,54 +2747,6 @@ div.register p a:hover {
   background-position: -66px -251px;
 }
 
-body {
-  font-family: "PT Sans", "Helvetica Nueue", Arial, sans-serif;
-  word-wrap: break-word;
-  background-color: #EEF5ED;
-  color: #657174;
-}
-body ::-webkit-input-placeholder {
-  color: rgba(70, 129, 153, 0.2);
-}
-body :-moz-placeholder {
-  color: rgba(70, 129, 153, 0.2);
-}
-body :-ms-input-placeholder {
-  color: rgba(70, 129, 153, 0.2);
-}
-
-h1, h2, h3, h4 {
-  margin: 10px 0 0;
-  line-height: 1.2em;
-  text-shadow: 1px 1px 0 rgba(245, 245, 245, 0.5);
-  text-rendering: optimizeLegibility;
-}
-
-p, span {
-  line-height: 1.3em;
-}
-
-em, strong {
-  color: #fe6500;
-}
-
-h1.logo {
-  display: inline-block;
-  margin-top: 15px;
-  text-indent: -100000px;
-  background: url("/images/frontend/sprite.png") no-repeat scroll -492px -150px transparent;
-  font-size: 25px;
-  line-height: 1em;
-  height: 31px;
-  width: 275px;
-}
-
-a {
-  text-decoration: none;
-}
-a:hover {
-  text-decoration: underline;
-}
 
 #persistent-search {
   z-index: 5;

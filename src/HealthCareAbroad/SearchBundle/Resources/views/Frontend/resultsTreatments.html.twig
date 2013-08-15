@@ -180,6 +180,9 @@
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
+        <!-- Specialization/Treatment Descriptions Section -->
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.treatmentDescriptions.html.twig' %}
+
         {{ render_search_results_featured_posts() }}
 
         {# include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' #}
