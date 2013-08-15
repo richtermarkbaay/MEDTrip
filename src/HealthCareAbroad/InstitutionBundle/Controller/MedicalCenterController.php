@@ -212,7 +212,7 @@ class MedicalCenterController extends InstitutionAwareController
                         foreach ($this->institutionMedicalCenter->getBusinessHours() as $hour ) {
                             $hour->setInstitutionMedicalCenter($this->institutionMedicalCenter);
                         }
-
+                        $institutionMedicalCenterService->save($this->institutionMedicalCenter);
                     } else if (isset($form['services'])) {
                         $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
