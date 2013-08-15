@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends ResponseHeadersController
 {
-    private $resultsPerPage = 5;
+    private $resultsPerPage = 20;
 
     public function indexAction(Request $request)
     {

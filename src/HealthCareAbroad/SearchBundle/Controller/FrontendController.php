@@ -29,7 +29,7 @@ use HealthCareAbroad\FrontendBundle\Controller\ResponseHeadersController;
  */
 class FrontendController extends ResponseHeadersController
 {
-    private $resultsPerPage = 5;
+    private $resultsPerPage = 20;
 
     public function showWidgetAction(Request $request)
     {
