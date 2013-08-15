@@ -47,6 +47,7 @@ class SimpleContactDetailFieldType extends AbstractType
         $builder->add('area_code', 'text', array('required' => false, 'attr' => array('placeholder' => 'Area Code')));
         $builder->add('number', 'text', array('required' => false, 'attr' => array( 'placeholder' => 'Phone Number')));
         $builder->add('ext', 'text', array('required' => false));
+        $builder->add('type', 'hidden', array('required' => false));
     }
     
     public function getName()
