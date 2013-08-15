@@ -1,5 +1,5 @@
 #header-wrapper {
-  height: 56px;
+  /*height: 56px;*/
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -770,7 +770,8 @@ ul.nav-tabs li.active a:hover {
 /* This specifically styles the navigation at the header */
 header#header-wrapper .inline-list {
   font-size: 16px;
-  margin-top: 20px;
+  /*margin-top: 20px;*/
+  padding:10px 0 0 0;
   list-style: none;
 }
 header#header-wrapper .inline-list li {
@@ -993,8 +994,8 @@ ul.small-thumbnail-list li {
 }
 
 #top-content-wrapper {
-  margin-bottom: 20px;
-  padding: 20px 0;
+  margin-bottom: 15px;
+  padding: 15px 0 10px 0;
   color: #468199;
   background: #d4e7ee;
   /* Old browsers */
@@ -1018,11 +1019,15 @@ ul.small-thumbnail-list li {
   text-align: center;
   font-weight: 400;
   font-family: "PT Sans", Arial, Sans-serif;
+  text-transform:uppercase;
+  letter-spacing:-2px;
+  line-height:1em;
 }
 #top-content-wrapper h2 {
   font-weight: 400;
   display: block;
   text-align: center;
+  line-height:1em;
 }
 
 #content-wrapper .gallery-wrapper > .large-thumbnail:hover, #content-wrapper ul.small-thumbnail-list li:hover {
@@ -2677,7 +2682,7 @@ em, strong {
 
 h1.logo {
   display: inline-block;
-  margin-top: 15px;
+  margin-top: 7px;
   text-indent: -100000px;
   background: url("/images/frontend/sprite.png") no-repeat scroll -492px -150px transparent;
   font-size: 25px;
