@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+
 use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
 
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
@@ -21,7 +23,8 @@ class SearchTwigExtension extends \Twig_Extension
     {
         return array(
             'get_narrow_search_widgets_configuration' => new \Twig_Function_Method($this, 'get_narrow_search_widgets_configuration'),
-            'get_center_links' => new \Twig_Function_Method($this, 'getCenterLinks')
+            'get_center_links' => new \Twig_Function_Method($this, 'getCenterLinks'),
+            'get_institution_links' => new \Twig_Function_Method($this, 'getInstitutionLinks'),
         );
     }
 
@@ -100,27 +103,6 @@ class SearchTwigExtension extends \Twig_Extension
      */
     public function getCenterLinks(InstitutionMedicalCenter $center)
     {
-        /*
-  private 'contactNumber' => null
-  private 'contactEmail' => string 'haroldmodest!@gmail.com' (length=23)
-  private 'websites' => string 'http://google.com' (length=17)
-  private 'websiteBackUp' => null
-  private 'socialMediaSites' => null
-  private 'isAlwaysOpen' => null
-  private 'dateCreated' =>
-    object(DateTime)[374]
-      public 'date' => string '2013-07-30 12:19:39' (length=19)
-      public 'timezone_type' => int 3
-      public 'timezone' => string 'Europe/Berlin' (length=13)
-  private 'dateUpdated' =>
-    object(DateTime)[373]
-      public 'date' => string '2013-07-30 12:19:39' (length=19)
-      public 'timezone_type' => int 3
-      public 'timezone' => string 'Europe/Berlin' (length=13)
-  private 'isFromInternalAdmin' => int 1
-  private 'status' => int 2
-  private 'payingClient' => int 0
-*/
         $links = array();
         $socialMediaSites = SocialMediaSites::formatSites($center->getSocialMediaSites());
 
@@ -146,6 +128,41 @@ class SearchTwigExtension extends \Twig_Extension
                 }
             case PayingStatus::FREE_LISTING:
                 if ($email = $center->getContactEmail()) {
+                    $links['email'] = array('label' => 'Email Us', 'value' => $email);
+                }
+        }
+
+        return $links;
+    }
+
+    /**
+     * See comment in previous function
+     */
+    public function getInstitutionLinks(Institution $institution)
+    {
+        $links = array();
+        $socialMediaSites = SocialMediaSites::formatSites($institution->getSocialMediaSites());
+
+        //Falls through; order of the elements in $links is significant
+        switch ($institution->getPayingClient()) {
+            case 1:
+                if (isset($socialMediaSites['googleplus'])) {
+                    $links[SocialMediaSites::GOOGLEPLUS] = array('label' => 'Visit G+', 'value' => $socialMediaSites[SocialMediaSites::GOOGLEPLUS]['value']);
+                }
+                if (isset($socialMediaSites[SocialMediaSites::TWITTER])) {
+                    $links[SocialMediaSites::TWITTER] = array('label' => 'Visit Twitter', 'value' => $socialMediaSites[SocialMediaSites::TWITTER]['value']);
+                }
+                if (isset($socialMediaSites[SocialMediaSites::FACEBOOK])) {
+                    $links[SocialMediaSites::FACEBOOK] = array('label' => 'Visit Facebook', 'value' => $socialMediaSites[SocialMediaSites::FACEBOOK]['value']);
+                }
+                if ($website = $institution->getWebsites()) {
+                    $links['website'] = array('label' => 'Visit Website', 'value' => $website);
+                }
+                if ($number = $institution->getContactNumber()) {
+                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $number);
+                }
+            case 0:
+                if ($email = $institution->getContactEmail()) {
                     $links['email'] = array('label' => 'Email Us', 'value' => $email);
                 }
         }
