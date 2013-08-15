@@ -158,40 +158,35 @@
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Common.js') }}" ></script>
 <script type="text/javascript">
-    $(function() {
-        _password = $("#institutionUserSignUp_password").val();
-        _confirmPassword = $("#institutionUserSignUp_confirm_password").val();
-        _confirmPasswordDivElem = $('#institutionUserSignUp_confirm_password').parent();
-        _passwordDivElem = $('#institutionUserSignUp_password').parent();
-        _emailDivElem = $('#institutionUserSignUp_email').parent();
+     $(document).ready(function() {
         
     	$('#institutionUserSignUp_email').blur(function(e) {
         	_email = $('#institutionUserSignUp_email').val();
         	if(_email !== "") {
         		$('#loader_ajax').show();
-        		HCA.removeInlineErrorMessage(_emailDivElem);
+        		HCA.removeInlineErrorMessage($('#institutionUserSignUp_email').parent());
         		if (isValidEmailAddress(_email)) {
             		$.ajax({
         				url: '{{ get_validate_email_uri() }}/' + _email,
         				type: 'GET',
         				success: function(response){
         					if(response.status == 'invalid') {
-        					    HCA.displayInlineErrorMessage(_emailDivElem, response.message);
+        					    HCA.displayInlineErrorMessage($('#institutionUserSignUp_email').parent(), response.message);
             				}
         					$('#loader_ajax').hide();
         				}
         			});
         		} else {
-        			HCA.displayInlineErrorMessage(_emailDivElem, 'Email is invalid');
+        			HCA.displayInlineErrorMessage($('#institutionUserSignUp_email').parent(), 'Email is invalid');
         			$('#loader_ajax').hide();
         		}
         	}
     	});
 
     	$("#institutionUserSignUp_password").blur(function() {
-    		HCA.removeInlineErrorMessage(_passwordDivElem);
-    		if(_password.length <= 5 && _password !== "") {
-        		HCA.displayInlineErrorMessage(_passwordDivElem, 'Password must be atleast 6 characters long!');
+    		HCA.removeInlineErrorMessage($('#institutionUserSignUp_password').parent());
+    		if($("#institutionUserSignUp_password").val().length <= 5) {
+        		HCA.displayInlineErrorMessage($('#institutionUserSignUp_password').parent(), 'Password must be atleast 6 characters long!');
     		}
     		else {
     			checkPasswordMatch();
@@ -199,13 +194,13 @@
     	});
     	
     	$("#institutionUserSignUp_confirm_password").blur(function() {
-        	if(_password.length >= 6) {
+        	if($("#institutionUserSignUp_password").val().length >= 6) {
         		checkPasswordMatch();
         	}
     	});
     	    	
         $('button._btnSubmit').click(function() {
-            if(_confirmPasswordDivElem.hasClass('error') || _passwordDivElem.hasClass('error') || _emailDivElem.hasClass('error')) {
+            if($('#institutionUserSignUp_confirm_password').parent().hasClass('error') || $('#institutionUserSignUp_password').parent().hasClass('error') || $('#institutionUserSignUp_email').parent().hasClass('error')) {
                 HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
                 window.location.href="#_accountInfo";
                 return false;
@@ -222,9 +217,9 @@
 
     	function checkPasswordMatch() {
     		$('img._loaderAjax').show();
-    	    HCA.removeInlineErrorMessage(_confirmPasswordDivElem);
-    	    if (_password != _confirmPassword) {
-        	  	HCA.displayInlineErrorMessage(_confirmPasswordDivElem, 'Passwords do not match!');
+    	    HCA.removeInlineErrorMessage($('#institutionUserSignUp_confirm_password').parent());
+    	    if ($("#institutionUserSignUp_password").val() != $("#institutionUserSignUp_confirm_password").val()) {
+        	  	HCA.displayInlineErrorMessage($('#institutionUserSignUp_confirm_password').parent(), 'Passwords do not match!');
     	    }
     	    $('img._loaderAjax').hide();	
     	}
