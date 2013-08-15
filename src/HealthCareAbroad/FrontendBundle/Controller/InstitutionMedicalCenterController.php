@@ -67,7 +67,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 // redirect to hospital page
             }
             
-            // build optional data
+            // build optional data, according to paying client rules
             $this->apiInstitutionMedicalCenterService
                 ->buildBusinessHours($this->institutionMedicalCenter)
                 ->buildDoctors($this->institutionMedicalCenter)
@@ -79,12 +79,11 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 // build cover photo src
                 ->buildFeaturedMediaSource($this->institutionMedicalCenter)
                 ->buildContactDetails($this->institutionMedicalCenter)
+                ->buildExternalSites($this->institutionMedicalCenter) 
             ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
             $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
-            
-            $this->institutionMedicalCenter['socialMediaSites'] =  SocialMediaSites::formatSites($this->institutionMedicalCenter['socialMediaSites']);
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institutionMedicalCenter);
         }

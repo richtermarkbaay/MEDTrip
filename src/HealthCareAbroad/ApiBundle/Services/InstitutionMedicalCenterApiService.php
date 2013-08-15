@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use HealthCareAbroad\HelperBundle\Services\ContactDetailService;
 
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
@@ -90,6 +92,36 @@ class InstitutionMedicalCenterApiService
                 $institutionMedicalCenter['contactDetails'] = array();
             }
             $institutionMedicalCenter['mainContactNumber'] = null;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Build website url and social media sites url
+     * 
+     * @param array $institutionMedicalCenter
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildExternalSites(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        
+        if (self::CONTEXT_FULL_API == $context) {
+            // full api, no restrictions, not yet used but could be helpful
+            $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
+            
+        }
+        else {
+            $canDisplayExternalSites = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+            if ($canDisplayExternalSites) {
+                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
+            }
+            else {
+                // build the SM sites default values
+                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites(\json_encode(SocialMediaSites::getDefaultValues()));
+                $institutionMedicalCenter['websites'] = null;
+            }
         }
         
         return $this;
