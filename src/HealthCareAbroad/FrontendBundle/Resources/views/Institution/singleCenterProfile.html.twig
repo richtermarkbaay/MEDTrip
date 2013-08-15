@@ -54,7 +54,7 @@
 </div>
 
 <aside class="span4 aside-wrapper">
-    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institutionMedicalCenter.coordinates }%}
+    {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
     {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
     <section id="form_feedback" class="widget-wrapper">
         <h4 class="widget-heading">

@@ -48,7 +48,13 @@
         
     </div>
     <aside class="span4 aside-wrapper">
-        {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: institutionMedicalCenter.coordinates }%}
+        {% if institutionMedicalCenter.coordinates %}
+            {% set coordinates = institutionMedicalCenter.coordinates %}
+        {% else %}
+            {% set coordinates = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'country', 'zipCode']) %}
+        {% endif %}
+    
+        {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: coordinates }%}
     
         {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
         {% if institutionMedicalCenter.businessHours %}
