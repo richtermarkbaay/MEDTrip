@@ -30,15 +30,13 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('POST', '/medical-center/3/specializations/1/ajaxRemove');
-        $this->assertEquals(404, $client->getResponse()->getStatusCode());
-        
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('POST', '/medical-center/1/specializations/2/ajaxRemove');
         $this->assertEquals(401, $client->getResponse()->getStatusCode());
         
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('POST', 'medical-center/1/specializations/1/ajaxRemove');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ), '{"id":"1"}');
+        $this->assertRegExp('/id/', $client->getResponse()->getContent());
         
     }
     public function testAjaxAddSpecialization()
@@ -46,6 +44,8 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('GET', '/ns-institution/ajax/1/loadInstitutionMedicalCenterSpecializations');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ));
+        $this->assertRegExp('/html/', $client->getResponse()->getContent());
 
         $client = $this->getBrowserWithActualLoggedInUser();
         $crawler = $client->request('POST', '/ns-institution/ajax/1/loadInstitutionMedicalCenterSpecializations');
@@ -58,6 +58,8 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $extra['specializationId'] = '1';
         $crawler = $client->request('GET', 'ns-institution/1/ajax/load-specialization-treatments/1', $extra);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ));
+        $this->assertRegExp('/html/', $client->getResponse()->getContent());
     }
 
     /* NOTE: Before running the test, set CSRF token to true. */
@@ -72,6 +74,8 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $extra['institutionSpecialization'] = array (5 => array( 'treatments' => array ( 0 => '6')));
         $crawler = $client->request('POST', '/medical-center/1/ajaxSave/Specializations', $extra);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ));
+        $this->assertRegExp('/html/', $client->getResponse()->getContent());
     }
 
     public function testAjaxAddInstitutionSpecializationTreatments()
@@ -83,9 +87,12 @@ class SpecializationControllerTest extends InstitutionBundleWebTestCase
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
         
         $client = $this->getBrowserWithActualLoggedInUser();
-        $form['institutionSpecialization'] = array (1 => array( 'treatments' => array ( 0 => '1')));;
+        $form['institutionSpecialization'] = array (1 => array( 'treatments' => array ( 0 => '1')));
+        $form['deleteTreatments']= '1';
         $crawler = $client->request('POST', 'medical-center/1/specializations/1/ajaxEditInstitutionSpecialization', $form);
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->headers->contains( 'Content-Type','application/json' ), '{"specializations":{"1":{"treatments":["1"]}}}');
+        $this->assertRegExp('/specializations/', $client->getResponse()->getContent());
         
         //invalid specialization id
         $client = $this->getBrowserWithActualLoggedInUser();
