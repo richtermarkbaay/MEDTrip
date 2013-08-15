@@ -8,6 +8,12 @@
   margin-bottom: 20px;
   background-color: transparent;
 }
+#content-wrapper.homepage > .span8 {
+  margin-left: 0;
+}
+#content-wrapper.homepage > .span4 {
+  width:320px;
+}
 #content-wrapper .search-results-wrapper {
   margin: 20px 0 20px 20px;
 }
