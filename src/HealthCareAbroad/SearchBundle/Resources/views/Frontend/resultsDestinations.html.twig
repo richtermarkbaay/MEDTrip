@@ -27,16 +27,17 @@
 
             {# https://github.com/chromedia/healthcareabroad/issues/510 #}
             {% if institution.id not in _featuredInstitutionIds %}
+                {% set url = get_institution_frontend_url(institution) %}
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'statisticsDataObject': searchResultVo.institution,
                        'searchResultItem' : {
-                           url: get_institution_frontend_url(institution),
+                           url: url,
                            logo: render_institution_logo(institution, {attr: {alt: 'hospital logo', class: 'small'}}),
                            name: institution.name,
                            description: institution.description | striptags,
                            mainAddress: institution_address_to_string(institution, ['city', 'state', 'country']),
                            streetAddress: institution_address_to_string(institution, ['address1', 'zipCode']),
-                           links: get_institution_links(institution),
+                           links: get_institution_links(institution, url),
                            payingStatus: institution.payingClient
                        }
                     }

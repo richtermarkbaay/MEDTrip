@@ -101,7 +101,7 @@ class SearchTwigExtension extends \Twig_Extension
      * Rules are here: https://basecamp.com/1876919/projects/3113924-health-care-abroad/todos/55796212-add-interface-to
      *
      */
-    public function getCenterLinks(InstitutionMedicalCenter $center)
+    public function getCenterLinks(InstitutionMedicalCenter $center, $url)
     {
         $links = array();
         $socialMediaSites = SocialMediaSites::formatSites($center->getSocialMediaSites());
@@ -124,11 +124,11 @@ class SearchTwigExtension extends \Twig_Extension
                     $links['website'] = array('label' => 'Visit Website', 'value' => $website);
                 }
                 if ($number = $center->getContactNumber()) {
-                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $number);
+                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
                 }
             case PayingStatus::FREE_LISTING:
                 if ($email = $center->getContactEmail()) {
-                    $links['email'] = array('label' => 'Email Us', 'value' => $email);
+                    $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
                 }
         }
 
@@ -138,7 +138,7 @@ class SearchTwigExtension extends \Twig_Extension
     /**
      * See comment in previous function
      */
-    public function getInstitutionLinks(Institution $institution)
+    public function getInstitutionLinks(Institution $institution, $url)
     {
         $links = array();
         $socialMediaSites = SocialMediaSites::formatSites($institution->getSocialMediaSites());
@@ -159,11 +159,11 @@ class SearchTwigExtension extends \Twig_Extension
                     $links['website'] = array('label' => 'Visit Website', 'value' => $website);
                 }
                 if ($number = $institution->getContactNumber()) {
-                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $number);
+                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
                 }
             case 0:
                 if ($email = $institution->getContactEmail()) {
-                    $links['email'] = array('label' => 'Email Us', 'value' => $email);
+                    $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
                 }
         }
 

@@ -23,20 +23,20 @@
         {% for searchResult in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResult.institutionMedicalCenter is defined ? searchResult.institutionMedicalCenter : searchResult %}
-            {# do this to save query #}
+            {% set url = get_institution_medical_center_frontend_url(center) %}
 
             {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                 'statisticsDataObject': searchResult.institutionMedicalCenter,
                 'searchResultItem' : {
                     institutionUrl: get_institution_frontend_url(center.institution),
-                    url: get_institution_medical_center_frontend_url(center),
+                    url: url,
                     logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
                     name: center.name,
                     institutionName: center.institution.name,
                     description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
                     mainAddress: medical_center_complete_address_to_string(center, ['city', 'state', 'country']),
                     streetAddress: medical_center_complete_address_to_string(center, ['address', 'zipCode']),
-                    links: get_center_links(center),
+                    links: get_center_links(center, url),
                     payingStatus: center.payingClient
                 }
             } %}
@@ -51,7 +51,7 @@
     <aside class="aside-wrapper span4">
         <!-- Specialization/Treatment Descriptions Section -->
         {% include 'SearchBundle:Frontend/Widgets:sidebar.treatmentDescriptions.html.twig' %}
-    
+
         {{ render_search_results_featured_posts() }}
 
         {% if includedNarrowSearchWidgets %}
