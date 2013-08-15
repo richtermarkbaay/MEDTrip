@@ -148,6 +148,25 @@ class InstitutionMedicalCenterApiService
     }
     
     /**
+     * Build media gallery data of medical center
+     * 
+     * @param array $institutionMedicalCenter
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildMediaGallery(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplayGallery = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        if (!$canDisplayGallery && $context != InstitutionMedicalCenterApiService::CONTEXT_FULL_API) {
+            $institutionMedicalCenter['media'] = array();
+        }
+        
+        // build the source
+        
+        return $this;
+    }
+    
+    /**
      * 
      * @param array $institutionMedicalCenter
      * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService

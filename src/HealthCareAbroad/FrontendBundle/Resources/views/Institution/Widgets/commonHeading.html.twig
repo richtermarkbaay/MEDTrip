@@ -22,7 +22,7 @@
             {% if viewData.logoSource %}
                 <img src="{{ viewData.logoSource }}" class="hospital-logo" />
             {% else %}
-                <span class="hca-sprite hospital-default-logo"></span>
+                <span class="hca-sprite {{ viewData.defaultLogoClass }}"></span>
             {% endif %}
         </div>
         <div class="span5 pull-right btn-contact-list">

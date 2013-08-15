@@ -78,6 +78,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 ->buildLogoSource($this->institutionMedicalCenter, ImageSizes::MEDIUM)
                 // build cover photo src
                 ->buildFeaturedMediaSource($this->institutionMedicalCenter)
+                ->buildMediaGallery($this->institutionMedicalCenter)
                 ->buildContactDetails($this->institutionMedicalCenter)
                 ->buildExternalSites($this->institutionMedicalCenter) 
             ;
