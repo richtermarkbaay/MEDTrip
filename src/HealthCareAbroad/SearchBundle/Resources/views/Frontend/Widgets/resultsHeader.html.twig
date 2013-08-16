@@ -9,7 +9,7 @@
             We found <em>{{ count }}</em> {{ count > 1 ? 'clinics' : 'clinic' }} {{ preposition }} <em>{{ searchLabel }}</em>.
         {% endif %}
     {% else %}
-        {% if isArraySearchLabel is defined and isArraySearchLabel %}
+        {% if type == 'combination' %}
             We have found no clinics for <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
         {% else %}
             {% set preposition = (type == 'destination') ? 'in' : 'for' %}

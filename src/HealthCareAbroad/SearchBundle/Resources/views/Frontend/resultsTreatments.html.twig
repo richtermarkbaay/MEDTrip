@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="search-results-wrapper span8">
-        {% include 'SearchBundle:Frontend/Widgets:resultsHeader.html.twig' with {type: 'combination'} %}
+        {% include 'SearchBundle:Frontend/Widgets:resultsHeader.html.twig' with {type: 'treatment'} %}
 
         {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
         {% set _featuredClinicIds = get_featured_clinics_by_search_parameters(featuredClinicParams) %}
