@@ -71,7 +71,7 @@
 
         {% if searchResultItem.links is defined %}
             {% for key, link in searchResultItem.links %}
-                <a href="{{ link.value }}"
+                <a href="{{ link.value }}">
                     <span data-toggle="tooltip" title="{{ link.label }}" class="{{ linkClasses[key] }}"></span>
                 </a>
             {% endfor %}

@@ -1597,7 +1597,6 @@ form.home-search > button.btn:active {
   border: 1px solid #dddddd !important;
 }
 .featured-type-wrapper .featured-item .content div.description-box {
-  z-index: 2;
   float: left;
   width: 300px;
   margin-left: 15px;
@@ -2992,10 +2991,12 @@ ul.ui-autocomplete.ui-menu li a {
   word-wrap: break-word;
   white-space: normal;
 }
+
+ul.ui-autocomplete.ui-menu .ui-menu-item:hover, 
 ul.ui-autocomplete.ui-menu .ui-menu-item a.ui-state-focus {
   margin: 0;
-  background: #FE6500;
   color: #FFFFFF;
+  background: #FE6500 !important;
 }
 ul.ui-autocomplete.ui-menu li ul li {
   border: none;
