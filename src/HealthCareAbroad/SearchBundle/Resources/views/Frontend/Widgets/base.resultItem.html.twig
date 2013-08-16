@@ -16,11 +16,10 @@
     {% endif %}
 
     <div class="right-column-wrapper">
-        {% if searchResultItem.payingStatus is constant('HealthCareAbroad\\InstitutionBundle\\Entity\\PayingStatus::PHOTO_LISTING') %}
-
+        {% if searchResultItem.featuredMedia and searchResultItem.payingStatus is constant('HealthCareAbroad\\InstitutionBundle\\Entity\\PayingStatus::PHOTO_LISTING') %}
             <div class="pull-right listing-photo">
                 <div class="thumbnail-frame">
-                    <img class="img-polaroid" alt="" src="http://placeimg.com/135/100/tech">
+                    <img class="img-polaroid" alt="" src="{{ institution_media_src(searchResultItem.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE')) }}">
                 </div>
                 <a class="btn green pull-right hca_statistics_clickthroughs">
                     <span class="white-icon-search"></span> Learn More
