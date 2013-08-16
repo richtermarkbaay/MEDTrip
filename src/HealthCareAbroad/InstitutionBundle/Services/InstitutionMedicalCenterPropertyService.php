@@ -229,15 +229,15 @@ class InstitutionMedicalCenterPropertyService
         //TODO: avoid the multiple inserts or check if doctrine will already optimize the queries
         foreach ($properties as $property) {
             $variableName = 'property'.$property;
-            $$variableName = new InstitutionMedicalCenterProperty();
-            $$variableName->setInstitution($institution);
-            $$variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
-            $$variableName->setInstitutionPropertyType($propertyType);
+            $variableName = new InstitutionMedicalCenterProperty();
+            $variableName->setInstitution($institution);
+            $variableName->setInstitutionMedicalCenter($institutionMedicalCenter);
+            $variableName->setInstitutionPropertyType($propertyType);
             if (array_key_exists($property, $ids)) { //check if id exist already
-                $$variableName->setExtraValue($ids[$property]); // set ExtraValue
+                $variableName->setExtraValue($ids[$property]); // set ExtraValue
             }
-            $$variableName->setValue($property);
-            $em->persist($$variableName);
+            $variableName->setValue($property);
+            $em->persist($variableName);
         }
         $em->flush();
         

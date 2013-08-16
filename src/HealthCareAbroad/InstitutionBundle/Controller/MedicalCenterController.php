@@ -213,16 +213,16 @@ class MedicalCenterController extends InstitutionAwareController
                             $hour->setInstitutionMedicalCenter($this->institutionMedicalCenter);
                         }
                         $institutionMedicalCenterService->save($this->institutionMedicalCenter);
-                    } else if (isset($form['services'])) {
-                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
-                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(),InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
+
+                    } elseif (isset($form['services'])) {
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(), InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
                         $responseContent = array('services' => $form['services']);
 
-                    } else if ($awardType = $request->get('awardTypeKey')) {
+                    } elseif ($awardType = $request->get('awardTypeKey')) {
 
                         $awardsData = isset($form['awards']) ? $form['awards']->getData() : array();
-                        $propertyService->removeInstitutionMedicalCenterPropertiesByPropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
-                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $awardsData,InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
+
+                        $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $awardsData, InstitutionPropertyType::TYPE_GLOBAL_AWARD, $this->institutionMedicalCenter);
                         $globalAwards = $propertyService->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
 
                         $responseContent['awardsType'] = $awardType;
