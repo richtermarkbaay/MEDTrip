@@ -122,6 +122,10 @@ class AdvertisementController extends Controller
         $advertisementTypeId = $request->get('advertisementTypeId', 1);
         $advertisement->setInstitution($this->institution);
 
+        $defaultExpiryDate = new \DateTime();
+        $defaultExpiryDate->modify('+30 days');
+        $advertisement->setDateExpiry($defaultExpiryDate);
+
         if($advertisementTypeId) {
             $advertisementType = $this->getDoctrine()->getRepository('AdvertisementBundle:AdvertisementType')->find($advertisementTypeId);
             $advertisement->setAdvertisementType($advertisementType);

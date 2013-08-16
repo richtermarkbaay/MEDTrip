@@ -214,13 +214,11 @@
     $(function(){
 
         {% if isEditMode is defined and isEditMode %}
-            $('#advertisement_institution').mousedown(function(){
-                alert('Choosing different Institution is not allowed in edit mode.')
-                return false;
+            $('#advertisement_institution, #advertisement_advertisementType').mousedown(function(e){
+                e.preventDefault();
             }).attr('readonly', true);
         {% endif %}
-    
-    	
+
     	{% if step == 2 %}  
             $('#advertisement_institution, #advertisement_advertisementType').change(function(){
                 var institutionId = $('#advertisement_institution').val();
