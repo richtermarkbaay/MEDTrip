@@ -28,17 +28,6 @@ p, span {
 em, strong {
   color: #fe6500;
 }
-span.logo {
-  display: inline-block;
-  margin-top: 75px;
-  text-indent: -100000px;
-  background: url("/images/frontend/sprite-logo.png") no-repeat scroll -90px -0px transparent;
-  font-size: 25px;
-  line-height: 1em;
-  height: 42px;
-  width: 373px;
-  margin-left:110px;
-}
 h1.logo {
   display: inline-block;
   margin-top: 5px;
@@ -49,18 +38,6 @@ h1.logo {
   height: 31px;
   width: 275px;
 }
-h2.logo {
-  display: inline-block;
-  margin-top: 35px;
-  text-indent: -100000px;
-  background: url("/images/frontend/sprite-logo.png") no-repeat scroll 0px 0px transparent;
-  font-size: 25px;
-  line-height: 1em;
-  height: 112px;
-  width: 88px;
-  margin-left:10px;
-}
-
 a {
   text-decoration: none;
 }
@@ -1097,13 +1074,15 @@ ul.small-thumbnail-list li {
   background-image:url('/images/frontend/homepage-bg.jpg');
 }
 #top-content-wrapper h1 {
-  padding: 0;
-  text-align: center;
-  font-weight: 400;
-  font-family: "PT Sans", Arial, Sans-serif;
-  text-transform:uppercase;
-  letter-spacing:-2px;
-  line-height:1em;
+  display: inline-block;
+  margin-top: 35px;
+  text-indent: -100000px;
+  background: url("/images/frontend/logo.png") no-repeat scroll 0px 0px transparent;
+  font-size: 25px;
+  line-height: 1em;
+  height: 112px;
+  width: 459px;
+  margin-left:15px;
 }
 #top-content-wrapper h2 {
   font-weight: 400;
