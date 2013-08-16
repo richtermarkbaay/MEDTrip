@@ -50,5 +50,9 @@
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/search/js/search.js') }}"></script>
+<script type="text/javascript">
+    $(window).ready(function() {
+        $(".icon-globe, .icon-envelope, .icon-phone, .icon-facebook, .icon-twitter, .icon-google-plus").tooltip();
+    });
+</script>
 {% endblock%}

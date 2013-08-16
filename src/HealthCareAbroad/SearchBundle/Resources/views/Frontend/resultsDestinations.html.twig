@@ -46,3 +46,10 @@
     </aside>
 {% endblock %}
 
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(window).ready(function() {
+        $(".icon-globe, .icon-envelope, .icon-phone, .icon-facebook, .icon-twitter, .icon-google-plus").tooltip();
+    });
+</script>
+{% endblock%}
