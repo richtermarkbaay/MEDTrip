@@ -76,13 +76,14 @@ var InstitutionSpecialization = {
     
     submitAddTreatmentsForm: function(_buttonElement) {
         _form = $(_buttonElement.attr('href'));
-        parentElem = _buttonElement.parents('.specializations-profile-listing:first').addClass('disabled process');
-        _divToggle = parentElem.find('.hca-hidden-content:first').scrollTop(0);
 
         if(!_form.find('.specialization-wrapper input:checked').length) {
         	_buttonElement.prev().prev().click();
         	return;
         }
+
+        parentElem = _buttonElement.parents('.specializations-profile-listing:first').addClass('disabled process');
+        _divToggle = parentElem.find('.hca-hidden-content:first').scrollTop(0);
         
         deleteTreatments = [];
         $.each(_form.find('input[type=checkbox].treatments.old:not(:checked)'), function(){
