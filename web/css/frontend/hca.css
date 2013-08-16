@@ -1055,25 +1055,23 @@ ul.small-thumbnail-list li {
   margin: 4px;
 }
 #main-top-wrapper {
-  /*background: #d4e7ee;
+  background: #c8ebf9;
   background: -moz-linear-gradient(top, #d4e7ee 0%, #bcd9e4 100%);
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d4e7ee), color-stop(100%, #bcd9e4));
   background: -webkit-linear-gradient(top, #d4e7ee 0%, #bcd9e4 100%);
   background: -o-linear-gradient(top, #d4e7ee 0%, #bcd9e4 100%);
   background: -ms-linear-gradient(top, #d4e7ee 0%, #bcd9e4 100%);
   background: linear-gradient(to bottom, #d4e7ee 0%, #bcd9e4 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$from', endColorstr='$to',GradientType=0 );*/
-  background-image:url('/images/frontend/whole-bg.jpg');
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='$from', endColorstr='$to',GradientType=0 );
 }
 #top-content-wrapper {
   margin-bottom: 15px;
   padding: 0 0 10px 0;
   color: #468199;
   margin-top:-75px; 
-  /*background-image:url('/images/frontend/homepage-bg.png');*/
   background-position:center;
   background-repeat:no-repeat;
-  background-image:url('/images/frontend/homepage-bg.jpg');
+  background-image:url('/images/frontend/homepage-bg.gif');
 }
 #top-content-wrapper h1 {
   display: inline-block;
