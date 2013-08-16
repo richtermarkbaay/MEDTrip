@@ -1,24 +1,18 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{#{% block callout %}
-    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
-{% endblock %}#}
-
 {% block content %}
     <div class="search-results-wrapper span8">
-        <h2 class="heading">
-            {% if searchResults.getTotalResults %} We have found the following matches: {% else %} No results found. {% endif %}
-        </h2>
         <div class="content-profile-widget-wrapper">
             <h3 class="heading">
                 {% if searchResults.getTotalResults %} We have found the following matches: {% else %} No results found. {% endif %}
             </h3>
 
-            {% if searchResults.isPaginable %}
+            {#% if searchResults.isPaginable %#}
+                {#
                 <h3 class="heading">Refine your results.</h3>
-                {# Refine results form #}
-                {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
-            {% endif %}
+                #}
+                {#% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %#}
+            {#% endif %#}
         </div>
 
         {% if relatedTreatments %}
@@ -79,10 +73,6 @@
     </div><!--End of main_content-->
     <aside class="aside-wrapper span4">
         {{ render_search_results_featured_posts() }}
-
-        {#-- we have not yet integrated broadsearch for sidebar --#}
-        {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } #}
-
         {{ render_search_results_image_ad() }}
     </aside>
 <!--End of content-->
