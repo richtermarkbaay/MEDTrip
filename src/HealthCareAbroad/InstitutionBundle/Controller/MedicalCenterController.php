@@ -213,7 +213,7 @@ class MedicalCenterController extends InstitutionAwareController
                             $hour->setInstitutionMedicalCenter($this->institutionMedicalCenter);
                         }
                         $institutionMedicalCenterService->save($this->institutionMedicalCenter);
-
+                        $responseContent = array('businessHours' => $formVariables['businessHours']);
                     } elseif (isset($form['services'])) {
                         $propertyService->addPropertyForInstitutionMedicalCenterByType($this->institution, $form['services']->getData(), InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE, $this->institutionMedicalCenter);
                         $responseContent = array('services' => $form['services']);
@@ -231,7 +231,7 @@ class MedicalCenterController extends InstitutionAwareController
                             'type' => $awardType.'s',
                             'toggleBtnId' => 'clinic-edit-'.$awardType.'s-btn'
                         ));
-                    } else {
+                    } else {    
                         $institutionMedicalCenterService->save($this->institutionMedicalCenter);
 
                         if ($this->isSingleCenter) {
