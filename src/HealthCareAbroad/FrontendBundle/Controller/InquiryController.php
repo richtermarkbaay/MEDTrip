@@ -78,6 +78,7 @@ class InquiryController extends Controller
     {
         $institutionInquiry = new InstitutionInquiry();
         $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
+
         $form->bindRequest($request);
         if ($form->isValid()) {
             if($request->get('imcId')) {
@@ -96,8 +97,7 @@ class InquiryController extends Controller
             $em->persist($institutionInquiry);
             $em->flush();
 
-            // TODO: Update this when we have formulated a strategy for our event system
-            // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+            //Listener for NOTIFICATIONS_INQUIRIES events is configured to rethrow any exceptions encountered.
             try {
                 $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
             } catch (\Exception $e) {
@@ -105,10 +105,28 @@ class InquiryController extends Controller
                 //ignored for now
             }
 
-            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
+            if ($form->get('newsletterSubscription')->getData()) {
+                //Copied from FrontendBundle:DefaultController:subscribeNewsletterAction
+                //TODO: move to service class
+                $mailChimp = $this->get('rezzza.mail_chimp.client');
+                //Test service
+                $subscriptionMessage = $mailChimp->ping();
+
+//                 $email = $institutionInquiry->getInquirerEmail();
+
+//                 //TODO: externalize
+//                 $listId = '6fb06f3765';
+//                 $mailChimp->listSubscribe($listId, $email);
+
+//                 $subscriptionMessage = $mailChimp->errorCode ?
+//                     'An error occurred while processing your subscription.' :
+//                     'Thank you! Please check your email to confirm your subscription.';
+            }
+
+            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId(), 'subscriptionMessage' => $subscriptionMessage)), 200, array('content-type' => 'application/json'));
         }
         else {
-            
+
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
             foreach ($form_errors as $_err) {
