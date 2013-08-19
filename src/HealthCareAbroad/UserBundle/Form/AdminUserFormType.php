@@ -31,7 +31,7 @@ class AdminUserFormType extends AbstractType
         $builder->add('lastName','text', array('constraints' => new NotBlank()));
         $builder->add('adminUserType', 'userType_list', array('label' =>'User Type',));
         $builder->add('email','email', array('constraints' => array(
-                new NotBlank(), new Email(), new ValidAccountEmail(array('field' => 'email', 'message' => 'Email already exists.')))
+                new NotBlank(), new ValidAccountEmail(array('field' => 'email', 'currentAccountEmail' => $options['data']->getEmail())))
             ));
         $builder->add( 'password', 'password', array(
             'label' => 'Password',
