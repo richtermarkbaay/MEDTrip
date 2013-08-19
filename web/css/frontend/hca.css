@@ -2107,17 +2107,24 @@ table.schedule-wrapper tr > td.open24hrs {
 }
 
 .pagination {
-  margin: 10px 0 0;
+  margin: 40px 0 0;
 }
 .pagination ul {
   box-shadow: none;
 }
 .pagination ul li a {
+  font-family: "Helvetica Nueue", Arial, sans-serif;
   border: none;
   color: #555;
 }
 .pagination ul li a:hover {
   color: #000;
+}
+.pagination ul li.active a {
+  font-weight: bold;
+  color: #555;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.5);
+  background-color: #ccc;
 }
 
 .site-map-section h5 {

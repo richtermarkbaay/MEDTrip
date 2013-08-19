@@ -6,7 +6,7 @@
 
     {% for page in pager.getPages %}
         {% if page == pager.getPage %}
-        <li><a href="">{{ page }}</a></li>
+        <li class="active"><a href="">{{ page }}</a></li>
         {% else %}
         <li><a href="{{ paginate_path(route, page, parameters) }}">{{ page }}</a></li>
         {% endif %}
