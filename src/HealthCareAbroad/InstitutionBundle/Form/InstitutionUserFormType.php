@@ -47,7 +47,7 @@ class InstitutionUserFormType extends AbstractType
         }
         
         $builder
-        ->add('email', 'email', array( 'error_bubbling' => false, 'constraints' => array(new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))))
+        ->add('email', 'email', array( 'error_bubbling' => false, 'constraints' => array(new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email')), new NotBlank(array('message' => 'Please provide your email address. ')))))
         ->add('password', 'password', array('label' => 'Password','error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')))))
         ->add('confirm_password', 'password', array('label' => 'Re-type password','virtual' => true,'error_bubbling' => false,'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))))
         
