@@ -6,20 +6,15 @@
     {% if institution.coordinates %}
         {% set coordinates = institution.coordinates %}
     {% else %}
-        {% set coordinates = institution_address_to_string(institution, ['address1', 'city', 'country', 'zipCode']) %}
+        {% set coordinates = institution_address_to_string(institution, ['city', 'country', 'zipCode']) %}
     {% endif %}
 
-
     {% if isSingleCenterInstitution %}
-
         {% include 'FrontendBundle:Institution:singleCenterProfile.html.twig' 
             with { institutionMedicalCenter: institutionMedicalCenter } 
         %}
-        
     {% else %}
-    
         {% include 'FrontendBundle:Institution:multipleCenterProfile.html.twig' %}        
-
     {% endif %}
 
 {% endblock %}

@@ -3,6 +3,7 @@
  * Functional test for InstitutionUserController
  * 
  * @author Allejo Chris G. Velarde
+ * @author Chaztine Blance
  * 
  */
 
@@ -15,169 +16,241 @@ use Symfony\Component\HttpFoundation\Request;
 class InstitutionUserControllerTest extends InstitutionBundleWebTestCase
 {
     
-    public function testResetPasswordAction()
-    {
-        $resetUrl = '/institution/reset.html';
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', $resetUrl);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    
-        $formValues =  array( 'email' => 'test.user@chromedia.com');
-        $crawler = $client->request('POST', $resetUrl, $formValues);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    
-    
-        ///test validate token
-        $validateTokenUrl = '/institution/set-new-password/25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1';
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', $validateTokenUrl);
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    
-        $formValues =  array( 'institutionUserResetPasswordType' => array(
-                        'new_password' => 'sad',
-                        'confirm_password' => 'sad')
-        );
-        $crawler = $client->request('POST', $validateTokenUrl, $formValues);
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-    
-    }
-    
     /**
      * Functional test for login and logout flow
      */
-    public function testLoginFlow()
-    {
-        $client = $this->getBrowserWithActualLoggedInUser();
-        $crawler = $client->request('GET', '/institution/login');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/institution/login');
-        
-        $form = $crawler->selectButton('Login')->form();
-        $crawler = $client->submit(
-            $form,
-                array( '_username' => 'chrunchy@test.com', // case sensitive for the input e.g. name="_username"
-                       '_password' => '1234567' // case sensitive for the input e.g. name="_password"
-                )
-        );
-        $crawler = $client->followRedirect();
-        $this->assertTrue($crawler->filter('h2:contains("Client Admin Log-in")')->count() > 0, 'Failed to log in with a good username and password.');
-        
-    }
-    
-    
-//     public function testInviteFlow()
+//     public function testInvalidLoginFlow()
 //     {
 //         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('GET', '/institution/invite-staff');
-        
+//         $crawler = $client->request('GET', '/institution/login');
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
-//         $formValues = array(
-//             'institutionUserInvitation[firstName]' => 'AAA',
-//             'institutionUserInvitation[middleName]' => 'BBB',
-//             'institutionUserInvitation[lastName]' => 'CCC',
-//             'institutionUserInvitation[firstName]' => 'AAA',
-//             'institutionUserInvitation[email]' => 'aaatest@chromedia.com',
-//             'institutionUserInvitation[message]' => 'this is the message',
-//         );
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $formValues);
+//         $client = static::createClient();
+//         $crawler = $client->request('GET', '/institution/login');
         
+//         $invalidFormValues = array( '_username' => 'invalid@email.com', // case sensitive for the input e.g. name="_username"
+//                    '_password' => '09322' // case sensitive for the input e.g. name="_password"
+//             );
+//         $form = $crawler->selectButton('Login')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertTrue($client->getResponse()->isRedirect(), 'The email address or password you entered is incorrect.');
+        
+//     }
+    
+//     public function testEditAccountPassword()
+//     {
+//         $editAccountPassUrl = '/institution/manage-account-password.html';
+        
+//         //---- test that this should not be accessed by anonymous user
+//         $client = $this->requestUrlWithNoLoggedInUser($editAccountPassUrl);
 //         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-//         $this->assertEquals('/institution/staff', $client->getResponse()->headers->get('location'));
-        
-//         // test for missing fields flow
-//         $crawler = $client->request('GET', '/institution/invite-staff');
-//         $formValues = array(
-//             'institutionUserInvitation[firstName]' => 'AAA',
-//             'institutionUserInvitation[middleName]' => 'BBB',
-//             'institutionUserInvitation[lastName]' => 'CCC',
-//             'institutionUserInvitation[firstName]' => 'AAA',
-//             'institutionUserInvitation[email]' => '',
-//             'institutionUserInvitation[message]' => 'this is the message',
-//         );
-//         $form = $crawler->selectButton('submit')->form();
-//         $crawler = $client->submit($form, $formValues);
-        
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count(), 'Expecting the validation message "This value should not be blank."');
-//     }
-    
-    
-//     public function testAcceptInvitation()
-//     {
-//         $client = static::createClient();
-//         $uri = '/accounts/accept-invitation/94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7';
-//         $crawler = $client->request('GET', $uri);
+//         $redirectLocation = $client->getResponse()->headers->get('location');
+//         $this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
 
-//         $this->assertEquals(302, $client->getResponse()->getStatusCode()); // test that it has been redirected to homepage
-//         $this->assertEquals('/institution', $client->getResponse()->headers->get('location'));
-//     }
-    
-//     /**
-//      * @depends testAcceptInvitation
-//      */
-//     public function testAcceptInvalidInvitation()
-//     {
-//         $client = static::createClient();
-//         $uri = '/accounts/accept-invitation/94f348d1f65c54cae854b22e5fcc949b408da4682efd9567a66fdbe8323595b7';
-//         $crawler = $client->request('GET', $uri);
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $crawler = $client->request('GET', $editAccountPassUrl);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Manage Account Password")')->count());
+
+//         $formValues =  array( 'institutionUserChangePasswordType' => array(
+//                             'current_password' => $this->userPassword,
+//                             'new_password' => $this->userPassword .'1',
+//                             'confirm_password' => $this->userPassword .'1',
+//                             )
+//                     );
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $formValues);
+//         \HCA_DatabaseManager::getInstance()->restoreGlobalAccountsDatabaseState();
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         
-//         // test that it should be a 404 error code since this token has already been accepted
-//         $this->assertEquals(404, $client->getResponse()->getStatusCode());
+//         //test empty fields
+//         $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
+//                         'current_password' => null,
+//                         'new_password' => null,
+//                         'confirm_password' => null,
+//             )
+//         );
+        
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Incorrect password.")')->count());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is required.")')->count());
+        
+//         //test incorrect current password
+//         $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
+//                         'current_password' => '123456',
+//                         'new_password' => '1234567',
+//                         'confirm_password' => '7654321')
+//         );
+        
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+        
+//         //test short entered value
+//         $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
+//                         'current_password' => '123',
+//                         'new_password' => '123',
+//                         'confirm_password' => '123')
+//         );
+        
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Incorrect password.")')->count());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Password is too short. Please enter at least 6 characters.")')->count());
+
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $session = $client->getContainer()->get('session');
+//         $session->set('accountId', 234);
+//         $crawler = $client->request('GET', $editAccountPassUrl);
+//         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 //     }
     
 //     public function testEditAccount()
 //     {
-//         $editAccountUrl = '/institution/edit-account';
-//         //---- test that this should not be accessed by anonymous user
-//         $client = $this->requestUrlWithNoLoggedInUser($editAccountUrl);
-//         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-//         $redirectLocation = $client->getResponse()->headers->get('location');
-//         $this->assertTrue($redirectLocation=='/institution/location' || $redirectLocation == 'http://localhost/institution/login');
+//         $editAccountUrl = '/institution/manage-account-profile.html';
         
 //         $client = $this->getBrowserWithActualLoggedInUser();
 //         $crawler = $client->request('GET', $editAccountUrl);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Login Information")')->count()); 
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Manage Account Profile")')->count());
         
-//         $client = $this->getBrowserWithActualLoggedInUser();
-        
-//         $formValues =  array( 'institutionUserChangePasswordType' => array(
-//                 'current_password' => $this->userPassword,
-//                 'new_password' => $this->userPassword .'1',
-//                 'confirm_password' => $this->userPassword .'1',
-//                 )
+//         $formValues = array(
+//             'institutionUserSignUp[firstName]' => 'tset resr',
+//             'institutionUserSignUp[contactDetails]' => array ( '0' =>  array ( 'country' => '1', 'area_code' => '343','number' => '434','ext' => '3' ),
+//                                                 '1' =>  array ( 'country' => '1', 'area_code' => '343','number' => '434')),
+//             'institutionUserSignUp[lastName]' => 'rsersr',
+//             'institutionUserSignUp[jobTitle]' => 'tester'
 //         );
-        
-//         $invalidFormValues =  array( 'institutionUserChangePasswordType' => array(
-//                 'current_password' => null,
-//                 'new_password' => null,
-//                 'confirm_password' => null,
-//             )
-//         );
-        
-//         $crawler = $client->request('POST', $editAccountUrl, $formValues);
-//         \HCA_DatabaseManager::getInstance()->restoreGlobalAccountsDatabaseState();
-//         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Success! Updated Password');
-        
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $crawler = $client->request('POST', $editAccountUrl, $invalidFormValues);
-//         $this->assertTrue($crawler->filter('Failed')->count() == 0, 'Failed to update password ');
-        
-//         $client = $this->getBrowserWithActualLoggedInUser();
-//         $dataValues = array ('userAccountDetail' => array(
-//                 'firstName' => 'Edited firstName',
-//                 'middleName' => 'Edited middleName',
-//                 'lastName' => 'Edited lastName',
-//             )
-//         );
-        
-//         $crawler = $client->request('POST', $editAccountUrl, $dataValues);
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $formValues);
 //         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Success! Updated Account');
         
+        
+//         $invalidFormValues = array(
+//             'institutionUserSignUp[firstName]' => null,
+//             'institutionUserSignUp[lastName]' => null,
+//         );
+
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your first name. ")')->count());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide your last name.")')->count());
+        
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $session = $client->getContainer()->get('session');
+//         $session->set('accountId', 234);
+//         $crawler = $client->request('GET', $editAccountUrl);
+//         $this->assertEquals(403, $client->getResponse()->getStatusCode());
+//     }
+
+//     public function testChangeEmailAddress()
+//     {
+//         $uri = '/institution/manage-account-email.html';
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Manage Account Email")')->count());
+        
+//         $formValues = array(
+//             'institutionUserChangeEmail[new_email]' => 'test@new.mail.com',
+//             'institutionUserChangeEmail[confirm_email]' => 'test@new.mail.com',
+//         );
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $formValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        
+//         //test invalid email
+//         $invalidFormValues = array(
+//             'institutionUserChangeEmail[new_email]' => 'test',
+//             'institutionUserChangeEmail[confirm_email]' => 'test@new.com',
+//         );
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Please provide a valid email")')->count());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address do not match")')->count());
+        
+//         // test existing email
+//         $invalidFormValues = array( 'institutionUserChangeEmail[new_email]' => 'test.adminuser@chromedia.com');
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address already exists.")')->count());
+        
+//         // test empty email
+//         $invalidFormValues = array('institutionUserChangeEmail[new_email]' => null );
+//         $form = $crawler->selectButton('Save Changes')->form();
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Email address is required.")')->count());
+        
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $session = $client->getContainer()->get('session');
+//         $session->set('accountId', 234);
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(403, $client->getResponse()->getStatusCode());
 //     }
     
+//     public function testResetPassword()
+//     {
+//         $uri = '/institution/reset.html';
+//         $client = $this->getBrowserWithActualLoggedInUser();
+//         $crawler = $client->request('GET', $uri);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode());
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("Reset Password ")')->count());
+        
+//         $formValues = array('email' => 'test.adminuser@chromedia.com');
+//         $form = $crawler->selectButton('Reset Password')->form();
+//         $crawler = $client->submit($form, $formValues);
+//         $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'Success! Updated Account');
+//         $crawler = $client->followRedirect();
+        
+//         $invalidFormValues = array('email' => 'invalid@email.com');
+//         $crawler = $client->submit($form, $invalidFormValues);
+//         $this->assertEquals(200, $client->getResponse()->getStatusCode(), 'Invalid Email');
+//         $this->assertGreaterThan(0, $crawler->filter('html:contains("The email address you entered does not exist. Please check and try again.")')->count());
+//     }
     
+    public function testChangePassword()
+    {
+        $uri = '/institution/set-new-password';
+        
+        $client = $this->getBrowserWithActualLoggedInUserForSingleType();
+        $crawler = $client->request('GET', $uri.'/a2846338db37bb3cca03211ceb8910822a5bb7862c02efb211dce7859b426036'); //no expired
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri.'/25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f1');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Create New Password")')->count());
+        
+        $invalidFormValues =  array( 'institutionUserResetPasswordType' => array(
+                        'new_password' => null,
+                        'confirm_password' => '7654321')
+        );
+        $form = $crawler->selectButton('Reset Password')->form();
+        $crawler = $client->submit($form, $invalidFormValues);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("Passwords do not match")')->count());
+        $this->assertGreaterThan(0, $crawler->filter('html:contains("This value should not be blank.")')->count());
+        
+        $formValues = array(
+            'institutionUserResetPasswordType[new_password]' => '12345678',
+            'institutionUserResetPasswordType[confirm_password]' => '12345678',
+        );
+        $form = $crawler->selectButton('Reset Password')->form();
+        $crawler = $client->submit($form, $formValues);
+        $this->assertEquals(302, $client->getResponse()->getStatusCode(), 'Success! Updated Account');
+        
+        $client = $this->getBrowserWithActualLoggedInUser();
+        $crawler = $client->request('GET', $uri.'/25883977e3635cf8cc47bfeb8d822e4aeff213fb3f34d6b427278542a7db32f6'); //invalid account
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        
+    }
 }

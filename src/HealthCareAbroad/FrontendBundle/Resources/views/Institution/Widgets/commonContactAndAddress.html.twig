@@ -1,0 +1,50 @@
+{# shared between institution and institution medical center profile #}
+
+<div class="profile-widget-wrapper contact">
+    <h5>Contact Information</h5>
+    <div class="row-fluid">
+        <div class="span5">
+            <div class="media">
+                <i class="icon-map-marker icon-2x pull-left orange"></i>
+                <div class="media-body">
+                    {{ streetAddress }}, {{ mainAddress }}
+                </div>
+            </div>
+        </div>
+        <div class="span7 btn-contact-list">
+            <ul class="unstyled inline-list">
+                {% if contactNumber %}
+                <li>
+                     <a href="#" id="example1" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
+                </li>
+                {% endif %}
+                <li>
+                    <a role="button" href="#form_feedback" class="btn orange"><i class="icon-envelope-alt"></i>  Email Us</a>
+                </li>
+                {% if website %}
+                <li>
+                    <a href="http://{{ website }}" class="btn orange" id="visit_website"><i class="icon-globe"></i> Visit Website</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="unstyled inline-list">
+
+                 {% if social.facebook.value %}
+                    <li>
+                        <a class="btn orange" href="{{ social.facebook.value }}">Visit <i class="icon-facebook"></i></a>
+                    </li>
+                {% endif %}
+                {% if social.twitter.value %}
+                    <li>
+                        <a class="btn orange" href="{{ social.twitter.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
+                    </li>
+                {% endif %}
+                {% if social.googleplus.value %}
+                    <li>
+                        <a class="btn orange" href="{{ social.googleplus.value }}" role="button" >Visit <i class="icon-google-plus"></i></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</div>

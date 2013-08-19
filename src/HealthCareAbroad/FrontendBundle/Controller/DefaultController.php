@@ -38,7 +38,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends ResponseHeadersController
 {
-    private $resultsPerPage = 15;
+    private $resultsPerPage = 20;
 
     public function indexAction(Request $request)
     {
@@ -208,18 +208,12 @@ class DefaultController extends ResponseHeadersController
             'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $country->getName()),
             'country' => $country,
             'specialization' => $specialization,
-
-            //'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'city'),
-            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'destinations'),
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
             'featuredClinicParams' => array('countryId' => $country->getId(),'specializationId' => $specialization->getId())
         ));
 
-        $response->headers->setCookie($this->buildCookie(array(
-                        'countryId' => $country->getId(),
-                        'specializationId' => $specialization->getId()
-        )));
-
+        $response->headers->setCookie($this->buildCookie(array('countryId' => $country->getId(), 'specializationId' => $specialization->getId())));
 
         return $this->setResponseHeaders($response);
     }
@@ -254,7 +248,6 @@ class DefaultController extends ResponseHeadersController
             'searchLabel' => array('treatment' => $subSpecialization->getName(), 'destination' => $country->getName()),
             'country' => $country,
             'subSpecialization' => $subSpecialization,
-            //'includedNarrowSearchWidgets' => array('treatment', 'city'),
             'includedNarrowSearchWidgets' => array('treatment', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $subSpecialization->getSpecialization()->getId()),
             'featuredClinicParams' => array('countryId' => $country->getId(),'subSpecializationId' => $subSpecialization->getId())
@@ -301,7 +294,6 @@ class DefaultController extends ResponseHeadersController
             'country' => $country,
             'specialization' => $treatment->getSpecialization(),
             'treatment' => $treatment,
-            //'includedNarrowSearchWidgets' => array('city'),
             'includedNarrowSearchWidgets' => array('destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $treatment->getSpecialization()->getId()),
             'featuredClinicParams' => array('countryId' => $country->getId(), 'treatmentId' => $treatment->getId())
@@ -344,7 +336,7 @@ class DefaultController extends ResponseHeadersController
                         'searchLabel' => array('treatment' => $specialization->getName(), 'destination' => $city->getName() . ', ' . $city->getCountry()->getName()),
                         'specialization' => $specialization,
                         'city' => $city,
-                        'includedNarrowSearchWidgets' => array('sub-specialization', 'treatment'),
+                        'includedNarrowSearchWidgets' => array('sub-specialization'),
                         'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId(), SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
                         'featuredClinicParams' => array('cityId' => $city->getId(),'specializationId' => $specialization->getId())
         ));

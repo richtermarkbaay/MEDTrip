@@ -1,0 +1,12 @@
+{#---- customization for form_row ----#}
+{% block form_row %}
+{% spaceless %}
+<div class="control-group">
+    <label for="{{ form.vars.id }}">{{ label }}</label>
+    {{ form_widget(form) }}
+    {% if help is defined %}
+    <br /><small>{{ help }}</small>
+    {% endif %}
+</div>
+{% endspaceless %}
+{% endblock form_row %}

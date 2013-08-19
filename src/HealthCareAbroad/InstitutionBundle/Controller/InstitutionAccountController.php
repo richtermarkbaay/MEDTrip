@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionMedicalCenterDoctorFormType;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -93,11 +95,6 @@ class InstitutionAccountController extends InstitutionAwareController
         }
     }
 
-    public function ajaxAddInstitutionUserAction(Request $request)
-    {
-        
-    }
-    
     /**
      * Action page for Institution Profile Page
      *
@@ -107,13 +104,10 @@ class InstitutionAccountController extends InstitutionAwareController
     {
         $medicalProviderGroup = $this->getDoctrine()->getRepository('InstitutionBundle:MedicalProviderGroup')->getActiveMedicalGroups();
         $medicalProviderGroupArr = array();
-        
         foreach ($medicalProviderGroup as $e) {
             $medicalProviderGroupArr[] = array('value' => $e->getName(), 'id' => $e->getId());
         }
-
         $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE)); 
-
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
         $currentGlobalAwards = $this->get('services.institution_property')->getGlobalAwardPropertiesByInstitution($this->institution);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
@@ -164,17 +158,13 @@ class InstitutionAccountController extends InstitutionAwareController
     public function ajaxUpdateProfileByFieldAction(Request $request)
     {
         if ($request->isMethod('POST')) {
-            try {
                 $this->get('services.contact_detail')->initializeContactDetails($this->institution, array(ContactDetailTypes::PHONE));
                 $formVariables = $request->get(InstitutionProfileFormType::NAME);
                 unset($formVariables['_token']);
 
                 $removedFields = \array_diff(InstitutionProfileFormType::getFieldNames(), array_keys($formVariables));
-
                 $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false, InstitutionProfileFormType::OPTION_REMOVED_FIELDS => $removedFields));
-
                 $formRequestData = $request->get($form->getName());
-
                 // we always expect 1 medical provider group. if it is empty remove it from the array
                 if (isset($formRequestData['medicalProviderGroups']) && !empty($formRequestData['medicalProviderGroups']) ) {
                     $providerGroup = trim($formRequestData['medicalProviderGroups'][0]);  
@@ -190,7 +180,6 @@ class InstitutionAccountController extends InstitutionAwareController
                 if ($form->isValid()) {
                     $propertyService = $this->get('services.institution_property');
                     $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
-
                     if(isset($form['services'])) {
                         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_ANCILLIARY_SERVICE);
                         $propertyService->removeInstitutionPropertiesByPropertyType($this->institution, $propertyType);
@@ -241,13 +230,8 @@ class InstitutionAccountController extends InstitutionAwareController
                             $errors[] = array('field' => $field->getName(), 'error' => $eachErrors[0]->getMessageTemplate());
                         }
                     }
-
                     $response = new Response(\json_encode(array('errors' => $errors)), 400, array('content-type' => 'application/json'));
                 }
-            }
-            catch (\Exception $e) {
-                return new Response($e->getMessage(),500);
-            }
         }
 
         return $response;
@@ -269,65 +253,6 @@ class InstitutionAccountController extends InstitutionAwareController
 
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
         }
-    }
-
-    /**
-     *
-     * @param unknown_type $institutionId
-     */
-    public function addGlobalAwardsAction()
-    {
-        $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institution);
-
-        if ($this->request->isMethod('POST')) {
-            $form->bind($this->request);
-
-            if ($form->isValid()) {
-
-                $this->institution = $this->get('services.institution')
-                ->saveAsDraft($form->getData());
-
-                $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
-
-                return $this->redirect($this->generateUrl('institution_medicalCenter_view',
-                                array('institutionId' => $this->institution->getId())));
-            }
-        }
-        return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
-                        'form' => $form->createView(),
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institution' => $this->institution
-        ));
-    }
-
-
-    public function ajaxRemovePropertyValueAction(Request $request)
-    {
-        $property = $this->get('services.institution_property')->findById($request->get('id', 0));
-
-        if (!$property) {
-            throw $this->createNotFoundException('Invalid Institution property.');
-        }
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->remove($property);
-        $em->flush();
-
-        return new Response("Property removed", 200);
-    }
-
-    /** 
-     * @deprecated
-     * Upload logo or featuredImage for Institution
-     * @param Request $request
-     */
-    public function uploadAction(Request $request)
-    {
-        $fileBag = $request->files;
-
-        $this->get('services.institution.media')->upload($fileBag->get('file'), $this->institution, $request->get('image_type'));
-
-        return $this->redirect($this->generateUrl('institution_account_profile'));
     }
 
     /**

@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -106,57 +108,30 @@ class InstitutionController extends ResponseHeadersController
         if (!$cachedData) {
             
             $mediaExtensionService = $this->apiInstitutionService->getMediaExtension();
-            
             $this->institution = $this->apiInstitutionService->getInstitutionPublicDataById($institutionId);
             
-            $isSingleCenterInstitution = $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']);
+            // process common data for both single and multiple center
+            $this->apiInstitutionService
+                ->buildGlobalAwards($this->institution) // build global awards data
+                ->buildOfferedServices($this->institution) // build anciliary services data
+                ->buildFeaturedMediaSource($this->institution) // build cover photo source
+                ->buildLogoSource($this->institution) // build logo
+                ->buildContactDetails($this->institution)
+                ->buildExternalSites($this->institution)
+            ;
             
+            $isSingleCenterInstitution = $this->apiInstitutionService->isSingleCenterInstitutionType($this->institution['type']);
             if ($isSingleCenterInstitution) {
-                $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
-                    ? $this->institution['institutionMedicalCenters'][0]
-                    : null;
-                if (!$firstMedicalCenter) {
-                    // no medical center
-                    // FIXME: right now throw an exception since this should not happen
-                    throw $this->createNotFoundException('Invalid single center clinic');
-                }
-                
-                // build awards from the first clinic
-                $this->institution['globalAwards'] = $this->apiInstitutionMedicalCenterService->getGlobalAwardsByInstitutionMedicalCenterId($firstMedicalCenter['id']); 
-                
-                // build offered services from first clinic
-                $this->institution['offeredServices'] = $this->apiInstitutionMedicalCenterService->getOfferedServicesByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-                
-                // build doctors from first clinic
-                $this->institution['doctors'] = $this->apiInstitutionMedicalCenterService->getDoctorsByInstitutionMedicalCenterId($firstMedicalCenter['id']);
-                
-                $this->apiInstitutionMedicalCenterService
-                    ->buildInstitutionSpecializations($firstMedicalCenter)
-                    ->buildBusinessHours($firstMedicalCenter)
-                    ->buildLogoSource($firstMedicalCenter)
-                ;
-                
-                $this->institution['institutionMedicalCenters'][0] = $firstMedicalCenter;
+                // build view data for single center institution
+                $this->processSingleCenterInstitution();
             } 
-            // multiple center institution
             else {
-                
-                $this->apiInstitutionService
-                    ->buildDoctors($this->institution) // build doctors data
-                    ->buildGlobalAwards($this->institution) // build global awards data
-                    ->buildOfferedServices($this->institution) // build anciliary services data
-                    ->buildFeaturedMediaSource($this->institution) // build cover photo source
-                    ->buildLogoSource($this->institution) // build logo
-                ;
-                
-                // Hesitant on modifying the twig extension since it is used in many contexts
-                foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
-                    $this->apiInstitutionMedicalCenterService
-                        ->buildLogoSource($imcData);
-                }
+                // build view data for multiple center institution
+                $this->processMultipleCenterInstitution();
             }
             
             $this->institution['specializationsList'] = $this->apiInstitutionService->listActiveSpecializations($this->institution['id']); 
+            
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institution);
         }
@@ -179,14 +154,12 @@ class InstitutionController extends ResponseHeadersController
                 // get the first 10 as list
                 PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($this->institution['specializationsList'],0, 10, true))
         )));        
-        
         $params = array(
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $isSingleCenterInstitution,
             'institutionDoctors' => $this->institution['doctors'],
             'institutionMedicalCenter' => $firstMedicalCenter, // will only be used in single center 
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
-            'formId' => 'institution_inquiry_form',
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
         );        
@@ -197,6 +170,48 @@ class InstitutionController extends ResponseHeadersController
         $response= $this->setResponseHeaders($content);
         
         return $response;
+    }
+    
+    private function processSingleCenterInstitution()
+    {
+        $firstMedicalCenter = isset($this->institution['institutionMedicalCenters'][0])
+            ? $this->institution['institutionMedicalCenters'][0]
+            : null;
+        
+        if (!$firstMedicalCenter) {
+            // FIXME: no medical center, right now throw an exception since this should not happen
+            throw $this->createNotFoundException('Invalid single center clinic');
+        }
+        
+        $this->apiInstitutionMedicalCenterService
+            ->buildInstitutionSpecializations($firstMedicalCenter)
+            ->buildBusinessHours($firstMedicalCenter)
+            ->buildDoctors($firstMedicalCenter)
+        ;
+        
+        // build doctors from first clinic
+        $this->institution['doctors'] = $firstMedicalCenter['doctors'];
+        $this->institution['institutionMedicalCenters'][0] = $firstMedicalCenter;
+    }
+    
+    private function processMultipleCenterInstitution()
+    {
+        // build doctors data
+        $this->apiInstitutionService->buildDoctors($this->institution); 
+        
+        // Hesitant on modifying the twig extension since it is used in many contexts
+        foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
+            $this->apiInstitutionMedicalCenterService
+            ->buildLogoSource($imcData);
+        
+            // flatten specializations list for displaying list
+            // do this here so we will have no processing in twig template and so this will be cached
+            $imcData['specializationsList'] = array();
+            foreach ($imcData['institutionSpecializations'] as $instSpecialization) {
+                // we always assume this since this is eagerly loaded in buildInstitutionSpecializations
+                $imcData['specializationsList'][$instSpecialization['specialization']['id']] = $instSpecialization['specialization']['name'];
+            }
+        }
     }
 
     public function errorReportAction()

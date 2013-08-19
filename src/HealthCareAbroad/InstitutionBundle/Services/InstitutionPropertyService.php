@@ -123,11 +123,12 @@ class InstitutionPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        static $isLoadedAvailableTypes = false;
-        if (!$isLoadedAvailableTypes) {
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoadedAvailableTypes = false;
+        //if (!$isLoadedAvailableTypes) {
             $this->_setupAvailablePropertyTypes();
             $isLoadedAvailableTypes = true;
-        }
+        //}
 
         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
@@ -157,11 +158,9 @@ class InstitutionPropertyService
      */
 
     public function findById($id)
-
     {
 
         return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->find($id);
-
     }
 
     public function getGlobalAwardPropertiesByInstitution(Institution $institution, array $options=array())

@@ -1,4 +1,4 @@
-<div id="persistent-search" class="hca-v-sprite stripe-bg blue">
+<div id="persistent-search">
     <div class="container">
         <!-- append search widget here -->
     </div>
@@ -11,7 +11,8 @@
         $(function () {
             $(window).scroll(function () {
             	_parentDiv = $('#top-content-wrapper');
-                _form = _parentDiv.find('form');
+
+                _form = $('form[name=search_box]');
                 _persistentDiv = $('#persistent-search');
 
                 if ($(this).scrollTop() > 210) {
@@ -19,7 +20,7 @@
                     $(_form).prependTo('#persistent-search > .container');
                 } else {
                 	_persistentDiv.fadeOut("fast");
-                    $(_persistentDiv.find('form')).appendTo(_parentDiv).after('<h1></h1>');
+                	$(_form).appendTo('#top-content-wrapper > .container');
                 }
             });
 

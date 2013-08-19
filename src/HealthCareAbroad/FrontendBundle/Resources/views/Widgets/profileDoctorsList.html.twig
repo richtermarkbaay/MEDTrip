@@ -11,7 +11,7 @@
     			{% endif %}
 		    </div>
 
-			<a class="name"><strong>Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</strong></a>
+			<a class="name">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</a>
 			<p class="info">
 			    {% for i, each in doctor.specializations %}
 			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}

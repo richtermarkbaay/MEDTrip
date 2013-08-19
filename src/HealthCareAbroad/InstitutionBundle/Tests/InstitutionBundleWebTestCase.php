@@ -78,14 +78,17 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
     
     protected function getBrowserWithActualLoggedInUserForSingleType()
     {
+//         self::$clientWithLoggedUser = static::createClient();
+//         $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
+        
         $client = static::createClient(array(), array(
                         'PHP_AUTH_USER' => 'institution_authorized_single',
                         'PHP_AUTH_PW'   => '123456',
         ));
         $session = $client->getContainer()->get('session');
-        $session->set('accountId', 2);
+        $session->set('accountId', 3);
         $session->set('institutionId', 2);
-        $session->set('institutionName', 'test single institution');
+        $session->set('institutionName', 'Apollo Hospital, Bangalore');
         $session->save();
     
         return $client;
@@ -98,8 +101,8 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
                         'PHP_AUTH_PW'   => '123456',
         ));
         $session = $client->getContainer()->get('session');
-        $session->set('accountId', 3);
-        $session->set('institutionId', 3);
+        $session->set('accountId', 1);
+        $session->set('institutionId', 1);
         $session->set('institutionName', 'test multiple institution');
         $session->save();
     
@@ -139,8 +142,11 @@ abstract class InstitutionBundleWebTestCase extends WebTestCase
      * Convenience function to set an invalid institution id in the browser session
      * @param unknown_type $client
      */
-    protected function setInvalidInstitutionInSession(&$client)
+    protected function setInvalidInstitutionInSession($client)
     {
+//         self::$clientWithLoggedUser = static::createClient();
+//         $crawler = self::$clientWithLoggedUser->request('GET', '/institution/logout');
+        
         $session = $client->getContainer()->get('session');
         $session->set('institutionId', 99999999);
         $session->save();

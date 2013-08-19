@@ -1,33 +1,33 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
-{% block callout %}
-    {% include 'SearchBundle:Frontend/Widgets:base.resultsCallout.html.twig' %}
-{% endblock %}
-
 {% block content %}
     <div class="search-results-wrapper span8">
-        <h2 class="heading"><strong>{{ searchResults.getTotalResults }}</strong> {{ searchResults.getTotalResults > 1 ? 'Results' : 'Result' }} Found</h2>
+        {% include 'SearchBundle:Frontend/Widgets:resultsHeader.html.twig' with {type: 'treatment'} %}
 
         {{ render_search_results_featured_clinic_ad(featuredClinicParams) }}
         {% set _featuredClinicIds = get_featured_clinics_by_search_parameters(featuredClinicParams) %}
-        
+
         {% for searchResultVo in searchResults %}
             {# BC for old search results whose result item is a medical center #}
             {% set center = searchResultVo.institutionMedicalCenter is defined ? searchResultVo.institutionMedicalCenter : searchResultVo %}
-            
+            {% set url = get_institution_medical_center_frontend_url(center) %}
+
             {# https://github.com/chromedia/healthcareabroad/issues/510 #}
             {% if searchResultVo.institutionMedicalCenter.id not in _featuredClinicIds %}
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'statisticsDataObject': searchResultVo.institutionMedicalCenter,
                        'searchResultItem' : {
-                           institutionUrl: get_institution_frontend_url(center.institution),
-                           url: get_institution_medical_center_frontend_url(center),
-                           logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
-                           name: center.name,
-                           institutionName: center.institution.name,
-                           description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
-                           mainAddress: medical_center_complete_address_to_string(center, ['city', 'state', 'country']),
-                           streetAddress: medical_center_complete_address_to_string(center, ['address', 'zipCode'])
+                               institutionUrl: get_institution_frontend_url(center.institution),
+                               url: url,
+                               logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
+                               featuredMedia: center.institution.featuredMedia,
+                               name: center.name,
+                               institutionName: center.institution.name,
+                               description: center.descriptionHighlight|length ? center.descriptionHighlight : (center.description|length > 300 ? center.description|slice(0, 300) ~ '...' : center.description),
+                               mainAddress: medical_center_complete_address_to_string(center, ['city', 'state', 'country']),
+                               streetAddress: medical_center_complete_address_to_string(center, ['address', 'zipCode']),
+                               links: get_center_links(center, url),
+                               payingStatus: center.payingClient
                        }
                    }
                %}
@@ -41,17 +41,18 @@
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
-        {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
-        
-        {# include 'SearchBundle:Frontend/Widgets:sidebar.narrowSearch.html.twig' #}
-    
-        {#% include 'SearchBundle:Frontend/Widgets:sidebar.resultsSingleSearch.html.twig' with { context: 'treatments', id: treatmentId } %#}
-        
+        <!-- Specialization/Treatment Descriptions Section -->
+        {% include 'SearchBundle:Frontend/Widgets:sidebar.treatmentDescriptions.html.twig' %}
+        {{ render_search_results_featured_posts() }}
         {{ render_search_results_image_ad() }}
     </aside>
 
 {% endblock %}
 
 {% block inlineJavascriptCode %}
-<script src="{{ asset('bundles/search/js/search.js') }}"></script>
+<script type="text/javascript">
+    $(window).ready(function() {
+        $(".icon-globe, .icon-envelope, .icon-phone, .icon-facebook, .icon-twitter, .icon-google-plus").tooltip();
+    });
+</script>
 {% endblock%}

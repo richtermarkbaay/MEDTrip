@@ -29,7 +29,7 @@ use HealthCareAbroad\FrontendBundle\Controller\ResponseHeadersController;
  */
 class FrontendController extends ResponseHeadersController
 {
-    private $resultsPerPage = 15;
+    private $resultsPerPage = 20;
 
     public function showWidgetAction(Request $request)
     {
@@ -457,7 +457,6 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('country' => $country->getSlug()),
             'destinationId' => $country->getId() . '-0',
             'country' => $country,
-            //'includedNarrowSearchWidgets' => array('specialization', 'city'),
             'includedNarrowSearchWidgets' => array('specialization', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $country->getId()),
             'featuredClinicParams' => array('countryId' => $country->getId())
@@ -490,7 +489,7 @@ class FrontendController extends ResponseHeadersController
             'destinationId' => $city->getCountry()->getId() . '-' . $city->getId(),
             'city' => $city,
             'country' => $city->getCountry(),
-            'includedNarrowSearchWidgets' => array('specialization', 'sub_specialization', 'treatment'),
+            'includedNarrowSearchWidgets' => array('specialization'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_COUNTRY => $city->getCountry()->getId(), SearchParameterBag::FILTER_CITY => $city->getId()),
             'featuredClinicParams' => array('cityId' => $city->getId())
         );
@@ -532,8 +531,7 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('specialization' => $specialization->getSlug()),
             'treatmentId' => $termId,
             'specialization' => $specialization,
-            //'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'country', 'city'),
-            'includedNarrowSearchWidgets' => array('sub_specialization', 'treatment', 'destinations'),
+            'includedNarrowSearchWidgets' => array('sub_specialization', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId()),
             'featuredClinicParams' => array('specializationId' => $specialization->getId())
         );
@@ -579,7 +577,6 @@ class FrontendController extends ResponseHeadersController
             'treatmentId' => $termId,
             'specialization' => $specialization,
             'subSpecialization' => $subSpecialization,
-            //'includedNarrowSearchWidgets' => array('treatment', 'country', 'city'),
             'includedNarrowSearchWidgets' => array('treatment', 'destinations'),
             'narrowSearchParameters' => array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_SUBSPECIALIZATION => $subSpecialization->getId()),
             'featuredClinicParams' => array('subSpecializationId' => $subSpecialization->getId())
@@ -625,7 +622,6 @@ class FrontendController extends ResponseHeadersController
             'paginationParameters' => array('specialization' => $specialization->getSlug(), 'treatment' => $treatment->getSlug()),
             'treatmentId' => $termId,
             'treatment' => $treatment,
-            //'includedNarrowSearchWidgets' => array('country', 'city'),
             'includedNarrowSearchWidgets' => array('destinations'),
             'narrowSearchParameters' => $treatment ? array(SearchParameterBag::FILTER_SPECIALIZATION => $specialization->getId(), SearchParameterBag::FILTER_TREATMENT => $treatment->getId()) : array(),
             'featuredClinicParams' => array('treatmentId' => $treatment->getId())

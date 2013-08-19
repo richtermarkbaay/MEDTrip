@@ -1,7 +1,7 @@
 <div class="pagination">
     <ul>
     {#% if pager.isFirstPage == false %#}
-        <li><a href="{{ paginate_path(route, pager.getPreviousPage, parameters) }}">Prev</a></li>
+        <li><a href="{{ paginate_path(route, pager.getPreviousPage, parameters) }}">&lt;</a></li>
     {#% endif %#}
 
     {% for page in pager.getPages %}
@@ -13,7 +13,7 @@
     {% endfor %}
 
     {#% if pager.isLastPage == false %#}
-        <li class="next"><a href="{{ paginate_path(route, pager.getNextPage, parameters) }}">Next</a></li>
+        <li class="next"><a href="{{ paginate_path(route, pager.getNextPage, parameters) }}">&gt;</a></li>
     {#% endif %#}
     </ul>
 </div>

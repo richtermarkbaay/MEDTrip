@@ -1,7 +1,7 @@
 {% if commonTreatmentsAds %}
     <div class="widget-wrapper">
         <h3 class="widget-heading">Common Treatments</h3>
-        <div class="widget-content-wrapper articles-type box-shadow">
+        <div class="widget-content-wrapper box-shadow">
             {% for each in commonTreatmentsAds %}
         
         	    {% if each.externalUrl %}
@@ -12,7 +12,7 @@
         	        {% set target = '' %}
         	    {% endif %}
     
-                <div class="item hover-effect">
+                <div class="article-format">
                     <a class="pull-left thumbnail-wrapper" href="{{ link }}" target="{{ target }}">
                         {% if (each.media is defined) and each.media %}
                             {# media(each.media, each, 'default', {class: 'featured-icon img-circle'}) | raw #}
@@ -20,7 +20,7 @@
                         {% else %}
                             <span class="hca-sprite treatment-icon featured-icon img-circle"></span>
                         {% endif %}
-                        <span class="hca-sprite more-icon"></span>
+                        <!-- <span class="hca-sprite more-icon"></span> -->
                     </a>
 
                     <h4 class="title"><a href="{{ link }}" target="{{ target }}">{{ each.title }}</a></h4>

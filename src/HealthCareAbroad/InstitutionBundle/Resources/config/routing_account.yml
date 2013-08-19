@@ -21,31 +21,3 @@ institution_ajaxUpdateCoordinates:
     defaults: {_controller: InstitutionBundle:InstitutionAccount:ajaxUpdateCoordinates }
     requirements:
         _method:  POST
-
-institution_addGlobalAwards:
-    pattern:  /institution/{institutionId}/global_awards
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:addGlobalAwards }
-    requirements:
-        institutionId: \d+
-        _method: GET|POST
-
-institution_ajaxRemovePropertyValue:
-    pattern: /institution/{institutionId}/ajaxRemovePropertyValue
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:ajaxRemovePropertyValue, institutionId: ~}
-    requirements:
-        _method: GET|POST
-        institutionId: \d+
-
-institution_logo_upload:
-    pattern: /institution/{institutionId}/logo/upload/
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload, media_type: logo }
-    requirements:
-        _method: POST
-        institutionId: \d+
-
-institution_featuredImage_upload:
-    pattern: /institution/{institutionId}/featured-image/upload/
-    defaults: { _controller: InstitutionBundle:InstitutionAccount:upload, media_type: featuredImage }
-    requirements:
-        _method: POST
-        institutionId: \d+

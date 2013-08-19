@@ -85,6 +85,7 @@ class ContactDetailService
 	
 	public function setContactDetail(ContactDetail $contactDetail, $contactsArray)
 	{
+	    $contactDetail->setType($contactsArray['type']);
 	    $contactDetail->setCountryCode($contactsArray['country_code']);
 	    $contactDetail->setNumber($contactsArray['number']);
 	    $contactDetail->setAbbr($contactsArray['abbr']);
@@ -129,6 +130,27 @@ class ContactDetailService
         }
 
         return $parentObject;
+    }
+    
+    public function contactDetailToString($contactDetail)
+    {
+        $contactDetailInstance = null;
+        if ($contactDetail instanceof ContactDetail){
+            $contactDetailInstance = $contactDetail;
+        }
+        elseif (\is_array($contactDetail)) {
+            // hydrated as array
+            $contactDetailInstance = new ContactDetail();
+            $contactDetailInstance->setCountryCode($contactDetail['countryCode']);
+            $contactDetailInstance->setAreaCode($contactDetail['areaCode']);
+            $contactDetailInstance->setNumber($contactDetail['number']);
+            $contactDetailInstance->setType($contactDetail['type']);
+        }
+        
+        
+        return $contactDetailInstance 
+            ? $contactDetailInstance->__toString()
+            : null;
     }
     
     /**

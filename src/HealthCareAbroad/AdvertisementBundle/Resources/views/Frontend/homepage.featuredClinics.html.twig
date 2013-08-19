@@ -1,7 +1,6 @@
 {% if featuredClinicsAds %}
 
 <div class="featured-type-wrapper">
-	<div class="heading"></div>
 	{% for each in featuredClinicsAds %}
 	    {% if each.institution and each.institutionMedicalCenter %}
 	    
@@ -26,19 +25,19 @@
     				</div>
     				<div class="description-box">
     				    
-				        <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} >
-				            <h3>{{ each.title }}</h3>
-			            </a>
+				            <h3 class="heading">
+                                <a href="{{ clinicUrl }}" class="{{ get_clickthrough_tracker_class() }}" {{ _clickThroughStatisticParametersAttribute }} > {{ each.title }} </a>
+                            </h3>
 			            
-			            <a href="{{ get_institution_frontend_url(each.institution) }}">
-			                <h4>{{ each.institution.name }}</h4>
-			            </a>
+			                <h4 class="sub-heading">
+                                <a href="{{ get_institution_frontend_url(each.institution) }}">{{ each.institution.name }}</a>
+                            </h4>
     					
     					<p>{{ each.description | raw }}</p>
     				</div>
 
                     {% if each.media %}
-                        <div class="hca-sprite thumbnail-frame pull-right">
+                        <div class="thumbnail-frame pull-right">
                             {% set thumbnailSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE') %}
                             <img src="{{ advertisement_media_src(each.media, thumbnailSize) }}" class="img-polaroid" alt="">
                         </div>
@@ -49,7 +48,7 @@
 				    </a>
 
     			</div>
-     			<div class="ad-highlights-wrapper hca-v-sprite stripe-bg green row-fluid">
+     			<div class="ad-highlights-wrapper bg-green row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
                     {% for clinicHighlight in clinicHighlights %}

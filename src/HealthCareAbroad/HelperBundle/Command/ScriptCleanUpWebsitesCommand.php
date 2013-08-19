@@ -1,5 +1,7 @@
 <?php
-
+/**
+* @author Chaztine Blance
+*/
 namespace HealthCareAbroad\HelperBundle\Command;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -14,6 +16,11 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 
 class ScriptCleanUpWebsitesCommand extends ContainerAwareCommand
 {
+    /**
+* @var OutputInterface
+*/
+    private $output;
+    
     protected function configure()
     {
         $this->setName('script:loadInstitutionWebsites')->setDescription('Check scripts');
@@ -21,37 +28,97 @@ class ScriptCleanUpWebsitesCommand extends ContainerAwareCommand
     
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $myFile = '/Users/Chaztine/websites/healthcareabroad.com/hca_draft/web/HospitalBrokenSites.txt';
+        $this->output = $output;
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $results = $em->getRepository('InstitutionBundle:Institution')->findAll();
         
         $defaultValue = array();
+        $string = array();
+        $main = '';
+        $facebook = '';
+        $twitter = '';
+        $googleplus = '';
+        $countBroke = 0;
+        $count = 0;
         foreach($results as $institution) {
-            echo "id:" .$institution->getId(). "\n";
-            $oldData =  $institution->getWebsiteBackUp();
+            $oldData = $institution->getWebsiteBackUp();
             $websitesArray = json_decode(\stripslashes($oldData), true);
             
-            if (\is_array($websitesArray)) {
-                if(isset($websitesArray['main'])) {
-                    $institution->setWebsites(isset($websitesArray['main']) ? $websitesArray['main'] : '' );
-                    if($institution->getSocialMediaSites() == ''){
-                        $defaultValue['facebook'] = isset($websitesArray['facebook']) ? $websitesArray['facebook'] : '';
-                        $defaultValue['twitter'] = isset($websitesArray['twitter']) ? $websitesArray['twitter'] : '';
-                        $defaultValue['googleplus'] = '';
-                        $institution->setSocialMediaSites(\json_encode($defaultValue));
-                        
-                        echo "SocialMediaSites" .$institution->getSocialMediaSites()."\n";
+            if($this->startsWith($oldData, "{")){
+                if (\is_array($websitesArray)) {
+                    if(isset($websitesArray['main'])) {
+                        $this->setData($institution,$websitesArray['main'], $websitesArray['facebook'], $websitesArray['twitter'], isset($websitesArray['googleplus']) ? $websitesArray['googleplus'] : 'http"//');
+                        $count ++;
                     }
+                }else{
+                    $this->output->writeln('id '.$institution->getId());
+                    $this->output->writeln('old '.$oldData);
+                    $data = explode(',', $oldData);
                     
-                    $em->persist($institution);
-                    echo "new:" .$institution->getWebsites(). "\n";
+                      foreach ($data as $key => $currentString) {
+                          // remove site type key to get the URI part
+                          $string[] = $currentString;
+                          \preg_match('/^\{?\"\w+\"\:/', $string[$key], $matches);
+                          $uri = \preg_replace('/^\{?\"\w+\"\:/', '', $string[$key]);
+                          $uri = $this->stripInvalidChars($uri);
+                          
+                          if( $this->stripInvalidChars($matches[0]) == 'main'){
+                              $main = $uri;
+                          }if( $this->stripInvalidChars($matches[0]) == 'facebook'){
+                              $facebook = $uri;
+                          }
+                          if( $this->stripInvalidChars($matches[0]) == 'twitter'){
+                              $twitter = $uri;
+                          }
+                          if( $this->stripInvalidChars($matches[0]) == 'googleplus'){
+                              $googleplus = $uri;
+                          }
+                              
+                      }
+                      
+                      $this->setData($institution,$main, $facebook, $twitter, $googleplus);
+                      $countBroke ++;
+                      $myContent[] = array( 'id' => $institution->getId(),'Hospital name' => $institution->getName(),'website data' => $oldData);
                 }
             }
-            
+            $em->persist($institution);
+            $this->output->writeln('new '.$institution->getWebsites());
         }
         $em->flush();
+        $this->output->writeln('done');
+        $this->output->writeln('count website backup:'. $count);
+        $this->output->writeln('count broken website json backup:'. $countBroke);
         
-        echo "done\n";
+        file_put_contents($myFile, print_r($myContent, true));
         exit;
     }
+
+    private function startsWith($haystack, $needle)
+    {
+        return !strncmp($haystack, $needle, strlen($needle));
+    }
     
+    private function stripInvalidChars($string)
+    {
+        $pattern = '/[\\\{\"\:(\s+)]/';
+        $s = preg_replace($pattern,'', $string);
+        
+        return $s;
+    }
+    private function setData($institution ,$main, $facebook, $twitter, $googlePlus)
+    {
+        $institution->setWebsites(isset($main) ? $main : '' );
+        
+        if($institution->getSocialMediaSites() == '' || $institution->getSocialMediaSites() == '{"facebook":"","twitter":"","googleplus":""}'){
+            $defaultValue['facebook'] = isset($facebook) ? $facebook : '';
+            $defaultValue['twitter'] = isset($twitter) ? $twitter : '';
+            $defaultValue['googleplus'] = $googlePlus;
+            $institution->setSocialMediaSites(\json_encode($defaultValue));
+            
+            $this->output->writeln('socialMediaSites '.$institution->getSocialMediaSites());
+        }
+        
+        return $institution;
+    }
 }

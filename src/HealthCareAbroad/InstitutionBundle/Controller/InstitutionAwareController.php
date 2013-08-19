@@ -42,7 +42,6 @@ abstract class InstitutionAwareController extends Controller
             if (!$institution) {
                 $this->throwInvalidInstitutionException();
             }
-
             $this->setInstitution($institution);
         }
     }
