@@ -1,27 +1,20 @@
 {% import _self as macro %}
 
 {% macro getHeaderText(count, searchLabel, type) %}
-    {% if count > 0 %}
-        {% if type == 'combination' %}
-            We found {{count}} {{ count > 1 ? ' clinics' : ' clinic' }} for <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
-        {% else %}
-            {% set preposition = (type == 'destination') ? 'in' : 'for' %}
-            We found <em>{{ count }}</em> {{ count > 1 ? 'clinics' : 'clinic' }} {{ preposition }} <em>{{ searchLabel }}</em>.
-        {% endif %}
+    {% set object = (count == 1) ? 'Clinic' : 'Clinics' %}
+    {% if type == 'combination' %}
+        We have found {{count}} {{ object }} that offer <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
     {% else %}
-        {% if type == 'combination' %}
-            We have found no clinics for <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
-        {% else %}
-            {% set preposition = (type == 'destination') ? 'in' : 'for' %}
-            We found no clinics {{ preposition }} <em>{{ searchLabel }}</em>.
+        {% if type == 'destination' %}
+            We have found <em>{{count}}</em> {{ object }} in <em>{{ searchLabel }}</em>.
+        {% elseif type == 'treatment' %}
+            We have found <em>{{count}}</em> {{ object }} that offer <em>{{ searchLabel }}</em>.
         {% endif %}
     {% endif %}
 {% endmacro %}
 
-{% set count = searchResults.getTotalResults %}
-
 <div class="content-profile-widget-wrapper">
-    <h3 class="heading">{{ macro.getHeaderText(count, searchLabel, type) }} </h3>
+    <h3 class="heading">{{ macro.getHeaderText(searchResults.getTotalResults, searchLabel, type) }} </h3>
 
     {% if searchResults.isPaginable %}
         <h3 class="heading">Refine your results.</h3>
