@@ -4,7 +4,7 @@
         <label for="{{ form.children.inquirer_name.vars.id }}">
            {{ form.children.inquirer_name.vars.label }}
         </label>
-        {{ form_widget(form.inquirer_name) }}    
+        {{ form_widget(form.inquirer_name) }}
     </div>
     <div class="country control-group">
         <label for="{{ form.children.country.vars.id }}" >
@@ -16,7 +16,7 @@
         <label for="{{ form.children.inquirer_email.vars.id }}">
             {{ form.children.inquirer_email.vars.label }}
         </label>
-        {{ form_widget(form.inquirer_email) }}    
+        {{ form_widget(form.inquirer_email) }}
         <p class="help-text"><small>Don't worry! We hate SPAM as much as you do!</small></p>
     </div>
     <div class="message control-group row-fluid">
@@ -25,7 +25,7 @@
         </label>
         {{ form_widget(form.message, {attr: {rows: 5} }) }}
     </div>
-    
+
     <div class="captcha control-group">
         <label for="{{ form.children.captcha.vars.id }}" >
             {{ form.children.captcha.vars.label }}
@@ -34,18 +34,21 @@
     </div>
 
     <div class="control-group">
-         <label class="checkbox">
+        <label class="checkbox">
+            {{ form_widget(form.newsletterSubscription) }}{{ form.children.newsletterSubscription.vars.label }}
+            <!--
             <input type="checkbox" name="subscribeMe">Yes, I'd like to subscribe to the HealthcareAbroad newsletter.
-        </label> 
+             -->
+        </label>
     </div>
     {{ form_rest(form) }}
-    
+
     <div class="control-group">
         <button class="btn btn-primary orange" data-loader-text="Processing..." id="inquiry_submitButton" type="submit">Send Message</button>
     </div>
 
     <p class="align-justify">
-        <small>We do not sell, trade, share nor otherwise transfer to outside parties your personally identifiable information without your full consent. 
+        <small>We do not sell, trade, share nor otherwise transfer to outside parties your personally identifiable information without your full consent.
         By submitting this you agree to our <a href="{{ path('frontend_page_terms_of_use')}}">Terms of Service</a> and <a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a>.</small>
     </p>
 </form>
