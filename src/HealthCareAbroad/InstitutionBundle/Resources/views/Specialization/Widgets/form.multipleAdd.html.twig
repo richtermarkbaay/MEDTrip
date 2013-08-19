@@ -62,8 +62,12 @@ $(function(){
 
         // TODO: ideally we should return the data not html
         if (!accordionInnerElem.data('loaded')) {
+        	$(e.target).parents('form').find('div.accordion-heading').addClass('disabled');
+        	$(this).parents('div.accordion-heading').removeClass('disabled');
+        	$(accordionInnerElem).parents('.accordion-group').find('.accordion-heading').removeClass('disabled');
             $.getJSON(accordionInnerElem.data('load-treatments-url'), function(response) {
             	accordionInnerElem.html(response.html).data('loaded', 1);
+            	$(e.target).parents('form').find('div.accordion-heading').removeClass('disabled');
             });
         }
     }).live('hide', function(e){ $(e.target).prev().find('i').removeClass('icon-minus-sign'); });
