@@ -156,10 +156,10 @@ class SearchTwigExtension extends \Twig_Extension
                     $links[SocialMediaSites::GOOGLEPLUS] = array('label' => 'Visit G+', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::GOOGLEPLUS], $true));
                 }
                 if (isset($socialMediaSites[SocialMediaSites::TWITTER])) {
-                    $links[SocialMediaSites::TWITTER] = array('label' => 'Visit Twitter', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::TWITTER]['value'], $true));
+                    $links[SocialMediaSites::TWITTER] = array('label' => 'Visit Twitter', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::TWITTER], $true));
                 }
                 if (isset($socialMediaSites[SocialMediaSites::FACEBOOK])) {
-                    $links[SocialMediaSites::FACEBOOK] = array('label' => 'Visit Facebook', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::FACEBOOK]['value'], $true));
+                    $links[SocialMediaSites::FACEBOOK] = array('label' => 'Visit Facebook', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::FACEBOOK], $true));
                 }
                 if ($website = $institution->getWebsites()) {
                     $links['website'] = array('label' => 'Visit Website', 'value' => $this->appendScheme($website));
