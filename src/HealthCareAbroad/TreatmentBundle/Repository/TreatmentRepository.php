@@ -11,7 +11,7 @@ use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\DBAL\LockMode;
 /**
  * TreatmentRepository
  *
@@ -20,6 +20,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class TreatmentRepository extends EntityRepository
 {
+    /**
+     * Overrides find() accepting either id or slug.
+     *
+     * (non-PHPdoc)
+     * @see \Doctrine\ORM\EntityRepository::find()
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+    {
+        if (is_numeric($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+
+        return $this->findOneBy(array('slug' => $id));
+    }
+
     public function search($term = '', $limit = 10)
     {
         $dql = "
@@ -78,12 +93,12 @@ class TreatmentRepository extends EntityRepository
 
         return $qb;
     }
-    
+
     public function getQueryBuilderForActiveTreatmentsBySpecializationExcludingTreatment(Specialization $specialization, Treatment $currentTreatment)
     {
         $qb = $this->getQueryBuilderForActiveTreatmentsBySpecialization($specialization);
         // add condition where treatment id is not current treatment
-        
+
         return $qb->andWhere('a.id != :treatment')
                   ->setParameter('treatment', $currentTreatment)->getQuery()->getResult();
     }

@@ -3,7 +3,7 @@
 namespace HealthCareAbroad\HelperBundle\Repository;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
-
+use Doctrine\DBAL\LockMode;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -14,6 +14,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class CountryRepository extends EntityRepository
 {
+    /**
+     * Overrides find() accepting either id or slug.
+     *
+     * (non-PHPdoc)
+     * @see \Doctrine\ORM\EntityRepository::find()
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+    {
+        if (is_numeric($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+
+        return $this->findOneBy(array('slug' => $id));
+    }
+
     function getCountryList() {
         $qb = $this->getQueryBuilderForCountries();
         $countries = $qb->getQuery()->getResult();

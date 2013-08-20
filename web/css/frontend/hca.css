@@ -1468,7 +1468,7 @@ form.home-search > button.btn:active {
   font-style: normal;
 }
 .specializations-list-wrapper ul.treatment > li:after {
-  content: ",";
+  content: "\00a0-\00a0";
 }
 .specializations-list-wrapper ul.treatment > li:last-child:after {
   content: "";
