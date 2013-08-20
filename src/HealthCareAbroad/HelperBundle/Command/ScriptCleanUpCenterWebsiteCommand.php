@@ -33,7 +33,6 @@ class ScriptCleanUpCenterWebsiteCommand extends ContainerAwareCommand
         $this->output = $output;
         $em = $this->getContainer()->get('doctrine')->getEntityManager();
         $results = $em->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findAll();
-
         $defaultValue = array();
         $string = array();
         $main = '';
@@ -63,19 +62,24 @@ class ScriptCleanUpCenterWebsiteCommand extends ContainerAwareCommand
                           \preg_match('/^\{?\"\w+\"\:/', $string[$key], $matches);
                           $uri = \preg_replace('/^\{?\"\w+\"\:/', '', $string[$key]);
                           $uri = $this->stripInvalidChars($uri);
-
-                          if( $this->stripInvalidChars($matches[0]) == 'main'){
-                              $main = $uri;
-                          }if( $this->stripInvalidChars($matches[0]) == 'facebook'){
-                              $facebook = $uri;
+                          $sites = isset($matches[0]) ? $this->stripInvalidChars($matches[0]) : '';
+                          
+                          switch ($sites){
+                              case 'main':
+                                  $main = $uri;
+                                  break;
+                              case 'facebook':
+                                  $facebook = $uri;
+                                  break;
+                              case 'twitter':
+                                  $twitter = $uri;
+                                  break;
+                              case 'googleplus':
+                                  $googleplus = $uri;
+                                  break;
+                              default:
+                                      
                           }
-                          if( $this->stripInvalidChars($matches[0]) == 'twitter'){
-                              $twitter = $uri;
-                          }
-                          if( $this->stripInvalidChars($matches[0]) == 'googleplus'){
-                              $googleplus = $uri;
-                          }
-
                       }
 
                       $this->setData($center,$main, $facebook, $twitter, $googleplus);
@@ -84,9 +88,10 @@ class ScriptCleanUpCenterWebsiteCommand extends ContainerAwareCommand
                 }
             }
             $em->persist($center);
+            $this->output->writeln('id '.$center->getId());
             $this->output->writeln('new '.$center->getWebsites());
         }
-        $em->flush();
+//         $em->flush();
         $this->output->writeln('done');
         $this->output->writeln('count website backup:'. $count);
         $this->output->writeln('count broken website json backup:'. $countBroke);
