@@ -2776,11 +2776,15 @@ div.register p a:hover {
   color: #bfc3be;
   line-height: 1.1em;
 }
+#contetn-wrapper .error-page h2 {
+  font-weight:400;
+}
 #content-wrapper .error-page .error-code > h1 {
   font-size: 10em;
   padding-right: 10px;
   margin-right: 20px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  padding:20px;
 }
 #content-wrapper .error-page .error-description {
   font-weight: normal;
