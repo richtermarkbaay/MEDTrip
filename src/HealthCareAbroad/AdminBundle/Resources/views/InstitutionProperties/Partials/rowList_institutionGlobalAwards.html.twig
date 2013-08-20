@@ -1,0 +1,12 @@
+<tbody>
+{% for award in globalAwards %}
+<tr>
+    <td> {{ award.name |title }} </td>
+    <td> {{ get_globalAward_type(award.type) |title }} </td>
+</tr>
+{% else %}
+<tr>
+    <td> No results to display! </td>
+</tr>
+{% endfor %}
+</tbody>

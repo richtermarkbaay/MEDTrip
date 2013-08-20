@@ -20,6 +20,15 @@ final class GlobalAwardTypes
         return static::$types;
     }
     
+    /**
+     * Get type value
+     * @param int $type
+     */
+    public static function getTypeValue($type)
+    {
+        return \array_key_exists($type, static::$types) ? static::$types[$type] : null;
+    }
+    
     static public function getTypeKeys()
     {
         return static::$typeKeys;

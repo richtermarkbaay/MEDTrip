@@ -443,4 +443,9 @@ class InstitutionPropertyService
         }
         $em->flush();
     }
+    
+    public function getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter(Institution $institution, $assignedGlobalAwards)
+    {
+        return $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter($institution, $assignedGlobalAwards);
+    }
 }
