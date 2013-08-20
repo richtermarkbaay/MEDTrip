@@ -4,7 +4,7 @@
     {% set object = (count == 1) ? 'Clinic' : 'Clinics' %}
     {% set verb = (count == 1) ? 'offers' : 'offer' %}
     {% if type == 'combination' %}
-        We have found {{count}} {{ object }} that {{ verb }} <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
+        We have found <em>{{count}}</em> {{ object }} that {{ verb }} <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
     {% else %}
         {% if type == 'destination' %}
             We have found <em>{{count}}</em> {{ object }} in <em>{{ searchLabel }}</em>.
