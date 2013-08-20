@@ -26,7 +26,7 @@ class CountryRepository extends EntityRepository
             return parent::find($id, $lockMode, $lockVersion);
         }
 
-        return $this->findBy(array('slug' => $id));
+        return $this->findOneBy(array('slug' => $id));
     }
 
     function getCountryList() {

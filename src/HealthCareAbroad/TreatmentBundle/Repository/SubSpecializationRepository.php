@@ -32,7 +32,7 @@ class SubSpecializationRepository extends EntityRepository
             return parent::find($id, $lockMode, $lockVersion);
         }
 
-        return $this->findBy(array('slug' => $id));
+        return $this->findOneBy(array('slug' => $id));
     }
 
     public function search($term = '', $limit = 10)

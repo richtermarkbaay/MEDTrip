@@ -164,7 +164,7 @@ class SearchTermRepository extends EntityRepository
         if ($groupedByCenters) {
             $qb->groupBy('imc.id');
         }
-        
+
         // order by clinic ranking points
         $qb->orderBy('imc.rankingPoints', 'DESC');
 
@@ -201,7 +201,7 @@ class SearchTermRepository extends EntityRepository
 
         // we may not need this?
         $qb->groupBy('inst.id');
-        
+
         // order by totalRankingPoints
         $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
 
@@ -234,7 +234,7 @@ class SearchTermRepository extends EntityRepository
 
         // order by clinic ranking points
         $qb->orderBy('imc.rankingPoints', 'DESC');
-        
+
         return $qb;
     }
 
@@ -337,7 +337,7 @@ class SearchTermRepository extends EntityRepository
         }
 
         $qb->groupBy('imc.id');
-        
+
         // order by clinic ranking points
         $qb->orderBy('imc.rankingPoints', 'DESC');
 
@@ -363,6 +363,7 @@ class SearchTermRepository extends EntityRepository
 
         $clinicSearchResults = false;
         foreach ($filters as $filter) {
+            var_dump($filter); exit;
             switch (get_class($filter)) {
                 case 'HealthCareAbroad\TreatmentBundle\Entity\Specialization':
                     $qb->andWhere('a.documentId = :documentId')
@@ -404,7 +405,7 @@ class SearchTermRepository extends EntityRepository
 
         // we may not need this?
         $qb->groupBy('imc.id');
-        
+
         if ($clinicSearchResults) {
             // order by clinic ranking points
             $qb->orderBy('imc.rankingPoints', 'DESC');
@@ -413,7 +414,7 @@ class SearchTermRepository extends EntityRepository
             // order by instititution total ranking points
             $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
         }
-        
+
         return $qb;
     }
 }
