@@ -363,7 +363,6 @@ class SearchTermRepository extends EntityRepository
 
         $clinicSearchResults = false;
         foreach ($filters as $filter) {
-            var_dump($filter); exit;
             switch (get_class($filter)) {
                 case 'HealthCareAbroad\TreatmentBundle\Entity\Specialization':
                     $qb->andWhere('a.documentId = :documentId')
