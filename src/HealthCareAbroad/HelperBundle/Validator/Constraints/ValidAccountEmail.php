@@ -9,7 +9,7 @@ use Symfony\Component\Validator\Constraint;
 
 class ValidAccountEmail extends Constraint
 {
-    public $message = "Email already exists";
+    public $message = "Email already exists.";
     public $invalidEmailMessage = "Please provide a valid email";
     public $checkMX = false;
     public $checkHost = false;
