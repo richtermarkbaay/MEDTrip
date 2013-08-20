@@ -273,22 +273,21 @@ var InstitutionMedicalCenter = {
     	_awardsTableElem = $(_elem.attr('data-tableId'));
     	_modalBtn = $(_elem.attr('data-modalBtnId'));
     	_modalBtn.removeAttr('disabled');
+    	$(_elem).html('Processing...');
     	$.ajax({
             type: 'GET',
             url: _href,
             success: function(response) {
-            	
             	if(response.count == 0) {
             		_modalBtn.attr('disabled', true);
             	}
+            	$(_elem).html(' Port Institution GlobalAwards');
             	_awardsTableElem.find('tbody').remove();
             	_awardsTableElem.find('thead').after($(response.html));
             	_modal.modal('show');
             }
         });
     },
-    
-    
     
     portInstitutionGlobalAwards: function(_btnElem) {
     	_btnElem = $(_btnElem);
@@ -301,6 +300,7 @@ var InstitutionMedicalCenter = {
             url: _href,
             data: {'isCopy' : 1},
             success: function(response) {
+            	_modal.modal('hide');
             	_btnElem.removeAttr('disabled').html('Submit');
             }
         });

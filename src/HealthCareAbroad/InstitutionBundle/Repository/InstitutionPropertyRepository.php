@@ -82,7 +82,6 @@ class InstitutionPropertyRepository extends EntityRepository
      */
     public function getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter(Institution $institution, $assignedGlobalAwards)
     {
-        $ancillaryServicePropertyType = $this->getEntityManager()->getRepository('InstitutionBundle:InstitutionPropertyType')->findOneBy(array('name' => InstitutionPropertyType::GLOBAL_AWARD_ID));
     
         $ids = array();
         foreach ($assignedGlobalAwards as $each) {

@@ -85,7 +85,7 @@ admin_institution_medicalCenter_ajaxRemoveGlobalAward:
         imcId: \d+
 
 admin_institution_medicalCenter_showGlobalAwardsForm:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/showAwardsForm
+    pattern: /ns-admin/institution/{institutionId}/medical-center/{imcId}/showAwardsForm
     defaults: { _controller: AdminBundle:InstitutionProperties:showInstitutionGlobalAwards }
     requirements:
         _method: GET

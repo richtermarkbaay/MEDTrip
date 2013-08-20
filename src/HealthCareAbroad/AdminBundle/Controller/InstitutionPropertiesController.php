@@ -52,7 +52,7 @@ class InstitutionPropertiesController extends Controller
         // check InstitutionMedicalCenter
         $this->request = $this->getRequest();
         if ($institutionMedicalCenterId = $this->request->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId, false);
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
             }
@@ -113,7 +113,7 @@ class InstitutionPropertiesController extends Controller
     {
         $assignedGlobalAwards = $this->get('services.institution_medical_center')->getMedicalCenterGlobalAwards($this->institutionMedicalCenter);
         $availableGlobalAwards = $this->get('services.institution_property')->getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter($this->institution, $assignedGlobalAwards);
-        
+
         $params = array('globalAwards' => $availableGlobalAwards);
         $output = array('html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:rowList_institutionGlobalAwards.html.twig', $params),
                         'count' => count($availableGlobalAwards));
@@ -158,8 +158,7 @@ class InstitutionPropertiesController extends Controller
                 }
             }
         }
-    
-        return $response = new Response(\json_encode(array('status' => 'success')), 200, array('content-type' => 'application/json'));
+        return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
     }
     
     /**
