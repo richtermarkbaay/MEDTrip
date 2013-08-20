@@ -21,21 +21,13 @@
                 <div class="thumbnail-frame">
                     <img class="img-polaroid" alt="" src="{{ institution_media_src(searchResultItem.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE')) }}">
                 </div>
-                <a class="btn green pull-right hca_statistics_clickthroughs">
-                    <span class="white-icon-search"></span> Learn More
-                </a>
-
-            {#<div class="align-right">#}
-                {#-- more info link --#}
-                {#{% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
-                        'link': {
-                            url: searchResultItem.url,
-                            html: '<span class="white-icon-search"></span> More Info',
-                            class: 'btn green'
-                        }
-                    }
-                %}
-            </div>#}
+                {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+                        'link': { 
+                            url: searchResultItem.url, 
+                            html: '<span class="white-icon-search"></span> Learn More', 
+                            class: 'btn green pull-right' }
+                } %}
+                
             </div>
 
         {% endif %}
