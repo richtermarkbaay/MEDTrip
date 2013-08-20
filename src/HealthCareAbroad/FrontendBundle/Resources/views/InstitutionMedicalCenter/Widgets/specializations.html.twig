@@ -6,7 +6,12 @@
                 {% set specialization = each.specialization %}
                 <li class="specialization">
                 
-                    <span class="thumbnail-wrapper ph-cardiology default img-polaroid pull-left"></span>
+                    {% if specialization.media and specialization.media.src %}
+                        <img class="thumbnail-wrapper default img-polaroid pull-left" src="{{ specialization.media.src }}" />
+                    {% else %}
+                        <span class="thumbnail-wrapper default img-polaroid pull-left"></span>
+                    {% endif %}
+                    
                     
                     <a>{{ specialization.name }}</a>
                     

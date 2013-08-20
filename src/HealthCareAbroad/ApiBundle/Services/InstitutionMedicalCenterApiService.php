@@ -184,6 +184,7 @@ class InstitutionMedicalCenterApiService
                 $canDefaultToSpecializationLogo = true;
                 break;
             case InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW:
+                $canDefaultToSpecializationLogo = true;
                 break;
         }
         
@@ -267,6 +268,13 @@ class InstitutionMedicalCenterApiService
     public function buildInstitutionSpecializations(&$institutionMedicalCenter)
     {
         $institutionMedicalCenter['institutionSpecializations'] = $this->getInstitutionSpecializationsByInstitutionMedicalCenterId($institutionMedicalCenter['id']);
+        
+        // build logo of insitution specializations
+        foreach ($institutionMedicalCenter['institutionSpecializations'] as &$instSpecialization) {
+            if ($instSpecialization['specialization']['media']) {
+                $instSpecialization['specialization']['media']['src'] = $this->mediaExtensionService->getSpecializationMediaSrc($instSpecialization['specialization']['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
+            }
+        }
         
         return $this;
     }
