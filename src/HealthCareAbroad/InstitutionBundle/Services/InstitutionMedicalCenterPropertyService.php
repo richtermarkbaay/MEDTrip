@@ -183,13 +183,13 @@ class InstitutionMedicalCenterPropertyService
             $returnVal = array();
             // get the property from the stored list
             foreach ($globalAwards as $_award) {
-//                 if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
-//                     foreach ($propertiesByValue[$_award->getId()] as $imp) {
-//                         // set the value object to GlobalAward
-//                         $imp->setValueObject($_award);
-//                         $returnVal[] = $imp;
-//                     }
-//                 }
+                if (\array_key_exists($_award->getId(), $propertiesByValue) && \is_array($propertiesByValue[$_award->getId()])) {
+                    foreach ($propertiesByValue[$_award->getId()] as $imp) {
+                        // set the value object to GlobalAward
+                        $imp->setValueObject($_award);
+                        $returnVal[] = $imp;
+                    }
+                }
             }
         }
 
