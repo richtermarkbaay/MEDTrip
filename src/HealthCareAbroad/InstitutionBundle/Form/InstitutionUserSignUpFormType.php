@@ -69,7 +69,7 @@ class InstitutionUserSignUpFormType extends AbstractType
             ));
         }
         if ($options['signup_fields']) {
-            $builder->add('email', 'email', array( 'error_bubbling' => false, 'constraints' => array(new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email', 'message' => 'Email already exists.')), new NotBlank(array('message' => 'Please provide your email address. ')))));
+            $builder->add('email', 'email', array('error_bubbling' => false,'constraints' => array(new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email')), new NotBlank(array('message' => 'Please provide your email address. ')))));
             $builder->add('confirm_email', 'email', array( 'label' => 'Confirm Email', 'virtual' => true, 'constraints' => array( new EqualFieldValue(array('field' => 'email', 'message' => 'Email address do not match')))));
             $builder->add('password', 'password', array('label' => 'Password','error_bubbling' => false,'constraints' => array(new NotBlank(array('message'=>'Password is required.')) , new MinLength(array('limit' => 6,'message' => 'Password is too short. Please enter at least 6 characters.')))));
             $builder->add('confirm_password', 'password', array('label' => 'Re-type password','virtual' => true,'error_bubbling' => false,'constraints' => array(new EqualFieldValue(array('field' => 'password', 'message' => 'Passwords do not match')))));
