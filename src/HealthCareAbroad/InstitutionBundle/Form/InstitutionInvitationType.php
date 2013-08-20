@@ -17,7 +17,7 @@ class InstitutionInvitationType extends AbstractType
     {
         $builder
         	->add('name', 'text', array('constraints' => array(new NotBlank())))
-        	->add('email', 'email', array('constraints' => array( new Email(), new NotBlank())))
+        	->add('email', 'email', array('constraints' => array( new NotBlank())))
          ;
     }
     

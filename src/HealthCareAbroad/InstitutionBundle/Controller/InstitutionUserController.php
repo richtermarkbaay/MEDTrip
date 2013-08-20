@@ -2,7 +2,6 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
-
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangeEmailFormType;
@@ -98,7 +97,7 @@ class InstitutionUserController extends Controller
         $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
             
         if(!$institutionUser){
-            throw new AccessDeniedHttpException();
+            throw new Access();
         }
         
         $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);

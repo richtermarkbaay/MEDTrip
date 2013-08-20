@@ -202,7 +202,7 @@ class InstitutionController extends ResponseHeadersController
         // Hesitant on modifying the twig extension since it is used in many contexts
         foreach ($this->institution['institutionMedicalCenters'] as $key => &$imcData) {
             $this->apiInstitutionMedicalCenterService
-            ->buildLogoSource($imcData);
+            ->buildLogoSource($imcData, ImageSizes::MINI, InstitutionMedicalCenterApiService::CONTEXT_HOSPITAL_CLINICS_LIST);
         
             // flatten specializations list for displaying list
             // do this here so we will have no processing in twig template and so this will be cached
