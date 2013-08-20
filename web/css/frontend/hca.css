@@ -1436,8 +1436,8 @@ form.home-search > button.btn:active {
   line-height: 1.5em;
 }
 /*default img specialization*/
-.specializations-list-wrapper ul li.specialization .thumbnail-wrapper .default .img-polaroid .pull-left {
-  background: url(/images/frontend/sprite.png) no-repeat 0px -332px;
+.specializations-list-wrapper ul li.specialization > span {
+  background: url(/images/frontend/sprite.png) no-repeat 0px -328px;
   width:50px;
   height:50px;
 }
