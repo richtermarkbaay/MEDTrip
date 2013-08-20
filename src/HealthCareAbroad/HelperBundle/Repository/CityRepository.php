@@ -3,6 +3,7 @@
 namespace HealthCareAbroad\HelperBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\DBAL\LockMode;
 
 /**
  * CityRepository
@@ -12,6 +13,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class CityRepository extends EntityRepository
 {
+    /**
+     * Overrides find() accepting either id or slug.
+     *
+     * (non-PHPdoc)
+     * @see \Doctrine\ORM\EntityRepository::find()
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+    {
+        if (is_numeric($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+
+        return $this->findBy(array('slug' => $id));
+    }
+
     function getCityListByCountryId($countryId) {
         $criteria = array('status'=>1);
         $cities = $this->_em->getRepository('HelperBundle:City')->findBy($criteria);

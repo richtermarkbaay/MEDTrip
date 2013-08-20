@@ -11,7 +11,7 @@ use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\DBAL\LockMode;
 /**
  * SubSpecializationRepository
  *
@@ -20,6 +20,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class SubSpecializationRepository extends EntityRepository
 {
+    /**
+     * Overrides find() accepting either id or slug.
+     *
+     * (non-PHPdoc)
+     * @see \Doctrine\ORM\EntityRepository::find()
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+    {
+        if (is_numeric($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+
+        return $this->findBy(array('slug' => $id));
+    }
+
     public function search($term = '', $limit = 10)
     {
         $dql = "

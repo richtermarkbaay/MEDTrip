@@ -8,7 +8,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 use Doctrine\ORM\EntityRepository;
-
+use Doctrine\DBAL\LockMode;
 /**
  * SpecializationRepository
  *
@@ -17,6 +17,21 @@ use Doctrine\ORM\EntityRepository;
  */
 class SpecializationRepository extends EntityRepository
 {
+    /**
+     * Overrides find() accepting either id or slug.
+     *
+     * (non-PHPdoc)
+     * @see \Doctrine\ORM\EntityRepository::find()
+     */
+    public function find($id, $lockMode = LockMode::NONE, $lockVersion = null)
+    {
+        if (is_numeric($id)) {
+            return parent::find($id, $lockMode, $lockVersion);
+        }
+
+        return $this->findBy(array('slug' => $id));
+    }
+
     public function search($term = '', $limit = 10)
     {
         $dql = "
@@ -47,7 +62,7 @@ class SpecializationRepository extends EntityRepository
 
         return $query->getArrayResult();
     }
-    
+
     public function getSpecializationSearchByName($term, $ids)
     {
         $dql = "SELECT Specialization.id, Specialization.name as value
@@ -55,13 +70,13 @@ class SpecializationRepository extends EntityRepository
         WHERE Specialization.name LIKE :term
         AND Specialization.status = :status
         ORDER BY Specialization.name ASC";
-        
+
         $query = $this->_em->createQuery($dql);
         $query->setParameter('status', Specialization::STATUS_ACTIVE);
         $query->setParameter('term', "%$term%");
 
         return $query->getArrayResult();
-    
+
     }
 
     /**
