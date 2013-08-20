@@ -1882,6 +1882,7 @@ form.home-search > button.btn:active {
 .item-wrapper > .right-column-wrapper .listing-photo .img-polaroid {
     width:135px;
     height:100px;
+    margin-left:10px;
 }
 .item-wrapper > .right-column-wrapper .listing-photo + h3,
 .item-wrapper > .right-column-wrapper .listing-photo + h3 + h4,
