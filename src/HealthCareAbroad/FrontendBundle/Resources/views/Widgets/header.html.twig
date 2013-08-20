@@ -1,7 +1,7 @@
 <div id="main-top-wrapper">
 <header id="header-wrapper" class="homepage-header-wrapper"> <!--Header-->
     <div class="container">
-    {% if isHomePage is not defined %}
+    {% if isHomePage is not defined or status_code is defined %} <!-- added condition for error pages (status_code)-->
         <a href="{{ path('frontend_main_homepage') }}">
             <h1 class="logo">HealthcareAbroad</h1>
         </a>
