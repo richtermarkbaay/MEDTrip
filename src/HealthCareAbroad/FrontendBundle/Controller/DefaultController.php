@@ -42,7 +42,41 @@ class DefaultController extends ResponseHeadersController
 
     public function indexAction(Request $request)
     {
-        return $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
+        $start = \microtime(true);
+        
+        $key = 'ads.homepage.all';
+        $memcache = $this->get('services.memcache');
+        $cachedData = $memcache->get($key);
+        if (!$cachedData) {
+            $twigExtension = $this->get('twig.advertisement_widgets');
+            $ads = array(
+                'featuredClinics' => $twigExtension->renderHomepageFeaturedClinicsAds(),
+                'featuredDestinations' => $twigExtension->renderHomepageFeaturedDestinationsAds(),
+                'featuredPosts' => $twigExtension->renderHomepageFeaturedPostsAds(),
+                'commonTreatments' => $twigExtension->renderHomepageCommonTreatmentsAds(),
+                'featuredVideo' => $twigExtension->renderHomepageFeaturedVideoAd(),
+            );
+            
+            $memcache->set($key, $ads);
+        }
+        else {
+            $ads = $cachedData;
+        }
+        
+        $response = $this->setResponseHeaders($this->render('FrontendBundle:Default:index.optimized.html.twig', array('ads' => $ads)));
+        $end = \microtime(true);$diff = $end-$start;
+        //echo "{$diff}s"; exit;
+        
+        return $response;
+    }
+    
+    public function indexBakAction(Request $request)
+    {
+        $start = \microtime(true);
+        $response = $this->setResponseHeaders($this->render('FrontendBundle:Default:index.html.twig'));
+        $end = \microtime(true);$diff = $end-$start;
+        echo "{$diff}s"; exit;
+        return $response;
     }
 
 //     public function renderNewsletterFormAction()

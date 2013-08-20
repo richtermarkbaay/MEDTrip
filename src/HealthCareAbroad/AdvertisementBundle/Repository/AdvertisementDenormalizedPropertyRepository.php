@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
 
 use Doctrine\ORM\EntityRepository;
@@ -33,7 +35,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getActiveFeaturedClinicByCriteria(array $criteria = array(), $limit = null)
+    public function getActiveFeaturedClinicByCriteria(array $criteria = array(), $limit = null, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->createQueryBuilder('a');
         $qb->select('a,b,c,d,gal,co,ci, imcLogo')
@@ -59,7 +61,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
             $qb->setMaxResults($limit);
         }
 
-        $result = $qb->getQuery()->getResult();
+        $result = $qb->getQuery()->getResult($hydrationMode);
 
         return $result;
     }

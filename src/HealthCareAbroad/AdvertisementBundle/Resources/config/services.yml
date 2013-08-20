@@ -44,6 +44,7 @@ services:
         arguments: [@twig, @services.advertisement.retriever, @services.api.hcaBlog]
         calls:
             - [setSessionService, [@session]]
+            - [setMemcacheService, [@services.memcache]]
         tags:
             - name: twig.extension
             

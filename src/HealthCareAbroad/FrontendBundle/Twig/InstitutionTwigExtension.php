@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
@@ -59,16 +61,30 @@ class InstitutionTwigExtension extends \Twig_Extension
         return $uri;
     }
     
-    public function getInstitutionMedicalCenterFrontendUrl(InstitutionMedicalCenter $institutionMedicalCenter)
+    public function getInstitutionMedicalCenterFrontendUrl($institutionMedicalCenter)
     {
+        if ($institutionMedicalCenter instanceof InstitutionMedicalCenter){
+            $type =  $institutionMedicalCenter->getInstitution()->getType();
+            $institutionSlug = $institutionMedicalCenter->getInstitution()->getSlug();
+            $imcSlug = $institutionMedicalCenter->getSlug();
+            $institution = $institutionMedicalCenter->getInstitution();
+        }
+        else {
+            // hydrate array
+            var_dump(\array_keys($institutionMedicalCenter));
+            $type = $institutionMedicalCenter['institution']['type'];
+            $institutionSlug = $institutionMedicalCenter['institution']['slug'];
+            $imcSlug = $institutionMedicalCenter['slug'];
+            $institution = $institutionMedicalCenter['institution'];
+        }
         // check first if this is a single center institution
-        if ($this->institutionService->isSingleCenter($institutionMedicalCenter->getInstitution())){
-            $uri = $this->getInstitutionFrontendUrl($institutionMedicalCenter->getInstitution());
+        if (InstitutionTypes::SINGLE_CENTER == $type){
+            $uri = $this->getInstitutionFrontendUrl($institution);
         }
         else {
             $uri = $this->router->generate('frontend_institutionMedicaCenter_profile', array(
-                'institutionSlug' => $institutionMedicalCenter->getInstitution()->getSlug(),
-                'imcSlug' => $institutionMedicalCenter->getSlug()
+                'institutionSlug' => $institutionSlug,
+                'imcSlug' => $imcSlug
             ));
         }
         

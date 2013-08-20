@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Twig;
 
+use HealthCareAbroad\StatisticsBundle\Exception\TrackerException;
+
 use HealthCareAbroad\StatisticsBundle\Form\TrackerFormType;
 
 use Symfony\Component\Form\FormFactory;
@@ -171,7 +173,7 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
     
     /** advertisement statistic parameters encoders **/
     
-    public function encode_advertisement_impressions_parameters(AdvertisementDenormalizedProperty $advertisement)
+    public function encode_advertisement_impressions_parameters($advertisement)
     {
         $parameters = $this->_getCommonAdvertisementStatisticParameters($advertisement);
         $parameters[StatisticParameters::CATEGORY_ID] = StatisticCategories::ADVERTISEMENT_IMPRESSIONS;
@@ -179,7 +181,7 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
         return StatisticParameters::encodeParameters($parameters);
     }
     
-    public function encode_advertisement_clickthrough_parameters(AdvertisementDenormalizedProperty $advertisement)
+    public function encode_advertisement_clickthrough_parameters($advertisement)
     {
         $parameters = $this->_getCommonAdvertisementStatisticParameters($advertisement);
         $parameters[StatisticParameters::CATEGORY_ID] = StatisticCategories::ADVERTISEMENT_CLICKTHROUGHS;
@@ -187,13 +189,33 @@ class StatisticsFrontendTwigExtension extends \Twig_Extension implements Contain
         return StatisticParameters::encodeParameters($parameters);
     }
     
-    private function _getCommonAdvertisementStatisticParameters(AdvertisementDenormalizedProperty $advertisement)
+    private function _getCommonAdvertisementStatisticParameters($advertisement)
     {
-        return $parameters = array(
-            StatisticParameters::ADVERTISEMENT_ID => $advertisement->getId(),
-            StatisticParameters::INSTITUTION_ID => $advertisement->getInstitution()->getId(),
+        if ($advertisement instanceof AdvertisementDenormalizedProperty) {
+            // transform to array data
+            $advertisementData = array(
+                'id' => $advertisement->getId(),
+                'institution' => array(
+                    'id' => $advertisement->getInstitution()->getId()
+                )
+            );
+        }
+        else {
+            if (!\is_array($advertisement)) {
+                // unknown hydration type
+                throw TrackerException::unknownAdvertisementDataType();
+            }
+            
+            $advertisementData = $advertisement;
+        }
+        
+        $parameters = array(
+            StatisticParameters::ADVERTISEMENT_ID => $advertisementData['id'],
+            StatisticParameters::INSTITUTION_ID => $advertisementData['institution']['id'],
             StatisticParameters::TYPE => StatisticTypes::ADVERTISEMENT,
         );
+        
+        return $parameters;
     }
     
     /** end advertisement statistic parameters encoders **/

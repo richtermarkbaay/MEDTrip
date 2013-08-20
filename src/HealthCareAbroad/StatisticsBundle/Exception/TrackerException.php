@@ -21,4 +21,9 @@ class TrackerException extends \Exception
     {
         return new self("Unknown tracker type {$className}. Possible types: ", \implode(', ', \array_keys(StatisticTypes::getTypes())));
     }
+    
+    static public function unknownAdvertisementDataType()
+    {
+        return new self("Unknown advertisement data type");
+    }
 }
