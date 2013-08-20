@@ -72,27 +72,23 @@ class DefaultController extends ResponseHeadersController
         return $this->setResponseHeaders($this->render('FrontendBundle:Default:listDestinations.html.twig', $params));
     }
 
+    /**
+     * TODO: validate email
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function subscribeNewsletterAction(Request $request)
     {
-        $mailChimp = $this->get('rezzza.mail_chimp.client');
-
-        //var_dump($mailChimp->ping()); exit;
         $subscriber = $request->get('newsletter_subscriber');
-        $email = $subscriber['email'];
-
-        //TODO: externalize
-        $listId = '6fb06f3765';
-        $mailChimp->listSubscribe($listId, $email);
 
         $response = array();
-        if ($mailChimp->errorCode) {
-            // echo "\tCode=".$api->errorCode."\n";
-            // echo "\tMsg=".$api->errorMessage."\n";
-            $response['success'] = 0;
-            $response['message'] = 'An error occurred while processing your request. Please try again.';
-        } else {
+        if ($this->get('services.mailchimp')->listSubscribe($subscriber['email'])) {
             $response['success'] = 1;
             $response['message'] = 'Thank you! Please check your email to confirm your subscription.';
+        } else {
+            $response['success'] = 0;
+            $response['message'] = 'An error occurred while processing your request. Please try again.';
         }
 
         return new Response(json_encode($response), 200, array('Content-Type'=>'application/json'));
