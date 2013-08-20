@@ -45,7 +45,8 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
             'get_city_url' => new \Twig_Function_Method($this, 'get_city_url'),
             'get_load_states_api_uri' => new \Twig_Function_Method($this, 'getLoadStatesApiUri'),
             'get_load_cities_api_uri' => new \Twig_Function_Method($this, 'getLoadCitiesApiUri'),
-            'get_validate_email_uri' => new \Twig_Function_Method($this, 'getValidateEmailUri')         
+            'get_validate_email_uri' => new \Twig_Function_Method($this, 'getValidateEmailUri'),
+            'get_update_cities_url' => new \Twig_Function_Method($this, 'getUpdateCitiesUrl'),
         );
     }
 
@@ -84,6 +85,11 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
     public function getLoadCitiesApiUri()
     {
         return $this->chromediaApiUrl.'/cities';
+    }
+    
+    public function getUpdateCitiesUrl()
+    {
+        return $this->generator->generate('admin_city_update');
     }
 
     public function getName()
