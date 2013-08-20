@@ -91,7 +91,7 @@ class ScriptCleanUpCenterWebsiteCommand extends ContainerAwareCommand
             $this->output->writeln('id '.$center->getId());
             $this->output->writeln('new '.$center->getWebsites());
         }
-//         $em->flush();
+        $em->flush();
         $this->output->writeln('done');
         $this->output->writeln('count website backup:'. $count);
         $this->output->writeln('count broken website json backup:'. $countBroke);
