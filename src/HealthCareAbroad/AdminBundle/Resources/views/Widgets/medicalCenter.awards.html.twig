@@ -1,6 +1,9 @@
 <div id="awards" class="treatmentbox">
     <h5 style="padding: 10px; border: 1px solid #EEEEEE">
       GlobalAwards / Certifications
+        <a href="{{ path('admin_institution_medicalCenter_showGlobalAwardsForm', { institutionId: institution.id, imcId: institutionMedicalCenter.id } ) }}" data-modalBtnId="#_btnInstitutionAwards" data-tableId="#_awardsTable" data-modalId="#_institutionAwardsModalForm" onclick="InstitutionMedicalCenter.showInstitutionAwardsForm(this); return false;" class="_portAwards btn btn-mini pull-right">
+            <i class="icon-plus"></i> Port Institution GlobalAwards
+        </a>
     </h5>
     <div class="boxcontent" style="border: 1px solid #EEEEEE; border-top: none;">
     <form action="#" method="POST" id="modal_award_form" >

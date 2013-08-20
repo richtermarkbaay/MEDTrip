@@ -44,12 +44,12 @@ twig:
 # MailChimp configuration
 rezzza_mail_chimp:
     api_key: %mailchimp_api_key%
-    connection: %mailchimp_connection%                
-                
+    connection: %mailchimp_connection%
+
 # Doctrine Configuration
 doctrine:
     dbal:
-        connections: 
+        connections:
             default:
                 driver:   %database_driver%
                 host:     %database_host%
@@ -66,6 +66,14 @@ doctrine:
                 user:     %database_user%
                 password: %database_password%
                 charset:  UTF8
+            hca_blog:
+                driver: %database_driver%
+                host: %hca_blog_db_host%
+                port: %database_port%
+                dbname: %hca_blog_db_name%
+                user: %hca_blog_db_user%
+                password: %hca_blog_db_password%
+                charset: UTF8
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         #auto_mapping: true
@@ -95,28 +103,28 @@ doctrine:
 web_profiler:
     toolbar: false
     intercept_redirects: false
-    
-    
+
+
 # TinyMCE Configuration
 stfalcon_tinymce:
     include_jquery: false
     tinymce_jquery: true
     textarea_class: "tinymce"
-    theme: 
+    theme:
         simple: %tinymce_simple_theme%
         advanced: %tinymce_advanced_theme%
         medium: %tinymce_medium_theme%
         bbcode: %tinymce_bbcode_theme%
-    
+
 # Swiftmailer Configuration
 swiftmailer:
     transport: %mailer_transport%
     host:      %mailer_host%
     username:  %mailer_user%
     password:  %mailer_password%
-    spool:     { type: memory }
+    #spool:     { type: memory }
     disable_delivery:  true
-    
+
     # Captcha configuration
 gregwar_captcha:
     as_url: true
@@ -169,4 +177,3 @@ knp_gaufrette:
         specialization:
             adapter: specialization_%media_source%
             alias: specialization_filesystem
-    

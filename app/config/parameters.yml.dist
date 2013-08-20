@@ -11,6 +11,11 @@ parameters:
     statistics_db_user: @STATISTICS_DATABASE_USER@
     statistics_db_password: @STATISTICS_DATABASE_PASSWORD@
 
+    # HCA Blog
+    hca_blog_db_host: @PROD_DATABASE_HOST@
+    hca_blog_db_name: hca_blog
+    hca_blog_db_user: root
+    hca_blog_db_password: hcadbadmin
 
     couchDbBaseUrl: @COUCHDB_URL@
     couchDbAlert: @COUCHDB_DOCUMENT@

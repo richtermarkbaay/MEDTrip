@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
+
 use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty;
@@ -50,7 +52,7 @@ class InstitutionPropertiesController extends Controller
         // check InstitutionMedicalCenter
         $this->request = $this->getRequest();
         if ($institutionMedicalCenterId = $this->request->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId, false);
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
             }
@@ -102,6 +104,61 @@ class InstitutionPropertiesController extends Controller
                         'count' => count($institutionAncillaryServices));
         
         return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
+    /*
+     * Show all globalAwards by Institution
+    */
+    public function showInstitutionGlobalAwardsAction(Request $request)
+    {
+        $assignedGlobalAwards = $this->get('services.institution_medical_center')->getMedicalCenterGlobalAwards($this->institutionMedicalCenter);
+        $availableGlobalAwards = $this->get('services.institution_property')->getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter($this->institution, $assignedGlobalAwards);
+
+        $params = array('globalAwards' => $availableGlobalAwards);
+        $output = array('html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:rowList_institutionGlobalAwards.html.twig', $params),
+                        'count' => count($availableGlobalAwards));
+        
+        return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+    }
+    
+    /**
+     * copy assigned institution globalAwards to medical center
+     * Required parameters:
+     *     - institutionId
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author ajacobe
+     */
+    public function portInstitutionGlobalAwardsAction(Request $request)
+    {
+        $propertyService = $this->get('services.institution_medical_center_property');
+        $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
+        
+        $assignedGlobalAwards = $this->get('services.institution_medical_center')->getMedicalCenterGlobalAwards($this->institutionMedicalCenter);
+        $availableGlobalAwards = $this->get('services.institution_property')->getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter($this->institution, $assignedGlobalAwards);
+        
+        if($request->get('isCopy')) {
+            foreach ($availableGlobalAwards as $award)
+            {
+                // check if this medical center already have this property value
+                if (!$this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award['id'])) {
+    
+                    $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
+                    $property->setValue($award['id']);
+                    try {
+                        $em = $this->getDoctrine()->getEntityManager();
+                        $em->persist($property);
+                        $em->flush();
+    
+                    }
+                    catch (\Exception $e){
+                        $response = new Response($e->getMessage(), 500);
+                    }
+                }
+            }
+        }
+        return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
     }
     
     /**

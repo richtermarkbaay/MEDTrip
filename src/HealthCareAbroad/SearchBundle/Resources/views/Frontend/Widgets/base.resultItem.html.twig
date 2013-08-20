@@ -1,17 +1,45 @@
 {% if searchResultItem is defined %}
 {#----- initialize impression tracker #}
-
 {% set _impressionStatisticParametersAttribute = get_statistics_parameter_attribute_name() ~ '=' ~ encode_search_result_item_impression_parameters(statisticsDataObject)  %}
-<article class="item-wrapper {{ get_impression_tracker_class() }}" {{_impressionStatisticParametersAttribute }}>
+
+<div class="item-wrapper {{ get_impression_tracker_class() }}" {{_impressionStatisticParametersAttribute }}>
+
+    {% if searchResultItem.payingStatus is constant('HealthCareAbroad\\InstitutionBundle\\Entity\\PayingStatus::PHOTO_LISTING') or
+        searchResultItem.payingStatus is constant('HealthCareAbroad\\InstitutionBundle\\Entity\\PayingStatus::LOGO_LISTING')
+    %}
     <div class="left-column-wrapper">
         {#-- logo link with listing click through --#}
         {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
-    	        'link': { url: searchResultItem.url, html: searchResultItem.logo, class: 'small-logo-wrapper' }
+                'link': { url: searchResultItem.url, html: searchResultItem.logo, class: 'small-logo-wrapper' }
         } %}
-        <strong>{{ searchResultItem.mainAddress }}</strong>
     </div>
+    {% endif %}
 
     <div class="right-column-wrapper">
+        {% if searchResultItem.featuredMedia and searchResultItem.payingStatus is constant('HealthCareAbroad\\InstitutionBundle\\Entity\\PayingStatus::PHOTO_LISTING') %}
+            <div class="pull-right listing-photo">
+                <div class="thumbnail-frame">
+                    <img class="img-polaroid" alt="" src="{{ institution_media_src(searchResultItem.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE')) }}">
+                </div>
+                <a class="btn green pull-right hca_statistics_clickthroughs">
+                    <span class="white-icon-search"></span> Learn More
+                </a>
+
+            {#<div class="align-right">#}
+                {#-- more info link --#}
+                {#{% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+                        'link': {
+                            url: searchResultItem.url,
+                            html: '<span class="white-icon-search"></span> More Info',
+                            class: 'btn green'
+                        }
+                    }
+                %}
+            </div>#}
+            </div>
+
+        {% endif %}
+
         <h3 class="heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
 
         {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
@@ -20,20 +48,34 @@
 
         {% if searchResultItem.description is defined and searchResultItem.description | length > 0 %}
             {% set _escapedDescription =  searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0,200) | trim)~'...' : searchResultItem.description %}
-            <p class="description">{{ _escapedDescription | raw}}</p>
+            <p>{{ _escapedDescription | raw}}
+                {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
+                        'link': {
+                            url: searchResultItem.url,
+                            html: 'More Info',
+                            class: ''
+                        }
+                    }
+                %}
+            </p>
         {% endif %}
-
-        <div class="align-right">
-            {#-- more info link --#}
-            {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
-        	        'link': {
-        	            url: searchResultItem.url,
-        			    html: '<span class="white-icon-search"></span> More Info',
-        			    class: 'btn green'
-        	        }
-        	    }
-        	%}
-    	</div>
     </div>
-</article>
+
+    {# Static Markup #}
+    <div class="tag-box">
+        <span class="location"><i class="icon-map-marker"></i> {{ searchResultItem.mainAddress }}</span>
+
+        {% set linkClasses = { googleplus: 'icon-google-plus', twitter: 'icon-twitter', facebook: 'icon-facebook', website: 'icon-globe', contactnumber: 'icon-phone', email: 'icon-envelope' } %}
+        <div class="link-box">
+
+        {% if searchResultItem.links is defined %}
+            {% for key, link in searchResultItem.links %}
+                <a href="{{ link.value }}" target="_blank">
+                    <span data-toggle="tooltip" title="{{ link.label }}" class="{{ linkClasses[key] }}"></span>
+                </a>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+</div>
 {% endif %}

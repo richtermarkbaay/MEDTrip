@@ -1,63 +1,67 @@
 var InstitutionInquiry = {
     institutionInquiryComponents: {},
-    
+
     institutionInquiryFormInputIdPrefix: 'institutionInquiry',
-    
+
     restoreInitialState: function() {
         InstitutionInquiry.clearErrors().resetForm().resetAlertBox();
     },
-    
+
     resetForm: function() {
         this.institutionInquiryComponents.form.show().find('input[type="text"],input[type="email"], textarea').val('');
-        this.institutionInquiryComponents.submitButton.attr('disabled', false).show();
+        this.institutionInquiryComponents.submitButton.attr('disabled', false);
+        $('#institutionInquiry_captcha').val('');
         return this;
     },
-    
+
     clearErrors: function() {
+        InstitutionInquiry.institutionInquiryComponents.form.find('ul.error').remove();
         InstitutionInquiry.institutionInquiryComponents.form.find('.error').removeClass('error');
         return this;
     },
-    
+
     resetAlertBox: function(){
-        InstitutionInquiry.institutionInquiryComponents.modal.find('.alert-box').removeClass('alert alert-error alert-success').html("");
+        InstitutionInquiry.institutionInquiryComponents.form.find('.alert-box').removeClass('alert alert-error alert-success').html("");
         return this;
     },
-    
+
     showAlertError: function(_errorString) {
         InstitutionInquiry
-            .resetAlertBox()
-            .institutionInquiryComponents.modal.find('.alert-box')
+            .institutionInquiryComponents.form.find('.alert-box')
             .addClass('alert alert-error')
             .html(_errorString);
             //.html('Please fill up the form properly.');
         return this;
     },
-    
-    showAlertSuccess: function() {
+
+    showAlertSuccess: function(response) {
+        var html = 'Your message has been sent! Thank you.';
+        if (response.subscribed) {
+            html = 'Your message has been sent! Please check your email to confirm your subscription. Thank you.';
+        }
+
         InstitutionInquiry
-        .resetAlertBox()
-        .institutionInquiryComponents.modal.find('.alert-box')
+        .institutionInquiryComponents.form.find('.alert-box')
         .addClass('alert alert-success')
-        .html('Your message has been sent! Thank you.');
+        .html(html);
         return this;
     },
-    
+
     saveInquiry: function(){
+        InstitutionInquiry.resetAlertBox();
         InstitutionInquiry.clearErrors();
         $.ajax({
-            url: InstitutionInquiry.institutionInquiryComponents.form.attr('action'),
+            url: this.institutionInquiryComponents.path,
             data: InstitutionInquiry.institutionInquiryComponents.form.serialize(),
             type: 'POST',
             dataType: 'json',
             success: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
-                .attr('disabled', false)
-                .hide();
-                $('#_closeBtnTrigger').html('Close');
-                InstitutionInquiry.showAlertSuccess();
-                InstitutionInquiry.institutionInquiryComponents.form.hide();
-                
+                .attr('disabled', false);
+                InstitutionInquiry.showAlertSuccess(response);
+                InstitutionInquiry.resetForm();
+                window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
             },
             error: function(response){
                 InstitutionInquiry.institutionInquiryComponents.submitButton
@@ -68,10 +72,12 @@ var InstitutionInquiry = {
                     var errors = $.parseJSON(response.responseText).html;
                     $('#institutionInquiry_captcha').val('');
                     if (errors.length) {
-                    	var _errorString = '';
+                        var _errorString = 'We need you to correct some of your input. Please check the fields in red.';
                         $.each(errors, function(key, item){
-                    		_errorString += item.error+"<br>";
                             InstitutionInquiry.institutionInquiryComponents.form.find('div.'+item.field).addClass('error');
+                            isLocationDropdown = item.field == 'country';
+                            isTextBox = item.field == 'message';
+                            $('<ul class="error"><li>'+item.error+'</li></ul>').insertAfter(InstitutionInquiry.institutionInquiryComponents.form.find('.'+item.field+' > ' + (isLocationDropdown ? '.fancy-dropdown-wrapper' : 'input' && isTextBox ? 'textarea' : 'input')));
                         });
                         InstitutionInquiry.showAlertError(_errorString);
                     }
@@ -80,43 +86,42 @@ var InstitutionInquiry = {
         });
 
     }
-    
+
 };
 
 
 
 (function($){
     $.fn.institutionInquiryModalForm = function(_components){
-        
+
         InstitutionInquiry.institutionInquiryComponents = {
-            'modal': this,
             'submitButton': _components.submitButton,
-            'form': _components.form
+            'form': _components.form,
+            'path': _components.path
         };
-        
-        InstitutionInquiry.institutionInquiryComponents.modal.live('show', function(){
-        	//console.log();
-        	$('body').append($(this));
-            InstitutionInquiry.restoreInitialState();
-        });
-        
+//
+//        InstitutionInquiry.institutionInquiryComponents.form.live('show', function(){
+//        	//console.log();
+//        	$('body').append($(this));
+//
+//        });
+//
         // initialize submit submitButton
         InstitutionInquiry.institutionInquiryComponents.submitButton.click(function(){
             $(this).attr('data-html', $(this).html())
                 .html($(this).attr('data-loader-text'))
                 .attr('disabled', true);
-            
+
             InstitutionInquiry.institutionInquiryComponents.form.submit();
-            
+
             return false;
         });
         InstitutionInquiry.institutionInquiryComponents.form.submit(function(){
-            
             InstitutionInquiry.saveInquiry();
-            
+
             return false;
         });
-        
+
         return this;
     }
 })(jQuery);

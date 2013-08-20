@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserChangeEmailFormType;
 
 use Symfony\Component\Form\Exception\NotValidException;
@@ -95,7 +97,7 @@ class InstitutionUserController extends Controller
         $institutionUser = $institutionUserService->findById($accountId, true); //get user account in chromedia global accounts by accountID
             
         if(!$institutionUser){
-            throw new AccessDeniedHttpException();
+            throw new Access();
         }
         
         $form = $this->createForm(new InstitutionUserChangePasswordType(), $institutionUser);
@@ -184,8 +186,7 @@ class InstitutionUserController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $institutionUser = $form->getData();
-    
-                // encrypt password here
+
                 $institutionUser->setEmail($form->get('new_email')->getData());
     
                 $institutionUserService->update($institutionUser);
@@ -201,7 +202,7 @@ class InstitutionUserController extends Controller
                         'institutionUser' => $institutionUser,
         ));
     }
-
+    
     public function inviteAction()
     {
         $institutionUserInvitation = new InstitutionUserInvitation();
@@ -224,49 +225,7 @@ class InstitutionUserController extends Controller
             'form' => $form->createView(),
         ));
     }
-
-    public function acceptInvitationAction()
-    {
-        // validate token
-        $token = $this->getRequest()->get('token', null);
-        $invitation = $this->get('services.token')->getActiveInstitutionUserInvitationByToken($token);
-
-        if (!$invitation) {
-            throw $this->createNotFoundException('Invalid token');
-        }
-
-        //TODO: get the matching institution user type
-        $institutionUserType = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->find(1);
-
-        // create temporary 10 character password
-        $temporaryPassword = \substr(SecurityHelper::hash_sha256(time()), 0, 10);
-
-        // create a institution user
-        $institutionUserService = $this->get('services.institution_user');
-        $institutionUser = new InstitutionUser();
-        $institutionUser->setInstitution($invitation->getInstitution());
-        $institutionUser->setInstitutionUserType($institutionUserType);
-        $institutionUser->setEmail($invitation->getEmail());
-        $institutionUser->setPassword($institutionUserService->encryptPassword($temporaryPassword));
-        $institutionUser->setFirstName($invitation->getFirstName());
-        $institutionUser->setMiddleName($invitation->getMiddleName());
-        $institutionUser->setLastName($invitation->getLastName());
-        $institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
-        $institutionUserService->create($institutionUser);
-
-        // dispatch event regarding institution user creation
-        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $this->get('events.factory')
-            ->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_USER, $institutionUser, array(
-                CreateInstitutionUserEvent::OPTION_TEMPORARY_PASSWORD => $temporaryPassword,
-                CreateInstitutionUserEvent::OPTION_USED_INVITATION => $invitation,
-        )));
-
-        // redirect to institution homepage
-        $this->get('session')->setFlash('success', 'You have successfuly accepted the invitation.');
-
-        return $this->redirect($this->generateUrl('institution_homepage'));
-    }
-
+    
     public function resetPasswordAction(Request $request)
     {
         $institutionUserService = $this->get('services.institution_user');
@@ -305,9 +264,7 @@ class InstitutionUserController extends Controller
      */
     public function changePasswordAction(Request $request)
     {
-        if (!$token = $request->get('token')) {
-            throw new NotFoundHttpException('Invalid or missing token.');
-        }
+        $token = $request->get('token');
         $institutionUserService = $this->get('services.institution_user');
         if (!$institutionUserToken = $institutionUserService->findUnexpiredUserPasswordToken($token)) {
             throw new NotFoundHttpException('Invalid or expired token.');

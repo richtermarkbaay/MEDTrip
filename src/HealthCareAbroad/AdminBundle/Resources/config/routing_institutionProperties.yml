@@ -84,6 +84,20 @@ admin_institution_medicalCenter_ajaxRemoveGlobalAward:
         institutionId: \d+
         imcId: \d+
 
+admin_institution_medicalCenter_showGlobalAwardsForm:
+    pattern: /ns-admin/institution/{institutionId}/medical-center/{imcId}/showAwardsForm
+    defaults: { _controller: AdminBundle:InstitutionProperties:showInstitutionGlobalAwards }
+    requirements:
+        _method: GET
+ 
+admin_institution_medicalCenter_portGlobalAwards:
+    pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/portGlobalAwards
+    defaults: { _controller: AdminBundle:InstitutionProperties:portInstitutionGlobalAwards }
+    requirements:
+        institutionId: \d+
+        imcId: \d+
+        _method: POST|GET
+        
 admin_institution_medicalCenter_ajaxAddAncillaryService:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxAddAncillaryService
     defaults: { _controller: AdminBundle:InstitutionProperties:ajaxAddInstitutionMedicalCenterAncillaryService }
@@ -97,6 +111,7 @@ admin_institution_medicalCenter_showAncillaryServiceForm:
     defaults: { _controller: AdminBundle:InstitutionProperties:showInstitutionAncillaryService}
     requirements:
         _method: POST|GET
+        
         
 admin_institution_medicalCenter_ajaxRemoveAncillaryService:
     pattern:  /admin/institution/{institutionId}/medical-center/{imcId}/ajaxRemoveAncillaryService

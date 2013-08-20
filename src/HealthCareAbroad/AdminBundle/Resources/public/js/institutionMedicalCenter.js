@@ -266,6 +266,48 @@ var InstitutionMedicalCenter = {
     	return false;
     },
     
+    showInstitutionAwardsForm: function(_elem) {
+    	_elem = $(_elem);
+    	_href = _elem.attr('href');
+    	_modal = $(_elem.attr('data-modalId'));
+    	_awardsTableElem = $(_elem.attr('data-tableId'));
+    	_modalBtn = $(_elem.attr('data-modalBtnId'));
+    	_modalBtn.removeAttr('disabled');
+    	$(_elem).html('Processing...');
+    	$.ajax({
+            type: 'GET',
+            url: _href,
+            success: function(response) {
+            	if(response.count == 0) {
+            		_modalBtn.attr('disabled', true);
+            	}
+            	$(_elem).html(' Port Institution GlobalAwards');
+            	_awardsTableElem.find('tbody').remove();
+            	_awardsTableElem.find('thead').after($(response.html));
+            	_modal.modal('show');
+            }
+        });
+    },
+    
+    portInstitutionGlobalAwards: function(_btnElem) {
+    	_btnElem = $(_btnElem);
+    	_divId = $(_btnElem.attr('data-divId'));
+    	_btnElem.attr('disabled',true).html('Processing...');
+    	_href = _btnElem.attr('data-path');
+    	_modal = $(_btnElem.attr('data-modalId'));
+    	$.ajax({
+            type: 'POST',
+            url: _href,
+            data: {'isCopy' : 1},
+            success: function(response) {
+            	_modal.modal('hide');
+            	_btnElem.removeAttr('disabled').html('Submit');
+            }
+        });
+    	
+    	return false;
+    },
+    
     _doAncillaryServiceAction: function (_linkElement) {
         if (_linkElement.hasClass('disabled')) {
             return false;

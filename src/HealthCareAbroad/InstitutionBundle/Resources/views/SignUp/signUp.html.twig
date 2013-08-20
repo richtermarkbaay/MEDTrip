@@ -9,8 +9,8 @@
         {% block wrappedContent %}    
         <h1>Create New Account</h1> 
         <div class="span8">
-            <form novalidate action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
-                <section class="section account-info">
+            <form action="{{ path('institution_signUp') }}" id="signupForm" method="POST" class="form">
+                <section id="_accountInfo" class="section account-info">
                    <h2>
                        Personal Contact Information<br>
                        </h2>
@@ -67,6 +67,7 @@
                                     <small> (Your company email address.)  </small>
                                 </label>
                                 {{ form_widget(form.email, { 'attr': {'class': 'span6 tooltip-wrap2', 'placeholder': 'i.e you@some-domain.com'} }) }}
+                                <img style="display:none; margin:-3px 37px 0px 0px;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
                                 {{ form_errors(form.email) }}
                                     <div class="tooltip-content2 hca-email">
                                                 Your email address will be your username when you log in.
@@ -88,6 +89,7 @@
                              <div class="control-group row-field {{ (form.confirm_password.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_confirmPassword"> Re-type your password * </label>
                                    {{ form_widget(form.confirm_password, { 'attr': {'class': 'span6'} }) }}
+                                   <img style="display:none; margin:-3px 37px 0px 0px;" class="_loaderAjax" src="{{ asset('images/institution/loading.gif') }}" />
                                    {{ form_errors(form.confirm_password) }}
                             </div>
                             </div>
@@ -133,9 +135,8 @@
                         <div class="span12">
                             <div class="span6"><label>* <small>Required Fields</small></label></div>
                             <div class="span6">
-                            <button type="submit" class="btn pull-right btn-primary btn-large"> Create Account</button>
+                            <button type="submit" class="_btnSubmit btn pull-right btn-primary btn-large"> Create Account</button>
                             </div>
-
                         </div>
                     </div>
                 </section>
@@ -146,13 +147,87 @@
             </form>
         </div>
         <aside class="span4">
-            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw}}
+            {{ render_signup_steps_by_route(app.request.attributes.get('_route'), false) | raw }}
 		</aside>
         {% endblock %}
     {% endembed %}
- 
+
 {% endblock %}
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript" src="{{ asset('bundles/helper/js/Flag.js') }}" ></script>
+<script type="text/javascript" src="{{ asset('bundles/helper/js/Common.js') }}" ></script>
+<script type="text/javascript">
+     $(document).ready(function() {
+        
+    	$('#institutionUserSignUp_email').blur(function(e) {
+        	_email = $('#institutionUserSignUp_email').val();
+        	if(_email !== "") {
+        		$('#loader_ajax').show();
+        		HCA.removeInlineErrorMessage($('#institutionUserSignUp_email').parent());
+        		if (isValidEmailAddress(_email)) {
+            		$.ajax({
+        				url: '{{ get_validate_email_uri() }}/' + _email,
+        				type: 'GET',
+        				success: function(response){
+        					if(response.status == 'invalid') {
+        					    HCA.displayInlineErrorMessage($('#institutionUserSignUp_email').parent(), response.message);
+            				}
+        					$('#loader_ajax').hide();
+        				}
+        			});
+        		} else {
+        			HCA.displayInlineErrorMessage($('#institutionUserSignUp_email').parent(), 'Email is invalid');
+        			$('#loader_ajax').hide();
+        		}
+        	}
+    	});
+
+    	$("#institutionUserSignUp_password").blur(function() {
+    		HCA.removeInlineErrorMessage($('#institutionUserSignUp_password').parent());
+    		if($("#institutionUserSignUp_password").val().length <= 5) {
+        		HCA.displayInlineErrorMessage($('#institutionUserSignUp_password').parent(), 'Password must be atleast 6 characters long!');
+    		}
+    		else {
+    			checkPasswordMatch();
+    		}
+    	});
+    	
+    	$("#institutionUserSignUp_confirm_password").blur(function() {
+        	if($("#institutionUserSignUp_password").val().length >= 6) {
+        		checkPasswordMatch();
+        	}
+    	});
+    	    	
+        $('button._btnSubmit').click(function() {
+            if($('#institutionUserSignUp_confirm_password').parent().hasClass('error') || $('#institutionUserSignUp_password').parent().hasClass('error') || $('#institutionUserSignUp_email').parent().hasClass('error')) {
+                HCA.alertMessage('error', 'We need you to correct some of your input. Please check the fields in red.');
+                window.location.href="#_accountInfo";
+                return false;
+            }else {
+            	$('button._btnSubmit').submit();
+            }
+        });
+    	
+    	
+    	function isValidEmailAddress(email) {
+    	    var pattern = new RegExp(/^(("[\w-+\s]+")|([\w-+]+(?:\.[\w-+]+)*)|("[\w-+\s]+")([\w-+]+(?:\.[\w-+]+)*))(@((?:[\w-+]+\.)*\w[\w-+]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][\d]\.|1[\d]{2}\.|[\d]{1,2}\.))((25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\.){2}(25[0-5]|2[0-4][\d]|1[\d]{2}|[\d]{1,2})\]?$)/i);
+    	    return pattern.test(email);
+    	};
+
+    	function checkPasswordMatch() {
+    		$('img._loaderAjax').show();
+    	    HCA.removeInlineErrorMessage($('#institutionUserSignUp_confirm_password').parent());
+    	    if ($("#institutionUserSignUp_password").val() != $("#institutionUserSignUp_confirm_password").val()) {
+        	  	HCA.displayInlineErrorMessage($('#institutionUserSignUp_confirm_password').parent(), 'Passwords do not match!');
+    	    }
+    	    $('img._loaderAjax').hide();	
+    	}
+
+    });
+
+
+
+</script>
+
 {% endblock %}

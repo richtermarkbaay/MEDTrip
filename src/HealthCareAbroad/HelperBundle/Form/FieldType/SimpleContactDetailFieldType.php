@@ -42,10 +42,12 @@ class SimpleContactDetailFieldType extends AbstractType
         $countryList = $builder->create('country', 'choice', array('label' => "Country", 'choices' => $countryChoices))
             ->addModelTransformer(new CountryTransformer($this->locationService));
         
+        $builder->add('type', 'hidden');
         $builder->add($countryList);
-        $builder->add('area_code', 'text', array('attr' => array('placeholder' => 'Area Code')));
-        $builder->add('number', 'text', array('attr' => array( 'placeholder' => 'Phone Number')));
+        $builder->add('area_code', 'text', array('required' => false, 'attr' => array('placeholder' => 'Area Code')));
+        $builder->add('number', 'text', array('required' => false, 'attr' => array( 'placeholder' => 'Phone Number')));
         $builder->add('ext', 'text', array('required' => false));
+        $builder->add('type', 'hidden', array('required' => false));
     }
     
     public function getName()

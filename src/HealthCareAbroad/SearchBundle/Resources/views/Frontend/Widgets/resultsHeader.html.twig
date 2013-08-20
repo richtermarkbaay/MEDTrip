@@ -1,0 +1,23 @@
+{% import _self as macro %}
+
+{% macro getHeaderText(count, searchLabel, type) %}
+    {% set object = (count == 1) ? 'Clinic' : 'Clinics' %}
+    {% if type == 'combination' %}
+        We have found {{count}} {{ object }} that offer <em>{{ searchLabel.treatment }}</em> in <em>{{ searchLabel.destination }}</em>.
+    {% else %}
+        {% if type == 'destination' %}
+            We have found <em>{{count}}</em> {{ object }} in <em>{{ searchLabel }}</em>.
+        {% elseif type == 'treatment' %}
+            We have found <em>{{count}}</em> {{ object }} that offer <em>{{ searchLabel }}</em>.
+        {% endif %}
+    {% endif %}
+{% endmacro %}
+
+<div class="content-profile-widget-wrapper">
+    <h3 class="heading">{{ macro.getHeaderText(searchResults.getTotalResults, searchLabel, type) }} </h3>
+
+    {% if searchResults.isPaginable %}
+        <h3 class="heading">Refine your results.</h3>
+        {% include 'SearchBundle:Frontend/Widgets:narrowsearch.html.twig' %}
+    {% endif %}
+</div>

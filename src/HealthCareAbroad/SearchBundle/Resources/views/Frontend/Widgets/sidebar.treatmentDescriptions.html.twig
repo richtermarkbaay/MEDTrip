@@ -1,0 +1,59 @@
+{% set data = [] %}
+
+{% if treatment is defined %}
+    {% set specialization = treatment.specialization %}
+    {% set subSpecializations = treatment.subSpecializations %}
+{% endif %}
+
+{% if subSpecialization is defined %}
+    {% if specialization is not defined %}
+        {% set specialization = subSpecialization.specialization %}
+    {% endif %}
+
+    {% set subSpecializations = [subSpecialization] %}
+{% endif %}
+
+<!-- Set Specialization Description -->
+{% set specializationData = {
+    title: specialization.name,
+    description: specialization.description,
+    url: path('frontend_search_results_specializations', {specialization: specialization.slug})
+} %}
+
+{% if specialization.media %}
+    {% set specializationData = specializationData|merge({thumbnail_url:specialization_media_src(specialization.media)}) %}
+{% else %}
+    {% set specializationData = specializationData|merge({thumbnail_icon_class:'specialization-icon'}) %}
+{% endif %}
+
+{% set data = data|merge([specializationData]) %}
+<!-- End of Set Specialization Description -->
+
+
+<!-- Set SubSpecializations Description -->
+{% if subSpecializations is defined and subSpecializations is not empty %}
+    {% for each in subSpecializations %}
+        {% set data = data|merge([{
+            title: each.name,
+            description: each.description,
+            url: path('frontend_search_results_subSpecializations', {specialization: specialization.slug, subSpecialization: each.slug})
+        }]) %}
+    {% endfor %}
+{% endif %}
+<!-- End of Set SubSpecializations Description -->
+
+
+<!-- Set Treatment Description -->
+{% if treatment is defined and treatment %}
+    {% set data = data|merge([{
+        title: treatment.name,
+        description: treatment.description,
+        url: path('frontend_search_results_treatments', {specialization: treatment.specialization.slug, treatment: treatment.slug}),
+        thumbnail_icon_class: 'treatment-icon'
+    }]) %}
+{% endif %}
+<!-- End of Set Treatment Description -->
+
+
+<!-- Pass data to featuredPosts.html.twig template -->
+{% include 'AdvertisementBundle:Frontend:featuredPosts.html.twig' with {featuredPosts: data} %}

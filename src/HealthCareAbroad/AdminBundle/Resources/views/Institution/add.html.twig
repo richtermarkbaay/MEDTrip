@@ -29,27 +29,19 @@
 										<form novalidate="novalidate" name="account" action="{{ path('admin_institution_add') }}" method="POST" class="form">
 					
 					                    <h5>Create USER account.</h5>
-					                     {{ form_errors(form) }}
-					                      {{ form_row(form.firstName) }}
-					                       {{ form_row(form.lastName) }}
-					                        <label for="username">Email 
-					                            <span><small style="font-size:85% ; color: #ccccc;">&nbsp;(your own email not the email of the institution)</small></span>
-					                        </label>
-					                         <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: 4px;">
-					                        <div class="input-prepend" >
-						                      	{{ form_widget(form.email) }}
-						                  
-					                        </div>
-					                       
+					                     {{ form_row(form.firstName) }}
+					                     {{ form_row(form.lastName) }}
+    					                        
+					                      	{{ form_row(form.email) }}
+					                       <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: -37px;">
 			                                {% for _widget in form.contactDetails %}
-			                                     <div class="span12 contact-add">
-                                                {{ form_widget(_widget) }}
+			                                    <div class="span12 contact-add">
+                                                    {{ form_widget(_widget) }}
                                                 </div>
                                             {% endfor %}
                                             {{ form_row(form.jobTitle) }}
 				                            {{ form_row(form.password) }}
 					                        {{ form_row(form.confirm_password) }}
-                                     
                                             <div>
                                                 <label for="institutionTypes">Types of Institution</label>
                                                 {% for _key, _typeChoice in form.type.vars.choices %}
@@ -59,7 +51,6 @@
                                                         <label class="required" for="{{ _inputId }}" style="display: inline !important;">{{ _typeChoice.label }}</label>
                                                     </div>
                                                 {% endfor %}
-                                                {{ form_errors(form.type) }}
                                             </div>
                                             <hr>
 					                     {{ form_widget(form._token) }}

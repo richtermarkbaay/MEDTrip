@@ -39,11 +39,24 @@ var HCA = {
 		HCA.alertContainerElem.find('.confirmation-box').html('<div class="alert alert-'+type+'"><p>' + message + '</p><a id="_close-confirmation-message" class="close" href="javascript:HCA.closeAlertMessage()"><i class="icon-remove"></i></a></div>');
 		HCA.alertContainerElem.fadeIn('fast');
 	},
-
+	
 	closeAlertMessage: function()
 	{
 		HCA.alertContainerElem.fadeOut();
+	},
+	
+	displayInlineErrorMessage: function(elem, message)
+	{
+		errorTemplate = '<ul class="error"><li>'+message+'</li></ul>';
+		elem.addClass('error').append(errorTemplate);
+	},
+	
+	removeInlineErrorMessage: function(elem)
+	{
+		elem.removeClass('error').find('ul').remove();
 	}
+	
+
 };
 
 function tinymceSetup(ed, e)
@@ -163,6 +176,12 @@ $(function(){
 
 	// Initialize HCA autocomplete object.
 	HCA.autocomplete.init();
+	
+	// Confirmation Close button 
+    $('#_close-confirmation-message').live('click', function(e) {
+        $("#confirmation-message").fadeOut();
+    });
+
 
 	// activate/deactivate status of current record 
 	$('a.update-status').click(function(){

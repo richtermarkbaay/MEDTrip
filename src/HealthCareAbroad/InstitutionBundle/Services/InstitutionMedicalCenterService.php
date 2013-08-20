@@ -61,10 +61,10 @@ class InstitutionMedicalCenterService
         if(!$slug) {
             return null;
         }
+        // USING static flag will yield unexpected results when ran in test suites
+        //static $isLoaded = false;
 
-        static $isLoaded = false;
-
-        if(!$isLoaded) {
+        //if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
             $qb->select('a, b, c, d, e, f, g, h, i, j, k, l')->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
             ->leftJoin('a.institution', 'b')
@@ -83,13 +83,14 @@ class InstitutionMedicalCenterService
             ->orderBy('f.id', 'ASC')
             ->setParameter('centerSlug', $slug)
             ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED);
+            $result = $qb->getQuery()->getOneOrNullResult();
+            //self::$institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
 
-            self::$institutionMedicalCenter = $qb->getQuery()->getOneOrNullResult();
+            //$isLoaded = true;
+        //}
 
-            $isLoaded = true;
-        }
-
-        return self::$institutionMedicalCenter;
+       // return self::$institutionMedicalCenter;
+       return $result;
     }
 
 
@@ -220,6 +221,7 @@ class InstitutionMedicalCenterService
         else {
             $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
         }
+        
         return $result;
     }
 

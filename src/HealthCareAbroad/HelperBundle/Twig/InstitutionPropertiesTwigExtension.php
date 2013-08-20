@@ -5,6 +5,10 @@
  */
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAward;
+
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -39,6 +43,7 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
         return array(
             'get_selected_AnciliaryServices' => new \Twig_Function_Method($this, 'getselected_AnciliaryServices'),
             'get_selected_GlobalAwards' => new \Twig_Function_Method($this, 'getselected_GlobalAwards'),
+            'get_globalAward_type' => new \Twig_Function_Method($this, 'getGlobalAwardType')
         );
     }
 
@@ -72,6 +77,11 @@ class InstitutionPropertiesTwigExtension extends \Twig_Extension
         }
 
         return static::$globalAwards;
+    }
+    
+    public function getGlobalAwardType($type)
+    {
+        return GlobalAwardTypes::getTypeValue($type);
     }
     
      public function getName()

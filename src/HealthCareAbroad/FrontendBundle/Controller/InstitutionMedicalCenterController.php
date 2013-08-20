@@ -6,6 +6,10 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
+
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
@@ -39,31 +43,6 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
      */
     protected $apiInstitutionMedicalCenterService;
 
-//     public function preExecute()
-//     {
-//         $request = $this->getRequest();
-
-//         if($request->get('imcSlug', null)) {
-
-//             $slug = $request->get('imcSlug');
-//             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->getFullInstitutionMedicalCenterBySlug($slug);
-
-//             if(!$this->institutionMedicalCenter) {
-//                 throw $this->createNotFoundException('Invalid institutionMedicalCenter');
-//             }
-
-//             $this->institution = $this->institutionMedicalCenter->getInstitution();
-
-//             $twigService = $this->get('twig');
-//             $twigService->addGlobal('institution', $this->institution);
-//             $twigService->addGlobal('institutionMedicalCenter', $this->institutionMedicalCenter);
-//         }
-//         else {
-
-//             throw $this->createNotFoundException('Medical center slug required.');
-//         }
-//     }
-
     public function profileAction(Request $request)
     {
         $start = \microtime(true);
@@ -88,19 +67,24 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
                 // redirect to hospital page
             }
             
-            // build optional data
+            // build optional data, according to paying client rules
             $this->apiInstitutionMedicalCenterService
                 ->buildBusinessHours($this->institutionMedicalCenter)
                 ->buildDoctors($this->institutionMedicalCenter)
                 ->buildGlobalAwards($this->institutionMedicalCenter)
                 ->buildOfferedServices($this->institutionMedicalCenter)
                 ->buildInstitutionSpecializations($this->institutionMedicalCenter)
-                ->buildLogoSource($this->institutionMedicalCenter)
+                // build logo src
+                ->buildLogoSource($this->institutionMedicalCenter, ImageSizes::MEDIUM)
+                // build cover photo src
+                ->buildFeaturedMediaSource($this->institutionMedicalCenter)
+                ->buildMediaGallery($this->institutionMedicalCenter)
+                ->buildContactDetails($this->institutionMedicalCenter)
+                ->buildExternalSites($this->institutionMedicalCenter) 
             ;
             
             $specializationsList = $this->apiInstitutionMedicalCenterService->listActiveSpecializations($this->institutionMedicalCenter);
             $this->institutionMedicalCenter['specializationsList'] = $specializationsList;
-            
             // cache this processed data
             $memcacheService->set($memcacheKey, $this->institutionMedicalCenter);
         }
@@ -116,7 +100,7 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institution' => $this->institution,
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry() )->createView(),
-            'formId' => 'imc_inquiry_form'
+            'formId' => 'imc_inquiry_form',
         );
         
         // set request variables to be used by page meta components

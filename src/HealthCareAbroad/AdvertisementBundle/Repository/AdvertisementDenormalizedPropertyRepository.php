@@ -23,10 +23,12 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->where('a.status = :status')
-        ->orderBy('a.dateExpiry', 'ASC')
+        ->andWhere('a.dateExpiry > :dateExpiry')
         ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
+        ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('advertisementTypes', $types)
-        ->setParameter('status', AdvertisementStatuses::ACTIVE);
+        ->setParameter('status', AdvertisementStatuses::ACTIVE)
+        ->setParameter('dateExpiry', new \DateTime());
         
         return $qb->getQuery()->getResult();
     }
@@ -42,10 +44,12 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->innerJoin('a.institutionMedicalCenter', 'c')
            ->leftJoin('c.logo', 'imcLogo')
            ->leftJoin('a.media', 'd')
-           ->orderBy('a.dateExpiry', 'ASC')
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')
            ->andWhere('a.status = :status')
-           ->setParameter('status', AdvertisementStatuses::ACTIVE);
+           ->andWhere('a.dateExpiry > :dateExpiry')
+           ->orderBy('a.dateExpiry', 'ASC')
+           ->setParameter('status', AdvertisementStatuses::ACTIVE)
+           ->setParameter('dateExpiry', new \DateTime());
 
         foreach($criteria as $key => $value) {
             $qb->andWhere("a.$key = :$key")->setParameter($key, $value);
@@ -70,9 +74,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('b.city', 'ci')
         ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'd')
-        ->orderBy('a.dateExpiry', 'ASC')
         ->andWhere('a.status = :status')
-        ->setParameter('status', AdvertisementStatuses::ACTIVE);
+        ->andWhere('a.dateExpiry > :dateExpiry')
+        ->orderBy('a.dateExpiry', 'ASC')
+        ->setParameter('status', AdvertisementStatuses::ACTIVE)
+        ->setParameter('dateExpiry', new \DateTime());
 
         foreach($criteria as $key => $value) {
             $qb->andWhere("a.$key = :$key")->setParameter($key, $value);
@@ -95,9 +101,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
            ->leftJoin('a.media', 'c')
            ->where('a.advertisementType = :type')
            ->andWhere('a.status = :status')
+           ->andWhere('a.dateExpiry > :dateExpiry')
            ->orderBy('a.dateExpiry', 'ASC')
            ->setParameter('type', 6)
-           ->setParameter('status', AdvertisementStatuses::ACTIVE);
+           ->setParameter('status', AdvertisementStatuses::ACTIVE)
+           ->setParameter('dateExpiry', new \DateTime());
 
         $result = $qb->getQuery()->getResult();
 
@@ -114,9 +122,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')
         ->andWhere('a.status = :status')
+        ->andWhere('a.dateExpiry > :dateExpiry')
         ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('type', 7)
-        ->setParameter('status', AdvertisementStatuses::ACTIVE);
+        ->setParameter('status', AdvertisementStatuses::ACTIVE)
+        ->setParameter('dateExpiry', new \DateTime());
 
         $result = $qb->getQuery()->getResult();
 
@@ -131,9 +141,11 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->leftJoin('a.media', 'c')
         ->where('a.advertisementType = :type')
         ->andWhere('a.status = :status')
+        ->andWhere('a.dateExpiry > :dateExpiry')
         ->orderBy('a.dateExpiry', 'ASC')
         ->setParameter('type', 13)
-        ->setParameter('status', AdvertisementStatuses::ACTIVE);
+        ->setParameter('status', AdvertisementStatuses::ACTIVE)
+        ->setParameter('dateExpiry', new \DateTime());
 
         foreach($criteria as $key => $value) {
             $qb->andWhere("a.$key = :$key")->setParameter($key, $value);

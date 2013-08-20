@@ -1,11 +1,3 @@
-institution_medicalCenter_ajaxRemoveSpecializationTreatment:
-    pattern:  /medical-center/{imcId}/specialization/{isId}/ajaxRemoveTreatment/
-    defaults: { _controller: InstitutionBundle:Specialization:ajaxRemoveSpecializationTreatment }
-    requirements:
-        imcId: \d+
-        isId: \d+
-        _method: POST
-        
 # AJAX
 institution_ajax_loadSpecializationTreatments:
     pattern: /ns-institution/{imcId}/ajax/load-specialization-treatments/{isId}

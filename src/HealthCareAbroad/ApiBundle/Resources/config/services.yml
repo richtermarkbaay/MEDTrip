@@ -5,13 +5,20 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setMemcache, [@services.memcache]]
             - [setMediaExtension, [@services.media.twig.extension]]
+            - [setContactDetailService, [@services.contact_detail]]
             
     services.api.institutionMedicalCenter:
         class: HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
         calls:
             - [setDoctrine, [@doctrine]]
             - [setMediaExtension, [@services.media.twig.extension]]
-            
+            - [setContactDetailService, [@services.contact_detail]]
+        
+    services.api.hcaBlog:
+        class: HealthCareAbroad\ApiBundle\Services\HcaBlogApiService
+        calls:
+            - [setDoctrine, [@doctrine]]
+
     #controller.api.institution:
     #    class: HealthCareAbroad\ApiBundle\Controller\InstitutionApiController
         

@@ -1,4 +1,24 @@
-{% include 'FrontendBundle:Institution/Widgets:heading.html.twig' %}
+{% set streetAddress = institution_address_to_string(institution, ['address1']) %}
+{% set mainAddress = institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode']) %}
+
+{% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
+        headerText: institution.name,
+        featuredMediaSource: institution.featuredMedia and institution.featuredMedia.src 
+            ? institution.featuredMedia.src 
+            : imageplaceholder.institutionFeaturedImage,
+        logoSource: institution.logo and institution.logo.src
+            ? institution.logo.src
+            : null,
+        defaultLogoClass: 'hospital-default-logo',
+        contactNumber: institution.mainContactNumber,
+        streetAddress: streetAddress,
+        mainAddress: mainAddress,
+        institutionInquiryLink: '#form',
+        social: institution.socialMediaSites,
+        contactEmail:institution.contactEmail,
+        website: institution.websites
+    }}
+%}
 
 <div class="profile-wrapper tab-content span8">
 	<ul class="nav nav-tabs" id="institutionTab">
@@ -19,19 +39,29 @@
         </div>
     {% endif %}
     <!-- End of Tabs Content -->
+    
+    {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
+            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institution.socialMediaSites,
+            contactEmail: institution.contactEmail,contactNumber: institution.mainContactNumber,website: institution.websites, } 
+        %}
 </div>
 
 <aside class="span4 aside-wrapper">
     {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
-    {# include 'FrontendBundle:Institution/Widgets:infoAside.html.twig' #}
-
-    {# include 'FrontendBundle:Institution/Widgets:branchesAside.html.twig' #}
-
     {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
 
-    {% include 'FrontendBundle:Widgets:profileSocialAside.html.twig' with { urls: social_media_sites_to_array(institution.socialMediaSites) } %}
+    <section id="form_feedback" class="widget-wrapper">
+        <h4 class="widget-heading">
+            Email this Institution
+        </h4>
+        {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {form: form} %}
+    </section>
 </aside> <!--End of aside_content-->
+<div class="span12">
+    <p>Copyright 2013, <b>{{ institution.name }}</b> 
+    </p>
+</div>
 
 
 {% block inlineJavascriptCode %}
@@ -40,12 +70,6 @@
 <!--
 (function($){
     $(function(){
-
-        $('#modal_multiple_institution_inquiry_form').institutionInquiryModalForm({
-            submitButton: $('#modal_institution_inquiry_submitButton'),
-            form: $('form#{{ formId }}') 
-        });
-        
         $('#hospital-contact[rel="tooltip"]').tooltip({
             title: function(){
 
@@ -64,11 +88,28 @@
         }).click(function(){
             return false;
         });
+
+        $('[rel=popover]').popover({
+            placement: 'top',
+            html: true,
+            trigger: 'click',
+            content: function() {
+                return $('#_call-content-wrapper').html();
+            }
+        }).click(function(e) {
+            e.preventDefault();
+        });
 		
         $('#institutionTab a').click(function (e) {
       	  e.preventDefault();
       	  $(this).tab('show');
       	});
+
+        $('#inquiry_submitButton').institutionInquiryModalForm({
+            submitButton: $('#inquiry_submitButton'),
+            form: $('form#inquiryForm') ,
+            path: "{{ path('frontend_multiple_center_ajaxSaveInstitutionInquiry', {institutionId : institution.id}) }}"
+        });
     });
 })(jQuery);
 //-->

@@ -97,8 +97,7 @@ class InquiryController extends Controller
             $em->persist($institutionInquiry);
             $em->flush();
 
-            // TODO: Update this when we have formulated a strategy for our event system
-            // We can't use InstitutionBundleEvents; we don't know the consequences of the event firing up other listeners.
+            //Listener for NOTIFICATIONS_INQUIRIES events is configured to rethrow any exceptions encountered.
             try {
                 $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
             } catch (\Exception $e) {
@@ -106,21 +105,24 @@ class InquiryController extends Controller
                 //ignored for now
             }
 
-            $this->get('session')->setFlash('notice', "Successfully saved!");
-            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId())), 200, array('content-type' => 'application/json'));
+            $subscribed = false;
+            if ($form->get('newsletterSubscription')->getData()) {
+                $subscribed = $this->get('services.mailchimp')->listSubscribe($institutionInquiry->getInquirerEmail());
+            }
+
+            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId(), 'subscribed' => $subscribed)), 200, array('content-type' => 'application/json'));
         }
         else {
+
             $errors = array();
             $form_errors = $this->get('validator')->validate($form);
             foreach ($form_errors as $_err) {
                 $errors[] = array('field' => str_replace('data.','',$_err->getPropertyPath()), 'error' => $_err->getMessage());
             }
-
             $captchaError = $form->get('captcha')->getErrors();
             if(count($captchaError)) {
                 $errors[] = array('field' => $form->get('captcha')->getName(), 'error' => $captchaError[0]->getMessageTemplate());
             }
-
             $response = new Response(\json_encode(array('html' => $errors)), 400, array('content-type' => 'application/json'));
         }
 

@@ -50,6 +50,12 @@ var BroadSearchWidget = {
 
             // reset dataSource of the other type
             BroadSearchWidget.formComponents[_theOtherType].dataSource = {};
+            var listWrapper = BroadSearchWidget.formComponents[_theOtherType].autocompleteField.siblings('.combolist-wrapper:first')
+            var updateList = !listWrapper.hasClass('hide');
+            if (updateList) {
+                //TODO: is this the proper way?
+                listWrapper.addClass('hide');
+            }
 
             $.ajax({
                 url: BroadSearchWidget.sourceUri,
@@ -59,7 +65,14 @@ var BroadSearchWidget = {
                 success: function(response) {
                     // update the value of the dataSource for this type
                     $.each(response, function(_key, _data){
+                        if (typeof BroadSearchWidget.formComponents[_key] == 'undefined') {
+                            return true;
+                        }
                         BroadSearchWidget.formComponents[_key].dataSource = _data;
+                        if (updateList) {
+                            //TODO: verify with Hazel if we want the list to redisplay
+                            BroadSearchWidget.formComponents[_key].dropdownButton.click();
+                        }
                     });
                 }
              });

@@ -91,7 +91,14 @@ doctrine:
                 user: %statistics_db_user%
                 password: %statistics_db_password%
                 charset: UTF8
-
+            hca_blog:
+                driver: %database_driver%
+                host: %hca_blog_db_host%
+                port: %database_port%
+                dbname: %hca_blog_db_name%
+                user: %hca_blog_db_user%
+                password: %hca_blog_db_password%
+                charset: UTF8
     orm:
         auto_generate_proxy_classes: %kernel.debug%
         #auto_mapping: true
@@ -122,6 +129,11 @@ doctrine:
                 connection: statistics
                 mappings:
                     StatisticsBundle: ~
+            hca_blog:
+                connection: hca_blog
+                mappings:
+                    ApiBundle: ~
+                      
 
 
 # Swiftmailer Configuration
@@ -159,7 +171,7 @@ gregwar_captcha:
     as_url: true
     reload: true
     distortion: false
-    width: 180
+    width: 170
     height: 60
     invalid_message: Incorrect captcha code.
     #text_color: { r: 85, g: 85, b: 85 }

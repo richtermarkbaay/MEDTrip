@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
+use HealthCareAbroad\HelperBundle\Services\ContactDetailService;
+
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension;
@@ -16,6 +22,19 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 
 class InstitutionMedicalCenterApiService
 {
+    // possible contexts to consider when building the data
+    const CONTEXT_FULL_API = 0; // not implemented, but maybe used for api with no restrictions
+    
+    const CONTEXT_FULL_PAGE_VIEW = 1; // Full page
+    
+    const CONTEXT_HOSPITAL_CLINICS_LIST = 2; // Clinic list
+    
+    const CONTEXT_SEARCH_RESULT_ITEM = 3; // Search results
+    
+    const CONTEXT_ADS = 4; // Ads results
+    
+    
+    
     /**
      * @var Registry
      */
@@ -25,6 +44,11 @@ class InstitutionMedicalCenterApiService
      * @var MediaExtension
      */
     private $mediaExtensionService;
+    
+    /**
+     * @var ContactDetailService
+     */
+    private $contactDetailService;
     
     public function setDoctrine(Registry $v)
     {
@@ -36,33 +60,153 @@ class InstitutionMedicalCenterApiService
         $this->mediaExtensionService = $v;
     }
     
+    public function setContactDetailService(ContactDetailService $v)
+    {
+        $this->contactDetailService = $v;
+    }
+    
+    /**
+     * 
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildContactDetails(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplayContactDetails = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        if ($canDisplayContactDetails) {
+            // add a string representation for each contactDetail
+            $hasSetMainContact = false;
+            foreach ($institutionMedicalCenter['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $this->contactDetailService->contactDetailToString($contactDetail);
+                if (!$hasSetMainContact) {
+                    $institutionMedicalCenter['mainContactNumber'] = $contactDetail;
+                    $hasSetMainContact = true;
+                }
+            }   
+        }
+        else {
+            // not yet used, but could be helpful
+            if (self::CONTEXT_FULL_API != $context) {
+                // TODO: Note to self: do we really have to clear this?  
+                $institutionMedicalCenter['contactDetails'] = array();
+            }
+            $institutionMedicalCenter['mainContactNumber'] = null;
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Build website url and social media sites url
+     * 
+     * @param array $institutionMedicalCenter
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildExternalSites(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        
+        if (self::CONTEXT_FULL_API == $context) {
+            // full api, no restrictions, not yet used but could be helpful
+            $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
+            
+        }
+        else {
+            $canDisplayExternalSites = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+            if ($canDisplayExternalSites) {
+                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
+            }
+            else {
+                // build the SM sites default values
+                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites(\json_encode(SocialMediaSites::getDefaultValues()));
+                $institutionMedicalCenter['websites'] = null;
+            }
+        }
+        
+        return $this;
+    }
+    
+    /**
+     *
+     * @param array $institutionMedicalCenter
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildFeaturedMediaSource(&$institutionMedicalCenter)
+    {
+        $canDisplayFeaturedMedia = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        
+        // temporarily pull the institution featured media
+        $featuredMedia = isset($institutionMedicalCenter['institution']['featuredMedia']) ? $institutionMedicalCenter['institution']['featuredMedia'] : null;
+        
+        if($canDisplayFeaturedMedia && $featuredMedia){
+            $featuredMedia['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($featuredMedia, ImageSizes::LARGE_BANNER);;
+            $institutionMedicalCenter['featuredMedia'] = $featuredMedia;
+        } 
+        
+        return $this;
+    }
+    
+    /**
+     * Build media gallery data of medical center
+     * 
+     * @param array $institutionMedicalCenter
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
+     */
+    public function buildMediaGallery(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplayGallery = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+        if (!$canDisplayGallery && $context != InstitutionMedicalCenterApiService::CONTEXT_FULL_API) {
+            $institutionMedicalCenter['media'] = array();
+        }
+        
+        // build the source
+        
+        return $this;
+    }
+    
     /**
      * 
      * @param array $institutionMedicalCenter
      * @return \HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService
      */
-    public function buildLogoSource(&$institutionMedicalCenter)
+    public function buildLogoSource(&$institutionMedicalCenter, $size=ImageSizes::MINI, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
     {
-        $canDisplayImcLogo = $institutionMedicalCenter['institution']['payingClient'];
+        $canDisplayImcLogo = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient']; // default
+        $canDefaultToSpecializationLogo = false;
+        switch ($context){
+            case InstitutionMedicalCenterApiService::CONTEXT_ADS:
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_SEARCH_RESULT_ITEM:
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_HOSPITAL_CLINICS_LIST:
+                $canDefaultToSpecializationLogo = true;
+                break;
+            case InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW:
+                break;
+        }
+        
         
         // client is allowed to display logo, and there is a logo
         if ($canDisplayImcLogo && $institutionMedicalCenter['logo']) {
-            $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($institutionMedicalCenter['logo'], ImageSizes::MEDIUM);
+            $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getInstitutionMediaSrc($institutionMedicalCenter['logo'], $size);
         }
         else {
-            // not allowed to display logo, or clinic has no logo
-            // we get the logo of the first specialization
-            $firstSpecialization = \count($institutionMedicalCenter['institutionSpecializations'])
-            ? (isset($institutionMedicalCenter['institutionSpecializations'][0]['specialization']) ? $institutionMedicalCenter['institutionSpecializations'][0]['specialization'] : null)
-            : null;
-        
-            // first specialization has a media
-            if ($firstSpecialization && $firstSpecialization['media']){
-                $institutionMedicalCenter['logo']['src'] = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
+            $src = null;
+            if ($canDefaultToSpecializationLogo) {
+                // not allowed to display logo, or clinic has no logo
+                // we get the logo of the first specialization
+                $firstSpecialization = \count($institutionMedicalCenter['institutionSpecializations'])
+                ? (isset($institutionMedicalCenter['institutionSpecializations'][0]['specialization']) ? $institutionMedicalCenter['institutionSpecializations'][0]['specialization'] : null)
+                : null;
+                
+                // first specialization has a media
+                if ($firstSpecialization && $firstSpecialization['media']){
+                    $src = $this->mediaExtensionService->getSpecializationMediaSrc($firstSpecialization['media'], ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
+                }
             }
-            else {
-                $institutionMedicalCenter['logo']['src'] = null;
-            }
+            $institutionMedicalCenter['logo']['src'] = $src;
         }
         
         return $this;
@@ -196,13 +340,14 @@ class InstitutionMedicalCenterApiService
     private function getQueryBuilderForFullInstitutionMedicalCenterProfile()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, imc_m, imc_cd, imc_bh, inst_sp, sp, sp_lg, tr, sub_sp')
+        $qb->select('imc, inst, co, st, ct, inst_lg, imc_lg, inst_fm, imc_m, imc_cd, imc_bh, inst_sp, sp, sp_lg, tr, sub_sp')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->innerJoin('imc.institution', 'inst')
             ->leftJoin('inst.country', 'co')
             ->leftJoin('inst.state', 'st')
             ->leftJoin('inst.city', 'ct')
             ->leftJoin('inst.logo', 'inst_lg')
+            ->leftJoin('inst.featuredMedia', 'inst_fm')
             ->leftJoin('imc.logo', 'imc_lg')
             ->leftJoin('imc.media', 'imc_m')
             ->leftJoin('imc.contactDetails', 'imc_cd')

@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
+
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
+use HealthCareAbroad\HelperBundle\Services\ContactDetailService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
 
 use Doctrine\ORM\Query\Expr\Join;
@@ -27,6 +33,15 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
  */
 class InstitutionApiService
 {
+    // possible context uses
+    const CONTEXT_FULL_API = 0;
+    
+    const CONTEXT_FULL_PAGE_VIEW = 1;
+    
+    const CONTEXT_SEARCH_RESULT_ITEM = 2; // Search results
+    
+    const CONTEXT_ADS = 4; // Ads results
+    
     /**
      * @var Registry
      */
@@ -36,6 +51,11 @@ class InstitutionApiService
      * @var MemcacheService
      */
     private $memcache;
+    
+    /**
+     * @var ContactDetailService
+     */
+    private $contactDetailService;
     
     /**
      * @var MediaExtension
@@ -57,12 +77,67 @@ class InstitutionApiService
         $this->mediaExtension = $v;
     }
     
+    public function setContactDetailService(ContactDetailService $v)
+    {
+        $this->contactDetailService = $v;
+    }
+    
     /**
      * @return \HealthCareAbroad\MediaBundle\Twig\Extension\MediaExtension
      */
     public function getMediaExtension()
     {
         return $this->mediaExtension;
+    }
+    
+    /**
+     * Build the main website url and social media sites
+     * 
+     * @param array $institution
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+     */
+    public function buildExternalSites(&$institution, $context=InstitutionApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplay = $institution['payingClient'] != 0;
+        if (InstitutionApiService::CONTEXT_FULL_API != $context && !$canDisplay) {
+            $institution['socialMediaSites'] = SocialMediaSites::formatSites(\json_encode(SocialMediaSites::getDefaultValues()));
+            $institution['websites'] = null;
+        }
+        else {
+            $institution['socialMediaSites'] = SocialMediaSites::formatSites($institution['socialMediaSites']);
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * Build contact details data of institution, also add a mainContactNumber property
+     * 
+     * @param array $institution
+     * @param int $context
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+     */
+    public function buildContactDetails(&$institution, $context=InstitutionApiService::CONTEXT_FULL_PAGE_VIEW)
+    {
+        $canDisplay = $institution['payingClient'] != 0;
+        if (InstitutionApiService::CONTEXT_FULL_API != $context && !$canDisplay){
+            $institution['contactDetails'] = array();
+            $institution['mainContactNumber'] = null;
+        }
+        else {
+            // add a string representation for each contactDetail
+            $hasSetMainContact = false;
+            foreach ($institution['contactDetails'] as &$contactDetail) {
+                $contactDetail['__toString'] = $this->contactDetailService->contactDetailToString($contactDetail);
+                if (!$hasSetMainContact) {
+                    $institution['mainContactNumber'] = $contactDetail;
+                    $hasSetMainContact = true;
+                }
+            }    
+        }
+        
+        return $this;
     }
     
     /**
@@ -73,7 +148,6 @@ class InstitutionApiService
      */
     public function buildFeaturedMediaSource(&$institution)
     {
-        // TODO: provide a more concise list of paying client flags
         if (isset($institution['featuredMedia']) && $institution['payingClient']){
             $institution['featuredMedia']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['featuredMedia'], ImageSizes::LARGE_BANNER);
         }
@@ -92,7 +166,6 @@ class InstitutionApiService
      */
     public function buildLogoSource(&$institution)
     {
-        // TODO: provide a more concise list of paying client flags
         if (isset($institution['logo']) && $institution['payingClient']){
             $institution['logo']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['logo'], ImageSizes::MEDIUM);
         }
@@ -140,10 +213,11 @@ class InstitutionApiService
         
         // build the medical centers data, based on the displayed elements in the medical centers list
         $qb = $this->doctrine->getManager()->createQueryBuilder();
-        $qb->select('imc, inst, imc_lg, imc_sp, sp, sp_m')
+        $qb->select('imc, inst, imc_lg, imc_md, imc_sp, sp, sp_m')
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->leftJoin('imc.institution', 'inst')
             ->leftJoin('imc.logo', 'imc_lg')
+            ->leftJoin('imc.media', 'imc_md')
             ->leftJoin('imc.institutionSpecializations', 'imc_sp')
             ->leftJoin('imc_sp.specialization', 'sp')
             ->leftJoin('sp.media', 'sp_m')
@@ -153,9 +227,10 @@ class InstitutionApiService
             // but we will replace the entry for institutionMedicalCenters so we have to ensure this
             ->andWhere('imc.status = :imcActiveStatus')
             ->setParameter('imcActiveStatus', InstitutionMedicalCenterStatus::APPROVED)
+            ->orderBy('imc.id', 'ASC')// important for first medical center
         ;
-        $institution['institutionMedicalCenters'] = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
         
+        $institution['institutionMedicalCenters'] = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
         
         return $institution;
     }

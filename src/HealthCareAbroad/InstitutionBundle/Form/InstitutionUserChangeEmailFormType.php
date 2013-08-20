@@ -31,6 +31,7 @@ class InstitutionUserChangeEmailFormType extends AbstractType
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $siteUser = $options['data'];
         
         if (!$siteUser instanceof SiteUser) {
@@ -50,13 +51,12 @@ class InstitutionUserChangeEmailFormType extends AbstractType
         ->add( 'new_email', 'email', array(
                         'label' => 'New Email',
                         'virtual' => true,
-                        'constraints' => array(new NotBlank(array('message'=>'Email address is required.')) ,new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email', 'message' => 'Email address already exists.')))
+                        'constraints' => array(new NotBlank(array('message'=>'Email address is required.')) ,new ValidAccountEmail(array('currentAccountEmail' => $institutionUser->getEmail(), 'field' => 'email')))
         ))
         ->add('confirm_email', 'email', array(
                         'label' => 'Confirm Email',
                         'virtual' => true,
-                        'constraints' => array(
-                                        new EqualFieldValue(array('field' => 'new_email', 'message' => 'Email address do not match')))
+                        'constraints' => array(new EqualFieldValue(array('field' => 'new_email', 'message' => 'Email address do not match')))
         ));
     }
     

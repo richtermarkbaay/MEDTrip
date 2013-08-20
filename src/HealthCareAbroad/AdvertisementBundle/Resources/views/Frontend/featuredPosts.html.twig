@@ -1,0 +1,24 @@
+{% if featuredPosts is not empty %}
+<div class="widget-wrapper">
+	<div class="widget-content-wrapper articles-type box-shadow">
+	    {% for each in featuredPosts %}
+			<article class="article-format">
+
+			    {% if (each.thumbnail_url is defined and each.thumbnail_url) or (each.thumbnail_icon_class is defined and each.thumbnail_icon_class) %}
+    			    <a class="pull-left thumbnail-wrapper" href="{{ each.url }}" target="_target">
+    			        {% if each.thumbnail_url is defined %}
+    			            <img src="{{ each.thumbnail_url }}" class="featured-icon img-circle">
+    			        {% elseif each.thumbnail_icon_class is defined %}
+    			            <span class="hca-sprite {{ each.thumbnail_icon_class }} img-circle featured-icon"></span>
+    			        {% endif %}
+    		        </a>
+                {% endif %}
+
+				<h4 class="title"><a href="{{ each.url }}" target="_blank">{{ each.title }}</a></h4>
+				<p>{{ each.description }}</p>
+			</article>
+		{% endfor %}
+    </div>
+</div> <!--End of aside_scrollbar-->
+
+{% endif %}
