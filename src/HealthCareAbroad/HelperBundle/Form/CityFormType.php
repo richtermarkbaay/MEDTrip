@@ -14,12 +14,12 @@ class CityFormType extends AbstractType
 {	
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
-		$status = array(City::STATUS_ACTIVE => 'active', City::STATUS_INACTIVE => 'inactive');
+		//$status = array(City::STATUS_ACTIVE => 'active', City::STATUS_INACTIVE => 'inactive');
 
 		$builder->add('name');
 // 		$builder->add('country', 'globalCountryList');
-		$builder->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country'));
-		$builder->add('status', 'choice', array('choices'=>$status));
+		//$builder->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country'));
+		//$builder->add('status', 'choice', array('choices'=>$status));
 	}
 
 	// How does it work?
