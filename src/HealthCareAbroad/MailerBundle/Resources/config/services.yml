@@ -1,4 +1,7 @@
 services:
+    services.mailchimp:
+        class: HealthCareAbroad\MailerBundle\Services\MailChimpService
+        arguments: [@rezzza.mail_chimp.client]
     services.mailer.message:
         class: HealthCareAbroad\MailerBundle\Services\MessageService
         arguments: [@service_container]

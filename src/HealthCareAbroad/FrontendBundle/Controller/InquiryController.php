@@ -105,25 +105,12 @@ class InquiryController extends Controller
                 //ignored for now
             }
 
+            $subscribed = false;
             if ($form->get('newsletterSubscription')->getData()) {
-                //Copied from FrontendBundle:DefaultController:subscribeNewsletterAction
-                //TODO: move to service class
-                $mailChimp = $this->get('rezzza.mail_chimp.client');
-                //Test service
-                $subscriptionMessage = $mailChimp->ping();
-
-//                 $email = $institutionInquiry->getInquirerEmail();
-
-//                 //TODO: externalize
-//                 $listId = '6fb06f3765';
-//                 $mailChimp->listSubscribe($listId, $email);
-
-//                 $subscriptionMessage = $mailChimp->errorCode ?
-//                     'An error occurred while processing your subscription.' :
-//                     'Thank you! Please check your email to confirm your subscription.';
+                $subscribed = $this->get('services.mailchimp')->listSubscribe($institutionInquiry->getInquirerEmail());
             }
 
-            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId(), 'subscriptionMessage' => $subscriptionMessage)), 200, array('content-type' => 'application/json'));
+            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId(), 'subscribed' => $subscribed)), 200, array('content-type' => 'application/json'));
         }
         else {
 
