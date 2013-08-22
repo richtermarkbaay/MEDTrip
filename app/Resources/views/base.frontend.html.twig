@@ -70,5 +70,8 @@
         {% block body %}{% endblock %}
 
         {% block inlineJavascriptCode %}{% endblock %}
+        
+        {#--- brandfolder script. #598 ---#}
+        <script type="text/javascript">var bf_url="healthcareabroad";(function(){var e=document.createElement("script");e.type="text/javascript";e.async=!0;e.src="//d2sdf28wg0skh3.cloudfront.net/bf.min.js";var t=document.getElementsByTagName("script")[0];t.parentNode.insertBefore(e,t)})();var brandfoldeOnLoad=function(){if("#brand"==window.location.hash)return Brandfolder.showEmbed({brandfolder_id:bf_url})}</script>
     </body>
 </html>
