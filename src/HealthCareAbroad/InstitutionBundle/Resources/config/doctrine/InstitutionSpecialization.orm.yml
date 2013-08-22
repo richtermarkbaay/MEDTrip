@@ -2,9 +2,6 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
     type: entity
     table: institution_specializations
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionSpecializationRepository
-    gedmo:
-        loggable:
-            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -15,25 +12,17 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
         description:
             type: text
             nullable: false
-            gedmo:
-                - versioned
         dateModified:
             type: datetime
             nullable: false
             column: date_modified
-            gedmo:
-                - versioned
         dateCreated:
             type: datetime
             nullable: false
             column: date_created
-            gedmo:
-                - versioned
         status:
             type: smallint
             nullable: false
-            gedmo:
-                - versioned
     manyToOne:
         specialization:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization

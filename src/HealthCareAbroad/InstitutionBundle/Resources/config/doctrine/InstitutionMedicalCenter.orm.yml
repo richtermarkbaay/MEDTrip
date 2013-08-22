@@ -41,6 +41,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             length: 100
             nullable: false
             column: address
+            gedmo:
+                - versioned
         addressHint:
             type: string
             length: 250
@@ -56,17 +58,23 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             fixed: false
             nullable: false
             column: contact_number
+            gedmo:
+                - versioned
         contactEmail:
             type: string
             length: 100
             fixed: false
             nullable: false
             column: contact_email
+            gedmo:
+                - versioned
         websites:
             type: string
             length: 200
             fixed: false
             nullable: false
+            gedmo:
+                - versioned
         websiteBackUp:
             type: text
             nullable: true
@@ -97,11 +105,15 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         payingClient:
             type: smallint
             nullable: false
-            column: paying_client    
+            column: paying_client
+            gedmo:
+                - versioned
         rankingPoints:
             type: integer
             nullable: true
             column: ranking_points
+            gedmo:
+                - versioned
         slug:
             type: string
             length: 100
@@ -116,6 +128,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
         institutionSpecializations:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
             mappedBy: institutionMedicalCenter
+            gedmo:
+                - versioned
         institutionMedicalCenterProperties:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty
             mappedBy: institutionMedicalCenter
@@ -172,6 +186,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             cascade:
                 - "persist"
             mappedBy: null
+            gedmo:
+                - versioned
             joinTable:
                 name: institution_medical_center_contact_details
                 joinColumns:

@@ -168,7 +168,20 @@ class DefaultController extends Controller
             $template = 'AdminBundle:Default:versionsList.html.twig';
         }
         
-        $objectName = $object->__toString();
+        if (\method_exists($object, '__toString')){
+            $objectName = $object->__toString();
+        }
+        elseif (\method_exists($object, 'getName')) {
+            $objectName = $object->getName();
+        }
+        elseif (\method_exists($object, 'getId')) {
+            $objectName = '#'.$object->getId();
+        }
+        else {
+            $objectName = null;
+        }
+        
+        
         return $this->render($template, array(
             'versions' => $versionEntries,
             'objectName' => $objectName

@@ -121,6 +121,7 @@ doctrine:
                     TreatmentBundle: ~
                     UserBundle: ~
                     TermBundle: ~
+                    LogBundle: ~
             logger:
                 connection: logger
                 mappings:

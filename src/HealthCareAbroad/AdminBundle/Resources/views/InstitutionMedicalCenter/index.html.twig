@@ -49,6 +49,9 @@
                             <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: center.id, institutionId: institution.id}) }}" target="_blank" class="pull-left edit-center-description" style="font-size:13px;font-weight:normal">
                                 <i class="icon-edit"></i> <span>edit</span>
                             </a>
+                            <a href="{{ path('admin_showEditHistory', {objectId: center.id, objectClass: base64_encode(getClass(center))}) }}">
+                                History
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}
