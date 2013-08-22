@@ -207,7 +207,9 @@ class SearchTwigExtension extends \Twig_Extension
             $url = $this->getInstitutionMedicalCenterFrontendUrl($item);
             $name = $item->getName();
             $description = strip_tags(strlen($item->getDescriptionHighlight()) ? $item->getDescriptionHighlight() : $item->getDescription());
-            $supplementaryUrl = array('url' => $this->getInstitutionFrontendUrl($item->getInstitution()), $name => $item->getInstitution()->getName());
+            $supplementaryUrl = array('url' => $this->getInstitutionFrontendUrl($item->getInstitution()), 'name' => $item->getInstitution()->getName());
+
+            $displayPhoto = $displayLogo = false;
             switch ($item->getPayingClient()) {
                 case PayingStatus::PHOTO_LISTING:
                     $displayPhoto = true;
@@ -219,18 +221,6 @@ class SearchTwigExtension extends \Twig_Extension
             $featuredMedia = $item->getInstitution()->getFeaturedMedia();
             $links = $this->getCenterLinks($item, $url);
         }
-
-        /*
-            hideSubLink: hideSubLink,
-            logo: render_institution_medical_center_logo(center, {attr: {class: 'small', alt: 'clinic logo'}}),
-            institutionName: center.institution.name,
-            mainAddress: medical_center_complete_address_to_string(center, ['city', 'state', 'country']),
-            streetAddress: medical_center_complete_address_to_string(center, ['address', 'zipCode']),
-
-            mainAddress: institution_address_to_string(institution, ['city', 'state', 'country']),
-            streetAddress: institution_address_to_string(institution, ['address1', 'zipCode']),
-
-        */
 
         return array(
             'isInstitution' => $isInstitution,
