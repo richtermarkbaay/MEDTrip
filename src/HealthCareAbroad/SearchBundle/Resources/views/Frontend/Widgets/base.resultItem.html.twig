@@ -22,19 +22,19 @@
                     <img class="img-polaroid" alt="" src="{{ institution_media_src(searchResultItem.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE')) }}">
                 </div>
                 {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with {
-                        'link': { 
-                            url: searchResultItem.url, 
-                            html: '<span class="white-icon-search"></span> Learn More', 
+                        'link': {
+                            url: searchResultItem.url,
+                            html: '<span class="white-icon-search"></span> Learn More',
                             class: 'btn green pull-right' }
                 } %}
-                
+
             </div>
 
         {% endif %}
 
         <h3 class="heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
 
-        {% if searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
+        {% if hideSubLink is defined and not hideSubLink and searchResultItem.institutionName is defined and searchResultItem.institutionName|length %}
             <h4 class="heading"><a href="{{ searchResultItem.institutionUrl }}">{{ searchResultItem.institutionName }}</a></h4>
         {% endif %}
 
