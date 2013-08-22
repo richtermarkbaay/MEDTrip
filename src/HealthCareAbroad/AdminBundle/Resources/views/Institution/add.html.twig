@@ -33,7 +33,9 @@
 					                     {{ form_row(form.lastName) }}
     					                        
 					                      	{{ form_row(form.email) }}
+					                      	
 					                       <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: -37px;">
+					                       {{ form_row(form.confirm_email) }}
 			                                {% for _widget in form.contactDetails %}
 			                                    <div class="span12 contact-add">
                                                     {{ form_widget(_widget) }}

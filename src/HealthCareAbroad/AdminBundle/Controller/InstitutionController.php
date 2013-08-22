@@ -186,7 +186,6 @@ class InstitutionController extends Controller
 	    			$institution->setLogo(null);
 	    			$institution->setCoordinates('');
 	    			$institution->setType(trim($postData['type'])); /* FIX ME! */
-	    			$institution->setState('');
 	    			$institution->setWebsites('');
 	    			$institution->setStatus(InstitutionStatus::getBitValueForInactiveStatus());
 	    			$institution->setZipCode('');
@@ -215,6 +214,9 @@ class InstitutionController extends Controller
     							));
 	    	
 	    			return $this->redirect($this->generateUrl('admin_institution_add_details', array('institutionId' => $institution->getId())));
+	    		}
+	    		else {
+	    		    
 	    		}
 	    	}
 	    	
