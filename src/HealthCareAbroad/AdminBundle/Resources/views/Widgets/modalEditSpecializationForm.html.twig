@@ -14,8 +14,12 @@
               <ul>
             {% for _treatment in _data.treatments %}
                 <li style="list-style:none;">
-                    <input  style="width: auto;!important" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ _treatment.id }}" /> {{ _treatment.name }}
+                    <label>
+                        <input  style="width: auto;!important" type="checkbox" name="{{ formName }}[{{ specialization.id }}][treatments][]" value="{{ _treatment.id }}" /> 
+                        {{ _treatment.name }}
+                    </label>
                 </li>
+                
             {% endfor %}
             </ul>
         

@@ -1,0 +1,26 @@
+<tr class="ancillaryancillaryServices_row">
+	<td>{{ each.name |title }}</td>
+	<td>
+	    {% set status = _isSelected is defined and _isSelected  ? {label: 'Delete', icon: 'icon-minus'} : {label: 'Add', icon: 'icon-plus'} %}
+         <div class="post-toolbar treatment_action">
+        	<i class="{{ status.icon }}" title="{{ status.label }}"></i>
+        	 {% if (_isSelected is defined and _isSelected ) %}
+        		 {% for property in properties %}
+        	        {% if property.value == each.id  %}
+        	        
+            		    <a href="{{ path('admin_institution_medicalCenter_ajaxRemoveAncillaryService', {'institutionId' : institution.id,'imcId': institutionMedicalCenter.id, 'id': property.id } ) }}" onclick="InstitutionMedicalCenter.addRemoveAncillaryService($(this)); return false;" title="" >
+            			    {{ status.label }} Service
+            		    </a>
+            		    
+        	    	 {% endif %}
+        		 {% endfor %}  
+        	 {% else %}
+        	    <a href="{{ path('admin_institution_medicalCenter_ajaxAddAncillaryService', {'institutionId' : institution.id, 'imcId': institutionMedicalCenter.id, 'id': each.id } ) }}" onclick="InstitutionMedicalCenter.addRemoveAncillaryService($(this)); return false;" title="" >
+        	        {{ status.label }} Service
+                </a>
+                
+            {% endif %}
+        </div>
+	</td>
+</tr>
+
