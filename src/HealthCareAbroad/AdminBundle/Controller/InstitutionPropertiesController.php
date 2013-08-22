@@ -139,23 +139,25 @@ class InstitutionPropertiesController extends Controller
         $availableGlobalAwards = $this->get('services.institution_property')->getUnAssignedInstitutionGlobalAwardsToInstitutionMedicalCenter($this->institution, $assignedGlobalAwards);
         
         if($request->get('isCopy')) {
+            $em = $this->getDoctrine()->getEntityManager();
             foreach ($availableGlobalAwards as $award)
             {
+                
                 // check if this medical center already have this property value
                 if (!$this->get('services.institution_medical_center')->hasPropertyValue($this->institutionMedicalCenter, $propertyType, $award['id'])) {
     
                     $property = $propertyService->createInstitutionMedicalCenterPropertyByName($propertyType->getName(), $this->institution, $this->institutionMedicalCenter);
                     $property->setValue($award['id']);
-                    try {
-                        $em = $this->getDoctrine()->getEntityManager();
-                        $em->persist($property);
-                        $em->flush();
-    
-                    }
-                    catch (\Exception $e){
-                        $response = new Response($e->getMessage(), 500);
-                    }
+                    $em->persist($property);
                 }
+            }
+            
+            try {
+                $em->flush();
+            
+            }
+            catch (\Exception $e){
+                $response = new Response($e->getMessage(), 500);
             }
         }
         return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
