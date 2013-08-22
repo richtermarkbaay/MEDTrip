@@ -7,22 +7,22 @@ services:
         calls:
             - [setFormFactory, [@form.factory]]
             - [setTwig, [@twig]]
-            
+
     frontend.institution_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\InstitutionTwigExtension
         public: false
-        calls: 
+        calls:
             - [setInstitutionService, [@services.institution]]
             - [setRouter, [@router]]
         tags:
             - { name: twig.extension }
-            
+
     frontend.advertisement_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\AdvertisementTwigExtension
         public: false
         tags:
             - { name: twig.extension }
-            
+
     frontend.page_meta_configuration_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\PageMetaConfigurationTwigExtension
         public: false
@@ -30,7 +30,7 @@ services:
             - { name: twig.extension }
         calls:
             - [setPageMetaConfigurationService, [@services.helper.page_meta_configuration]]
-            
+
     frontend.search_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\SearchTwigExtension
         public: false
@@ -38,3 +38,4 @@ services:
             - { name: twig.extension }
         calls:
             - [setRouter, [@router]]
+            - [setInstitutionService, [@services.institution]]
