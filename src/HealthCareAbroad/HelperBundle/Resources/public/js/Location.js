@@ -30,8 +30,11 @@ var Location = {
                 if (response.states.length){
                     Location.disableWidget(widget, false);
                     widget.data('fancyAutocomplete').setSource(response.states);
-                    widget.trigger('reloadedDataSource');
                 }
+                else {
+                    widget.data('fancyAutocomplete').setSource([]);
+                }
+                widget.trigger('reloadedDataSource');
             }
         });
     },

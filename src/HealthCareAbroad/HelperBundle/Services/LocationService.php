@@ -267,7 +267,7 @@ class LocationService
 	
 	public function createCityFromArray(array $data)
 	{
-	    $requiredFields = array('id', 'name', 'slug');
+	    $requiredFields = array('id', 'name');
 	    foreach ($requiredFields as $key) {
 	        if (!\array_key_exists($key, $data)) {
 	            throw LocationServiceException::missingRequiredCityDataKey($key);
@@ -277,7 +277,9 @@ class LocationService
 	    $city = new City();
 	    $city->setId($data['id']);
 	    $city->setName($data['name']);
-	    $city->setSlug($data['slug']);
+	    if (isset($data['slug'])){
+	        $city->setSlug($data['slug']);
+	    }
 	    $city->setStatus(City::STATUS_ACTIVE);
 
 	    if(isset($data['geoCountry'])) {
