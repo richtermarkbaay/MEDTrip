@@ -95,7 +95,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         if (!$medicalCenter->getId()) {
             $medicalCenter->setWebsites($this->institution->getWebsites());
         }
-        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
+        $this->_add($builder, 'websites', 'website_custom_field', array('label' => 'Website', 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'address', 'detailed_street_address', array('constraints' => array(new NotBlank(array('message' => 'Please provide a valid address.')))));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));

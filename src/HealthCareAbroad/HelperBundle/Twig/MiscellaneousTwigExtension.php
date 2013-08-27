@@ -49,7 +49,6 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
             'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
-            'get_main_website' => new \Twig_Function_Method($this, 'getMainWebsite'),
             'get_social_media_site_url' => new \Twig_Function_Method($this, 'getSocialMediaSiteUrl'),
             'get_social_media_site_label' => new \Twig_Function_Method($this, 'getSocialMediaSiteLabel'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
@@ -188,22 +187,6 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         }
 
         return $returnVal;
-    }
-
-    public function getMainWebsite($jsonString)
-    {
-        $arrWebsites = \json_decode($jsonString, true);
-
-        if(!\is_array($arrWebsites)) {
-            $siteName = $jsonString;
-        } else {
-            $siteName = isset($arrWebsites['main']) ? $arrWebsites['main'] : '';
-
-        }
-
-        $siteName = \str_replace('http://', '', $siteName);
-
-        return $siteName;
     }
 
     /**

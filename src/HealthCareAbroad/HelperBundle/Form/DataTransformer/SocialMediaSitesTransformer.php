@@ -5,7 +5,7 @@ use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-class WebsitesDataTransformer implements  DataTransformerInterface
+class SocialMediaSitesTransformer implements  DataTransformerInterface
 {   
     public function transform($value)
     {

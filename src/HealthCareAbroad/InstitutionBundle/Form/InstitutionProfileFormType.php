@@ -114,9 +114,9 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
-        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
+        $this->_add($builder, 'websites', 'website_custom_field', array('label' => 'Website', 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
-        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false ));
+        $this->_add($builder, 'services', 'institutionServices_list', array('mapped' => false, 'centers' => false));
         $this->_add($builder, 'awards', 'institutionGlobalAwards_list', array('mapped' => false, 'centers' => false));
         $this->_add($builder, 'logo', new InstitutionMediaFileType($this->institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($this->institution->getFeaturedMedia()));
