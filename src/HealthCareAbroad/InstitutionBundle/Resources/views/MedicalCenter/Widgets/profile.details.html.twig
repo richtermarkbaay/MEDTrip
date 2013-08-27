@@ -72,12 +72,12 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set website = get_main_website(institutionMedicalCenter.websites)  %}
-          <div id="_view-contacts-content" class="{{ website == '' or institutionMedicalCenter.contactEmail == '' or not institutionMedicalCenter.contactDetails.first.number ? 'alert alert-block' : '' }}">
+        {% set website = institutionMedicalCenter.websites %}
+        <div id="_view-contacts-content" class="{{ website == '' or institutionMedicalCenter.contactEmail == '' or not institutionMedicalCenter.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p><i class="icon-globe"></i> Website:
                 <span id="profileWebsitesText">
                     {% if website %}
-                       <b>http://{{ website }}</b>
+                       <b>{{ website }}</b>
                     {% else %}
                         <b>no clinic website</b> added.
                         <a onclick="$('#clinic-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add Website</a>
