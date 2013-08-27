@@ -44,8 +44,8 @@
                          {% set institutionTypeLabel = get_institution_type(institution.type)%}
                         <td>{{ institutionTypeLabel}}</td>
                         <td>{{ institution.country }}</td>
-                        <td>{{ institution.dateCreated|date('m-d-Y h:iA') }}</td>
-                        <td>{{ institution.dateModified|date('m-d-Y h:iA') }}</td>
+                        <td>{{ institution.dateCreated|date('F-d-Y h:iA') }}</td>
+                        <td>{{ institution.dateModified|date('F-d-Y h:iA') }}</td>
 
                         <td>
                             <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a> 

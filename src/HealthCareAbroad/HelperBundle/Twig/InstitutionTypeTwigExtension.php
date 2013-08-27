@@ -22,9 +22,12 @@ class InstitutionTypeTwigExtension extends \Twig_Extension
      
      public function getInstitutionType($types)
      {
-         $returnValue = InstitutionTypes::getLabelList();
-
-         return $returnValue[$types];
+         $institutionType = 'Single';
+         if ($types == 1) {
+             $institutionType = 'Multiple';
+         }
+         
+         return $institutionType;
      }
      
      public function getName()

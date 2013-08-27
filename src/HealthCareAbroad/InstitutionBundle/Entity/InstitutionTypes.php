@@ -12,8 +12,8 @@ final class InstitutionTypes
     public static function getLabelList()
     {
         return array(
-            self::MULTIPLE_CENTER => 'Multiple',
-            self::SINGLE_CENTER => 'Single',
+            self::MULTIPLE_CENTER => 'A hospital with many clinics, centers or units',
+            self::SINGLE_CENTER => 'A single clinic or an independent healthcare provider',
             //self::MEDICAL_TOURISM_FACILITATOR => 'A Medical Tourism Facilitator / Agent',
         );
     }
