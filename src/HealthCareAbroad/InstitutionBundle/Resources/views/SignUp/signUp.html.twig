@@ -167,8 +167,9 @@
         		HCA.removeInlineErrorMessage($('#institutionUserSignUp_email').parent());
         		if (isValidEmailAddress(_email)) {
             		$.ajax({
-        				url: '{{ get_validate_email_uri() }}/' + _email,
-        				type: 'GET',
+        				url: '{{ get_validate_email_uri() }}',
+        				data: {'email': _email },
+        				type: 'POST',
         				success: function(response){
         					if(response.status == 'invalid') {
         					    HCA.displayInlineErrorMessage($('#institutionUserSignUp_email').parent(), response.message);
@@ -185,7 +186,7 @@
 
     	$("#institutionUserSignUp_password").blur(function() {
     		HCA.removeInlineErrorMessage($('#institutionUserSignUp_password').parent());
-    		if($("#institutionUserSignUp_password").val().length <= 5) {
+    		if($("#institutionUserSignUp_password").val().length <= 5 && $("#institutionUserSignUp_password").val() !== '' ) {
         		HCA.displayInlineErrorMessage($('#institutionUserSignUp_password').parent(), 'Password must be atleast 6 characters long!');
     		}
     		else {
