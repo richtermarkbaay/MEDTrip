@@ -6,11 +6,11 @@ FrontendBundle_institution:
 FrontendBundle_feedback:
     resource: "@FrontendBundle/Resources/config/routing.feedback.yml"
     prefix:   /
-    
+
 frontend_campaign_intro:
     pattern:  /advertising-guide.html
     defaults: { _controller: FrontendBundle:CampaignIntro:index}
-    
+
 frontend_newsletter_subscribe:
     pattern: /subscribe-newswletter
     defaults: { _controller: FrontendBundle:Default:subscribeNewsletter}
@@ -70,19 +70,19 @@ frontend_page_history:
     defaults: { _controller: FrontendBundle:CommonPage:viewHistory, breadcrumbLabel: 'History' }
     requirements:
        _method:  GET
-       
+
 frontend_page_inquiry:
     pattern: /advertising-inquiry.html
     defaults: { _controller: FrontendBundle:CommonPage:saveInquiry, breadcrumbLabel: 'Advertising Inquiry' }
     requirements:
         _method: GET|POST
-        
+
 frontend_page_about_us:
     pattern: /about-us.html
     defaults: { _controller: FrontendBundle:CommonPage:viewAboutUs, breadcrumbLabel: 'About Us' }
     requirements:
        _method: GET
-        
+
 frontend_treatment_list:
     pattern: /treatments.html
     defaults: { _controller: FrontendBundle:Default:treatmentList, breadcrumbLabel: Treatments }
@@ -103,7 +103,7 @@ frontend_search_combined_countries_specializations:
         page: \d+
 
 frontend_search_combined_countries_specializations__subSpecializations:
-    pattern: /{country}/{specialization}/{subSpecializations}
+    pattern: /{country}/{specialization}/{subSpecialization}
     defaults: { _controller: FrontendBundle:Default:listCountrySubSpecialization, page: 1 }
     requirements:
         page: \d+
@@ -122,7 +122,7 @@ frontend_search_combined_countries_cities_specializations:
         page: \d+
 
 frontend_search_combined_countries_cities_specializations__subSpecializations:
-    pattern: /{country}/{city}/{specialization}/{subSpecializations}
+    pattern: /{country}/{city}/{specialization}/{subSpecialization}
     defaults: { _controller: FrontendBundle:Default:listCitySubSpecialization, page: 1 }
     requirements:
         page: \d+
@@ -136,7 +136,7 @@ frontend_search_combined_countries_cities_specializations_treatments:
 frontend_404:
     pattern: /404
     defaults: { _controller: FrontendBundle:Default:call404Excemption }
-    
+
 frontend_500:
     pattern: /500
     defaults: { _controller: FrontendBundle:Default:call500Excemption }
@@ -144,7 +144,7 @@ frontend_500:
 frontend_main_default:
     pattern:  /
     defaults: { _controller: FrontendBundle:Default:index}
-    
+
 frontend_static_page:
     pattern: /{url}
     defaults: { _controller: FrontendBundle:StaticPage: index }
