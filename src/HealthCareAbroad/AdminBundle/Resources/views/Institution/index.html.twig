@@ -21,6 +21,7 @@
                 <tr>
                     <th width="30" align="center">Paying</a></th>
                     <th width="200" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                    <th width="200">Email</th>
                     <th width="200">Insititution Type</th>
                     <th width="100">Country</th>
                     <th width="100" id="column-dateCreated"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateCreated' ? 'sort-' ~ sortOrder : '' }}">Date Created</a></th>
@@ -39,6 +40,7 @@
                         <td>
                             <a class="name" href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" target="_blank" title="View {{ institution.name }}">{{ institution.name }}</a> 
                         </td>
+                        <td>{{ institution.contactEmail }}</td>
                          {% set institutionTypeLabel = get_institution_type(institution.type)%}
                         <td>{{ institutionTypeLabel}}</td>
                         <td>{{ institution.country }}</td>
