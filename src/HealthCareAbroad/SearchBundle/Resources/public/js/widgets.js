@@ -82,11 +82,17 @@ var BroadSearchWidget = {
     initializeComponents: function(){
 
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
-            componentOptions.dropdownButton.click(function(){
-                componentOptions.autocompleteField.autocomplete('search', '');
-            });
-
+            
             var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
+            
+            componentOptions.dropdownButton.click(function(){
+                if (listWrapper.hasClass('hide')){
+                    componentOptions.autocompleteField.autocomplete('search', '');
+                }
+                else {
+                    listWrapper.addClass('hide');
+                }
+            });            
 
             componentOptions.autocompleteField
                 // setup autocomplete
@@ -111,6 +117,7 @@ var BroadSearchWidget = {
                            // load sources of the other type
                            BroadSearchWidget.loadSourcesByType(ui.item);
                            $(BroadSearchWidget.formComponents[ui.item.type].valueField).val(ui.item.id);
+                           BroadSearchWidget.submitButton.attr('disabled', false);
                        }
                    },
                    change: function(event, ui) {
@@ -139,13 +146,14 @@ var BroadSearchWidget = {
                 /*var _itemLink = $('<a data-value="'+item.id+'" data-type="'+item.type+'">'+item.label+'</a>');*/
                 var _itemLink = SearchWidgetUtils.getLink(item);
 
-                _itemLink.on('click', function(){
+                /**_itemLink.on('click', function(){
                     BroadSearchWidget.loadSourcesByType(item);
                     $(BroadSearchWidget.formComponents[item.type].valueField).val(item.id);
                     BroadSearchWidget.submitButton.attr('disabled', false);
                     BroadSearchWidget.formComponents[item.type].autocompleteField.val(item.label);
 
-                });
+                    console.log('Selected '+item.label);
+                });**/
                 return $("<li>").append(_itemLink).appendTo(ul);
             };
 
