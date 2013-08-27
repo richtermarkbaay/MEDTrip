@@ -298,7 +298,19 @@ var FancyBusinessHours = function(_options){
             _inputOpeningTimestamp = openingDateTime.getTime();
             _inputClosingTimestamp = closingDateTime.getTime();         
             // input for opening time is within range of an existing business hour
-            if (_inputOpeningTimestamp >= this.openingTimestamp && _inputClosingTimestamp <= this.closingTimestamp) {
+            if (_inputOpeningTimestamp >= this.openingTimestamp && _inputClosingTimestamp <= this.closingTimestamp ) {
+                _valid = false;
+                return false; // break loop
+            }
+            else if(_inputOpeningTimestamp >= this.openingTimestamp && _inputClosingTimestamp >= this.closingTimestamp ) {
+                _valid = false;
+                return false; // break loop
+            }
+            else if(_inputOpeningTimestamp <= this.openingTimestamp && _inputClosingTimestamp >= this.closingTimestamp ) {
+                _valid = false;
+                return false; // break loop
+            }
+            else if(_inputOpeningTimestamp <= this.openingTimestamp && _inputClosingTimestamp <= this.closingTimestamp ) {
                 _valid = false;
                 return false; // break loop
             }
