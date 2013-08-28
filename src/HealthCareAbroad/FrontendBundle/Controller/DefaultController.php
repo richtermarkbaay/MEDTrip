@@ -43,7 +43,7 @@ class DefaultController extends ResponseHeadersController
     public function indexAction(Request $request)
     {
         $start = \microtime(true);
-        
+
         $key = 'ads.homepage.all';
         $memcache = $this->get('services.memcache');
         $cachedData = $memcache->get($key);
@@ -56,20 +56,20 @@ class DefaultController extends ResponseHeadersController
                 'commonTreatments' => $twigExtension->renderHomepageCommonTreatmentsAds(),
                 'featuredVideo' => $twigExtension->renderHomepageFeaturedVideoAd(),
             );
-            
+
             $memcache->set($key, $ads);
         }
         else {
             $ads = $cachedData;
         }
-        
+
         $response = $this->setResponseHeaders($this->render('FrontendBundle:Default:index.optimized.html.twig', array('ads' => $ads)));
         $end = \microtime(true);$diff = $end-$start;
         //echo "{$diff}s"; exit;
-        
+
         return $response;
     }
-    
+
     public function indexBakAction(Request $request)
     {
         $start = \microtime(true);
