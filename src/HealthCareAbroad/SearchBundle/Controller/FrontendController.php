@@ -29,7 +29,7 @@ use HealthCareAbroad\FrontendBundle\Controller\ResponseHeadersController;
  */
 class FrontendController extends ResponseHeadersController
 {
-    private $resultsPerPage = 20;
+    private $resultsPerPage = 1;
 
     public function showWidgetAction(Request $request)
     {
@@ -119,10 +119,12 @@ class FrontendController extends ResponseHeadersController
 
         $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
 
+        $context = $request->attributes->get('context');
+
         if (count($searchTerms) == 1 || $context === 'destination') {
             $searchTerm = $searchTerms[0];
 
-            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $request->attributes->get('context'));
+            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $context);
 
             // this is used to avoid using slugs after redirection
             $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
