@@ -73,6 +73,9 @@ a:hover {
   line-height: 1.2em;
   margin: 20px 0 20px;
 }
+#content-wrapper .search-results-wrapper > .home-search {
+  margin: 10px 30px 10px 5px;
+}
 #content-wrapper .search-results-wrapper > .item-wrapper {
   border-bottom: 1px solid #e5e5e5;
 }
