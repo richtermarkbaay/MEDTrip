@@ -77,17 +77,6 @@ class InstitutionSpecializationService
         return $center;
     }
 
-    public function getSpecializationSearchResult(Institution $institution , $term){
-        $ids = array();
-        foreach ($this->doctrine->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializations($institution)  as $e) {
-            $ids[] = $e->getSpecialization()->getId();
-        }
-
-        $result = $this->doctrine->getRepository('TreatmentBundle:Specialization')->getSpecializationSearchByName(trim($term), $ids);
-
-        return $result;
-    }
-
     /**
      * Newley added service for updated markup
      * Get all unselected specializations in centers
