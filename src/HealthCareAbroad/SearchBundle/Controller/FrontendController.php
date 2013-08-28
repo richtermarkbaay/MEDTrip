@@ -643,13 +643,13 @@ class FrontendController extends ResponseHeadersController
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
+        $paginationParameters = array('tag' => $request->get('tag', ''));
         if ($request->get('country', '')) {
             $paginationParameters['country'] = $request->get('country', '');
         }
         if ($request->get('city', '')) {
             $paginationParameters['city'] = $request->get('city', '');
         }
-        $paginationParameters['tag'] = $request->get('tag');
 
         if (empty($searchTerms)) {
             $filters = array(
@@ -692,9 +692,10 @@ class FrontendController extends ResponseHeadersController
             }
             $uniqueTermIds = array_flip(array_flip($termIds));
             $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->get('doctrine'), $uniqueTermIds);
-            $paginationParameters = $routeConfig['routeParameters'];
+
+            //$paginationParameters = $routeConfig['routeParameters'];
             $searchTerms = $routeConfig['sessionParameters'];
-            $request->getSession()->set('search_terms', json_encode($searchTerms));
+            //$request->getSession()->set('search_terms', json_encode($searchTerms));
         }
 
         //FIXME: we just show Home -> Related Search for now

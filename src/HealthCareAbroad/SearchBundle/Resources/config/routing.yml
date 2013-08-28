@@ -33,20 +33,22 @@ frontend_search_process:
 
 frontend_search_results_related_terms:
     pattern: /related-search/{tag}/{page}
-    #defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
-    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
+    #defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
 
 frontend_search_results_related_terms_country:
     pattern: /related-search/{country}/{tag}/{page}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
+    #defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
 
 frontend_search_results_related_terms_city:
     pattern: /related-search/{country}/{city}/{tag}/{page}
-    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
+    defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1, breadcrumbLabel: 'Related Search' }
+    #defaults: { _controller: SearchBundle:Frontend:searchResultsRelated, page: 1 }
     requirements:
         page: \d+
 
