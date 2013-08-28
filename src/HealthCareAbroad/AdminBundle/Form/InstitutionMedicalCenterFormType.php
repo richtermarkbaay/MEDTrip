@@ -88,7 +88,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email'));
         $this->_add($builder, 'contactDetails', 'collection', array('label' => 'Clinic Phone Number', 'type' => 'simple_contact_detail'));
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
-        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
+        $this->_add($builder, 'websites', 'website_custom_field', array('label' => 'Clinic Website', 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field', array('attr' => array('value' => $this->institution->getSocialMediaSites())));
         $this->_add($builder, 'address', 'detailed_street_address', array('label' => 'Address', 'attr' => array('value' => $this->institution->getAddress1())));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));

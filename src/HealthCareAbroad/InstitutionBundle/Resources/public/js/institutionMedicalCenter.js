@@ -363,7 +363,7 @@ var InstitutionMedicalCenter = {
                     	}
                     	
                        	if(response.institutionMedicalCenter.websites){
-                    		$('#profileWebsitesText').html('<b>http://'+ response.institutionMedicalCenter.websites +'</b>');
+                    		$('#profileWebsitesText').html('<b>'+ response.institutionMedicalCenter.websites +'</b>');
                     	}else{
                     		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'clinic website'));
                     	}

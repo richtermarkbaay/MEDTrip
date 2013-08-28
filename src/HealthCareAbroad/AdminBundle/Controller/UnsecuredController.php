@@ -50,7 +50,7 @@ class UnsecuredController extends Controller
             throw $this->createNotFoundException("Invalid institution");
         }
         if ($this->request->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($this->request->get('imcId', 0));
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($this->request->get('imcId', 0), true);
         }
     }
     
@@ -132,11 +132,17 @@ class UnsecuredController extends Controller
      */
     public function ajaxSpecializationSourceAction(Request $request)
     {
+        $start = \microtime(true);
         $output = array();
         $term = \trim($request->get('term', ''));
-    
-        $output = $this->get('services.institution_specialization')->getSpecializationSearchResult($this->institution , $term);
-    
-        return new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        
+        $specializations = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')
+            ->getAvailableSpecializationsByMedicalCenterId($this->institutionMedicalCenter->getId(), array('name' => $term));
+        
+        $end = \microtime(true); $diff = $end-$start;
+        $output = array('specializations' => $specializations, 'executionTime' => $diff);
+        $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
+        
+        return $response; 
     }
 }

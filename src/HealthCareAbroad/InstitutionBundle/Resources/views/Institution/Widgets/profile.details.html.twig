@@ -66,13 +66,13 @@
     {% endblock %}
 
     {% block viewContent %}
-        {% set website = get_main_website(institution.websites) %}
+        {% set website = institution.websites %}
         <div id="alertDiv" class="{{ website == '' or institution.contactEmail == '' or not institution.contactDetails.first.number ? 'alert alert-block' : '' }}">
             <p>
                 <i class="icon-globe"></i> Website:
                 <span id="profileWebsitesText">
                     {% if website %}
-                        <b>http://{{ website }}</b>
+                        <b>{{ website }}</b>
                     {% else %}
                         <b>no website</b> added.
                         <a onclick="$('#institution-edit-contacts-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add website</a>

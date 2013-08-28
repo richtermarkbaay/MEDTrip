@@ -53,6 +53,12 @@ var FancyAutocompleteWidget = function(widget, options){
             return this;
         },
         
+        getSource: function()
+        {
+            return this.options.source;
+        },
+        
+        
         disabled: function(disabled){
             var _disabled = (disabled === true || disabled === 1) ;
             

@@ -44,7 +44,7 @@
                     </div>
                 
                     
-                    {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
+                    {% include 'AdminBundle:InstitutionMedicalCenter/Widgets:list.specializations.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
                     {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
@@ -92,10 +92,10 @@
                                 </table>
                             </div>
                             <div class="modal-footer">
-                                <form action="{{ path('admin_institution_medicalCenter_portGlobalAwards', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}">
+                                <form id="port_global_awards_form" action="{{ path('admin_institution_medicalCenter_portGlobalAwards', { imcId: institutionMedicalCenter.id, institutionId: institution.id }) }}">
                                     <input type="hidden" name="isCopy" value="1" />
-                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                            	    <button id="_btnInstitutionAwards" data-loader-text="Processing..." class="btn btn-primary submit-button">Submit</button>
+                                    <button type="button" class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                            	    <button type="submit" data-loader-text="Processing..." class="btn btn-primary submit-button">Submit</button>
                                 </form>
                             </div>
                         </div>
@@ -142,17 +142,32 @@
     <script type="text/javascript">
         $(function() {
 
+            //---- institution specializations related
+            $('a.btn-delete-institution-specialization').click(function(e){
+                e.preventDefault();
+                var modal = $('#delete_institution_specialization_modal');
+                var form = modal.find('form');
+                form.find('span.specialization-name').html($(this).data('specialization-name'));
+                form.attr('action', $(this).attr('href'));
+                modal.modal('show');
+            });
+
+            $('#delete_institution_specialization_form').submit(function(e){
+                e.preventDefault();
+                InstitutionSpecialization.onSubmitRemoveSpecializationForm($(this));
+            });
+            //----------
+
         	
             $('select.paying-client-field').change(function(){
                 $(this).parents('form.paying-client-status-form').submit();
             });
 
-            $('#_btnInstitutionAwards').click(function() {
-
-            	$(this).attr('disabled',true).html('Processing...');
-            	$(this).submit();
-            	                
+            $('#port_global_awards_form').submit(function(e){
+                $(this).find('button[type=submit]').attr('disabled', true);
             });
+
+            
             
             $('form.paying-client-status-form').submit(function(e){
                 e.preventDefault();

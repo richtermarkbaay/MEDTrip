@@ -431,8 +431,9 @@ hr {
     color: #888;
 }
 
-#content section.section .row-fluid.hca-edit-box .control-group,#content section.section .row-fluid.hca-edit-box .row {
-    margin: 10px 20px 15px;
+#content section.section .row-fluid.hca-edit-box .control-group,
+#content section.section .row-fluid.hca-edit-box .row {
+    margin: 10px 20px 0;
 }
 
 #content section.section .row-fluid.hca-edit-box h3 {
@@ -2164,8 +2165,8 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal .row-fluid {
-    background-color: #fff!important;
-    border: 0!important;
+    border: 0;
+    background-color: #FFF;
 }
 
 .modal .row-fluid .span12.roles {
@@ -2185,10 +2186,10 @@ h1,h2,h3,h4,h5 {
 }
 
 .modal .row-fluid.hca-clinic-modal {
-    background-color: #eee!important;
-    width: 97%;
+    width: inherit;
+    padding: 20px;
     margin-bottom: 20px;
-    padding: 20px 0 5px 20px;
+    background-color: #eee;
 }
 
 .modal .confirm-email {
@@ -2893,10 +2894,6 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
     border: 0;
 }
 
-#content section.section .row-fluid.hca-edit-box .alert,#content section.section .row-fluid.hca-edit-box .control-group,.aside-box .features ul.thumbnails,.single-listing li form,.nav,.modal.hca-doctors-modal form,.modal.hca-file-modal form,.modal .modal-body .alert.results,.table.hca-media ul,.table.hca-incomplete {
-    margin-bottom: 0;
-}
-
 #content section.section .row-fluid.hca-edit-box .accordion,.hca-contact-number select,.accordion .services-listing li {
     width: 100%;
 }
@@ -2904,11 +2901,7 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
 #content section.section .row-fluid.hca-edit-box .accordion .accordion-inner,#content section.section .row-fluid.terms>div,.accordion .row-fluid ul li {
     padding: 0;
 }
-
-#content section.section .row-fluid.hca-edit-box .control-group.website,#content section.section .row-fluid.hca-edit-box .control-group.hca-contact-number,.aside-box .features iframe,.hca-contact-number input {
-    margin-bottom: 10px;
-}
-
+    
 #content section.section .row-fluid.hca-edit-box .control-group.website input,#content section.section .row-fluid.hca-edit-box .control-group.hca-contact-number input {
     margin-bottom: 15px;
 }

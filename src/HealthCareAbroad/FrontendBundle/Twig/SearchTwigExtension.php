@@ -1,23 +1,18 @@
 <?php
-
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
 use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
-
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
-
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 class SearchTwigExtension extends \Twig_Extension
 {
-    /**
-     * @var Router
-     */
     private $router;
+    private $institutionService;
 
     public function getFunctions()
     {
@@ -25,6 +20,7 @@ class SearchTwigExtension extends \Twig_Extension
             'get_narrow_search_widgets_configuration' => new \Twig_Function_Method($this, 'get_narrow_search_widgets_configuration'),
             'get_center_links' => new \Twig_Function_Method($this, 'getCenterLinks'),
             'get_institution_links' => new \Twig_Function_Method($this, 'getInstitutionLinks'),
+            'get_search_result_item' => new \Twig_Function_Method($this, 'getSearchResultItem')
         );
     }
 
@@ -36,6 +32,11 @@ class SearchTwigExtension extends \Twig_Extension
     public function setRouter($v)
     {
         $this->router = $v;
+    }
+
+    public function setInstitutionService($service)
+    {
+        $this->institutionService = $service;
     }
 
     public function get_narrow_search_widgets_configuration($widgets, $commonAutocompleteOptions=array())
@@ -174,6 +175,97 @@ class SearchTwigExtension extends \Twig_Extension
         }
 
         return $links;
+    }
+
+    /**
+     * Support only objects for now. Item is either an instance of Institution
+     * or InstitutionMedicalCenter
+     *
+     * @param unknown $item
+     * @return multitype:string
+     */
+    public function getSearchResultItem($item)
+    {
+        $isInstitution = $item instanceof Institution;
+        if ($item instanceof InstitutionMedicalCenter) {
+            $isInstitution = $item->getInstitution()->getType() == InstitutionTypes::SINGLE_CENTER;
+            if ($isInstitution) {
+                $item = $item->getInstitution();
+            }
+        }
+
+        if ($isInstitution) {
+            $url = $this->getInstitutionFrontendUrl($item);
+            $name = $item->getName();
+            $description = strip_tags($item->getDescription());
+            $supplementaryUrl = false;
+            $displayPhoto = $displayLogo = $item->getPayingClient() == 1;
+            $featuredMedia = $item->getFeaturedMedia();
+            $links = $this->getInstitutionLinks($item, $url);
+
+        } else {
+            $url = $this->getInstitutionMedicalCenterFrontendUrl($item);
+            $name = $item->getName();
+            $description = strip_tags(strlen($item->getDescriptionHighlight()) ? $item->getDescriptionHighlight() : $item->getDescription());
+            $supplementaryUrl = array('url' => $this->getInstitutionFrontendUrl($item->getInstitution()), 'name' => $item->getInstitution()->getName());
+
+            $displayPhoto = $displayLogo = false;
+            switch ($item->getPayingClient()) {
+                case PayingStatus::PHOTO_LISTING:
+                    $displayPhoto = true;
+                case PayingStatus::LOGO_LISTING:
+                    $displayLogo = true;
+                case PayingStatus::LINKED_LISTING:
+                case PayingStatus::FREE_LISTING:
+            }
+            $featuredMedia = $item->getInstitution()->getFeaturedMedia();
+            $links = $this->getCenterLinks($item, $url);
+        }
+
+        return array(
+            'isInstitution' => $isInstitution,
+            'url' => $url,
+            'name' => $name,
+            'supplementaryUrl' => $supplementaryUrl,
+            'description' => $description,
+            'displayPhoto' => $displayPhoto,
+            'displayLogo' => $displayLogo,
+            'featuredMedia' => $featuredMedia,
+            'links' => $links,
+            'dataObject' => $item
+        );
+    }
+
+    private function getInstitutionFrontendUrl($institution)
+    {
+        $slug = $institution instanceof Institution ? $institution->getSlug() : $institution['slug'];
+        $routeName = $this->institutionService->getInstitutionRouteName($institution);
+
+        return $this->router->generate($routeName, array('institutionSlug' => $slug), true);
+    }
+
+    // Calling code will already check the institution type so most of the code for this
+    // method can be removed.
+    private function getInstitutionMedicalCenterFrontendUrl($center)
+    {
+        if ($center instanceof InstitutionMedicalCenter) {
+            $institution = $center->getInstitution();
+            $institutionType = $institution->getType();
+            $institutionSlug = $institution->getSlug();
+            $imcSlug = $center->getSlug();
+        } else {
+            $institution = $center['institution'];
+            $institutionType = $institution['type'];
+            $institutionSlug = $institution['slug'];
+            $imcSlug = $center['slug'];
+        }
+
+        if (InstitutionTypes::SINGLE_CENTER == $institutionType) {
+            return $this->getInstitutionFrontendUrl($institution);
+        }
+
+        return $this->router->generate('frontend_institutionMedicaCenter_profile', array(
+            'institutionSlug' => $institutionSlug, 'imcSlug' => $imcSlug));
     }
 
     /**

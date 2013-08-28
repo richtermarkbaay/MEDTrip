@@ -281,7 +281,7 @@ var InstitutionMedicalCenter = {
             	if(response.count == 0) {
             		_modalBtn.attr('disabled', true);
             	}
-            	$(_elem).html(' Port Institution GlobalAwards');
+            	$(_elem).html('<i class="icon-plus"></i> Port Institution GlobalAwards');
             	_awardsTableElem.find('tbody').remove();
             	_awardsTableElem.find('thead').after($(response.html));
             	_modal.modal('show');

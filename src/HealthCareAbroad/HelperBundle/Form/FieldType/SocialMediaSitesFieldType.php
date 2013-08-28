@@ -1,17 +1,17 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
-use HealthCareAbroad\HelperBundle\Form\DataTransformer\WebsitesDataTransformer;
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\SocialMediaSitesTransformer;
 
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\Form\AbstractType;
 
-class WebSitesFieldType extends AbstractType
+class SocialMediaSitesFieldType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new WebsitesDataTransformer());
+        $builder->addModelTransformer(new SocialMediaSitesTransformer());
     }
     public function getName()
     {

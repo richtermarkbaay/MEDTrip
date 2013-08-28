@@ -1,6 +1,12 @@
 <?php
 namespace HealthCareAbroad\TreatmentBundle\Repository;
 
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+
+use Doctrine\ORM\Query;
+
+use Doctrine\ORM\Query\ResultSetMapping;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -63,7 +69,7 @@ class SpecializationRepository extends EntityRepository
         return $query->getArrayResult();
     }
 
-    public function getSpecializationSearchByName($term, $ids)
+    public function getSpecializationSearchByName($term)
     {
         $dql = "SELECT Specialization.id, Specialization.name as value
         FROM TreatmentBundle:Specialization AS Specialization
@@ -147,71 +153,36 @@ class SpecializationRepository extends EntityRepository
         return $query->getResult();
 
     }
-
-    /////////////////////////////////////////////////////
-    // MOVE FUNCTIONS TO INSTITUTION SPECIALIZATION
-
-//     /**
-//      * Get Specializations that have associated procedure types but are not yet
-//      * linked to a specific institution.
-//      *
-//      * @param Institution $institution
-//      * @return Doctrine\ORM\QueryBuilder
-//      */
-//     public function getQueryBuilderForUnselectedInstitutionSpecializations(Institution $institution)
-//     {
-//         $invalidSpecializationIds = array();
-//         foreach ($institution->getInstitutionSpecializations() as $e) {
-//             $invalidSpecializationIds[] = $e->getSpecialization()->getId();
-//         }
-
-//         foreach ($this->getIdsOfSpecializationsWithNoProcedureTypes() as $center) {
-//             if (!in_array($center['id'], $invalidSpecializationIds)) {
-//                 $invalidSpecializationIds[] = $center['id'];
-//             }
-//         }
-
-//         $qb = $this->createQueryBuilder('a');
-//         $qb->where('a.status = :active');
-
-//         if (!empty($invalidSpecializationIds)) {
-//             $qb->andWhere($qb->expr()->notIn('a.id', $invalidSpecializationIds));
-//         }
-
-//         $qb->orderBy('a.name', 'ASC')
-//         ->setParameter('active', Specialization::STATUS_ACTIVE);
-
-//         return $qb;
-//     }
-
-//     /**
-//      * Get Specializations that are not yet linked to a specific institution excluding
-//      * the medical centers with status InstitutionSpecializationGroupStatus::DRAFT
-//      *
-//      * @param Institution $institution
-//      * @return Doctrine\ORM\QueryBuilder
-//      */
-//     public function getQueryBuilderForUnselectedInstitutionSpecializationsButWithDraftsIncluded(Institution $institution)
-//     {
-//         $usedSpecializationIds = array();
-//         foreach ($institution->getInstitutionSpecializations() as $e) {
-//             if ($e->getStatus() == InstitutionSpecializationGroupStatus::DRAFT) {
-//                 continue;
-//             }
-//             $usedSpecializationIds[] = $e->getSpecialization()->getId();
-//         }
-
-//         $qb = $this->createQueryBuilder('a');
-//         $qb->add('where', 'a.status = :active');
-//         if (!empty($usedSpecializationIds)) {
-//             $qb->andWhere($qb->expr()->notIn('a.id', $usedSpecializationIds));
-//         }
-
-//         $qb->orderBy('a.name', 'ASC')
-//         ->setParameter('active', Specialization::STATUS_ACTIVE);
-
-//         return $qb;
-//     }
+    
+    /**
+     * Get specializations that are not yet linked to medical center id
+     * 
+     * @param integer $imcId
+     * @return array specialization with hydrate array
+     */
+    public function getAvailableSpecializationsByMedicalCenterId($imcId, $filters=array())
+    {   
+        $em = $this->getEntityManager();
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata('TreatmentBundle:Specialization', 'sp');
+        
+        $sql = "SELECT sp.*, sp.name FROM `specializations` sp ".
+            "INNER JOIN `treatments` tr ON tr.`specialization_id` = sp.`id` ".
+            "LEFT JOIN (SELECT * FROM `institution_specializations` WHERE `institution_medical_center_id` = :institutionMedicalCenterId) used_sp ON used_sp.`specialization_id` = sp.`id` ".
+            "WHERE 1=1 ".
+            "AND used_sp.id IS NULL "
+        ;
+        $parameters = array('institutionMedicalCenterId' => $imcId);
+        if(isset($filters['name'])) {
+            $sql .= "AND sp.`name` LIKE :name ";
+            $parameters['name'] = '%'.$filters['name'].'%';
+        }
+        $sql .= "GROUP BY sp.`id`";
+        
+        $query = $em->createNativeQuery($sql, $rsm);
+        $query->setParameters($parameters);
+        return $query->getResult(Query::HYDRATE_ARRAY);
+    }
 
     //Get by slug or id
     public function getSpecialization($identifier)

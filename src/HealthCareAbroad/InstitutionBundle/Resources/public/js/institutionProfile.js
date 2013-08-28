@@ -162,9 +162,9 @@ var InstitutionProfile = {
                     	}
                     	
                        	if(response.institution.websites){
-                    		$('#profileWebsitesText').html('<b>http://'+response.institution.websites + '</b>');
+                    		$('#profileWebsitesText').html('<b>'+response.institution.websites + '</b>');
                     	}else{
-                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'hospital website'));
+                    		$('#profileWebsitesText').html(emptyString.replace(/{FIELD_LABEL}/g,'website'));
                     	}
                        	
                      	if(response.institution.contactEmail){

@@ -92,7 +92,7 @@ class InstitutionFormType extends AbstractType
         $this->_add($builder, 'address1', 'detailed_street_address', array('label' => 'Hospital Address'));
         $this->_add($builder, 'addressHint', 'text', array('label' => 'Helpful hint for getting there?', 'required' => false));
         $this->_add($builder, 'contactDetails', 'collection',array('type' => 'simple_contact_detail'));
-        $this->_add($builder, 'websites', 'text', array('label' => 'Website ' , 'required' => false));
+        $this->_add($builder, 'websites', 'website_custom_field', array('label' => 'Website', 'required' => false));
         $this->_add($builder, 'socialMediaSites', 'social_media_sites_custom_field');
         $this->_add($builder, 'logo', new InstitutionMediaFileType($institution->getLogo()));
         $this->_add($builder, 'featuredMedia', new InstitutionMediaFileType($institution->getFeaturedMedia()));

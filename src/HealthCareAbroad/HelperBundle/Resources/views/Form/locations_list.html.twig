@@ -116,7 +116,17 @@
                         Location.loadCities(countryValueElem.val(), $('#{{ form.parent.state.vars.id }}').val(), $('#{{ widgetId }}'), 0);
                         
                     });
-    
+
+                    // listener for reload of states source
+                    dependencyElement.on('reloadedDataSource', function(e){
+                        var statesSource = $(e.target).data('fancyAutocomplete').getSource(); 
+                        if (statesSource.length == 0){
+                            // country had no states
+                            dependencyElement.trigger('selectedState');
+                        }
+                    });
+
+                    // there is a preset value in the state container
                     if (parseInt(dependencyElementValueContainer.val())){
                         dependencyElement.trigger('selectedState');
                     }

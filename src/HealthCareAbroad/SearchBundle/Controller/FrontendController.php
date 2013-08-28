@@ -118,12 +118,11 @@ class FrontendController extends ResponseHeadersController
         }
 
         $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
-        $context = $request->attributes->get('context');
 
         if (count($searchTerms) == 1 || $context === 'destination') {
             $searchTerm = $searchTerms[0];
 
-            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $context);
+            $routeConfig = $this->get('services.search')->getRouteConfig($searchTerm, $this->get('doctrine'), $request->attributes->get('context'));
 
             // this is used to avoid using slugs after redirection
             $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
@@ -142,6 +141,7 @@ class FrontendController extends ResponseHeadersController
         // this is used to avoid using slugs after redirection
         $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
 
+        // Redirect to related search
         return $this->redirect($this->generateUrl($routeConfig['routeName'], $routeConfig['routeParameters']));
     }
 
@@ -642,19 +642,52 @@ class FrontendController extends ResponseHeadersController
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
-        // FIXME: patch for fixing refresh issue
-        $session_key = \implode(':', $request->attributes->get('_route_params'));
-        if (empty($searchTerms) || \is_null($searchTerms)) {
-            // check if this has been previously accessed by this user
-            $searchTerms = $request->getSession()->get($session_key, null);
-            if (!$searchTerms) {
-                // no search terms in saved session for this related tag, redirect to homepage
-                return $this->redirect($this->generateUrl('frontend_main_homepage'));
+        if ($request->get('country', '')) {
+            $paginationParameters['country'] = $request->get('country', '');
+        }
+        if ($request->get('city', '')) {
+            $paginationParameters['city'] = $request->get('city', '');
+        }
+        $paginationParameters['tag'] = $request->get('tag');
+
+        if (empty($searchTerms)) {
+            $filters = array(
+                            'treatmentName' => '',
+                            'destinationName' => '',
+                            'treatmentId' => '',
+                            'countryId' => 0,
+                            'cityId' => 0
+            );
+
+            if ($countrySlug = $request->get('country', '')) {
+                if (!$country = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry($countrySlug)) {
+                    throw new NotFoundHttpException();
+                }
+                $filters['countryId'] = $country->getId();
             }
+            if ($citySlug = $request->get('city', '')) {
+                if (!$city = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry($citySlug)) {
+                    throw new NotFoundHttpException();
+                }
+                $filters['countryId'] = $city->getCountry()->getId();
+                $filters['cityId'] = $city->getId();
+            }
+
+            //TODO: this is duplicated code from searchKeywordAction()
+            $filters['treatmentName'] = $request->get('tag');
+            $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
+            $termIds = array();
+            foreach ($searchTerms as $term) {
+                $termIds[] = (int) $term['term_id'];
+            }
+            $uniqueTermIds = array_flip(array_flip($termIds));
+            $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->get('doctrine'), $uniqueTermIds);
+            //$paginationParameters = $routeConfig['routeParameters'];
+            $searchTerms = $routeConfig['sessionParameters'];
+            $request->getSession()->set('search_terms', json_encode($searchTerms));
         }
-        else {
-            $request->getSession()->set($session_key, $searchTerms);
-        }
+
+        //TODO: append to search label if destination is present
 
         $this->setBreadcrumbRequestAttributesForRelatedSearch($request, $searchTerms);
 
@@ -662,19 +695,18 @@ class FrontendController extends ResponseHeadersController
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
         $searchResults = new Pager($adapter, array('page' => $request->get('page'), 'limit' => $this->resultsPerPage));
 
-        $response = null;
         if ($searchResults->count()) {
             $response = $this->render('SearchBundle:Frontend:resultsSectioned.html.twig', array(
                 'searchResults' => $searchResults,
                 'searchLabel' => $request->get('tag', ''),
-                'routeName' => 'frontend_search_results_related_terms',
-                'paginationParameters' => array('tag' => $request->get('tag', '')),
-                'relatedTreatments' => $searchResults->getTotalResults() ? $this->get('services.search')->getRelatedTreatments($searchTerms) : array()
+                'routeName' => $request->attributes->get('_route'),
+                //'paginationParameters' => array('tag' => $request->get('tag', '')),
+                'paginationParameters' => $paginationParameters,
+                'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($searchTerms)
             ));
 
             $response = $this->setResponseHeaders($response);
-        }
-        else {
+        } else {
             $response = $this->render('SearchBundle:Frontend:noResults.html.twig', array(
                 'searchResults' => $searchResults,
                 'searchLabel' => $request->get('tag', ''),
@@ -845,6 +877,7 @@ class FrontendController extends ResponseHeadersController
 
     private function setBreadcrumbRequestAttributesForRelatedSearch(Request $request, array $searchTerms)
     {
+        //$attributes['country'] = $request->get('country', '');
         $attributes['tag'] = $request->get('tag', '');
 
         // The route may already have route parameters named country and city so we set different attribute names

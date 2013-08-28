@@ -25,9 +25,12 @@ services:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\ContactNumberWithFlagFieldType
         tags:
             - { name: form.type, alias: contact_number_with_flag }
-    
+    form.custom.website:
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\WebsiteFieldType
+        tags:
+            - { name: form.type, alias: website_custom_field }
     form.custom.social_media_sites:
-        class: HealthCareAbroad\HelperBundle\Form\FieldType\WebSitesFieldType
+        class: HealthCareAbroad\HelperBundle\Form\FieldType\SocialMediaSitesFieldType
         tags:
             - { name: form.type, alias: social_media_sites_custom_field }
     form.globalCountry_list:

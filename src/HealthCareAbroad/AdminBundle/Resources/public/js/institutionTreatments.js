@@ -63,33 +63,7 @@ var InstitutionSpecialization = {
                 _modal.find('.ajax_loader').hide();
                 
                 // replace the treatments list
-                _modal.parents('div.maincontentblock').find('.institution_specialization_treatments_container').html(response.html);
-                _modal.modal('hide');
-            },
-            error: function (response) {
-                _modal.find('div.ajax_content_container').html('');
-                _modal.find('.ajax_loader').hide();
-                _modal.modal('hide');
-            }
-        });
-    },
-    submitAddTreatmentsForm: function(_buttonElement) {
-        _el = $(_buttonElement);
-        _modal = _el.parents('div.add_treatments_modal');
-        _form = _modal.find('form.add_treatments_form');
-        _html = _el.html();
-        _el.html(this._processing).attr('disabled', true);
-        $.ajax({
-            url: _form.attr('action'),
-            data: _form.serialize(),
-            type: 'POST',
-            dataType: 'json',
-            success: function (response) {
-                _modal.find('div.ajax_content_container').html('');
-                _modal.find('.ajax_loader').hide();
-                
-                // replace the treatments list
-                _modal.parents('div.maincontentblock').find('.institution_specialization_treatments_container').html(response.html);
+                $('#institution_specialization_treatments_container').html(response.html);
                 _modal.modal('hide');
             },
             error: function (response) {
@@ -100,29 +74,26 @@ var InstitutionSpecialization = {
         });
     },
     
-    removeSpecialization: function(_linkElement) {
-        var _linkElement = $(_linkElement);
-        if (_linkElement.hasClass('disabled')) {
-            return false;
-        }
-        _href = _linkElement.attr('href');
-        _html = _linkElement.html();
-        _linkElement.html(this._processing).addClass('disabled');
-        
+    onSubmitRemoveSpecializationForm: function(form){
+        var btn = form.find('button[type=submit]');
+        btn.attr('disabled', true);
         $.ajax({
-            url: _href,
-            type: 'POST',
+            url: form.attr('action'),
+            type: 'DELETE',
             success: function(response) {
-            	_linkElement.parents('div#specialization_block_'+response.id).remove();
+                $('#specialization_block_'+response.id).remove();
+                btn.attr('disabled', false);
+                form.parent('div.modal').modal('hide');
             },
             error: function(response) {
                 console.log(response);
+                btn.attr('disabled', false);
             }
         });
-        
-        return false;
-    },
+    }
 };
+
+
 var InstitutionSpecializationAutocomplete = {
 	    removePropertyUri: '',
 	    singleSelectionOnly: false,
@@ -166,23 +137,36 @@ var InstitutionSpecializationAutocomplete = {
 	    },
 	    
 	    autocomplete: function(){
-	        
-	        // initialize accordion for data container
-	        //InstitutionSpecializationAutocomplete.autocompleteOptions.selectedDataContainer.accordion({active: false, collapsible: true, heightStyle: "content"});
-	        
+	        var xhr;
 	        InstitutionSpecializationAutocomplete.autocompleteOptions.target.autocomplete({
 	            minLength: 2,
 	            source: function (request, res) {
-		        		InstitutionSpecializationAutocomplete._loaderElement.fadeIn();
-		    			$.ajax({
-		    				url: InstitutionSpecializationAutocomplete.autocompleteOptions.source,
-		    				data: {term: request.term},
-		    				success: function(response){
-		    					res(response);
-		    					InstitutionSpecializationAutocomplete._loaderElement.hide();
-		    				}
-		    			});
-	              },
+	                InstitutionSpecializationAutocomplete._loaderElement.fadeIn();
+	                if (xhr && xhr.readyState != 4){
+	                    xhr.abort();
+	                }
+	    			xhr = $.ajax({
+	    				url: InstitutionSpecializationAutocomplete.autocompleteOptions.source,
+	    				data: {term: request.term},
+	    				success: function(response){
+	    				    var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+	    		            var matches = [];
+	    		            var dataSource = response.specializations;
+	    		            $.each(dataSource, function(_i, _each){
+	    		                var _label = _each.label ? _each.label : _each.name;
+	    		                if (_each.id && ( !request.term || matcher.test(_label))) {
+	    		                    matches.push({
+	    		                        'id': _each.id, 
+	    		                        'label': _label 
+    		                        });
+	    		                }
+	    		            });
+	    		            
+	    					res(matches);
+	    					InstitutionSpecializationAutocomplete._loaderElement.hide();
+	    				}
+	    			});
+                },
 	            select: function( event, ui) {
 	                InstitutionSpecializationAutocomplete._loadSpecializationForm(ui.item.id);
 	                return false;

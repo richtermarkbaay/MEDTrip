@@ -5,33 +5,18 @@
         {% include 'SearchBundle:Frontend/Widgets:resultsHeader.html.twig' with {type: 'destination'} %}
 
         {{ render_search_results_featured_institution_ad(featuredClinicParams) }}
+
         {% set _featuredInstitutionIds = get_featured_institutions_by_search_parameters(featuredClinicParams) %}
 
         {% for searchResultVo in searchResults %}
             {% set institution = searchResultVo.institution is defined ? searchResultVo.institution : searchResultVo %}
-            {# if institution is paying client display everything #}
-            {% set payingStatus = institution.payingClient ? 3 : 0 %}
 
-            {# https://github.com/chromedia/healthcareabroad/issues/510 #}
             {% if institution.id not in _featuredInstitutionIds %}
-                {% set url = get_institution_frontend_url(institution) %}
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'statisticsDataObject': searchResultVo.institution,
-                       'searchResultItem' : {
-                           url: url,
-                           logo: render_institution_logo(institution, {attr: {alt: 'hospital logo', class: 'small'}}),
-                           featuredMedia: institution.featuredMedia,
-                           name: institution.name,
-                           description: institution.description | striptags,
-                           mainAddress: institution_address_to_string(institution, ['city', 'state', 'country']),
-                           streetAddress: institution_address_to_string(institution, ['address1', 'zipCode']),
-                           links: get_institution_links(institution, url),
-                           payingStatus: payingStatus
-                       }
-                    }
-                %}
+                       'searchResultItem' : get_search_result_item(institution)
+              }%}
             {% endif %}
-
         {% endfor %}
 
         {% if searchResults.isPaginable %}

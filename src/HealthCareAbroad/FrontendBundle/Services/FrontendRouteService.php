@@ -19,7 +19,7 @@ use HealthCareAbroad\FrontendBundle\Entity\FrontendRoute;
  */
 class FrontendRouteService
 {
-    
+
     const COMBINED_SEARCH_ROUTE_NAME = 'frontend_search_combined';
 
     /**
@@ -149,7 +149,7 @@ class FrontendRouteService
     private function extrapolateControllerFromVariables(array $variables)
     {
         $controller = '';
-//var_dump($variables); exit;
+
         switch (count($variables)) {
 
             case 2:
@@ -172,7 +172,7 @@ class FrontendRouteService
                 if (isset($variables['treatmentId'])) {
                     if (isset($variables['cityId']))
                         $controller = 'FrontendBundle:Default:listCityTreatment';
-                    else 
+                    else
                         $controller = 'FrontendBundle:Default:listCountryTreatment';
 
                 } else if (isset($variables['cityId'])) {
@@ -227,10 +227,9 @@ class FrontendRouteService
         //       if true sanity check third token is a treatment MATCH /country/center/treatment
         // 4. tokens = 4
         //
-
-        $tokens = explode('/', substr($uri, 1));
+        $tokens = explode('/', urldecode(substr($uri, 1)));
         $tokenCount = count($tokens);
-//var_dump($tokenCount); exit;
+
         if (count($tokens) < 2 || count($tokens) > 5) {
             return null;
         }
@@ -340,7 +339,7 @@ class FrontendRouteService
     {
         $routeObj = null;
         if ($vars = $this->session->get(\md5($uri), null)) {
-            
+
             $routeObj = new FrontendRoute();
             $routeObj->setUri($uri);
             $routeObj->setController($this->extrapolateControllerFromVariables(json_decode($vars, true)));
