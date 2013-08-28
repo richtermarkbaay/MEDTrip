@@ -143,7 +143,6 @@ class FrontendController extends ResponseHeadersController
         // this is used to avoid using slugs after redirection
         $request->getSession()->set('search_terms', json_encode($routeConfig['sessionParameters']));
 
-        // Redirect to related search
         return $this->redirect($this->generateUrl($routeConfig['routeName'], $routeConfig['routeParameters']));
     }
 
@@ -668,7 +667,7 @@ class FrontendController extends ResponseHeadersController
                 $filters['countryId'] = $country->getId();
             }
             if ($citySlug = $request->get('city', '')) {
-                if (!$city = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry($citySlug)) {
+                if (!$city = $this->getDoctrine()->getRepository('HelperBundle:City')->getCity($citySlug)) {
                     throw new NotFoundHttpException();
                 }
                 $filters['countryId'] = $city->getCountry()->getId();
@@ -676,7 +675,16 @@ class FrontendController extends ResponseHeadersController
             }
 
             //TODO: this is duplicated code from searchKeywordAction()
-            $filters['treatmentName'] = $request->get('tag');
+            if (!($term = $this->get('services.search')->getTerm($request->get('tag'), array('column' => 'slug')))) {
+                return $this->render('SearchBundle:Frontend:noResults.html.twig', array(
+                    'searchLabel' => $request->get('tag', ''),
+                    'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
+                ));
+            }
+
+            $filters['treatmentId'] = $term['id'];
+            $filters['treatmentName'] = $term['name'];
+
             $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
             $termIds = array();
             foreach ($searchTerms as $term) {
@@ -684,14 +692,13 @@ class FrontendController extends ResponseHeadersController
             }
             $uniqueTermIds = array_flip(array_flip($termIds));
             $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->get('doctrine'), $uniqueTermIds);
-            //$paginationParameters = $routeConfig['routeParameters'];
+            $paginationParameters = $routeConfig['routeParameters'];
             $searchTerms = $routeConfig['sessionParameters'];
             $request->getSession()->set('search_terms', json_encode($searchTerms));
         }
 
-        //TODO: append to search label if destination is present
-
-        $this->setBreadcrumbRequestAttributesForRelatedSearch($request, $searchTerms);
+        //FIXME: we just show Home -> Related Search for now
+        //$this->setBreadcrumbRequestAttributesForRelatedSearch($request, $searchTerms);
 
         //TODO: This is temporary; use OrmAdapter
         $adapter = new ArrayAdapter($this->get('services.search')->searchByTerms($searchTerms));
@@ -702,7 +709,6 @@ class FrontendController extends ResponseHeadersController
                 'searchResults' => $searchResults,
                 'searchLabel' => $request->get('tag', ''),
                 'routeName' => $request->attributes->get('_route'),
-                //'paginationParameters' => array('tag' => $request->get('tag', '')),
                 'paginationParameters' => $paginationParameters,
                 'relatedTreatments' => $this->get('services.search')->getRelatedTreatments($searchTerms)
             ));
