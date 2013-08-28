@@ -530,5 +530,5 @@ class InstitutionMedicalCenterController extends Controller
 
         return $response;
     }
-
+    
 }

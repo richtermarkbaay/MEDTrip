@@ -114,3 +114,9 @@ admin_institution_updatePayingClient:
         institutionId: \d+
         payingClient: \d+
         _method: PUT
+        
+admin_institution_medicalCenters:
+    pattern:  /admin/medical-centers
+    defaults: { _controller: AdminBundle:Institution:viewAllCenters }
+    requirements:
+         _method: GET
