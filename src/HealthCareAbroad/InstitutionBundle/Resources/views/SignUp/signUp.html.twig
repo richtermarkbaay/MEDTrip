@@ -67,15 +67,16 @@
                                     <small> (Your company email address.)  </small>
                                 </label>
                                 {{ form_widget(form.email, { 'attr': {'class': 'span6 tooltip-wrap2', 'placeholder': 'i.e you@some-domain.com'} }) }}
-                                <img style="display:none; margin:-3px 37px 0px 0px;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
+                                <img style="display:none; margin:-3px 37px 0px 0px;" id="_confirmEmailAjax" src="{{ asset('images/institution/loading.gif') }}" />
                                 {{ form_errors(form.email) }}
                                     <div class="tooltip-content2 hca-email">
-                                                Your email address will be your username when you log in.
-                                            </div>
+                                        Your email address will be your username when you log in.
+                                    </div>
                             </div>
                             <div class="control-group row-field {{ (form.confirm_email.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_confirmEmail"> Re-type your email * </label>
                                    {{ form_widget(form.confirm_email, { 'attr': {'class': 'span6'} }) }}
+                                   <img style="display:none; margin:-3px 37px 0px 0px;" id="loader_ajax" src="{{ asset('images/institution/loading.gif') }}" />
                                    {{ form_errors(form.confirm_email) }}
                             </div>
 
@@ -184,6 +185,16 @@
         	}
     	});
 
+
+    	$('#institutionUserSignUp_confirm_email').blur(function() {
+    		$('_confirmEmailAjax').show();
+    	    HCA.removeInlineErrorMessage($('#institutionUserSignUp_confirm_email').parent());
+    	    if ($("#institutionUserSignUp_email").val() != $("#institutionUserSignUp_confirm_email").val()) {
+        	  	HCA.displayInlineErrorMessage($('#institutionUserSignUp_confirm_email').parent(), 'Emails do not match!');
+    	    }
+    	    $('_confirmEmailAjax').hide();
+    	});
+    	
     	$("#institutionUserSignUp_password").blur(function() {
     		HCA.removeInlineErrorMessage($('#institutionUserSignUp_password').parent());
     		if($("#institutionUserSignUp_password").val().length <= 5 && $("#institutionUserSignUp_password").val() !== '' ) {
