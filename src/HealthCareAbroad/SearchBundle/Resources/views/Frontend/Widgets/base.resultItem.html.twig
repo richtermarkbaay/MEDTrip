@@ -31,7 +31,7 @@
 
         {% if searchResultItem.description | length > 0 %}
             <p>
-                {{ searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0,200) | trim)~'...' : searchResultItem.description | raw }}
+                {{ (searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0, 200) | trim) ~ '...' : searchResultItem.description) | raw }}
                 {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with { 'link': {
                     url: searchResultItem.url, html: 'More Info', class: '' }} %}
             </p>
