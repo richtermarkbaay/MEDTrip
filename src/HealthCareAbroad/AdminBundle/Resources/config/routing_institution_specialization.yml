@@ -39,13 +39,12 @@ admin_institution_medicalCenter_ajaxAddSpecialization:
         institutionId: \d+
         imcId: \d+
         _method: GET|POST
-        _method: GET   
         
 admin_medicalCenter_ajaxRemoveSpecialization:
-    pattern: /admin/institution/{institutionId}/medical-center/{imcId}/specializations/{isId}/ajaxRemove
+    pattern: /admin/institutions/{institutionId}/medical-centers/{imcId}/institution-specializations/{isId}
     defaults: { _controller: AdminBundle:InstitutionSpecialization:ajaxRemoveSpecialization }
     requirements:
-        _method: GET|POST
+        _method: DELETE
         imcId: \d+
         isId: \d+
         institutionId: \d+ 

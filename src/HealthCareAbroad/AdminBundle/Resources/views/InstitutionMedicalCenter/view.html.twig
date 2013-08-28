@@ -44,7 +44,7 @@
                     </div>
                 
                     
-                    {% include 'AdminBundle:Widgets:medicalCenter.specializationsList.html.twig' %}
+                    {% include 'AdminBundle:InstitutionMedicalCenter/Widgets:list.specializations.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.ancillaryServicesList.html.twig'%}
                     {% include 'AdminBundle:Widgets:medicalCenter.businessHours.html.twig' %}
                     {% include 'AdminBundle:Widgets:medicalCenter.awards.html.twig'%}
@@ -141,6 +141,22 @@
     <script type="text/javascript" src="{{ asset('js/bootstrap-timepicker.min.js') }}"></script>
     <script type="text/javascript">
         $(function() {
+
+            //---- institution specializations related
+            $('a.btn-delete-institution-specialization').click(function(e){
+                e.preventDefault();
+                var modal = $('#delete_institution_specialization_modal');
+                var form = modal.find('form');
+                form.find('span.specialization-name').html($(this).data('specialization-name'));
+                form.attr('action', $(this).attr('href'));
+                modal.modal('show');
+            });
+
+            $('#delete_institution_specialization_form').submit(function(e){
+                e.preventDefault();
+                InstitutionSpecialization.onSubmitRemoveSpecializationForm($(this));
+            });
+            //----------
 
         	
             $('select.paying-client-field').change(function(){

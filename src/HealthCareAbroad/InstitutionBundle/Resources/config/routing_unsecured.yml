@@ -1,9 +1,1 @@
 # institutionId is included in request parameters since this is an unsecured request
-        
-institution_medicalCenter_ajaxSpecializationSource:
-    pattern: /ns-institution/{institutionId}/medical-center/{imcId}/specialization/search
-    defaults: { _controller: InstitutionBundle:Unsecured:ajaxSpecializationSource}
-    requirements:
-        imcId: \d+
-        institutionId: \d+
-        _method: GET       
