@@ -14,4 +14,33 @@ use Gedmo\Loggable\Entity\Repository\LogEntryRepository;
 
 class VersionEntryRepository extends LogEntryRepository
 {
+    
+    /**
+     * 
+     * @param array $filters
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderForFindAll($filters=array())
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('ve')
+            ->from('LogBundle:VersionEntry', 've')
+            ->where('1=1');
+        
+        $knownFilters = array(
+            'startDate' => $qb->expr()->gte('ve.loggedAt', ':startDate'),
+            'endDate' => $qb->expr()->gte('ve.loggedAt', ':endDate'),
+        );
+        
+        foreach ($filters as $key => $value){
+            if (isset($knownFilters[$key])) {
+                $qb->andWhere($knownFilters[$key])
+                    ->setParameter($key, $value);
+            }
+        }
+        
+        $qb->orderBy('ve.loggedAt', 'DESC');
+        
+        return $qb;
+    }
 }

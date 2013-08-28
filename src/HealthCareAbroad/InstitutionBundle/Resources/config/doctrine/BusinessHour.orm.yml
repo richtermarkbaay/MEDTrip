@@ -2,6 +2,9 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
     type: entity
     table: business_hours
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\BusinessHourRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -26,6 +29,8 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
             nullable: false
     manyToOne:
         institutionMedicalCenter:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             inversedBy: businessHours
             joinColumn:

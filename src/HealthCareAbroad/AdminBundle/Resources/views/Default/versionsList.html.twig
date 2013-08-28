@@ -14,16 +14,18 @@
 		    {% set accountData = getAccountDataById(version.username) %}
 		    {% if accountData %}
 		        {{ accountData.first_name }} {{ accountData.last_name }}
+		        <br />
+		        {{ accountData.email }}
 		    {% else %}
 		        User id {{ version.username }} not found    
 		    {% endif %}
 		</td>
 		<td>
-		    <ul class="version-edit-list">
+		    <ul style="list-style:none;">
 		    
 		    {% for key, value in version.data %}
 		        <li>
-		            <label class="field"> {{ key | title }}:</label>
+		            <label class="label"> {{ key | title }}</label>
                     {{ value }}
 		        </li>
 		    {% endfor %}

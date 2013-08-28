@@ -2,6 +2,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization:
     type: entity
     table: institution_specializations
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionSpecializationRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true

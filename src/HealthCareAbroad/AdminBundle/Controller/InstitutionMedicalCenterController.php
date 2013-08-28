@@ -72,7 +72,7 @@ class InstitutionMedicalCenterController extends Controller
 
         // check InstitutionMedicalCenter
         if ($institutionMedicalCenterId = $this->request->get('imcId', 0)) {
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId, false);
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
             }
