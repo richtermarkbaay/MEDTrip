@@ -488,7 +488,7 @@ class SearchService
     public function getRouteConfigFromFilters($filters, $doctrine, $uniqueTermIds)
     {
         $routeName = 'frontend_search_results_related_terms';
-        $routeParameters = array('tag' => $filters['treatmentName']);
+        $routeParameters = array('tag' => isset($filters['treatmentName']) ? $filters['treatmentName'] : $filters['treatmentSlug']);
         $sessionParameters = array('termIds' => $uniqueTermIds);
 
         if (isset($filters['countryId']) && $filters['countryId']) {

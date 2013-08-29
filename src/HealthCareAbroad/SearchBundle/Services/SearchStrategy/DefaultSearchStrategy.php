@@ -314,6 +314,8 @@ class DefaultSearchStrategy extends SearchStrategy
     }
 
     public function getSearchTermsFilteredOn(array $searchParams, $uniqueTermDocument = false) {
+        $termId = $termName = $termSlug = $cityId = $countryId = $destinationName = null;
+
         $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
 
         $sql ="
@@ -323,18 +325,20 @@ class DefaultSearchStrategy extends SearchStrategy
             WHERE a.status = 1
         ";
 
-        if ($cityId = (int) $searchParams['cityId']) {
+        if (isset($searchParams['cityId']) && $cityId = (int) $searchParams['cityId']) {
             $sql .= ' AND a.city_id = :cityId ';
-        } elseif ($countryId = (int) $searchParams['countryId']) {
+        } elseif (isset($searchParams['countryId']) && $countryId = (int) $searchParams['countryId']) {
             $sql .= ' AND a.country_id = :countryId ';
-        } elseif ($destinationName = (int) $searchParams['destinationName']) {
+        } elseif (isset($searchParams['destinationName']) && $destinationName = $searchParams['destinationName']) {
             $sql .= ' AND (a.country_name LIKE :destinationName OR a.city_name LIKE :destinationName) ';
         }
 
-        if ($termId = (int) $searchParams['treatmentId']) {
+        if (isset($searchParams['treatmentId']) && $termId = (int) $searchParams['treatmentId']) {
             $sql .= ' AND a.term_id = :termId ';
-        } elseif ($termName = $searchParams['treatmentName']) {
+        } elseif (isset($searchParams['treatmentName']) && $termName = $searchParams['treatmentName']) {
             $sql .= ' AND b.name LIKE :termName ';
+        } elseif (isset($searchParams['treatmentSlug']) && $termSlug = $searchParams['treatmentSlug']) {
+            $sql .= ' AND b.slug LIKE :termSlug ';
         }
 
         if ($uniqueTermDocument) {
@@ -346,7 +350,11 @@ class DefaultSearchStrategy extends SearchStrategy
             $stmt->bindValue('termId', $termId, \PDO::PARAM_INT);
         } elseif ($termName) {
             $stmt->bindValue('termName', '%'.$termName.'%');
+        } elseif ($termSlug) {
+            $stmt->bindValue('termSlug', '%'.$termSlug.'%');
         }
+
+
         if ($cityId) {
             $stmt->bindValue('cityId', $cityId, \PDO::PARAM_INT);
         } elseif ($countryId) {
