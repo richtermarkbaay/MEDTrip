@@ -64,14 +64,16 @@ class InstitutionMedicalCenterController extends Controller
     public function preExecute()
     {
         $this->request = $this->getRequest();
-        $this->institution = $this->get('services.institution.factory')->findById($this->request->get('institutionId', 0));
-        // Check Institution
-        if(!$this->institution) {
-            throw $this->createNotFoundException('Invalid Institution');
+        if($this->request->get('institutionId')){
+            $this->institution = $this->get('services.institution.factory')->findById($this->request->get('institutionId', 0));
+            // Check Institution
+            if(!$this->institution) {
+                throw $this->createNotFoundException('Invalid Institution');
+            }
         }
-
         // check InstitutionMedicalCenter
-        if ($institutionMedicalCenterId = $this->request->get('imcId', 0)) {
+        if ($this->request->get('imcId')) {
+            $institutionMedicalCenterId = $this->request->get('imcId');
             $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
@@ -530,5 +532,15 @@ class InstitutionMedicalCenterController extends Controller
 
         return $response;
     }
-
+    
+    public function viewAllMedicalCentersAction(){
+    
+        $params = array(
+            'pager' => $this->pager,
+            'institutionMedicalCenters' => $this->filteredResult,
+            'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
+        );
+    
+        return $this->render('AdminBundle:InstitutionMedicalCenter:viewAll.html.twig', $params);
+    }
 }
