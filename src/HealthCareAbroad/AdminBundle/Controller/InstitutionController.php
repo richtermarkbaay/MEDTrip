@@ -561,14 +561,4 @@ class InstitutionController extends Controller
    	    ));
    	}
    	
-   	public function viewAllCentersAction(){
-   	
-   	    $params = array(
-   	                    'pager' => $this->pager,
-   	                    'institutionMedicalCenters' => $this->filteredResult,
-   	                    'statusList' => InstitutionMedicalCenterStatus::getStatusList(),
-   	    );
-   	
-   	    return $this->render('AdminBundle:InstitutionMedicalCenter:list.html.twig', $params);
-   	}
 }

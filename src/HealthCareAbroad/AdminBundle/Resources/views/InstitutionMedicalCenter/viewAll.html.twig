@@ -31,11 +31,11 @@
                     <tr id="institution-medical-center-{{ institutionMedicalCenter.id }}">
                         <td> 
                             <a href="{{ path('admin_institution_medicalCenter_view', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" class="pull-left view-center">
-                                {{ institutionMedicalCenter.name }}
+                                {{ institutionMedicalCenter.name | title }}
                             </a>
                         </td>
                         <td>
-                            <a class="name" href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" title="View {{ institutionMedicalCenter.institution.name }}">{{ institutionMedicalCenter.institution.name }}</a> 
+                            <a class="name" href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" title="View {{ institutionMedicalCenter.institution.name }}">{{ institutionMedicalCenter.institution.name | title }}</a> 
                         </td>
                         <td>{{ get_medical_center_status_label(institutionMedicalCenter) }}</td>
                         <td>{{ institutionMedicalCenter.dateCreated|date('m-d-Y h:iA') }}</td>
