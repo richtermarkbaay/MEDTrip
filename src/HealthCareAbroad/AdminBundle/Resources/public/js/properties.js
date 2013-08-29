@@ -192,7 +192,6 @@
     $.globalAward._clickEdit = function(_event) {
         _el = $(this);
         $.globalAward._editForm.attr('action', _el.attr('href'));
-        
         // find the globalAwardId element and replace the value with the data-globalAwardId attr
         $.globalAward._editForm.find($.globalAward.options.edit.input_award_id)
             .val(_el.attr('data-globalAwardId'));
@@ -204,7 +203,11 @@
         $.globalAward.options.edit.data_label_target.html(_el.attr('data-label')); // replace data label value
         //$.globalAward.options.edit.modal.find($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.attr('data-propertyExtraValue'))// initialize autocomplete field values
         _showModal($.globalAward.options.edit.modal);
-        
+        if(_el.parents('tr').find('.yearAcquired').text() == " "){
+        	$($.globalAward.options.edit.input_extraValueAutocomplete).val('');
+        }else{
+        	$($.globalAward.options.edit.input_extraValueAutocomplete).val(_el.parents('tr').find('.yearAcquired').text());
+        }
         return false;
     };
     // submit edit form handler
