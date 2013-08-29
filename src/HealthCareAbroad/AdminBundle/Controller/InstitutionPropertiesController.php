@@ -344,7 +344,7 @@ class InstitutionPropertiesController extends Controller
         if (!$globalAward) {
             throw $this->createNotFoundException('Invalid global award.');
         }
-    
+        $property->setValueObject($globalAward);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType(), $property);
         if ($request->isMethod('POST')) {
             $editGlobalAwardForm->bind($request);
@@ -355,11 +355,10 @@ class InstitutionPropertiesController extends Controller
                     $em->persist($property);
                     $em->flush();
                     $extraValue = \json_decode($property->getExtraValue(), true);
-                    $yearAcquired = \implode(', ',$extraValue[InstitutionGlobalAwardExtraValueDataTransformer::YEAR_ACQUIRED_JSON_KEY]);
     
                     $output = array(
                                     'targetRow' => '#globalAwardRow_'.$property->getId(),
-                                    'html' => $yearAcquired
+                                    'html' => $property->getExtraValue()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }

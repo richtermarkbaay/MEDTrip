@@ -103,9 +103,8 @@
             $('a.edit_global_award').globalAward('edit', {
                 'modal': $('div.edit_award_form_container'),
                 'data_label_target': $('div.edit_award_form_container').find('.editAwardForm_awardName'),
-                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValueAutocomplete' 
+                'input_extraValueAutocomplete': 'input#institution_global_award_form_extraValue' 
             });
-
 
             $.GlobalAutocompleteAction.setLoadHtmlContentUri('{{ path("admin_institution_ajaxAddGlobalAward", {"institutionId": institution.id}) }}');
 
