@@ -1429,6 +1429,7 @@ form.home-search > button.btn:active {
 }
 .specializations-list-wrapper ul li.specialization {
   margin-bottom: 10px;
+  min-height: 60px;
 }
 .specializations-list-wrapper ul li.specialization > * {
   margin-right: 10px;
