@@ -1880,6 +1880,7 @@ form.home-search > button.btn:active {
 .item-wrapper > .right-column-wrapper p a {
   color: #fe6500;
   cursor: pointer;
+  display: inline-block;
 }
 .item-wrapper > .right-column-wrapper p a:hover {
   color: #ff8432;
