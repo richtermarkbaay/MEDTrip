@@ -41,23 +41,23 @@ class InstitutionMedicalCentersViewListFilter extends DoctrineOrmListFilter
             $this->queryParams['name'] = '';
         }
     
-        $this->filterOptions['name'] = array('label' => 'Medical Center Name', 'value' => isset($this->queryParams['name']) ? $this->queryParams['name'] : '' );
+        $this->filterOptions['name'] = array('label' => 'Institution Name', 'value' => isset($this->queryParams['name']) ? $this->queryParams['name'] : '' );
     }
     
     function setFilteredResults()
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
+        $this->queryBuilder->select('a,b')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
+        $this->queryBuilder->leftJoin('a.institution', 'b');
         
         if (trim($this->queryParams['name'])) {
-            
-            $this->queryBuilder->andWhere('a.name LIKE :name');
+            $this->queryBuilder->where('b.name LIKE :name');
             $this->queryBuilder->setParameter('name', "%" . $this->queryParams['name'] . "%");
         }
         
         if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
             
-            $this->queryBuilder->where('a.status = :status');
+            $this->queryBuilder->andWhere('a.status = :status');
             $this->queryBuilder->setParameter('status', $this->queryParams['status']);
         }
         
@@ -70,7 +70,6 @@ class InstitutionMedicalCentersViewListFilter extends DoctrineOrmListFilter
             $sortBy = 'dateUpdated';
             $sort = "a.$sortBy " . 'desc';
         }
-        
         $this->queryBuilder->add('orderBy', $sort);
         $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
         $this->pager->setLimit(50);
