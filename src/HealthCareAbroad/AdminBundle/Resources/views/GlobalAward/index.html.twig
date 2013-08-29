@@ -25,12 +25,12 @@
                 
                 <table id="global_award-list" class="table table-bordered sortable-list">
                         <tr>
-                            <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                            <th id="column-details"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : '' }}">Details</a></th>
+                            <th id="column-name" width="250"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                            <th id="column-details" width="350"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : '' }}">Details</a></th>
                             <th id="column-details">Type</th>
                             <th id="column-awardingBody"><a href="{{ app.request.uri }}" class="{{ sortBy == 'awardingBody' ? 'sort-' ~ sortOrder : '' }}">Awarding Body</a></th>
                             <th id="column-country"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
-                            <th class="actions" width="100">Action</th>
+                            <th class="actions" width="130">Action</th>
                         </tr>
             
                 {% for each in global_awards %}
