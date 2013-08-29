@@ -17,16 +17,24 @@ HealthCareAbroad\InstitutionBundle\Entity\BusinessHour:
             type: integer
             nullable: false
             column: weekday_bit_value
+            gedmo:
+                - versioned
         opening:
             type: time
             nullable: true
+            gedmo:
+                - versioned
         closing:
             type: time
             nullable: true
+            gedmo:
+                - versioned
         notes:
             type: string
             length: 250
             nullable: false
+            gedmo:
+                - versioned
     manyToOne:
         institutionMedicalCenter:
             gedmo:

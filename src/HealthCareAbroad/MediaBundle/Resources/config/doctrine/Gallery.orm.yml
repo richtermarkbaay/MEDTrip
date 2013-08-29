@@ -2,6 +2,9 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
     type: entity
     table: gallery
     repositoryClass: HealthCareAbroad\MediaBundle\Repository\GalleryRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -16,6 +19,8 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
             column: date_created
     manyToMany:
         media:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media 
             cascade:
                 - "persist"
@@ -31,6 +36,8 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
                         referencedColumnName: id
     oneToOne:
         institution:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
             inversedBy: gallery
 

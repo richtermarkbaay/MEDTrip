@@ -143,7 +143,7 @@ admin_history_index:
         
 admin_showEditHistory:
     pattern: /admin/edit-history/objects/{objectId}
-    defaults: { _controller: AdminBundle:Default:showEditHistory }
+    defaults: { _controller: AdminBundle:EntityHistory:showEditHistory }
     requirements:
         _method: GET
         objectId: \d+

@@ -2,6 +2,9 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty:
     type: entity
     table: institution_medical_center_properties
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionMedicalCenterPropertyRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -13,23 +16,33 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty:
         value:
             type: text
             nullable: false
+            gedmo:
+                - versioned
         extraValue:
             type: text
             nullable: true
             column: extra_value
+            gedmo:
+                - versioned
     manyToOne:
         institution:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
             joinColumn:
                 name: institution_id
                 referencedColumnName: id
         institutionMedicalCenter:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
             inversedBy: institutionMedicalCenterProperties
             joinColumn:
                 name: institution_medical_center_id
                 referencedColumnName: id
         institutionPropertyType:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionPropertyType
             joinColumn:
                 name: institution_property_type_id

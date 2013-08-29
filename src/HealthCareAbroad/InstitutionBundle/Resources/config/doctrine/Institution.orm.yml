@@ -2,6 +2,9 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
     type: entity
     table: institutions
     repositoryClass: HealthCareAbroad\InstitutionBundle\Repository\InstitutionRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -15,15 +18,21 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             length: 250
             fixed: false
             nullable: false
+            gedmo:
+                - versioned
         description:
             type: text
             nullable: false
+            gedmo:
+                - versioned
         contactEmail:
             type: string
             length: 100
             fixed: false
             nullable: false
             column: contact_email
+            gedmo:
+                - versioned
         contactNumber:
             type: string
             length: 100
@@ -33,6 +42,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         websites:
             type: text
             nullable: false
+            gedmo:
+                - versioned
         websiteBackUp:
             type: text
             nullable: true
@@ -40,19 +51,27 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         socialMediaSites:
             type: text
             nullable: true  
-            column: social_media_sites 
+            column: social_media_sites
+            gedmo:
+                - versioned
         address1:
             type: text
             nullable: false
+            gedmo:
+                - versioned
         addressHint:
             type: text
             nullable: true
             column: address_hint
+            gedmo:
+                - versioned
         zipCode:
             type: string
             length: 10
             nullable: false
             column: zip_code
+            gedmo:
+                - versioned
         coordinates:
             type: string
             length: 100
@@ -65,6 +84,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             type: integer
             nullable: true
             column: total_clinic_ranking_points
+            gedmo:
+                - versioned
         signupStepStatus:
             type: smallint
             nullable: false
@@ -94,11 +115,15 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
         status:
             type: smallint
             nullable: false
+            gedmo:
+                - versioned
         type:
             type: integer
             unsigned: true
             nullable: false
             column: institution_type
+            gedmo:
+                - versioned
         stateBak:
             type: string
             length: 255
@@ -132,6 +157,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                         referencedColumnName: id
             orderBy: null
         contactDetails:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
             cascade:
                 - "persist"
@@ -149,6 +176,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             orderBy: null  
     manyToOne:
         country:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
             cascade: 
                 - "persist"
@@ -159,6 +188,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     referencedColumnName: id
             orphanRemoval: false
         city:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\HelperBundle\Entity\City
             cascade:
                 - "persist"
@@ -169,6 +200,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     referencedColumnName: id
             orphanRemoval: false
         state:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\HelperBundle\Entity\State
             joinColumns:
                 state_id:
@@ -178,6 +211,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             orphanRemoval: false
 
         logo:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             cascade: {  }
             mappedBy: null
@@ -188,6 +223,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             orphanRemoval: false
 
         featuredMedia:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             cascade: {  }
             mappedBy: null
@@ -199,6 +236,8 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
 
     oneToOne:
         gallery:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
             mappedBy: institution
 

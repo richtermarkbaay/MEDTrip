@@ -1,6 +1,5 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'institutions'%}
-{% set selectedSubTab = 'institutions_index'%}
+{% set selectedTab = 'logs'%}
 
 {% block content %}
     <div id="content">
@@ -25,7 +24,7 @@
                     </thead>
                     {% for version in entries %}
                     <tr>
-                        <td>{{ version.loggedAt | date("Y-m-d H:i:s")}}</td>
+                        <td>{{ version.loggedAt | date("M-d-Y g:i A")}}</td>
                         <td>{{ version.action }}</td>
                 		<td>
                 		    {{ version.user.fullName }}
@@ -33,7 +32,11 @@
                 		    <i>{{ version.user.email }}</i>
                 		</td>
                 		<td>
-                		    {{ version.objectClass }}
+                		    {% set _classLabel = get_class_label_by_fully_qualified_name(version.objectClass) %}
+                		    {% if _classLabel %}
+                		    <b>{{ _classLabel.singular | title }}</b>
+                		    {% endif %}
+                		    <i>{{ version.objectClass }}</i>
                 		</td>
                 		<td>
                 		    <ul style="list-style:none;">
@@ -44,17 +47,17 @@
                 		        </li>
                 		    {% endfor %}
                 		    </ul>
+                		    <a target="_blank" href="{{ path('admin_showEditHistory', {objectId: version.object.id, objectClass: base64_encode(version.objectClass)}) }}">
+                                View Related History
+                            </a>
                 		</td>
                 		<td>
                 		    <ul style="list-style:none;">
+                		    
                 		    {% for key, value in version.data %}
                 		        <li>
                 		            <label class="label"> {{ key  }}</label>
-                    		        {% if value is iterable %}
-                    		            {{ json_encode(value) }}
-                    		        {% else %}
-                                        {{ value }}
-                    		        {% endif %}
+                		            {{ value }}
                 		        </li>
                 		    {% endfor %}
                 		    </ul>
@@ -73,6 +76,9 @@
             {% endblock %}
         {% endembed %}
         
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_history_index', app.request.query.all) }}
+        {% endif %}
         
     </div>
     

@@ -4,7 +4,14 @@ parameters:
     # Sample:
     #    {{ getLabels('institution_medical_center') }}
     class_keys:
+        institution: HealthCareAbroad\InstitutionBundle\Entity\Institution
         institution_medical_center: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+        institution_specialization: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
+        institution_property: HealthCareAbroad\InstitutionBundle\Entity\InstitutionProperty
+        institution_medical_center_property: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty
+        media: HealthCareAbroad\MediaBundle\Entity\Media
+        contact_detail: HealthCareAbroad\HelperBundle\Entity\ContactDetail
+        business_hour: HealthCareAbroad\InstitutionBundle\Entity\BusinessHour
 
     #-- 
     # translation of class key to displayed labels in Twig templates
@@ -12,8 +19,14 @@ parameters:
         specialization: {singular: "specialization", plural: "specializations"}
         sub_specialization: {singular: "sub specialization", plural: "sub specializations"}
         treatment: {singular: "treatment", plural: "treatments"}
+        contact_detail: {singular: "contact detail", plural: "contact details"}
+        business_hour: {singular: "business hour", plural: "business hours"}
+        institution: {singular: "institution", plural: "institutions" }
         institution_medical_center: {singular: "clinic", plural: "clinics"}
         institution_specialization: {singular: "specialization", plural: "specializations"}
+        institution_property: {singular: "global award / ancillary service", plural: "global awards / ancillary services"}
+        institution_medical_center_property: {singular: "global award / ancillary service of clinic", plural: "global awards / ancillary services of clinic"}
+        media: {singular: "image / video", plural: "images / videos"}
         country: {singular: "country", plural: "countries"}
         helper_text: {singular: "helper text", plural: "helper text"}
         city: {singular: "city", plural: "cities"}

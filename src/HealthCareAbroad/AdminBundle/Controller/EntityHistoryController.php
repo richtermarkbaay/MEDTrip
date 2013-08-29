@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\PagerBundle\Adapter\DoctrineOrmAdapter;
@@ -12,55 +14,124 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class EntityHistoryController extends Controller
 {
-    public function indexAction()
+    private $historyService;
+    private $userService;
+    private $repositoryObjects = array();
+    private $cachedAccountData = array();
+    
+    public function indexAction(Request $request)
     {
         $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')
             ->getQueryBuilderForFindAll();
         
         $adapter = new DoctrineOrmAdapter($qb, Query::HYDRATE_ARRAY);
         $pager = new Pager($adapter);
-        $userService = $this->get('services.twig_user');
-        $historyService = $this->get('services.log.entity_version');
+        $pager->setLimit(50);
+        $pager->setPage($request->get('page', 1));
+        
+        $this->userService = $this->get('services.twig_user');
+        $this->historyService = $this->get('services.log.entity_version');
         
         // build the data into a "more readable" log history
         $entries = array();
-        $repositoryObjects = array();
-        $cachedAccountData = array();
+        
         foreach ($pager->getResults() as $versionEntry){
-            $entryData = $versionEntry;
-            // try to get the object
-            $class = $versionEntry['objectClass'];
-            if (!isset($repositoryObjects[$class])){
-                $repositoryObjects[$class] = array();
-            }
-            
-            if (!\array_key_exists($versionEntry['objectId'], $repositoryObjects[$class])){
-                $object = $this->getDoctrine()->getRepository($versionEntry['objectClass'])->find($versionEntry['objectId']);
-                
-                if ($object){
-                    $repositoryObjects[$class][$versionEntry['objectId']] = $historyService->buildGenericViewDataFromObject($object);
-                }
-                else {
-                    $repositoryObjects[$class][$versionEntry['objectId']] = array(
-                        'id' => $versionEntry['objectId'], 
-                        'name' => null
-                    );
-                }
-            }
-            $entryData['object'] =  $repositoryObjects[$class][$versionEntry['objectId']];
-            if (!isset($cachedAccountData[$versionEntry['username']])) {
-                $accountData = $userService->getAccountDataById($versionEntry['username']);
-                $accountData['fullName'] = \trim($accountData['first_name'].' '.$accountData['last_name']);
-                $cachedAccountData[$versionEntry['username']] = $accountData;
-            }
-            $entryData['user'] = $cachedAccountData[$versionEntry['username']];
-            $entries[] = $entryData;
+            $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
         
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
-            'entries' => $entries
+            'entries' => $entries,
+            'pager' => $pager
         ));
         
         return $response;
+    }
+    
+    /**
+     * Show edit history of an object
+     * Required REQUEST parameters are:
+     *     objectId - int
+     *     objectClass - base64_encoded fully qualified class name
+     *
+     * @param Request $request
+     * @return \HealthCareAbroad\AdminBundle\Controller\Response
+     * @author Allejo Chris G. Velarde
+     */
+    public function showEditHistoryAction(Request $request)
+    {
+        $objectId = $request->get('objectId', null);
+        $objectClass = $request->get('objectClass', null);
+        if ($objectId === null || $objectClass === null) {
+            return new Response("objectId and objectClass are required parameters", 400);
+        }
+    
+        $objectClass = \base64_decode($objectClass);
+        if (!\class_exists($objectClass)) {
+            throw $this->createNotFoundException("Cannot view history of invalid class {$objectClass}");
+        }
+        
+        $this->userService = $this->get('services.twig_user');
+        $this->historyService = $this->get('services.log.entity_version');
+        $filters = array(
+            'objectId' => $objectId,
+            'objectClass' => $objectClass
+        );
+        
+        $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')
+            ->getQueryBuilderForFindAll($filters);
+        
+        $adapter = new DoctrineOrmAdapter($qb, Query::HYDRATE_ARRAY);
+        $pager = new Pager($adapter);
+        $pager->setLimit(50);
+        $pager->setPage($request->get('page', 1));
+        
+        foreach ($pager->getResults() as $versionEntry){
+            $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
+        }
+        
+        $response = $this->render('AdminBundle:EntityHistory:editHistory.html.twig', array(
+            'entries' => $entries,
+            'pager' => $pager,
+            'objectId' => $objectId,
+            'objectClass' => $objectClass,
+        ));
+        
+        return $response;
+        
+    }
+    
+    private function buildViewDataOfVersionEntry($versionEntry)
+    {
+        $entryData = $versionEntry;
+        // try to get the object
+        $class = $versionEntry['objectClass'];
+        if (!isset($this->repositoryObjects[$class])){
+            $this->repositoryObjects[$class] = array();
+        }
+        
+        if (!\array_key_exists($versionEntry['objectId'], $this->repositoryObjects[$class])){
+            $object = $this->getDoctrine()->getRepository($versionEntry['objectClass'])->find($versionEntry['objectId']);
+        
+            if ($object){
+                $this->repositoryObjects[$class][$versionEntry['objectId']] = $this->historyService->buildGenericViewDataFromObject($object);
+            }
+            else {
+                $this->repositoryObjects[$class][$versionEntry['objectId']] = array(
+                    'id' => $versionEntry['objectId'],
+                    'name' => null
+                );
+            }
+        }
+        $entryData['object'] =  $this->repositoryObjects[$class][$versionEntry['objectId']];
+        if (!isset($this->cachedAccountData[$versionEntry['username']])) {
+            $accountData = $this->userService->getAccountDataById($versionEntry['username']);
+            $accountData['fullName'] = \trim($accountData['first_name'].' '.$accountData['last_name']);
+            $this->cachedAccountData[$versionEntry['username']] = $accountData;
+        }
+        $entryData['user'] = $this->cachedAccountData[$versionEntry['username']];
+        
+        // build the changed data
+        $entryData['data'] = $this->historyService->buildViewDataForChangedData($versionEntry['data']);
+        return $entryData;
     }
 }

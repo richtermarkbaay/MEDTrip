@@ -1,20 +1,73 @@
 {% extends 'AdminBundle::layout.html.twig' %}
-{% set selectedTab = 'manageHcaData' %}
-{% set selectedSubTab = 'manage_centers' %}
+{% set selectedTab = 'logs'%}
 
 {% block content %}
+    <div id="content">
+        <div id="page-heading">
+            {% set subjectLabel = get_class_label_by_fully_qualified_name(objectClass) %}
+		    {% if subjectLabel %}
+		        {% set subjectLabel = subjectLabel.singular | title %}
+	        {% else %}
+	            {% set subjectLabel = objectClass %}
+		    {% endif %}
+            <h3>Edits History for <i>{{ subjectLabel ~ ' #' ~objectId }}</i> </h3>
+        </div>
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+                {% include '::notice.admin.html.twig' %}
+                <!-- Render Filter Box -->
+                <div>
+                <table class="table table-bordered sortable-list">
+                    <thead>
+                        <tr>
+                            <td>Log Date</td>
+                            <td>Action</td>
+                            <td>User</td>
+                            <td>Changed Data</td>
+                        </tr>
+                    </thead>
+                    {% for version in entries %}
+                    <tr>
+                        <td>{{ version.loggedAt | date("M-d-Y g:i A")}}</td>
+                        <td>{{ version.action }}</td>
+                		<td>
+                		    {{ version.user.fullName }}
+                		    <br />
+                		    <i>{{ version.user.email }}</i>
+                		</td>
+                		<td>
+                		    <ul style="list-style:none;">
+                		    
+                		    {% for key, value in version.data %}
+                		        <li>
+                		            <label class="label"> {{ key  }}</label>
+                		            {{ value }}
+                		        </li>
+                		    {% endfor %}
+                		    </ul>
+                		</td>
+                    </tr>
+                    {% else  %}
+                        <tr>
+                            <td class="empty-list" colspan="5">No records yet!</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                
+     
+            </div>
+            
+            {% endblock %}
+        {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_history_index', app.request.query.all) }}
+        {% endif %}
+        
+    </div>
+    
+{% endblock %}
 
-	<div id="content">
-
-		<div id="page-heading"><h2>Edit History - {{ objectName }}</h2></div>
-
-		{% embed '::contentWrapper.admin.html.twig' %}
-			{% block wrappedContent %}
-
-                {% include 'AdminBundle:Default:versionsList.html.twig' with {'versions': versions} %}
-						
-			{% endblock %}
-		{% endembed %}
-	</div>
+{% block inlineJavascriptCode %}
 
 {% endblock %}

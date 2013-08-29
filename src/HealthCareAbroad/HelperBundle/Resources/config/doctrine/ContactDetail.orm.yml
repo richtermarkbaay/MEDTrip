@@ -2,6 +2,9 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
     type: entity
     table: contact_details
     repositoryClass: HealthCareAbroad\HelperBundle\Repository\ContactDetailRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -19,16 +22,22 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
             fixed: false
             nullable: false
             column: number
+            gedmo:
+                - versioned
         countryCode:
             type: string
             length: 25
             nullable: false
             column: country_code
+            gedmo:
+                - versioned
         areaCode:
             type: string
             length: 25
             nullable: false
             column: area_code
+            gedmo:
+                - versioned
         abbr:
             type: string
             length: 25
@@ -39,6 +48,8 @@ HealthCareAbroad\HelperBundle\Entity\ContactDetail:
             length: 5
             nullable: true
             column: extension
+            gedmo:
+                - versioned
         fromNewWidget:
             type: boolean
             nullable: true

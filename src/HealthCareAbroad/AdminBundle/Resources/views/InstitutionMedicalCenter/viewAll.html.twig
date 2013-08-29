@@ -40,11 +40,17 @@
                         <td>{{ get_medical_center_status_label(institutionMedicalCenter) }}</td>
                         <td>{{ institutionMedicalCenter.dateCreated|date('m-d-Y h:iA') }}</td>
                         <td>{{ institutionMedicalCenter.dateUpdated|date('m-d-Y h:iA') }}</td>
-                        <td><a href="{{ path('admin_institution_medicalCenter_view', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" class="pull-left view-center" style="font-size:13px;font-weight:normal;">
+                        <td>
+                            <a href="{{ path('admin_institution_medicalCenter_view', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" >
                                 <i class="icon-share"></i> <span>view </span>
                             </a>
-                            <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" class="pull-left edit-center-description" style="font-size:13px;font-weight:normal">
+                            <br />
+                            <a href="{{ path('admin_institution_medicalCenter_edit', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id}) }}" target="_blank" >
                                 <i class="icon-edit"></i> <span>edit </span>
+                            </a>
+                            <br />
+                            <a class="" style="font-size:13px;font-weight:normal" target="_blank" href="{{ path('admin_showEditHistory', {objectId: institutionMedicalCenter.id, objectClass: base64_encode(getClass(institutionMedicalCenter))}) }}">
+                               <i class="icon-share"></i> Logs
                             </a>
                         </td>
                     </tr>

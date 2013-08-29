@@ -39,6 +39,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'contact_details_to_json' => new \Twig_Function_Method($this, 'contactDetailsToJSON'),
             'getClass' => new \Twig_Function_Method($this, 'getClass'),
             'getClassLabel' => new \Twig_Function_Method($this, 'getClassLabel'),
+            'get_class_label_by_fully_qualified_name' => new \Twig_Function_Method($this, 'getClassLabelByFullyQualifiedName'),
             'getClassLabels' => new \Twig_Function_Method($this, 'getClassLabels'),
             'base64_encode' => new \Twig_Function_Method($this, 'base64_encode'),
             'unserialize' => new \Twig_Function_Method($this, 'unserialize'),
@@ -145,6 +146,21 @@ class MiscellaneousTwigExtension extends \Twig_Extension
         }
 
         return $this->classLabels[$classKey];
+    }
+    
+    public function getClassLabelByFullyQualifiedName($class)
+    {
+        $r = \array_flip($this->classKeys);
+        $classLabel = null;
+        if (\array_key_exists($class, $r)){
+            $classKey = $r[$class];
+            if (!\array_key_exists($classKey, $this->classLabels)) {
+                throw new \Exception("Unable to find label for class {$classKey}");
+            }
+            $classLabel = $this->classLabels[$classKey];
+        }
+        
+        return $classLabel;
     }
 
     public function getName()

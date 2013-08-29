@@ -28,6 +28,8 @@ class VersionEntryRepository extends LogEntryRepository
             ->where('1=1');
         
         $knownFilters = array(
+            'objectId' => $qb->expr()->eq('ve.objectId', ':objectId'),
+            'objectClass' => $qb->expr()->eq('ve.objectClass', ':objectClass'),
             'startDate' => $qb->expr()->gte('ve.loggedAt', ':startDate'),
             'endDate' => $qb->expr()->gte('ve.loggedAt', ':endDate'),
         );

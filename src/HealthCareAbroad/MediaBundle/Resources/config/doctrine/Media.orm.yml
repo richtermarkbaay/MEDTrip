@@ -2,6 +2,9 @@ HealthCareAbroad\MediaBundle\Entity\Media:
     type: entity
     table: media
     repositoryClass: HealthCareAbroad\MediaBundle\Repository\MediaRepository
+    gedmo:
+        loggable:
+            logEntryClass: HealthCareAbroad\LogBundle\Entity\VersionEntry
     fields:
         id:
             id: true
@@ -19,11 +22,15 @@ HealthCareAbroad\MediaBundle\Entity\Media:
             length: 255
             fixed: false
             nullable: false
+            gedmo:
+                - versioned
         caption:
             type: string
             length: 255
             fixed: false
             nullable: false
+            gedmo:
+                - versioned
         context:
             type: string
             length: 100
@@ -56,6 +63,8 @@ HealthCareAbroad\MediaBundle\Entity\Media:
             column: date_modified
     manyToMany:
         gallery:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
             mappedBy: media
     lifecycleCallbacks: {  }

@@ -53,6 +53,35 @@ class EntityVersionService
         return array('id' => $object->getId(), 'name' => $objectName);
     }
     
+    public function buildViewDataForChangedData(&$changedData)
+    {
+        $viewData = array();
+        if (\is_array($changedData)){
+            foreach ($changedData as $key => $value) {
+                $viewData[$key] = $this->_processChangedDataValue($value);
+            }    
+        }
+        
+        return $viewData;
+    }
+    
+    private function _processChangedDataValue(&$value)
+    {
+        if (\is_array($value)){
+            $value = \json_encode($value);
+        }
+        elseif (\is_object($value)){
+            if ($value instanceof \DateTime) {
+                $value = $value->format('Y-m-d g:i A');    
+            }
+        }
+        return $value;
+    }
+    
+    
+    
+    
+    
     public function getVersionEntriesOfInstitutionMedicalCenter($institutionMedicalCenterId)
     {
         // hard coded list of classes that will be part of edit history of a medical center

@@ -91,6 +91,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             type: smallint
             nullabe: false
             column: is_always_open
+            gedmo:
+                - versioned
         dateCreated:
             type: datetime
             nullable: false
@@ -137,15 +139,21 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization
             mappedBy: institutionMedicalCenter
         institutionMedicalCenterProperties:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterProperty
             mappedBy: institutionMedicalCenter
         businessHours:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\BusinessHour
             mappedBy: institutionMedicalCenter
             cascade:
                 - "persist"
     manyToOne:
         logo:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             cascade: {  }
             mappedBy: null
@@ -162,6 +170,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                 referencedColumnName: id
     manyToMany:
         media:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\MediaBundle\Entity\Media
             joinTable:
                 name: institution_medical_center_media
@@ -173,6 +183,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                         referencedColumnName: id
 
         doctors:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\DoctorBundle\Entity\Doctor
             cascade: {}
             mappedBy: null
@@ -188,6 +200,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
                         referencedColumnName: id
                         
         contactDetails:
+            gedmo:
+                - versioned
             targetEntity: HealthCareAbroad\HelperBundle\Entity\ContactDetail
             cascade:
                 - "persist"
