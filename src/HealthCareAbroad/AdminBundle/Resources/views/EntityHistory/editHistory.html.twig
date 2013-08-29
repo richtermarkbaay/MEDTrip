@@ -41,7 +41,7 @@
                 		    {% for key, value in version.data %}
                 		        <li>
                 		            <label class="label"> {{ key  }}</label>
-                		            {{ value }}
+                		            {{ value | raw}}
                 		        </li>
                 		    {% endfor %}
                 		    </ul>
