@@ -16,7 +16,8 @@
             <li class="{{ selectedSubTab == 'institutions_newlyRegisteredInstitutions' ? 'active' : '' }}"><a href="{{ path('admin_institution_newlyRegisteredInstitution') }}">View Newly Registered Institutions</a></li>
             <li class="{{ selectedSubTab == 'institutions_newlyAddedClinics' ? 'active' : '' }}"><a href="{{ path('admin_institution_newlyAddedClinics') }}">View Newly Added Clinics</a></li>
             <li class="divider"></li>
-            <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_index') }}">View all institutions</a></li>
+            <li class="{{ selectedSubTab == 'institutions_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_index') }}">View All Institutions</a></li>
+             <li class="{{ selectedSubTab == 'medical_centers_index' ? 'active' : '' }}"><a href="{{ path('admin_institution_medicalCenters') }}">View All Medical Centers</a></li>
             <li class="{{ selectedSubTab == 'institutions_contactInfoList' ? 'active' : '' }}"><a href="{{ path('admin_institution_contactInfoList') }}">Institutions Contact Info</a></li>
             <li class="{{ selectedSubTab == 'institutions_add' ? 'active' : '' }}"><a href="{{ path('admin_institution_add') }}">Add new</a></li>
         </ul>
