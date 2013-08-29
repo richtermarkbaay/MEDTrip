@@ -17,6 +17,7 @@ class GlobalAwardListFilter extends DoctrineOrmListFilter
         // Add country in validCriteria
         $this->addValidCriteria('awardingBody');
         $this->addValidCriteria('country');
+        $this->addValidCriteria('name');
     }
 
     function setFilterOptions()
@@ -24,6 +25,16 @@ class GlobalAwardListFilter extends DoctrineOrmListFilter
         $this->setAwardingBodiesFilterOption();
         $this->setCountryFilterOption();
         $this->setStatusFilterOption();
+        $this->setNameFilterOption();
+    }
+    
+    function setNameFilterOption()
+    {
+        if($this->queryParams['name'] == 'all') {
+            $this->queryParams['name'] = '';
+        }
+    
+        $this->filterOptions['name'] = array('label' => 'Global Award Name', 'value' => isset($this->queryParams['name']) ? $this->queryParams['name'] : '' );
     }
 
     function setAwardingBodiesFilterOption()
@@ -83,6 +94,11 @@ class GlobalAwardListFilter extends DoctrineOrmListFilter
         if($this->sortBy == 'country') {
         	$this->queryBuilder->leftJoin('a.country', 'b');
         	$sort = 'b.name ' . $this->sortOrder;
+        }
+        
+        if (trim($this->queryParams['name'])) {
+            $this->queryBuilder->andWhere('a.name LIKE :name');
+            $this->queryBuilder->setParameter('name', "%" . $this->queryParams['name'] . "%");
         }
         
         if($this->sortBy == 'awardingBody') {

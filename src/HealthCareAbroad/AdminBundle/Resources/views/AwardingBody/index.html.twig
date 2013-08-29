@@ -25,10 +25,10 @@
                 
                  <table id="awardingBody-list" class="table table-bordered sortable-list">
                     <tr>
-                        <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                         <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : default }}">Details</a></th>
-                          <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'website' ? 'sort-' ~ sortOrder : default }}">Website</a></th>
-                        <th class="actions" width="150">Action</th>
+                        <th width="250" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                         <th width="350" id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'details' ? 'sort-' ~ sortOrder : default }}">Details</a></th>
+                          <th ><a href="{{ app.request.uri }}" class="{{ sortBy == 'website' ? 'sort-' ~ sortOrder : default }}">Website</a></th>
+                        <th width="130" class="actions">Action</th>
                     </tr>
             
                 {% for each in awards %}
