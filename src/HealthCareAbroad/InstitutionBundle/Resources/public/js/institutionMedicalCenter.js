@@ -385,8 +385,7 @@ var InstitutionMedicalCenter = {
                     	var websites = response.institutionMedicalCenter.socialMediaSites;
                     	$.each(websites, function(type, value) {                    		
                     		if($.trim(websites[type]) != '') {
-                    			website = _form.find('.social-media ._'+type+'-prefix').html() + value;
-                				$('#view-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ website +'</b>');
+                				$('#view-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ value +'</b>');
                     		}else{
                     			$('#view-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionMedicalCenter.toggleForm($(\'#clinic-edit-mediaSites-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                         	}

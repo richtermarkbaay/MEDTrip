@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
 use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
 
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
@@ -101,11 +103,10 @@ class InstitutionApiService
     {
         $canDisplay = $institution['payingClient'] != 0;
         if (InstitutionApiService::CONTEXT_FULL_API != $context && !$canDisplay) {
-            $institution['socialMediaSites'] = SocialMediaSites::formatSites(\json_encode(SocialMediaSites::getDefaultValues()));
+            $institution['socialMediaSites'] = SocialMediaSites::getDefaultValues();
             $institution['websites'] = null;
-        }
-        else {
-            $institution['socialMediaSites'] = SocialMediaSites::formatSites($institution['socialMediaSites']);
+        } else {
+            $institution['socialMediaSites'] = \json_decode($institution['socialMediaSites'], true); 
         }
         
         return $this;
@@ -120,10 +121,11 @@ class InstitutionApiService
      */
     public function buildContactDetails(&$institution, $context=InstitutionApiService::CONTEXT_FULL_PAGE_VIEW)
     {
+        $institution['mainContactNumber'] = null;
+
         $canDisplay = $institution['payingClient'] != 0;
         if (InstitutionApiService::CONTEXT_FULL_API != $context && !$canDisplay){
             $institution['contactDetails'] = array();
-            $institution['mainContactNumber'] = null;
         }
         else {
             // add a string representation for each contactDetail
@@ -136,7 +138,7 @@ class InstitutionApiService
                 }
             }    
         }
-        
+
         return $this;
     }
     
@@ -148,11 +150,10 @@ class InstitutionApiService
      */
     public function buildFeaturedMediaSource(&$institution)
     {
+        $institution['featuredMedia']['src'] = null;
+
         if (isset($institution['featuredMedia']) && $institution['payingClient']){
             $institution['featuredMedia']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['featuredMedia'], ImageSizes::LARGE_BANNER);
-        }
-        else {
-            $institution['featuredMedia']['src'] = null;
         }
         
         return $this;
@@ -166,13 +167,12 @@ class InstitutionApiService
      */
     public function buildLogoSource(&$institution)
     {
+        $institution['logo']['src'] = null;
+
         if (isset($institution['logo']) && $institution['payingClient']){
             $institution['logo']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['logo'], ImageSizes::MEDIUM);
         }
-        else {
-            $institution['logo']['src'] = null;
-        }
-        
+
         return $this;
     }
     
@@ -210,7 +210,11 @@ class InstitutionApiService
             ->setParameter('institutionId', $institutionId);
         
         $institution = $qb->getQuery()->getOneOrNullResult(Query::HYDRATE_ARRAY);
-        
+
+        if(!$institution) {
+            throw new NotFoundHttpException();
+        }
+
         // build the medical centers data, based on the displayed elements in the medical centers list
         $qb = $this->doctrine->getManager()->createQueryBuilder();
         $qb->select('imc, inst, imc_lg, imc_md, imc_sp, sp, sp_m')

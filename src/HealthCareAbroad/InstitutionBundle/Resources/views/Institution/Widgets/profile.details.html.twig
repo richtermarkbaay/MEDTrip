@@ -117,15 +117,16 @@
 
     {% block viewContent %}
       {% set socialSites = social_media_sites_to_array(institution.socialMediaSites) %}
-        <div class="{{ socialSites.facebook.value == '' or socialSites.twitter.value == '' or  socialSites.googleplus.value == '' ? 'alert alert-block' : '' }}">
+        <div class="{{ socialSites.facebook == '' or socialSites.twitter == '' or  socialSites.googleplus == '' ? 'alert alert-block' : '' }}">
             {% for type, socialSite in socialSites %}
+                {% set siteLabel = get_social_media_site_label(type) %}
                 <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"></i>
                  <span class="_{{ type }}-wrapper _social-media-sites">
-                      {% if socialSite.value %}
-                         <b>{{ socialSite.value }}</b>
+                      {% if socialSite %}
+                         <b>{{ socialSite }}</b>
                       {% else %}
-                          <b>no {{ socialSite.label }} account</b> added.
-                          <a onclick="$('#institution-edit-socialmedia-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ socialSite.label }} account</a>
+                          <b>no {{ siteLabel|lower }} account</b> added.
+                          <a onclick="$('#institution-edit-socialmedia-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ siteLabel }} account</a>
                       {% endif %}
                   </span>
                 </p>

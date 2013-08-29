@@ -133,15 +133,16 @@
 
     {% block viewContent %}
         {% set social = social_media_sites_to_array(institutionMedicalCenter.socialMediaSites) %}
-        <div class="{{ social.facebook.value == '' or social.twitter.value == '' or  social.googleplus.value == '' ? 'alert alert-block' : '' }}">
-            {% for type, site in social %}
+        <div class="{{ social.facebook == '' or social.twitter == '' or  social.googleplus == '' ? 'alert alert-block' : '' }}">
+            {% for type, value in social %}
+                {% set siteLabel = get_social_media_site_label(type) %}
                 <p><i class="icon-{{ type == 'googleplus' ? 'google-plus' : type }}"> </i>
                  <span class="_{{ type }}-wrapper _social-media-sites">
-                  {% if site.value %}
-                     <b>{{ site.value }}</b>
+                  {% if value %}
+                     <b>{{ value }}</b>
                      {% else %}
-                         <b>no {{ site.label|lower }} account</b> added.
-                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ site.label }} account</a>
+                         <b>no {{ siteLabel|lower }} account</b> added.
+                         <a onclick="$('#clinic-edit-mediaSites-btn').click()" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add {{ siteLabel }} account</a>
                   {% endif %}
                  </span>
                 </p>
