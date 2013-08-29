@@ -75,9 +75,9 @@ class ScriptReformatSocialMediaSitesCommand extends ContainerAwareCommand
                     }
 
                     $this->output->writeln(" => " . $socialMediaSitesArr[$type] . " ($type)");
-                } else {
-                    $this->output->writeln("Ignored url: " . $socialMediaSitesArr[$type] . " ($type)");
                 }
+
+                // else { $this->output->writeln("Ignored url: " . $socialMediaSitesArr[$type] . " ($type)"); }
             }
         
             if($hasFormattedSites) {
