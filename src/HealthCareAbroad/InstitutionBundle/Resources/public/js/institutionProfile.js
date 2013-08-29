@@ -184,8 +184,7 @@ var InstitutionProfile = {
                     	var websites = response.institution.socialMediaSites;
                     	$.each(websites, function(type, value) {
                     		if($.trim(websites[type]) != '') {
-                    			website = _form.find('.social-media ._'+type+'-prefix').html() + value;
-                				$('#institution-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ website +'</b>');
+                				$('#institution-socialMediaSites').find('._' + type + '-wrapper').html('<b>'+ value +'</b>');
                     		} else{
                     			$('#institution-socialMediaSites').find('._'+ type + '-wrapper').html('<b>no '+type+' account.</b> added <a onclick="InstitutionProfile.toggleForm($(\'#institution-edit-socialmedia-btn\'))" class="btn btn-primary btn-small"><i class="icon-plus"></i> Add '+type+' Account');
                         	}

@@ -6,8 +6,6 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
-use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
-
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -99,17 +97,18 @@ class InstitutionController extends ResponseHeadersController
         $start = \microtime(true);
         $slug = $request->get('institutionSlug', null);
         $institutionId = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getInstitutionIdBySlug($slug);
+
         $this->apiInstitutionService = $this->get('services.api.institution');
         $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
         $memcacheService = $this->get('services.memcache');
         $memcacheKey = 'frontend.controller.institution_profile.'.$institutionId;
         $cachedData = $memcacheService->get($memcacheKey);
-        
+
         if (!$cachedData) {
             
             $mediaExtensionService = $this->apiInstitutionService->getMediaExtension();
             $this->institution = $this->apiInstitutionService->getInstitutionPublicDataById($institutionId);
-            
+
             // process common data for both single and multiple center
             $this->apiInstitutionService
                 ->buildGlobalAwards($this->institution) // build global awards data

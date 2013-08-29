@@ -49,7 +49,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'json_encode' => new  \Twig_Function_Method($this, 'json_encode'),
             'unset_array_key' => new \Twig_Function_Method($this, 'unset_array_key'),
             'json_to_array' => new \Twig_Function_Method($this, 'json_to_array'),
-            'get_social_media_site_url' => new \Twig_Function_Method($this, 'getSocialMediaSiteUrl'),
+            'get_social_media_site_placeholder' => new \Twig_Function_Method($this, 'getSocialMediaSitePlaceHolder'),
             'get_social_media_site_label' => new \Twig_Function_Method($this, 'getSocialMediaSiteLabel'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
             'array_flip' => new \Twig_Function_Method($this, 'arrayFlip'),
@@ -295,12 +295,18 @@ class MiscellaneousTwigExtension extends \Twig_Extension
 
     public function socialMedialSitesToArray($jsonString)
     {
-        return SocialMediaSites::formatSites($jsonString);
+         $arrData = json_decode($jsonString, true);
+         
+         if(!\is_array($arrData) || empty($arrData)) {
+             $arrData = SocialMediaSites::getDefaultValues();
+         }
+
+         return $arrData;
     }
 
-    public function getSocialMediaSiteUrl($type)
+    public function getSocialMediaSitePlaceHolder($type)
     {
-        return SocialMediaSites::getUrlByType($type);
+        return SocialMediaSites::getPlaceHolderByType($type);
     }
 
     public function getSocialMediaSiteLabel($type)

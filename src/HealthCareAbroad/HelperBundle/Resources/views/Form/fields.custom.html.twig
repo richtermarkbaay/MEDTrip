@@ -80,14 +80,14 @@
 
 {% block social_media_sites_custom_field_widget %}
     {% spaceless %}
-        <div class="control-group social-media">
-            {% for type, site in form.vars.value %}
-                {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
-                <label for="{{ form.vars.full_name ~ '['~ type ~']' }}">{{ get_social_media_site_label(type) }}</label>
-                <input type="text" value="{{ site }}" name="{{ form.vars.full_name ~ '[' ~ type ~']' }}" class="span7 pull-right">
-                <i class="icon-{{ iconClass }} icon-2x"></i><span class="pull-right _{{ type }}-prefix">{{ get_social_media_site_url(type) }}</span>
-            {% endfor %}
-        </div>
+        {% for type, site in form.vars.value %}
+            {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
+            <div class="control-group row">
+                <label for="{{ form.vars.full_name ~ '['~ type ~']' }}" style="margin-left: 50px;">{{ get_social_media_site_label(type) }}</label>
+                <i class="icon-{{ iconClass }} icon-2x"></i>
+                <input type="text" value="{{ site }}" name="{{ form.vars.full_name ~ '[' ~ type ~']' }}" class="span11 pull-right" placeholder="{{ get_social_media_site_placeholder(type) }}">
+            </div>
+        {% endfor %}
     {% endspaceless %}
 {% endblock %}
 

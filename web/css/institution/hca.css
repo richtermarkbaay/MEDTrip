@@ -387,20 +387,20 @@ hr {
     margin-bottom: 0;
 }
 
-#content section.section .row-fluid .social-media {
-    margin-top: -10px;
-    margin-bottom: 0;
-}
-
-#content section.section .row-fluid .social-media .icon-twitter {
+#content section.section .control-group .icon-twitter {
     color: #00a0d1;
 }
 
-#content section.section .row-fluid .social-media .icon-facebook {
+#content section.section .control-group .icon-facebook {
     color: #3b5998;
 }
 
-#content section.section .row-fluid .social-media .icon-google-plus {
+#content section.section .control-group .icon-2x {
+	top: 2px;
+    position: relative;
+}
+
+#content section.section .control-group .icon-google-plus {
     color: #C63D2D;
 }
 

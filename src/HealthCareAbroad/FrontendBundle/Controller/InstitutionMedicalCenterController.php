@@ -6,31 +6,22 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
-use HealthCareAbroad\MediaBundle\Services\ImageSizes;
-
-use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
-
 use Symfony\Component\HttpFoundation\Request;
 
-use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
+use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
 
 use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
 
-use HealthCareAbroad\HelperBundle\Entity\PageMetaConfiguration;
+use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
+
+use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
 use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
-
-use HealthCareAbroad\InstitutionBundle\Entity\Institution;
-
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
-use HealthCareAbroad\AdminBundle\Entity\ErrorReport;
-
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class InstitutionMedicalCenterController extends ResponseHeadersController
 {
