@@ -73,6 +73,8 @@ class InstitutionMedicalCenterApiService
      */
     public function buildContactDetails(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
     {
+        $institutionMedicalCenter['mainContactNumber'] = null;
+
         $canDisplayContactDetails = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
         if ($canDisplayContactDetails) {
             // add a string representation for each contactDetail
@@ -91,7 +93,6 @@ class InstitutionMedicalCenterApiService
                 // TODO: Note to self: do we really have to clear this?  
                 $institutionMedicalCenter['contactDetails'] = array();
             }
-            $institutionMedicalCenter['mainContactNumber'] = null;
         }
         
         return $this;
@@ -106,24 +107,22 @@ class InstitutionMedicalCenterApiService
      */
     public function buildExternalSites(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
     {
-        
-        if (self::CONTEXT_FULL_API == $context) {
-            // full api, no restrictions, not yet used but could be helpful
-            $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
-            
-        }
-        else {
+        $institutionMedicalCenter['socialMediaSites'] = \json_decode($institutionMedicalCenter['socialMediaSites'], true);
+
+        // api with restrictions 
+        if (self::CONTEXT_FULL_API != $context) {
+ 
             $canDisplayExternalSites = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
-            if ($canDisplayExternalSites) {
-                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites($institutionMedicalCenter['socialMediaSites']);
-            }
-            else {
-                // build the SM sites default values
-                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::formatSites(\json_encode(SocialMediaSites::getDefaultValues()));
+
+            if(!$canDisplayExternalSites) {
+                // build the Social Media Sites default values
+                $institutionMedicalCenter['socialMediaSites'] = SocialMediaSites::getDefaultValues();
                 $institutionMedicalCenter['websites'] = null;
             }
         }
         
+        
+
         return $this;
     }
     

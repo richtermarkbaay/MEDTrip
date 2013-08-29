@@ -23,27 +23,19 @@
                 </li>
                 {% if website %}
                 <li>
-                    <a href="{{ website }}" class="btn orange" id="visit_website"><i class="icon-globe"></i> Visit Website</a>
+                    <a href="{{ website }}" class="btn orange" id="visit_website" target="_blank"><i class="icon-globe"></i> Visit Website</a>
                 </li>
                 {% endif %}
             </ul>
             <ul class="unstyled inline-list">
-
-                 {% if social.facebook.value %}
+            {% for type, value in social %}
+                {% if value %}
+                    {% set iconClass = type == 'googleplus' ? 'icon-google-plus' : 'icon-' ~ type  %}
                     <li>
-                        <a class="btn orange" href="{{ social.facebook.value }}">Visit <i class="icon-facebook"></i></a>
+                        <a class="btn orange" href="{{ value }}" target="_blank">Visit <i class="{{ iconClass }}"></i></a>
                     </li>
                 {% endif %}
-                {% if social.twitter.value %}
-                    <li>
-                        <a class="btn orange" href="{{ social.twitter.value }}" role="button" > Visit <i class="icon-twitter"></i> </a>
-                    </li>
-                {% endif %}
-                {% if social.googleplus.value %}
-                    <li>
-                        <a class="btn orange" href="{{ social.googleplus.value }}" role="button" >Visit <i class="icon-google-plus"></i></a>
-                    </li>
-                {% endif %}
+            {% endfor %}
             </ul>
         </div>
     </div>

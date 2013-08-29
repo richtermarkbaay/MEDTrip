@@ -105,27 +105,20 @@ class SearchTwigExtension extends \Twig_Extension
     public function getCenterLinks(InstitutionMedicalCenter $center, $url)
     {
         $links = array();
-        //TODO: fix formatSites so that it can accept strings with or without the
-        //social media site's prefix: can accept either "https://facebook.com/my_name" or just "my_name"
-        //$socialMediaSites = SocialMediaSites::formatSites($center->getSocialMediaSites());
-        $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
-
+        
         //Falls through; order of the elements in $links is significant
         switch ($center->getPayingClient()) {
             case PayingStatus::PHOTO_LISTING:
             case PayingStatus::LOGO_LISTING:
             case PayingStatus::LINKED_LISTING:
-                if (isset($socialMediaSites[SocialMediaSites::GOOGLEPLUS]) && $socialMediaSites[SocialMediaSites::GOOGLEPLUS]) {
-                    $links[SocialMediaSites::GOOGLEPLUS] = array('label' => 'Visit G+', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::GOOGLEPLUS], true));
+                
+                $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
+                foreach($socialMediaSites as $type => $value) {
+                    $links[$type] = array('label' => SocialMediaSites::getLabelByType($type), 'value' => $value);
                 }
-                if (isset($socialMediaSites[SocialMediaSites::TWITTER]) && $socialMediaSites[SocialMediaSites::TWITTER]) {
-                    $links[SocialMediaSites::TWITTER] = array('label' => 'Visit Twitter', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::TWITTER], true));
-                }
-                if (isset($socialMediaSites[SocialMediaSites::FACEBOOK]) && $socialMediaSites[SocialMediaSites::FACEBOOK]) {
-                    $links[SocialMediaSites::FACEBOOK] = array('label' => 'Visit Facebook', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::FACEBOOK], true));
-                }
+
                 if ($website = $center->getWebsites()) {
-                    $links['website'] = array('label' => 'Visit Website', 'value' => $this->appendScheme($website));
+                    $links['website'] = array('label' => 'Visit Website', 'value' => $website);
                 }
                 if ($number = $center->getContactNumber()) {
                     $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
@@ -145,26 +138,20 @@ class SearchTwigExtension extends \Twig_Extension
     public function getInstitutionLinks(Institution $institution, $url)
     {
         $links = array();
-        //TODO: fix formatSites so that it can accept strings with or without the social media
-        // site's prefix: e.g. can accept either "https://facebook.com/my_name" or just "my_name"
-        //$socialMediaSites = SocialMediaSites::formatSites($institution->getSocialMediaSites());
-        $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
 
         //Falls through; order of the elements in $links is significant
         switch ($institution->getPayingClient()) {
             case 1:
-                if (isset($socialMediaSites[SocialMediaSites::GOOGLEPLUS])) {
-                    $links[SocialMediaSites::GOOGLEPLUS] = array('label' => 'Visit G+', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::GOOGLEPLUS], true));
+
+                $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
+                foreach($socialMediaSites as $type => $value) {
+                    $links[$type] = array('label' => SocialMediaSites::getLabelByType($type), 'value' => $value);
                 }
-                if (isset($socialMediaSites[SocialMediaSites::TWITTER])) {
-                    $links[SocialMediaSites::TWITTER] = array('label' => 'Visit Twitter', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::TWITTER], true));
-                }
-                if (isset($socialMediaSites[SocialMediaSites::FACEBOOK])) {
-                    $links[SocialMediaSites::FACEBOOK] = array('label' => 'Visit Facebook', 'value' => $this->appendScheme($socialMediaSites[SocialMediaSites::FACEBOOK], true));
-                }
+
                 if ($website = $institution->getWebsites()) {
-                    $links['website'] = array('label' => 'Visit Website', 'value' => $this->appendScheme($website));
+                    $links['website'] = array('label' => 'Visit Website', 'value' => $website);
                 }
+
                 if ($number = $institution->getContactNumber()) {
                     $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
                 }
@@ -218,6 +205,7 @@ class SearchTwigExtension extends \Twig_Extension
                 case PayingStatus::LINKED_LISTING:
                 case PayingStatus::FREE_LISTING:
             }
+
             $featuredMedia = $item->getInstitution()->getFeaturedMedia();
             $links = $this->getCenterLinks($item, $url);
         }
@@ -266,28 +254,5 @@ class SearchTwigExtension extends \Twig_Extension
 
         return $this->router->generate('frontend_institutionMedicaCenter_profile', array(
             'institutionSlug' => $institutionSlug, 'imcSlug' => $imcSlug));
-    }
-
-    /**
-     * FIXME: this sidesteps the real issue (?) which is that urls in the template
-     * are prepended with the current page's uri if scheme is absent.
-     *
-     * @param unknown $uri
-     * @param string $prefix
-     */
-    private function appendScheme($uri, $isSecureScheme = false)
-    {
-        $scheme = 'http';
-        $pattern = "/^({$scheme})(s?)(:\/\/.*$)/";
-
-        if (preg_match($pattern, $uri, $matches) === 0) {
-            $uri = $scheme . ($isSecureScheme ? 's://' : '://') . $uri;
-        } else {
-            if ($isSecureScheme && !$matches[2]) {
-                $uri = $matches[1].'s'.$matches[3];
-            }
-        }
-
-        return $uri;
     }
 }
