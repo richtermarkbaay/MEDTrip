@@ -644,22 +644,23 @@ class FrontendController extends ResponseHeadersController
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
         $paginationParameters = array('tag' => $request->get('tag', ''));
+        $context = SearchParameterBag::SEARCH_TYPE_TREATMENTS;
+
         if ($request->get('country', '')) {
             $paginationParameters['country'] = $request->get('country', '');
+            $context = SearchParameterBag::SEARCH_TYPE_COMBINATION;
         }
         if ($request->get('city', '')) {
             $paginationParameters['city'] = $request->get('city', '');
+            $context = SearchParameterBag::SEARCH_TYPE_COMBINATION;
         }
 
         if (empty($searchTerms)) {
-            $filters = array(
-                            'treatmentName' => '',
-                            'destinationName' => '',
-                            'treatmentId' => '',
-                            'countryId' => 0,
-                            'cityId' => 0
-            );
+            // If session does not exist the tag can either be a partially or fully formed slug
+            $filters = array('treatmentSlug' => $request->get('tag', ''));
 
+            // We can be sure that the slugs for destination are the fully-formed one
+            // as we are only allowing destination searches if the id is used.
             if ($countrySlug = $request->get('country', '')) {
                 if (!$country = $this->getDoctrine()->getRepository('HelperBundle:Country')->getCountry($countrySlug)) {
                     throw new NotFoundHttpException();
@@ -674,24 +675,22 @@ class FrontendController extends ResponseHeadersController
                 $filters['cityId'] = $city->getId();
             }
 
-            //TODO: this is duplicated code from searchKeywordAction()
-            if (!($term = $this->get('services.search')->getTerm($request->get('tag'), array('column' => 'slug')))) {
+            $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
+
+            if (empty($searchTerms)) {
                 return $this->render('SearchBundle:Frontend:noResults.html.twig', array(
-                    'searchLabel' => $request->get('tag', ''),
-                    'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
+                                'searchLabel' => $request->get('tag', ''),
+                                'specializations' => $this->getDoctrine()->getRepository('TermBundle:SearchTerm')->findAllActiveTermsGroupedBySpecialization()
                 ));
             }
 
-            $filters['treatmentId'] = $term['id'];
-            $filters['treatmentName'] = $term['name'];
-
-            $searchTerms = $this->get('services.search')->getSearchTermsWithUniqueDocumentsFilteredOn($filters);
             $termIds = array();
             foreach ($searchTerms as $term) {
                 $termIds[] = (int) $term['term_id'];
             }
             $uniqueTermIds = array_flip(array_flip($termIds));
-            $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->get('doctrine'), $uniqueTermIds);
+
+            $routeConfig = $this->get('services.search')->getRouteConfigFromFilters($filters, $this->getDoctrine(), $uniqueTermIds);
 
             //$paginationParameters = $routeConfig['routeParameters'];
             $searchTerms = $routeConfig['sessionParameters'];
