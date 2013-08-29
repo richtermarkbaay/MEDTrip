@@ -98,6 +98,9 @@ a:hover {
 #content-wrapper .aside-wrapper .widget-wrapper form textarea {
   width: 226px;
 }
+#content-wrapper .aside-wrapper .widget-wrapper form ul.ui-widget-content {
+  width: 238px !important;
+}
 
 #content-wrapper .aside-wrapper iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.025);
