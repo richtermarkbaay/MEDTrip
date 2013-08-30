@@ -40,6 +40,10 @@ class EntityHistoryController extends Controller
         if($request->get('action')){
             $filters['action'] = $request->get('action');
         }
+        if($request->get('isClientOnly')){
+            $usersId = $this->getDoctrine()->getRepository('UserBundle:AdminUser')->getAllUsers();
+            $filters['isClientOnly'] = $usersId;
+        }
         
         $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
         
@@ -57,7 +61,6 @@ class EntityHistoryController extends Controller
         foreach ($pager->getResults() as $versionEntry){
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
-        
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
             'pager' => $pager,
@@ -123,6 +126,7 @@ class EntityHistoryController extends Controller
     
     private function buildViewDataOfVersionEntry($versionEntry)
     {
+        
         $entryData = $versionEntry;
         // try to get the object
         $class = $versionEntry['objectClass'];
@@ -155,4 +159,5 @@ class EntityHistoryController extends Controller
         $entryData['data'] = $this->historyService->buildViewDataForChangedData($versionEntry['data']);
         return $entryData;
     }
+    
 }

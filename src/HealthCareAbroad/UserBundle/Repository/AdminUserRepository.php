@@ -40,4 +40,18 @@ class AdminUserRepository extends EntityRepository
         
         return $query->getResult();
     }
+    
+    public function getAllUsers()
+    {
+        $dql = "SELECT a FROM UserBundle:AdminUser a";
+        $query = $this->getEntityManager()->createQuery($dql);
+        
+        $ids= array();
+        
+        foreach ($query->getArrayResult() as $result){
+            $ids[] = $result['accountId'];
+        }
+        
+        return $ids;
+    }
 }

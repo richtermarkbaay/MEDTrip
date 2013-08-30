@@ -12,6 +12,10 @@
                 <!-- Render Filter Box -->
                 <div>
                 <div id="filter-wrapper">
+                        <div>
+                    		<label>View Client Users Only:</label>
+                    		<input type="checkbox" id="filter-isClientOnly" class="filter-params styledselect_form_1" name =isClientOnly value="1" {{ filter.isClientOnly is defined ? 'checked' : '' }}>
+                		</div>
                 		<div>
                 			<label>Actions:</label>
                 			<select name="action" id="filter-actions" class="filter-params styledselect_form_1">
@@ -110,6 +114,11 @@
     $(function(){
     	$('#filter-startDate').datepicker();
     	$('#filter-endDate').datepicker();
+
+    	 $('#filter-isClientOnly').on('change', function() {
+		    var val = this.checked ? '1' : '';
+		    $(this).val(val);
+		});
     });
 </script>
 {% endblock %}

@@ -26,18 +26,23 @@ class VersionEntryRepository extends LogEntryRepository
         $qb->select('ve')
             ->from('LogBundle:VersionEntry', 've')
             ->where('1=1');
+        
         $knownFilters = array(
             'objectId' => $qb->expr()->eq('ve.objectId', ':objectId'),
             'objectClass' => $qb->expr()->eq('ve.objectClass', ':objectClass'),
             'action' => $qb->expr()->eq('ve.action', ':action'),
             'startDate' => $qb->expr()->gte('ve.loggedAt', ':startDate'),
             'endDate' => $qb->expr()->lte('ve.loggedAt', ':endDate'),
+            'isClientOnly' => $qb->expr()->notIn('ve.username', ':isClientOnly'),
         );
+
+        
         foreach ($filters as $key => $value){
             if (isset($knownFilters[$key])) {
                 $qb->andWhere($knownFilters[$key])
                     ->setParameter($key, $value);
             }
+            
         }
         $qb->orderBy('ve.loggedAt', 'DESC');
         
