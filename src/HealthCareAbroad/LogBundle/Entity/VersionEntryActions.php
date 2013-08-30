@@ -5,11 +5,11 @@ use HealthCareAbroad\LogBundle\Entity\VersionEntry;
 
 final class VersionEntryActions {
     
-    const CREATE = 'create';
+    const CREATE = 'Create';
     
-    const UPDATE = 'update';
+    const UPDATE = 'Update';
     
-    const REMOVE = 'remove';
+    const REMOVE = 'Remove';
     
     private static $actions = array();
     
@@ -25,11 +25,10 @@ final class VersionEntryActions {
     
     static public function _initActions()
     {
-    
         static::$actions = array(
-            VersionEntryActions::CREATE => 'Create',
-            VersionEntryActions::UPDATE => 'Update',
-            VersionEntryActions::REMOVE => 'Remove',
+            VersionEntryActions::CREATE => 'create',
+            VersionEntryActions::UPDATE => 'update',
+            VersionEntryActions::REMOVE => 'remove',
         );
     }
     

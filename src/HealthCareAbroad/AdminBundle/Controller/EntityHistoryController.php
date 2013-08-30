@@ -38,8 +38,7 @@ class EntityHistoryController extends Controller
             $filters['endDate'] = $endDate->format("Y-m-d H:i:s");
         }
         if($request->get('action')){
-            
-            $filters['action'] = VersionEntryActions::getActionLabel($request->get('action'));
+            $filters['action'] = $request->get('action');
         }
         
         $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
@@ -58,10 +57,6 @@ class EntityHistoryController extends Controller
         foreach ($pager->getResults() as $versionEntry){
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
-        
-//         if($request->get('action')){
-//             $filters['action'] = VersionEntryActions::getActionLabel($request->get('action'));
-//         }
         
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
