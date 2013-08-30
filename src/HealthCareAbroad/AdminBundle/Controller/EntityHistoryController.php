@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\LogBundle\Entity\VersionEntry;
+
+use HealthCareAbroad\LogBundle\LogBundle;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\ORM\Query;
@@ -21,8 +25,22 @@ class EntityHistoryController extends Controller
     
     public function indexAction(Request $request)
     {
-        $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')
-            ->getQueryBuilderForFindAll();
+        $filters = array();
+        $startDate = new \DateTime($request->get('startDate', null));
+        $endDate = new \DateTime($request->get('endDate',null));
+        
+        if($request->get('startDate')){
+            $filters['startDate'] = $startDate->format("Y-m-d H:i:s");
+        }
+        if($request->get('endDate')){
+            $filters['endDate'] = $endDate->format("Y-m-d H:i:s");
+        }
+        if($request->get('action')){
+            
+            $filters['action'] = $request->get('action');
+        }
+        
+        $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
         
         $adapter = new DoctrineOrmAdapter($qb, Query::HYDRATE_ARRAY);
         $pager = new Pager($adapter);
@@ -39,9 +57,16 @@ class EntityHistoryController extends Controller
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
         
+        if($request->get('startDate')){
+            $filters['startDate'] = $startDate->format("m/d/Y");
+            $filters['endDate'] = $endDate->format("m/d/Y");
+        }
+        
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
-            'pager' => $pager
+            'pager' => $pager,
+            'filter' => $filters,
+            'options'=> VersionEntry::getActionOptions()
         ));
         
         return $response;

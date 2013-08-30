@@ -267,6 +267,7 @@ class InstitutionMedicalCenterController extends Controller
                     $this->institutionMedicalCenter->addContactDetail($phoneNumber);
                 }
             }
+//             var_dump($form->getErrorsAsString());exit;
         }
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
         return $this->render($template, array(

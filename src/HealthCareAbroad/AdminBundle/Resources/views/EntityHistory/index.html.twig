@@ -11,6 +11,27 @@
                 {% include '::notice.admin.html.twig' %}
                 <!-- Render Filter Box -->
                 <div>
+                <div id="filter-wrapper">
+                		<div>
+                			<label>Actions:</label>
+                			<select name="action" id="filter-actions" class="filter-params styledselect_form_1">
+                			    <option value="" {{ filter.action is defined and filter.action == ''  ? 'selected' : ''}}>All</option>
+                				{% for label, value in options %}
+                					<option value="{{ value }}" {{ filter.action is defined and value == filter.action ? 'selected' : ''}}>{{ label }}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div>
+                    		<label>Start Date:</label>
+                    		<input type="text" id="filter-startDate" class="filter-params styledselect_form_1 span2"  name ="startDate" data-date-format="mm/dd/yyyy" value="{{ filter.startDate is defined ? filter.startDate : '' }}" >
+                		</div>
+                		<div>
+                    		<label>End Date:</label>
+                    		<input type="text" id="filter-endDate" class="filter-params styledselect_form_1 span2"  name ="endDate" data-date-format="mm/dd/yyyy" value="{{ filter.endDate is defined ? filter.endDate : '' }}" >
+                		</div>
+                	<button class="btn btn-success" type="button" onclick="HCA.filterResult('{{ path('admin_history_index') }}')">Go</button>
+                </div>
+                
                 <table class="table table-bordered sortable-list">
                     <thead>
                         <tr>
@@ -83,7 +104,11 @@
     </div>
     
 {% endblock %}
-
 {% block inlineJavascriptCode %}
-
+<script type="text/javascript">
+    $(function(){
+    	$('#filter-startDate').datepicker();
+    	$('#filter-endDate').datepicker();
+    });
+</script>
 {% endblock %}
