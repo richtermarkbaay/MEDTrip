@@ -2,7 +2,7 @@
 {% for institutionMedicalCenter in medicalCenters %}
     {% set website = institutionMedicalCenter.websites %}
     <li class="thumbnail hca-clinic-listing">
-        {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
+        {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::SMALL') %}
         {% set imgSrc = institutionMedicalCenter.logo ? institution_media_src(institutionMedicalCenter.logo, logoSize) : imageplaceholder.imcDefaultLogo %}
         <img src="{{ imgSrc }}" alt="" class="pull-left img-polaroid"/>
 

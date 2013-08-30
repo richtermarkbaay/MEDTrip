@@ -67,7 +67,7 @@ class DoctorMediaService extends MediaService
             // set newly uploaded logo
             $doctor->setMedia($media);
 
-            $this->resize($media, $sizes);
+            $this->resize($media, $sizes, false);
             
             if($flushObject) {
                 $this->entityManager->persist($doctor);

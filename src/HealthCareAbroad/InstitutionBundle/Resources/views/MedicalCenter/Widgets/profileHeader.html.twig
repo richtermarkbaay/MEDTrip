@@ -1,7 +1,7 @@
 <section class="section row-fluid hca-clinic-heading">
     <div class="span3">
         <form class="ajaxUploadLogoForm hidden" enctype="multipart/form-data" action="{{ path('institution_medicalCenter_logo_upload', { imcId: institutionMedicalCenter.id } ) }}" method="POST">
-            <a href="javascript:void(0)" class="file-browse-btn" onclick="$(this).next().click()">
+            <a href="javascript:void(0)" class="file-browse-btn logo-wrapper" onclick="$(this).next().click()">
                 <span class="rollover hca-profile-photo-rollover"></span>
                 {% set logoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MEDIUM') %}
                 <img id="imcLogo" src="{{ institutionMedicalCenter.logo ? institution_media_src(institutionMedicalCenter.logo, logoSize) :  imageplaceholder.imcDefaultLogo}}" alt="" class="imgborder"/>

@@ -76,14 +76,19 @@ abstract class MediaService
      * Resize Image Media file. Sizes is based on ImageSizes class.
      * @param Media $media
      * @param array $sizes 
+     * @param bool $forceCrop
      */
-    function resize(Media $media, $sizes = array())
+    function resize(Media $media, $sizes = array(), $forceCrop = true)
     {
         if(count($sizes)) {
             $in = new File($media->getName(), $this->filesystem);
+
             $fileArr = explode(".", $in->getName());
             $format = array_pop($fileArr);
 
+            if(!$forceCrop) {
+                $this->resizer->setModeToInset();
+            }
 
             foreach($sizes as $each) {
                 $out = new File($each. '_' . $media->getName(), $this->filesystem);

@@ -102,4 +102,9 @@ class DefaultResizer implements Resizer
 
         return $size->scale($ratio);
     }
+
+    public function setModeToInset()
+    {
+        $this->mode = ImageInterface::THUMBNAIL_INSET;
+    }
 }

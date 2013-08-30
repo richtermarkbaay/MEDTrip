@@ -215,23 +215,25 @@ a:hover {
   padding: 0;
   width: 50px;
   height: 50px;
-  line-height: 63px;
+  line-height: 50px;
   overflow: hidden;
   margin-right: 5px;
   text-align: center;
 }
-.profile-widget-wrapper .thumbnail-wrapper > .default, .profile-widget-wrapper .thumbnail-wrapper > span.hca-sprite {
+.profile-widget-wrapper .thumbnail-wrapper > .default {
   max-width: 45px;
-  max-height: 45px;
+  max-height: 32px;
   vertical-align: middle;
 }
 .profile-widget-wrapper .thumbnail-wrapper > img {
-  border: none;
-  box-shadow: 0;
-  display: block;
   width: 50px;
+  border: none;
   max-width: none;
   max-height: none;
+}
+
+.profile-widget-wrapper .thumbnail-wrapper .mini.clinic-default-logo {
+	margin-top: 10px;
 }
 .profile-widget-wrapper:before {
   content: " ";
@@ -2625,7 +2627,7 @@ div.register p a:hover {
 }
 .hca-sprite.clinic-default-logo.mini {
   width: 40px;
-  height: 300px;
+  height: 30px;
   background-position: -664px -307px;
 }
 .hca-sprite.doctor-icon {

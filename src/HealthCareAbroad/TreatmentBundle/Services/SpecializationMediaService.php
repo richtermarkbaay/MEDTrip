@@ -63,7 +63,7 @@ class SpecializationMediaService extends MediaService
             // set newly uploaded logo
             $specialization->setMedia($media);
 
-            $this->resize($media, $sizes);
+            $this->resize($media, $sizes, false);
             
             if($flushObject) {
                 $this->entityManager->persist($specialization);
