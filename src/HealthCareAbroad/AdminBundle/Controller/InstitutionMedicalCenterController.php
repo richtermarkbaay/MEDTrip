@@ -242,6 +242,9 @@ class InstitutionMedicalCenterController extends Controller
         $template = 'AdminBundle:InstitutionMedicalCenter:form.html.twig';
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
 
+        if ($request->isMethod('GET')) {
+            $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
+        }
         if ($request->isMethod('POST')) {
 
             $formVariables = $this->request->get(InstitutionMedicalCenterFormType::NAME);
@@ -268,13 +271,13 @@ class InstitutionMedicalCenterController extends Controller
                 }
             }
         }
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
+        
         return $this->render($template, array(
-                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                        'institution' => $this->institution,
-                        'form' => $form->createView(),
-                        'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(),
-                                        'institutionId' => $this->institution->getId()))
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'institution' => $this->institution,
+            'form' => $form->createView(),
+            'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(),
+            'institutionId' => $this->institution->getId()))
         ));
     }
 
