@@ -15,9 +15,10 @@
                 		<div>
                 			<label>Actions:</label>
                 			<select name="action" id="filter-actions" class="filter-params styledselect_form_1">
+                			
                 			    <option value="" {{ filter.action is defined and filter.action == ''  ? 'selected' : ''}}>All</option>
                 				{% for label, value in options %}
-                					<option value="{{ value }}" {{ filter.action is defined and value == filter.action ? 'selected' : ''}}>{{ label }}</option>
+                					<option value="{{ value }}" {{ filter.action is defined and label == filter.action ? 'selected' : ''}}>{{ label }}</option>
                 				{% endfor %}
                 			</select>
                 		</div>

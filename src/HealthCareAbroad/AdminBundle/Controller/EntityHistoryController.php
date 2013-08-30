@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\LogBundle\Entity\VersionEntryAction;
+use HealthCareAbroad\LogBundle\Entity\VersionEntryActions;
 
 use HealthCareAbroad\LogBundle\Entity\VersionEntry;
 
@@ -39,7 +39,7 @@ class EntityHistoryController extends Controller
         }
         if($request->get('action')){
             
-            $filters['action'] = $request->get('action');
+            $filters['action'] = VersionEntryActions::getActionLabel($request->get('action'));
         }
         
         $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
@@ -59,11 +59,15 @@ class EntityHistoryController extends Controller
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
         
+//         if($request->get('action')){
+//             $filters['action'] = VersionEntryActions::getActionLabel($request->get('action'));
+//         }
+        
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
             'pager' => $pager,
             'filter' => $filters,
-            'options'=> VersionEntryAction::getActionOptionsList()
+            'options'=> VersionEntryActions::getActionOptions()
         ));
         
         return $response;
