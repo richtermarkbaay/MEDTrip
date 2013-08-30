@@ -105,16 +105,16 @@ class SearchTwigExtension extends \Twig_Extension
     public function getCenterLinks(InstitutionMedicalCenter $center, $url)
     {
         $links = array();
-        
+
         //Falls through; order of the elements in $links is significant
         switch ($center->getPayingClient()) {
             case PayingStatus::PHOTO_LISTING:
             case PayingStatus::LOGO_LISTING:
             case PayingStatus::LINKED_LISTING:
-                
+
                 $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
                 foreach($socialMediaSites as $type => $value) {
-                    $links[$type] = array('label' => SocialMediaSites::getLabelByType($type), 'value' => $value);
+                    $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
                 }
 
                 if ($website = $center->getWebsites()) {
@@ -145,7 +145,7 @@ class SearchTwigExtension extends \Twig_Extension
 
                 $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
                 foreach($socialMediaSites as $type => $value) {
-                    $links[$type] = array('label' => SocialMediaSites::getLabelByType($type), 'value' => $value);
+                    $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
                 }
 
                 if ($website = $institution->getWebsites()) {
