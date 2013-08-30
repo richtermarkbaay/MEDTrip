@@ -317,8 +317,14 @@ hr {
     padding-bottom: 10px;
 }
 
-#content section.section.hca-clinic-heading img,#content section.section.hca-doctor-heading img {
+#content section.section.hca-clinic-heading .logo-wrapper {
+    display: block;
+	text-align: center;
+	line-height: 135px;
     border: 1px solid #bfc3be;
+}
+
+#content section.section.hca-clinic-heading img,#content section.section.hca-doctor-heading img {
     width: 135px;
 }
 
@@ -1793,17 +1799,18 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .hca-logo {
+    left: 10px;
+    width: 135px;
+    height: 135px;
+    z-index: 1;
     display: block;
     position: absolute;
     margin-top: -155px;
+    line-height: 135px;
+    text-align: center;
     background-color: #fff;
     border: 5px solid #6e6e6e;
-    z-index: 1000;
-    left: 10px;
-    height: 135px;
-    width: 135px;
 }
-
 .hca-logo.hca-profile-photo {
     margin-top: 0;
     width: 135px;
@@ -1909,9 +1916,19 @@ span.rollover:hover {
     font-weight: 700;
 }
 
-.doctors-new-listing img,.specializations-profile-listing img {
-    margin-right: 10px;
-    width: 50px;
+.doctors-new-listing form.upload-thumbnail {
+    margin: 0;
+	width: 70px;
+	float:left;
+	height:60px;
+	text-align: center;
+    display: inline-block;
+}
+
+.doctors-new-listing form.upload-thumbnail img,.specializations-profile-listing img {
+    max-width: 50px;
+    max-height: 50px;
+    margin-right: 10px;    
 }
 
 .doctors-new-listing .icon-edit,.doctors-new-listing .icon-ok,.specializations-profile-listing .icon-edit,.specializations-profile-listing .icon-ok {
@@ -2634,10 +2651,10 @@ h1,h2,h3,h4,h5 {
 }
 
 .thumbnails li.thumbnail img.img-polaroid {
-    position: absolute;
-    height: 64px;
     width: 64px;
+    height: auto;
     margin: 10px;
+    position: absolute;
 }
 
 .thumbnails li.thumbnail.hca-alert-inquiry {

@@ -49,7 +49,7 @@ class AdvertisementMediaService extends MediaService
         if(is_object($result)) {
             $media = $result;
             $sizes = $this->getSizesByType($imageType);
-            $this->resize($media, $sizes);
+            $this->resize($media, $sizes, false);
 
             return $media;
         }

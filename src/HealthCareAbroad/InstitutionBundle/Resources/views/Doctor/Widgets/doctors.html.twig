@@ -10,9 +10,9 @@
                 <a class="remove-doctor-btn" href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" data-doctor-id="{{ doctor.id }}"><i class="icon-remove-sign pull-right"></i></a>
                 <a class="edit-doctor-btn" data-doctor="{{ json_encode(doctors[doctor.id]) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}"><i class="icon-edit pull-right"></i></a>
     
-                <form action="{{ path('institution_doctor_logo_upload', {doctorId: doctor.id, imcId: institutionMedicalCenter.id}) }}" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">
-                    <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media ? doctor_media_src(doctor.media, doctorLogoSize) : imageplaceholder.doctorDefaultImage }}" class="pull-left img-polaroid">
-                    <span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>
+                <form action="{{ path('institution_doctor_logo_upload', {doctorId: doctor.id, imcId: institutionMedicalCenter.id}) }}" method="post" enctype="multipart/form-data" class="ajaxUploadForm upload-thumbnail">
+                    <span class="rollover hca-profile-photo-rollover" onclick="$(this).siblings('input[type=file]').click()"></span>
+                    <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media ? doctor_media_src(doctor.media, doctorLogoSize) : imageplaceholder.doctorDefaultImage }}" class="img-polaroid">
                     <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
                 </form>
     
@@ -41,9 +41,9 @@
             <a class="remove-doctor-btn" href="#"><i class="icon-remove-sign pull-right"></i></a>
             <a class="edit-doctor-btn" href="#" data-doctor=""><i class="icon-edit pull-right"></i></a>
 
-            <form action="#" method="post" enctype="multipart/form-data" class="ajaxUploadForm" style="display:inline;width: 70px;float:left;height:60px; margin: 0">
-                <img id="doctor-thumbnail" class="pull-left img-polaroid doctor-thumbnail" alt="" src="">
-                <span class="rollover hca-profile-photo-rollover" onclick="$(this).next().click()"></span>
+            <form action="#" method="post" enctype="multipart/form-data" class="ajaxUploadForm upload-thumbnail">
+                <span class="rollover hca-profile-photo-rollover" onclick="$(this).siblings('input[type=file]').click()"></span>
+                <img id="doctor-thumbnail" class="img-polaroid doctor-thumbnail" alt="" src="">
                 <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
             </form>
             

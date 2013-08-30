@@ -86,7 +86,7 @@ class InstitutionMediaService extends MediaService
             // set newly uploaded logo
             $institution->setLogo($media);
 
-            $this->resize($media, $sizes);
+            $this->resize($media, $sizes, false);
 
             if($flushObject) {
                 $this->entityManager->persist($institution);
@@ -170,7 +170,7 @@ class InstitutionMediaService extends MediaService
 
             $medicalCenter->setLogo($media);
 
-            $this->resize($media, $sizes);
+            $this->resize($media, $sizes, false);
 
             if($flushObject) {
                 $this->entityManager->persist($medicalCenter);

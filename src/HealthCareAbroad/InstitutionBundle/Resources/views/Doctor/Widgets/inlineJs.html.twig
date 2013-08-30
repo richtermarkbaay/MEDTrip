@@ -17,7 +17,7 @@ function ucwords (str) {
 
             success: function(response) {
                 if(response.status) {
-                    $('#doctor-thumbnail-'+response.doctor.id).attr('src', response.doctor.mediaSrc).css('opacity', 1).next().show();
+                    $('#doctor-thumbnail-'+response.doctor.id).attr('src', response.doctor.mediaSrc).css('opacity', 1).prev().show();
                 } else {
                     alert('ERROR: Unable to upload Logo!');
                 }
