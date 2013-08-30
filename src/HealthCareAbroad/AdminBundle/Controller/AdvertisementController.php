@@ -113,7 +113,7 @@ class AdvertisementController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENTS')")
      * @param Request $request
      */
     public function addAction(Request $request)
@@ -144,7 +144,7 @@ class AdvertisementController extends Controller
     /**
      * This is the edit advertisement page
      *
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENTS')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -165,7 +165,7 @@ class AdvertisementController extends Controller
 
     /**
      * This is the step when adding an advertisement
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENTS')")
      * @param Request $request
      */
     public function saveAction()
@@ -213,7 +213,7 @@ class AdvertisementController extends Controller
     /**
      * This page will be the third step when creating a new advertisement.
      * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENTS')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -227,7 +227,7 @@ class AdvertisementController extends Controller
     /**
      * This will be the last page when creating a new advertisement
      * 
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENT')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_ADVERTISEMENTS')")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
