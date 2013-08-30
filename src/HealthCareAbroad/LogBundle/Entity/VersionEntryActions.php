@@ -5,53 +5,37 @@ use HealthCareAbroad\LogBundle\Entity\VersionEntry;
 
 final class VersionEntryActions {
     
-    const CREATE = 1;
+    const CREATE = 'create';
     
-    const UPDATE = 2;
+    const UPDATE = 'update';
     
-    const REMOVE = 3;
-    
-    static function getActionOptions()
-    {
-        return array(
-            'Create' => self::CREATE,
-            'Update' => self::UPDATE,
-            'Remove' => self::REMOVE
-        );
-    }
+    const REMOVE = 'remove';
     
     private static $actions = array();
     
-    private static $actionKeys = array();
+    static function getActionOptions()
+    {
+        return self::$actions;
+    }
     
     public static function getActions()
     {
         return static::$actions;
     }
     
-    static public function getActionKeys()
-    {
-        return static::$actionKeys;
-    }
-    
     static public function _initActions()
     {
-        static::$actions = array(
-                        self::CREATE => 'Create',
-                        self::UPDATE => 'Update',
-                        self::REMOVE => 'Remove',
-        );
     
-        static::$actionKeys = array(
-                        VersionEntryActions::CREATE => 'Create',
-                        VersionEntryActions::UPDATE => 'Update',
-                        VersionEntryActions::REMOVE => 'Remove',
+        static::$actions = array(
+            VersionEntryActions::CREATE => 'Create',
+            VersionEntryActions::UPDATE => 'Update',
+            VersionEntryActions::REMOVE => 'Remove',
         );
     }
     
     static public function getActionLabel($action)
     {
-        return isset(self::$actionKeys[$action]) ? self::$actionKeys[$action] : '';
+        return isset(self::$actions[$action]) ? self::$actions[$action] : '';
     }
     
 }
