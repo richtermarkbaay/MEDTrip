@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\LogBundle\Entity\VersionEntryAction;
+
 use HealthCareAbroad\LogBundle\Entity\VersionEntry;
 
 use HealthCareAbroad\LogBundle\LogBundle;
@@ -57,16 +59,11 @@ class EntityHistoryController extends Controller
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
         
-        if($request->get('startDate')){
-            $filters['startDate'] = $startDate->format("m/d/Y");
-            $filters['endDate'] = $endDate->format("m/d/Y");
-        }
-        
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
             'pager' => $pager,
             'filter' => $filters,
-            'options'=> VersionEntry::getActionOptions()
+            'options'=> VersionEntryAction::getActionOptionsList()
         ));
         
         return $response;

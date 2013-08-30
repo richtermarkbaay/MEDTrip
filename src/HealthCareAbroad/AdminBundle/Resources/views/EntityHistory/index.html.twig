@@ -23,11 +23,11 @@
                 		</div>
                 		<div>
                     		<label>Start Date:</label>
-                    		<input type="text" id="filter-startDate" class="filter-params styledselect_form_1 span2"  name ="startDate" data-date-format="mm/dd/yyyy" value="{{ filter.startDate is defined ? filter.startDate : '' }}" >
+                    		<input type="text" id="filter-startDate" class="filter-params styledselect_form_1 span2"  name ="startDate" data-date-format="mm/dd/yyyy" value="{{ filter.startDate is defined ? filter.startDate|date('m/d/Y') : '' }}" >
                 		</div>
                 		<div>
                     		<label>End Date:</label>
-                    		<input type="text" id="filter-endDate" class="filter-params styledselect_form_1 span2"  name ="endDate" data-date-format="mm/dd/yyyy" value="{{ filter.endDate is defined ? filter.endDate : '' }}" >
+                    		<input type="text" id="filter-endDate" class="filter-params styledselect_form_1 span2"  name ="endDate" data-date-format="mm/dd/yyyy" value="{{ filter.endDate is defined ? filter.endDate|date('m/d/Y') : '' }}" >
                 		</div>
                 	<button class="btn btn-success" type="button" onclick="HCA.filterResult('{{ path('admin_history_index') }}')">Go</button>
                 </div>

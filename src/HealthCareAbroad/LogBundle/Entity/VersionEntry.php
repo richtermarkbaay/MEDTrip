@@ -4,15 +4,6 @@ namespace HealthCareAbroad\LogBundle\Entity;
 class VersionEntry
 {
     
-    static function getActionOptions()
-    {
-        return array(
-            'Create' => 'create',
-            'Update' => 'update',
-            'Remove' => 'remove'
-        );
-    }
-    
     /**
      * @var bigint $id
      */
