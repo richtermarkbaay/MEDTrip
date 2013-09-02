@@ -510,7 +510,9 @@ class FrontendController extends ResponseHeadersController
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
+        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(
+                        isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'),
+                        true)) {
             throw new NotFoundHttpException();
         }
 
@@ -551,7 +553,9 @@ class FrontendController extends ResponseHeadersController
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
 
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
+        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(
+                        isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'),
+                        true)) {
             throw new NotFoundHttpException();
         }
         if (!$subSpecialization = $this->getDoctrine()->getRepository('TreatmentBundle:SubSpecialization')->getSubSpecialization(isset($searchTerms['subSpecializationId']) ? $searchTerms['subSpecializationId'] : $request->get('subSpecialization'))) {
@@ -597,7 +601,9 @@ class FrontendController extends ResponseHeadersController
     public function searchResultsTreatmentsAction(Request $request)
     {
         $searchTerms = json_decode($request->getSession()->remove('search_terms'), true);
-        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'))) {
+        if (!$specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')->getSpecialization(
+                        isset($searchTerms['specializationId']) ? $searchTerms['specializationId'] : $request->get('specialization'),
+                        true)) {
             throw new NotFoundHttpException();
         }
 

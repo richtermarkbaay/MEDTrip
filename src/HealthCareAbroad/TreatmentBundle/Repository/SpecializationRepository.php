@@ -153,19 +153,19 @@ class SpecializationRepository extends EntityRepository
         return $query->getResult();
 
     }
-    
+
     /**
      * Get specializations that are not yet linked to medical center id
-     * 
+     *
      * @param integer $imcId
      * @return array specialization with hydrate array
      */
     public function getAvailableSpecializationsByMedicalCenterId($imcId, $filters=array())
-    {   
+    {
         $em = $this->getEntityManager();
         $rsm = new ResultSetMappingBuilder($em);
         $rsm->addRootEntityFromClassMetadata('TreatmentBundle:Specialization', 'sp');
-        
+
         $sql = "SELECT sp.*, sp.name FROM `specializations` sp ".
             "INNER JOIN `treatments` tr ON tr.`specialization_id` = sp.`id` ".
             "LEFT JOIN (SELECT * FROM `institution_specializations` WHERE `institution_medical_center_id` = :institutionMedicalCenterId) used_sp ON used_sp.`specialization_id` = sp.`id` ".
@@ -178,15 +178,34 @@ class SpecializationRepository extends EntityRepository
             $parameters['name'] = '%'.$filters['name'].'%';
         }
         $sql .= "GROUP BY sp.`id`";
-        
+
         $query = $em->createNativeQuery($sql, $rsm);
         $query->setParameters($parameters);
         return $query->getResult(Query::HYDRATE_ARRAY);
     }
 
     //Get by slug or id
-    public function getSpecialization($identifier)
+    public function getSpecialization($identifier, $includeMedia = false)
     {
+        if ($includeMedia) {
+            $qb = $this->getEntityManager()->createQueryBuilder();
+            $qb->select('s, m')
+                ->from('TreatmentBundle:Specialization', 's')
+                ->leftJoin('s.media', 'm')
+                ->where('s.status = :status')
+                ->setParameter('status', Specialization::STATUS_ACTIVE);
+
+            if (is_numeric($identifier)) {
+                $qb->andWhere('s.id = :identifier');
+var_dump('asdfasdfasdasdfddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
+            } elseif (is_string($identifier)) {
+                $qb->andWhere('s.slug = :identifier');
+            }
+            $qb->setParameter('identifier', $identifier);
+
+            return $qb->getQuery()->getOneOrNullResult();
+        }
+
         if (is_numeric($identifier)) {
             return $this->find($identifier);
         } elseif (is_string($identifier)) {
