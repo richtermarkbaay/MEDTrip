@@ -2,6 +2,12 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\LogBundle\Entity\VersionEntryActions;
+
+use HealthCareAbroad\LogBundle\Entity\VersionEntry;
+
+use HealthCareAbroad\LogBundle\LogBundle;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Doctrine\ORM\Query;
@@ -21,8 +27,29 @@ class EntityHistoryController extends Controller
     
     public function indexAction(Request $request)
     {
-        $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')
-            ->getQueryBuilderForFindAll();
+        $filters = array();
+        $startDate = new \DateTime($request->get('startDate', null));
+        $endDate = new \DateTime($request->get('endDate',null));
+        
+        if($request->get('startDate')){
+            $filters['startDate'] = $startDate->format("Y-m-d H:i:s");
+        }
+        if($request->get('endDate')){
+            $filters['endDate'] = $endDate->format("Y-m-d H:i:s");
+        }
+        if($request->get('action')){
+            $filters['action'] = $request->get('action');
+        }
+        if($request->get('isClientOnly')){
+            $users = $this->getDoctrine()->getRepository('UserBundle:AdminUser')->getAllUsers();
+            $ids= array();
+            foreach ($users as $user){
+                $ids[] = $user['accountId'];
+            }
+            $filters['isClientOnly'] = $ids;
+        }
+        
+        $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
         
         $adapter = new DoctrineOrmAdapter($qb, Query::HYDRATE_ARRAY);
         $pager = new Pager($adapter);
@@ -38,10 +65,11 @@ class EntityHistoryController extends Controller
         foreach ($pager->getResults() as $versionEntry){
             $entries[] = $this->buildViewDataOfVersionEntry($versionEntry);
         }
-        
         $response = $this->render('AdminBundle:EntityHistory:index.html.twig', array(
             'entries' => $entries,
-            'pager' => $pager
+            'pager' => $pager,
+            'filter' => $filters,
+            'options'=> VersionEntryActions::getActionOptions()
         ));
         
         return $response;
@@ -102,6 +130,7 @@ class EntityHistoryController extends Controller
     
     private function buildViewDataOfVersionEntry($versionEntry)
     {
+        
         $entryData = $versionEntry;
         // try to get the object
         $class = $versionEntry['objectClass'];
@@ -134,4 +163,5 @@ class EntityHistoryController extends Controller
         $entryData['data'] = $this->historyService->buildViewDataForChangedData($versionEntry['data']);
         return $entryData;
     }
+    
 }

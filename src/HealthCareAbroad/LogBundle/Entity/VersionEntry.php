@@ -3,6 +3,7 @@ namespace HealthCareAbroad\LogBundle\Entity;
 
 class VersionEntry
 {
+    
     /**
      * @var bigint $id
      */

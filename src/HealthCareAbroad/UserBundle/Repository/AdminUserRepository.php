@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 use Doctrine\ORM\EntityRepository;
@@ -39,5 +41,13 @@ class AdminUserRepository extends EntityRepository
             ->setParameter('inactive_user_status', SiteUser::STATUS_INACTIVE);
         
         return $query->getResult();
+    }
+    
+    public function getAllUsers()
+    {
+        $dql = "SELECT a FROM UserBundle:AdminUser a";
+        $query = $this->getEntityManager()->createQuery($dql);
+        
+        return $query->getResult(Query::HYDRATE_ARRAY);
     }
 }

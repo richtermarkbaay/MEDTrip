@@ -11,6 +11,32 @@
                 {% include '::notice.admin.html.twig' %}
                 <!-- Render Filter Box -->
                 <div>
+                <div id="filter-wrapper">
+                        <div>
+                    		<label>View Client Users Only:</label>
+                    		<input type="checkbox" id="filter-isClientOnly" class="filter-params styledselect_form_1" name =isClientOnly value="1" {{ filter.isClientOnly is defined ? 'checked' : '' }}>
+                		</div>
+                		<div>
+                			<label>Actions:</label>
+                			<select name="action" id="filter-actions" class="filter-params styledselect_form_1">
+                			
+                			    <option value="" {{ filter.action is defined and filter.action == ''  ? 'selected' : ''}}>All</option>
+                				{% for label, value in options %}
+                					<option value="{{ value }}" {{ filter.action is defined and value == filter.action ? 'selected' : ''}}>{{ label }}</option>
+                				{% endfor %}
+                			</select>
+                		</div>
+                		<div>
+                    		<label>Start Date:</label>
+                    		<input type="text" id="filter-startDate" class="filter-params styledselect_form_1 span2"  name ="startDate" data-date-format="mm/dd/yyyy" value="{{ filter.startDate is defined ? filter.startDate|date('m/d/Y') : '' }}" >
+                		</div>
+                		<div>
+                    		<label>End Date:</label>
+                    		<input type="text" id="filter-endDate" class="filter-params styledselect_form_1 span2"  name ="endDate" data-date-format="mm/dd/yyyy" value="{{ filter.endDate is defined ? filter.endDate|date('m/d/Y') : '' }}" >
+                		</div>
+                	<button class="btn btn-success" type="button" onclick="HCA.filterResult('{{ path('admin_history_index') }}')">Go</button>
+                </div>
+                
                 <table class="table table-bordered sortable-list">
                     <thead>
                         <tr>
@@ -83,7 +109,16 @@
     </div>
     
 {% endblock %}
-
 {% block inlineJavascriptCode %}
+<script type="text/javascript">
+    $(function(){
+    	$('#filter-startDate').datepicker();
+    	$('#filter-endDate').datepicker();
 
+    	 $('#filter-isClientOnly').on('change', function() {
+		    var val = this.checked ? '1' : '';
+		    $(this).val(val);
+		});
+    });
+</script>
 {% endblock %}
