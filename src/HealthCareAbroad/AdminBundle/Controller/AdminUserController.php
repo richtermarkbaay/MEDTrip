@@ -178,7 +178,8 @@ class AdminUserController extends Controller
         if ($request->isMethod('POST')) {
             $form->bind($request);
             if ($form->isValid()) {
-                $this->get('services.admin_user')->create($form->getData());
+                $adminUser->setPassword($this->get('services.admin_user')->encryptPassword($adminUser->getPassword()));
+                $this->get('services.admin_user')->create($adminUser);
                 $this->get('session')->setFlash('success', "User successfully created.");
                 
                 return $this->redirect($this->generateUrl('admin_user_index'));
