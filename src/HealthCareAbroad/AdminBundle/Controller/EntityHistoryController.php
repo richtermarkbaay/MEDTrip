@@ -41,8 +41,12 @@ class EntityHistoryController extends Controller
             $filters['action'] = $request->get('action');
         }
         if($request->get('isClientOnly')){
-            $usersId = $this->getDoctrine()->getRepository('UserBundle:AdminUser')->getAllUsers();
-            $filters['isClientOnly'] = $usersId;
+            $users = $this->getDoctrine()->getRepository('UserBundle:AdminUser')->getAllUsers();
+            $ids= array();
+            foreach ($users as $user){
+                $ids[] = $user['accountId'];
+            }
+            $filters['isClientOnly'] = $ids;
         }
         
         $qb = $this->getDoctrine()->getRepository('LogBundle:VersionEntry')->getQueryBuilderForFindAll($filters);
