@@ -84,7 +84,6 @@ class DoctorController extends Controller
             }
             
             $media = $doctor->getMedia();
-            $doctor->setMedia(null);
             $msg = "Successfully updated account";
             $title = 'Edit Doctor Details';
         }
