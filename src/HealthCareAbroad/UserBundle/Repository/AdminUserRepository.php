@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\UserBundle\Repository;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
 
 use Doctrine\ORM\EntityRepository;
@@ -47,8 +49,7 @@ class AdminUserRepository extends EntityRepository
         $query = $this->getEntityManager()->createQuery($dql);
         
         $ids= array();
-        
-        foreach ($query->getArrayResult() as $result){
+        foreach ($query->getResult(Query::HYDRATE_ARRAY) as $result){
             $ids[] = $result['accountId'];
         }
         
