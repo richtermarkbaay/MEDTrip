@@ -197,7 +197,6 @@ class SpecializationRepository extends EntityRepository
 
             if (is_numeric($identifier)) {
                 $qb->andWhere('s.id = :identifier');
-var_dump('asdfasdfasdasdfddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd');
             } elseif (is_string($identifier)) {
                 $qb->andWhere('s.slug = :identifier');
             }
