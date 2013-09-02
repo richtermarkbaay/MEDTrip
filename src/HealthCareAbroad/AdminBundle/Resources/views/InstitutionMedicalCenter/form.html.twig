@@ -16,8 +16,6 @@
                 <h3>{{ centerLabel }} Information</h3>
     
                 <form novalidate="novalidate" action="{{ formAction }}" method="POST" {{ form_enctype(form) }} class="basic-form row-fluid">        
-                    {{ form_errors(form) }}   
-        
                     {{ form_row(form.name, { 'attr': {'class': 'input-xlarge'} }) }}
                     {{ form_row(form.description, { 'attr': {style: "width: 70%", class: "tinymce"} } ) }}
                      <hr />
