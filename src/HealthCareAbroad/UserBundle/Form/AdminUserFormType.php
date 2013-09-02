@@ -35,7 +35,6 @@ class AdminUserFormType extends AbstractType
             ));
         $builder->add( 'password', 'password', array(
             'label' => 'Password',
-            'virtual' => true,
             'constraints' => array(new NotBlank())
         ));
         $builder->add('confirm_password', 'password', array(

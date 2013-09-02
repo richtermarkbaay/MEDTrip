@@ -100,7 +100,6 @@ class AdminUserService extends UserService
     public function create(SiteUser $siteUser)
     {
         // create user in chromedia global accounts
-        $siteUser->setPassword($siteUser->getPassword());
         $siteUser->setStatus(SiteUser::STATUS_ACTIVE);
         $siteUser = $this->createUser($siteUser);
 
