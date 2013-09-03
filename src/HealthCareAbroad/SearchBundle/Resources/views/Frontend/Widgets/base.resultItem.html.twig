@@ -13,7 +13,7 @@
     {% endif %}
 
     <div class="right-column-wrapper">
-        {% if searchResultItem.displayPhoto %}
+        {% if searchResultItem.displayPhoto and searchResultItem.featuredMedia %}
             <div class="pull-right listing-photo">
                 <div class="thumbnail-frame">
                     <img class="img-polaroid" alt="" src="{{ institution_media_src(searchResultItem.featuredMedia, constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::ADS_FEATURED_IMAGE')) }}">
