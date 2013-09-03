@@ -150,10 +150,11 @@ class InstitutionApiService
      */
     public function buildFeaturedMediaSource(&$institution)
     {
-        $institution['featuredMedia']['src'] = null;
-
         if (isset($institution['featuredMedia']) && $institution['payingClient']){
             $institution['featuredMedia']['src'] = $this->mediaExtension->getInstitutionMediaSrc($institution['featuredMedia'], ImageSizes::LARGE_BANNER);
+        }
+        else {
+            $institution['featuredMedia']['src'] = null;
         }
         
         return $this;
