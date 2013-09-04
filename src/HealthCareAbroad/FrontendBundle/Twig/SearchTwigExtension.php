@@ -140,26 +140,22 @@ class SearchTwigExtension extends \Twig_Extension
         $links = array();
 
         //Falls through; order of the elements in $links is significant
-        switch ($institution->getPayingClient()) {
-            case 1:
+        if($institution->getPayingClient()) {
+            $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
+            foreach($socialMediaSites as $type => $value) {
+                $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
+            }
 
-                $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
-                foreach($socialMediaSites as $type => $value) {
-                    $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
-                }
+            if ($website = $institution->getWebsites()) {
+                $links['website'] = array('label' => 'Visit Website', 'value' => $website);
+            }
 
-                if ($website = $institution->getWebsites()) {
-                    $links['website'] = array('label' => 'Visit Website', 'value' => $website);
-                }
-
-                if ($number = $institution->getContactNumber()) {
-                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
-                }
-            case 0:
-                if ($email = $institution->getContactEmail()) {
-                    $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
-                }
+            if ($number = $institution->getContactNumber()) {
+                $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
+            }
         }
+        
+        $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
 
         return $links;
     }
