@@ -234,11 +234,4 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
                     referencedColumnName: id
             orphanRemoval: false
 
-    oneToOne:
-        gallery:
-            gedmo:
-                - versioned
-            targetEntity: HealthCareAbroad\MediaBundle\Entity\Gallery
-            mappedBy: institution
-
     lifecycleCallbacks: {  }

@@ -39,6 +39,10 @@ HealthCareAbroad\MediaBundle\Entity\Gallery:
             gedmo:
                 - versioned
             targetEntity: HealthCareAbroad\InstitutionBundle\Entity\Institution
-            inversedBy: gallery
+            inversedBy: null
+            joinColumns:
+                institution_id:
+                    referencedColumnName: id
+            orphanRemoval: false
 
     lifecycleCallbacks: {  }

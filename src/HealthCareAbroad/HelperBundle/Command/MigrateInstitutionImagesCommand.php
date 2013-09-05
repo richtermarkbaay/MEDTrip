@@ -176,7 +176,7 @@ class MigrateInstitutionImagesCommand extends ContainerAwareCommand
     {
         $this->output->write('GALLERY: ');
         $oldDirectory = $this->getWebRootDirectory().'/'.$institution->getId();
-        $gallery = $institution->getGallery();
+        $gallery = array();//$institution->getGallery();
         if ($gallery) {
             foreach ($gallery->getMedia() as $media) {
                 $oldMediaFile = $oldDirectory.'/'.$media->getName();

@@ -1,4 +1,4 @@
-<div class="row-fluid control-group">
+<div id="_clinic-list" class="row-fluid control-group">
     <label>
         Publish this Image file with a specific clinic.<br>
         <small>
@@ -6,12 +6,13 @@
             the correct image file.
         </small>
     </label>
+
     <ul class="media-listing" style="width: auto;display:block">
         {% for center in medicalCenters %}
-        {% set existingClinic = center.id in selectedClinics %}
+        {% set existingClinic = selectedClinics[center.id] is defined %}
         <li>
             <label style="font-weight:normal">
-                <input type="checkbox" class="pull-left medical-center-checkbox {{ existingClinic ? 'existing' : '' }}" value="{{ center.id }}" name="medical_center_ids[]" {% if existingClinic %}checked="checked"{% endif %} style="margin-top: 0">
+                <input type="checkbox" class="pull-left medical-center-checkbox {{ existingClinic ? 'existing' : '' }}" value="{{ center.id }}" name="medical_center_ids[]" {% if existingClinic %}checked="checked"{% endif %}>
                 {{ center.name }}
             </label>
         </li>

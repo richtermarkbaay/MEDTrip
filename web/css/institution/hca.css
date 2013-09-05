@@ -1241,20 +1241,20 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .media-listing li {
-    border-bottom: 1px solid rgba(0,0,0,.1);
-    list-style-type: none;
-    display: inline-block;
-    margin-right: 4%;
+
     float: left;
     width: 46%;
+    padding: 2px 0;
+    margin-right: 4%;
     text-indent: 2px;
     line-height: 18px;
-    padding: 10px 0;
+    list-style-type: none;
+    border-bottom: 1px solid rgba(0,0,0,.1);
 }
 
-.media-listing li input[type=radio],.media-listing li input[type=checkbox] {
-    margin-top: 2px;
-    margin-bottom: 18px;
+.media-listing li input[type=radio],
+.media-listing li input[type=checkbox] {
+    margin-top: 4px;
 }
 
 .specializations-listing {

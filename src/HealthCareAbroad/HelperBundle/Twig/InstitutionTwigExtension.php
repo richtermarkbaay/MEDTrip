@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionGalleryService;
+
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMedicalCenterService;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -30,6 +32,13 @@ class InstitutionTwigExtension extends \Twig_Extension
      */
     private $institutionService;
     
+
+    /** 
+     * @var InstitutionGalleryService
+     */
+    private $institutionGalleryService;
+    
+    
     public function setInstitutionService(InstitutionService $s)
     {
         $this->institutionService = $s;
@@ -48,6 +57,11 @@ class InstitutionTwigExtension extends \Twig_Extension
     public function setMediaExtension(MediaExtension $media)
     {
         $this->mediaExtension = $media;
+    }
+    
+    public function setInstitutionGalleryService(InstitutionGalleryService $service)
+    {
+        $this->institutionGalleryService = $service;
     }
     
     public function setImagePlaceHolders($v)
@@ -128,7 +142,7 @@ class InstitutionTwigExtension extends \Twig_Extension
             }
         }
 
-        if(!$institution->getGallery()) {
+        if($this->institutionGalleryService->institutionHasPhotos($institution->getId())) {
              if($institution->getPayingClient()){
                 $suggestions[] = array('description' => '<span class="span1"><i class="icon-film icon-2x hca-red pull-left"></i></span>You have not yet uploaded <b>photos or videos</b>. Beautiful photos and videos help give users a more complete image of your '.$label.', and makes decisions easier and more likely.');
             }else{

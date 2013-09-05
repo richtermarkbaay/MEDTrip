@@ -23,6 +23,8 @@ class AncillaryServicesService
      */
     private $repository;
     
+    private static $activeServices = null;
+    
     public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
@@ -31,8 +33,11 @@ class AncillaryServicesService
     
     public function getActiveAncillaryServices()
     {
-        $qb = $this->repository->getBuilderForOfferedServices();
-        
-        return  $qb->getQuery()->execute();
+        if(!static::$activeServices) {
+            $qb = $this->repository->getBuilderForOfferedServices();
+            static::$activeServices = $qb->getQuery()->execute();            
+        }
+
+        return static::$activeServices;
     }
 }

@@ -32,10 +32,19 @@
                     <input type="hidden" name="media_ids" id="mediaIds">
                     <p><small>Maximum upload file size:</small>2MB</p>
 
-                    {% if not isSingleCenter %}
-                        {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                    {% if uploadFromMedicalCenterContext is defined %}
+                        <input type="hidden" value="{{ institutionMedicalCenter.id }}" name="medical_center_ids[]" checked="checked">
+                    {% else %}
+                        {% if not isSingleCenter %}
+                            {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                        {% endif %}
                     {% endif %}
                 </form>
+                
+                <div class="alert" style="display: none" id="_confirm-save-container">
+                    You have not selected a clinic for this photo. This will be added to the hospital main gallery. <br/> 
+                    <b>Click Confirm button to proceed.</b>
+                </div>
             </div>
         </div>
     </div>
@@ -44,8 +53,7 @@
     {% block modalFooter %}
         <div class="align-right action-buttons">
             <button class="btn cancel" onclick="$('#add-media').modal('hide')" type="button">Cancel</button> &nbsp;
-            <button class="btn btn-primary save" type="button" disabled="disabled" style="display:{{ isSingleCenter  ? 'none' : '' }}" onclick="$('#addInstitutionMediaForm').submit()"><i class="icon-save"></i>Save Changes</button> &nbsp;
-            <button class="btn btn-success done" onclick="$('#add-media').modal('hide'); window.location.reload()" disabled="disabled" type="button">Done</button>
+            <button class="btn btn-success finish" disabled="disabled" type="button">Finish</button>
         </div>
     {% endblock %}
     
@@ -78,19 +86,29 @@
                 	$('#mediaIds').val($('#mediaIds').val() == '' ? response.mediaId : $('#mediaIds').val() + ',' + response.mediaId);
                 	addMediaFormElem.find('.medical-center-checkbox:first').change();
                 	buttonsContainer.find('button.cancel').remove();
-                	buttonsContainer.find('button.done').removeAttr('disabled');
+                	buttonsContainer.find('button.finish').removeAttr('disabled');
                 } else {
                 	$(file.previewTemplate).addClass('error');
                 }
             }
         });
 
-        addMediaFormElem.find('.medical-center-checkbox').change(function() {
-            
-            if($('#mediaIds').val() != '' && addMediaFormElem.find('.medical-center-checkbox:checked').length) {
-            	buttonsContainer.find('button').removeAttr('disabled');
-            } else {
-            	buttonsContainer.find('button.save').attr('disabled', 'disabled');
+        buttonsContainer.find('button.finish').click(function(){
+            selectedCentersCount = addMediaFormElem.find('.medical-center-checkbox:checked').length;
+            msgContainer = $('#_confirm-save-container'); 
+
+        	if(msgContainer.is(':hidden') && !selectedCentersCount && $('#_clinic-list').length) {
+        		msgContainer.fadeIn();
+        		$(this).html('Confirm');
+        		return false;
+            }
+
+        	$(this).html('processing...').attr('disabled', true);
+        	
+            if(selectedCentersCount || !$('#_clinic-list').length) {
+            	$('#addInstitutionMediaForm').submit();
+            } else { 
+            	window.location.reload(); 
             }
         });
     });

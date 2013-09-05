@@ -425,9 +425,12 @@ class InstitutionController extends Controller
 
    	public function galleryAction(Request $request)
    	{
-   	    $adapter = new ArrayAdapter($this->get('services.institution.media')->getMediaGallery($this->institution));
+   	    $photos = $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution->getId());
+
+   	    $adapter = new ArrayAdapter($photos);
+
    	    $pager = new Pager($adapter, array('page' => $request->get('page'), 'limit' => 5));
-   	
+
    	    return $this->render('AdminBundle:Institution:gallery.html.twig', array(
             'institution' => $this->institution,
             'institutionMedia' => $pager

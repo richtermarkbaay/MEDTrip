@@ -25,6 +25,9 @@
             <!-- Sidebar Content -->
             {% include 'InstitutionBundle:Widgets:sidebar.base.html.twig' %}
             <!-- end Modal Institution name -->
+            
+            
+            {% include 'InstitutionBundle:MediaGallery/Widgets:addModalForm.html.twig' with {medicalCenters: institution.institutionMedicalCenters, selectedClinics: [] } %}
         {% endblock %}
 
     {% endembed %}

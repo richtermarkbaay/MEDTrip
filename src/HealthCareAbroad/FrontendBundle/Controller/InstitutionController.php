@@ -161,6 +161,7 @@ class InstitutionController extends ResponseHeadersController
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
+            'photos' => $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution['id']),
         );        
         
         $content = $this->render('FrontendBundle:Institution:profile.html.twig', $params);

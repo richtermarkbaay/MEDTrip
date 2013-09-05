@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\FieldType;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\HelperBundle\Form\EventListener\ContactDetailDataSubscriber;
 
 use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryTransformer;
@@ -35,10 +37,10 @@ class SimpleContactDetailFieldType extends AbstractType
         $builder->addEventSubscriber(new ContactDetailDataSubscriber());
         $countryChoices = array();
         foreach ($this->locationService->getActiveCountries() as $country) {
-            $code = (int)$country->getCode();
-            $countryChoices[$country->getId()] = $country->getName()." (+{$code})";    
+            $code = (int)$country['code'];
+            $countryChoices[$country['id']] = $country['name']." (+{$code})";    
         }
-        
+
         $countryList = $builder->create('country', 'choice', array('label' => "Country", 'choices' => $countryChoices))
             ->addModelTransformer(new CountryTransformer($this->locationService));
         

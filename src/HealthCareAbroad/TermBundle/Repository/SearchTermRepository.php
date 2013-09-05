@@ -148,14 +148,13 @@ class SearchTermRepository extends EntityRepository
             'searchTermActiveStatus' => SearchTerm::STATUS_ACTIVE
         );
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga, imcLogo')
+        $qb->select('a, imc, inst, co, ci, imcLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
         ->leftJoin('imc.logo', 'imcLogo')
         ->innerJoin('imc.institution', 'inst')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
-        ->leftJoin('inst.gallery', 'ga')
         ->where('a.documentId = :documentId')
         ->andWhere('a.type = :documentType')
         ->andWhere('a.status = :searchTermActiveStatus' )
@@ -181,14 +180,13 @@ class SearchTermRepository extends EntityRepository
     public function getQueryBuilderByDestination(Country $country, City $city = null)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga,instLogo')
+        $qb->select('a, imc, inst, co, ci, instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
         ->innerJoin('a.institution', 'inst')
         ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
-        ->leftJoin('inst.gallery', 'ga')
         ->where('co.id = :countryId')
         ->andWhere('a.status = :searchTermActiveStatus')
         ->setParameter('countryId', $country->getId())
@@ -217,7 +215,7 @@ class SearchTermRepository extends EntityRepository
     public function getQueryBuilderByTerm($termId)
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('a, imc, inst, co, ci, ga,imcLogo,instLogo')
+        $qb->select('a, imc, inst, co, ci, imcLogo, instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->leftJoin('a.term', 'term')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
@@ -226,7 +224,6 @@ class SearchTermRepository extends EntityRepository
         ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
-        ->leftJoin('inst.gallery', 'ga')
         ->where('a.term = :termId')
         ->andWhere('a.status = :searchTermActiveStatus')
         ->setParameter('termId', $termId)
@@ -292,7 +289,7 @@ class SearchTermRepository extends EntityRepository
     {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select('a, imc, inst, co, ci, ga,imcLogo,instLogo')
+        $qb->select('a, imc, inst, co, ci, imcLogo, instLogo')
         ->from('TermBundle:SearchTerm', 'a')
         ->innerJoin('a.institutionMedicalCenter', 'imc')
         ->leftJoin('imc.logo', 'imcLogo')
@@ -300,7 +297,6 @@ class SearchTermRepository extends EntityRepository
         ->leftJoin('inst.logo', 'instLogo')
         ->innerJoin('inst.country', 'co')
         ->leftJoin('inst.city', 'ci')
-        ->leftJoin('inst.gallery', 'ga')
         ->leftJoin('a.term', 't')
         ->where('a.status = :searchTermActiveStatus')
         ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
@@ -351,13 +347,12 @@ class SearchTermRepository extends EntityRepository
     private function getQueryBuilderFilteredBy(array $filters = array()) {
         $qb = $this->getEntityManager()->createQueryBuilder();
 
-        $qb->select('a, imc, inst, co, ci, ga')
+        $qb->select('a, imc, inst, co, ci')
             ->from('TermBundle:SearchTerm', 'a')
             ->innerJoin('a.institutionMedicalCenter', 'imc')
             ->innerJoin('a.institution', 'inst')
             ->innerJoin('inst.country', 'co')
             ->leftJoin('inst.city', 'ci')
-            ->leftJoin('inst.gallery', 'ga')
             ->where('a.status = :searchTermActiveStatus')
             ->setParameter('searchTermActiveStatus', SearchTerm::STATUS_ACTIVE);
 

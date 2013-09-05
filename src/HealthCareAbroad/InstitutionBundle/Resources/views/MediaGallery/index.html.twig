@@ -10,9 +10,21 @@
                 <a href="#add-media" class="btn btn-primary btn-large pull-right" data-toggle="modal"><i class="icon-picture"></i>Add New Media</a>
             </h1>
 
-            {% if institution.gallery and institution.gallery.media|length %}
-                {% set gallery = institution.gallery %}
+            {% if photos|length %}
                 <div class="span12">
+
+                    {% if not isSingleCenter %}
+                    <label>
+                        <b>Filter by Clinic: </b>
+                        <select id="_clinic-filter">
+                            <option value="">All</option>
+                            {% for each in medicalCenters %}
+                                <option value="{{ each.id }}" {{ app.request.get('medical-center-id') and app.request.get('medical-center-id') == each.id ? 'selected' : '' }}>{{ each.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </label>
+                    {% endif %}
+
                     <table class="table table-hover hca-media">
                         <thead>
                             <tr>
@@ -23,34 +35,30 @@
                         </thead>
                         <tbody>
                         {% set thumbnail = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
-                        {% for each in gallery.media %}
-                            {% set hasClinics = mediaClinics[each.id] is defined %}
+                        {% for each in photos %}
+                            {% set hasClinics = photosLinkedToMedicalCenter[each.id] is defined %}
                             <tr id="media-item-{{each.id}}">
                                 <td>
                                     <a class="fancybox large-thumbnail" rel="gallery" href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
                                     <img  class="pull-left thumbnail" style="width:55px;height:55px;border: 1px solid #eee;margin-right: 20px;" src="{{ institution_media_src(each, thumbnail) }}" alt="institution"> </a>
                                     <h4 class="media-heading">{{ each.caption }}</h4>
-                                    <span class="type" style="margin:0">{{ each.contentType }}</span>
+                                    <span class="type" style="margin:0">{{ each.content_type }}</span>
                                 </td>
                                 <td>
-                                {% if not isSingleCenter %}
-                                    {% if hasClinics %}
-                                        {% for center in medicalCenters %}
-                                            {% if center.id in mediaClinics[each.id] %}
-                                            <p><i class="icon-medkit" style="position:relative;top:4px"></i><span class="clinic-name-{{ each.id }}" style="margin:0">{{ center.name }}</span></p>
-                                            {% endif %} 
-                                        {% endfor %}
-                                    {% endif %}
+                                {% if not isSingleCenter and hasClinics %}
+                                    {% for centerId, centerName in photosLinkedToMedicalCenter[each.id] %}
+                                        <p><i class="icon-medkit" style="position:relative;top:4px"></i><span class="clinic-name-{{ centerId }}" style="margin:0">{{ centerName }}</span></p> 
+                                    {% endfor %}
                                 {% endif %}
                                 </td>
                                 
                                 <td>
                                     <div class="btn-group">
-                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(mediaClinics[each.id]) : [] }}" onclick="HCA.closeAlertMessage()"><i class="icon-edit"></i>edit</a>
+                                        <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(photosLinkedToMedicalCenter[each.id]) : [] }}" onclick="HCA.closeAlertMessage()"><i class="icon-edit"></i>edit</a>
                                         <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}" onclick="HCA.closeAlertMessage()"><i class="icon-trash"></i>delete</a>
                                     </div>
-                                    
-                                    {% include 'InstitutionBundle:MediaGallery/Widgets:editModalForm.html.twig' with {media: each, selectedClinics: hasClinics ? mediaClinics[each.id] : [] } %}
+
+                                    {% include 'InstitutionBundle:MediaGallery/Widgets:editModalForm.html.twig' with {media: each, selectedClinics: hasClinics ? photosLinkedToMedicalCenter[each.id] : [] } %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -73,11 +81,6 @@
 <script type="text/javascript">
 (function($){
 	var editFormElem;
-	var medicalCenterId = "{{ app.request.get('medical-center-id') }}";
-    if(window.location.toString().indexOf('#add-media') !== -1 || medicalCenterId) {
-    	$('#add-media').modal('show');
-        $('input:checkbox[value='+medicalCenterId+']').attr('checked','checked');            
-    }
 
     $('input.medical-center-checkbox').change(function() {
     	editFormElem = $(this).parents('form.edit-institution-media-form');
@@ -96,6 +99,11 @@
 
     // Medial Gallery Lightbox
     $(".fancybox").fancybox({'autoDimensions': false, 'width': 350, 'height': 'auto', 'transitionIn': 'none'});
+
+    $('#_clinic-filter').change(function(){
+        var baseUrl = "{{ path('institution_mediaGallery_index') }}";
+    	window.location = $(this).val() ? baseUrl + '?medical-center-id=' + $(this).val() : baseUrl;
+    });
 })(jQuery);
 </script>
 {% endblock %}

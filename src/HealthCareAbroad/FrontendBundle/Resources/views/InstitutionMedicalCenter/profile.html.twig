@@ -56,7 +56,7 @@
     
         {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: coordinates }%}
     
-        {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institutionMedicalCenter.media ? institutionMedicalCenter.media : [], logo: institutionMedicalCenter.logo } %}
+        {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { photos: institutionMedicalCenter.media.photos } %}
         {% if institutionMedicalCenter.businessHours %}
         <section class="widget-wrapper">
             <h4 class="widget-heading">

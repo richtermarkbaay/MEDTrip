@@ -45,7 +45,6 @@ class InstitutionContactDetailListFilter extends DoctrineOrmListFilter
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a, b, c')->from('InstitutionBundle:Institution', 'a');
         $this->queryBuilder->leftJoin('a.institutionUsers', 'b');
-        $this->queryBuilder->leftJoin('a.gallery', 'c');
         $this->queryBuilder->innerJoin('a.contactDetails', 'd');
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
@@ -57,11 +56,9 @@ class InstitutionContactDetailListFilter extends DoctrineOrmListFilter
         $sort = "a.$sortBy " . $this->sortOrder;
         
         $this->queryBuilder->add('orderBy', $sort);
-//         $count = count($this->queryBuilder->getQuery()->getResult());
-//         $this->pagerDefaultOptions['limit'] = $count;
-        
+
         $this->pagerAdapter->setQueryBuilder($this->queryBuilder);
-        
+
         $this->filteredResult = $this->pager->getResults();
     }
 }

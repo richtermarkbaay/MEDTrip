@@ -13,7 +13,7 @@ services:
             - [setDoctrine, [@doctrine]]
             - [setMediaExtension, [@services.media.twig.extension]]
             - [setContactDetailService, [@services.contact_detail]]
-        
+            - [setInstitutionGalleryService, [@services.institution.gallery]]
     services.api.hcaBlog:
         class: HealthCareAbroad\ApiBundle\Services\HcaBlogApiService
         calls:

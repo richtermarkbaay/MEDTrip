@@ -42,7 +42,9 @@ class InstitutionPropertyService
      */
     private $memcache;
 
-    private $activePropertyTypes;
+    private static $activePropertyTypes;
+    
+    private static $institutionGlobalAwards = null;
 
     public function __construct(Registry $doctrine, MemcacheService $memcache)
     {
@@ -123,25 +125,24 @@ class InstitutionPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        // USING static flag will yield unexpected results when ran in test suites
-        //static $isLoadedAvailableTypes = false;
-        //if (!$isLoadedAvailableTypes) {
-            $this->_setupAvailablePropertyTypes();
-            $isLoadedAvailableTypes = true;
-        //}
+        $this->_setupAvailablePropertyTypes();
 
-        if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
+        if (!isset(static::$activePropertyTypes[$propertyTypeName])) {
             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
         }
 
-        return $this->activePropertyTypes[$propertyTypeName];
+        return static::$activePropertyTypes[$propertyTypeName];
     }
 
     private function _setupAvailablePropertyTypes()
     {
-        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->findBy(array('status' => InstitutionPropertyType::STATUS_ACTIVE));
-        foreach ($result as $each) {
-            $this->activePropertyTypes[$each->getName()] = $each;
+        // USING static flag will yield unexpected results when ran in test suites - 
+        // @TODO: Need to check if this still causes some bug.
+        if (!static::$activePropertyTypes) {
+            $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->findBy(array('status' => InstitutionPropertyType::STATUS_ACTIVE));
+            foreach ($result as $each) {
+                static::$activePropertyTypes[$each->getName()] = $each;
+            }
         }
     }
 
@@ -164,8 +165,11 @@ class InstitutionPropertyService
     }
 
     public function getGlobalAwardPropertiesByInstitution(Institution $institution, array $options=array())
-
     {
+        if(static::$institutionGlobalAwards) {
+            return static::$institutionGlobalAwards; 
+        }
+        
         $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
         $options = \array_merge($defaultOptions, $options);
 
@@ -230,12 +234,12 @@ class InstitutionPropertyService
         }
 
         if ($options['groupByType']) {
-            $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
+            static::$institutionGlobalAwards = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
         }
 
 
 
-        return $returnVal;
+        return static::$institutionGlobalAwards;
 
     }
     /**
@@ -250,11 +254,8 @@ class InstitutionPropertyService
         $propertyType = $this->getAvailablePropertyType($propertyName);
 
         $criteria = array(
-
             'institution' => $institution,
-
             'institutionPropertyType' => $propertyType
-
         );
 
         $properties = $this->doctrine->getRepository('InstitutionBundle:InstitutionProperty')->findBy($criteria);

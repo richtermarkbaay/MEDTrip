@@ -58,19 +58,6 @@ class InstitutionMediaService extends MediaService
     {
         $this->uploadDirectory = $directory;
     }
-
-    public function getMediaGallery(Institution $institution)
-    {
-        $gallery = $institution->getGallery();
-        if (!$gallery) {
-            $gallery = new Gallery();
-            $gallery->setInstitution($institution);
-            $this->entityManager->persist($gallery);
-            $this->entityManager->flush();
-        }
-
-        return $gallery->getMedia()->toArray();
-    }
     
     public function uploadLogo($file, Institution $institution, $flushObject = true)
     {
@@ -135,7 +122,7 @@ class InstitutionMediaService extends MediaService
             $media = $result;
             $sizes = $this->getSizesByType(self::GALLERY_TYPE_IMAGE);
         
-            $gallery = $institution->getGallery();
+            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findOneByInstitution($institution->getId());
     
             if(!$gallery) {
                 $gallery = new Gallery();
@@ -189,12 +176,12 @@ class InstitutionMediaService extends MediaService
     
         if(is_object($result)) {
             $media = $result;
-    
+
             $sizes = $this->getSizesByType(self::GALLERY_TYPE_IMAGE);
             $this->resize($media, $sizes);
-    
-            $gallery = $medicalCenter->getInstitution()->getGallery();
-    
+
+            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findOneByInstitution($institution->getId());
+
             if(!$gallery) {
                 $gallery = new Gallery();
                 $gallery->addMedia($media);
@@ -203,7 +190,7 @@ class InstitutionMediaService extends MediaService
             } else {
                 $gallery->addMedia($media);
             }
-    
+
             $medicalCenter->addMedia($media);
 
             if($flushObject) {
@@ -214,7 +201,7 @@ class InstitutionMediaService extends MediaService
 
             return $media;
         }
-    
+
         return null;
     }
 

@@ -26,6 +26,8 @@ class LocationService
 	private $loadedGlobalCityList = array();
 	
 	private $totalResults;
+	
+	private static $activeCountries = null;
 
 	public $chromediaApiUri;
 
@@ -335,14 +337,16 @@ class LocationService
 
         return $qb->getQuery()->getResult();
 	}
-	
-	public function getActiveCountries($hydrationMode=Query::HYDRATE_OBJECT)
+
+	public function getActiveCountries($hydrationMode=Query::HYDRATE_ARRAY)
 	{
-	    $qb = $this->getQueryBuilderForCountries();
-	    $qb->andWhere('c.status = 1')
-	        ->orderBy('c.name');
-	    
-	    return $qb->getQuery()->getResult($hydrationMode);
+	    if(!static::$activeCountries) {
+	        $qb = $this->getQueryBuilderForCountries();
+	        $qb->andWhere('c.status = 1')->orderBy('c.name');
+	        static::$activeCountries = $qb->getQuery()->getResult($hydrationMode);	        
+	    }
+
+	    return static::$activeCountries;
 	}
 	/**
 	 * Hackish way to use this service without injecting it on other services.

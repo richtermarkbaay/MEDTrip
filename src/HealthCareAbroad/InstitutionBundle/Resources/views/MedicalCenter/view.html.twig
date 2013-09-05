@@ -47,6 +47,8 @@
                 {% endblock %}
             {% endembed %}
 
+            {% include 'InstitutionBundle:MediaGallery/Widgets:addModalForm.html.twig' with {uploadFromMedicalCenterContext: true} %}
+            
         {% endblock %}
     {% endembed %}
 

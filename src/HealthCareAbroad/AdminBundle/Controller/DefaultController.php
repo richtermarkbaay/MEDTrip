@@ -142,10 +142,9 @@ class DefaultController extends Controller
     {
         $result = false;
 
-        $media = $this->getDoctrine()->getRepository('MediaBundle:Media')->find($request->get('mediaId'));
-
-        $serviceId = 'services.' . $request->get('mediaContext') . '.media'; 
-        $this->get($serviceId)->delete($media, $request->get('imageType'));
+        $media = $this->getDoctrine()->getRepository('MediaBundle:Media')->find($request->get('media_id'));
+ 
+        $this->get($request->get('service_id'))->delete($media, $request->get('imageType'));
 
         $response = new Response(json_encode(true));
         $response->headers->set('Content-Type', 'application/json');

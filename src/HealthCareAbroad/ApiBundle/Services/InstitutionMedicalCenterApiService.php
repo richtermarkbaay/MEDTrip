@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\ApiBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionGalleryService;
+
 use HealthCareAbroad\HelperBundle\Entity\SocialMediaSites;
 
 use HealthCareAbroad\HelperBundle\Services\ContactDetailService;
@@ -50,6 +52,11 @@ class InstitutionMedicalCenterApiService
      */
     private $contactDetailService;
     
+    /** 
+     * @var InstitutionGalleryService
+     */
+    private $institutionGalleryService;
+    
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
@@ -63,6 +70,11 @@ class InstitutionMedicalCenterApiService
     public function setContactDetailService(ContactDetailService $v)
     {
         $this->contactDetailService = $v;
+    }
+    
+    public function setInstitutionGalleryService(InstitutionGalleryService $service)
+    {
+        $this->institutionGalleryService = $service;
     }
     
     /**
@@ -156,11 +168,12 @@ class InstitutionMedicalCenterApiService
     public function buildMediaGallery(&$institutionMedicalCenter, $context=InstitutionMedicalCenterApiService::CONTEXT_FULL_PAGE_VIEW)
     {
         $canDisplayGallery = PayingStatus::FREE_LISTING != $institutionMedicalCenter['payingClient'];
+
         if (!$canDisplayGallery && $context != InstitutionMedicalCenterApiService::CONTEXT_FULL_API) {
-            $institutionMedicalCenter['media'] = array();
+            $institutionMedicalCenter['media']['photos'] = array();
+        } else {
+            $institutionMedicalCenter['media']['photos'] = $this->institutionGalleryService->getInstitutionMedicalCenterPhotos($institutionMedicalCenter['id']);            
         }
-        
-        // build the source
         
         return $this;
     }

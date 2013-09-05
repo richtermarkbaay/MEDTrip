@@ -52,7 +52,7 @@
 <aside class="span4 aside-wrapper">
     {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
-    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { photos: photos } %}
     
     {% if institutionMedicalCenter.businessHours %}
     <section class="widget-wrapper">

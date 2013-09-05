@@ -9,7 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Institution
 {
-
     /**
      * @var integer
      */
@@ -119,11 +118,6 @@ class Institution
      * @var string
      */
     private $stateBak;
-
-    /**
-     * @var \HealthCareAbroad\MediaBundle\Entity\Gallery
-     */
-    private $gallery;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -672,29 +666,6 @@ class Institution
     public function getStateBak()
     {
         return $this->stateBak;
-    }
-
-    /**
-     * Set gallery
-     *
-     * @param \HealthCareAbroad\MediaBundle\Entity\Gallery $gallery
-     * @return Institution
-     */
-    public function setGallery(\HealthCareAbroad\MediaBundle\Entity\Gallery $gallery = null)
-    {
-        $this->gallery = $gallery;
-    
-        return $this;
-    }
-
-    /**
-     * Get gallery
-     *
-     * @return \HealthCareAbroad\MediaBundle\Entity\Gallery 
-     */
-    public function getGallery()
-    {
-        return $this->gallery;
     }
 
     /**
