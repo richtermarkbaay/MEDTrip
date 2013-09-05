@@ -98,6 +98,9 @@ a:hover {
 #content-wrapper .aside-wrapper .widget-wrapper form textarea {
   width: 226px;
 }
+#content-wrapper .aside-wrapper .widget-wrapper form ul.ui-widget-content {
+  width: 238px !important;
+}
 
 #content-wrapper .aside-wrapper iframe {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.025);
@@ -1455,6 +1458,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb5200', end
 }
 .specializations-list-wrapper ul li.specialization {
   margin-bottom: 10px;
+  min-height: 60px;
 }
 .specializations-list-wrapper ul li.specialization > * {
   margin-right: 10px;
@@ -1644,7 +1648,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb5200', end
 }
 .featured-type-wrapper .featured-item > .content {
   color: #657174;
-  padding: 20px 10px 10px;
+  padding: 10px;
   margin-left: 0;
 }
 .featured-type-wrapper .featured-item > .content div.clinic-box {
@@ -1953,6 +1957,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb5200', end
 .item-wrapper > .right-column-wrapper p a {
   color: #fe6500;
   cursor: pointer;
+  display: inline-block;
 }
 .item-wrapper > .right-column-wrapper p a:hover {
   color: #ff8432;
