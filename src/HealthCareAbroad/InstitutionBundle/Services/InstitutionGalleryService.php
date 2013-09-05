@@ -70,6 +70,8 @@ class InstitutionGalleryService
     
     public function getPhotosLinkedToMedicalCenter($institutionId)
     {
+        $centersWithPhotos = array();
+
         $connection = $this->doctrine->getConnection();
         $query = "SELECT a.*, b.name AS institution_medical_center_name FROM institution_medical_center_media AS a INNER JOIN institution_medical_centers AS b ON a.institution_medical_center_id = b.id WHERE b.institution_id = :institutionId";
         $stmt = $connection->prepare($query);
