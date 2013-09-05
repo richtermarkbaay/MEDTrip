@@ -1595,6 +1595,39 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb5200', end
   margin: 0px 0px 20px;
   position: relative;
 }
+.featured-type-wrapper .featured-item .title-ads {
+  font-size: 16px !important;
+  left: -1em;
+  top: 0.5em;
+  bottom: 0.5em; 
+  position: relative;
+  display: inline-block;
+  background: #fc771f;
+  color: #fff;
+  padding: 0.5em 1em 0.5em;
+  margin-bottom: 10px;
+}
+.featured-type-wrapper .featured-item .title-ads:before {
+  content: "";
+  position: absolute;
+  display: block;
+  border-style: solid;
+  border-color: #c34f03 transparent transparent transparent;
+  bottom: -1em;
+  left: 0;
+  border-width: 1em 0 0 1em;
+}
+.featured-type-wrapper .featured-item .title {
+  margin: 0;
+  display: block;
+  font-size: 16px;
+  line-height: 1.3em;
+  font-weight: normal;
+  text-shadow: none;
+}
+.featured-type-wrapper .featured-item .title a {
+  color: #fff;
+}
 .featured-type-wrapper .featured-item p {
   margin: 10px 0 !important;
 }

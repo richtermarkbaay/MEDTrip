@@ -20,6 +20,17 @@
                     {% set primaryUrl = get_institution_frontend_url(each.institution) %}
     		    {% endif %}
     		    
+                {% if each.title %}
+                <div class="title-ads">
+                    <h4 class="title">
+                        {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
+                                statisticsDataObject: each,
+                                link: {url: primaryUrl, html: each.title }
+                        } %}
+                    </h4>
+                </div>
+                {% endif %}    
+
     			<div class="content row">
     				<div class="clinic-box">
 
@@ -39,19 +50,13 @@
     				</div>
     				<div class="description-box">
 
-			            <h3 class="heading">
-                            {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
-                                    statisticsDataObject: each,
-                                    link: {url: primaryUrl, html: each.title }
-                            } %}
-                        </h3>
                         {% if secondaryUrl is defined %}
-                        <h4 class="sub-heading">
+                        <h3 class="heading">
                             {% include 'FrontendBundle:Widgets/Statistics:advertisement.clickthroughLink.html.twig' with {
                                     statisticsDataObject: each,
                                     link: {url: primaryUrl, html: each.institution.name }
                             } %}
-                        </h4>
+                        </h3>
                         {% endif %}
     					
                         <span class="location">
