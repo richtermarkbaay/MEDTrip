@@ -1711,6 +1711,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cb5200', end
 }
 .ad-highlights-wrapper > .item-wrapper > .title {
   display: block;
+  font-size: 14px;
   line-height: 1.2em;
   margin-left: 60px;
   text-shadow: 0px 1px 0 rgba(0, 0, 0, 0.5);
