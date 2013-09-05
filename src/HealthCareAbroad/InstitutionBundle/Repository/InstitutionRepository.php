@@ -199,14 +199,12 @@ class InstitutionRepository extends EntityRepository
         return $result;
 
     }
-    
-    // TODO - MUST FIX MULTIPLE QUERY FOR GALLERY BUG AND REMOVE gallery LEFT JOIN.
+
     public function getAllInstitutions()
     {
          $qb = $this->createQueryBuilder('a');
-         $query = $qb->select('a, b, c')
+         $query = $qb->select('a, b')
             ->leftJoin('a.institutionUsers', 'b')
-            ->leftJoin('a.gallery', 'c') // This isn't required
             ->orderBy('a.name', 'ASC')
             ->getQuery();
          

@@ -10,25 +10,28 @@ use Doctrine\ORM\Mapping as ORM;
 class Gallery
 {
     /**
-     * @var integer $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var datetime $dateCreated
+     * @var \DateTime
      */
     private $dateCreated;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
+     * @var \Doctrine\Common\Collections\Collection
      */
     private $media;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->media = new \Doctrine\Common\Collections\ArrayCollection();
@@ -47,19 +50,20 @@ class Gallery
     /**
      * Set dateCreated
      *
-     * @param datetime $dateCreated
+     * @param \DateTime $dateCreated
      * @return Gallery
      */
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
+    
         return $this;
     }
 
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return \DateTime 
      */
     public function getDateCreated()
     {
@@ -69,19 +73,20 @@ class Gallery
     /**
      * Set institution
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
      * @return Gallery
      */
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
+    
         return $this;
     }
 
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return \HealthCareAbroad\InstitutionBundle\Entity\Institution 
      */
     public function getInstitution()
     {
@@ -91,19 +96,20 @@ class Gallery
     /**
      * Add media
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param \HealthCareAbroad\MediaBundle\Entity\Media $media
      * @return Gallery
      */
     public function addMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
     {
         $this->media[] = $media;
+    
         return $this;
     }
 
     /**
      * Remove media
      *
-     * @param HealthCareAbroad\MediaBundle\Entity\Media $media
+     * @param \HealthCareAbroad\MediaBundle\Entity\Media $media
      */
     public function removeMedia(\HealthCareAbroad\MediaBundle\Entity\Media $media)
     {
@@ -113,7 +119,7 @@ class Gallery
     /**
      * Get media
      *
-     * @return Doctrine\Common\Collections\Collection 
+     * @return \Doctrine\Common\Collections\Collection 
      */
     public function getMedia()
     {

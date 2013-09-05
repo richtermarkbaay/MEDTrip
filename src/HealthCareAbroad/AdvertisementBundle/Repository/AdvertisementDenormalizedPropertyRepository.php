@@ -18,11 +18,10 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getActiveAdvertisementsByType(array $types)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c,gal,co,ci')
+        $qb->select('a,b,c,co,ci')
         ->leftJoin('a.institution', 'b')
         ->leftJoin('b.country', 'co')
         ->leftJoin('b.city', 'ci')
-        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->where('a.status = :status')
         ->andWhere('a.dateExpiry > :dateExpiry')
@@ -38,11 +37,10 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getActiveFeaturedClinicByCriteria(array $criteria = array(), $limit = null, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c,d,gal,co,ci, imcLogo')
+        $qb->select('a,b,c,d,co,ci, imcLogo')
            ->leftJoin('a.institution', 'b')
            ->leftJoin('b.country', 'co')
            ->leftJoin('b.city', 'ci')
-           ->leftJoin('b.gallery', 'gal')
            ->innerJoin('a.institutionMedicalCenter', 'c')
            ->leftJoin('c.logo', 'imcLogo')
            ->leftJoin('a.media', 'd')
@@ -70,11 +68,10 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     {
 
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,d,gal,co,ci')
+        $qb->select('a,b,d,co,ci')
         ->leftJoin('a.institution', 'b')
         ->leftJoin('b.country', 'co')
         ->leftJoin('b.city', 'ci')
-        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'd')
         ->andWhere('a.status = :status')
         ->andWhere('a.dateExpiry > :dateExpiry')
@@ -117,9 +114,8 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getCommonTreatments()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c,d,gal')
+        $qb->select('a, b, c,d')
         ->leftJoin('a.institution', 'b')
-        ->leftJoin('b.gallery', 'gal')
         ->leftJoin('a.media', 'c')
         ->leftJoin('a.treatment', 'd')
         ->where('a.advertisementType = :type')

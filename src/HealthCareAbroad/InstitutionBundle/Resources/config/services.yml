@@ -72,3 +72,7 @@ services:
             - [setEntityManager, [@doctrine.orm.entity_manager]]
             - [setUploadDirectory, [%local_web_root%/%media_institution_subdir%]]
             
+    services.institution.gallery:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionGalleryService
+        calls:
+            - [setDoctrine, [@doctrine]]

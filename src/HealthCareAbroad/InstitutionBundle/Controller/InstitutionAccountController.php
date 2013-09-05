@@ -114,6 +114,7 @@ class InstitutionAccountController extends InstitutionAwareController
 
         $params = array(
             'institutionForm' => $form->createView(),
+            'institutionPhotos' => $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution->getId()),
             'currentGlobalAwards' => $currentGlobalAwards,
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
             'medicalProvidersJSON' => \json_encode($medicalProviderGroupArr),

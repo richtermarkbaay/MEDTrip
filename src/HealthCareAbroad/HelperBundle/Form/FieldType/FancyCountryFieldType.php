@@ -48,8 +48,7 @@ class FancyCountryFieldType extends AbstractType
      */
     private function _getCountryList()
     {
-        //$countries = $this->locationService->getGlobalCountries();
-        $countries = $this->locationService->getActiveCountries(Query::HYDRATE_ARRAY);
+        $countries = $this->locationService->getActiveCountries();
         $result = array();
 
         foreach ($countries as $each){

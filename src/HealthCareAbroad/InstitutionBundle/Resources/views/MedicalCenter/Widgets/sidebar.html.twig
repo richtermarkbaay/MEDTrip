@@ -19,12 +19,10 @@
             {% set gallery = institutionMedicalCenter.media %}
             {% set thumbnail = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
             {% for each in gallery %}
-                {% if loop.index <= 6 %} {# display images up to 6 only #}
                 <li>
                     <a class="fancybox large-thumbnail" rel="gallery"  href="{{ institution_media_src(each) }}" title="{{ each.caption }}">
                     <img class="thumbnail" src="{{ institution_media_src(each, thumbnail) }}" alt="" width="60"> </a>
                 </li>
-                {% endif %}
             {% endfor %}
             </ul>
              <a href="{{ path('institution_mediaGallery_index' , {'medical-center-id': institutionMedicalCenter.id}) }}" target="_blank" class="btn btn-primary btn-medium"><i class="icon-picture icon-24x hca-earth"></i> Upload Media Here</a>

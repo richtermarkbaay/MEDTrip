@@ -176,6 +176,16 @@ class InstitutionApiService
         return $this;
     }
     
+    /**
+     * Build the media gallery photos of an institution, if allowed
+     *
+     * @param array array data of $institution
+     * @return \HealthCareAbroad\ApiBundle\Services\InstitutionApiService
+     */
+    public function buildGalleryPhotos(&$institution)
+    {
+
+    }
     
     /**
      * Build an array of public data of an institution by slug
@@ -333,7 +343,7 @@ class InstitutionApiService
     private function getQueryBuilderForInstitutionPublicProfileData()
     {
         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('inst, imc, ct, co, st, icd, fm, lg, gal, gal_m')
+        $qb->select('inst, imc, ct, co, st, icd, fm, lg')
             ->from('InstitutionBundle:Institution', 'inst')
             ->innerJoin('inst.institutionMedicalCenters', 'imc', Join::WITH, 'imc.status = :imcActiveStatus')
                 ->setParameter('imcActiveStatus', InstitutionMedicalCenterStatus::APPROVED)
@@ -343,8 +353,6 @@ class InstitutionApiService
             ->leftJoin('inst.contactDetails', 'icd')
             ->leftJoin('inst.featuredMedia', 'fm')
             ->leftJoin('inst.logo', 'lg')
-            ->leftJoin('inst.gallery', 'gal')
-            ->leftJoin('gal.media', 'gal_m')
             ->where('1=1')
             ->andWhere('inst.status = :activeStatus')
                 ->setParameter('activeStatus', InstitutionStatus::getBitValueForApprovedStatus());

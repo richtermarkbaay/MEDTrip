@@ -73,6 +73,7 @@ services:
             - [setInstitutionService, [@services.institution]]
             - [setInstitutionMedicalCenterService, [@services.institution_medical_center]]
             - [setMediaExtension, [@services.media.twig.extension]]
+            - [setInstitutionGalleryService, [@services.institution.gallery]]
             - [setImagePlaceHolders, [%imageplaceholder%]]
         tags:
             - { name: twig.extension }

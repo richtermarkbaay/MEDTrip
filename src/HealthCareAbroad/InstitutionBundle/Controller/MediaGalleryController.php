@@ -14,17 +14,16 @@ class MediaGalleryController extends InstitutionAwareController
     
     public function indexAction(Request $request) 
     {
-        $params = array(
-            'institution' => $this->institution, 
-            'medicalCenters' => $this->institution->getInstitutionMedicalCenters(), 
-            'mediaClinics' => array()
-        );
+        $photos = $request->get('medical-center-id') 
+            ? $this->get('services.institution.gallery')->getInstitutionMedicalCenterPhotos($request->get('medical-center-id'))
+            : $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution->getId());
 
-        foreach($params['medicalCenters'] as $each) {
-            foreach($each->getMedia() as $media) {
-                $params['mediaClinics'][$media->getId()][] = $each->getId();
-            }
-        }
+        $params = array(
+            'photos' => $photos,
+            'institution' => $this->institution,
+            'medicalCenters' => $this->institution->getInstitutionMedicalCenters(),
+            'photosLinkedToMedicalCenter' => $this->get('services.institution.gallery')->getPhotosLinkedToMedicalCenter($this->institution->getId())
+        );
 
         return $this->render('InstitutionBundle:MediaGallery:index.html.twig', $params);
     }

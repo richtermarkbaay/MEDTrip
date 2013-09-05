@@ -49,7 +49,7 @@
 <aside class="span4 aside-wrapper">
     {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' %}
 
-    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { media: institution.gallery ? institution.gallery.media : [], logo: institution.logo } %}
+    {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { photos: photos } %}
 
     <section id="form_feedback" class="widget-wrapper">
         <h4 class="widget-heading">

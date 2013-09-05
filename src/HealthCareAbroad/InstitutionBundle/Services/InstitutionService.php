@@ -192,15 +192,13 @@ class InstitutionService
 
         //if(!$isLoaded) {
             $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-            $qb->select('a, b, c, d, e, f, g, h, i')->from('InstitutionBundle:Institution', 'a')
+            $qb->select('a, b, c, d, e, f, g')->from('InstitutionBundle:Institution', 'a')
             ->leftJoin('a.country', 'b')
             ->leftJoin('a.city', 'c')
             ->leftJoin('a.logo', 'd')
             ->leftJoin('a.featuredMedia', 'e')
             ->leftJoin('a.contactDetails', 'f')
             ->leftJoin('a.medicalProviderGroups', 'g')
-            ->leftJoin('a.gallery', 'h')
-            ->leftJoin('h.media', 'i')
             ->where('a.id = :id')
             ->setParameter('id', $id);
             $result = $qb->getQuery()->getOneOrNullResult();
@@ -250,7 +248,7 @@ class InstitutionService
         else {
             $type = $institution['type'];
         }
-        
+
         return InstitutionTypes::MULTIPLE_CENTER == $type;
     }
 
@@ -346,6 +344,7 @@ class InstitutionService
     public function getAllNotExpiredArchivedAndInactiveMedicalCenters(Institution $institution)
     {
         $dql = "SELECT a FROM InstitutionBundle:InstitutionMedicalCenter a WHERE a.institution = :institutionId AND a.status != :inActive AND a.status != :expired AND a.status != :archived ";
+
         $query = $this->doctrine->getEntityManager()->createQuery($dql)
         ->setParameter('institutionId', $institution->getId())
         ->setParameter('inActive', InstitutionMedicalCenterStatus::INACTIVE)
@@ -609,5 +608,4 @@ class InstitutionService
         return $this->institutionUserService->getAccountData($institution->getInstitutionUsers()->first());
         //return $this->institutionUserService->getAccountDataById($institution->getInstitutionUsers()->first()->getAccountId());
     }
-
 }
