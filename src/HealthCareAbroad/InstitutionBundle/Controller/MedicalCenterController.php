@@ -166,6 +166,7 @@ class MedicalCenterController extends InstitutionAwareController
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
+            'medicalCenterPhotos' => $this->get('services.institution.gallery')->getInstitutionMedicalCenterPhotos($this->institutionMedicalCenter->getId()),
             'institutionMedicalCenterForm' => $form->createView(),
 
             'specializations' => $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter),

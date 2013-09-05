@@ -59,7 +59,7 @@ class InstitutionGalleryService
                     FROM institution_medical_center_media AS a 
                     INNER JOIN media AS b ON a.media_id = b.id
                     INNER JOIN institution_medical_centers AS c ON a.institution_medical_center_id = c.id 
-                    WHERE a.institution_medical_center_id = :centerId";
+                    WHERE a.institution_medical_center_id = :centerId ORDER BY b.id DESC";
 
         $stmt = $connection->prepare($query);
         $stmt->bindValue('centerId', $institutionMedicalCenterId);

@@ -48,7 +48,7 @@ class MediaGalleryController extends InstitutionAwareController
     {
         $mediaIds = explode(',', $request->get('media_ids')); 
         $medicalCenterIds = $request->get('medical_center_ids', array());
-
+        
         $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
         $media = $em->getRepository('MediaBundle:Media')->getMediaByIds($mediaIds);
 
@@ -63,8 +63,8 @@ class MediaGalleryController extends InstitutionAwareController
         $em->flush();
 
         $request->getSession()->setFlash('success', "Photo has been successfully uploaded and linked to clinics!");
-        
-        return $this->redirect($this->generateUrl('institution_mediaGallery_index'));
+
+        return $this->redirect($request->server->get('HTTP_REFERER'));
     }
 
     public function updateMediaAction(Request $request)

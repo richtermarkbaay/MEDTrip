@@ -32,8 +32,12 @@
                     <input type="hidden" name="media_ids" id="mediaIds">
                     <p><small>Maximum upload file size:</small>2MB</p>
 
-                    {% if not isSingleCenter %}
-                        {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                    {% if uploadFromMedicalCenterContext is defined %}
+                        <input type="hidden" value="{{ institutionMedicalCenter.id }}" name="medical_center_ids[]" checked="checked">
+                    {% else %}
+                        {% if not isSingleCenter %}
+                            {% include 'InstitutionBundle:MediaGallery/Widgets:medicalCenterList.html.twig' with {selectedClinics: []} %}
+                        {% endif %}
                     {% endif %}
                 </form>
                 
@@ -92,7 +96,8 @@
         buttonsContainer.find('button.finish').click(function(){
             selectedCentersCount = addMediaFormElem.find('.medical-center-checkbox:checked').length;
             msgContainer = $('#_confirm-save-container'); 
-        	if(msgContainer.is(':hidden') && !selectedCentersCount) {
+
+        	if(msgContainer.is(':hidden') && !selectedCentersCount && $('#_clinic-list').length) {
         		msgContainer.fadeIn();
         		$(this).html('Confirm');
         		return false;
@@ -100,10 +105,10 @@
 
         	$(this).html('processing...').attr('disabled', true);
         	
-            if(selectedCentersCount) {
+            if(selectedCentersCount || !$('#_clinic-list').length) {
             	$('#addInstitutionMediaForm').submit();
             } else { 
-            	window.location = "{{ path('institution_mediaGallery_index') }}"; 
+            	window.location.reload(); 
             }
         });
     });

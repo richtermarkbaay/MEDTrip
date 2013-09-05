@@ -81,12 +81,6 @@
 <script type="text/javascript">
 (function($){
 	var editFormElem;
-	var medicalCenterId = "{{ app.request.get('medical-center-id') }}";
-	console.log(medicalCenterId);
-    if(window.location.toString().indexOf('#add-media') !== -1) {
-    	$('#add-media').modal('show');
-        $('input:checkbox[value='+medicalCenterId+']').attr('checked','checked');            
-    }
 
     $('input.medical-center-checkbox').change(function() {
     	editFormElem = $(this).parents('form.edit-institution-media-form');
