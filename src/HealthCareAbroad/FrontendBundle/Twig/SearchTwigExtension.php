@@ -111,7 +111,6 @@ class SearchTwigExtension extends \Twig_Extension
             case PayingStatus::PHOTO_LISTING:
             case PayingStatus::LOGO_LISTING:
             case PayingStatus::LINKED_LISTING:
-
                 $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
                 foreach($socialMediaSites as $type => $value) {
                     $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
@@ -123,11 +122,10 @@ class SearchTwigExtension extends \Twig_Extension
                 if ($number = $center->getContactNumber()) {
                     $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
                 }
-            case PayingStatus::FREE_LISTING:
-                if ($email = $center->getContactEmail()) {
-                    $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
-                }
+                break;
         }
+
+        $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
 
         return $links;
     }
