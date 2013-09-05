@@ -17,6 +17,20 @@
         <script src="{{ asset_url }}"></script>
         {% endjavascripts %}
 
+        <script type="text/javascript">
+        $(function(){
+            HCA.init({
+                tinymceConfig: {
+                    textarea_class: "{{ tinymce.textarea_class }}",
+                    themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),
+                    themeMedium: $.parseJSON('{{ tinymce.theme.medium|json_encode|raw }}'),
+                    themeBbCode: $.parseJSON('{{ tinymce.theme.bbcode|json_encode|raw }}'),
+                    themeAdvanced: $.parseJSON('{{ tinymce.theme.advanced|json_encode|raw }}')
+                }
+            });
+        });
+        </script>
+
         {% stylesheets
 		    'css/jquery-ui/base/jquery-ui-1.10.1.custom.min.css'
             'css/bootstrap.min.css'
@@ -75,17 +89,6 @@
         <script type="text/javascript">
         (function(){
             $(function(){
-                HCA.init({
-                    tinymceConfig: {
-                        textarea_class: "{{ tinymce.textarea_class }}",
-                        themeSimple: $.parseJSON('{{ tinymce.theme.simple|json_encode|raw }}'),
-                        themeMedium: $.parseJSON('{{ tinymce.theme.medium|json_encode|raw }}'),
-                        themeBbCode: $.parseJSON('{{ tinymce.theme.bbcode|json_encode|raw }}'),
-                        themeAdvanced: $.parseJSON('{{ tinymce.theme.advanced|json_encode|raw }}')
-                    }
-    
-                });
-
                 $('body').append($('.modal.fade'));
 
                 $(window).scroll(function() {
