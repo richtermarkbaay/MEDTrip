@@ -113,7 +113,7 @@ class SearchTwigExtension extends \Twig_Extension
             case PayingStatus::LINKED_LISTING:
                 $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
                 foreach($socialMediaSites as $type => $value) {
-                    $links[$type] = array('tooltip' => SocialMediaSites::getLabelByType($type));
+                    $links[$type] = array('tooltip' => "This hospital is on $value");
                 }
 
                 if ($website = $center->getWebsites()) {
