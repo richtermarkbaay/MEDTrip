@@ -1,4 +1,4 @@
-<div class="item-wrapper {{ get_impression_tracker_class() }}" {{ get_statistics_parameter_attribute_name() ~ '=' ~ encode_search_result_item_impression_parameters(statisticsDataObject) }}>
+<div class="item-wrapper {{ get_impression_tracker_class() }}" {{ get_statistics_parameter_attribute_name() }} = ~ encode_search_result_item_impression_parameters(statisticsDataObject) }}>
 
     {% if searchResultItem.displayLogo %}
         <div class="left-column-wrapper">
@@ -49,10 +49,8 @@
         {% if searchResultItem.links is defined %}
             {% set linkClasses = { googleplus: 'icon-google-plus', twitter: 'icon-twitter', facebook: 'icon-facebook', website: 'icon-globe', contactnumber: 'icon-phone', email: 'icon-envelope' } %}
             <div class="link-box">
-                {% for key, link in searchResultItem.links %}
-                <a href="{{ link.value }}" target="_blank">
-                    <span data-toggle="tooltip" title="{{ link.label }}" class="{{ linkClasses[key] }}"></span>
-                </a>
+                {% for key, link in searchResultItem.links %} 
+                    <a {% if link.value is defined %} href="{{link.value}}" target="_blank" {% endif %} data-toggle="tooltip" title="{{ link.tooltip }}" class="{{ linkClasses[key] }} link-tooltip"></a>
                 {% endfor %}
             </div>
         {% endif %}

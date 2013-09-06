@@ -113,19 +113,19 @@ class SearchTwigExtension extends \Twig_Extension
             case PayingStatus::LINKED_LISTING:
                 $socialMediaSites = json_decode($center->getSocialMediaSites(), true);
                 foreach($socialMediaSites as $type => $value) {
-                    $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
+                    $links[$type] = array('tooltip' => SocialMediaSites::getLabelByType($type));
                 }
 
                 if ($website = $center->getWebsites()) {
-                    $links['website'] = array('label' => 'Visit Website', 'value' => $website);
+                    $links['website'] = array('tooltip' => "Website: $website");
                 }
                 if ($number = $center->getContactNumber()) {
-                    $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
+                    $links['contactnumber'] = array('tooltip' => 'Call Us', 'value' => $url);
                 }
                 break;
         }
 
-        $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
+        $links['email'] = array('tooltip' => 'Email Us', 'value' => $url.'#form_feedback');
 
         return $links;
     }
@@ -141,19 +141,21 @@ class SearchTwigExtension extends \Twig_Extension
         if($institution->getPayingClient()) {
             $socialMediaSites = json_decode($institution->getSocialMediaSites(), true);
             foreach($socialMediaSites as $type => $value) {
-                $links[$type] = array('label' => 'Visit '.SocialMediaSites::getLabelByType($type), 'value' => $value);
+                if($value) {
+                    $links[$type] = array('tooltip' => "This hospital is on $value");                    
+                }
             }
 
             if ($website = $institution->getWebsites()) {
-                $links['website'] = array('label' => 'Visit Website', 'value' => $website);
+                $links['website'] = array('tooltip' => "Website: $website");
             }
 
             if ($number = $institution->getContactNumber()) {
-                $links['contactnumber'] = array('label' => 'Call Us', 'value' => $url);
+                $links['contactnumber'] = array('tooltip' => 'Call Us', 'value' => $url);
             }
         }
-        
-        $links['email'] = array('label' => 'Email Us', 'value' => $url.'#form_feedback');
+
+        $links['email'] = array('tooltip' => 'Email Us', 'value' => $url.'#form_feedback');
 
         return $links;
     }
