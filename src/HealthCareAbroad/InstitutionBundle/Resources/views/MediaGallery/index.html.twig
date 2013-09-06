@@ -45,10 +45,14 @@
                                     <span class="type" style="margin:0">{{ each.content_type }}</span>
                                 </td>
                                 <td>
-                                {% if not isSingleCenter and hasClinics %}
-                                    {% for centerId, centerName in photosLinkedToMedicalCenter[each.id] %}
-                                        <p><i class="icon-medkit" style="position:relative;top:4px"></i><span class="clinic-name-{{ centerId }}" style="margin:0">{{ centerName }}</span></p> 
-                                    {% endfor %}
+                                {% if not isSingleCenter %}
+                                    {% if hasClinics %}
+                                        {% for centerId, centerName in photosLinkedToMedicalCenter[each.id] %}
+                                            <p><i class="icon-medkit" style="position:relative;top:4px"></i><span class="clinic-name-{{ centerId }}" style="margin:0">{{ centerName }}</span></p> 
+                                        {% endfor %}
+                                    {% else %}
+                                        <p>Hospital only</p>
+                                    {% endif %}
                                 {% endif %}
                                 </td>
                                 
