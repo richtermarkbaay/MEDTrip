@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
 
 use HealthCareAbroad\AdminBundle\Form\InstitutionProfileFormType;
@@ -74,7 +78,23 @@ class InstitutionMedicalCenterController extends Controller
         // check InstitutionMedicalCenter
         if ($this->request->get('imcId')) {
             $institutionMedicalCenterId = $this->request->get('imcId');
-            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId);
+
+            $eagerLoad = false;
+            if($this->request->attributes->get('_route') == 'admin_institution_medicalCenter_view') {
+                $eagerLoad = array(
+                    'media' => 'a.media',
+                    'doctors' => 'a.doctors',
+                    'businessHours' => 'a.businessHours',
+                    'contactDetails' => 'a.contactDetails',
+                    'docSpecializations' => 'doctors.specializations',
+                );
+            } else if ($this->request->attributes->get('_route') == 'admin_institution_medicalCenter_edit') {
+                $eagerLoad = array('businessHours' => 'a.businessHours', 'contactDetails' => 'a.contactDetails');
+
+            }
+
+            $this->institutionMedicalCenter = $this->get('services.institution_medical_center')->findById($institutionMedicalCenterId, $eagerLoad);            
+            
             if (!$this->institutionMedicalCenter) {
                 throw $this->createNotFoundException('Invalid institution medical center');
             }
@@ -141,7 +161,7 @@ class InstitutionMedicalCenterController extends Controller
 
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $instSpecializationRepo = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization');
-        $institutionSpecializations = $this->institutionMedicalCenter->getInstitutionSpecializations();
+        $institutionSpecializations = $institutionMedicalCenterService->getActiveSpecializations($this->institutionMedicalCenter);
         $institutionSpecializationForm = $this->createForm(new InstitutionSpecializationFormType(), new InstitutionSpecialization());
         $institutionMedicalSpecialistForm = $this->createForm(new InstitutionDoctorSearchFormType());
         //globalAwards Form
@@ -201,37 +221,34 @@ class InstitutionMedicalCenterController extends Controller
      */
     public function editStatusAction(Request $request)
     {
-        $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_REMOVED_FIELDS => array('name','description','businessHours','city','country','zipCode','state','contactEmail','contactDetails','address','timeZone','websites','socialMediaSites','addressHint')));
-        $template = 'AdminBundle:InstitutionMedicalCenter/Modals:editStatus.html.twig';
-        $output = array();
         if ($request->isMethod('POST')) {
-            $form->bind($request);
-            if ($form->isValid()) {
-                $this->get('services.institution_medical_center')->save($form->getData());
-                $output['html'] = array('success' => $this->institutionMedicalCenter->getName().'status has been updated!');
 
-                if (InstitutionMedicalCenterStatus::APPROVED == $form->getData()->getStatus()) {
+            $formData = $this->getRequest()->get('institutionMedicalCenter');
+
+            if (InstitutionMedicalCenterStatus::isValid($formData['status'])) {
+
+                if(InstitutionMedicalCenterStatus::APPROVED == $formData['status'] && $this->institution->getStatus() != InstitutionStatus::getBitValueForActiveAndApprovedStatus()) {
+                    return new Response(\json_encode(array('error' => 'Unable to approve this Clinic! You must approve the Institution first.')), 400, array('content-type' => 'application/json'));
+                }
+
+                $this->get('services.institution_medical_center')->updateStatus($this->institutionMedicalCenter, $formData['status']);
+
+                $output = array('message' => $this->institutionMedicalCenter->getName().'status has been updated!');
+
+                if (InstitutionMedicalCenterStatus::APPROVED == $formData['status']) {
                     $this->get('event_dispatcher')->dispatch(
                         MailerBundleEvents::NOTIFICATIONS_NEW_LISTINGS_APPROVED, new GenericEvent($this->institutionMedicalCenter)
                     );
                 }
+
+                $response = new Response(\json_encode(array('success' => 'Status has been updated!')), 200, array('content-type' => 'application/json'));
+
+            } else {
+                $response = new Response(\json_encode(array('error' => 'Invalid status!')), 400, array('content-type' => 'application/json'));
             }
-            else {
-                $errors = array();
-                foreach ($form->getErrors() as $_err) {
-                    $errors[] = $_err->getMessage();
-                }
-                $response = new Response(\json_encode(array('html' => \implode('<br />', $errors))), 400, array('content-type' => 'application/json'));
-            }
+        } else {
+            throw new NotFoundHttpException();
         }
-        else {
-            $output['html'] =  $this->renderView($template, array(
-                            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                            'institution' => $this->institution,
-                            'institutionMedicalCenterForm' => $form->createView()
-            ));
-        }
-        $response = new Response(\json_encode($output),200, array('content-type' => 'application/json'));
 
         return $response;
     }

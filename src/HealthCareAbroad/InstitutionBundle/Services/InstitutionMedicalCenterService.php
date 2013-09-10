@@ -206,19 +206,33 @@ class InstitutionMedicalCenterService
      * Layer to Doctrine find by id. Apply caching here.
      *
      * @param int $id
+     * @param mixed $eagerly, bool|array if array it must be a key, value format as "alias => property" of InstitutionMedicalCenter - ex: array('doctors' => 'a.doctors')
      * @return InstitutionMedicalCenter
      */
-    public function findById($id, $eagerly=true)
+    public function findById($id, $eagerly = true)
     {
-        $result = null;
-        if ($eagerly) {
-            $qb = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getQueryBuilderForEagerlyLoadedMedicalCenter();
-            $qb->andWhere('imc.id = :id')
-                ->setParameter('id', $id);
+        if(is_array($eagerly)) {
+            $qb = $this->doctrine->getEntityManagerForClass('InstitutionBundle:InstitutionMedicalCenter')->createQueryBuilder();
+            $qb->select('a, ' . implode(', ', array_keys($eagerly)))
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
+            foreach($eagerly as $alias => $property) {
+                $qb->leftJoin($property, $alias);
+            }
+
+            $qb->where('a.id = :centerId')->setParameter('centerId', $id);
             
             $result = $qb->getQuery()->getOneOrNullResult();
+
+            return $result;
         }
-        else {
+
+        if ($eagerly) {
+            $qb = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getQueryBuilderForEagerlyLoadedMedicalCenter();
+            $qb->andWhere('imc.id = :id')->setParameter('id', $id);
+
+            $result = $qb->getQuery()->getOneOrNullResult();
+
+        } else {
             $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
         }
         
@@ -498,6 +512,15 @@ class InstitutionMedicalCenterService
         $em = $this->doctrine->getEntityManager();
         $em->persist($institutionMedicalCenter);
         $em->flush($institutionMedicalCenter);
+    }
+    
+    function updateStatus(InstitutionMedicalCenter $center, $status)
+    {
+        $center->setStatus($status);
+
+        $em = $this->doctrine->getEntityManager();
+        $em->persist($center);
+        $em->flush();
     }
 
     public function addMedicalCenterSpecializationsWithTreatments(InstitutionMedicalCenter $institutionMedicalCenter, array $specializationsWithTreatments)

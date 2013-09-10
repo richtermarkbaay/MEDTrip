@@ -203,6 +203,12 @@ var InstitutionMedicalCenter = {
             	_button.removeAttr('disabled')
                 .html('Submit');
             	_modal.modal('hide');
+            	alert(response.success);
+
+            },
+            error: function(response){
+            	alert($.parseJSON(response.responseText).error);
+            	window.location.reload();
             }
         });
         	

@@ -103,16 +103,7 @@ class InstitutionSpecializationRepository extends EntityRepository
 
         return $qb->getQuery()->getResult();
     }
-    
-    /**
-     * @deprecated Use getActiveSpecializationsByInstitutionMedicalCenter
-     * @param unknown_type $institutionMedicalCenter
-     */
-    public function getByInstitutionMedicalCenter($institutionMedicalCenter)
-    {
-        return $this->getActiveSpecializationsByInstitutionMedicalCenter($institutionMedicalCenter);
-    }
-    
+
     /**
      * Get active institution specializations of an institution medical center/ clinic
      * 
