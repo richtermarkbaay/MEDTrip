@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -169,6 +171,42 @@ class ContactDetailService
         }
         
         return $output;
+    }
+    
+    /**
+     * For add new Medical Center , set contact details data
+     * Check if user has a contact details (mobile or phone).
+     * Used in admin side, in adding new medical center only
+     * @param InstitutionMedicalCenter $medicalCenter
+     * @return InstitutionMedicalCenter
+     * @author Chaztine Blance
+     */
+    
+    public function initializeMedicalCenterContactDetails(InstitutionMedicalCenter $medicalCenter, $types)
+    {
+        $types = array_flip($types);
+    
+        foreach ($medicalCenter->getContactDetails() as $contact){
+            unset($types[$contact->getType()]);
+        }
+    
+        foreach($types as $type => $dummy) {
+            $number = new ContactDetail();
+            $number->setType($type);
+            
+            if(!$medicalCenter->getId()){
+                foreach ($medicalCenter->getInstitution()->getContactDetails() as $defaultContact){
+                    $number->setCountry($defaultContact->getCountry());
+                    $number->setCountryCode($defaultContact->getCountryCode());
+                    $number->setAreaCode($defaultContact->getAreaCode());
+                    $number->setNumber($defaultContact->getNumber());
+                }
+            }
+            
+            $medicalCenter->addContactDetail($number);
+        }
+    
+        return $medicalCenter;
     }
     
 }
