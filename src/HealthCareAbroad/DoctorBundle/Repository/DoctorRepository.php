@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -146,9 +148,11 @@ class DoctorRepository extends EntityRepository
         ->leftJoin('a.media', 'dm')
         ->where('c.institution = :institution')
         ->andWhere('a.status = :status')
+        ->andWhere('c.status = :centerStatus')
         ->orderBy('a.firstName')
         ->setParameter('institution', $institution)
-        ->setParameter('status', Doctor::STATUS_ACTIVE);
+        ->setParameter('status', Doctor::STATUS_ACTIVE)
+        ->setParameter('centerStatus', InstitutionMedicalCenterStatus::APPROVED);
         
         return $qb;
         
