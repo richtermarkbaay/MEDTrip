@@ -23,7 +23,7 @@ class TwigMailer extends SmtpMailer
         $data = $this->normalizeData($data);
 
         if ($this->debugMode) {
-            $allowedContactEmails = array('hazel@pinoyoutsource.com', 'haroldmodesto@gmail.com', 'harold.modesto@chromedia.com');
+            $allowedContactEmails = array('hazel.caballero@pinoyoutsource.com', 'haroldmodesto@gmail.com', 'harold.modesto@chromedia.com');
             if (!in_array(strtolower($data['to']), $allowedContactEmails)) {
                 return;
             }
