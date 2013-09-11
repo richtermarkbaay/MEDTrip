@@ -33,18 +33,7 @@
                                                      {{ form_errors(form.name) }}
                                                  </div>
                                                 {{ form_row( form.description, {attr: {rows: 5, style: 'width: 750px;'} } ) }}
-                                                <div class="control-group  {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
-                                                     <label for="email">Email </label>
-        					                         <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: 4px;">
-        						                      	{{ form_widget(form.contactEmail) }}
-        						                      	{{ form_errors(form.contactEmail) }}
-    					                        </div>
-                                                {% for _widget in form.contactDetails %}
-                                                    <div class="span12">
-                                                        {{ form_widget(_widget) }}
-                                                    </div>
-                                                {% endfor %}
-                                                <div class="control-group">
+                                                 <div class="control-group">
                                                     <label for="network-group">  Medical Provider Group/Network  </label>
                                                         {% for _i in form.medicalProviderGroups %}
                                                              {{ form_widget(_i, {'attr': {class: 'span3'} })  }}
@@ -54,8 +43,14 @@
                                                      <div id="autoDiv">
                                                      </div>
                                                 </div>
-                                                {{ form_row( form.websites) }}
-                                                 <hr />
+                                                <div class="control-group  {{ (form.contactEmail.vars.valid ? '' : 'error') }}">
+                                                     <label for="email">Email </label>
+        					                         <input type="button" class="btn btn-info" value="Generate Email" onClick="randomString();" style="float: right;margin-right: 467px;margin-top: 4px;">
+        						                      	{{ form_widget(form.contactEmail) }}
+        						                      	{{ form_errors(form.contactEmail) }}
+    					                        </div>
+    					                        {{ form_row( form.websites) }}
+    					                        <hr />
                                                     <h4 style="margin-bottom: 10px;"> Institution Address </h4>
                                                     {{ form_widget( form.address1 ) }}
                                                  <div class="span12">
@@ -89,6 +84,11 @@
                                                     {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}
                                                 </div>
                                                 <hr />
+                                                {% for _widget in form.contactDetails %}
+                                                    <div class="span12">
+                                                        {{ form_widget(_widget) }}
+                                                    </div>
+                                                {% endfor %}
                                                  <div class="row-fluid">
                                                      <div class="span7">
                                                      <h4 style="margin-bottom: 10px;">Social Media Sites</h4>
@@ -118,11 +118,18 @@
 <!--
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     $(function(){
-        $('#institution_profile_form_country').change();
-
+        
         $("#institution_profile_form_medicalProviderGroups_0").autocomplete({
             appendTo: "#autoDiv",
             source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
+        });
+
+        var countryWidget = $('#{{ form.country.vars.id ~ "_widget" }}');
+        countryWidget.on('selectedCountry', function(e){
+            var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
+            var countryValue = fancyAutocomplete.options.valueContainer.val();
+            var contactWidget = '#{{ form.contactDetails.vars.id ~ "_0_country"}} option[value='+ countryValue +']';
+            $(contactWidget+'option[value='+countryValue+']').attr('selected', true);
         });
         
     });
@@ -130,7 +137,6 @@
 	function randomString() {
 		var chars = "abcdefghiklmnopqrstuvwxyz";
 		var string_length = 8;
-		//var inputVal = document.getElementById('institutionSignUp_email');
 		var institutionSignUp = '';
 		for (var i=0; i<string_length; i++) {
 			var rnum = Math.floor(Math.random() * chars.length);

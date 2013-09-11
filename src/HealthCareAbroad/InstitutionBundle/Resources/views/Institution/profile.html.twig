@@ -68,6 +68,8 @@
             });
         }
     }
+
+    
 })();
 </script>
 
@@ -80,6 +82,15 @@
     Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
     (function($){
         $(function(){
+
+            var countryWidget = $('#{{ institutionForm.country.vars.id ~ "_widget" }}');
+            countryWidget.on('selectedCountry', function(e){
+                var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
+                var countryValue = fancyAutocomplete.options.valueContainer.val();
+                var contactWidget = '#{{ institutionForm.contactDetails.vars.id ~ "_0_country"}} option[value='+ countryValue +']';
+                $(contactWidget+'option[value='+countryValue+']').attr('selected', true);
+            });
+            
             var ajaxFormUploadElem;
             $('form.ajaxUploadLogoForm').ajaxForm({
                 success: function(response) {

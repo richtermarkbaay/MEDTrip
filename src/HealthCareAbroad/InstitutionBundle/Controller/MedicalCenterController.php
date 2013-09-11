@@ -313,7 +313,7 @@ class MedicalCenterController extends InstitutionAwareController
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
 
-            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
             $this->institutionMedicalCenter->setDescription(' ');
             $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
             $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());
