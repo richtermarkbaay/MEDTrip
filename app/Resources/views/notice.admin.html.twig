@@ -1,6 +1,6 @@
 {% for alert, message in app.session.flashes %}
 	{% if alert == 'warning' %}
-	    {% set class = '' %}
+	    {% set class = 'warning' %}
 	{% elseif alert == 'error' %}
 	    {% set class = 'alert-error' %}
 	{% elseif alert == 'success' %}

@@ -84,7 +84,7 @@ class DoctorController extends Controller
             }
             
             $media = $doctor->getMedia();
-            $msg = "Successfully updated account";
+            $msg = "Successfully updated doctors profile";
             $title = 'Edit Doctor Details';
         }
         else {
@@ -112,7 +112,12 @@ class DoctorController extends Controller
                 $em->flush();
 
                 if ($doctor) {
-                    $this->get('session')->setFlash('success', $msg);
+                    if($doctor->getSpecializations()->count() > 1)
+                    {
+                        $this->get('session')->setFlash('info', 'Successfully added doctor! Note: you have added multiple specializations to this doctor.');
+                    }else{
+                        $this->get('session')->setFlash('success', $msg);
+                    }
                     
                     return $this->redirect($this->generateUrl('admin_doctor_index'));
                 } else {
