@@ -97,11 +97,9 @@ class DoctorController extends Controller
         $this->get('services.contact_detail')->initializeContactDetails($doctor, array(ContactDetailTypes::PHONE));
 
         $form = $this->createForm(new DoctorFormType(), $doctor);
-        
         if ($this->getRequest()->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
-
                 $fileBag = $request->files->get('doctor');
                 if(isset($fileBag['media']) && $fileBag['media']) {
                     $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor, false);
@@ -112,7 +110,8 @@ class DoctorController extends Controller
                 $em->flush();
 
                 if ($doctor) {
-                    if($doctor->getSpecializations()->count() > 1)
+                    $data = $request->get('doctor');
+                    if(count($data['specializations']) > 1)
                     {
                         $this->get('session')->setFlash('info', 'Successfully added doctor! Note: you have added multiple specializations to this doctor.');
                     }else{
