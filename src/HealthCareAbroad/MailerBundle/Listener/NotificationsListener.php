@@ -143,7 +143,8 @@ abstract class NotificationsListener
         //Hardcode for now; if not use router to generate the urls
         $sharedData = array(
             'email' => array(
-                'support' => 'support@healthcareabroad.com'
+                /*'support' => 'support@healthcareabroad.com'*/
+                'support' => 'listings@healthcareabroad.com'
             ),
             'url' => array(
                 'support' => 'http://support.healthcareabroad.com',

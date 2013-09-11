@@ -23,12 +23,9 @@ services:
     services.mailer.notifications.twig:
         class: HealthCareAbroad\MailerBundle\Services\TwigMailer
         arguments:
-            #- @services.mailer.instant
-            #- @mailer
-            #- @router
             - @twig
-            #- %mailer.templates%
             - @logger
+            - %notifications.debug%
 
     # UNTESTED/UNUSED
 #    services.mailer.notifications.plain_text:
