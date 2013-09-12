@@ -118,9 +118,8 @@ class MedicalCenterController extends InstitutionAwareController
         // Add Medical Center Form
         $institutionMedicalCenter = new InstitutionMedicalCenter();
         $institutionMedicalCenter->setInstitution($this->institution);
-        $phoneNumber = new ContactDetail();
-        $phoneNumber->setType(ContactDetailTypes::PHONE);
-        $institutionMedicalCenter->addContactDetail($phoneNumber);
+        
+        $this->get('services.contact_detail')->initializeContactDetails($institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         $parameters = array(
@@ -146,7 +145,7 @@ class MedicalCenterController extends InstitutionAwareController
      */
     public function viewAction(Request $request)
     {
-        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
@@ -313,7 +312,7 @@ class MedicalCenterController extends InstitutionAwareController
             unset($formVariables['_token']);
             $removedFields = \array_diff(InstitutionMedicalCenterFormType::getFieldNames(), array_keys($formVariables));
 
-            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
             $this->institutionMedicalCenter->setDescription(' ');
             $this->institutionMedicalCenter->setAddress($this->institution->getAddress1());
             $this->institutionMedicalCenter->setAddressHint($this->institution->getAddressHint());

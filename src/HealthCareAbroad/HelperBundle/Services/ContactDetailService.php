@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\HelperBundle\Services;
 
+use HealthCareAbroad\HelperBundle\Entity\Country;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
+
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
@@ -115,7 +119,7 @@ class ContactDetailService
      * @author Chaztine Blance
      */
     
-    public function initializeContactDetails($parentObject, $types)
+    public function initializeContactDetails($parentObject, $types, Country $country = null)
     {
         $types = array_flip($types);
 
@@ -126,6 +130,10 @@ class ContactDetailService
         foreach($types as $type => $dummy) {
             $number = new ContactDetail();
             $number->setType($type);
+            if ($country){
+                $number->setCountryCode($country->getCode());
+                $number->setCountry($country);
+            }
             $parentObject->addContactDetail($number);
         }
 
@@ -170,5 +178,4 @@ class ContactDetailService
         
         return $output;
     }
-    
 }
