@@ -4,8 +4,10 @@ parameters:
     #notifications.enabled: true
 
     notification.support.user:
-        "support@healthcareabroad.com": "The HealthcareAbroad Team"
-    notification.support.password: "HCA#602_h3lp"
+        #"support@healthcareabroad.com": "The HealthcareAbroad Team"
+        "listings@healthcareabroad.com": "The HealthcareAbroad Team"
+    #notification.support.password: "HCA#602_h3lp"
+    notification.support.password: "*rnXMV3&"
 
     notification.inquiry.user:
         "inquiry@healthcareabroad.com": "The HealthcareAbroad Team"

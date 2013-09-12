@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Repository;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
@@ -54,19 +56,7 @@ class DoctorRepository extends EntityRepository
         $stmt->execute();
         return $stmt->fetchAll();
     }
-    public function getDoctorsByInstitutionMedicalCenter($imcId)
-    {
-        $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT * FROM doctors a JOIN doctor_specializations b WHERE a.id = b.doctor_id AND b.specialization_id 
-                    IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) GROUP BY a.id";
-        
-        $stmt = $connection->prepare($query);
-        $stmt->bindValue('imcId', $imcId);
-        $stmt->execute();
-        return $stmt->fetchAll();
-        
-    }
-    
+
     /**
      * Get doctors of a  medical center
      * 
@@ -147,9 +137,11 @@ class DoctorRepository extends EntityRepository
         ->leftJoin('a.media', 'dm')
         ->where('c.institution = :institution')
         ->andWhere('a.status = :status')
+        ->andWhere('c.status = :centerStatus')
         ->orderBy('a.firstName')
         ->setParameter('institution', $institution)
-        ->setParameter('status', Doctor::STATUS_ACTIVE);
+        ->setParameter('status', Doctor::STATUS_ACTIVE)
+        ->setParameter('centerStatus', InstitutionMedicalCenterStatus::APPROVED);
         
         return $qb;
         
