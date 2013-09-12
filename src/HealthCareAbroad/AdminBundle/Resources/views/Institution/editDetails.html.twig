@@ -37,14 +37,8 @@
                         {{ form_widget( form.contactEmail ) }}
                         {{ form_errors(form.contactEmail) }}
                     </div>
-                    <div class="row-fluid">
-                        {% for _widget in form.contactDetails %}
-                            {{ form_widget(_widget) }}
-                        {% endfor %}
-                    </div>
-                    {{ form_row( form.websites) }}
+                     {{ form_row( form.websites) }}
                     <hr />
-                    
                     <h5 style="margin-bottom: 10px;"> Institution Address </h5>
                     {{ form_widget( form.address1 ) }}
                      <div class="span12">
@@ -81,6 +75,12 @@
                     </div>
                     
                      <hr />
+                    
+                    <div class="row-fluid">
+                        {% for _widget in form.contactDetails %}
+                            {{ form_widget(_widget) }}
+                        {% endfor %}
+                    </div>
                      <div class="row-fluid">
                          <div class="span7">
                          <h5 style="margin-bottom: 10px;">Social Media Sites</h5>
@@ -105,6 +105,14 @@
         $("#{{ form.getChild('medicalProviderGroups').vars.id }}_0").autocomplete({
             appendTo: "#autoDiv",
             source: $.parseJSON('{{ add_slashes(medicalProvidersJSON) | raw }}'),
+        });
+
+        var countryWidget = $('#{{ form.country.vars.id ~ "_widget" }}');
+        countryWidget.on('selectedCountry', function(e){
+            var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
+            var countryValue = fancyAutocomplete.options.valueContainer.val();
+            var contactWidget = '#{{ form.contactDetails.vars.id ~ "_0_country"}} option[value='+ countryValue +']';
+            $(contactWidget+'option[value='+countryValue+']').attr('selected', true);
         });
         
         $('#institution_profile_form_country').change();

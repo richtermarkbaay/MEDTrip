@@ -329,7 +329,7 @@ class InstitutionMedicalCenterController extends Controller
                     return $this->redirect($this->generateUrl('admin_institution_medicalCenter_index', array('institutionId' => $this->institution->getId())));
                 }
             }
-            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+            $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution),$this->institutionMedicalCenter, array('is_hidden' => false,InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 

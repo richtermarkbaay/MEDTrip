@@ -79,6 +79,7 @@ class InstitutionMedicalCenterFormType extends AbstractType
             $medicalCenter->setSocialMediaSites($this->institution->getSocialMediaSites());
             $medicalCenter->setAddress($this->institution->getAddress1());
             $medicalCenter->setAddressHint($this->institution->getAddressHint());
+            $medicalCenter->setContactEmail($this->institution->getContactEmail());
         }
         $imcProperty = new InstitutionMedicalCenterProperty();
         $this->_add($builder, 'name','text', array('label' => 'Name'));

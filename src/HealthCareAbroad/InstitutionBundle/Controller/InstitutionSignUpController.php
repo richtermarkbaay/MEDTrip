@@ -388,7 +388,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             $this->institutionMedicalCenter->setInstitution($this->institution);
         }
 
-        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
