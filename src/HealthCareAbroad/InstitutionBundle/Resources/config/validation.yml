@@ -78,8 +78,8 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionUserInvitation:
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
-            fields: [institution, name]
-            message: Center already exists!
+            fields: [name, institution]
+            message: Clinic already exists!
     properties:
         name:
             - NotBlank: {message: 'Clinic name is required.'}
