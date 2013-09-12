@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\HelperBundle\Twig\UrlGeneratorTwigExtension;
 
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
@@ -483,6 +485,7 @@ class InstitutionSignUpController extends InstitutionAwareController
         $doctor = new Doctor();
         $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
         $form = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), Query::HYDRATE_OBJECT);
 
         if ($request->isMethod('POST')) {
             $form->bind($request);
@@ -515,18 +518,18 @@ class InstitutionSignUpController extends InstitutionAwareController
             'institution' => $this->institution,
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'thumbnailSize' => ImageSizes::DOCTOR_LOGO,
-            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors())
+            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($doctors)
         );
 
         $editDoctor = new Doctor();
-        if($this->institutionMedicalCenter->getDoctors()->count()) {
-            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+        if(!empty($doctors)) {
+            $editDoctor = $doctors[0];
         }
 
-        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
         $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-        $params['editForm'] = $editForm->createView();
+        $params['editDoctorForm'] = $editForm->createView();
 
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
     }
