@@ -257,7 +257,7 @@ class InstitutionMedicalCenterController extends Controller
     {
         $institutionMedicalCenterService = $this->get('services.institution_medical_center');
         $template = 'AdminBundle:InstitutionMedicalCenter:form.html.twig';
-        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE));
+        $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE),$this->institution->getCountry());
 
         if ($request->isMethod('GET')) {
             $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter);
