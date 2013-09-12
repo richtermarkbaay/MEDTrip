@@ -7,7 +7,7 @@ function ucwords (str) {
 	}
 (function($){
     $(function(){
-        {% if institutionMedicalCenter.doctors|length < 1 %}
+        {% if doctors|length < 1 %}
             $('#add-doctor').modal('show');
         {% endif %}
 
@@ -89,24 +89,24 @@ function ucwords (str) {
                 editFormWrapper.empty();
                 editForm.removeAttr('style').attr('action', $(this).attr('href'));
 
-                editForm.find("#{{ editForm.getChild('lastName').vars.id }}").val(doctor.lastName);
-                editForm.find("#{{ editForm.getChild('firstName').vars.id }}").val(doctor.firstName);
-                editForm.find("#{{ editForm.getChild('middleName').vars.id }}").val(doctor.middleName);
-                editForm.find("#{{ editForm.getChild('suffix').vars.id }}").val(doctor.suffix);
-                editForm.find("#input-{{ editForm.getChild('suffix').vars.id }}").val(doctor.suffix);
-                editForm.find("#{{ editForm.getChild('contactEmail').vars.id }}").val(doctor.contactEmail);
+                editForm.find("#{{ editDoctorForm.getChild('lastName').vars.id }}").val(doctor.lastName);
+                editForm.find("#{{ editDoctorForm.getChild('firstName').vars.id }}").val(doctor.firstName);
+                editForm.find("#{{ editDoctorForm.getChild('middleName').vars.id }}").val(doctor.middleName);
+                editForm.find("#{{ editDoctorForm.getChild('suffix').vars.id }}").val(doctor.suffix);
+                editForm.find("#input-{{ editDoctorForm.getChild('suffix').vars.id }}").val(doctor.suffix);
+                editForm.find("#{{ editDoctorForm.getChild('contactEmail').vars.id }}").val(doctor.contactEmail);
 
-                editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_number").val('');
-                editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_abbr").val('');
-                editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_areaCode").val('');
-                editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_0_ext").val('');
+                editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_0_number").val('');
+                editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_0_abbr").val('');
+                editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_0_areaCode").val('');
+                editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_0_ext").val('');
 
                 $.each(doctor.contactDetails, function(i){
-                    numberElem = editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_number").val(doctor.contactDetails[i].number);
-                    editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_abbr").val(doctor.contactDetails[i].abbr);
-                    editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_country_code").val(doctor.contactDetails[i].countryCode);
-                    editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_area_code").val(doctor.contactDetails[i].areaCode);
-                    editForm.find("#{{ editForm.getChild('contactDetails').vars.id }}_"+i+"_ext").val(doctor.contactDetails[i].ext);
+                    numberElem = editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_"+i+"_number").val(doctor.contactDetails[i].number);
+                    editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_"+i+"_abbr").val(doctor.contactDetails[i].abbr);
+                    editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_"+i+"_country_code").val(doctor.contactDetails[i].countryCode);
+                    editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_"+i+"_area_code").val(doctor.contactDetails[i].areaCode);
+                    editForm.find("#{{ editDoctorForm.getChild('contactDetails').vars.id }}_"+i+"_ext").val(doctor.contactDetails[i].ext);
 
                     numberElem.siblings('.flag-selector-widget:first').find('.flag16:first').attr('class', 'flag16 ' + doctor.contactDetails[i].abbr);
                 });

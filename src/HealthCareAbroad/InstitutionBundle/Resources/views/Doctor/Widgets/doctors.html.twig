@@ -1,6 +1,6 @@
 {% set doctorLogoSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::DOCTOR_LOGO') %}
 <section id="doctorsList" class="doctors-new-listing">
-    {% for doctor in institutionMedicalCenter.doctors %}
+    {% for doctor in doctors %}
         <div id="doctor-item-{{ doctor.id }}">
             <div class="doctor-heading medicalCenter-doctors" style="margin-bottom: 1px; min-height: 60px;padding: 10px;position:relative;">
     
@@ -8,11 +8,11 @@
                 </div> -->
 
                 <a class="remove-doctor-btn" href="{{ path('institution_medicalCenter_removeDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}" data-doctor-id="{{ doctor.id }}"><i class="icon-remove-sign pull-right"></i></a>
-                <a class="edit-doctor-btn" data-doctor="{{ json_encode(doctors[doctor.id]) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}"><i class="icon-edit pull-right"></i></a>
+                <a class="edit-doctor-btn" data-doctor="{{ json_encode(doctor) }}" href="{{ path('institution_medicalCenter_ajaxUpdateDoctor', {imcId: institutionMedicalCenter.id, doctorId: doctor.id}) }}"><i class="icon-edit pull-right"></i></a>
     
                 <form action="{{ path('institution_doctor_logo_upload', {doctorId: doctor.id, imcId: institutionMedicalCenter.id}) }}" method="post" enctype="multipart/form-data" class="ajaxUploadForm upload-thumbnail">
                     <span class="rollover hca-profile-photo-rollover" onclick="$(this).siblings('input[type=file]').click()"></span>
-                    <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media ? doctor_media_src(doctor.media, doctorLogoSize) : imageplaceholder.doctorDefaultImage }}" class="img-polaroid">
+                    <img id="doctor-thumbnail-{{ doctor.id }}" alt="" src="{{ doctor.media is defined ? doctor_media_src(doctor.media, doctorLogoSize) : imageplaceholder.doctorDefaultImage }}" class="img-polaroid">
                     <input name="file" type="file" accept="image/*" style="visibility:hidden" onchange="$(this).parent().submit()"/>
                 </form>
     
@@ -54,7 +54,7 @@
     </div>
     <!-- END OF DOCTOR ITEM TEMPLATE -->
 
-    <p id="empty-doctors-msg" style="display: {{ institutionMedicalCenter.doctors|length ? 'none' : 'block' }}">
+    <p id="empty-doctors-msg" style="display: {{ doctors|length ? 'none' : 'block' }}">
        You have not yet added any doctors.Patients want to know about who will be performing their treatment. Providing detailed information about the practitioners at your facility will build trust with patients and make them more likely to submit an inquiry.
     </p>
         

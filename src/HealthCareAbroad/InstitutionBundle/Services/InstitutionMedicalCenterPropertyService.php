@@ -35,9 +35,14 @@ class InstitutionMedicalCenterPropertyService
      * @var MemcacheService
      */
     private $memcache;
-    
-    private $activePropertyTypes;
+
     private $propertyRepository;
+    
+    private static $activePropertyTypes;
+    
+    private static $institutionMedicalCenterGlobalAwards;
+    
+    private static $institutionMedicalCenterPropertiesByType = array();
     
     /**
      * @var GlobalAwardService
@@ -128,24 +133,23 @@ class InstitutionMedicalCenterPropertyService
      */
     public function getAvailablePropertyType($propertyTypeName)
     {
-        // USING static flag will yield unexpected results when ran in test suites
-        //static $isLoadedAvailableTypes = false;
-        //if (!$isLoadedAvailableTypes) {
-            $this->_setupAvailablePropertyTypes();
-            $isLoadedAvailableTypes = true;
-        //}
-//         if (!\array_key_exists($propertyTypeName, $this->activePropertyTypes)) {
-//             throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
-//         }
-        
-        return $this->activePropertyTypes[$propertyTypeName];
+        $this->_setupAvailablePropertyTypes();
+
+        if (!isset(static::$activePropertyTypes[$propertyTypeName])) {
+            throw InstitutionPropertyException::unavailablePropertyType($propertyTypeName);
+        }
+
+        return static::$activePropertyTypes[$propertyTypeName];
     }
     
     private function _setupAvailablePropertyTypes()
     {
-        $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->findBy(array('status' => InstitutionPropertyType::STATUS_ACTIVE));
-        foreach ($result as $each) {
-            $this->activePropertyTypes[$each->getName()] = $each;
+        // @TODO: Need to check if this still causes some bug.
+        if(!static::$activePropertyTypes) {
+            $result = $this->doctrine->getRepository('InstitutionBundle:InstitutionPropertyType')->findBy(array('status' => InstitutionPropertyType::STATUS_ACTIVE));
+            foreach ($result as $each) {
+                static::$activePropertyTypes[$each->getName()] = $each;
+            }
         }
     }
     
@@ -158,6 +162,10 @@ class InstitutionMedicalCenterPropertyService
      */
     public function getGlobalAwardPropertiesByInstitutionMedicalCenter(InstitutionMedicalCenter $institutionMedicalCenter, array $options=array())
     {
+        if(static::$institutionMedicalCenterGlobalAwards) {
+            return static::$institutionMedicalCenterGlobalAwards;
+        }
+        
         $defaultOptions = array('loadValuesEagerly' => true, 'groupByType' => true);
         $options = \array_merge($defaultOptions, $options);
         $propertyType = $this->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
@@ -194,14 +202,18 @@ class InstitutionMedicalCenterPropertyService
         }
 
         if ($options['groupByType']) {
-            $returnVal = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
+            static::$institutionMedicalCenterGlobalAwards = GlobalAwardService::groupGlobalAwardPropertiesByType($returnVal);
         }
 
-        return $returnVal;
+        return static::$institutionMedicalCenterGlobalAwards;
     }
     
     public function getInstitutionMedicalCenterByPropertyType(InstitutionMedicalCenter $institutionMedicalCenter, $propertyName)
     {
+        if(isset(static::$institutionMedicalCenterPropertiesByType[$propertyName])) {
+            return static::$institutionMedicalCenterPropertiesByType[$propertyName];
+        }
+
         $propertyType = $this->getAvailablePropertyType($propertyName);
          
         $criteria = array(
@@ -209,8 +221,9 @@ class InstitutionMedicalCenterPropertyService
             'institutionPropertyType' => $propertyType
         );
     
-        $properties = $this->propertyRepository->findBy($criteria);
-        return $properties;
+        static::$institutionMedicalCenterPropertiesByType[$propertyName] = $this->propertyRepository->findBy($criteria);
+
+        return static::$institutionMedicalCenterPropertiesByType[$propertyName];
     }
     
     public function addPropertyForInstitutionMedicalCenterByType(Institution $institution, $properties = array(), $propertyTypeName, InstitutionMedicalCenter $institutionMedicalCenter)

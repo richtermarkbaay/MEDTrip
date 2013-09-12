@@ -85,15 +85,16 @@ class DoctorRepository extends EntityRepository
         }
         
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('d, d_sp, dm')
+        $qb->select('d, d_sp, dm, dc')
             ->from('DoctorBundle:Doctor', 'd')
             ->innerJoin('d.institutionMedicalCenters', 'imc')
             ->leftJoin('d.specializations', 'd_sp')
             ->leftJoin('d.media', 'dm')
+            ->leftJoin('d.contactDetails', 'dc')
             ->where('imc.id = :institutionMedicalCenterId')
                 ->setParameter('institutionMedicalCenterId', $institutionMedicalCenterId);
         
-        return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        return $qb->getQuery()->getResult($hydrationMode);
     }
     
     public function getSpecializationListByMedicalSpecialist($doctorId)

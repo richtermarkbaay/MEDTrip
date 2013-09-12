@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Doctrine\ORM\Query;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
@@ -84,7 +86,7 @@ class MedicalCenterController extends InstitutionAwareController
         // Temporary condition for eagerLoad
         if ($imcId = $this->getRequest()->get('imcId',0)){
             if($this->getRequest()->attributes->get('_route') == 'institution_medicalCenter_view') {
-                $this->institutionMedicalCenter = $this->service->findById($imcId, false);
+                $this->institutionMedicalCenter = $this->service->findById($imcId, array('logo' => 'a.logo','contactDetails' => 'a.contactDetails', 'businessHours' => 'a.businessHours', 'specializations' => 'a.institutionSpecializations'));
 
                 if ($this->institutionMedicalCenter->getInstitution()->getId() != $this->institution->getId() ) {
                     return $this->_redirectIndexWithFlashMessage('Invalid medical center.', 'error');
@@ -147,36 +149,37 @@ class MedicalCenterController extends InstitutionAwareController
     {
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
-        $doctor = new Doctor();
-        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
-        $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
-
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         $currentGlobalAwards = $this->get('services.institution_medical_center_property')->getGlobalAwardPropertiesByInstitutionMedicalCenter($this->institutionMedicalCenter);
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
 
-        $editDoctor = new Doctor();
-        if($this->institutionMedicalCenter->getDoctors()->count()) {
-            $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+        // Doctors
+        $editDoctor = $doctor = new Doctor();
+        $doctor->addInstitutionMedicalCenter($this->institutionMedicalCenter);
+        $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
+        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), Query::HYDRATE_OBJECT);
+
+        if(!empty($doctors)) {
+            $editDoctor = $doctors[0];
         }
-        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE));
+        $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
+        $editDoctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
 
-        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+
         return $this->render('InstitutionBundle:MedicalCenter:view.html.twig', array(
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'medicalCenterPhotos' => $this->get('services.institution.gallery')->getInstitutionMedicalCenterPhotos($this->institutionMedicalCenter->getId()),
             'institutionMedicalCenterForm' => $form->createView(),
+            'institutionMedicalCenter' => $this->institutionMedicalCenter,
 
-            'specializations' => $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionSpecialization')->getActiveSpecializationsByInstitutionMedicalCenter($this->institutionMedicalCenter),
+            'medicalCenterPhotos' => $this->get('services.institution.gallery')->getInstitutionMedicalCenterPhotos($this->institutionMedicalCenter->getId()),
+            'specializations' => $this->institutionMedicalCenter->getInstitutionSpecializations(),
             'ancillaryServicesData' =>  $this->get('services.helper.ancillary_service')->getActiveAncillaryServices(),
             'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
             'currentGlobalAwards' => $currentGlobalAwards,
             'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-
-            'doctors' =>  $this->get('services.doctor')->doctorsObjectToArray($this->institutionMedicalCenter->getDoctors()),
+            'doctors' => $this->get('services.doctor')->doctorsObjectToArray($doctors),
             'doctorForm' => $doctorForm->createView(),
-            'editForm' => $editForm->createView()
+            'editDoctorForm' => $editDoctorForm->createView()
         ));
     }
 
