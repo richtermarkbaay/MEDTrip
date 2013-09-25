@@ -10,12 +10,14 @@ class TwigMailer extends SmtpMailer
     private $twig;
     private $logger;
     private $debugMode;
+    private $debugEmails;
 
-    public function __construct(\Twig_Environment $twig, Logger $logger = null, $debugMode = false)
+    public function __construct(\Twig_Environment $twig, Logger $logger = null, $debugMode = false, $debugEmails = array())
     {
         $this->twig = $twig;
         $this->logger = $logger;
         $this->debugMode = $debugMode;
+        $this->debugEmails = $debugEmails;
     }
 
     public function sendMessage($data)
@@ -23,11 +25,11 @@ class TwigMailer extends SmtpMailer
         $data = $this->normalizeData($data);
 
         if ($this->debugMode) {
-            $allowedContactEmails = array('hazel.caballero@pinoyoutsource.com', 'haroldmodesto@gmail.com', 'harold.modesto@chromedia.com');
-            if (!in_array(strtolower($data['to']), $allowedContactEmails)) {
+            //$debugEmails = array('hazel.caballero@pinoyoutsource.com', 'haroldmodesto@gmail.com', 'harold.modesto@chromedia.com');
+            if (!in_array(strtolower($data['to']), $this->debugEmails)) {
                 return;
             }
-            if (isset($data['cc']) && !in_array(strtolower($data['cc'], $allowedContactEmails))) {
+            if (isset($data['cc']) && !in_array(strtolower($data['cc'], $this->debugEmails))) {
                 unset($data['cc']);
             }
         }
