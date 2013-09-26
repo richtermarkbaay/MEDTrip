@@ -6,10 +6,18 @@ admin_institution_index:
     pattern:  /admin/institutions
     defaults: { _controller: AdminBundle:Institution:index }
 
-admin_institution_newlyRegisteredInstitution:
-    pattern:  /admin/newly-registered-institutions
-    defaults: { _controller: AdminBundle:Institution:viewNewlyRegisteredInstitution }
-    
+admin_institution_newlyRegistered:
+    pattern:  /admin/institutions/newly-registered
+    defaults: { _controller: AdminBundle:Institution:viewNewlyRegistered }
+
+admin_institution_recentlyApproved:
+    pattern: /admin/institutions/recently-approved
+    defaults: { _controller: AdminBundle:Institution:recentlyApproved }
+
+admin_institution_recentlyApprovedClinics:
+    pattern: /admin/institutions/recently-approved-clinics
+    defaults: { _controller: AdminBundle:Institution:recentlyApprovedClinics }
+
 admin_institution_newlyAddedClinics:
     pattern:  /admin/newly-added-clinics
     defaults: { _controller: AdminBundle:Institution:viewNewlyAddedClinics }
@@ -48,14 +56,6 @@ admin_institution_getAjaxAccountData:
          accountId: \d+
          institutionId: \d+
          _method: GET
-
-admin_institution_updateStatus:
-    pattern:  /admin/institution/{institutionId}/update-status
-    defaults: { _controller: AdminBundle:Institution:updateStatus }
-    requirements:
-        institutionId: \d+
-        status: \d+
-        _method: POST
 
 #Institution Media Related Routes
 admin_institution_gallery:

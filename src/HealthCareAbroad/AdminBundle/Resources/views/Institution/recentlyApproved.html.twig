@@ -1,0 +1,44 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_recentlyApproved'%}
+
+{% block content %}
+    <div id="content">
+        <div id="page-heading"><h3>Recently Approved Institutions</h3></div>
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            <div>
+                <table class="table table-bordered sortable-list">
+                <tr>
+                    <th width="30" align="center">Name</th>
+                    <th width="200" id="column-name">Date Approved</th>
+                    <th width="200">Actions</th>
+                </tr>
+
+                {% for each in recentlyApprovedInstitutions %}
+                    {% set institution = each.institution %}
+                    <tr>
+                        <td width="50%">
+                            <a href="{{ path('admin_institution_view', {institutionId: institution.id}) }}" target="_blank" title="View {{ institution.name }}">{{ institution.name }}</a> 
+                        </td>
+                        <td>{{ each.dateUpdated|date('F-d-Y h:iA') }}</td>
+                        <td>
+                            <a href="{{ path('admin_institution_medicalCenter_index', {institutionId:institution.id}) }}" target="_blank"><i class="icon-list"></i> View centers</a>
+                            <br/>
+                            <a href="{{ path('admin_institution_edit_details', {institutionId:institution.id} ) }}" target="_blank"><i class="icon-pencil"></i> Edit institution</a>
+                        </td>
+                    </tr>
+                {% else  %}
+                    <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                {% endfor %}
+                </table>
+                
+     
+            </div>
+            
+            {% endblock %}
+        {% endembed %}
+        
+    </div>
+    
+{% endblock %}

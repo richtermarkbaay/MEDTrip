@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Listener;
 
+use HealthCareAbroad\HelperBundle\Services\RecentlyApprovedListingService;
+
+use Symfony\Component\EventDispatcher\GenericEvent;
+
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserTypeStatuses;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
@@ -11,8 +15,6 @@ use HealthCareAbroad\UserBundle\Entity\InstitutionUserRole;
 use Doctrine\ORM\EntityManager;
 
 use HealthCareAbroad\InstitutionBundle\Event\CreateInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\EditInstitutionEvent;
-use HealthCareAbroad\InstitutionBundle\Event\DeleteInstitutionEvent;
 use HealthCareAbroad\UserBundle\Entity\InstitutionUserType;	
 use HealthCareAbroad\UserBundle\Entity\InstitutionUser;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -50,7 +52,16 @@ class InstitutionListener
     public function onEdit(){
     	
     }
-    
+
+    public function onUpdateStatus(GenericEvent $event){
+
+        // Update recentlyApprovedListings
+        $recentlyApprovedListingService = new RecentlyApprovedListingService();
+        $recentlyApprovedListingService->setEntityManager($this->em);
+        $recentlyApprovedListingService->updateInstitutionListing($event->getSubject());
+        // End of Update recentlyApprovedListing
+    }
+
     public function onAdd(CreateInstitutionEvent $event)
     {
         $institution = $event->getInstitution();

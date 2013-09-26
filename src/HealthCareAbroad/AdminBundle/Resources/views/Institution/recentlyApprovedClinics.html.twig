@@ -1,0 +1,44 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'institutions'%}
+{% set selectedSubTab = 'institutions_recentlyApprovedClinics'%}
+
+{% block content %}
+    <div id="content">
+        <div id="page-heading"><h3>Recently Approved Clinics</h3></div>
+        {% embed '::contentWrapper.admin.html.twig' %}
+            {% block wrappedContent %}
+            <div>
+                <table class="table table-bordered sortable-list">
+                <tr>
+                    <th width="45%" align="center">Name</th>
+                    <th width="30%">Under Institution</th>
+                    <th width="15%">Date Approved</th>
+                    <th width="10%">Actions</th>
+                </tr>
+
+                {% for each in recentlyApprovedListings %}
+                    {% set center = each.institutionMedicalCenter %}
+                    <tr>
+                        <td>{{ center.name }} </td>
+                        <td><a href="{{ path('admin_institution_view', {institutionId: each.institution.id}) }}" target="_blank" title="View {{ each.institution.name }}">{{ each.institution.name }}</a></td>
+                        <td>{{ each.dateUpdated|date('M-d-Y h:iA') }}</td>
+                        <td align="center">
+                            <a href="{{ path('admin_institution_medicalCenter_view', {institutionId: each.institution.id, imcId: center.id}) }}" target="_blank" title="View {{ center.name }}">View</a>
+                            | 
+                            <a href="{{ path('admin_institution_medicalCenter_edit', {institutionId: each.institution.id, imcId: center.id} ) }}" target="_blank">Edit</a>
+                        </td>
+                    </tr>
+                {% else  %}
+                    <tr><td class="empty-list" colspan="4">No records yet!</td></tr>
+                {% endfor %}
+                </table>
+                
+     
+            </div>
+            
+            {% endblock %}
+        {% endembed %}
+        
+    </div>
+    
+{% endblock %}

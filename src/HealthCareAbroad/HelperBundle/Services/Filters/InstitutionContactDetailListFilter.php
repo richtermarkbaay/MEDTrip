@@ -45,7 +45,7 @@ class InstitutionContactDetailListFilter extends DoctrineOrmListFilter
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a, b, c')->from('InstitutionBundle:Institution', 'a');
         $this->queryBuilder->leftJoin('a.institutionUsers', 'b');
-        $this->queryBuilder->innerJoin('a.contactDetails', 'd');
+        $this->queryBuilder->leftJoin('a.contactDetails', 'c');
 
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('a.country = :country');

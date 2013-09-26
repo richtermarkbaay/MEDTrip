@@ -6,6 +6,7 @@ final class InstitutionBundleEvents
     const ON_ADD_INSTITUTION = 'event.institution.add';
     const ON_EDIT_INSTITUTION = 'event.institution.edit';
     const ON_DELETE_INSTITUTION = 'event.institution.delete';
+    const ON_UPDATE_STATUS_INSTITUTION = 'event.institution.update_status';
     
     const ON_ADD_INSTITUTION_INVITATION = 'event.institution_invitation.add';
     
