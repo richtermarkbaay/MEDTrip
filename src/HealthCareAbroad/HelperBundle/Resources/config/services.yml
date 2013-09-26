@@ -22,10 +22,15 @@ services:
     services.helper.ancillary_service:
         class: HealthCareAbroad\HelperBundle\Services\AncillaryServicesService
         arguments: [@doctrine]
-        
+
     services.global_award:
         class: HealthCareAbroad\HelperBundle\Services\GlobalAwardService
         arguments: [@doctrine]
+        
+    services.recentlyApprovedListing:
+        class: HealthCareAbroad\HelperBundle\Services\RecentlyApprovedListingService
+        calls: 
+            - [setEntityManager, [@doctrine.orm.entity_manager]]
         
     services.helper.institution_name_validator:
         class: HealthCareAbroad\HelperBundle\Validator\Constraints\InstitutionUniqueNameValidator

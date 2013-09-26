@@ -235,6 +235,9 @@ class InstitutionMedicalCenterController extends Controller
 
                 $output = array('message' => $this->institutionMedicalCenter->getName().'status has been updated!');
 
+                // dispatch institutionMedicalCenter UPDATE_STATUS event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION_MEDICAL_CENTER, new GenericEvent($this->institutionMedicalCenter));
+
                 if (InstitutionMedicalCenterStatus::APPROVED == $formData['status']) {
                     $this->get('event_dispatcher')->dispatch(
                         MailerBundleEvents::NOTIFICATIONS_NEW_LISTINGS_APPROVED, new GenericEvent($this->institutionMedicalCenter)

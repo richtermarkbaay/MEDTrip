@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\EventDispatcher\GenericEvent;
+
+use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserSignUpFormType;
 
 use HealthCareAbroad\HelperBundle\Entity\ContactDetailTypes;
@@ -134,17 +138,40 @@ class InstitutionController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
      */
-
-    public function viewNewlyRegisteredInstitutionAction()
+    public function viewNewlyRegisteredAction()
     {
         $criteria = array('isFromInternalAdmin' => null, 'status' => InstitutionStatus::INACTIVE);
         $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($criteria);
 
         $params = array('institutions' => $institutions, 'statusList' => InstitutionStatus::getBitValueLabels());
 
-        return $this->render('AdminBundle:Institution:newlyRegisteredInstitutions.html.twig', $params);
+        return $this->render('AdminBundle:Institution:newlyRegistered.html.twig', $params);
     }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+    public function recentlyApprovedAction()
+    {
+        $recentlyApprovedInstitutions = $this->get('services.recentlyApprovedListing')->getRecentlyApprovedInstitutions();
+
+        $params = array('recentlyApprovedInstitutions' => $recentlyApprovedInstitutions);
     
+        return $this->render('AdminBundle:Institution:recentlyApproved.html.twig', $params);
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
+     */
+    public function recentlyApprovedClinicsAction()
+    {
+        $recentlyApprovedListings = $this->get('services.recentlyApprovedListing')->getRecentlyApprovedInstitutionMedicalCenters();
+    
+        $params = array('recentlyApprovedListings' => $recentlyApprovedListings);
+    
+        return $this->render('AdminBundle:Institution:recentlyApprovedClinics.html.twig', $params);
+    }
+
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS')")
      */
@@ -382,33 +409,6 @@ class InstitutionController extends Controller
             'institutionStatusForm' => $form->createView()
         ));
     }
-    
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_INSTITUTION')")
-     */
-    public function updateStatusAction()
-    {
-        $request = $this->getRequest();
-        if(!InstitutionStatus::isValid($request->get('status'))) {
-            $request->getSession()->setFlash('error', 'Unable to update status. ' . $request->get('status') . ' is invalid status value!');
-
-            return $this->redirect($this->generateUrl('admin_institution_index'));
-        }
-
-        $this->institution->setStatus(InstitutionStatus::getBitValue($request->get('status')));
-
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($this->institution);
-        $em->flush($this->institution);
-
-        // dispatch EDIT institution event
-        $event = $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->institution);
-        $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
-
-        $request->getSession()->setFlash('success', '"'.$this->institution->getName().'" has been updated!');
-
-        return $this->redirect($this->generateUrl('admin_institution_index'));
-    }
 
    	public function addMediaAction(Request $request)
    	{
@@ -472,6 +472,10 @@ class InstitutionController extends Controller
             if ($form->isValid()) {
                 $this->institution = $form->getData();
                 $this->get('services.institution.factory')->save($this->institution);
+
+                // dispatch UPDATE_STATUS institution event
+                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_UPDATE_STATUS_INSTITUTION, new GenericEvent($this->institution));
+
                 $response = new Response(\json_encode(array('html' => '<strong>Success!</strong> Updated status for '.$this->institution->getName().'.', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
             }
             else {
