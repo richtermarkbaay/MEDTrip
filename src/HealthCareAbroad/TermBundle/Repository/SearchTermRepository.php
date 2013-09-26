@@ -165,7 +165,8 @@ class SearchTermRepository extends EntityRepository
         }
 
         // order by clinic ranking points
-        $qb->orderBy('imc.rankingPoints', 'DESC');
+        //$qb->orderBy('imc.rankingPoints', 'DESC');
+        $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
 
         return $qb;
     }
@@ -400,14 +401,16 @@ class SearchTermRepository extends EntityRepository
         // we may not need this?
         $qb->groupBy('imc.id');
 
-        if ($clinicSearchResults) {
+        /*if ($clinicSearchResults) {
             // order by clinic ranking points
             $qb->orderBy('imc.rankingPoints', 'DESC');
         }
         else {
             // order by instititution total ranking points
             $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
-        }
+        }*/
+        
+        $qb->orderBy('inst.totalClinicRankingPoints', 'DESC');
 
         return $qb;
     }
