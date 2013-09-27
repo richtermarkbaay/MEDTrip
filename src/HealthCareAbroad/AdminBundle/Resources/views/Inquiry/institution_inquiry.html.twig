@@ -32,7 +32,7 @@
                         {% if each.institutionMedicalCenter %}
                             <div>
                                 Posted to clinic: 
-                                <a href="{{ path('admin_institution_view', {institutionId: each.institution.id}) }}" target="_blank">{{ each.institutionMedicalCenter.name }}</a>
+                                <a href="{{ path('admin_institution_medicalCenter_view', {institutionId: each.institution.id, imcId: each.institutionMedicalCenter.id}) }}" target="_blank">{{ each.institutionMedicalCenter.name }}</a>
                             </div>
                         {% endif %}
                     </td>
