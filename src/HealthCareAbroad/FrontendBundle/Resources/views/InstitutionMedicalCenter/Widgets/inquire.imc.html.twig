@@ -2,11 +2,11 @@
     {% block modalBody %}
     <div class="alert-box"></div>
     <form class="form-horizontal row-fluid" {{ form_enctype(form) }} action="{{ path('frontend_institutionMedicaCenter_ajaxSaveImcInquiry', {institutionId : institution.id, imcId: institutionMedicalCenter.id}) }}" id="{{formId}}" method="POST">
-        <div class="inquirer_name control-group">
-            <label for="{{ form.children.inquirer_name.vars.id }}" class="span3">
-                <strong>{{ form.children.inquirer_name.vars.label }}</strong>
+        <div class="inquirerName control-group">
+            <label for="{{ form.children.inquirerName.vars.id }}" class="span3">
+                <strong>{{ form.children.inquirerName.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_name, {attr: {class: 'span9'}}) }}    
+            {{ form_widget(form.inquirerName, {attr: {class: 'span9'}}) }}    
         </div>
         <div class="country control-group">
             <label for="{{ form.children.country.vars.id }}" class="span3">
@@ -14,11 +14,11 @@
             </label>
             {{ form_widget(form.country, {attr: {class: 'span9'}}) }}
         </div>
-        <div class="inquirer_email control-group">
-            <label for="{{ form.children.inquirer_email.vars.id }}" class="span3">
-                <strong>{{ form.children.inquirer_email.vars.label }}</strong>
+        <div class="inquirerEmail control-group">
+            <label for="{{ form.children.inquirerEmail.vars.id }}" class="span3">
+                <strong>{{ form.children.inquirerEmail.vars.label }}</strong>
             </label>
-            {{ form_widget(form.inquirer_email, {attr: {class: 'span9'}}) }}    
+            {{ form_widget(form.inquirerEmail, {attr: {class: 'span9'}}) }}    
         </div>
         
         <div class="message control-group row-fluid">

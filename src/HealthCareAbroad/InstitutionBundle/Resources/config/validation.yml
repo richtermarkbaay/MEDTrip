@@ -49,9 +49,9 @@ HealthCareAbroad\AdminBundle\Entity\ErrorReport:
             
 HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
     properties:
-        inquirer_name:
+        inquirerName:
             - NotBlank: {message: 'Please provide your name.'}
-        inquirer_email:
+        inquirerEmail:
             - NotBlank: {message: 'Please provide your email address.'}
             - Email: {message: 'The email address you have provided is not valid.'}   
         message:
