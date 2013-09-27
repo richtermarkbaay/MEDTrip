@@ -4,52 +4,53 @@
 {% set inquiryLabel = getClassLabel('inquiry')  %}
 {% block content %}
     <div id="content">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { title: inquiryLabel.plural | title } %}
 
-    	{% embed 'HelperBundle:Widgets:section.html.twig' 
-            with { 
-                title: inquiryLabel.plural | title
-            }  
-        %}
-    
-          {% block sectionContent %}
-          
-            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} 
-            {% endautoescape %}
+        {% block sectionContent %}
+            {% autoescape false %} {{ listFilters }} {% endautoescape %}
 
             {% set sortBy = app.request.get('sortBy') %}
             {% set sortOrder = app.request.get('sortOrder') %}
-            {% set default = sortBy | length ? '' : 'sort-asc' %}
-            {% include '::notice.admin.html.twig' %}
+            {% set default = sortBy | length ? '' : 'sort-desc' %}
 
             <table id="inquiries-list" class="table table-bordered sortable-list">
             <tr>
-                <th> <a id="column-name"><a href="#">Institution</a></th>
-                <th> <a id="column-name"><a href="#">Inquirer</a></th>
-                <th><a href="#">Message</a></th>
-                <th><a href="#">Email</a></th>
-                <th><a href="#">Date Created</a></th>
+                <th>#</th>
+                <th width="200" id="column-institution.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'institution.name' ? 'sort-' ~ sortOrder : '' }}">Institution/Clinic</a></th>
+                <th width="100" id="column-inquirerName"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerName' ? 'sort-' ~ sortOrder : '' }}">Inquirer</a></th>
+                <th>Message</th>
+                <th width="100" id="column-inquirerEmail"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerEmail' ? 'sort-' ~ sortOrder : '' }}">Email</a></th>
+                <th width="100" id="column-country.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country.name' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
+                <th id="column-dateCreated"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateCreated' ? 'sort-' ~ sortOrder : default }}">Date</a></th>
             </tr>
-	
-			{% for each in inquiries %}
+
+            {% for each in inquiries %}
                 <tr>
-                    <td class="name">{{ each.institution.name | title }}</td>
+                    <th>{{ loop.index + ((pager.page - 1) * pager.limit) }}</th>
+                    <td class="name">
+                        <a href="{{ path('admin_institution_view', {institutionId: each.institution.id}) }}" target="_blank">{{ each.institution.name | title }}</a>
+                        {% if each.institutionMedicalCenter %}
+                            <div>
+                                Posted to clinic: 
+                                <a href="{{ path('admin_institution_view', {institutionId: each.institution.id}) }}" target="_blank">{{ each.institutionMedicalCenter.name }}</a>
+                            </div>
+                        {% endif %}
+                    </td>
                     <td class="name">{{ each.inquirerName | title }}</td>
                     <td>{{ each.message | capitalize }}</td>
                     <td>{{ each.inquirerEmail }}</td>
-                    <td align="center">{{ each.dateCreated|date("m/d/Y") }}</td>
+                    <td>{{ each.country }}</td>
+                    <td align="center">{{ each.dateCreated|date("m/d/Y h:ia") }}</td>
                 </tr>
+           {% else %}
+               <tr><td colspan="7" style="text-align:center">Empty record.</td></tr>
            {% endfor %}
                 </table>
             {% endblock %}
         {% endembed %}
+
+        {% if pager.isPaginable %}
+           {{ paginate(pager, 'admin_institution_inquire', app.request.query.all) }}
+        {% endif %}
     </div>
 {% endblock %}
-
-{% block inlineJavascriptCode %}
-<script type="text/javascript">
-    $(function(){
-    	$('#filter-dateCreated').datepicker();
-    });
-</script>
-{% endblock %}
-    

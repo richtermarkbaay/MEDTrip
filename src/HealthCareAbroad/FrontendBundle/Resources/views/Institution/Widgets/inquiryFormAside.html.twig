@@ -1,10 +1,10 @@
 <form {{ form_enctype(form) }} action="" id="inquiryForm">
     <div class="alert-box"></div>
-    <div class="inquirer_name control-group">
-        <label for="{{ form.children.inquirer_name.vars.id }}">
-           {{ form.children.inquirer_name.vars.label }}
+    <div class="inquirerName control-group">
+        <label for="{{ form.children.inquirerName.vars.id }}">
+           {{ form.children.inquirerName.vars.label }}
         </label>
-        {{ form_widget(form.inquirer_name) }}
+        {{ form_widget(form.inquirerName) }}
     </div>
     <div class="country control-group">
         <label for="{{ form.children.country.vars.id }}" >
@@ -12,11 +12,11 @@
         </label>
         {{ form_widget(form.country) }}
     </div>
-    <div class="inquirer_email control-group">
-        <label for="{{ form.children.inquirer_email.vars.id }}">
-            {{ form.children.inquirer_email.vars.label }}
+    <div class="inquirerEmail control-group">
+        <label for="{{ form.children.inquirerEmail.vars.id }}">
+            {{ form.children.inquirerEmail.vars.label }}
         </label>
-        {{ form_widget(form.inquirer_email) }}
+        {{ form_widget(form.inquirerEmail) }}
         <p class="help-text"><small>Don't worry! We hate SPAM as much as you do!</small></p>
     </div>
     <div class="message control-group row-fluid">
