@@ -15,13 +15,14 @@
 
             <table id="inquiries-list" class="table table-bordered sortable-list">
             <tr>
-                <th>#</th>
-                <th width="200" id="column-institution.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'institution.name' ? 'sort-' ~ sortOrder : '' }}">Institution/Clinic</a></th>
-                <th width="100" id="column-inquirerName"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerName' ? 'sort-' ~ sortOrder : '' }}">Inquirer</a></th>
+                <th width="10">#</th>
+                <th width="100" id="column-institution.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'institution.name' ? 'sort-' ~ sortOrder : '' }}">Institution<br/>or Clinic</a></th>
+                <th width="80" id="column-institutionCountry.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'institutionCountry.name' ? 'sort-' ~ sortOrder : '' }}">Institution Country</a></th>
+                <th width="80" id="column-inquirerName"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerName' ? 'sort-' ~ sortOrder : '' }}">Inquirer</a></th>
                 <th>Message</th>
-                <th width="100" id="column-inquirerEmail"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerEmail' ? 'sort-' ~ sortOrder : '' }}">Email</a></th>
-                <th width="100" id="column-country.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country.name' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
-                <th id="column-dateCreated"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateCreated' ? 'sort-' ~ sortOrder : default }}">Date</a></th>
+                <th width="70" id="column-inquirerEmail"><a href="{{ app.request.uri }}" class="{{ sortBy == 'inquirerEmail' ? 'sort-' ~ sortOrder : '' }}">Email</a></th>
+                <th width="70" id="column-country.name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'country.name' ? 'sort-' ~ sortOrder : '' }}">Country</a></th>
+                <th width="70" id="column-dateCreated"><a href="{{ app.request.uri }}" class="{{ sortBy == 'dateCreated' ? 'sort-' ~ sortOrder : default }}">Date</a></th>
             </tr>
 
             {% for each in inquiries %}
@@ -36,6 +37,7 @@
                             </div>
                         {% endif %}
                     </td>
+                    <td class="name">{{ each.institution.country | title }}</td>
                     <td class="name">{{ each.inquirerName | title }}</td>
                     <td>{{ each.message | capitalize }}</td>
                     <td>{{ each.inquirerEmail }}</td>

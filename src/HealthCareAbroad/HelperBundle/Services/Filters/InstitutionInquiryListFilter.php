@@ -17,6 +17,7 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
 
         $this->addValidCriteria('country');
         $this->addValidCriteria('institution');
+        $this->addValidCriteria('institutionCountry');
         $this->addValidCriteria('institutionsOrClinics');
 
         $this->sortOrder = 'desc';
@@ -26,11 +27,12 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
     function setFilterOptions()
     {
         $this->setInstitutionsOrClinicsFilterOption();
+        $this->setInstitutionCountryFilterOption();
         $this->setCountryFilterOption();
         $this->setInstitutionFilterOption();
     }
 
-    function setCountryFilterOption()
+    function setInstitutionCountryFilterOption()
     {
         $countries = $this->getInjectedDependcy('services.location')->getGlobalCountries();
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
@@ -39,6 +41,22 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
             $options[$each['id']] = $each['name'];
         }
 
+        $this->filterOptions['institutionCountry'] = array(
+            'label' => 'Institution Country',
+            'selected' => $this->queryParams['institutionCountry'],
+            'options' => $options
+        );
+    }
+
+    function setCountryFilterOption()
+    {
+        $countries = $this->getInjectedDependcy('services.location')->getGlobalCountries();
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+    
+        foreach($countries['data'] as $each) {
+            $options[$each['id']] = $each['name'];
+        }
+    
         $this->filterOptions['country'] = array(
             'label' => 'Country',
             'selected' => $this->queryParams['country'],
@@ -88,8 +106,9 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
     function setFilteredResults()
     {
         $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $this->queryBuilder->select('a, institution, institutionMedicalCenter, country')->from('InstitutionBundle:InstitutionInquiry', 'a');
+        $this->queryBuilder->select('a, institution, institutionMedicalCenter, institutionCountry, country')->from('InstitutionBundle:InstitutionInquiry', 'a');
         $this->queryBuilder->leftJoin('a.institution', 'institution');
+        $this->queryBuilder->leftJoin('institution.country', 'institutionCountry');
         $this->queryBuilder->leftJoin('a.institutionMedicalCenter', 'institutionMedicalCenter');
         $this->queryBuilder->leftJoin('a.country', 'country');
 
@@ -97,7 +116,12 @@ class InstitutionInquiryListFilter extends DoctrineOrmListFilter
             $this->queryBuilder->andWhere('a.country = :country');
             $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
-        
+
+        if ($this->queryParams['institutionCountry'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('institution.country = :institutionCountry');
+            $this->queryBuilder->setParameter('institutionCountry', $this->queryParams['institutionCountry']);
+        }
+
         if ($this->queryParams['institution'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('a.institution = :institution');
             $this->queryBuilder->setParameter('institution', $this->queryParams['institution']);
