@@ -10,16 +10,18 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry:
             nullable: false
             generator:
                 strategy: IDENTITY
-        inquirer_name:
+        inquirerName:
             type: string
             length: 250
             fixed: false
             nullable: false
-        inquirer_email:
+            column: inquirer_name
+        inquirerEmail:
             type: string
             length: 250
             fixed: false
             nullable: false
+            column: inquirer_email
         message:
             type: text
             nullable: false

@@ -7,66 +7,67 @@ class InstitutionInquiry
     const STATUS_DELETED = 0;
     const STATUS_UNREAD = 1;
     const STATUS_READ = 2;
+
     /**
-     * @var bigint $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $inquirer_name
+     * @var string
      */
-    private $inquirer_name;
+    private $inquirerName;
 
     /**
-     * @var string $inquirer_email
+     * @var string
      */
-    private $inquirer_email;
+    private $inquirerEmail;
 
     /**
-     * @var HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    private $country;
-    
-    /**
-     * @var text $message
+     * @var string
      */
     private $message;
 
     /**
-     * @var string $remoteAddress
+     * @var string
      */
     private $remoteAddress;
-    
+
     /**
-     * @var string $httpUseAgent
+     * @var string
      */
     private $httpUseAgent;
-    
+
     /**
-     * @var datetime $dateCreated
+     * @var \DateTime
      */
     private $dateCreated;
 
     /**
-     * @var tinyint $status
+     * @var integer
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\Institution
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\Institution
      */
     private $institution;
 
     /**
-     * @var HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
+     * @var \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter
      */
     private $institutionMedicalCenter;
+
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
 
 
     /**
      * Get id
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getId()
     {
@@ -74,87 +75,68 @@ class InstitutionInquiry
     }
 
     /**
-     * Set inquirer_name
+     * Set inquirerName
      *
      * @param string $inquirerName
      * @return InstitutionInquiry
      */
     public function setInquirerName($inquirerName)
     {
-        $this->inquirer_name = $inquirerName;
+        $this->inquirerName = $inquirerName;
+    
         return $this;
     }
 
     /**
-     * Get inquirer_name
+     * Get inquirerName
      *
      * @return string 
      */
     public function getInquirerName()
     {
-        return $this->inquirer_name;
+        return $this->inquirerName;
     }
 
     /**
-     * Set inquirer_email
+     * Set inquirerEmail
      *
      * @param string $inquirerEmail
      * @return InstitutionInquiry
      */
     public function setInquirerEmail($inquirerEmail)
     {
-        $this->inquirer_email = $inquirerEmail;
+        $this->inquirerEmail = $inquirerEmail;
+    
         return $this;
     }
 
     /**
-     * Get inquirer_email
+     * Get inquirerEmail
      *
      * @return string 
      */
     public function getInquirerEmail()
     {
-        return $this->inquirer_email;
+        return $this->inquirerEmail;
     }
 
     /**
-     * Set country
-     *
-     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
-     * @return InstitutionInquiry
-     */
-    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
-    {
-        $this->country = $country;
-        return $this;
-    }
-    
-    /**
-     * Get country
-     *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country
-     */
-    public function getCountry()
-    {
-        return $this->country;
-    }
-    
-    /**
      * Set message
      *
-     * @param text $message
+     * @param string $message
      * @return InstitutionInquiry
      */
     public function setMessage($message)
     {
         $this->message = $message;
+    
         return $this;
     }
 
     /**
      * Get message
      *
-     * @return text 
+     * @return string 
      */
     public function getMessage()
     {
@@ -170,19 +152,20 @@ class InstitutionInquiry
     public function setRemoteAddress($remoteAddress)
     {
         $this->remoteAddress = $remoteAddress;
+    
         return $this;
     }
-    
+
     /**
      * Get remoteAddress
      *
-     * @return string
+     * @return string 
      */
     public function getRemoteAddress()
     {
         return $this->remoteAddress;
     }
-    
+
     /**
      * Set httpUseAgent
      *
@@ -192,35 +175,37 @@ class InstitutionInquiry
     public function setHttpUseAgent($httpUseAgent)
     {
         $this->httpUseAgent = $httpUseAgent;
+    
         return $this;
     }
-    
+
     /**
      * Get httpUseAgent
      *
-     * @return string
+     * @return string 
      */
     public function getHttpUseAgent()
     {
         return $this->httpUseAgent;
     }
-    
+
     /**
      * Set dateCreated
      *
-     * @param datetime $dateCreated
+     * @param \DateTime $dateCreated
      * @return InstitutionInquiry
      */
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
+    
         return $this;
     }
 
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return \DateTime 
      */
     public function getDateCreated()
     {
@@ -230,19 +215,20 @@ class InstitutionInquiry
     /**
      * Set status
      *
-     * @param tinyint $status
+     * @param integer $status
      * @return InstitutionInquiry
      */
     public function setStatus($status)
     {
         $this->status = $status;
+    
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return tinyint 
+     * @return integer 
      */
     public function getStatus()
     {
@@ -252,19 +238,20 @@ class InstitutionInquiry
     /**
      * Set institution
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\Institution $institution
      * @return InstitutionInquiry
      */
     public function setInstitution(\HealthCareAbroad\InstitutionBundle\Entity\Institution $institution = null)
     {
         $this->institution = $institution;
+    
         return $this;
     }
 
     /**
      * Get institution
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\Institution 
+     * @return \HealthCareAbroad\InstitutionBundle\Entity\Institution 
      */
     public function getInstitution()
     {
@@ -274,22 +261,46 @@ class InstitutionInquiry
     /**
      * Set institutionMedicalCenter
      *
-     * @param HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
+     * @param \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter
      * @return InstitutionInquiry
      */
     public function setInstitutionMedicalCenter(\HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter $institutionMedicalCenter = null)
     {
         $this->institutionMedicalCenter = $institutionMedicalCenter;
+    
         return $this;
     }
 
     /**
      * Get institutionMedicalCenter
      *
-     * @return HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
+     * @return \HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter 
      */
     public function getInstitutionMedicalCenter()
     {
         return $this->institutionMedicalCenter;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return InstitutionInquiry
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+    
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
     }
 }

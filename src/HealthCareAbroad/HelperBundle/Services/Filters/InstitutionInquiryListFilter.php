@@ -1,73 +1,118 @@
 <?php 
-/**
- * @autor Chaztine Blance
- */
 
+/**
+ * @author Adelbert Silla
+ */
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use Symfony\Component\Validator\Constraints\Date;
+use Doctrine\ORM\Query;
 
-use HealthCareAbroad\AdminBundle\Entity\InquirySubject;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 class InstitutionInquiryListFilter extends DoctrineOrmListFilter
 {
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
-    $this->addValidCriteria('field');
-    $this->addValidCriteria('dateCreated');
-    
+
+        $this->addValidCriteria('country');
+        $this->addValidCriteria('institution');
+        $this->addValidCriteria('institutionsOrClinics');
+
+        $this->sortOrder = 'desc';
+        $this->serviceDependencies = array('services.location');
     }
+
     function setFilterOptions()
     {
-        $this->setInquiryFilterOption();
-        $this->setDateCreatedFilterOption();
+        $this->setInstitutionsOrClinicsFilterOption();
+        $this->setCountryFilterOption();
+        $this->setInstitutionFilterOption();
     }
-    
-    function setInquiryFilterOption()
+
+    function setCountryFilterOption()
     {
-        $this->filterOptions['field'] = array(
-                        'label' => 'Search for keyword',
-                        'value' => '',
-        );
-    }
-    function setDateCreatedFilterOption()
-    {
-        if($this->queryParams['dateCreated'] == 'all' ){
-            $dateOptions = date("m/d/Y");
-        }else{
-           $dateOptions = date("m/d/Y", $this->queryParams['dateCreated']);
+        $countries = $this->getInjectedDependcy('services.location')->getGlobalCountries();
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+
+        foreach($countries['data'] as $each) {
+            $options[$each['id']] = $each['name'];
         }
-            
-        $this->filterOptions['dateCreated'] = array(
-                        'label' => 'Date Created',
-                        'value' => $dateOptions
+
+        $this->filterOptions['country'] = array(
+            'label' => 'Country',
+            'selected' => $this->queryParams['country'],
+            'options' => $options
         );
     }
-    
+
+    function setInstitutionFilterOption()
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('a.id, a.name')
+           ->from('InstitutionBundle:Institution', 'a')
+           ->where('a.status = :status')
+           ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus())
+           ->orderBy('a.name', 'ASC');
+
+        $institutions = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+        
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        
+        foreach($institutions as $each) {
+            $options[$each['id']] = $each['name'];
+        }
+        
+        $this->filterOptions['institution'] = array(
+            'label' => 'Institution',
+            'selected' => $this->queryParams['institution'],
+            'options' => $options
+        );
+    }
+
+    function setInstitutionsOrClinicsFilterOption()
+    {
+        $options = array(
+            ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL,
+            1 => 'Iquiries for Institutions Only',
+            2 => 'Iquiries for Clinics Only'
+        );
+
+        $this->filterOptions['institutionsOrClinics'] = array(
+            'label' => 'Inquiries For Institutions or Clinics',
+            'selected' => $this->queryParams['institutionsOrClinics'],
+            'options' => $options
+        );
+    }
+
     function setFilteredResults()
     {
         $this->queryBuilder = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionInquiry', 'a');
-        
-        if ($this->queryParams['status'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->where('a.status = :status');
-            $this->queryBuilder->setParameter('status', $this->queryParams['status']);
+        $this->queryBuilder->select('a, institution, institutionMedicalCenter, country')->from('InstitutionBundle:InstitutionInquiry', 'a');
+        $this->queryBuilder->leftJoin('a.institution', 'institution');
+        $this->queryBuilder->leftJoin('a.institutionMedicalCenter', 'institutionMedicalCenter');
+        $this->queryBuilder->leftJoin('a.country', 'country');
+
+        if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.country = :country');
+            $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
         
-        if ($this->queryParams['field'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->innerJoin('a.institution', 'b'); 
-            $this->queryBuilder->where('b.name LIKE :searchKey');
-            $this->queryBuilder->setParameter('searchKey', '%'.$this->queryParams['field'].'%' );
+        if ($this->queryParams['institution'] != ListFilter::FILTER_KEY_ALL) {
+            $this->queryBuilder->andWhere('a.institution = :institution');
+            $this->queryBuilder->setParameter('institution', $this->queryParams['institution']);
         }
         
-        if ($this->queryParams['dateCreated'] != ListFilter::FILTER_KEY_ALL) {
-            $this->queryBuilder->andWhere('a.dateCreated >= :dateCreated');
-            $this->queryBuilder->setParameter('dateCreated', date("Y-m-d H:i:s", $this->queryParams['dateCreated']) );
+        if ($this->queryParams['institutionsOrClinics'] != ListFilter::FILTER_KEY_ALL) {
+            if((int)$this->queryParams['institutionsOrClinics'] === 1) {
+                $this->queryBuilder->andWhere('a.institutionMedicalCenter IS NULL');
+            } else if((int)$this->queryParams['institutionsOrClinics'] === 2) {
+                $this->queryBuilder->andWhere('a.institutionMedicalCenter IS NOT NULL');                
+            }
         }
-        
-    	$sortBy = 'inquirer_name  ';
-    	$sort = "a.$sortBy " . $this->sortOrder;
+
+        $sortBy = $this->sortBy ? $this->sortBy : 'dateCreated';
+    	$sort = (strrpos($sortBy, '.') !== false ? "$sortBy " : "a.$sortBy ") . $this->sortOrder;
 
         $this->queryBuilder->add('orderBy', $sort);
         

@@ -40,7 +40,7 @@ abstract class ListFilter
     
     protected $pagerAdapter;
 
-    protected $pagerDefaultOptions = array('limit' => 10, 'page' => 1);
+    protected $pagerDefaultOptions = array('limit' => 20, 'page' => 1);
     
     /**
      * @var array list of services that this filter depends on
