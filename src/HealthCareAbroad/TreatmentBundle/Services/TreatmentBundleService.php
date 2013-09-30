@@ -52,23 +52,23 @@ class TreatmentBundleService
      */
     public function getAllActiveSpecializations()
     {
+        
         if(static::$activeSpecializations) {
             return static::$activeSpecializations;
         }
-
+       
         // check in cache
         $key = 'TreatmentBundle:TreatmentBundleService:getAllActiveSpecializations';
         static::$activeSpecializations = $this->memcache->get($key);
 
         if (!static::$activeSpecializations) {
-            $result = $this->doctrine->getRepository('TreatmentBundle:Specialization')
+            static::$activeSpecializations = $this->doctrine->getRepository('TreatmentBundle:Specialization')
             ->getQueryBuilderForActiveSpecializations()
             ->getQuery()->getResult();
 
             // cache this result
             $this->memcache->set($key, static::$activeSpecializations);
         }
-
         return static::$activeSpecializations;
     }
 
