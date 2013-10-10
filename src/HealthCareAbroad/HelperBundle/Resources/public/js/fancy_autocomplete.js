@@ -104,7 +104,12 @@ var FancyAutocompleteWidget = function(widget, options){
          * @access public
          */
         resetValue: function(){
-            this.widget.val('');
+            
+            // Reset inputed text only if this.options.acceptCustomValue is false 
+            if(this.options.acceptCustomValue == false) {
+                this.widget.val('');                
+            }
+
             if (this.options.valueContainer){
                 this.options.valueContainer.val('');
             }
@@ -228,6 +233,7 @@ var FancyAutocompleteWidget = function(widget, options){
                     delay: 0,
                     appendTo: listWrapper
                 },
+                acceptCustomValue: false,
                 maxItems: 50,
                 valueContainer: null,
                 reloadSource: function(){}

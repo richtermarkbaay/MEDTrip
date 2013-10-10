@@ -388,6 +388,16 @@ class LocationService
 	    return $city;
 	}
 	
+	public function saveGlobalGeoCity($cityData)
+	{
+	    var_dump($this->chromediaApiUri.'/city/add');
+	    $response = $this->request->post($this->chromediaApiUri.'/city/add', array('data' => $cityData));
+	    echo $response->getBody(true);
+	    $city = (\json_decode($response->getBody(true), true));
+	
+	    return $city;
+	}
+	
 	//-------------------------------------
 	
 	//-------------------------------------

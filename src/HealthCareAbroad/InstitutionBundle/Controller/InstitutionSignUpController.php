@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\City;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\HelperBundle\Twig\UrlGeneratorTwigExtension;
@@ -320,6 +322,8 @@ class InstitutionSignUpController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($request->isMethod('POST')) {
+            $em = $this->getDoctrine()->getManager();
+
             $formRequestData = $request->get($form->getName());
 
             if (isset($formRequestData['medicalProviderGroups']) ) {
@@ -332,11 +336,33 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }
             }
 
+            // Check If Custom City 
+            if(!$formRequestData['city'] && $request->get('custom_city')) {
+                $cityData = array(
+                    'name' => $request->get('custom_city'), 
+                    'countryId' => $formRequestData['country'],
+                    'status' => City::STATUS_ACTIVE
+                );
+var_dump($cityData);
+                $city = $this->get('services.location')->saveGlobalGeoCity($cityData);
+var_dump($city); exit;
+                $city = new City();
+                $city->setName($request->get('custom_city'));
+                $city->setCountry($country);
+                $city->setStatus(City::STATUS_ACTIVE);
+                $em->persist($city);
+                $em->flush();
+                
+                $formRequestData['city'] = $city->getId();
+            }
+            
+            var_dump($formRequestData);
+            exit;
+
             $form->bind($formRequestData);
             if ($form->isValid()) {
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
 
-                $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
 
                 // set sign up status to current step number
