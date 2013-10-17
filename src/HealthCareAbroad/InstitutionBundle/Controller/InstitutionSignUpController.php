@@ -528,8 +528,8 @@ class InstitutionSignUpController extends InstitutionAwareController
 
         $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
-        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-        $params['editDoctorForm'] = $editForm->createView();
+        $editDoctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+        $params['editDoctorForm'] = $editDoctorForm->createView();
 
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
     }

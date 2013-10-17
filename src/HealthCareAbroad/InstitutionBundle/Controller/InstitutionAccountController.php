@@ -135,10 +135,10 @@ class InstitutionAccountController extends InstitutionAwareController
                 $editDoctor->addContactDetail($contactDetail);
             }
 
-            $editMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+            $editDoctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
             $institutionMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
-            $params['editForm'] = $editMedicalCenterForm->createView();
+            $params['editDoctorForm'] = $editDoctorForm->createView();
             $params['institutionMedicalCenter'] = $this->institutionMedicalCenter;
             $params['institutionMedicalCenterForm'] = $institutionMedicalCenterForm->createView();
             $params['commonDeleteForm'] = $this->createForm(new CommonDeleteFormType())->createView();
