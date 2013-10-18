@@ -20,11 +20,11 @@ HealthCareAbroad\HelperBundle\Entity\City:
             length: 100
             fixed: true
             nullable: false
-            gedmo:
-              slug:
-                separator: -
-                fields:
-                  - name
+            #gedmo:
+            #  slug:
+            #    separator: -
+            #    fields:
+            #      - name
         status:
             type: smallint
             nullable: false
@@ -37,6 +37,15 @@ HealthCareAbroad\HelperBundle\Entity\City:
             nullable: true
             column: old_id     
     manyToOne:
+        state:
+            targetEntity: HealthCareAbroad\HelperBundle\Entity\State
+            cascade: {  }
+            mappedBy: null
+            inversedBy: cities
+            joinColumns:
+                state_id:
+                    referencedColumnName: id
+            orphanRemoval: false
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country
             cascade: {  }

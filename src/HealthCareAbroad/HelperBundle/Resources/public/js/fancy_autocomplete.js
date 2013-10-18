@@ -74,13 +74,19 @@ var FancyAutocompleteWidget = function(widget, options){
          * @access public
          */
         initialize: function(){
-            
+
+            // FIXME: Temporary Way to add 'acceptCustomValue' option.
+            if(typeof(this.widget.data('accept-custom-value')) != 'undefined' && this.widget.data('accept-custom-value')) {
+                this.options.acceptCustomValue = true;
+            }
+
             // reset the values, in case of browser refresh that does not clear form values
             this.resetValue();
 
             // build autocomplete options
             var autocompleteOptions = this._buildAutocompleteOptions(this.options);
             var widget = this.widget;
+
             this.widget.autocomplete(autocompleteOptions);
 
             // check if widget has a data-autocomplete-trigger attribute
@@ -88,6 +94,10 @@ var FancyAutocompleteWidget = function(widget, options){
             if (_autocompleteTrigger.length) {
                 this.dropdownTrigger = _autocompleteTrigger;
                 this.dropdownTrigger.on('click', function(){
+                    if($(this).attr('disabled')) {
+                        return;
+                    }
+
                     widget.autocomplete('search', '');
                     widget.focus();
                 });
@@ -104,10 +114,9 @@ var FancyAutocompleteWidget = function(widget, options){
          * @access public
          */
         resetValue: function(){
-            
-            // Reset inputed text only if this.options.acceptCustomValue is false 
-            if(this.options.acceptCustomValue == false) {
-                this.widget.val('');                
+            // Reset inputed text only if this.options.acceptCustomValue is undefined or false 
+            if(typeof(this.options.acceptCustomValue) == 'undefined' || this.options.acceptCustomValue == false) {
+                this.widget.val('');
             }
 
             if (this.options.valueContainer){
@@ -180,8 +189,13 @@ var FancyAutocompleteWidget = function(widget, options){
                 // variable "this" here refers to the subject of this event, which is the autcomplete widget
                 $(this).data('fancyAutocomplete').resetValue();
             }
+
+            // check if their is an onAutocompleteChangeCallback function
+            if ('function' == typeof($(this).data('fancyAutocomplete').options.onAutocompleteChangeCallback)) {
+                $(this).data('fancyAutocomplete').options.onAutocompleteChangeCallback($(this).data('fancyAutocomplete'));
+            }
         },
-        
+
         _autocompleteSelect: function(widget, _options, item) {
             // check that the selected value is not the same as the new selected
             if (_options.valueContainer && _options.valueContainer.val() != item.id) {
@@ -198,6 +212,7 @@ var FancyAutocompleteWidget = function(widget, options){
         
         // build the options for jQuery autocomplete
         _buildAutocompleteOptions: function(_options){
+
             // localize variable
             var widget = this.widget;
             var _autocompleteOptions = _options.autocomplete;
@@ -207,7 +222,7 @@ var FancyAutocompleteWidget = function(widget, options){
 
             // set the change handler
             _autocompleteOptions.change = this._autocompleteChange;
-            
+
             // there is a custom handler for autocomplete.select event
             if (_options.autocomplete.select && 'function' == typeof _options.autocomplete.select) {
                 _autocompleteOptions.select = _options.autocomplete.select;
@@ -219,7 +234,7 @@ var FancyAutocompleteWidget = function(widget, options){
                     _onSelect(widget, _options, ui.item);
                 }
             }
-            
+
             return _autocompleteOptions;
         },
         

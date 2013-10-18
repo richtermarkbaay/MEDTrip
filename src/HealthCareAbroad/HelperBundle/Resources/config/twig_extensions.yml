@@ -100,6 +100,7 @@ services:
         class: HealthCareAbroad\HelperBundle\Twig\UrlGeneratorTwigExtension
         public: false
         calls:
+            - [setSession, [@session]]
             - [setChromediaApiUrl, [%chromedia_api_uri%]]
             - [setChromediaAccountUrl, [%chromedia_accounts_uri%]]
         arguments: [@router]

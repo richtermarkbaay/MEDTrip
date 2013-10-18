@@ -15,6 +15,15 @@ HealthCareAbroad\HelperBundle\Entity\State:
             length: 255
             fixed: false
             nullable: false     
+        administrativeCode:
+            type: string
+            length: 3
+            fixed: false
+            nullable: true
+            column: administrative_code
+        status:
+            type: smallint
+            nullable: false
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country

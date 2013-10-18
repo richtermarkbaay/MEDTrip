@@ -9,31 +9,49 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class City
 {
-	const STATUS_ACTIVE = 1;
-	
-	const STATUS_INACTIVE = 0;
+    const STATUS_NEW = 2;
+    
+    const STATUS_ACTIVE = 1;
+    
+    const STATUS_INACTIVE = 0;
+
     /**
-     * @var integer $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var string $name
+     * @var string
      */
     private $name;
 
     /**
-     * @var string $slug
+     * @var string
      */
     private $slug;
 
     /**
-     * @var smallint $status
+     * @var integer
      */
     private $status;
 
     /**
-     * @var HealthCareAbroad\HelperBundle\Entity\Country
+     * @var integer
+     */
+    private $geoCityId;
+
+    /**
+     * @var integer
+     */
+    private $oldId;
+
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\State
+     */
+    private $state;
+
+    /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
 
@@ -47,6 +65,7 @@ class City
     public function setId($id)
     {
         $this->id = $id;
+    
         return $this;
     }
 
@@ -69,6 +88,7 @@ class City
     public function setName($name)
     {
         $this->name = $name;
+    
         return $this;
     }
 
@@ -91,6 +111,7 @@ class City
     public function setSlug($slug)
     {
         $this->slug = $slug;
+    
         return $this;
     }
 
@@ -107,19 +128,20 @@ class City
     /**
      * Set status
      *
-     * @param smallint $status
+     * @param integer $status
      * @return City
      */
     public function setStatus($status)
     {
         $this->status = $status;
+    
         return $this;
     }
 
     /**
      * Get status
      *
-     * @return smallint 
+     * @return integer 
      */
     public function getStatus()
     {
@@ -127,36 +149,27 @@ class City
     }
 
     /**
-     * Set country
+     * Set geoCityId
      *
-     * @param HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @param integer $geoCityId
      * @return City
      */
-    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    public function setGeoCityId($geoCityId)
     {
-        $this->country = $country;
+        $this->geoCityId = $geoCityId;
+    
         return $this;
     }
 
     /**
-     * Get country
+     * Get geoCityId
      *
-     * @return HealthCareAbroad\HelperBundle\Entity\Country 
+     * @return integer 
      */
-    public function getCountry()
+    public function getGeoCityId()
     {
-        return $this->country;
+        return $this->geoCityId;
     }
-    
-    public function __toString()
-    {
-        return $this->name;
-    }
-    /**
-     * @var integer
-     */
-    private $oldId;
-
 
     /**
      * Set oldId
@@ -180,32 +193,55 @@ class City
     {
         return $this->oldId;
     }
-    /**
-     * @var integer
-     */
-    private $geoCityId;
-
 
     /**
-     * Set geoCityId
+     * Set state
      *
-     * @param integer $geoCityId
+     * @param \HealthCareAbroad\HelperBundle\Entity\State $state
      * @return City
      */
-    public function setGeoCityId($geoCityId)
+    public function setState(\HealthCareAbroad\HelperBundle\Entity\State $state = null)
     {
-        $this->geoCityId = $geoCityId;
+        $this->state = $state;
     
         return $this;
     }
 
     /**
-     * Get geoCityId
+     * Get state
      *
-     * @return integer 
+     * @return \HealthCareAbroad\HelperBundle\Entity\State 
      */
-    public function getGeoCityId()
+    public function getState()
     {
-        return $this->geoCityId;
+        return $this->state;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
+     * @return City
+     */
+    public function setCountry(\HealthCareAbroad\HelperBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+    
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \HealthCareAbroad\HelperBundle\Entity\Country 
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

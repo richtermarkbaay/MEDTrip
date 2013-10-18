@@ -1,11 +1,11 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Twig;
+
 use HealthCareAbroad\HelperBundle\Entity\City;
-
 use HealthCareAbroad\HelperBundle\Entity\Country;
-
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
@@ -16,12 +16,26 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  */
 class UrlGeneratorTwigExtension extends \Twig_Extension
 {
+    /**
+     * 
+     * @var Session
+     */
+    private $session;
+    
     private $generator;
     
     private $chromediaApiUrl;
     
     private $chromediaAccountUrl;
-    
+
+    /** 
+     * @param Session $session
+     */
+    public function setSession(Session $session)
+    {
+        $this->session = $session;
+    }
+
     public function setChromediaApiUrl($url)
     {
         $this->chromediaApiUrl=$url;
@@ -79,12 +93,24 @@ class UrlGeneratorTwigExtension extends \Twig_Extension
     
     public function getLoadStatesApiUri()
     {
-        return $this->chromediaApiUrl.'/states';
+        $uri = $this->chromediaApiUrl.'/states';
+
+        if($institutionId = $this->session->get('institutionId')) {
+            $uri .= "?institution_id=$institutionId";
+        }
+
+        return $uri;
     }
     
     public function getLoadCitiesApiUri()
     {
-        return $this->chromediaApiUrl.'/cities';
+        $uri = $this->chromediaApiUrl.'/cities';
+
+        if($institutionId = $this->session->get('institutionId')) {
+            $uri .= "?institution_id=$institutionId";
+        }
+
+        return $uri;
     }
     
     public function getUpdateCitiesUrl()

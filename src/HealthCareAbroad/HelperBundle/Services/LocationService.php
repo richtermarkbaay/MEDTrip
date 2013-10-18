@@ -83,13 +83,89 @@ class LocationService
 	
 	
 	
-	public function saveGlobalCountry(array $data)
+	public function saveGlobalCountry($country)
 	{
-	    $country['data'] = $data;
-	    $response = $this->request->post($this->chromediaApiUri.'/country/add', $country);
-	    $country = $this->createCountryFromArray(\json_decode($response->getBody(true), true));
-	    
-	    return $country;
+	    if(!is_array($country)) {
+	        $country = self::countryObjectToArray($country);
+	    }
+
+	    $response = $this->request->post($this->chromediaApiUri.'/country/add', array('data' => $country));
+
+	    return \json_decode($response->getBody(true), true);
+	}
+
+	/**
+	 * This will add a new data in global cities (geo_cities) first 
+	 * and will save/update local city if success.
+	 * @param array $data
+	 * @return \HealthCareAbroad\HelperBundle\Entity\City
+	 */
+	public function addNewCity(array $data) {
+	    // Save to global city.
+	    $cityData = $this->saveGlobalGeoCity($data);
+
+	    // Update local city if successfully saved in global city.
+        $city = $this->doctrine->getRepository('HelperBundle:City')->find($cityData['id']);
+        if(!$city) {
+            $city = new City();
+            $city->setId($cityData['id']);
+
+            $country = $this->getCountryById($data['country_id']);
+            $city->setCountry($country);
+        }
+
+        $city->setName($cityData['name']);
+        $city->setStatus($cityData['status']);
+        $city->setSlug($cityData['slug']);
+
+        $em = $this->doctrine->getEntityManagerForClass('HelperBundle:City');
+        $em->persist($city);
+        $em->flush($city);
+
+        return $city;
+	}
+	
+	/**
+	 * This will add a new data in global states (geo_states) first
+	 * and will save/update local states if success.
+	 * @param array $data
+	 * @return \HealthCareAbroad\HelperBundle\Entity\State
+	 */
+	public function addNewState(array $data) {
+	    // Save to global state.
+	    $stateData = $this->saveGlobalGeoState($data);
+	
+	    // Update local state if successfully saved in global state.
+	    $state = $this->doctrine->getRepository('HelperBundle:State')->find($stateData['id']);
+	    if(!$state) {
+	        $state = new State();
+	        $state->setId($stateData['id']);
+	
+	        $country = $this->getCountryById($data['country_id']);
+	        $state->setCountry($country);
+	    }
+
+	    $state->setName($stateData['name']);
+	    $state->setStatus($stateData['status']);
+	    //$state->setSlug($stateData['slug']);
+
+	    $em = $this->doctrine->getEntityManagerForClass('HelperBundle:State');
+	    $em->persist($state);
+	    $em->flush($state);
+
+	    return $state;
+	}
+
+	static function countryObjectToArray(Country $country)
+	{
+	    return array(
+            'id' => $country->getId(),
+            'name' => $country->getName(),
+            'abbr' => $country->getAbbr(),
+            'code' =>  $country->getCode(),
+            'slug' => $country->getSlug(),
+            'status' => $country->getStatus(),
+	    );
 	}
 	
 	public function updateStatusGlobalCountry($id)
@@ -208,7 +284,7 @@ class LocationService
 	    $requiredFields = array('id', 'name', 'slug');
 	    
 	    foreach ($requiredFields as $key) {
-	        if (!\array_key_exists($key, $data)) {
+	        if (!isset($data[$key])) {
 	            throw LocationServiceException::missingRequiredCountryDataKey($key);
 	        }
 	    }
@@ -390,14 +466,26 @@ class LocationService
 	
 	public function saveGlobalGeoCity($cityData)
 	{
-	    var_dump($this->chromediaApiUri.'/city/add');
 	    $response = $this->request->post($this->chromediaApiUri.'/city/add', array('data' => $cityData));
-	    echo $response->getBody(true);
-	    $city = (\json_decode($response->getBody(true), true));
-	
-	    return $city;
+
+	    if (201 != $response->getStatusCode()) {
+	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
+	    }
+
+	    return \json_decode($response->getBody(true), true);
 	}
-	
+
+	public function saveGlobalGeoState($stateData)
+	{
+	    $response = $this->request->post($this->chromediaApiUri.'/state/add', array('data' => $stateData));
+
+	    if (201 != $response->getStatusCode()) {
+	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
+	    }
+
+	    return \json_decode($response->getBody(true), true);
+	}
+
 	//-------------------------------------
 	
 	//-------------------------------------
@@ -409,9 +497,16 @@ class LocationService
 	    $em->flush();
 	}
 	
-	public function findGlobalStatesByCountry($countryId)
+	// TODO: This is currently not being used! DEPRECATED??
+	public function findGlobalStatesByCountry($countryId, $institutionId = null)
 	{
-	    $response = $this->request->get($this->chromediaApiUri.'/states?country_id='.$countryId);
+	    $url = $this->chromediaApiUri.'/states&country_id='.$countryId;
+	    
+	    if($institutionId) {
+	        $url .= "&institution_id=$institutionId";
+	    }
+	    
+	    $response = $this->request->get($url);
 	    if (200 != $response->getStatusCode()) {
 	        throw LocationServiceException::failedApiRequest($response->getRequest()->getUrl(false), $response->getReasonPhrase());
 	    }

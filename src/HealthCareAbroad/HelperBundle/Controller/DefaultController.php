@@ -29,7 +29,8 @@ class DefaultController extends Controller
     {
         return $this->render('HelperBundle:Default:index.html.twig', array('name' => $name));
     }
-    
+
+    // TODO: This is currently not being used! DEPRECATED??
     public function loadStatesAction(Request $request)
     {
         $countryId = $request->get('countryId', 0);

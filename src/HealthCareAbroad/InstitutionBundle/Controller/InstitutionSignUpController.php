@@ -274,25 +274,21 @@ class InstitutionSignUpController extends InstitutionAwareController
                 $stateData = array(
                     'name' => $stateName,
                     'country_id' => $formRequestData['country'],
-                    'institution_id' => $this->institution->getId()
-                );
+                    'institution_id' => $this->institution->getId());
 
                 $state = $this->get('services.location')->addNewState($stateData);
-
                 $formRequestData['state'] = $state->getId();
             }
-            
+
             // Check If Custom City
             if(!(int)$formRequestData['city'] && ($cityName = $request->get('custom_city'))) {
                 $cityData = array(
                     'name' => $cityName,
                     'state_id' => $formRequestData['state'],
                     'country_id' => $formRequestData['country'],
-                    'institution_id' => $this->institution->getId()
-                );
+                    'institution_id' => $this->institution->getId());
 
                 $city = $this->get('services.location')->addNewCity($cityData);
-
                 $formRequestData['city'] = $city->getId();
             }
 
@@ -324,9 +320,6 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
         }
 
-//         $startTime = \microtime(true);
-//         $form->createView();
-//         $endTime = \microtime(true); $diff = $endTime-$startTime; echo "{$diff}s"; exit;
         return $this->render('InstitutionBundle:SignUp:setupProfile.singleCenter.html.twig', array(
             'form' => $form->createView(),
             'institutionMedicalCenter' => $institutionMedicalCenter,
@@ -360,20 +353,15 @@ class InstitutionSignUpController extends InstitutionAwareController
                     $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
-            
-            var_dump($formRequestData['state']); 
-            var_dump($formRequestData['city']);
+
             // Check If Custom State
             if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
                 $stateData = array(
                     'name' => $stateName, 
                     'country_id' => $formRequestData['country'], 
-                    'institution_id' => $this->institution->getId()
-                );
-                var_dump($stateData);
+                    'institution_id' => $this->institution->getId());
+
                 $state = $this->get('services.location')->addNewState($stateData);
-                
-                var_dump($state);
                 $formRequestData['state'] = $state->getId();
             }
 
@@ -383,15 +371,12 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'name' => $cityName, 
                     'state_id' => $formRequestData['state'], 
                     'country_id' => $formRequestData['country'], 
-                    'institution_id' => $this->institution->getId()
-                );
-                var_dump($cityData);
+                    'institution_id' => $this->institution->getId());
+
                 $city = $this->get('services.location')->addNewCity($cityData);
-                
-                var_dump($city);
                 $formRequestData['city'] = $city->getId();
             }
-exit;
+
             $form->bind($formRequestData);
 
             if ($form->isValid()) {
@@ -591,8 +576,8 @@ exit;
 
         $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
-        $editForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
-        $params['editDoctorForm'] = $editForm->createView();
+        $editDoctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
+        $params['editDoctorForm'] = $editDoctorForm->createView();
 
         return $this->render('InstitutionBundle:SignUp:setupDoctors.html.twig', $params);
     }

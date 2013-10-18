@@ -4,7 +4,12 @@ namespace HealthCareAbroad\HelperBundle\Entity;
 
 class State
 {
+    const STATUS_NEW = 2;
     
+    const STATUS_ACTIVE = 1;
+    
+    const STATUS_INACTIVE = 0;
+
     /**
      * @var integer
      */
@@ -16,14 +21,19 @@ class State
     private $name;
 
     /**
+     * @var string
+     */
+    private $administrativeCode;
+
+    /**
+     * @var integer
+     */
+    private $status;
+
+    /**
      * @var \HealthCareAbroad\HelperBundle\Entity\Country
      */
     private $country;
-    
-    public function __toString()
-    {
-        return $this->name;
-    }
 
 
     /**
@@ -73,6 +83,52 @@ class State
     }
 
     /**
+     * Set administrativeCode
+     *
+     * @param string $administrativeCode
+     * @return State
+     */
+    public function setAdministrativeCode($administrativeCode)
+    {
+        $this->administrativeCode = $administrativeCode;
+    
+        return $this;
+    }
+
+    /**
+     * Get administrativeCode
+     *
+     * @return string 
+     */
+    public function getAdministrativeCode()
+    {
+        return $this->administrativeCode;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     * @return State
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer 
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
      * Set country
      *
      * @param \HealthCareAbroad\HelperBundle\Entity\Country $country
@@ -93,5 +149,10 @@ class State
     public function getCountry()
     {
         return $this->country;
+    }
+    
+    public function __toString()
+    {
+        return $this->name;
     }
 }
