@@ -257,6 +257,7 @@ class InstitutionSignUpController extends InstitutionAwareController
 
 
         if ($this->request->isMethod('POST')) {
+            
             $formRequestData = $this->request->get($form->getName());
             if (isset($formRequestData['medicalProviderGroups']) ) {
                 // we always expect 1 medical provider group
@@ -266,6 +267,33 @@ class InstitutionSignUpController extends InstitutionAwareController
                 }else {
                     $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
+            }
+            
+            // Check If Custom State
+            if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
+                $stateData = array(
+                    'name' => $stateName,
+                    'country_id' => $formRequestData['country'],
+                    'institution_id' => $this->institution->getId()
+                );
+
+                $state = $this->get('services.location')->addNewState($stateData);
+
+                $formRequestData['state'] = $state->getId();
+            }
+            
+            // Check If Custom City
+            if(!(int)$formRequestData['city'] && ($cityName = $request->get('custom_city'))) {
+                $cityData = array(
+                    'name' => $cityName,
+                    'state_id' => $formRequestData['state'],
+                    'country_id' => $formRequestData['country'],
+                    'institution_id' => $this->institution->getId()
+                );
+
+                $city = $this->get('services.location')->addNewCity($cityData);
+
+                $formRequestData['city'] = $city->getId();
             }
 
             $form->bind($formRequestData);
@@ -313,7 +341,6 @@ class InstitutionSignUpController extends InstitutionAwareController
      */
     private function setupProfileMultipleCenter(Request $request)
     {
-        
         // get the current step by this route
         $this->currentSignUpStep = $this->signUpService->getMultipleCenterSignUpStepByRoute($this->request->attributes->get('_route'));
 
@@ -322,8 +349,6 @@ class InstitutionSignUpController extends InstitutionAwareController
         $form = $this->createForm(new InstitutionProfileFormType(), $this->institution, array(InstitutionProfileFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
-
             $formRequestData = $request->get($form->getName());
 
             if (isset($formRequestData['medicalProviderGroups']) ) {
@@ -335,34 +360,44 @@ class InstitutionSignUpController extends InstitutionAwareController
                     $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
+            
+            var_dump($formRequestData['state']); 
+            var_dump($formRequestData['city']);
+            // Check If Custom State
+            if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
+                $stateData = array(
+                    'name' => $stateName, 
+                    'country_id' => $formRequestData['country'], 
+                    'institution_id' => $this->institution->getId()
+                );
+                var_dump($stateData);
+                $state = $this->get('services.location')->addNewState($stateData);
+                
+                var_dump($state);
+                $formRequestData['state'] = $state->getId();
+            }
 
             // Check If Custom City 
-            if(!$formRequestData['city'] && $request->get('custom_city')) {
+            if(!(int)$formRequestData['city'] && ($cityName = $request->get('custom_city'))) {
                 $cityData = array(
-                    'name' => $request->get('custom_city'), 
-                    'countryId' => $formRequestData['country'],
-                    'status' => City::STATUS_ACTIVE
+                    'name' => $cityName, 
+                    'state_id' => $formRequestData['state'], 
+                    'country_id' => $formRequestData['country'], 
+                    'institution_id' => $this->institution->getId()
                 );
-var_dump($cityData);
-                $city = $this->get('services.location')->saveGlobalGeoCity($cityData);
-var_dump($city); exit;
-                $city = new City();
-                $city->setName($request->get('custom_city'));
-                $city->setCountry($country);
-                $city->setStatus(City::STATUS_ACTIVE);
-                $em->persist($city);
-                $em->flush();
+                var_dump($cityData);
+                $city = $this->get('services.location')->addNewCity($cityData);
                 
+                var_dump($city);
                 $formRequestData['city'] = $city->getId();
             }
-            
-            var_dump($formRequestData);
-            exit;
-
+exit;
             $form->bind($formRequestData);
+
             if ($form->isValid()) {
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
 
+                $em = $this->getDoctrine()->getManager();
                 $em->persist($this->institution);
 
                 // set sign up status to current step number
@@ -418,6 +453,7 @@ var_dump($city); exit;
 
         $this->get('services.contact_detail')->initializeContactDetails($this->institutionMedicalCenter, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
+
         $form = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));
 
         if ($this->request->isMethod('POST')) {
@@ -460,6 +496,7 @@ var_dump($city); exit;
                    $error_message = 'We need you to correct some of your input. Please check the fields in red.';
             }
         }
+        
         return $this->render('InstitutionBundle:SignUp:setupInstitutionMedicalCenter.html.twig', array(
             'form' => $form->createView(),
             'institution' => $this->institution,
