@@ -117,8 +117,6 @@ class InstitutionAccountController extends InstitutionAwareController
         $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
 
         $params = array(
-            'isCustomCity' => $this->institution->getState()->getStatus() == City::STATUS_NEW,
-            'isCustomState' => $this->institution->getState()->getStatus() == State::STATUS_NEW,
             'institutionForm' => $form->createView(),
             'institutionPhotos' => $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution->getId()),
             'currentGlobalAwards' => $currentGlobalAwards,
