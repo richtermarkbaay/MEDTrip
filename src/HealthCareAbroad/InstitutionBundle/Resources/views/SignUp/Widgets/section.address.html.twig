@@ -27,12 +27,12 @@
             </div>
             <div class="row-fluid terms">
                 <div class="state control-group span6 {{ (form.state.vars.valid ? '' : 'error') }}">
-                    <label>State / Province <small><br/>(type your state/province if not exists for the list)</small></label>
+                    <label>State / Province <small><br/>(type your state/province if not exists from the list)</small></label>
                     {{ form_widget(form.state, { attr: {class: 'addressFields span12', 'data-accept-custom-value': true} } )}}
                     {{ form_errors(form.state)}} 
                 </div>
                 <div class="city control-group  span6 {{ (form.city.vars.valid ? '' : 'error') }}  span6">
-                    <label for="{{ form.children.city.vars.id }}">  City * <small><br/>(type your city if not exists for the list)</small></label>
+                    <label for="{{ form.children.city.vars.id }}">  City * <small><br/>(type your city if from exists for the list)</small></label>
                     {{ form_widget(form.city, { attr: {class: 'span12', 'data-accept-custom-value': true} } )}}
                     {{ form_errors(form.city)}} 
                 </div>

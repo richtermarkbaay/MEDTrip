@@ -21,6 +21,8 @@ var Location = {
     loadStatesOfCountry: function(countryId, widget, selectedStateId){
         Location.disableWidget(widget, true);
         Location.resetWidgetValue(widget);
+        var widgetPlaceholder = widget.prop('placeholder');
+        widget.prop('placeholder', 'loading states...');
         $.ajax({
             url: Location.loadStatesUrl,
             data: {country_id: countryId},
@@ -35,6 +37,7 @@ var Location = {
                     widget.data('fancyAutocomplete').setSource([]);
                 }
                 widget.trigger('reloadedDataSource');
+                widget.prop('placeholder', widgetPlaceholder);
             }
         });
     },
@@ -45,6 +48,9 @@ var Location = {
         var params = {};
         if(countryId) { params.country_id = countryId; }
         if(stateId) { params.state_id = stateId; }
+
+        var widgetPlaceholder = widget.prop('placeholder');
+        widget.prop('placeholder', 'loading cities...');
         
         $.ajax({
             url: Location.loadCitiesUrl,
@@ -57,6 +63,8 @@ var Location = {
                     widget.data('fancyAutocomplete').setSource(response.cities);
                     widget.trigger('reloadedDataSource');
                 }
+
+                widget.prop('placeholder', widgetPlaceholder);
             }
         });
     }	
