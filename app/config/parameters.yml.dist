@@ -54,3 +54,8 @@ parameters:
     notification.password_reset.enabled: true
     notification.password_confirm.enabled: true
 
+    # Enable zopim application
+    enable_zopim: true
+
+    # Enable zendesk application
+    enable_zendesk: true

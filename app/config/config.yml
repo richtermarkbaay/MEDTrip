@@ -50,6 +50,9 @@ twig:
 
         media_context: %media_context%
 
+        enable_zopim: %enable_zopim%
+        enable_zendesk: %enable_zendesk%
+
 # Assetic Configuration
 assetic:
     debug: %kernel.debug%

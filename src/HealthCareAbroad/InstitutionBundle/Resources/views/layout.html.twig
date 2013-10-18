@@ -1,6 +1,6 @@
 {% extends '::base.institution.html.twig' %}
-{% set include_zopim = true %}
-{% set include_zendesk = true %}
+{% set include_zopim = enable_zopim %}
+{% set include_zendesk = enable_zendesk %}
 
 {% block title %}{% endblock %}
 
