@@ -41,7 +41,7 @@ HealthCareAbroad\HelperBundle\Entity\City:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\State
             cascade: {  }
             mappedBy: null
-            inversedBy: cities
+            inversedBy: null
             joinColumns:
                 state_id:
                     referencedColumnName: id

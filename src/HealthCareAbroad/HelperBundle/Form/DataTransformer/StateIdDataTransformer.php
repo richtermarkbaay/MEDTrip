@@ -45,6 +45,7 @@ class StateIdDataTransformer implements DataTransformerInterface
             $state = new State();
             $state->setId($globalStateData['id']);
             $state->setName($globalStateData['name']);
+            $state->setStatus(State::STATUS_ACTIVE);
             
             $countryData = $globalStateData['geoCountry'];
             $country = $this->locationService->getCountryById($countryData['id']);
