@@ -175,8 +175,7 @@ var InstitutionMedicalCenter = {
 
     submitRemoveMedicalSpecialistForm: function(_formElement) {
         _button = _formElement.find('button.delete-button');
-        _button.attr('disabled', true)
-            .html('Processing...');
+        _button.prop('disabled', true).html('Processing...');
         $.ajax({
             url: _formElement.attr('action'),
             data: _formElement.serialize(),
@@ -184,6 +183,7 @@ var InstitutionMedicalCenter = {
             success: function(response){
             	$('#doctor_id_'+response.id).remove();
             	$('#_specialistModal').modal('hide');
+            	_button.prop('disabled', false).html('Delete');
             	
             }
          });
