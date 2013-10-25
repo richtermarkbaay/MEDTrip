@@ -134,10 +134,11 @@ class DoctorRepository extends EntityRepository
     {
         
         $qb = $this->getEntityManager()->createQueryBuilder()
-        ->select('a, sp, dm')
+        ->select('a, sp, dm, ms')
         ->from('DoctorBundle:Doctor', 'a')
         ->innerJoin('a.specializations', 'sp')
         ->innerJoin('a.institutionMedicalCenters', 'c')
+        ->leftJoin('a.medicalSpecialities', 'ms')
         ->leftJoin('a.media', 'dm')
         ->where('c.institution = :institution')
         ->andWhere('a.status = :status')

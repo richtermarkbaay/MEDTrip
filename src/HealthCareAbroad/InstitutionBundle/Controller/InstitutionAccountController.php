@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Doctrine\ORM\Query;
+
 use HealthCareAbroad\HelperBundle\Entity\City;
 
 use HealthCareAbroad\HelperBundle\Entity\State;
@@ -131,13 +133,12 @@ class InstitutionAccountController extends InstitutionAwareController
             $doctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType(), $doctor);
             $editDoctor = new Doctor();
 
-            if($this->institutionMedicalCenter->getDoctors()->count()) {
-                $editDoctor = $this->institutionMedicalCenter->getDoctors()->first();
+            $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findByInstitutionMedicalCenter($this->institutionMedicalCenter->getId(), Query::HYDRATE_OBJECT);
+            if(!empty($doctors)) {
+                $editDoctor = $doctors[0];
             }
-            if(!$editDoctor->getContactDetails()->count()) {
-                $contactDetail = new ContactDetail();
-                $editDoctor->addContactDetail($contactDetail);
-            }
+            
+            $this->get('services.contact_detail')->initializeContactDetails($editDoctor, array(ContactDetailTypes::PHONE), $this->institution->getCountry());
 
             $editDoctorForm = $this->createForm(new InstitutionMedicalCenterDoctorFormType('editInstitutionMedicalCenterDoctorForm'), $editDoctor);
             $institutionMedicalCenterForm = $this->createForm(new InstitutionMedicalCenterFormType($this->institution), $this->institutionMedicalCenter, array(InstitutionMedicalCenterFormType::OPTION_BUBBLE_ALL_ERRORS => false));

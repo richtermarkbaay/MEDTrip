@@ -135,16 +135,14 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             $ids[] = $each->getId();
         }
     
-        $exclodeExistingDoctorsId = implode(", ",$ids);
+        $exclodeExistingDoctorsId = !empty($ids) ? "a.id NOT IN (". implode(", ",$ids) . ") AND " : '';
 
         $connection = $this->getEntityManager()->getConnection();
         $query = "SELECT a.*, s.name AS specialization_name FROM doctors a
         LEFT JOIN doctor_specializations b ON a.id = b.doctor_id
         LEFT JOIN specializations s ON s.id = b.specialization_id
-        WHERE a.id NOT IN ($exclodeExistingDoctorsId)
-        AND ((a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)
-            OR CONCAT(a.last_name, ' ', a.first_name)  LIKE :searchKey)  
-        AND a.status = :active ORDER BY a.last_name, a.first_name ASC";
+        WHERE $exclodeExistingDoctorsId (a.first_name LIKE :searchKey OR a.last_name LIKE :searchKey OR CONCAT(a.last_name, ' ', a.first_name) LIKE :searchKey) 
+        AND a.status = :active ORDER BY a.last_name ASC";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $center->getId());
         $stmt->bindValue('searchKey', '%'.str_replace(',', '', $searchKey).'%');
