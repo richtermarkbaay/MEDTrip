@@ -9,7 +9,6 @@ class Doctor
     const GENDER_MALE = 1;
     const GENDER_FEMALE = 2;
 
-    
     /**
      * @var integer
      */
@@ -48,11 +47,6 @@ class Doctor
     /**
      * @var string
      */
-    private $country;
-    
-    /**
-     * @var string
-     */
     private $contactNumber;
 
     /**
@@ -76,6 +70,11 @@ class Doctor
     private $media;
 
     /**
+     * @var \HealthCareAbroad\HelperBundle\Entity\Country
+     */
+    private $country;
+
+    /**
      * @var \Doctrine\Common\Collections\Collection
      */
     private $specializations;
@@ -91,6 +90,11 @@ class Doctor
     private $contactDetails;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $medicalSpecialities;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -98,8 +102,9 @@ class Doctor
         $this->specializations = new \Doctrine\Common\Collections\ArrayCollection();
         $this->institutionMedicalCenters = new \Doctrine\Common\Collections\ArrayCollection();
         $this->contactDetails = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->medicalSpecialities = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
+    
     /**
      * Get id
      *
@@ -126,7 +131,7 @@ class Doctor
     /**
      * Get firstName
      *
-     * @return string
+     * @return string 
      */
     public function getFirstName()
     {
@@ -149,7 +154,7 @@ class Doctor
     /**
      * Get middleName
      *
-     * @return string
+     * @return string 
      */
     public function getMiddleName()
     {
@@ -241,7 +246,7 @@ class Doctor
     /**
      * Get contactEmail
      *
-     * @return string
+     * @return string 
      */
     public function getContactEmail()
     {
@@ -264,7 +269,7 @@ class Doctor
     /**
      * Get contactNumber
      *
-     * @return string
+     * @return string 
      */
     public function getContactNumber()
     {
@@ -333,7 +338,7 @@ class Doctor
     /**
      * Get status
      *
-     * @return boolean
+     * @return boolean 
      */
     public function getStatus()
     {
@@ -485,45 +490,36 @@ class Doctor
         return $this->contactDetails;
     }
 
-    public function getFullName()
+    /**
+     * Add medicalSpecialities
+     *
+     * @param \HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality $medicalSpecialities
+     * @return Doctor
+     */
+    public function addMedicalSpeciality(\HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality $medicalSpecialities)
     {
-        $fullName = $this->firstName . ' ' . $this->lastName;
-        if ($this->suffix) {
-            $fullName .= ' ' . $this->suffix;
-        }
-
-        return $fullName;
-    }
-
-    public function getSpecializationsAsString()
-    {
-        $specializations = '';
-
-        $first = true;
-        foreach($this->specializations as $specialization) {
-            if ($first) {
-                $specializations = $specialization->getName();
-                $first = false;
-            } else {
-                $specializations .= ', '.$specialization->getName();
-            }
-        }
-
-        return $specializations;
+        $this->medicalSpecialities[] = $medicalSpecialities;
+    
+        return $this;
     }
 
     /**
-     * The values returned here may not yet be persisted.
+     * Remove medicalSpecialities
      *
+     * @param \HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality $medicalSpecialities
      */
-    public function getSpecializationIds()
+    public function removeMedicalSpeciality(\HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality $medicalSpecialities)
     {
-        $ids = array();
+        $this->medicalSpecialities->removeElement($medicalSpecialities);
+    }
 
-        foreach($this->specializations as $specialization) {
-            $ids[] = $specialization->getId();
-        }
-
-        return $ids;
+    /**
+     * Get medicalSpecialities
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getMedicalSpecialities()
+    {
+        return $this->medicalSpecialities;
     }
 }

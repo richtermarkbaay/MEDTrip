@@ -54,6 +54,7 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             'get_social_media_site_label' => new \Twig_Function_Method($this, 'getSocialMediaSiteLabel'),
             'contact_detail_type_has_extension' => new \Twig_Function_Method($this, 'contactDetailTypeHasExtension'),
             'array_flip' => new \Twig_Function_Method($this, 'arrayFlip'),
+            'array_replace' => new \Twig_Function_Method($this, 'arrayReplace'),
         );
     }
 
@@ -333,6 +334,11 @@ class MiscellaneousTwigExtension extends \Twig_Extension
     public function arrayFlip(array $arrayData)
     {
         return array_flip($arrayData);
+    }
+    
+    public function arrayReplace(array $array1, array $array2)
+    {
+        return array_replace($array1, $array2);
     }
 
     private function _removeEmptyValueInArray(&$array = array())

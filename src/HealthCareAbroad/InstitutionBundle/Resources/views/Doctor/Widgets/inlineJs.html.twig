@@ -107,22 +107,22 @@
                 });
 
                 editForm.find('.specializations-listing input[type=checkbox]').removeAttr('checked');
-                $.each(doctor.specializations, function(id, name){
-                    editForm.find('.specializations-listing input[value='+id+']').attr('checked', 'checked');                    
+                $.each(doctor.specializations, function(id, name) {
+                    editForm.find('.specializations-listing input.specializations[value='+id+']').attr('checked', 'checked');
+
+                    if(typeof(doctor.medicalSpecialities[id]) != 'undefined') {
+                        $.each(doctor.medicalSpecialities[id], function(specialityId, specialityName) {
+                            editForm.find('.specializations-listing input.medical-specialities[value='+specialityId+']').attr('checked', 'checked');
+                        });
+                    }                    
                 });
 
                 editForm.ajaxForm({
                     success: function(response) {
                         $('#doctorsList').children('div').removeClass('disabled process');
                         editFormWrapper.slideToggle("slow", function(){
-
-                            var specializationString = '';
-                            $.each(response.doctor.specializations, function(key) {
-                                specializationString += ', ' + response.doctor.specializations[key]; 
-                            });
-    
                             editFormWrapper.prev().find('h4.full-name:first').text(response.doctor.fullName);
-                            editFormWrapper.prev().find('.doctor-specializations:first').text(specializationString.substr(1));
+                            editFormWrapper.prev().find('.doctor-specializations:first').text(response.doctor.specialitiesString);
                             btnIcon.parent().attr('data-doctor', JSON.stringify(response.doctor));
                             btnIcon.removeClass('icon-ok').addClass('icon-edit');
 
@@ -154,7 +154,7 @@
 
             return false;
         });
-
+        
         /** modal Js**/
         var lastNameElem = $("#{{ doctorForm.getChild('lastName').vars.id }}");
         var firstNameElem = $("#{{ doctorForm.getChild('firstName').vars.id }}");

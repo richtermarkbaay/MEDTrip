@@ -223,43 +223,4 @@ class SignUpService
     {
         $this->institutionFactory->save($institution);
     }
-
-    //TODO: Temporary measure: we should not pass in the registry object
-    public function addDoctor(Doctor $doctor, Registry $doctrine)
-    {
-        $em = $doctrine->getManager();
-        $em->persist($doctor);
-        $em->flush();
-
-        return $doctor;
-    }
-
-    //TODO: Temporary measure: we should not pass in the registry object
-    public function editDoctor(Doctor $doctor, Registry $doctrine)
-    {
-        $persistedDoctor = $doctrine->getRepository('DoctorBundle:Doctor')->find($doctor->getId());
-        $currentSpecializationIds = $persistedDoctor->getSpecializationIds();
-        $newSpecializationIds = $doctor->getSpecializationIds();
-
-        $specializationsToBeRemoved = array_diff($currentSpecializationIds, $newSpecializationIds);
-        $specializationsToBeAdded = array_diff($newSpecializationIds, $currentSpecializationIds);
-
-        $specializationRepository = $doctrine->getRepository('TreatmentBundle:Specialization');
-        foreach ($specializationsToBeAdded as $id) {
-            $doctor->addSpecialization($specializationRepository->find($id));
-        }
-        $em = $doctrine->getManager();
-        $em->persist($doctor);
-        $em->flush();
-
-        foreach ($doctor->getSpecializations() as $specialization) {
-            if (in_array($specialization->getId(), $specializationsToBeRemoved)) {
-                $doctor->removeSpecialization($specialization);
-            }
-        }
-        $em->persist($doctor);
-        $em->flush();
-
-        return $doctor;
-    }
 }

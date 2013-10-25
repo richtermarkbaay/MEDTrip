@@ -19,11 +19,9 @@ class DoctorController extends Controller
 {
     public function indexAction()
     {
-        $doctors = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->findAll();
-        
         return $this->render('AdminBundle:Doctor:index.html.twig', array(
-                        'doctors' => $this->filteredResult,
-                        'pager' => $this->pager
+            'doctors' => $this->filteredResult,
+            'pager' => $this->pager
         ));
     }
     
@@ -104,6 +102,30 @@ class DoctorController extends Controller
                 if(isset($fileBag['media']) && $fileBag['media']) {
                     $this->get('services.doctor.media')->uploadLogo($fileBag['media'], $doctor, false);
                 }
+
+                if($medicalSpecialitiesIds = $request->get('doctor_medical_specialities', array())) {
+                    $qb = $this->getDoctrine()->getEntityManagerForClass('DoctorBundle:MedicalSpeciality')->createQueryBuilder();
+                    $qb->select('a')->from('DoctorBundle:MedicalSpeciality', 'a')
+                       ->where($qb->expr()->in('a.id', ':medicalSpecialitiesIds'))
+                       ->setParameter(':medicalSpecialitiesIds', $medicalSpecialitiesIds);
+
+                    $medicalSpecialities = $qb->getQuery()->getResult();
+
+                    // Add selected medicalSpecialities
+                    foreach ($medicalSpecialities as $each) {
+                        if(!$doctor->getMedicalSpecialities()->contains($each)) {
+                            $doctor->addMedicalSpeciality($each);                        
+                        }
+                    }
+                }
+
+                // Remove non-selected medicalSpecialities
+                foreach($doctor->getMedicalSpecialities() as $each) {
+                    if(!in_array($each->getId(), $medicalSpecialitiesIds)) {
+                        $doctor->removeMedicalSpeciality($each);
+                    }
+                }
+                
                 $this->get('services.contact_detail')->removeInvalidContactDetails($doctor);
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($doctor);

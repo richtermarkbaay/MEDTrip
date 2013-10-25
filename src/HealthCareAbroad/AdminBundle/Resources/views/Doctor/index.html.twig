@@ -52,15 +52,17 @@
                         <td>
                             <ul class="nav">
                             {% for institutionMedicalCenter in each.institutionMedicalCenters %}
-                                <li> <a href="{{ path('admin_institution_view', {institutionId: institutionMedicalCenter.institution.id} ) }}"> {{ institutionMedicalCenter.institution.name }} </a></li>
+                                <li> <a href="{{ path('admin_institution_medicalCenter_view', {imcId: institutionMedicalCenter.id, institutionId: institutionMedicalCenter.institution.id} ) }}" target="_blank"> {{ institutionMedicalCenter.name }} </a></li>
                             {% endfor %}
                             </ul>
                         </td>
                         <td>
                             <ul class="nav">
-                                {% for specialization in each.specializations %}
-                                    <li> <a href="{{ path('admin_specialization_edit',{ id: specialization.id} ) }}">{{ specialization.name }} </a></li>
-                                {% endfor %}
+                                {% if each.specializations|length %}
+                                    {{ doctor_specializations_to_string(each) }}
+                                {% else %}
+                                    No specializations yet.
+                                {% endif %}
                             </ul>
                         <td>
                             <ul class="table-action">

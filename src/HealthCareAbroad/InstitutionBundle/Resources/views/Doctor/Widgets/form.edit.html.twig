@@ -24,25 +24,20 @@
 
     <div class="row-fluid">
         <div class="control-group span12">
-            <label for="Email Address">
-                Doctor's Email Address<br>
-                <small>This email will not be listed on the webpage.</small>
-            </label>
-            {{ form_widget(editDoctorForm.contactEmail, { 'attr': {'class': 'span8'} }) }}
+            <label for="Email Address">Doctor's Email Address</label>
+            {{ form_widget(editDoctorForm.contactEmail, { 'attr': {'class': 'span6'} }) }}
+            <label><small><em>Note: This email will not be listed on the webpage.</em></small></label>
         </div>
     </div>
     
-    <div class="row-fluid">
-        
-        <label for="Phone Number">
-            Doctor's Contact Number<br>
-            <small>This number will not be listed on the webpage.</small>
-        </label>
-        
+    <div class="row-fluid">        
         {% for widget in editDoctorForm.contactDetails %}
             {{ form_widget(widget) }}
         {% endfor %}
     </div>
+    <label style="margin-left: 10px; margin-bottom: 10px;">
+        <em><small>Note: This number will not be listed on the webpage.</small></em>
+    </label>
 
     {{ form_widget(editDoctorForm._token) }}
 </form>

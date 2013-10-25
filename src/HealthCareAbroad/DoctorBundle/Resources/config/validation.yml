@@ -4,3 +4,7 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
             - NotBlank: ~
         lastName:
             - NotBlank: ~
+    constraints:
+            - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+                fields: [firstName, middleName, lastName, suffix]
+                message: Doctor name already exists!

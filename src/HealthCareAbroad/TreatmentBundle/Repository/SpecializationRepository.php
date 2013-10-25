@@ -101,6 +101,24 @@ class SpecializationRepository extends EntityRepository
 
         return $qb;
     }
+    
+    /**
+     * Get Active Specializations
+     *
+     * @return Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilderForDocSpecializationsWithSpecialities()
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+        $qb->select('a, b')
+        ->from('TreatmentBundle:Specialization', 'a')
+        ->leftJoin('a.medicalSpecialities', 'b')
+        ->add('where', 'a.status = :status')
+        ->orderBy('a.name')
+        ->setParameter('status', Specialization::STATUS_ACTIVE);
+    
+        return $qb;
+    }
 
     private function getIdsOfSpecializationsWithNoSubSpecializations()
     {

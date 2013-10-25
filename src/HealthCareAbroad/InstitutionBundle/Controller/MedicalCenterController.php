@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use Doctrine\ORM\AbstractQuery;
+
+use HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality;
+
 use Doctrine\ORM\Query;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -440,15 +444,40 @@ class MedicalCenterController extends InstitutionAwareController
 
         if ($form->isValid()) {
             $this->get('services.contact_detail')->removeInvalidContactDetails($doctor);
+
+            if($medicalSpecialitiesIds = $request->get('doctor_medical_specialities', array())) {
+                $qb = $this->getDoctrine()->getEntityManagerForClass('DoctorBundle:MedicalSpeciality')->createQueryBuilder();
+                $qb->select('a')->from('DoctorBundle:MedicalSpeciality', 'a')
+                   ->where($qb->expr()->in('a.id', ':medicalSpecialitiesIds'))
+                   ->setParameter(':medicalSpecialitiesIds', $medicalSpecialitiesIds);
+
+                $medicalSpecialities = $qb->getQuery()->getResult();
+
+                // Add selected medicalSpecialities
+                foreach ($medicalSpecialities as $each) {
+                    if(!$doctor->getMedicalSpecialities()->contains($each)) {
+                        $doctor->addMedicalSpeciality($each);                        
+                    }
+                }
+            }
+
+            // Remove non-selected medicalSpecialities
+            foreach($doctor->getMedicalSpecialities() as $each) {
+                if(!in_array($each->getId(), $medicalSpecialitiesIds)) {
+                    $doctor->removeMedicalSpeciality($each);
+                }
+            }
+
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($doctor);
             $em->flush();
-
+            
             $data = array(
                 'status' => true,
                 'message' => 'Doctor info has been updated!',
                 'doctor' => $this->get('services.doctor')->toArrayDoctor($doctor)
             );
+            
         } else {
             $data = array('status' => false, 'message' => $form->getErrorsAsString());
         }

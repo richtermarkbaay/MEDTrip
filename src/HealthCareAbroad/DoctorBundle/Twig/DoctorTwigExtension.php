@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\DoctorBundle\Twig;
 
+use HealthCareAbroad\DoctorBundle\Services\DoctorService;
+
 /**
  * Twig extension class for functionalities relating to a doctor
  * 
@@ -14,7 +16,8 @@ class DoctorTwigExtension extends \Twig_Extension
     {
         return array(
             'doctorToArray' => new \Twig_Function_Method($this, 'doctorToArray'),
-            'institutionMedicalCenterGroupDoctorList' => new \Twig_Function_Method($this, 'institutionMedicalCenterGroupDoctorList')
+            'institutionMedicalCenterGroupDoctorList' => new \Twig_Function_Method($this, 'institutionMedicalCenterGroupDoctorList'),
+            'doctor_specializations_to_string' => new \Twig_Function_Method($this, 'doctorSpecializationsToString')
         );
     }
     
@@ -35,5 +38,10 @@ class DoctorTwigExtension extends \Twig_Extension
         }
 
         return $arr;
+    }
+    
+    public function doctorSpecializationsToString($doctor) 
+    {
+        return DoctorService::doctorSpecialitiesToString($doctor);
     }
 }

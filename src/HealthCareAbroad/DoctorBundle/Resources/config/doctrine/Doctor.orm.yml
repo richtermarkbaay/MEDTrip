@@ -107,6 +107,22 @@ HealthCareAbroad\DoctorBundle\Entity\Doctor:
                         name: contact_detail_id
                         referencedColumnName: id
             orderBy: null   
+        medicalSpecialities:
+            targetEntity: HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality
+            cascade:
+                - "persist"
+            mappedBy: null
+            joinTable:
+                name: doctor_medical_specialities
+                joinColumns:
+                    -
+                        name: doctor_id
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: medical_speciality_id
+                        referencedColumnName: id
+            orderBy: null
     manyToOne:
         country:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\Country

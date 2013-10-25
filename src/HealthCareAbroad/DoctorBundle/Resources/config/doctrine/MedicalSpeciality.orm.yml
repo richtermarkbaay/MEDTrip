@@ -1,0 +1,34 @@
+HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality:
+    type: entity
+    table: medical_specialities
+    fields:
+        id:
+            id: true
+            type: integer
+            unsigned: true
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        name:
+            type: string
+            length: 200
+            fixed: false
+            nullable: false
+        dateCreated:
+            type: datetime
+            nullable: false
+            column: date_created
+        status:
+            type: smallint
+            nullable: false
+    manyToOne:
+        specialization:
+            targetEntity: HealthCareAbroad\TreatmentBundle\Entity\Specialization
+            cascade: {  }
+            mappedBy: null
+            inversedBy: medicalSpecialities
+            joinColumns:
+                specialization_id:
+                    referencedColumnName: id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

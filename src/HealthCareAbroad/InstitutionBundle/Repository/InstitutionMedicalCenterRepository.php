@@ -128,29 +128,30 @@ class InstitutionMedicalCenterRepository extends EntityRepository
         return $qb->getQuery()->getResult();
     }
 
-    public function getAvailableDoctorsByInstitutionMedicalCenter(InstitutionMedicalCenter $center, $searchKey)
+    public function getAvailableDoctors(InstitutionMedicalCenter $center, $searchKey)
     {
         $ids = array();
         foreach ($center->getDoctors() as $each) {
             $ids[] = $each->getId();
         }
-
-        $idsNotIn = "'".\implode("', '",$ids)."'";
+    
+        $exclodeExistingDoctorsId = implode(", ",$ids);
 
         $connection = $this->getEntityManager()->getConnection();
-        $query = "SELECT a.*, s.name AS specialization_name FROM doctors a 
-                  LEFT JOIN doctor_specializations b ON a.id = b.doctor_id
-                  LEFT JOIN specializations s ON s.id = b.specialization_id
-                  WHERE a.id = b.doctor_id AND a.id NOT IN ({$idsNotIn})
-                  AND ( (a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)  OR ( CONCAT(a.first_name ,' ' ,IFNULL(middle_name + ' ', '')  ,last_name) LIKE :searchKey) )AND b.specialization_id
-                  IN (SELECT specialization_id FROM institution_specializations WHERE institution_medical_center_id = :imcId) AND a.status = :active GROUP BY a.id ORDER BY a.first_name ASC";
+        $query = "SELECT a.*, s.name AS specialization_name FROM doctors a
+        LEFT JOIN doctor_specializations b ON a.id = b.doctor_id
+        LEFT JOIN specializations s ON s.id = b.specialization_id
+        WHERE a.id NOT IN ($exclodeExistingDoctorsId)
+        AND ((a.first_name LIKE :searchKey OR a.middle_name LIKE :searchKey OR a.last_name LIKE :searchKey)
+            OR CONCAT(a.last_name, ' ', a.first_name)  LIKE :searchKey)  
+        AND a.status = :active ORDER BY a.last_name, a.first_name ASC";
         $stmt = $connection->prepare($query);
         $stmt->bindValue('imcId', $center->getId());
-        $stmt->bindValue('searchKey', '%'.$searchKey.'%');
+        $stmt->bindValue('searchKey', '%'.str_replace(',', '', $searchKey).'%');
         $stmt->bindValue('active', Doctor::STATUS_ACTIVE);
         $stmt->execute();
-        return $stmt->fetchAll();
 
+        return $stmt->fetchAll();    
     }
 
 

@@ -29,12 +29,12 @@ class DoctorFormType extends AbstractType
      		->add('firstName', 'text', array('label' => 'First name'))
      		->add('middleName', 'text', array('label' => 'Middle name'))
      		->add('lastName', 'text', array('label' => 'Last name'))
-     		->add('suffix', 'text', array('label' => 'Suffix'))
+     		->add('suffix', 'choice', array('choices' => $this->_getSuffix()))
      		->add('gender', 'choice', array('choices'=>$gender))
      		->add('country','country_list')
      		->add('details', 'textarea')
      		->add('media', new AdminMediaFileType($media), array('label' => 'Image'))
-    	    ->add('specializations', new SpecializationListType(), array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
+    	    ->add('specializations', 'doctorSpecializations_list', array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
     	    ->add('contactDetails', 'collection',array('type' => 'simple_contact_detail'));
     }
@@ -42,6 +42,11 @@ class DoctorFormType extends AbstractType
     public function getName()
     {
         return 'doctor';
+    }
+    
+    private function _getSuffix()
+    {
+        return array('' => '', 'Jr.' => 'Jr.', 'Sr.' => 'Sr.', 'I' => 'I', 'II' => 'II', 'III' => 'III');
     }
 }
 

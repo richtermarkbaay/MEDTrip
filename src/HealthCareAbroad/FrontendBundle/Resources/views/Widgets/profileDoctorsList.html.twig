@@ -13,9 +13,7 @@
 
 			<a class="name">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</a>
 			<p class="info">
-			    {% for i, each in doctor.specializations %}
-			        {{ each.name }}{{ i != ((doctor.specializations | length) -1) ? ', ' : '' }}
-			    {% endfor %}
+			    {{ doctor_specializations_to_string(doctor) }}
 			</p>
 			{# <ul class="contact">
 			    {% if doctor.contactEmail %}

@@ -52,6 +52,13 @@ HealthCareAbroad\TreatmentBundle\Entity\Specialization:
         subSpecializations:
             targetEntity: HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization
             mappedBy: specialization
+        medicalSpecialities:
+            targetEntity: HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality
+            mappedBy: specialization
+            cascade:
+                - "persist"
+            orderBy: {"name": "ASC"}
+
 
     manyToOne:
         media:

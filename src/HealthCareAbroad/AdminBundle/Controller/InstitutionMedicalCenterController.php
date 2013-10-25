@@ -388,12 +388,13 @@ class InstitutionMedicalCenterController extends Controller
      */
     public function loadMedicalSpecialistAction(Request $request)
     {
-        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctorsByInstitutionMedicalCenter($this->institutionMedicalCenter, \trim($request->get('term','')));
+        $doctors = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->getAvailableDoctors($this->institutionMedicalCenter, \trim($request->get('term','')));
         $doctorArr = array();
         foreach ($doctors as $each) {
-            $doctorArr[] = array('value' => $each['first_name'] ." ". $each['last_name'] . " - " . $each['specialization_name'] , 
-                                 'id' => $each['id'], 
-                                 'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
+            $doctorArr[] = array(
+                'value' => ucwords($each['last_name'] .", ". $each['first_name'] . " " . $each['middle_name'] . " " . $each['suffix']) . ' - '.$each['id'], 
+                'id' => $each['id'], 
+                'path' => $this->generateUrl('admin_doctor_specializations', array('doctorId' =>  $each['id'])));
         }
 
         return new Response(\json_encode($doctorArr, JSON_HEX_APOS), 200, array('content-type' => 'application/json'));

@@ -150,21 +150,45 @@
 
 {% block doctorSpecializations_list_widget %}
     {% spaceless %}
-
-
-    {# this is temporary #}
-    {% set treatments = { 1: 'Treatment 1', 2: 'Treatment 2', 3: 'Treatment 3' } %}
     {% set specializations = form.vars.data %}
+    {% set hasMedicalSpecialities = form.parent.vars.value.medicalSpecialities|length %}
 
-    <ul class="specializations-listing">
-        {% for choice in form.vars.choices %}
-        <li>
-            <label style="font-weight:normal">
-                <input type="checkbox" {% if choice.data in specializations %}checked{% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" />{{ choice.label }}
-            </label>
-        </li>
-        {% endfor %}
-    </ul>
+    <div class="doctor-specializations-wrapper two-column">
+        <ul class="specializations-listing">
+            {% for choice in form.vars.choices %}
+            <li class="specialization-item">
+                <label style="font-weight:normal">
+                    <input type="checkbox" {% if choice.data in specializations %}checked{% endif %} name="{{ form.vars.full_name ~ '[]' }}" value="{{ choice.value }}" class="specializations"/>{{ choice.label }}
+                </label>
+                {% if choice.data.medicalSpecialities|length %}
+                    <ul class="medical-specialities-list">
+                    {% for speciality in choice.data.medicalSpecialities %}
+                        <label style="font-weight:normal;font-size: 90%;color: #AAA">
+                            <input type="checkbox" {% if hasMedicalSpecialities and speciality in form.parent.vars.value.medicalSpecialities %}checked{% endif %} name="doctor_medical_specialities[]" value="{{ speciality.id }}" class="medical-specialities"/>
+                            {{ speciality.name }}
+                        </label>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <script type="text/javascript">
+    $(function(){
+        $('input.specializations[type=checkbox]').live('change', function() {
+            if(!$(this).is(':checked')) {
+                $(this).parents('li.specialization-item:first').find('input.medical-specialities[type=checkbox]').prop('checked', false);
+            }
+        });
+
+        $('input.medical-specialities[type=checkbox]').live('change', function(){
+            var parentElem = $(this).parents('li.specialization-item:first'); 
+            var hasChecked = parentElem.find('input.medical-specialities:checked').length;
+            parentElem.find('input.specializations[type=checkbox]').prop('checked', hasChecked);
+        });
+    });
+    </script>
 
     {% endspaceless %}
 {% endblock %}

@@ -53,6 +53,10 @@ class DoctorService
      */
     public function searchDoctors($criteria = array(), $format = null)
     {
+        if(!isset($criteria['status'])) {
+            $criteria['status'] = Doctor::STATUS_ACTIVE;
+        }
+
         $doctors = $this->getDoctorsByCriteria($criteria);
 
         // Return Array Object Results
@@ -83,7 +87,7 @@ class DoctorService
     
     public function toArrayDoctor(Doctor $doctor)
     {
-        $specializations = $contactDetails = array();
+        $medicalSpecialities = $specializations = $contactDetails = array();
 
         foreach($doctor->getContactDetails() as $each) {
             $contactDetails[] = array(
@@ -96,9 +100,13 @@ class DoctorService
                 'abbr' => $each->getAbbr()
             );
         }
-
+        
         foreach($doctor->getSpecializations() as $specialization) {
             $specializations[$specialization->getId()] = $specialization->getName();
+        }
+
+        foreach($doctor->getMedicalSpecialities() as $each) {
+            $medicalSpecialities[$each->getSpecialization()->getId()][$each->getId()] = $each->getName();
         }
 
         $data = array(
@@ -106,15 +114,17 @@ class DoctorService
             'lastName' => $doctor->getLastName(),
             'firstName' => $doctor->getFirstName(),
             'middleName' => $doctor->getMiddleName(),
-            'fullName' => $this->_getFullName($doctor),
+            'fullName' => self::getFullName($doctor),
             'contactEmail' => $doctor->getContactEmail(),
             'gender' => $doctor->getGender(),
             'suffix' => $doctor->getSuffix(),
             'contactDetails' => $contactDetails,
             'specializations' => $specializations,
+            'medicalSpecialities' => $medicalSpecialities,
+            'specialitiesString' => self::doctorSpecialitiesToString($doctor),
             'mediaSrc' => ''
         );
-        
+
         if($doctor->getMedia()) {
             $src = $this->doctorMediaService->mediaTwigExtension->getDoctorMediaSrc($doctor->getMedia(), ImageSizes::DOCTOR_LOGO);
             $data['mediaSrc'] = $src;
@@ -123,7 +133,41 @@ class DoctorService
         return $data;
     }
     
-    private function _getFullName(Doctor $doctor)
+    static function doctorSpecialitiesToString($doctor)
+    {   
+        $specializations = $medicalSpecialities = array();
+
+        if(is_object($doctor)) {
+            foreach($doctor->getSpecializations() as $specialization) {
+                $specializations[$specialization->getId()] = $specialization->getName();
+            }
+            foreach($doctor->getMedicalSpecialities() as $each) {
+                $medicalSpecialities[$each->getSpecialization()->getId()][$each->getId()] = $each->getName();
+            }
+        } else if(is_array($doctor)) {
+            foreach($doctor['specializations'] as $each) {
+                $specializations[$each['id']] = $each['name'];
+            }
+            foreach($doctor['medicalSpecialities'] as $each) {
+                $medicalSpecialities[$each['specialization']['id']][$each['id']] = $each['name'];
+            }
+        }
+
+        if(empty($specializations)) {
+            return '';
+        }
+
+        $specializaties = array_replace($specializations, $medicalSpecialities);
+
+        $string = '';
+        foreach($specializaties as $each) {
+            $string .= (is_array($each) ? implode(', ', array_values($each)) : $each) . ', ';  
+        }
+
+        return substr($string, 0, -2);
+    }
+    
+    static function getFullName(Doctor $doctor)
     {
         $name = 'Dr. ' . ucwords($doctor->getFirstName()) . ' ';
         if($doctor->getMiddleName()) {

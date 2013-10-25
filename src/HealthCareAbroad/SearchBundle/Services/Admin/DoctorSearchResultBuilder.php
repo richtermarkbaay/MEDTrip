@@ -1,6 +1,8 @@
 <?php
 
 namespace HealthCareAbroad\SearchBundle\Services\Admin;
+use HealthCareAbroad\DoctorBundle\Services\DoctorService;
+
 class DoctorSearchResultBuilder extends SearchResultBuilder
 {
 
@@ -29,7 +31,7 @@ class DoctorSearchResultBuilder extends SearchResultBuilder
         $result->setMiddleName($val->getMiddleName());
         $route = $this->router->generate("admin_doctor_edit",array('idId' => $val->getId()));
         $result->setUrl($route);
-        $result->setName($result->getFullName());
+        $result->setName(DoctorService::getFullName($val));
         return $result;
     }
 }

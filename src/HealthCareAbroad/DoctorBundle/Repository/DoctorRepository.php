@@ -21,11 +21,13 @@ class DoctorRepository extends EntityRepository
 {
     public function getDoctorsByCriteria($criteria = array())
     {
+
         $qb = $this->getEntityManager()->createQueryBuilder()
-        ->select('a, b')
+        ->select('a, b, c')
         ->from('DoctorBundle:Doctor', 'a')
         ->leftJoin('a.specializations', 'b')
-        ->where('a.status = :active')->setParameter('active', Doctor::STATUS_ACTIVE);;
+        ->leftJoin('b.medicalSpecialities', 'c');
+        //->where('a.status = :active')->setParameter('active', Doctor::STATUS_ACTIVE);;
 
         foreach($criteria as $key => $value) {
             $qb->andWhere("a.$key = :$key")->setParameter($key, $value);
@@ -75,10 +77,12 @@ class DoctorRepository extends EntityRepository
         }
         
         $qb = $this->getEntityManager()->createQueryBuilder();
-        $qb->select('d, d_sp, dm, dc')
+        $qb->select('d, d_sp, d_medSp, d_medSp_sp, dm, dc')
             ->from('DoctorBundle:Doctor', 'd')
             ->innerJoin('d.institutionMedicalCenters', 'imc')
             ->leftJoin('d.specializations', 'd_sp')
+            ->leftJoin('d.medicalSpecialities', 'd_medSp')
+            ->leftJoin('d_medSp.specialization', 'd_medSp_sp')
             ->leftJoin('d.media', 'dm')
             ->leftJoin('d.contactDetails', 'dc')
             ->where('imc.id = :institutionMedicalCenterId')

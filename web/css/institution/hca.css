@@ -1256,21 +1256,26 @@ ul.hca-notifications li:hover ul.actions li a,ul.hca-inquiries li:hover ul.actio
 }
 
 .specializations-listing {
+	/*
     border: 1px solid rgba(0,0,0,.1);
     display: inline-block;
     top: auto;
-    max-height: 170px;
+    max-height: 200px;
     overflow: auto;
     margin: 0;
     padding: 10px 25px;
+    background: #F4F4F4;
+    */
 }
 
 .specializations-listing li {
     list-style-type: none;
     line-height: 1.5em;
+    /*
     display: inline-block;
     float: left;
     width: 50%;
+    */
     padding: 5px 0 0;
 }
 
@@ -1967,6 +1972,27 @@ ul.two-column>li input[type=checkbox] {
 ul.two-column>li label {
     max-width: 235px;
     display: inline-block;
+}
+
+div.two-column {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 20px;
+    column-count: 2;
+    column-gap: 20px;
+}
+
+.doctor-specializations-wrapper.two-column {
+    border: 1px solid rgba(0,0,0,.1);
+    overflow: auto;
+    margin: 0;
+    padding: 10px 25px;
+    background: #F4F4F4;
+}
+
+.doctor-specializations-wrapper.two-column > ul.specializations-listing {
+    margin: 0;
 }
 
 .hca-contact-number {
