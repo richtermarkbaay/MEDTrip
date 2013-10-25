@@ -278,17 +278,17 @@ a {
 .doctors-specialiations {
     width:100%;
 }
-.doctors-specialiations label {
-	display: block;
-	width:45%;
-	float:left;
-	margin-top: -0.5%;
+
+.doctors-specialiations ul.specializations-listing {
+	list-style: none;
+	
 }
-.doctors-specialiations input[type="checkbox"] 
-{
-    width:4%;
-    float:left;
+.doctors-specialiations ul.specializations-listing li {
+	display: inline-block;
+	width: 50%;
+	float: left;
 }
+
 .doctors-contactEmail label{
     	margin-top:12px;
 }
