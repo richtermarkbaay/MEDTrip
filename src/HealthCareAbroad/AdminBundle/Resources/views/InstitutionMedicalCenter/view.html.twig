@@ -191,7 +191,7 @@
         	$('.ajax_loader').hide();
         	$(".hour").timepicker({ seconds: false  });
 
-        	$('a._removeDoctor').live('click', function() {
+        	$('a._removeDoctor').click(function(e) {
         	    var _linkElem = $(this);
         	    var _doctorElemId = $('#_doctorId');
         	    var _modalId = $(_linkElem.attr('data-modalId'));
