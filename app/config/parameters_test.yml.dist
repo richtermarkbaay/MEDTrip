@@ -27,11 +27,23 @@ parameters:
     memcached.servers:
         - { host: 127.0.0.1, port: 11211 }
 
-    notifications.debug: false
+    # Global and all-overriding setting; this determines whether or not
+    # notifications will be sent through, debug mode or otherwise
     notifications.enabled: false
-    notification.account_created.enabled: true
-    notification.hospital_profile_created.enabled: true
-    notification.clinic_created.enabled: true
+
+    # When notifications.debug is true this will override the settings for
+    # the specific notifications below, however only allowed recipients will
+    # be sent notifications
+    notifications.debug: false
+    notifications.allowed_recipients:
+        - "haroldmodesto@gmail.com"
+        - "hazel.caballero@pinoyoutsource.com"
+        - "harold.modesto@chromedia.com"
+
+    # specific notifications
+    notification.account_created.enabled: false
+    notification.hospital_profile_created.enabled: false
+    notification.clinic_created.enabled: false
     notification.new_listings_approved.enabled: false
     notification.inquiries.enabled: false
     notification.password_reset.enabled: true

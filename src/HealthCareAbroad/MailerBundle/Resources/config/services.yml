@@ -25,8 +25,8 @@ services:
         arguments:
             - @twig
             - @logger
-            - %notifications.debug%
-            - %notifications.allowed_recipients%
+            #- %notifications.debug%
+            #- %notifications.allowed_recipients%
 
     # UNTESTED/UNUSED
 #    services.mailer.notifications.plain_text:
