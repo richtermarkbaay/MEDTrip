@@ -84,13 +84,8 @@ abstract class NotificationsListener
         $data = $this->mergeTemplateConfigData($this->getData($event));
         $data = $this->mergeTemplateSharedData($data);
 
-        if ($this->debugMode) {
-            $enabled = isset($this->templateConfig['enabled']) && $this->templateConfig['enabled'];
-            // Run this check again because we have temporarily ignored the
-            // notifications enabled property in $this->isEnabled
-            if (!$enabled && !$this->hasAllowedRecipients($data)) {
-                return;
-            }
+        if (!$this->hasAllowedRecipients($data)) {
+            return;
         }
 
         try {
@@ -206,7 +201,7 @@ abstract class NotificationsListener
         if ($enabled) {
             $enabled = isset($this->templateConfig['enabled']) && $this->templateConfig['enabled'];
 
-            //Temporarily override specific notification setting when in debug mode;
+            //Temporarily override specific notification setting when in debug mode.
             //The actual decision on whether to proceed or not will be made in
             //$this->hasAllowedRecipients
             if (!$enabled && $this->debugMode) {
@@ -219,9 +214,20 @@ abstract class NotificationsListener
 
     private function hasAllowedRecipients($data)
     {
+        // Run this check again because we have temporarily ignored the
+        // notifications enabled property in $this->isEnabled
+        if (isset($this->templateConfig['enabled']) && $this->templateConfig['enabled']) {
+            return true;
+        }
+
+        if (!$this->debugMode ) {
+            return false;
+        }
+
         if (!in_array(strtolower($data['to']), $this->allowedRecipients)) {
             return false;
         }
+
         if (isset($data['cc']) && !in_array(strtolower($data['cc'], $this->allowedRecipients))) {
             unset($data['cc']);
         }
