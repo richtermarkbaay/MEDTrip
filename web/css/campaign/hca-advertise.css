@@ -8,4 +8,7 @@
 .nav-list li:last-child {
 	margin-bottom:20px;
 }
+.nav-list {
+	line-height:35px !important;
+}
 .seal7{background:url(../../images/frontend/campaign/lead-seal-7.png) no-repeat center center;height:80px;width:80px;margin-top:10px;margin-bottom:10px;-webkit-background-size:cover;-moz-background-size:cover;-o-background-size:cover;background-size:cover;float:right}
