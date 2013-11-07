@@ -8,7 +8,7 @@ use HealthCareAbroad\HelperBundle\Services\LocationService;
 
 use Symfony\Component\Form\DataTransformerInterface;
 
-class StateIdDataTransformer implements DataTransformerInterface
+class StateTransformer implements DataTransformerInterface
 {
     /**
      * @var LocationService
@@ -41,17 +41,8 @@ class StateIdDataTransformer implements DataTransformerInterface
             if (null === $globalStateData){
                 throw new \Exception('Failed to transform invalid state id: '.$id);
             }
-            $globalStateData = $globalStateData['state'];
-            $state = new State();
-            $state->setId($globalStateData['id']);
-            $state->setName($globalStateData['name']);
-            $state->setStatus(State::STATUS_ACTIVE);
-            
-            $countryData = $globalStateData['geoCountry'];
-            $country = $this->locationService->getCountryById($countryData['id']);
-            
-            $state->setCountry($country);
-//             $this->locationService->saveState($state);
+
+            $state = $this->locationService->createStateFromArray($globalStateData);
         }
         
         return $state;

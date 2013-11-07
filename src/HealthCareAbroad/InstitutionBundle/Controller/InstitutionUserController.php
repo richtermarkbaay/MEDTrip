@@ -203,8 +203,16 @@ class InstitutionUserController extends Controller
         ));
     }
     
-    public function inviteAction()
+    /**
+     * NOTE: Not currently being used! DEPRECATED??
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
+    public function inviteAction(Request $request)
     {
+        $institutionId = $request->getSession()->get('institutionId');
+        $this->institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($institutionId);
+
         $institutionUserInvitation = new InstitutionUserInvitation();
         $form = $this->createForm(new InstitutionUserInvitationType(), $institutionUserInvitation);
 
@@ -222,7 +230,8 @@ class InstitutionUserController extends Controller
         }
 
         return $this->render('InstitutionBundle:InstitutionUser:invite.html.twig', array(
-            'form' => $form->createView(),
+            'institution' => $this->institution,
+            'form' => $form->createView()
         ));
     }
     

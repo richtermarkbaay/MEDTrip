@@ -5,6 +5,12 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Doctrine\Common\Util\Inflector;
+
+use HealthCareAbroad\HelperBundle\Services\LocationService;
+
+use Symfony\Component\Form\FormError;
+
 use HealthCareAbroad\HelperBundle\Form\FieldType\CityNameFieldType;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -24,14 +30,11 @@ class CityController extends Controller
      */
     public function indexAction()
     {
-        $filterForm = $this->createFormBuilder(array('country' => null, 'state' => null), array())
-            ->add('country', 'fancy_country')
-            ->add('state', 'state_list')
-            ->add('name', 'text')
-            ->getForm();
         return $this->render('AdminBundle:City:index.html.twig', array(
-            'filterForm' => $filterForm->createView(),
-            'editCityNameForm' => $this->createForm(new CityFormType(),new City())->createView()
+            'statusNew' => City::STATUS_NEW,
+            'statuses' => array(City::STATUS_NEW => 'New', City::STATUS_ACTIVE => 'Active', City::STATUS_INACTIVE => 'Inactive'),
+            'cities' => $this->filteredResult,
+            'pager' => $this->pager
         ));
     }
 
@@ -40,7 +43,7 @@ class CityController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New CityFormType(), new City());
+        $form = $this->createForm(New CityFormType());
 
         return $this->render('AdminBundle:City:form.html.twig', array(
             'id' => null,
@@ -54,8 +57,13 @@ class CityController extends Controller
      */
     public function editAction($id)
     {
-        $city = $this->getDoctrine()->getEntityManager()
-                ->getRepository('HelperBundle:City')->find($id);
+        $city = $this->get('services.location')->findGlobalCityById($id); 
+        if(isset($city['geoCountry'])) {
+            $city['geoCountry'] = $city['geoCountry']['id'];
+        }
+        if(isset($city['geoState'])) {
+            $city['geoState'] = $city['geoState']['id'];
+        }
 
         $form = $this->createForm(New CityFormType(), $city);
 
@@ -66,27 +74,6 @@ class CityController extends Controller
         ));
     }
 
-    public function updateAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getEntityManager();
-        $form = $this->createForm(new CityFormType(), new City());
-        $form->bind($request);
-        if($form->isValid()) {
-            // update global city data
-            $city = $em->getRepository('HelperBundle:City')->find($request->get('id',0));
-            if($city) {
-                $em->persist($city);
-                $em->flush();
-            }
-            
-            $cityData = $request->get('city');
-            $cityData['id'] = $request->get('id');
-            $city = $this->get('services.location')->saveGlobalCity($cityData);
-        }
-        
-        return new Response(\json_encode($city));
-    }
-    
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
@@ -96,40 +83,39 @@ class CityController extends Controller
             return new Response("Save requires POST method!", 405);
         }
 
-        $id = $request->get('id', null);
-        $em = $this->getDoctrine()->getEntityManager();
+        $formData = $request->get(CityFormType::NAME);
+        $form = $this->createForm(new CityFormType(), $formData);
 
-        $form = $this->createForm(New CityFormType(), $city);
-        $form->bind($request);
-        
-        if ($form->isValid()) {
-            
-            if(!$id) {
-                $data = $request->get('city');
+        if($id = $request->get('id', null)) {
+            $formAction = $this->generateUrl('admin_city_update', array('id' => $id));
+            $result = $this->get('services.location')->updateGlobalCity($formData, $id);
+        } else {
+            $formAction = $this->generateUrl('admin_city_create');
+            $result = $this->get('services.location')->addGlobalCity($formData);
+        }
+
+        // if no errors
+        if(!isset($result['form'])) {
+            if($id) {
+                $this->get('services.location')->updateCity($result, $id);
             }
-            else {
-                $data = array(
-                        'id' => $city->getId(),
-                        'name' => $city->getName(),
-                        'countryId' =>  $city->getCountry()->getId(),
-                        'status' => $city->getStatus()
-                );
-            }
-            $city = $this->get('services.location')->saveGlobalCity($data);
-            $em->persist($city);
-            $em->flush($city);
-            
-            // dispatch event
-            $eventName = $id ? AdminBundleEvents::ON_EDIT_CITY : AdminBundleEvents::ON_ADD_CITY;
-            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $city));
 
             $request->getSession()->setFlash('success', 'City has been saved!');
-            
-            return $this->redirect($this->generateUrl('admin_city_index'));
+            $routeParams = array(
+                'country' => $formData['geoCountry'],
+                'state' => isset($formData['geoState']) ? $formData['geoState'] : 0, 
+                'status' => $formData['status'],
+            );
+
+            return $this->redirect($this->generateUrl('admin_city_index', $routeParams));
         }
-        $formAction = $id
-            ? $this->generateUrl('admin_city_update', array('id' => $id))
-            : $this->generateUrl('location_city_save');
+
+        // Bind API Form Errors to client form 
+        foreach($result['form']['children'] as $property => $data) {
+            if(isset($data['errors'])) {
+                $form->get($property)->addError(new FormError($data['errors'][0]));                
+            }
+        }
 
         return $this->render('AdminBundle:City:form.html.twig', array(
             'id' => $id,
@@ -141,24 +127,23 @@ class CityController extends Controller
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_CITY')")
      */
-    public function updateStatusAction($id)
+    public function updateStatusAction(Request $request)
     {
-        $result = false;
-        $em = $this->getDoctrine()->getEntityManager();
-        $city = $em->getRepository('HelperBundle:City')->find($id);
+        $city = $this->get('services.location')->updateGlobalCityStatus($request->get('id'), $request->get('status'));
 
-        if ($city) {
-            $city->setStatus($city->getStatus() ? 0 : 1);
-            $em->persist($city);
-            $em->flush($city);
+        $em = $this->getDoctrine()->getEntityManager();
+        $cityObj = $em->getRepository('HelperBundle:City')->find($city['id']);
+
+        if ($cityObj) {
+            $cityObj->setStatus($city['status']);
+            $em->persist($cityObj);
+            $em->flush($cityObj);
 
             // dispatch event
             $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_CITY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_CITY, $city));
-
-            $result = true;
         }
 
-        $response = new Response(json_encode($result));
+        $response = new Response(json_encode($city));
         $response->headers->set('Content-Type', 'application/json');
 
         return $response;

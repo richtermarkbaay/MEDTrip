@@ -30,13 +30,11 @@ class GlobalCountryListType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	    //$builder->prependNormTransformer(new CountryTransformer($this->locationService));
-	    $builder->addModelTransformer(new CountryTransformer($this->locationService));
-	    
+	    //$builder->addModelTransformer(new CountryTransformer($this->locationService));	    
 	}
 	
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {	
-        
         $countries = $this->locationService->getGlobalCountries();
         $choices = array();
         foreach ($countries['data'] as $country){

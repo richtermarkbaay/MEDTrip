@@ -5,13 +5,13 @@ admin_city_index:
         _method:  GET
 
 admin_city_add:
-    pattern:  /admin/city/add
+    pattern:  /admin/cities/add
     defaults: { _controller: AdminBundle:City:add }
     requirements:
         _method:  GET
 
 admin_city_create:
-    pattern:  /admin/cities
+    pattern:  /admin/cities/save
     defaults: { _controller: AdminBundle:City:save }
     requirements:
          _method: POST
@@ -25,7 +25,7 @@ admin_city_edit:
 
 admin_city_update:
     pattern:  /admin/cities/update
-    defaults: { _controller: AdminBundle:City:update }
+    defaults: { _controller: AdminBundle:City:save }
     requirements:
          _method: POST
 
@@ -34,3 +34,4 @@ admin_city_updateStatus:
     defaults: { _controller: AdminBundle:City:updateStatus, id: ~ }
     requirements:
         id: \d+
+        status: \d+

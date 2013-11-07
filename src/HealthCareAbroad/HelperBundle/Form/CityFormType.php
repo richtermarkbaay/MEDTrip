@@ -12,26 +12,31 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class CityFormType extends AbstractType
 {	
+    const NAME = 'geoCity';
+    
 	public function buildForm(FormBuilderInterface $builder, array $options)
-	{
-		//$status = array(City::STATUS_ACTIVE => 'active', City::STATUS_INACTIVE => 'inactive');
-
+	{   
 		$builder->add('name');
-// 		$builder->add('country', 'globalCountryList');
-		//$builder->add('country', 'globalCountry_list', array('empty_value' => 'Please select a country'));
-		//$builder->add('status', 'choice', array('choices'=>$status));
+		$builder->add('geoCountry', 'globalCountry_list', array('empty_value' => 'Please select a country'));
+		$builder->add('geoState', 'choice', array('choices' => array(null => 'Please select a state')));
+		$builder->add('status', 'choice', array('choices' => $this->getStatuses()));
 	}
 
 	// How does it work?
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
-			'data_class' => 'HealthCareAbroad\HelperBundle\Entity\City',
+            'csrf_protection' => false
 		));
+	}
+	
+	private function getStatuses()
+	{
+	    return array(City::STATUS_NEW => 'New', City::STATUS_ACTIVE => 'Active', City::STATUS_INACTIVE => 'Inactive');
 	}
 
 	public function getName()
 	{
-		return 'city';
+		return self::NAME;
 	}
 }

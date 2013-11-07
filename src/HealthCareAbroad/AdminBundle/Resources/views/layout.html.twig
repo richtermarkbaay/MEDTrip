@@ -6,16 +6,16 @@
 
 <body>
     {% include 'AdminBundle:Embed:header.layout.html.twig' %}  
+
     <div id="main-content"  class="container maincontent">
+
+            {% include '::notice.admin.html.twig' %}
 
             {% if breadcrumbs is defined %}
                 {% autoescape false %}{{ breadcrumbs }}{% endautoescape %}
             {% endif %}
-
-            {% include '::notice.admin.html.twig' %}
             
             {% block content %}{% endblock %}
-
     </div>
 
     {% include '::footer.admin.html.twig' %}

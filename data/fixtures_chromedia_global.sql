@@ -174,7 +174,8 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
   `geo_state_id` bigint(20) unsigned DEFAULT NULL,
   `county` varchar(255) DEFAULT NULL COMMENT 'Name of county. US only',
   `slug` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `status` tinyint(1) NOT NULL,
+  `status` smallint(1) NOT NULL DEFAULT '1',
+  `institution_id` int(11) unsigned DEFAULT NULL,
   `__old_country_id` int(10) unsigned DEFAULT NULL COMMENT 'old countries.id',
   `__old_city_id` int(10) unsigned DEFAULT NULL COMMENT 'old cities.id',
   `__region_code` int(11) DEFAULT NULL,
@@ -184,9 +185,10 @@ CREATE TABLE IF NOT EXISTS `geo_cities` (
   `__adm2_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'The name of a subdivision of a second-order administrative division, or known as a county in the United States. (US only).',
   `__adm2_full_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`geo_country_id`,`geo_state_id`),
   KEY `country_id` (`geo_country_id`),
   KEY `geo_state_id` (`geo_state_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2686938 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `geo_cities`
@@ -258,9 +260,12 @@ CREATE TABLE IF NOT EXISTS `geo_states` (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `geo_country_id` int(10) unsigned NOT NULL,
   `administrative_code` varchar(3) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'First-Order Administrative Division Code',
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  `institution_id` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`geo_country_id`),
   KEY `geo_country_id` (`geo_country_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3702 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `geo_states`
