@@ -82,7 +82,7 @@
     {% spaceless %}
         {% for type, site in form.vars.value %}
             {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
-            <div class="control-group row">
+            <div class="control-group" style="margin-bottom: 20px">
                 <label for="{{ form.vars.full_name ~ '['~ type ~']' }}" style="margin-left: 50px;">{{ get_social_media_site_label(type) }}</label>
                 <i class="icon-{{ iconClass }} icon-2x"></i>
                 <input type="text" value="{{ site }}" name="{{ form.vars.full_name ~ '[' ~ type ~']' }}" class="span11 pull-right" placeholder="{{ get_social_media_site_placeholder(type) }}">
