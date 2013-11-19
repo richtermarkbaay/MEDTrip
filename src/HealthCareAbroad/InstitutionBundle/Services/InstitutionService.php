@@ -541,7 +541,7 @@ class InstitutionService
                 else {
                     $status = 'read';
                 }
-                //var_dump();
+
                 $inquiryArr[] = array(
                                 'sender' => $each->getInquirerName(),
                                 'email' => $each->getInquirerEmail(),

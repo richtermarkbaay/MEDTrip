@@ -30,41 +30,18 @@ class DefaultController extends Controller
         return $this->render('HelperBundle:Default:index.html.twig', array('name' => $name));
     }
 
-    // TODO: This is currently not being used! DEPRECATED??
-    public function loadStatesAction(Request $request)
-    {
-        $countryId = $request->get('countryId', 0);
-        $selectedStateId = $request->get('selectedStateId', 0);
-        $globalData = $this->get('services.location')->findGlobalStatesByCountry($countryId);
-        
-        $json = \json_encode($globalData['states']);
-        
-        return new Response($json, 200, array('content-type' => 'application/json'));
-    }
     
     public function loadCitiesAction(Request $request)
     {
         $countryId = $request->get('countryId', 0);
-        $selectedCity = $request->get('selectedCityId', 0);
-        
-        $selectedCityData = array();
-       if($request->get('loadNonGlobalCities')) {
-           $data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
-       }
-       else {
-           $data =  array();
-           $countries = $this->get('services.location')->getGlobalCitiesListByContry($countryId);
 
-           foreach ($countries['data'] as $each){
-               $data[] =  array('id' => $each['id'], 'name' => $each['name']);
-               if ($selectedCity == $each['id']) {
-                   $selectedCityData = array('id' => $each['id'], 'name' => $each['name']);
-               }
-           }
-       }
-        
-        //$html = $this->renderView('HelperBundle:Default:cities.html.twig', array('cities' => $data, 'selectedCity' => $selectedCity));
-        $response = new Response(json_encode(array('data' => $data, 'selectedCity' => $selectedCityData)), 200, array('content-type' => 'application/json'));
+        if($request->get('loadNonGlobalCities')) {
+            $data = $this->get('services.location')->getListActiveCitiesByCountryId($countryId);
+        } else {
+            $data = $this->get('services.location')->getGlobalCities(array('country_id' => $countryId, 'key_value' => 1));
+        }
+
+        $response = new Response(json_encode(array('data' => $data)), 200, array('content-type' => 'application/json'));
 
         return $response;
     }

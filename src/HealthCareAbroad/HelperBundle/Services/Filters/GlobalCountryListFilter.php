@@ -30,8 +30,9 @@ class GlobalCountryListFilter extends ArrayListFilter
     function setFilteredResults()
     {
         $this->queryParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
+        $this->queryParams['limit'] = $this->pagerDefaultOptions['limit'];
+
         $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCountries($this->queryParams);
-        
         $this->pager->getAdapter()->setData($dataFromAPi);
         
         $this->filteredResult = $this->pager->getResults();

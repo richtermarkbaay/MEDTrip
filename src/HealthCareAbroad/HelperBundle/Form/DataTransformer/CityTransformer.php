@@ -16,7 +16,7 @@ class CityTransformer implements DataTransformerInterface
     }
     
     public function transform($data)
-    {         
+    {
         if ($data instanceof City) {
             $data = $data->getId();
         }
@@ -32,7 +32,7 @@ class CityTransformer implements DataTransformerInterface
 
         $city = $this->service->getCityById($id);
         if (!$city) {
-            $cityGlobalData = $this->service->findGlobalCityById($id);
+            $cityGlobalData = $this->service->getGlobalCityById($id);
             $city = $this->service->createCityFromArray($cityGlobalData); 
         }
 

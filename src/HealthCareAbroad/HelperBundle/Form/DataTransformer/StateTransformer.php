@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\DataTransformer;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\HelperBundle\Entity\State;
 
 use HealthCareAbroad\HelperBundle\Services\LocationService;
@@ -35,8 +37,9 @@ class StateTransformer implements DataTransformerInterface
             return null;
         }
         
-        $state = $this->locationService->findStateById($id);
-        if (!$state){
+        $state = $this->locationService->getStateById($id);
+
+        if (!$state){ 
             $globalStateData = $this->locationService->getGlobalStateById($id);
             if (null === $globalStateData){
                 throw new \Exception('Failed to transform invalid state id: '.$id);

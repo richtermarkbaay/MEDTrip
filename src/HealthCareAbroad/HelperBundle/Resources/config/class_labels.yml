@@ -28,8 +28,9 @@ parameters:
         institution_medical_center_property: {singular: "global award / ancillary service of clinic", plural: "global awards / ancillary services of clinic"}
         media: {singular: "image / video", plural: "images / videos"}
         country: {singular: "country", plural: "countries"}
-        helper_text: {singular: "helper text", plural: "helper text"}
+        state: {singular: "state", plural: "states"}
         city: {singular: "city", plural: "cities"}
+        helper_text: {singular: "helper text", plural: "helper text"}
         doctor: {singular: "doctor", plural: "doctors"}
         awardingBody: {singular: "awarding body", plural: "awarding bodies"}
         global_award: {singular: "award, certificate or affiliation", plural: "awards, certificates or affiliations"}

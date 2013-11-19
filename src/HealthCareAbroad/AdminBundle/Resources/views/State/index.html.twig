@@ -1,7 +1,7 @@
 {% extends 'AdminBundle::layout.html.twig' %}
 {% set selectedTab = 'manageHcaData' %}
-{% set selectedSubMenu = 'cities' %}
-{% set cityLabel = getClassLabel('city') %}
+{% set selectedSubMenu = 'states' %}
+{% set stateLabel = getClassLabel('state') %}
 
 {% block content %}
     <div class="span3">
@@ -11,8 +11,8 @@
  
  	   {% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
-                title: cityLabel.plural | title,
-                actions: [{link: path('admin_city_add'), label: 'Add '~ cityLabel.singular | title, 'icon' : 'icon-plus' }] 
+                title: stateLabel.plural | title,
+                actions: [{link: path('admin_state_add'), label: 'Add '~ stateLabel.singular | title, 'icon' : 'icon-plus' }] 
             }  
         %}
     
@@ -23,14 +23,14 @@
             {% set sortOrder = app.request.get('sortOrder') %}
             {% set default = sortBy | length ? '' : 'sort-asc' %}
             
-            <table id="city-list" class="table table-bordered sortable-list">
+            <table id="state-list" class="table table-bordered sortable-list">
                 <tr>
                     <th id="column-name" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
-
-            {% for each in cities %}
+        
+            {% for each in states %}
                 <tr>
                     <td>
                         {{ each.name }}
@@ -39,22 +39,21 @@
                         {% endif %}
                     </td>
                     <td>
-                        <select class="update-status" style="width: 100px" data-update-url="{{ path('admin_city_updateStatus', {id:each.id}) }}">
+                        <select class="update-status" style="width: 100px" data-update-url="{{ path('admin_state_updateStatus', {id:each.id}) }}">
                             {% for status, statusLabel in statuses %}
                             <option value="{{ status }}" {% if each.status is sameas(status) %}selected="selected"{% endif %}>{{ statusLabel }}</option>    
                             {% endfor %}
                         </select>
-
                     </td>
-                     <td>
-                        <a href="{{ path('admin_city_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a> <br/>
+                    <td>
+                        <a href="{{ path('admin_state_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a> <br/>
                     </td>
                 </tr>
             {% endfor %}
             </table>
 
             {% if pager.isPaginable %}
-               {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
+               {{ paginate(pager, 'admin_state_index', app.request.query.all) }}
             {% endif %}
     
         {% endblock %}
@@ -67,25 +66,14 @@
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
 $(function(){
-    var loadStatesUrl = '{{ get_load_states_api_uri() }}';
-    $('#filter-country').change(function() {
-        var statesOptions = '<option value="all">All</option>';
-        $('#filter-state').prop('disabled', true).html('<option>loading...</option>');
-        $.getJSON(loadStatesUrl, {country_id: $(this).val()}, function(response){
-            $.each(response.data, function(i, state){
-                statesOptions += '<option value="'+state.id+'">'+state.name+'</option>';
-            });
-            $('#filter-state').prop('disabled', false).html(statesOptions);
-        });
-    });
-
     $('select.update-status').change(function(){
         var elem = $(this).prop('disabled', true);
         elem.after('<span> updating status...</span>');
         $.post($(this).data('update-url'), {status: $(this).val()}, function(response){
+            console.log(response);
             elem.prop('disabled', false).next().remove();
         });
-    });    
+    });
 })
 </script>
 {% endblock %}

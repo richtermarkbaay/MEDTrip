@@ -1,26 +1,25 @@
 <?php
 /**
- * @autor Alnie Jacobe
+ * @autor Adelbert Silla
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
-use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\State;
 
 use HealthCareAbroad\HelperBundle\Entity\Country;
 
 use Doctrine\ORM\QueryBuilder;
 
-class GlobalCityListFilter extends ArrayListFilter
+class GlobalStateListFilter extends ArrayListFilter
 {
 	function __construct($doctrine)
 	{
 		parent::__construct($doctrine);
 		
 		$this->addValidCriteria('country');
-		$this->addValidCriteria('state');
 		// set default status filter to active
-		$this->defaultParams = array('status' => City::STATUS_ACTIVE, 'country' => 1, 'state' => self::FILTER_KEY_ALL);
+		$this->defaultParams = array('status' => State::STATUS_ACTIVE, 'country' => 1, 'state' => 0);
 	
 		//manually inject service for serviceDependencies
 		$this->serviceDependencies = array('services.location');
@@ -29,15 +28,14 @@ class GlobalCityListFilter extends ArrayListFilter
     function setFilterOptions()
     {
         $statuses = array(
-            City::STATUS_NEW => 'New', 
-            City::STATUS_ACTIVE => 'Active', 
-            City::STATUS_INACTIVE => 'Inactive', 
+            State::STATUS_NEW => 'New', 
+            State::STATUS_ACTIVE => 'Active', 
+            State::STATUS_INACTIVE => 'Inactive', 
             self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL
         );
 
         $this->setStatusFilterOption($statuses);
         $this->setCountryFilterOption();
-        $this->setStateFilterOption();
     }
 
     function setCountryFilterOption()
@@ -54,44 +52,22 @@ class GlobalCityListFilter extends ArrayListFilter
             'options' => $options
         );
     }
-    
-    function setStateFilterOption()
-    {
-        // Set The Filter Option
-        $params = array('country_id' => $this->queryParams['country'], 'key_value' => 1);
-        $states = $this->getInjectedDependcy('services.location')->getGlobalStates($params);
 
-        $options = array(self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL);
-        foreach($states['data'] as $each) {
-            $options[$each['id']] = $each['name'];
-        }
-    
-        $this->filterOptions['state'] = array(
-            'label' => 'State/Province',
-            'selected' => $this->queryParams['state'],
-            'options' => isset($options) ? $options : array()
-        );
-    }
-    
     function setFilteredResults()
     {   
-        $globalCitiesParams = array(
+        $globalStatesParams = array(
             'country_id' => $this->queryParams['country'],
             'page' => isset($this->queryParams['page']) ? $this->queryParams['page'] : 1,
             'limit' => isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit']
         );
 
-        if($this->queryParams['state'] && $this->queryParams['state'] != self::FILTER_KEY_ALL) {
-            $globalCitiesParams['state_id'] = $this->queryParams['state'];
-        }
-
-        if($this->queryParams['status'] == self::FILTER_KEY_ALL) {
-            $globalCitiesParams['active_only'] = 0; 
+        if($this->queryParams['status'] == 'all') {
+            $globalStatesParams['active_only'] = 0; 
         } else {
-            $globalCitiesParams['status'] = $this->queryParams['status'];
+            $globalStatesParams['status'] = $this->queryParams['status'];
         }
         
-        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCities($globalCitiesParams);
+        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalStates($globalStatesParams);
 
         $this->pager->getAdapter()->setData($dataFromAPi);
         

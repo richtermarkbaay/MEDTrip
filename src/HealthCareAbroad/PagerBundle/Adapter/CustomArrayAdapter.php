@@ -36,9 +36,10 @@ class CustomArrayAdapter implements PagerAdapterInterface
      * @return ArrayAdapter Provides a fluent interface
      */
     public function setData(array $data) {
-        $this->array = $data;
-        $this->totalItems = count($data);
-    
+        $this->array = $data['data'];
+
+        $this->totalItems = $data['totalResults'];
+
         return $this;
     }
 
@@ -46,12 +47,12 @@ class CustomArrayAdapter implements PagerAdapterInterface
      * {@inheritDoc}
      */
     function countResults($offset = null, $limit = null) {
-        return count(array_slice($this->array, $offset, $limit));
+        return count($this->array);
     }
 
     public function getResults($offset, $limit)
     {
-        return array_slice($this->array, $offset, $limit);
+        return $this->array;
     }
     
     /**

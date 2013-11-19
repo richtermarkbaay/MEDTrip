@@ -95,10 +95,16 @@ doctrine:
                     SearchBundle: ~
                     TreatmentBundle: ~
                     UserBundle: ~
+                    TermBundle: ~
+                    LogBundle: ~
             logger:
                 connection: logger
                 mappings:
                     LogBundle: ~
+            hca_blog:
+                connection: hca_blog
+                mappings:
+                    ApiBundle: ~
 
 web_profiler:
     toolbar: false

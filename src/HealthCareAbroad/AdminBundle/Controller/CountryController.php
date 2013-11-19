@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use Symfony\Component\Form\FormError;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +21,7 @@ class CountryController extends Controller
     {
         return $this->render('AdminBundle:Country:index.html.twig', array(
             'countries' => $this->filteredResult,
+            'statuses' => array(Country::STATUS_ACTIVE => 'Active', Country::STATUS_INACTIVE => 'Inactive'),
             'pager' => $this->pager
         ));
     }
@@ -26,7 +31,7 @@ class CountryController extends Controller
      */
     public function addAction()
     {
-        $form = $this->createForm(New CountryFormType(), new Country());
+        $form = $this->createForm(New CountryFormType());
 
         return $this->render('AdminBundle:Country:form.html.twig', array(
             'id' => null,
@@ -40,92 +45,85 @@ class CountryController extends Controller
      */
     public function editAction($id)
     {
-        $locationService = $this->get('services.location'); 
-        $country = $locationService->getGlobalCountryById($id);
-        $country = $locationService->createCountryFromArray($country);
+        $country = $this->get('services.location')->getGlobalCountryById($id);
         
         $form = $this->createForm(New CountryFormType(), $country);
-
+        
         return $this->render('AdminBundle:Country:form.html.twig', array(
-                'id' => $id,
-                'form' => $form->createView(),
-                'formAction' => $this->generateUrl('admin_country_update', array('id' => $id))
+            'id' => $id,
+            'form' => $form->createView(),
+            'formAction' => $this->generateUrl('admin_country_update', array('id' => $id))
+        ));
+       
+    }
+
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
+     */
+    public function saveAction(Request $request)
+    {        
+        $formData = $request->get(CountryFormType::NAME);
+        $form = $this->createForm(new CountryFormType(), $formData);
+        
+        if($id = $request->get('id', null)) {
+            $formAction = $this->generateUrl('admin_country_update', array('id' => $id));
+            $result = $this->get('services.location')->updateGlobalCountry($formData, $id);
+        } else {
+            $formAction = $this->generateUrl('admin_country_create'); 
+            $result = $this->get('services.location')->addGlobalCountry($formData);
+        }
+        
+        // if no errors
+        if(!isset($result['form'])) {
+            if($id && ($countryObj = $this->get('services.location')->updateCountry($result, $id))) {
+                $eventName = AdminBundleEvents::ON_EDIT_COUNTRY;
+                $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $countryObj));
+            }
+        
+            $request->getSession()->setFlash('success', 'Country has been saved!');
+            $routeParams = array(
+                'status' => $formData['status'],
+            );
+        
+            return $this->redirect($this->generateUrl('admin_country_index', $routeParams));
+        }
+        
+        // Bind API Form Errors to client form
+        foreach($result['form']['children'] as $property => $data) {
+            if(isset($data['errors'])) {
+                $form->get($property)->addError(new FormError($data['errors'][0]));
+            }
+        }
+        
+        return $this->render('AdminBundle:Country:form.html.twig', array(
+            'id' => $id,
+            'form' => $form->createView(),
+            'formAction' => $formAction
         ));
     }
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_COUNTRY')")
      */
-    public function saveAction()
+    public function updateStatusAction(Request $request)
     {
-        $request = $this->getRequest();
-        if('POST' != $request->getMethod()) {
-            return new Response("Save requires POST method!", 405);
-        }
+        $country = $this->get('services.location')->updateGlobalCountryStatus($request->get('id'), $request->get('status'));
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $countryObj = $em->getRepository('HelperBundle:Country')->find($country['id']);
+        
+        if ($countryObj) {
+            $countryObj->setStatus($city['status']);
+            $em->persist($countryObj);
+            $em->flush($countryObj);
 
-        $locationService = $this->get('services.location');
-        
-        if($id = $request->get('id', null)) {
-            $country = $locationService->getGlobalCountryById($id);
-            $country = $locationService->createCountryFromArray($country);
-        } else {
-            $country = new Country();
-        }
-        
-        $form = $this->createForm(New CountryFormType(), $country);
-        $form->bind($request);
-        if ($form->isValid()) {
-            if(!$id) {
-                $data = $request->get('country');
-            }
-            else {
-                $data = array(
-                        'id' => $country->getId(),
-                        'name' => $country->getName(),
-                        'abbr' => $country->getAbbr(),
-                        'code' =>  $country->getCode(),
-                        'status' => $country->getStatus()
-                );
-            }
-            
-            $country = $locationService->saveGlobalCountry($data);
-            
             // dispatch event
-            $eventName = $id ? AdminBundleEvents::ON_EDIT_COUNTRY : AdminBundleEvents::ON_ADD_COUNTRY;
-            // $eventName;exit;
-            $this->get('event_dispatcher')->dispatch($eventName, $this->get('events.factory')->create($eventName, $country));
-            
-            $request->getSession()->setFlash('success', 'Country has been saved!');
-            
-            return $this->redirect($this->generateUrl('admin_country_index'));
-        }
-        $formAction = $id ? $this->generateUrl('admin_country_update', array('id' => $id)) : $this->generateUrl('admin_country_create');
-
-        return $this->render('AdminBundle:Country:form.html.twig', array(
-                'id' => $id,
-                'form' => $form->createView(),
-                'formAction' => $formAction
-        ));
-    }
-
-    /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_COUNTRY')")
-     */
-    public function updateStatusAction($id)
-    {
-        $country = $this->get('services.location')->updateStatusGlobalCountry($id);
-        
-        if ($country) {
-            
-            // dispatch event
-            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_COUNTRY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_COUNTRY, $country));
-
-            $result = true;
+            $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_COUNTRY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_COUNTRY, $countryObj));
         }
 
-        $response = new Response(json_encode($result));
+        $response = new Response(json_encode($country));
         $response->headers->set('Content-Type', 'application/json');
-
+        
         return $response;
     }
 }

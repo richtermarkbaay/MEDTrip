@@ -79,6 +79,11 @@ AdminBundle_country:
     resource: "@AdminBundle/Resources/config/routing_country.yml"
     prefix:   /
 
+# Routes for Admin StateController #
+AdminBundle_state:
+    resource: "@AdminBundle/Resources/config/routing_state.yml"
+    prefix:   /
+
 # Routes for Admin CityController #
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"

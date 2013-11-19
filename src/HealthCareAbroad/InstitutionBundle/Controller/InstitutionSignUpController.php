@@ -240,7 +240,7 @@ class InstitutionSignUpController extends InstitutionAwareController
                     $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
-            
+
             // Check If Custom State
             if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
                 $stateData = array(
@@ -265,6 +265,7 @@ class InstitutionSignUpController extends InstitutionAwareController
             }
 
             $form->bind($formRequestData);
+
             if ($form->isValid()) {
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
 

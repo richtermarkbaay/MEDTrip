@@ -1,0 +1,35 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+{% set selectedSubMenu = 'states' %}
+{% set stateLabel = getClassLabel('state') %}
+
+{% block content %}
+    <div class="span3">
+    {% include 'AdminBundle:Widgets:subMenu.manageHcaData.html.twig'%}
+	</div>
+	<div class="span9">
+	
+		{% embed 'HelperBundle:Widgets:section.html.twig' with { 
+                title: ( form.vars.value.id is defined ? 'Edit ' : 'Add ' ) ~ stateLabel.singular | title ,
+                actions: [{link: path('admin_state_index'), label: 'View all '~ stateLabel.plural | title, 'icon' : 'icon-list' }]
+            }
+        %}
+
+        {% block sectionContent %}
+
+            {% include '::notice.admin.html.twig' %}
+
+			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
+				{{ form_row(form.name) }}
+				{{ form_row(form.geoCountry) }}
+				{{ form_row(form.status) }}
+				{{ form_rest(form) }}
+
+ 				<input type="submit" class="btn btn-large btn-primary" name="submit" value="Save" onclick="$(this).prop('disabled', true).val('Saving...')"/>
+			</form>
+	
+            {% endblock %}
+        {% endembed %}
+    </div>
+
+{% endblock %}

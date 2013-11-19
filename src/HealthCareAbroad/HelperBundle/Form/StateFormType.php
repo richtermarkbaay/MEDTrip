@@ -3,25 +3,25 @@ namespace HealthCareAbroad\HelperBundle\Form;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-use HealthCareAbroad\HelperBundle\Entity\City;
+use HealthCareAbroad\HelperBundle\Entity\State;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 
-class CityFormType extends AbstractType
+class StateFormType extends AbstractType
 {	
-    const NAME = 'geoCity';
+    const NAME = 'geoState';
     
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{   
 		$builder->add('name');
 		$builder->add('geoCountry', 'globalCountry_list', array('empty_value' => 'Please select a country', 'label' => 'Country'));
-		$builder->add('geoState', 'choice', array('choices' => array(null => 'Please select a state'), 'label' => 'State'));
 		$builder->add('status', 'choice', array('choices' => $this->getStatuses()));
 	}
 
+	// How does it work?
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
 	{
 	    $resolver->setDefaults(array(
@@ -31,7 +31,7 @@ class CityFormType extends AbstractType
 	
 	private function getStatuses()
 	{
-	    return array(City::STATUS_NEW => 'New', City::STATUS_ACTIVE => 'Active', City::STATUS_INACTIVE => 'Inactive');
+	    return array(State::STATUS_NEW => 'New', State::STATUS_ACTIVE => 'Active', State::STATUS_INACTIVE => 'Inactive');
 	}
 
 	public function getName()

@@ -57,7 +57,7 @@ class CityController extends Controller
      */
     public function editAction($id)
     {
-        $city = $this->get('services.location')->findGlobalCityById($id); 
+        $city = $this->get('services.location')->getGlobalCityById($id); 
         if(isset($city['geoCountry'])) {
             $city['geoCountry'] = $city['geoCountry']['id'];
         }

@@ -48,6 +48,7 @@ final class ListFilterFactory
         return array(
             'admin_news_index' => 'NewsListFilter',
             'admin_city_index' => 'GlobalCityListFilter',
+            'admin_state_index' => 'GlobalStateListFilter',
             'admin_doctor_index' => 'DoctorListFilter',
             'admin_country_index' => 'GlobalCountryListFilter',
             'admin_institution_index' => 'InstitutionListFilter',

@@ -15,7 +15,7 @@ var Location = {
 
     resetWidgetValue: function(widget){
         widget.val('');
-        widget.data('fancyAutocomplete').options.valueContainer.val(0);
+        widget.data('fancyAutocomplete').options.valueContainer.val("");
     },
 	
     loadStatesOfCountry: function(countryId, widget, selectedStateId){
@@ -29,14 +29,18 @@ var Location = {
             type: 'get',
             dataType: 'json',
             success: function(response){
-                if (response.states.length){
+                if (response.data.length){
                     Location.disableWidget(widget, false);
-                    widget.data('fancyAutocomplete').setSource(response.states);
+                    widget.data('fancyAutocomplete').setSource(response.data);
                 }
                 else {
                     widget.data('fancyAutocomplete').setSource([]);
+                    if(widget.data('fancyAutocomplete').options.acceptCustomValue) {
+                        Location.disableWidget(widget, false);
+                        widget.data('fancyAutocomplete').dropdownTrigger.prop('disabled', true);
+                    }
                 }
-                widget.trigger('reloadedDataSource');
+                //widget.trigger('reloadedDataSource');
                 widget.prop('placeholder', widgetPlaceholder);
             }
         });
@@ -45,23 +49,29 @@ var Location = {
     loadCities: function(countryId, stateId, widget, selectedCityId){
         Location.disableWidget(widget, true);
         Location.resetWidgetValue(widget);
-        var params = {};
+        var params = {key_value: 1};
         if(countryId) { params.country_id = countryId; }
         if(stateId) { params.state_id = stateId; }
 
         var widgetPlaceholder = widget.prop('placeholder');
         widget.prop('placeholder', 'loading cities...');
-        
         $.ajax({
             url: Location.loadCitiesUrl,
             data: params,
             type: 'get',
             dataType: 'json',
             success: function(response){
-                if (response.cities.length){
+
+                if (response.data.length){
                     Location.disableWidget(widget, false);
-                    widget.data('fancyAutocomplete').setSource(response.cities);
-                    widget.trigger('reloadedDataSource');
+                    widget.data('fancyAutocomplete').setSource(response.data);
+                    //widget.trigger('reloadedDataSource');
+                } else {
+                    widget.data('fancyAutocomplete').setSource([]);
+                    if(widget.data('fancyAutocomplete').options.acceptCustomValue) {
+                        Location.disableWidget(widget, false);
+                        widget.data('fancyAutocomplete').dropdownTrigger.prop('disabled', true);
+                    }
                 }
 
                 widget.prop('placeholder', widgetPlaceholder);
