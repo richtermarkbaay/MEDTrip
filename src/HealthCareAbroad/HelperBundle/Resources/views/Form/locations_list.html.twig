@@ -175,10 +175,16 @@
                                 matchedItem.click();
                             }
 
+                            if(_inputElem.val() == '') {
+                                _valueContainer.val('');
+                                Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
+                                $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
+                            }
+
                             if(_valueContainer.val() == '') {
                                 $('#{{ form.parent.city.vars.id }}_trigger').attr('disabled', 'disabled');
                                 $('#{{ form.parent.city.vars.id }}_widget').autocomplete('disable');
-                            }                            
+                            }
                         }
                     }
                 });
@@ -204,6 +210,13 @@
                     {% endif %}
 
                 {% endif %}
+
+                {% if form.parent.city %}
+                    _inputElem.on('reloadedDataSource', function(e){
+                        Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
+                    });
+                {% endif %}
+                
             });
         })(jQuery);
         </script>

@@ -40,7 +40,7 @@ var Location = {
                         widget.data('fancyAutocomplete').dropdownTrigger.prop('disabled', true);
                     }
                 }
-                //widget.trigger('reloadedDataSource');
+                widget.trigger('reloadedDataSource');
                 widget.prop('placeholder', widgetPlaceholder);
             }
         });
@@ -49,10 +49,8 @@ var Location = {
     loadCities: function(countryId, stateId, widget, selectedCityId){
         Location.disableWidget(widget, true);
         Location.resetWidgetValue(widget);
-        var params = {key_value: 1};
-        if(countryId) { params.country_id = countryId; }
-        if(stateId) { params.state_id = stateId; }
 
+        var params = {key_value: 1, state_id: stateId, country_id: countryId};
         var widgetPlaceholder = widget.prop('placeholder');
         widget.prop('placeholder', 'loading cities...');
         $.ajax({
