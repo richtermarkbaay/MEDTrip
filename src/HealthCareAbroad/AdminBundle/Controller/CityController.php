@@ -125,7 +125,7 @@ class CityController extends Controller
     }
 
     /**
-     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_DELETE_CITY')")
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_CITY')")
      */
     public function updateStatusAction(Request $request)
     {
