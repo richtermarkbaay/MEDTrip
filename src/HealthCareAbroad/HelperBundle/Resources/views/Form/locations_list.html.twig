@@ -168,7 +168,7 @@
                         widget.trigger('selectedState', widget);
                     },
                     onAutocompleteChangeCallback: function(widget) {
-                        $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
+                        var cityWidget = $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
                         if(typeof(widget.options.acceptCustomValue) == 'boolean' && widget.options.acceptCustomValue == true) {
                             var matchedItem = _inputElem.parent().find('.combolist-wrapper li a:contains("'+_inputElem.val()+'")');
                             if(matchedItem.length && matchedItem.html().length == _inputElem.val().length && matchedItem.data('value') != _valueContainer.val()) {
@@ -177,13 +177,13 @@
 
                             if(_inputElem.val() == '') {
                                 _valueContainer.val('');
-                                Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
-                                $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
-                            }
-
-                            if(_valueContainer.val() == '') {
-                                $('#{{ form.parent.city.vars.id }}_trigger').attr('disabled', 'disabled');
-                                $('#{{ form.parent.city.vars.id }}_widget').autocomplete('disable');
+                                Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, cityWidget, 0);
+                                cityWidget.autocomplete('enable');
+                            } else {
+                                if(!_valueContainer.val()) {
+                                    cityWidget.autocomplete('disable');
+                                    $('#{{ form.parent.city.vars.id }}_trigger').prop('disabled', true);
+                                }
                             }
                         }
                     }
@@ -213,7 +213,9 @@
 
                 {% if form.parent.city %}
                     _inputElem.on('reloadedDataSource', function(e){
-                        Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
+                        if(!_valueContainer.val()) {
+                          Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
+                        }
                     });
                 {% endif %}
                 
