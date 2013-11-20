@@ -66,7 +66,7 @@ class ClinicCreatedListener extends NotificationsListener
         return InstitutionTypes::MULTIPLE_CENTER == $institutionMedicalCenter->getInstitution()->getType();
     }
 
-    public function getTemplateConfig(Event $event = null) {
+    public function getTemplateConfigName(Event $event = null) {
         return 'notification.clinic_created';
     }
 

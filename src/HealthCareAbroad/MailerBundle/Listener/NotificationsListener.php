@@ -11,7 +11,10 @@ abstract class NotificationsListener
 {
     protected $container;
     protected $templateConfigs;
+    protected $templateConfig;
     protected $exceptionLogger;
+    private $debugMode;
+    private $allowedRecipients;
 
     /**
      * Returns context dependent data needed by the email template
@@ -28,7 +31,7 @@ abstract class NotificationsListener
      * @param Event $event
      * @return string
     */
-    public abstract function getTemplateConfig(Event $event = null);
+    public abstract function getTemplateConfigName(Event $event = null);
 
     /**
      *
@@ -39,6 +42,10 @@ abstract class NotificationsListener
     {
         $this->container = $container;
         $this->templateConfigs = $templateConfigs;
+        $this->debugMode = $container->hasParameter('notifications.debug') ?
+            $container->getParameter('notifications.debug') : false;
+        $this->allowedRecipients = $container->hasParameter('notifications.allowed_recipients') ?
+            $container->getParameter('notifications.allowed_recipients') : array();
     }
 
     public function setExceptionLogger(ExceptionLogger $logger)
@@ -47,13 +54,25 @@ abstract class NotificationsListener
     }
 
     /**
-     * If
+     * TODO: several of the checks here can be handled by compiler passes.
      *
      *
      * @param Event $event
      */
     public function onSendNotification(Event $event)
     {
+        $templateConfigName = $this->getTemplateConfigName($event);
+
+        if (isset($this->templateConfigs[$templateConfigName])) {
+            $this->templateConfig = $this->templateConfigs[$templateConfigName];
+
+            if (empty($this->templateConfig)) {
+                throw new \Exception('Template configuration is required.');
+            }
+        } else {
+            throw new \Exception('Template configuration does not exist in the mailer.templates parameter. Check that getTemplateConfig() returns a valid value.');
+        }
+
         if (!$this->isEnabled($event)) {
             return;
         }
@@ -62,8 +81,17 @@ abstract class NotificationsListener
             return;
         }
 
-        $data = $this->mergeTemplateConfigData($this->getData($event), $this->getTemplateConfig($event));
+        $data = $this->mergeTemplateConfigData($this->getData($event));
         $data = $this->mergeTemplateSharedData($data);
+
+        if ($this->debugMode) {
+            $enabled = isset($this->templateConfig['enabled']) && $this->templateConfig['enabled'];
+            // Run this check again because we have temporarily ignored the
+            // notifications enabled property in $this->isEnabled
+            if (!$enabled && !$this->hasAllowedRecipients($data)) {
+                return;
+            }
+        }
 
         try {
             $this->container->get('services.mailer.notifications.twig')->sendMessage($data);
@@ -109,18 +137,10 @@ abstract class NotificationsListener
      * @throws \Exception
      * @return Ambigous <multitype:, unknown>
      */
-    private function mergeTemplateConfigData(array $data, $templateConfig)
+    private function mergeTemplateConfigData(array $data)
     {
-        if (!$templateConfig) {
-            throw new \Exception('Template configuration is required.');
-        }
-
-        if (!isset($this->templateConfigs[$templateConfig])) {
-            throw new \Exception('Template configuration does not exist in the mailer.templates parameter. Check that getTemplateConfig() returns a valid value.');
-        }
-
         //TODO: recursive merge
-        foreach ($this->templateConfigs[$templateConfig] as $key => $value) {
+        foreach ($this->templateConfig as $key => $value) {
             if (!isset($data[$key])) {
                 $data[$key] = $value;
             }
@@ -184,10 +204,28 @@ abstract class NotificationsListener
         }
 
         if ($enabled) {
-            $config = $this->templateConfigs[$this->getTemplateConfig($event)];
-            $enabled = isset($config['enabled']) && $config['enabled'];
+            $enabled = isset($this->templateConfig['enabled']) && $this->templateConfig['enabled'];
+
+            //Temporarily override specific notification setting when in debug mode;
+            //The actual decision on whether to proceed or not will be made in
+            //$this->hasAllowedRecipients
+            if (!$enabled && $this->debugMode) {
+                $enabled = true;
+            }
         }
 
         return $enabled;
+    }
+
+    private function hasAllowedRecipients($data)
+    {
+        if (!in_array(strtolower($data['to']), $this->allowedRecipients)) {
+            return false;
+        }
+        if (isset($data['cc']) && !in_array(strtolower($data['cc'], $this->allowedRecipients))) {
+            unset($data['cc']);
+        }
+
+        return true;
     }
 }

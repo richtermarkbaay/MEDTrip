@@ -40,7 +40,7 @@ class PasswordListener extends NotificationsListener
         }
     }
 
-    public function getTemplateConfig(Event $event = null)
+    public function getTemplateConfigName(Event $event = null)
     {
         switch ($event->getName()) {
             case MailerBundleEvents::NOTIFICATIONS_PASSWORD_RESET:

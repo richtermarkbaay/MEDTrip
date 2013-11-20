@@ -9,30 +9,16 @@ class TwigMailer extends SmtpMailer
 {
     private $twig;
     private $logger;
-    private $debugMode;
-    private $debugEmails;
 
-    public function __construct(\Twig_Environment $twig, Logger $logger = null, $debugMode = false, $debugEmails = array())
+    public function __construct(\Twig_Environment $twig, Logger $logger = null)
     {
         $this->twig = $twig;
         $this->logger = $logger;
-        $this->debugMode = $debugMode;
-        $this->debugEmails = $debugEmails;
     }
 
     public function sendMessage($data)
     {
         $data = $this->normalizeData($data);
-
-        if ($this->debugMode) {
-            //$debugEmails = array('hazel.caballero@pinoyoutsource.com', 'haroldmodesto@gmail.com', 'harold.modesto@chromedia.com');
-            if (!in_array(strtolower($data['to']), $this->debugEmails)) {
-                return;
-            }
-            if (isset($data['cc']) && !in_array(strtolower($data['cc'], $this->debugEmails))) {
-                unset($data['cc']);
-            }
-        }
 
         $template = $this->twig->loadTemplate($data['template']);
         $subject = $template->renderBlock('subject', $data);

@@ -87,7 +87,7 @@ class InquiriesListener extends NotificationsListener
 //         return !empty($to);
     }
 
-    public function getTemplateConfig(Event $event = null)
+    public function getTemplateConfigName(Event $event = null)
     {
         return 'notification.inquiries';
     }

@@ -57,7 +57,7 @@ class HospitalProfileCreatedListener extends NotificationsListener
         );
     }
 
-    public function getTemplateConfig(Event $event = null)
+    public function getTemplateConfigName(Event $event = null)
     {
         return 'notification.hospital_profile_created';
     }
