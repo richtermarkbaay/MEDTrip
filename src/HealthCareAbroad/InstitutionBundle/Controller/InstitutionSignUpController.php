@@ -248,8 +248,9 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'geoCountry' => $formRequestData['country'],
                     'institutionId' => $this->institution->getId());
 
-                $state = $this->get('services.location')->addNewState($stateData);
-                $formRequestData['state'] = $state->getId();
+                if($state = $this->get('services.location')->addNewState($stateData)) {
+                    $formRequestData['state'] = $state->getId();
+                }
             }
 
             // Check If Custom City
@@ -260,8 +261,9 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'geoCountry' => $formRequestData['country'],
                     'institutionId' => $this->institution->getId());
 
-                $city = $this->get('services.location')->addNewCity($cityData);
-                $formRequestData['city'] = $city->getId();
+                if($city = $this->get('services.location')->addNewCity($cityData)) {
+                    $formRequestData['city'] = $city->getId();                    
+                }
             }
 
             $form->bind($formRequestData);
@@ -334,8 +336,9 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'geoCountry' => $formRequestData['country'], 
                     'institutionId' => $this->institution->getId());
 
-                $state = $this->get('services.location')->addNewState($stateData);
-                $formRequestData['state'] = $state->getId();
+                if($state = $this->get('services.location')->addNewState($stateData)) {
+                    $formRequestData['state'] = $state->getId();                    
+                }
             }
 
             // Check If Custom City 
@@ -346,8 +349,9 @@ class InstitutionSignUpController extends InstitutionAwareController
                     'geoCountry' => $formRequestData['country'], 
                     'institutionId' => $this->institution->getId());
 
-                $city = $this->get('services.location')->addNewCity($cityData);
-                $formRequestData['city'] = $city->getId();
+                if($city = $this->get('services.location')->addNewCity($cityData)) {
+                    $formRequestData['city'] = $city->getId();                    
+                }
             }
 
             $form->bind($formRequestData);

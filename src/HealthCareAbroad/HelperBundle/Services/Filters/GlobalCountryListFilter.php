@@ -14,9 +14,11 @@ class GlobalCountryListFilter extends ArrayListFilter
 	function __construct($doctrine)
 	{
 		parent::__construct($doctrine);
+        
+		$this->addValidCriteria('name');
 
-		// set default status filter to active
-		$this->defaultParams = array('status' => Country::STATUS_ACTIVE);
+		// set default filters
+		$this->defaultParams = array('status' => Country::STATUS_ACTIVE, 'name' => '');
 	
 		// Add treatment in validCriteria
 		$this->serviceDependencies = array('services.location');
@@ -24,15 +26,25 @@ class GlobalCountryListFilter extends ArrayListFilter
 	
     function setFilterOptions()
     {
+        $this->setNameFilterOption();
         $this->setStatusFilterOption();
+    }
+
+    function setNameFilterOption()
+    {
+        $this->filterOptions['name'] = array('label' => 'State Name', 'value' => $this->queryParams['name']);
     }
 
     function setFilteredResults()
     {
-        $this->queryParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
-        $this->queryParams['limit'] = $this->pagerDefaultOptions['limit'];
+        $golbalCountriesParams['page'] = isset($this->queryParams['page']) ? $this->queryParams['page'] : $this->pagerDefaultOptions['page'];
+        $golbalCountriesParams['limit'] = $this->pagerDefaultOptions['limit'];
 
-        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCountries($this->queryParams);
+        if($this->queryParams['name']) {
+            $golbalCountriesParams['name'] = $this->queryParams['name'];
+        }
+
+        $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCountries($golbalCountriesParams);
         $this->pager->getAdapter()->setData($dataFromAPi);
         
         $this->filteredResult = $this->pager->getResults();

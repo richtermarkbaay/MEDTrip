@@ -1,6 +1,6 @@
 <?php
 /**
- * @autor Alnie Jacobe
+ * @autor Adelbert Silla
  */
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
@@ -17,10 +17,12 @@ class GlobalCityListFilter extends ArrayListFilter
 	{
 		parent::__construct($doctrine);
 		
+		$this->addValidCriteria('name');
 		$this->addValidCriteria('country');
 		$this->addValidCriteria('state');
-		// set default status filter to active
-		$this->defaultParams = array('status' => City::STATUS_ACTIVE, 'country' => 1, 'state' => self::FILTER_KEY_ALL);
+
+		// set default filters
+		$this->defaultParams = array('status' => City::STATUS_ACTIVE, 'country' => 1, 'state' => self::FILTER_KEY_ALL, 'name' => '');
 	
 		//manually inject service for serviceDependencies
 		$this->serviceDependencies = array('services.location');
@@ -35,9 +37,15 @@ class GlobalCityListFilter extends ArrayListFilter
             self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL
         );
 
+        $this->setNameFilterOption();
         $this->setStatusFilterOption($statuses);
         $this->setCountryFilterOption();
         $this->setStateFilterOption();
+    }
+
+    function setNameFilterOption()
+    {
+        $this->filterOptions['name'] = array('label' => 'City Name', 'value' => $this->queryParams['name']);
     }
 
     function setCountryFilterOption()
@@ -81,6 +89,10 @@ class GlobalCityListFilter extends ArrayListFilter
             'limit' => isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit']
         );
 
+        if($this->queryParams['name']) {
+            $globalCitiesParams['name'] = $this->queryParams['name'];
+        }
+
         if($this->queryParams['state'] && $this->queryParams['state'] != self::FILTER_KEY_ALL) {
             $globalCitiesParams['state_id'] = $this->queryParams['state'];
         }
@@ -90,7 +102,7 @@ class GlobalCityListFilter extends ArrayListFilter
         } else {
             $globalCitiesParams['status'] = $this->queryParams['status'];
         }
-        
+
         $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCities($globalCitiesParams);
 
         $this->pager->getAdapter()->setData($dataFromAPi);

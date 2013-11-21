@@ -286,6 +286,7 @@ class LocationService
 	    }
 
 	    $state->setName($stateData['name']);
+	    $state->setInstitutionId($stateData['institutionId']);
 	    $state->setStatus($stateData['status']);
 
 	    $em = $this->doctrine->getEntityManagerForClass('HelperBundle:State');
@@ -472,6 +473,10 @@ class LocationService
 	    // Save to global city.
 	    $cityData = $this->addGlobalCity($data);
 
+	    if(isset($cityData['form'])) {
+	        return null;
+	    }
+
 	    $city = $this->getCityById($cityData['id']);
 
 	    if(!$city) {
@@ -486,8 +491,9 @@ class LocationService
 	    }
 
 	    $city->setName($cityData['name']);
-	    $city->setStatus($cityData['status']);
 	    $city->setSlug($cityData['slug']);
+	    $city->setInstitutionId($cityData['institutionId']);
+	    $city->setStatus($cityData['status']);
 
 	    $em = $this->doctrine->getEntityManagerForClass('HelperBundle:City');
 	    $em->persist($city);

@@ -33,17 +33,12 @@ class City
     /**
      * @var integer
      */
+    private $institutionId;
+
+    /**
+     * @var integer
+     */
     private $status;
-
-    /**
-     * @var integer
-     */
-    private $geoCityId;
-
-    /**
-     * @var integer
-     */
-    private $oldId;
 
     /**
      * @var \HealthCareAbroad\HelperBundle\Entity\State
@@ -126,6 +121,29 @@ class City
     }
 
     /**
+     * Set institutionId
+     *
+     * @param integer $institutionId
+     * @return City
+     */
+    public function setInstitutionId($institutionId)
+    {
+        $this->institutionId = $institutionId;
+    
+        return $this;
+    }
+
+    /**
+     * Get institutionId
+     *
+     * @return integer 
+     */
+    public function getInstitutionId()
+    {
+        return $this->institutionId;
+    }
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -146,52 +164,6 @@ class City
     public function getStatus()
     {
         return $this->status;
-    }
-
-    /**
-     * Set geoCityId
-     *
-     * @param integer $geoCityId
-     * @return City
-     */
-    public function setGeoCityId($geoCityId)
-    {
-        $this->geoCityId = $geoCityId;
-    
-        return $this;
-    }
-
-    /**
-     * Get geoCityId
-     *
-     * @return integer 
-     */
-    public function getGeoCityId()
-    {
-        return $this->geoCityId;
-    }
-
-    /**
-     * Set oldId
-     *
-     * @param integer $oldId
-     * @return City
-     */
-    public function setOldId($oldId)
-    {
-        $this->oldId = $oldId;
-    
-        return $this;
-    }
-
-    /**
-     * Get oldId
-     *
-     * @return integer 
-     */
-    public function getOldId()
-    {
-        return $this->oldId;
     }
 
     /**

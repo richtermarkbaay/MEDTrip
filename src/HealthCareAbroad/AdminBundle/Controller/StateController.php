@@ -130,6 +130,7 @@ class StateController extends Controller
 
         if ($stateObj) {
             $stateObj->setStatus($state['status']);
+            $stateObj->setInstitutionId($state['institutionId']);
             $em->persist($stateObj);
             $em->flush($stateObj);
 

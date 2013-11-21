@@ -182,6 +182,7 @@
                             } else {
                                 if(!_valueContainer.val()) {
                                     cityWidget.autocomplete('disable');
+                                    $('#{{ form.parent.city.vars.id }}').val('');
                                     $('#{{ form.parent.city.vars.id }}_trigger').prop('disabled', true);
                                 }
                             }

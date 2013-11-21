@@ -136,6 +136,7 @@ class CityController extends Controller
 
         if ($cityObj) {
             $cityObj->setStatus($city['status']);
+            $cityObj->setInstitutonId($city['institutionId']);
             $em->persist($cityObj);
             $em->flush($cityObj);
 

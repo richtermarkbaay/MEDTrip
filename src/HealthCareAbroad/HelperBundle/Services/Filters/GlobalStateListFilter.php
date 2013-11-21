@@ -17,9 +17,11 @@ class GlobalStateListFilter extends ArrayListFilter
 	{
 		parent::__construct($doctrine);
 		
+		$this->addValidCriteria('name');
 		$this->addValidCriteria('country');
-		// set default status filter to active
-		$this->defaultParams = array('status' => State::STATUS_ACTIVE, 'country' => 1, 'state' => 0);
+		
+		// set default filters
+		$this->defaultParams = array('status' => State::STATUS_ACTIVE, 'country' => 1, 'state' => 0, 'name' => '');
 	
 		//manually inject service for serviceDependencies
 		$this->serviceDependencies = array('services.location');
@@ -34,8 +36,14 @@ class GlobalStateListFilter extends ArrayListFilter
             self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL
         );
 
+        $this->setNameFilterOption();
         $this->setStatusFilterOption($statuses);
         $this->setCountryFilterOption();
+    }
+    
+    function setNameFilterOption()
+    {
+        $this->filterOptions['name'] = array('label' => 'Country Name', 'value' => $this->queryParams['name']);
     }
 
     function setCountryFilterOption()
@@ -60,6 +68,10 @@ class GlobalStateListFilter extends ArrayListFilter
             'page' => isset($this->queryParams['page']) ? $this->queryParams['page'] : 1,
             'limit' => isset($this->queryParams['limit']) ? $this->queryParams['limit'] : $this->pagerDefaultOptions['limit']
         );
+
+        if($this->queryParams['name']) {
+            $globalStatesParams['name'] = $this->queryParams['name'];
+        }
 
         if($this->queryParams['status'] == 'all') {
             $globalStatesParams['active_only'] = 0; 

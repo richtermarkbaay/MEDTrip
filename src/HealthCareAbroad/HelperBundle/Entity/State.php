@@ -28,6 +28,11 @@ class State
     /**
      * @var integer
      */
+    private $institutionId;
+
+    /**
+     * @var integer
+     */
     private $status;
 
     /**
@@ -106,6 +111,29 @@ class State
     }
 
     /**
+     * Set institutionId
+     *
+     * @param integer $institutionId
+     * @return State
+     */
+    public function setInstitutionId($institutionId)
+    {
+        $this->institutionId = $institutionId;
+    
+        return $this;
+    }
+
+    /**
+     * Get institutionId
+     *
+     * @return integer 
+     */
+    public function getInstitutionId()
+    {
+        return $this->institutionId;
+    }
+
+    /**
      * Set status
      *
      * @param integer $status
@@ -150,7 +178,7 @@ class State
     {
         return $this->country;
     }
-    
+
     public function __toString()
     {
         return $this->name;
