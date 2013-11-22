@@ -32,7 +32,7 @@ class GlobalCountryListFilter extends ArrayListFilter
 
     function setNameFilterOption()
     {
-        $this->filterOptions['name'] = array('label' => 'State Name', 'value' => $this->queryParams['name']);
+        $this->filterOptions['name'] = array('label' => 'Country Name', 'value' => $this->queryParams['name']);
     }
 
     function setFilteredResults()
