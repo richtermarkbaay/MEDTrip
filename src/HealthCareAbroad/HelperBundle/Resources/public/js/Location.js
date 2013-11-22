@@ -47,8 +47,10 @@ var Location = {
     },
     
     loadCities: function(countryId, stateId, widget, selectedCityId){
-        Location.disableWidget(widget, true);
-        Location.resetWidgetValue(widget);
+        if(!selectedCityId) {
+            Location.disableWidget(widget, true);
+            Location.resetWidgetValue(widget);            
+        }
 
         var params = {key_value: 1, state_id: stateId, country_id: countryId};
         var widgetPlaceholder = widget.prop('placeholder');

@@ -205,7 +205,7 @@
                         dependencyElement.trigger('selectedCountry');
                     }
 
-                    {% if form.parent.vars.value.state %}
+                    {% if form.parent.vars.value.state %} 
                         _inputElem.val('{{ form.parent.vars.value.state.name }}');
                         _valueContainer.val('{{ form.parent.vars.value.state.id }}');
                     {% endif %}
@@ -213,9 +213,10 @@
                 {% endif %}
 
                 {% if form.parent.city %}
-                    _inputElem.on('reloadedDataSource', function(e){
+                    _inputElem.on('reloadedDataSource', function(e) {
                         if(!_valueContainer.val()) {
-                          Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), 0);
+                            selectedCityId = '{{ form.parent.vars.value.city ? form.parent.vars.value.city.id : 0 }}'; 
+                            Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), selectedCityId);
                         }
                     });
                 {% endif %}
