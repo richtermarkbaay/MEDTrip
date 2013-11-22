@@ -113,7 +113,7 @@ class CountryController extends Controller
         $countryObj = $em->getRepository('HelperBundle:Country')->find($country['id']);
         
         if ($countryObj) {
-            $countryObj->setStatus($city['status']);
+            $countryObj->setStatus($country['status']);
             $em->persist($countryObj);
             $em->flush($countryObj);
 
