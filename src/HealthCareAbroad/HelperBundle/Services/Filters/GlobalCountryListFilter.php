@@ -44,6 +44,12 @@ class GlobalCountryListFilter extends ArrayListFilter
             $golbalCountriesParams['name'] = $this->queryParams['name'];
         }
 
+        if($this->queryParams['status'] == 'all') {
+            $golbalCountriesParams['active_only'] = 0;
+        } else {
+            $golbalCountriesParams['status'] = $this->queryParams['status'];
+        }
+
         $dataFromAPi = $this->getInjectedDependcy('services.location')->getGlobalCountries($golbalCountriesParams);
         $this->pager->getAdapter()->setData($dataFromAPi);
         
