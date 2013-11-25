@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\HelperBundle\Listener;
 
+use HealthCareAbroad\StatisticsBundle\Services\StatisticsService;
+
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
@@ -19,9 +21,24 @@ class GlobalOnKernelController
      */
     protected $twig;
 
+    /** 
+     * @var StatisticsService
+     */
+    protected $statsService;
+    
+
     public function setTwig(\Twig_Environment $twig)
     {
         $this->twig = $twig;
+    }
+    
+    /**
+     * 
+     * @param StatisticsService $statsService
+     */
+    public function setStatisticsService(StatisticsService $statsService)
+    {
+        $this->statsService = $statsService;
     }
 
     /**
@@ -37,7 +54,6 @@ class GlobalOnKernelController
 
 
         // Set Frontend Breadcrumb
-
         if(substr($route, 0, 8) == 'frontend') {
             //var_dump($request->attributes->get('_route_params'));
             //var_dump($request->attributes);
@@ -46,5 +62,11 @@ class GlobalOnKernelController
             $this->twig->addGlobal('renderFrontendBreadcrumb', true);           
         }
         // End of Set Frontend Breadcrumb 
+        
+        // Add Page View Stats
+        $this->statsService->addPageViewStats($request);
+
+//echo $route;
+        
     }
 }

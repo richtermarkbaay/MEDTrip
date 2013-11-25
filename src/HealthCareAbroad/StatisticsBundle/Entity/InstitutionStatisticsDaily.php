@@ -2,7 +2,12 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Entity;
 
-class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * InstitutionStatisticsDaily
+ */
+class InstitutionStatisticsDaily extends StatisticsDaily
 {
     /**
      * @var integer
@@ -15,19 +20,14 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     private $date;
 
     /**
-     * @var boolean
-     */
-    private $categoryId;
-
-    /**
      * @var integer
      */
     private $institutionId;
 
     /**
-     * @var integer
+     * @var boolean
      */
-    private $institutionMedicalCenterId;
+    private $categoryId;
 
     /**
      * @var string
@@ -49,7 +49,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
      * Set date
      *
      * @param \DateTime $date
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionStatisticsDaily
      */
     public function setDate($date)
     {
@@ -69,33 +69,10 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     }
 
     /**
-     * Set categoryId
-     *
-     * @param boolean $categoryId
-     * @return InstitutionMedicalCenterStatisticsDaily
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-    
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return boolean 
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
-
-    /**
      * Set institutionId
      *
      * @param integer $institutionId
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionStatisticsDaily
      */
     public function setInstitutionId($institutionId)
     {
@@ -115,33 +92,33 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     }
 
     /**
-     * Set institutionMedicalCenterId
+     * Set categoryId
      *
-     * @param integer $institutionMedicalCenterId
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @param boolean $categoryId
+     * @return InstitutionStatisticsDaily
      */
-    public function setInstitutionMedicalCenterId($institutionMedicalCenterId)
+    public function setCategoryId($categoryId)
     {
-        $this->institutionMedicalCenterId = $institutionMedicalCenterId;
+        $this->categoryId = $categoryId;
     
         return $this;
     }
 
     /**
-     * Get institutionMedicalCenterId
+     * Get categoryId
      *
-     * @return integer 
+     * @return boolean 
      */
-    public function getInstitutionMedicalCenterId()
+    public function getCategoryId()
     {
-        return $this->institutionMedicalCenterId;
+        return $this->categoryId;
     }
 
     /**
      * Set ipAddress
      *
      * @param string $ipAddress
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionStatisticsDaily
      */
     public function setIpAddress($ipAddress)
     {

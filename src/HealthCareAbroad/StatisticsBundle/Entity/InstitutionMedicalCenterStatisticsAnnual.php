@@ -2,7 +2,12 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Entity;
 
-class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * InstitutionMedicalCenterStatisticsAnnual
+ */
+class InstitutionMedicalCenterStatisticsAnnual
 {
     /**
      * @var integer
@@ -30,9 +35,14 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     private $institutionMedicalCenterId;
 
     /**
-     * @var string
+     * @var integer
      */
-    private $ipAddress;
+    private $total;
+
+    /**
+     * @var \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress
+     */
+    private $institutionMedicalCenterStatisticsAnnualIpAddress;
 
 
     /**
@@ -49,7 +59,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
      * Set date
      *
      * @param \DateTime $date
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setDate($date)
     {
@@ -72,7 +82,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
      * Set categoryId
      *
      * @param boolean $categoryId
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setCategoryId($categoryId)
     {
@@ -95,7 +105,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
      * Set institutionId
      *
      * @param integer $institutionId
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setInstitutionId($institutionId)
     {
@@ -118,7 +128,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
      * Set institutionMedicalCenterId
      *
      * @param integer $institutionMedicalCenterId
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setInstitutionMedicalCenterId($institutionMedicalCenterId)
     {
@@ -138,25 +148,48 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     }
 
     /**
-     * Set ipAddress
+     * Set total
      *
-     * @param string $ipAddress
-     * @return InstitutionMedicalCenterStatisticsDaily
+     * @param integer $total
+     * @return InstitutionMedicalCenterStatisticsAnnual
      */
-    public function setIpAddress($ipAddress)
+    public function setTotal($total)
     {
-        $this->ipAddress = $ipAddress;
+        $this->total = $total;
     
         return $this;
     }
 
     /**
-     * Get ipAddress
+     * Get total
      *
-     * @return string 
+     * @return integer 
      */
-    public function getIpAddress()
+    public function getTotal()
     {
-        return $this->ipAddress;
+        return $this->total;
+    }
+
+    /**
+     * Set institutionMedicalCenterStatisticsAnnualIpAddress
+     *
+     * @param \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress $institutionMedicalCenterStatisticsAnnualIpAddress
+     * @return InstitutionMedicalCenterStatisticsAnnual
+     */
+    public function setInstitutionMedicalCenterStatisticsAnnualIpAddress(\HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress $institutionMedicalCenterStatisticsAnnualIpAddress = null)
+    {
+        $this->institutionMedicalCenterStatisticsAnnualIpAddress = $institutionMedicalCenterStatisticsAnnualIpAddress;
+    
+        return $this;
+    }
+
+    /**
+     * Get institutionMedicalCenterStatisticsAnnualIpAddress
+     *
+     * @return \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress 
+     */
+    public function getInstitutionMedicalCenterStatisticsAnnualIpAddress()
+    {
+        return $this->institutionMedicalCenterStatisticsAnnualIpAddress;
     }
 }
