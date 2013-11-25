@@ -452,6 +452,7 @@ class LocationService
 	    $state->setId($data['id']);
 	    $state->setName($data['name']);
 	    $state->setCountry($data['country']);
+	    $state->setInstitutionId(isset($data['institutionId']) ? $data['institutionId'] : 0);
 	    $state->setAdministrativeCode(isset($data['administrativeCode']) ? $data['administrativeCode'] : null);
 	    $state->setStatus(isset($data['status']) ? $data['status'] : State::STATUS_ACTIVE);
 	
@@ -719,6 +720,7 @@ class LocationService
 	    $city->setId($data['id']);
 	    $city->setName($data['name']);
 	    $city->setCountry($data['country']);
+	    $city->setInstitutionId(isset($data['institutionId']) ? $data['institutionId'] : 0);
 	    $city->setStatus(isset($data['status']) ? $data['status'] : City::STATUS_ACTIVE);
 	    if (isset($data['slug'])){
 	        $city->setSlug($data['slug']);
