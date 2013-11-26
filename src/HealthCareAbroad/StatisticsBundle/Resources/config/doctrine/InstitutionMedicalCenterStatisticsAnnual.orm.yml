@@ -27,8 +27,8 @@ HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnua
             type: bigint
             nullable: false
     oneToOne:
-        institutionMedicalCenterStatisticsAnnualIpAddress:
-            targetEntity: HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress
+        institutionMedicalCenterStatisticsAnnualIpAddresses:
+            targetEntity: HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses
             cascade: {  }
             mappedBy: null
             inversedBy: null

@@ -41,9 +41,9 @@ class InstitutionMedicalCenterStatisticsAnnual
     private $total;
 
     /**
-     * @var \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress
+     * @var \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses
      */
-    private $institutionMedicalCenterStatisticsAnnualIpAddress;
+    private $institutionMedicalCenterStatisticsAnnualIpAddresses;
 
 
     /**
@@ -172,25 +172,25 @@ class InstitutionMedicalCenterStatisticsAnnual
     }
 
     /**
-     * Set institutionMedicalCenterStatisticsAnnualIpAddress
+     * Set institutionMedicalCenterStatisticsAnnualIpAddresses
      *
-     * @param \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress $institutionMedicalCenterStatisticsAnnualIpAddress
+     * @param \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses $institutionMedicalCenterStatisticsAnnualIpAddresses
      * @return InstitutionMedicalCenterStatisticsAnnual
      */
-    public function setInstitutionMedicalCenterStatisticsAnnualIpAddress(\HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress $institutionMedicalCenterStatisticsAnnualIpAddress = null)
+    public function setInstitutionMedicalCenterStatisticsAnnualIpAddresses(\HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses $institutionMedicalCenterStatisticsAnnualIpAddresses = null)
     {
-        $this->institutionMedicalCenterStatisticsAnnualIpAddress = $institutionMedicalCenterStatisticsAnnualIpAddress;
+        $this->institutionMedicalCenterStatisticsAnnualIpAddresses = $institutionMedicalCenterStatisticsAnnualIpAddresses;
     
         return $this;
     }
 
     /**
-     * Get institutionMedicalCenterStatisticsAnnualIpAddress
+     * Get institutionMedicalCenterStatisticsAnnualIpAddresses
      *
-     * @return \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddress 
+     * @return \HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses 
      */
-    public function getInstitutionMedicalCenterStatisticsAnnualIpAddress()
+    public function getInstitutionMedicalCenterStatisticsAnnualIpAddresses()
     {
-        return $this->institutionMedicalCenterStatisticsAnnualIpAddress;
+        return $this->institutionMedicalCenterStatisticsAnnualIpAddresses;
     }
 }
