@@ -1,10 +1,10 @@
-frontend_multiple_center_institution_profile:
+frontend_institution_multipleCenter_profile:
     pattern: /hospital/{institutionSlug}
     defaults: { _controller: FrontendBundle:Institution:profile }
     requirements:
         _method:  GET
         
-frontend_single_center_institution_profile:
+frontend_institution_singleCenter_profile:
     pattern: /clinic/{institutionSlug}
     defaults: { _controller: FrontendBundle:Institution:profile }
     requirements:
@@ -22,7 +22,7 @@ frontend_institutionMedicaCenter_ajaxSaveImcInquiry:
     requirements:
         _method:  GET|POST
         
-frontend_institutionMedicaCenter_profile:
+frontend_institutionMedicalCenter_profile:
     pattern: /{institutionSlug}/clinic/{imcSlug}
     defaults: { _controller: FrontendBundle:InstitutionMedicalCenter:profile }
     requirements:
