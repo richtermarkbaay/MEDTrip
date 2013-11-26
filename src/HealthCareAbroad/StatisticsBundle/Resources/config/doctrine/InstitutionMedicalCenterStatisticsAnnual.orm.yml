@@ -12,7 +12,7 @@ HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnua
             type: date
             nullable: false
         categoryId:
-            type: boolean
+            type: smallint
             nullable: false
             column: category_id
         institutionId:

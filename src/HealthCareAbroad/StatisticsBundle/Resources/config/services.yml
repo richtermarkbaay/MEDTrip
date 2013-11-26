@@ -1,7 +1,4 @@
 services:
-    services.statistics:
-        class: HealthCareAbroad\StatisticsBundle\Services\StatisticsService
-
     factory.statistics.dailyTracker:
         class: HealthCareAbroad\StatisticsBundle\Services\TrackerFactory
         arguments: [@doctrine]

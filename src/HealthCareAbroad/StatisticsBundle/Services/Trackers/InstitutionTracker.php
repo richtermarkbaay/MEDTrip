@@ -2,56 +2,68 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Services\Trackers;
 
-use HealthCareAbroad\StatisticsBundle\Entity\StatisticCategories;
+use HealthCareAbroad\StatisticsBundle\Entity\StatisticParameters;
 
-use HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsDaily;
+use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticsDaily;
-
+use HealthCareAbroad\StatisticsBundle\Entity\StatisticCategories;
+use HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsDaily;
 use HealthCareAbroad\StatisticsBundle\Services\StatisticsParameterBag;
 
 class InstitutionTracker extends Tracker
 {
-    static $instance;
-    
-    static public function createInstance()
+    static function getCategoryByRoute($route)
     {
-        if(!static::$instance)
-            static::$instance = new self;
+        $categories = array(
+            'frontend_institution_multipleCenter_profile' => StatisticCategories::HOSPITAL_FULL_PAGE_VIEW,
+            'frontend_institution_singleCenter_profile' => StatisticCategories::HOSPITAL_FULL_PAGE_VIEW
+        );
 
-        return static::$instance;
+        return isset($categories[$route]) ? $categories[$route] : null; 
     }
     
     public function createDataFromParameters(StatisticsParameterBag $parameters)
     {
-        var_dump($parameters->get('institutionSlug'));
-        exit;
+        $institutionStatsDaily = new InstitutionStatisticsDaily();
+        $institutionStatsDaily->setInstitutionId($parameters->get(StatisticParameters::INSTITUTION_ID));
+        $institutionStatsDaily->setCategoryId($parameters->get(StatisticParameters::CATEGORY_ID));
+        $institutionStatsDaily->setIpAddress($parameters->get(StatisticParameters::IP_ADDRESS));
+        $institutionStatsDaily->setDate(new \DateTime());
+
+        return $institutionStatsDaily;
     }
 
-    public function createFullPageViewDataFromSlug(array $data)
+    /**
+     * (non-PHPdoc)
+     * @see \HealthCareAbroad\StatisticsBundle\Services\Trackers\Tracker::createDataFromHttpRequest()
+     */
+    public function createDataFromHttpRequest(Request $request)
     {
-        $data['categoryId'] = StatisticCategories::HOSPITAL_FULL_PAGE_VIEW;
-        $data = $this->createData($data);
+        $requestParams = $request->attributes->all();
+        $category = self::getCategoryByRoute($request->get('_route'));
 
-        return $data;
-    }
-    
-    private function createData(array $data)
-    {
-        $data = new InstitutionStatisticsDaily();
-        $data->setInstitutionId($data['institutionId']);
-        $data->setCategoryId($data['categoryId']);
-        $data->setIpAddress($data['ipAddress']);
-        $data->setDate(new \DateTime());
+        switch($category) {
+            case StatisticCategories::HOSPITAL_FULL_PAGE_VIEW :
+                $params[StatisticParameters::INSTITUTION_ID] = $requestParams['institution']['id'];
+                break;
+        }
 
-        return $data;
+        $params[StatisticParameters::IP_ADDRESS] = $request->getClientIp();
+        $params[StatisticParameters::CATEGORY_ID] = $category;
+
+        return $this->createDataFromParameters(new StatisticsParameterBag($params));
     }
-    
+
     public function add(StatisticsDaily $data)
     {
-        $em = $this->doctrine->getEntityManagerForClass('StatisticsBundle:InstitutionStatiticsDaily');
+        // extra check that this is an institution statistics data
+        if (!$data instanceof InstitutionStatisticsDaily) {
+            return false;
+        }
 
-        $em->persist($data);
-        $em->flush();
+        $this->data[] = $data;
+
+        return true;
     }
 }

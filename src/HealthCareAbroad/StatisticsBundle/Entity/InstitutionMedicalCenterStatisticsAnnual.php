@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InstitutionMedicalCenterStatisticsAnnual
 {
+
     /**
      * @var integer
      */
@@ -20,7 +21,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     private $date;
 
     /**
-     * @var boolean
+     * @var integer
      */
     private $categoryId;
 
@@ -81,7 +82,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     /**
      * Set categoryId
      *
-     * @param boolean $categoryId
+     * @param integer $categoryId
      * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setCategoryId($categoryId)
@@ -94,7 +95,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     /**
      * Get categoryId
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getCategoryId()
     {

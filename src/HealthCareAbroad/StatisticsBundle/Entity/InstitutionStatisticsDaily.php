@@ -25,7 +25,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     private $institutionId;
 
     /**
-     * @var boolean
+     * @var integer
      */
     private $categoryId;
 
@@ -94,7 +94,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     /**
      * Set categoryId
      *
-     * @param boolean $categoryId
+     * @param integer $categoryId
      * @return InstitutionStatisticsDaily
      */
     public function setCategoryId($categoryId)
@@ -107,7 +107,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     /**
      * Get categoryId
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getCategoryId()
     {

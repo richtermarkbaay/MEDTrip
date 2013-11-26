@@ -17,7 +17,7 @@ HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsAnnual:
             nullable: false
             column: institution_id
         categoryId:
-            type: boolean
+            type: smallint
             nullable: false
             column: category_id
         total:

@@ -15,7 +15,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     private $date;
 
     /**
-     * @var boolean
+     * @var integer
      */
     private $categoryId;
 
@@ -71,7 +71,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     /**
      * Set categoryId
      *
-     * @param boolean $categoryId
+     * @param integer $categoryId
      * @return InstitutionMedicalCenterStatisticsDaily
      */
     public function setCategoryId($categoryId)
@@ -84,7 +84,7 @@ class InstitutionMedicalCenterStatisticsDaily extends StatisticsDaily
     /**
      * Get categoryId
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getCategoryId()
     {

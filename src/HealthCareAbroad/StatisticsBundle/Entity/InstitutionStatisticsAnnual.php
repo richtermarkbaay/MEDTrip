@@ -25,7 +25,7 @@ class InstitutionStatisticsAnnual
     private $institutionId;
 
     /**
-     * @var boolean
+     * @var integer
      */
     private $categoryId;
 
@@ -99,7 +99,7 @@ class InstitutionStatisticsAnnual
     /**
      * Set categoryId
      *
-     * @param boolean $categoryId
+     * @param integer $categoryId
      * @return InstitutionStatisticsAnnual
      */
     public function setCategoryId($categoryId)
@@ -112,7 +112,7 @@ class InstitutionStatisticsAnnual
     /**
      * Get categoryId
      *
-     * @return boolean 
+     * @return integer 
      */
     public function getCategoryId()
     {

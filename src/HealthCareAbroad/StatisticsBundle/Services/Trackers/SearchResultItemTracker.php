@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Services\Trackers;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticParameters;
 
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticTypes;
@@ -14,6 +16,11 @@ use HealthCareAbroad\StatisticsBundle\Services\StatisticsParameterBag;
 
 class SearchResultItemTracker extends Tracker
 {
+    public function createDataFromHttpRequest(Request $request)
+    {
+        
+    }
+    
     public function createDataFromParameters(StatisticsParameterBag $parameters)
     {
         $type = $parameters->get(StatisticParameters::TYPE);
@@ -42,8 +49,9 @@ class SearchResultItemTracker extends Tracker
         if (!$data instanceof SearchResultsItemStatisticsDaily) {
             return false;
         }
-        
+
         $this->data[] = $data;
+
         return true;
     }
 }
