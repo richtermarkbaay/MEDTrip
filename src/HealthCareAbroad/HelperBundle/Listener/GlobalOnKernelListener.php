@@ -25,6 +25,11 @@ class GlobalOnKernelListener
      */
     protected $statsTrackerFactory;
     
+    /** 
+     * @var array
+     */
+    protected $statisticsIgnoredIp;
+    
 
     public function setTwig(\Twig_Environment $twig)
     {
@@ -37,6 +42,11 @@ class GlobalOnKernelListener
     public function setStatisticsFactoryTracker(TrackerFactory $statsTrackerFactory)
     {
         $this->statsTrackerFactory = $statsTrackerFactory;
+    }
+
+    public function setStatisticsIgnoredIp($ipAddresses)
+    {
+        $this->statisticsIgnoredIp = $ipAddresses;
     }
 
     /**
@@ -66,9 +76,9 @@ class GlobalOnKernelListener
     {
         $request = $event->getRequest();
         $route = $request->attributes->get('_route');
-
+        echo $request->getClientIp();
         // Add Page View Stats
-        if($event->getRequestType() == HttpKernel::MASTER_REQUEST) {
+        if(!\in_array($request->getClientIp(), $this->statisticsIgnoredIp) && $event->getRequestType() == HttpKernel::MASTER_REQUEST) {
             $statsTracker = $this->statsTrackerFactory->getTrackerByRoute($route);
             if($statsTracker instanceof Tracker) {
                 if($data = $statsTracker->createDataFromHttpRequest($request))

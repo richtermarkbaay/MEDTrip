@@ -170,5 +170,6 @@ services:
         class: HealthCareAbroad\HelperBundle\Listener\GlobalOnKernelListener
         calls:
             - [setStatisticsFactoryTracker, [@factory.statistics.dailyTracker]]
+            - [setStatisticsIgnoredIp, [%statistics_ignored_ip%]]
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
