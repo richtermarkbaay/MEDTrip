@@ -44,15 +44,31 @@ class TrackerFactory
     public function getTrackerByType($type)
     {
         $this->_initializeTypes();
-        
+
         if (!isset($this->trackers[$type])) {
             throw TrackerException::unknownTrackerType($type);
         }
         
         return $this->trackers[$type];
     }
-    
-    
+
+    /**
+     * Get statistics daily tracker by page route
+     *
+     * @param string $route
+     * @return Tracker
+     */
+    public function getTrackerByRoute($route)
+    {
+        $type = StatisticTypes::getTypeByRoute($route);
+
+        if(!$type) {
+            return;
+        }
+
+        return $this->getTrackerByType($type);
+    }
+
     private function _initializeTypes()
     {
         static $hasInitialized = false;

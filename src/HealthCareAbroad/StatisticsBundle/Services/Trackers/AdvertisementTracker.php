@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\StatisticsBundle\Services\Trackers;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticsDaily;
 
 use HealthCareAbroad\StatisticsBundle\Entity\AdvertisementStatisticsDaily;
@@ -33,6 +35,11 @@ class AdvertisementTracker extends Tracker
         return $data;
     }
     
+    public function createDataFromHttpRequest(Request $request)
+    {
+        
+    }
+
     public function add(StatisticsDaily $data)
     {
         // extra check that this is an Advertisement statistics data

@@ -3,7 +3,7 @@
         {% block sectionContent %}
             {% for each in institution.institutionMedicalCenters %}
                 <div class="media">
-                    <a class="thumbnail-wrapper img-polaroid pull-left" href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
+                    <a class="thumbnail-wrapper img-polaroid pull-left" href="{{ path('frontend_institutionMedicalCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">
                         {% if each.logo and each.logo.src %}
     				        <img src="{{ each.logo.src }}" alt="{{ each.name }}" class="logo" />
     				    {% else %}
@@ -12,7 +12,7 @@
                     </a>
                     <div class="media-body">
                         <h4>
-                            <a href="{{ path('frontend_institutionMedicaCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">{{ each.name }}</a>
+                            <a href="{{ path('frontend_institutionMedicalCenter_profile', {institutionSlug: institution.slug, imcSlug: each.slug}) }}">{{ each.name }}</a>
                         </h4>
                         <!-- Static markup for the clinic specializations -->
                         <p>{{ each.specializationsList | join(', ')}}</p> 

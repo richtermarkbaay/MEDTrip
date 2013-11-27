@@ -24,7 +24,9 @@ final class StatisticTypes
     private static $types = array();
     
     private static $trackerClasses = array();
-    
+
+    private static $typesByRoutes = array();
+
     static public function isValidType($type) 
     {
         return \array_key_exists($type, self::$types);    
@@ -39,7 +41,12 @@ final class StatisticTypes
     {
         return static::$trackerClasses;
     }
-    
+
+    static public function getTypeByRoute($route)
+    {
+        return isset(static::$typesByRoutes[$route]) ? static::$typesByRoutes[$route] : null;
+    }
+
     static public function _initializeTypes()
     {
         static::$types = array(
@@ -55,7 +62,14 @@ final class StatisticTypes
             StatisticTypes::INSTITUTION_MEDICAL_CENTER => '\HealthCareAbroad\StatisticsBundle\Services\Trackers\InstitutionMedicalCenterTracker',
             StatisticTypes::SEARCH_RESULT_ITEM => '\HealthCareAbroad\StatisticsBundle\Services\Trackers\SearchResultItemTracker',
         );
+        
+        static::$typesByRoutes = array(
+            'frontend_institution_multipleCenter_profile' => self::INSTITUTION,
+            'frontend_institution_singleCenter_profile' => self::INSTITUTION,
+            'frontend_institutionMedicalCenter_profile' => self::INSTITUTION_MEDICAL_CENTER
+        );
     }
+    
 }
 
 StatisticTypes::_initializeTypes();

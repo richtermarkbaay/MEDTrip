@@ -10,6 +10,7 @@ parameters:
     statistics_db_name: healthcareabroad_stats
     statistics_db_user: @STATISTICS_DATABASE_USER@
     statistics_db_password: @STATISTICS_DATABASE_PASSWORD@
+    statistics_ignored_ip: [112.199.81.42, 127.0.0.1]
 
     # HCA Blog
     hca_blog_db_host: @PROD_DATABASE_HOST@

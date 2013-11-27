@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -68,7 +70,7 @@ class PageMetaConfigurationController extends Controller
         $builderMethod = 'buildForInstitutionPage';
         $builderParameter = null;
         if ($institutionMedicalCenter) { // clinic page
-            $url = $this->generateUrl('frontend_institutionMedicaCenter_profile', array(
+            $url = $this->generateUrl('frontend_institutionMedicalCenter_profile', array(
                 'institutionSlug' => $institution->getSlug(),
                 'imcSlug' => $institutionMedicalCenter->getSlug()
             ));
@@ -76,7 +78,7 @@ class PageMetaConfigurationController extends Controller
             $builderParameter = $institutionMedicalCenter;
         }
         else { // hospital page
-            $url = $this->generateUrl($this->get('services.institution')->getInstitutionRouteName($institution), array(
+            $url = $this->generateUrl(InstitutionService::getInstitutionRouteName($institution), array(
                 'institutionSlug' => $institution->getSlug()
             ));
             $builderMethod = 'buildForInstitutionPage';

@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\StatisticsBundle\Services\Trackers;
 
+use Symfony\Component\HttpFoundation\Request;
+
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticsDaily;
 
 use HealthCareAbroad\StatisticsBundle\Services\StatisticsParameterBag;
@@ -30,8 +32,15 @@ abstract class Tracker
      * Add statistics data from parameters
      * 
      * @param StatisticsParameterBag $parameters
+     * @return StatisticsDaily
      */
     abstract public function createDataFromParameters(StatisticsParameterBag $parameters);
+    
+    /** 
+     * @param Request $request
+     * @return StatisticsDaily
+     */
+    abstract public function createDataFromHttpRequest(Request $request);
     
     /**
      * 
@@ -53,6 +62,13 @@ abstract class Tracker
         foreach ($this->data as $_each) {
             $em->persist($_each);
         }
+        $em->flush();
+    }
+    
+    final public function save(StatisticsDaily $data)
+    {
+        $em = $this->doctrine->getEntityManager('statistics');
+        $em->persist($data);
         $em->flush();
     }
 }
