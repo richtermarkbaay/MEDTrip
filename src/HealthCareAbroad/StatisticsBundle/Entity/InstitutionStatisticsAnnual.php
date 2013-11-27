@@ -15,7 +15,7 @@ class InstitutionStatisticsAnnual
     private $id;
 
     /**
-     * @var \DateTime
+     * @var date
      */
     private $date;
 
@@ -53,7 +53,7 @@ class InstitutionStatisticsAnnual
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param date $date
      * @return InstitutionStatisticsAnnual
      */
     public function setDate($date)
@@ -66,7 +66,7 @@ class InstitutionStatisticsAnnual
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return date 
      */
     public function getDate()
     {

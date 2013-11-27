@@ -9,7 +9,7 @@ HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsDaily:
             generator:
                 strategy: IDENTITY
         date:
-            type: datetime
+            type: date
             nullable: false
         institutionId:
             type: integer

@@ -15,7 +15,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     private $id;
 
     /**
-     * @var \DateTime
+     * @var date
      */
     private $date;
 
@@ -48,7 +48,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param date $date
      * @return InstitutionStatisticsDaily
      */
     public function setDate($date)
@@ -61,7 +61,7 @@ class InstitutionStatisticsDaily extends StatisticsDaily
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return date 
      */
     public function getDate()
     {

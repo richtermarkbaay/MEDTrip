@@ -16,7 +16,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     private $id;
 
     /**
-     * @var \DateTime
+     * @var date
      */
     private $date;
 
@@ -59,7 +59,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     /**
      * Set date
      *
-     * @param \DateTime $date
+     * @param date $date
      * @return InstitutionMedicalCenterStatisticsAnnual
      */
     public function setDate($date)
@@ -72,7 +72,7 @@ class InstitutionMedicalCenterStatisticsAnnual
     /**
      * Get date
      *
-     * @return \DateTime 
+     * @return date 
      */
     public function getDate()
     {
