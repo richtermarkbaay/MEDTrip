@@ -392,13 +392,12 @@ CREATE TABLE IF NOT EXISTS `cities` (
   `country_id` int(10) unsigned NOT NULL,
   `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `geo_city_id` bigint(20) unsigned DEFAULT NULL,
-  `old_id` int(10) unsigned DEFAULT NULL,
+  `institution_id` int(10) unsigned NOT NULL DEFAULT '0',
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `state_id` (`state_id`),
-  UNIQUE KEY `state_country_name` (`state_id`,`country_id`,`name`),
-  KEY `country_id` (`country_id`)
+  UNIQUE KEY `state_country_name` (`state_id`,`country_id`,`name`,`institution_id`),
+  KEY `country_id` (`country_id`),
+  KEY `state_id` (`state_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -453,6 +452,7 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
 -- Table structure for table `countries`
 --
 
+
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -465,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `countries`
@@ -1844,11 +1844,12 @@ CREATE TABLE IF NOT EXISTS `states` (
   `name` varchar(255) NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `administrative_code` varchar(3) DEFAULT NULL,
+  `institution_id` int(10) unsigned NOT NULL DEFAULT '0',
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`name`,`country_id`),
+  UNIQUE KEY `name` (`name`,`country_id`,`institution_id`),
   KEY `country_id` (`country_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `states`
