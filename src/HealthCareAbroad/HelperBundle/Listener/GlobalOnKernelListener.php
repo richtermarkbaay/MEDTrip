@@ -76,10 +76,11 @@ class GlobalOnKernelListener
     {
         $request = $event->getRequest();
         $route = $request->attributes->get('_route');
-        echo $request->getClientIp();
-        // Add Page View Stats
+
+        // Check if IP is not in statistics_ingored_ip AND requestType is a MASTER_REQUEST
         if(!\in_array($request->getClientIp(), $this->statisticsIgnoredIp) && $event->getRequestType() == HttpKernel::MASTER_REQUEST) {
             $statsTracker = $this->statsTrackerFactory->getTrackerByRoute($route);
+
             if($statsTracker instanceof Tracker) {
                 if($data = $statsTracker->createDataFromHttpRequest($request))
                     $statsTracker->save($data);
