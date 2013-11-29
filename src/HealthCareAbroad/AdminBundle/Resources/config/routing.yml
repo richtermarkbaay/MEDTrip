@@ -139,6 +139,11 @@ AdminBundle_medical_provider_group.yml_text:
     resource: "@AdminBundle/Resources/config/routing_medical_provider_group.yml"
     prefix:   /
 
+# Routes for Statistics #
+AdminBundle_statistics:
+    resource: "@AdminBundle/Resources/config/routing_statistics.yml"
+    prefix:   /
+
 ## -- edits history
 admin_history_index:
     pattern: /admin/edit-history

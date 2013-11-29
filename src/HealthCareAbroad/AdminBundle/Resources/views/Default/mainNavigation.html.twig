@@ -122,6 +122,23 @@
         </ul>
     </li>
     {% endif %}
+    
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_STATISTICS')") %}
+    <li class="dropdown {{ selectedTab == 'statistics' ? 'active' : '' }}">
+        <a data-toggle="dropdown" class="dropdown-toggle" href="#">Statistics<b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'institutionStatistics' ? 'active' : '' }}">
+                <a href="{{ path('admin_statistics_institution') }}">Institutions</a>
+            </li>
+            {#
+            <li class="{{ selectedSubTab == 'institution_inquire_index' ? 'active' : '' }}">
+                <a href="{{ path('admin_statistics_institutionMedicalCenter') }}">Institution Medical Centers</a>
+            </li>#}
+        </ul>
+    </li>
+    {% endif %}
+    
+    
     {# Temporary hide the Viewing of feedbacks
     <li class="dropdown {{ selectedTab == 'feedback' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Feedbacks <b class="caret"></b></a>

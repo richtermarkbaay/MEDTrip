@@ -6,6 +6,7 @@ HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsAnnualIpAddresses:
             id: true
             type: bigint
             nullable: false
+            column: institution_statistics_annual_id
             generator:
                 strategy: NONE
         ipAddresses:

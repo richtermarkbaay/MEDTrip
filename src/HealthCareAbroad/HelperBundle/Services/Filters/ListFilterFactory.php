@@ -73,7 +73,8 @@ final class ListFilterFactory
             'admin_feedback' => 'FeedbackListFilter',
             'admin_institution_ranking_index' => 'InstitutionRankingListFilter',
             'admin_center_ranking_index' => 'InstitutionMedicalCenterRankingListFilter',
-            'admin_institution_medicalCenters' => 'InstitutionMedicalCentersViewListFilter'
+            'admin_institution_medicalCenters' => 'InstitutionMedicalCentersViewListFilter',
+            'admin_statistics_institution' => 'InstitutionStatisticsListFilter'
                         //'institution_inquiries' => 'InstitutionInquiryListFilter'
         );
     }

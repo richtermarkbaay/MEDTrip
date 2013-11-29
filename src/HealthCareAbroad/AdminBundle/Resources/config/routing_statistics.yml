@@ -1,0 +1,11 @@
+admin_statistics_institution:
+    pattern:  /admin/statistics/institutions
+    defaults: { _controller: AdminBundle:Statistics:institutions }
+    requirements:
+        _method:  GET
+
+admin_statistics_institutionMedicalCenter:
+    pattern:  /admin/statistics/institution-medical-centers
+    defaults: { _controller: AdminBundle:Statistics:institutionMedicalCenter }
+    requirements:
+        _method:  GET

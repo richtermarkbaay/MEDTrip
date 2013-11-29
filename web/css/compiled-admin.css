@@ -1103,6 +1103,7 @@ background-color: #cccccc;
 
 #filter-wrapper > div {
     margin-right: 20px;
+    margin-bottom: 20px;
     display: inline-block;
 }
 

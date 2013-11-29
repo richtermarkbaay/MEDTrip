@@ -1,0 +1,27 @@
+HealthCareAbroad\StatisticsBundle\Entity\Category:
+    type: entity
+    table: categories
+    fields:
+        id:
+            id: true
+            type: integer
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        type:
+            type: integer
+            nullable: false
+        name:
+            type: string
+            length: 250
+            fixed: false
+            nullable: false
+        code:
+            type: string
+            length: 10
+            fixed: true
+            nullable: false
+        description:
+            type: text
+            nullable: true
+    lifecycleCallbacks: {  }
