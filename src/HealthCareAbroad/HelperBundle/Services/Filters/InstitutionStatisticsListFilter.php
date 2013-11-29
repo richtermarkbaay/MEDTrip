@@ -27,13 +27,14 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
 
         $this->defaultParams['name'] = '';
         $this->defaultParams['category'] = StatisticCategories::HOSPITAL_FULL_PAGE_VIEW;
-        $this->defaultParams['date'] = date('Y/m/d');
+        $this->defaultParams['date'] = date('Y-m-d');
         $this->defaultParams['dateYear'] = '';
         $this->defaultParams['reportType'] = 1;
         $this->defaultParams['limit'] = $this->pagerDefaultOptions['limit'];
 
         $this->sortBy = 'name';
     }
+
     function setFilterOptions()
     {
         $this->setCategoryFilterOption();
@@ -70,7 +71,7 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
         $this->filterOptions['date'] = array(
             'label' => 'Date',
             'value' => $this->queryParams['date'],
-            'placeholder' => 'yyyy/mm/dd'
+            'placeholder' => 'yyyy-mm-dd'
         );
     }
     

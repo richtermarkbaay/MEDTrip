@@ -99,7 +99,7 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
     public function getResults($offset, $limit, $params = array())
     { 
         $statement = $this->prepareStatement($this->query, $offset, $limit);
-        
+
         $statement->execute($this->queryParams);
         $this->results = $statement->fetchAll();
 
@@ -128,25 +128,24 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
         $subQuery = " WHERE ";
 
         foreach($queryParams as $key => $value) {
+            $keyParam = str_replace('.', '', $key);
+
             if(is_array($value)) {
                 $operator = key($value);
-                
-                if(strtolower($operator) == 'between') {
-                    $keyParam = str_replace('.', '', $key);
-                    $subQuery .= "$key $operator :$keyParam" . "_from AND :" . $keyParam . "_to AND ";
 
+                if(strtolower($operator) == 'between') {
+                    
                     $newQueryParams[':'. $keyParam . '_from'] = $value[$operator][0];
                     $newQueryParams[':'. $keyParam . '_to'] = $value[$operator][1];
-                    continue;
+                    $subQuery .= "$key $operator :$keyParam" . "_from AND :" . $keyParam . "_to AND ";
 
                 } else {
-                    $value = $value[$operator];                    
+                    $newQueryParams[":$keyParam"] = $value[$operator];
+                    $subQuery .= "$key $operator :$keyParam AND ";
                 }
 
             } else {
-                $keyParam = str_replace('.', '', $key);
                 $newQueryParams[":$keyParam"] = $value;
-
                 $subQuery .= "$key = :$keyParam AND ";                
             }            
         }
@@ -154,6 +153,7 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
         $subQuery = substr($subQuery, 0, -4);
 
         $this->query = $query . $subQuery . $groupBy . $sort;
+
         $this->countQuery = $countQuery . $subQuery . $groupBy;
         $this->queryParams = $newQueryParams;
     }
@@ -165,7 +165,7 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
      * @param int $limit
      * @return Doctrine\DBAL\Statement
      */
-    private function prepareStatement($query, $params = array(), $offset = null, $limit = null)
+    private function prepareStatement($query, $offset = null, $limit = null)
     {
         if($limit) {
             $query .= " LIMIT $offset, $limit";
