@@ -9,49 +9,30 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use HealthCareAbroad\AdminBundle\Form\GenericRankingItemFormType;
 
 class RankingController extends Controller
 {
     public function institutionIndexAction(Request $request)
     {
-        $institutions = $this->get('services.institution.factory')->findAllApproved();
-        $data = array();
-        foreach ($institutions as $_each) {
-            $data[] = array(
-                'id' => $_each->getId(),
-                'label' => $_each->getName()
-            );
-        }
+        $institutions = $this->filteredResult;
         
-        return $this->render('AdminBundle:Ranking:form.index.html.twig', array(
-                        'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
-                        'institutions' => $this->filteredResult,
-                        'pager' => $this->pager,
-                        'isInstitution' => true,
-                        'page' => 'rank_institution_page',
-                        'page_uri' => 'admin_institution_ranking_index',
+        $rankingItemForm = $this->createForm(new GenericRankingItemFormType());
+        
+        return $this->render('AdminBundle:Ranking:institutionRankings.html.twig', array(
+            //'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
+            'institutions' => $institutions,
+            'rankingItemForm' => $rankingItemForm->createView()
         ));
     }
     
     public function institutionMedicalCenterIndexAction(Request $request)
     {
-        $institutions = $this->get('services.institution.factory')->findAllApproved();
+        $rankingItemForm = $this->createForm(new GenericRankingItemFormType());
         
-        $data = array();
-        foreach ($institutions as $_each) {
-            $data[] = array(
-                            'id' => $_each->getId(),
-                            'label' => $_each->getName()
-            );
-        }
-        
-        return $this->render('AdminBundle:Ranking:form.index.html.twig', array(
-                        'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
-                        'centers' => $this->filteredResult,
-                        'pager' => $this->pager,
-                        'page' => 'rank_center_page',
-                        'page_uri' => 'admin_center_ranking_index',
-        
+        return $this->render('AdminBundle:Ranking:institutionMedicalCenterRankings.html.twig', array(
+            'institutionMedicalCenters' => $this->filteredResult,
+            'rankingItemForm' => $rankingItemForm->createView()
         ));
     }
     
@@ -111,41 +92,83 @@ class RankingController extends Controller
         return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
     }
     
-    public function ajaxUpdateInstitutionRankingAction(Request $request)
+    /**
+     * Update ranking of an institution
+     * 
+     * @author acgvelarde
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putUpdateInstitutionRankingAction(Request $request)
     {
-        $type = $request->get('type');
-        $id = $request->get('id');
+        $form = $this->createForm(new GenericRankingItemFormType());
+        $form->bind($request);
+        $data = $form->getData();
         
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($data['id']);
+        if (!$institution){
+            throw $this->createNotFoundException('Invalid institution');
+        }
         
-        $currentRankingPts = $institution->getTotalClinicRankingPoints();
-        $institution->setTotalClinicRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
-        $this->save($institution);
+        $institution->setTotalClinicRankingPoints($data['rankingPoints']);
+        $institutionService = $this->get('services.institution');
+        $institutionService->save($institution);
         
-        $response = array('data' => 'success', 'points' => $institution->getTotalClinicRankingPoints() ? $institution->getTotalClinicRankingPoints() : 0 );
+        // check if this is a single center institution
+        if ($institutionService->isSingleCenter($institution)){
+            // also set the ranking point for the clinic
+            $firstMedicalCenter = $institutionService->getFirstMedicalCenter($institution);
+            if ($firstMedicalCenter){
+                $firstMedicalCenter->setRankingPoints($data['rankingPoints']);
+                $this->get('services.institution_medical_center')->save($firstMedicalCenter);
+            }
+        }
         
-        return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
+        
+        $responseData = array(
+        	'id' => $institution->getId(),
+            'rankingPoints' => $institution->getTotalClinicRankingPoints(),
+            'error' => false
+        );
+        
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
     
-    private function save($entity) {
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-    }
-    
-    public function ajaxUpdateInstitutionMedicalCenterRankingAction(Request $request)
+    /**
+     * Update ranking of an institution medical center
+     * 
+     * @author acgvelarde
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putUpdateInstitutionMedicalCenterRankingAction(Request $request)
     {
-        $type = $request->get('type');
-        $id = $request->get('id');
-
-        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
-        $currentRankingPts = $center->getRankingPoints();
-        $center->setRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
-        $this->save($center);
+        $form = $this->createForm(new GenericRankingItemFormType());
+        $form->bind($request);
+        $data = $form->getData();
         
-        $response = array('data' => 'success', 'points' => $center->getRankingPoints() ? $center->getRankingPoints() : 0);
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($data['id']);
+        if (!$institutionMedicalCenter){
+            throw $this->createNotFoundException('Invalid medical center');	
+        }
+        $institution = $institutionMedicalCenter->getInstitution();
+        $institutionMedicalCenter->setRankingPoints($data['rankingPoints']);
+        $this->get('services.institution_medical_center')->save($institutionMedicalCenter);
         
-        return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
+        // check if this is a single center institution
+        $institutionService = $this->get('services.institution');
+        if ($institutionService->isSingleCenter($institution)){
+            // also set the ranking point for the parent institution
+            $institution->setTotalClinicRankingPoints($data['rankingPoints']);
+            $institutionService->save($institution);
+        }
+        
+        $responseData = array(
+            'id' => $institutionMedicalCenter->getId(),
+            'rankingPoints' => $institutionMedicalCenter->getRankingPoints(),
+            'error' => false
+        );
+        
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
-    
 }

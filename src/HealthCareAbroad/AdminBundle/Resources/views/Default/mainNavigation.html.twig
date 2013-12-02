@@ -6,7 +6,9 @@
     {% set selectedSubTab = '' %}
 {% endif %}
 <ul class="nav" id="main-nav">
-    <li class="{{ selectedTab == 'dashboard' ? 'active' : '' }}"><a href="{{ path('admin_homepage') }}">Dashboard</a></li>
+    <li class="{{ selectedTab == 'dashboard' ? 'active' : '' }}">
+    <a href="{{ path('admin_homepage') }}"><i class="icon-home"></i></a>
+    </li>
 
 
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INSTITUTIONS', 'CAN_MANAGE_INSTITUTION')") %}
@@ -52,6 +54,10 @@
                 <a href="{{ path('admin_medical_provider_group_index') }}"> Medical Provider Group</a>
             </li>
             <li class="divider"></li>
+            
+            <li class="{{ selectedSubTab == 'page_rankings' ? 'active' : '' }}" >
+                <a href="{{ path('admin_institution_ranking_index') }}">Page Rankings</a>
+            </li>
             
             <li class="{{ selectedSubTab == 'meta_configurations' ? 'active' : '' }}" >
                 <a href="{{ path('admin_page_metas_index') }}">Page Meta Configuration</a>
@@ -149,6 +155,8 @@
         </ul>
     </li>
     #}
+    {#
+    <!-- 
     <li class="dropdown {{ selectedTab == 'logs' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Logs <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -157,6 +165,8 @@
             </li>
         </ul>
     </li>
+     -->
+     #}
     {% if is_expr_granted("hasAnyRole('SUPER_ADMIN')") %}
     <li class="dropdown {{ selectedTab == 'settings' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Settings <b class="caret"></b></a>

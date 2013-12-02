@@ -10,6 +10,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 class InstitutionRankingListFilter extends DoctrineOrmListFilter
 {
+    protected $defaultParams = array(
+    	'name' => ''
+    );
+    
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
@@ -17,12 +21,23 @@ class InstitutionRankingListFilter extends DoctrineOrmListFilter
         // Add country in validCriteria
         $this->addValidCriteria('country');
         $this->addValidCriteria('city');
+        $this->addValidCriteria('name');
     
     }
     function setFilterOptions()
     {
+        $this->setNameFilter();
         $this->setCountryFilterOption();
         $this->setCityFilterOption();
+    }
+    
+    public function setNameFilter()
+    {
+        $this->filterOptions['name'] = array(
+            'label' => 'Name',
+            'value' => '',
+            'placeholder' => 'Search by institution name'
+        );
     }
     
     function setCountryFilterOption()
@@ -68,6 +83,7 @@ class InstitutionRankingListFilter extends DoctrineOrmListFilter
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
         $this->queryBuilder->select('a')->from('InstitutionBundle:Institution', 'a');
         $this->queryBuilder->andWhere('a.status = :approved_status')->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus());
+        
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
             $this->queryBuilder->andWhere('a.country = :country');
             $this->queryBuilder->setParameter('country', $this->queryParams['country']);
@@ -77,6 +93,12 @@ class InstitutionRankingListFilter extends DoctrineOrmListFilter
             $this->queryBuilder->andWhere('a.city = :city');
             $this->queryBuilder->setParameter('city', $this->queryParams['city']);
         }
+        
+        $name = \trim($this->queryParams['name']);
+        if ('' != $name) {
+        	$this->queryBuilder->andWhere('a.name LIKE :name')
+        	->setParameter('name', "%{$name}%");
+        } 
         
         $sortBy = $this->sortBy ? $this->sortBy : 'name';
         $sort = "a.$sortBy " . $this->sortOrder;
