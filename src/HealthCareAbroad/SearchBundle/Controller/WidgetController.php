@@ -36,13 +36,27 @@ class WidgetController extends Controller
                 break;
             default:
                 // defaults to loading all
+                $startDestinations = \microtime(true);
+                $destinations = $this->get('services.search')->getAllDestinations();
+                $endDestinations = \microtime(true);
+                $diffDestinations = $endDestinations-$startDestinations;
+                
+                $startTreatments = \microtime(true);
+                $treatments = $this->get('services.search')->getAllTreatments();
+                $endTreatments = \microtime(true);
+                $diffTreatments = $endTreatments-$startTreatments;
+                
                 $responseData = array(
-                    'treatments' => $this->get('services.search')->getAllTreatments(),
-                    'destinations' => $this->get('services.search')->getAllDestinations(),
+                    'treatments' => $treatments,
+                    'destinations' => $destinations,
                 );
+                
+                $responseData['diffDestinations'] = $diffDestinations;
+                $responseData['diffTreatments'] = $diffTreatments;
         }
         $end = \microtime(true); $diff=$end-$start;
         $responseData['executionTime'] = $diff;
+        
         
         return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
