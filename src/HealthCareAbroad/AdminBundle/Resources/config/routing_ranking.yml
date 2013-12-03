@@ -1,39 +1,39 @@
 admin_institution_ranking_index:
-    pattern:  /admin/institution/ranking
+    pattern:  /admin/rankings/institutions
     defaults: { _controller: AdminBundle:Ranking:institutionIndex }
     requirements:
          _method: GET
          
 admin_ranking_institution_updateRanking:
-    pattern: /admin/ranking/institution
+    pattern: /admin/rankings/institutions
     defaults: { _controller: AdminBundle:Ranking:putUpdateInstitutionRanking}
     requirements:
         _method: PUT
 
 admin_center_ranking_index:
-    pattern:  /admin/institution-medical-center/ranking
+    pattern:  /admin/rankings/institution-medical-centers
     defaults: { _controller: AdminBundle:Ranking:institutionMedicalCenterIndex }
     requirements:
          _method: GET
          
 admin_ranking_imc_updateRanking:
-    pattern: /admin/institution-medical-center/ranking
-    defaults: { _controller: AdminBundle:Ranking:putUpdateInstitutionMedicalCenterRanking }
+    pattern: /admin/rankings/institution-medical-centers
+    defaults: {_controller: AdminBundle:Ranking:putUpdateInstitutionMedicalCenterRanking }
     requirements:
         _method: PUT
-         
-admin_center_ranking_search:
-    pattern: /admin/ranking/ajaxSearchInstitutionMedicalCenter
-    defaults: { _controller: AdminBundle:Ranking:ajaxSearchInstitutionMedicalCenter}
-    requirements:
-        _method: GET|POST
         
-admin_institution_ranking_search:
-    pattern: /admin/ranking/ajaxSearchInstitution
-    defaults: { _controller: AdminBundle:Ranking:ajaxSearchInstitution}
+admin_view_search_results_ranking:
+    pattern: /admin/rankings/view-search-results
+    defaults: {_controller: AdminBundle:Ranking:viewSearchResultsRanking }
     requirements:
-        _method: GET|POST
+        _method: GET
         
+admin_ranking_process_search:
+    pattern: /admin/rankings/search
+    defaults: {_controller: AdminBundle:Ranking:processSearch }
+    requirements:
+        _method: POST
+    
 
         
 
