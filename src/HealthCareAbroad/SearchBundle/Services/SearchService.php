@@ -114,7 +114,7 @@ class SearchService
 
     public function getAllTreatments()
     {
-        $key = 'search.widget.controller.destinations.all';
+        $key = 'search.widget.controller.treatments.all';
         $treatments = $this->memcache->get($key);
 
         if (!$treatments) {
