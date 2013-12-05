@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\FrontendBundle\Twig;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -223,7 +225,7 @@ class SearchTwigExtension extends \Twig_Extension
     private function getInstitutionFrontendUrl($institution)
     {
         $slug = $institution instanceof Institution ? $institution->getSlug() : $institution['slug'];
-        $routeName = $this->institutionService->getInstitutionRouteName($institution);
+        $routeName = InstitutionService::getInstitutionRouteName($institution);
 
         return $this->router->generate($routeName, array('institutionSlug' => $slug), true);
     }
@@ -248,7 +250,7 @@ class SearchTwigExtension extends \Twig_Extension
             return $this->getInstitutionFrontendUrl($institution);
         }
 
-        return $this->router->generate('frontend_institutionMedicaCenter_profile', array(
+        return $this->router->generate('frontend_institutionMedicalCenter_profile', array(
             'institutionSlug' => $institutionSlug, 'imcSlug' => $imcSlug));
     }
 }

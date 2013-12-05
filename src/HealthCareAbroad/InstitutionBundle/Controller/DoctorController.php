@@ -40,6 +40,7 @@ class DoctorController extends InstitutionAwareController
     
     
     /**
+     * @deprecated ?? - currently not being used!
      * Update doctor details
     */
     public function saveAction(Request $request)

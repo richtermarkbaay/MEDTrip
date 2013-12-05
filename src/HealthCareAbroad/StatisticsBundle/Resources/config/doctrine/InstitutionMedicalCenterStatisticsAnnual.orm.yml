@@ -1,0 +1,39 @@
+HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnual:
+    type: entity
+    table: institution_medical_center_statistics_annual
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        date:
+            type: date
+            nullable: false
+        categoryId:
+            type: smallint
+            nullable: false
+            column: category_id
+        institutionId:
+            type: bigint
+            nullable: false
+            column: institution_id
+        institutionMedicalCenterId:
+            type: bigint
+            nullable: false
+            column: institution_medical_center_id
+        total:
+            type: bigint
+            nullable: false
+    oneToOne:
+        institutionMedicalCenterStatisticsAnnualIpAddresses:
+            targetEntity: HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsAnnualIpAddresses
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                id:
+                    referencedColumnName: institution_medical_center_statistics_annual_id
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -21,6 +21,12 @@ HealthCareAbroad\HelperBundle\Entity\State:
             fixed: false
             nullable: true
             column: administrative_code
+        institutionId:
+            type: integer
+            unsigned: true
+            nullable: false
+            default: 0
+            column: institution_id
         status:
             type: smallint
             nullable: false

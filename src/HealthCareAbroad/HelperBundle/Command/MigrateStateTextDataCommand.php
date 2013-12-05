@@ -156,7 +156,7 @@ class MigrateStateTextDataCommand extends ContainerAwareCommand
      */
     private function getHcaState($globalStateData, Country $country)
     {
-        $hcaState = $this->locationService->findStateById($globalStateData['id']);
+        $hcaState = $this->locationService->getStateById($globalStateData['id']);
         if (!$hcaState) {
             // create new hca state
             $hcaState = new State();

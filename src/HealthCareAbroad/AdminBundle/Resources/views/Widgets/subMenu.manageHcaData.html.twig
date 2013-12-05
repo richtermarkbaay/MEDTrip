@@ -1,4 +1,4 @@
-{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country' , 'city', 'doctor', 'awardingBody', 'global_award', 'ancilliary_service', 'language', 'helper_text', 'medical_provider_group']) %}
+{% set hcaDataClassLabels = getClassLabels(['specialization', 'treatment', 'sub_specialization', 'country', 'state', 'city', 'doctor', 'awardingBody', 'global_award', 'ancilliary_service', 'language', 'helper_text', 'medical_provider_group']) %}
 {% include 'HelperBundle:Widgets:subMenu.html.twig' 
     with { 
         links: [
@@ -8,6 +8,7 @@
             {name: 'treatments', url: path('admin_treatment_index'), label: hcaDataClassLabels.treatment.plural|title, icon: 'icon-list'},
             {name: 'medical_provider_groups', url: path('admin_medical_provider_group_index'), label: hcaDataClassLabels.medical_provider_group.plural|title, icon: 'icon-list'},
             {name: 'countries', url: path('admin_country_index'), label: hcaDataClassLabels.country.plural|title, icon: 'icon-list'},
+            {name: 'states', url: path('admin_state_index'), label: hcaDataClassLabels.state.plural|title, icon: 'icon-list'},
             {name: 'cities', url: path('admin_city_index'), label: hcaDataClassLabels.city.plural|title, icon: 'icon-list'},
             {name: 'doctors', url: path('admin_doctor_index'), label: hcaDataClassLabels.doctor.plural|title, icon: 'icon-list'},
             {name: 'awardingBodies', url: path('admin_awardingBody_index'), label: hcaDataClassLabels.awardingBody.plural|title, icon: 'icon-list'},

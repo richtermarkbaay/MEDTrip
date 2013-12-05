@@ -34,9 +34,8 @@ class CountryTransformer implements DataTransformerInterface
         $country = $this->service->getCountryById($data);
         if (!$country) {
             throw new \Exception('Cannot transform invalid country id');
-//             $countryGlobalData = $this->service->getGlobalCountryById($data);
-//             $country = $this->service->createCountryFromArray($countryGlobalData);
         }
+
         return $country;
     }
 }

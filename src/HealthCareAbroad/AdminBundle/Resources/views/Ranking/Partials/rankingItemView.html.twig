@@ -1,0 +1,9 @@
+<tr class="ranking_item_row">
+    <td>{{ rankingItem.name  | raw}}</td>
+    <td class="ranking_points_view">{{ rankingItem.rankingPoints ? rankingItem.rankingPoints : 0 }}</td>
+    <td>
+        <input class="span1 ranking_value_input"  type="text" name="ranking_value[{{ rankingItem.id }}]" value="{{ rankingItem.rankingPoints ? rankingItem.rankingPoints : 0 }}">
+        &nbsp;
+        <button data-ranking-item-id="{{ rankingItem.id }}" type="button" class=" btn btn-success ranking_value_trigger" >Save changes</button>
+    </td>
+</tr>

@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
-use HealthCareAbroad\HelperBundle\Form\DataTransformer\StateIdDataTransformer;
+use HealthCareAbroad\HelperBundle\Form\DataTransformer\StateTransformer;
 
 use HealthCareAbroad\HelperBundle\Services\LocationService;
 
@@ -31,7 +31,7 @@ class StateListType extends AbstractType
     
     public function buildForm(FormBuilderInterface $builder, array $options=array())
     {
-        $builder->addModelTransformer(new StateIdDataTransformer($this->locationService));   
+        $builder->addModelTransformer(new StateTransformer($this->locationService));   
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)

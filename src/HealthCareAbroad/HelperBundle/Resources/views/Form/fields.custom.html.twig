@@ -82,7 +82,7 @@
     {% spaceless %}
         {% for type, site in form.vars.value %}
             {% set iconClass = type == 'googleplus' ? 'google-plus' : type %}
-            <div class="control-group row">
+            <div class="control-group" style="margin-bottom: 20px">
                 <label for="{{ form.vars.full_name ~ '['~ type ~']' }}" style="margin-left: 50px;">{{ get_social_media_site_label(type) }}</label>
                 <i class="icon-{{ iconClass }} icon-2x"></i>
                 <input type="text" value="{{ site }}" name="{{ form.vars.full_name ~ '[' ~ type ~']' }}" class="span11 pull-right" placeholder="{{ get_social_media_site_placeholder(type) }}">
@@ -260,7 +260,7 @@
             {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}            
             {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
             <input type="hidden" id="{{ elemId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
-            <input required="required" type="text" id="input-{{ elemId }}" placeholder="Select Country" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
+            <input required="required" type="text" id="input-{{ elemId }}" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
             <button class="btn hca-location-btn show_list_btn" type="button">
                 <span class="icon-chevron-down"></span>
             </button>
@@ -284,7 +284,6 @@
                             Location.loadCities(_valueContainer, _currentCity);
                         }
                     {% endif %}
-
 
                 	_inputElem.fancyAutocomplete({
                         source: window.JSON.parse('{{ countries | raw }}'),

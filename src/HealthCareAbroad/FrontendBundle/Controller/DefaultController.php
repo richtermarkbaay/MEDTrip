@@ -100,7 +100,6 @@ class DefaultController extends ResponseHeadersController
 
     public function destinationListAction()
     {
-        //$params['countries'] = $this->get('services.location')->getActiveCountriesWithCities();
         $params['countries'] = $this->get('services.terms')->getActiveCountriesWithCities();
 
         return $this->setResponseHeaders($this->render('FrontendBundle:Default:listDestinations.html.twig', $params));

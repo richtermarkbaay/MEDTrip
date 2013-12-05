@@ -58,6 +58,7 @@ class ListFilterBeforeController
         $params = array_merge($request->get('_route_params'), $request->query->all());
 
         if($listFilter) {
+            
             // client admin filter
             if (\preg_match('/^$routeName/', $routeName)) {
                 $params['institutionId'] = $request->getSession()->get('institutionId', 0);
@@ -76,7 +77,7 @@ class ListFilterBeforeController
 
             $this->twig->addGlobal('listFilters', $listFilters);
 
-            $this->twig->addGlobal('pager', $listFilters);
+            $this->twig->addGlobal('pager', $controller[0]->pager);
         }
     }
 }

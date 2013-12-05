@@ -37,17 +37,6 @@ BEGIN
         WHERE `institution_medical_center_id` = OLD.`id`;
     END IF;  
     
-    
-    -- clinic ranking point has been changed
-    IF OLD.`ranking_points` != NEW.`ranking_points` THEN
-        
-        SELECT SUM(imc.`ranking_points`) INTO _sum_clinic_ranking_points
-        FROM `institution_medical_centers`  imc
-        WHERE imc.`institution_id` = NEW.`institution_id`;
-        
-        UPDATE `institutions` SET `total_clinic_ranking_points` = _sum_clinic_ranking_points
-        WHERE `id` = NEW.`institution_id`;
-    END IF;
 END; $$
 ### end institution_medical_centers_au trigger definition
 

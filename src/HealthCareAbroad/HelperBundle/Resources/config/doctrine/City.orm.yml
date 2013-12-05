@@ -20,22 +20,15 @@ HealthCareAbroad\HelperBundle\Entity\City:
             length: 100
             fixed: true
             nullable: false
-            #gedmo:
-            #  slug:
-            #    separator: -
-            #    fields:
-            #      - name
+        institutionId:
+            type: integer
+            unsigned: true
+            nullable: false
+            default: 0
+            column: institution_id
         status:
             type: smallint
             nullable: false
-        geoCityId:
-            type: bigint
-            nullable: true
-            column: geo_city_id
-        oldId:
-            type: integer
-            nullable: true
-            column: old_id     
     manyToOne:
         state:
             targetEntity: HealthCareAbroad\HelperBundle\Entity\State

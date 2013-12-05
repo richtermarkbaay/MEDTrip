@@ -230,7 +230,7 @@ class InstitutionController extends Controller
 	    			$institutionUser->setEmail($form->get('email')->getData());
 	    			$institutionUser->setFirstName($institution->getName());
 	    			$institutionUser->setLastName('Admin');
-	    			$institutionUser->setPassword($form->get('password')->getData());
+	    			$institutionUser->setPassword(SecurityHelper::hash_sha256($form->get('password')->getData()));
 	    			$institutionUser->setInstitution($institution);
 	    			$institutionUser->setStatus(SiteUser::STATUS_ACTIVE);
 	    			$this->get('services.contact_detail')->removeInvalidContactDetails($institutionUser);

@@ -79,6 +79,11 @@ AdminBundle_country:
     resource: "@AdminBundle/Resources/config/routing_country.yml"
     prefix:   /
 
+# Routes for Admin StateController #
+AdminBundle_state:
+    resource: "@AdminBundle/Resources/config/routing_state.yml"
+    prefix:   /
+
 # Routes for Admin CityController #
 AdminBundle_city:
     resource: "@AdminBundle/Resources/config/routing_city.yml"
@@ -132,6 +137,11 @@ AdminBundle_helper_text:
 # Routes for medical provider group section #
 AdminBundle_medical_provider_group.yml_text:
     resource: "@AdminBundle/Resources/config/routing_medical_provider_group.yml"
+    prefix:   /
+
+# Routes for Statistics #
+AdminBundle_statistics:
+    resource: "@AdminBundle/Resources/config/routing_statistics.yml"
     prefix:   /
 
 ## -- edits history

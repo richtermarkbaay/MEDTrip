@@ -9,143 +9,267 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use HealthCareAbroad\AdminBundle\Form\GenericRankingItemFormType;
+use HealthCareAbroad\SearchBundle\Services\SearchStates;
+use HealthCareAbroad\SearchBundle\Services\SearchParameterService;
+use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
+use HealthCareAbroad\PagerBundle\Adapter\ArrayAdapter;
+use HealthCareAbroad\PagerBundle\Pager;
+use HealthCareAbroad\TermBundle\Entity\SearchTerm;
 
 class RankingController extends Controller
 {
     public function institutionIndexAction(Request $request)
     {
-        $institutions = $this->get('services.institution.factory')->findAllApproved();
-        $data = array();
-        foreach ($institutions as $_each) {
-            $data[] = array(
-                'id' => $_each->getId(),
-                'label' => $_each->getName()
-            );
-        }
+        $institutions = $this->filteredResult;
         
-        return $this->render('AdminBundle:Ranking:form.index.html.twig', array(
-                        'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
-                        'institutions' => $this->filteredResult,
-                        'pager' => $this->pager,
-                        'isInstitution' => true,
-                        'page' => 'rank_institution_page',
-                        'page_uri' => 'admin_institution_ranking_index',
+        $rankingItemForm = $this->createForm(new GenericRankingItemFormType());
+        
+        return $this->render('AdminBundle:Ranking:institutionRankings.html.twig', array(
+            //'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
+            'institutions' => $institutions,
+            'rankingItemForm' => $rankingItemForm->createView()
         ));
     }
     
     public function institutionMedicalCenterIndexAction(Request $request)
     {
-        $institutions = $this->get('services.institution.factory')->findAllApproved();
+        $rankingItemForm = $this->createForm(new GenericRankingItemFormType());
         
-        $data = array();
-        foreach ($institutions as $_each) {
-            $data[] = array(
-                            'id' => $_each->getId(),
-                            'label' => $_each->getName()
-            );
-        }
-        
-        return $this->render('AdminBundle:Ranking:form.index.html.twig', array(
-                        'institutionsJsonData' => \json_encode($data, JSON_HEX_APOS),
-                        'centers' => $this->filteredResult,
-                        'pager' => $this->pager,
-                        'page' => 'rank_center_page',
-                        'page_uri' => 'admin_center_ranking_index',
-        
+        return $this->render('AdminBundle:Ranking:institutionMedicalCenterRankings.html.twig', array(
+            'institutionMedicalCenters' => $this->filteredResult,
+            'rankingItemForm' => $rankingItemForm->createView()
         ));
     }
     
-    public function ajaxSearchInstitutionMedicalCenterAction(Request $request)
+    /**
+     * Update ranking of an institution
+     * 
+     * @author acgvelarde
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putUpdateInstitutionRankingAction(Request $request)
     {
-        $institutionId = $request->get('institutionId',0);
-        $countryId = $request->get('_countryId',0);
-        $cityId = $request->get('_cityId',0);
-        $imcId = $request->get('imcId',0);
+        $form = $this->createForm(new GenericRankingItemFormType());
+        $form->bind($request);
+        $data = $form->getData();
         
-        $centers = array();
-        if($imcId == 0 && $institutionId != 0) {
-            $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('institution' => $institutionId, 'status' => InstitutionMedicalCenterStatus::APPROVED));
-        } 
-        else if($imcId != 0) {
-            $centers = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->findBy(array('id' => $imcId));
+        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($data['id']);
+        if (!$institution){
+            throw $this->createNotFoundException('Invalid institution');
         }
-        else {
-            if($institutionSearchName = $request->get('institutionName')) {
-                $params = array('countryId' => $countryId,
-                              'cityId' => $cityId,
-                              'searchTerm' => $institutionSearchName);
-                
-                $centers = $this->get('services.institution_medical_center')->getApprovedMedicalCentersByFiltersAndInstitutionSearchName($params);
+        
+        $institution->setTotalClinicRankingPoints($data['rankingPoints']);
+        $institutionService = $this->get('services.institution');
+        $institutionService->save($institution);
+        
+        // check if this is a single center institution
+        if ($institutionService->isSingleCenter($institution)){
+            // also set the ranking point for the clinic
+            $firstMedicalCenter = $institutionService->getFirstMedicalCenter($institution);
+            if ($firstMedicalCenter){
+                $firstMedicalCenter->setRankingPoints($data['rankingPoints']);
+                $this->get('services.institution_medical_center')->save($firstMedicalCenter);
             }
         }
-        $html = $this->renderView('AdminBundle:Ranking/Partials:view.html.twig', array('centers' => $centers));
         
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        //FIXME:  only flush the memcache related to this insitution
+        $this->get('services.memcache')->flush();
         
+        $responseData = array(
+        	'id' => $institution->getId(),
+            'rankingPoints' => $institution->getTotalClinicRankingPoints(),
+            'error' => false
+        );
+        
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
     
-    public function ajaxSearchInstitutionAction(Request $request)
+    /**
+     * Update ranking of an institution medical center
+     * 
+     * @author acgvelarde
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putUpdateInstitutionMedicalCenterRankingAction(Request $request)
     {
-        $institutionId = $request->get('institutionId',0);
-        $countryId = $request->get('_countryId',0);
-        $cityId = $request->get('_cityId',0);
-        $params = array();
-        if($institutionId != 0) {
-            $institutions = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy(array('id' => $institutionId));
-            $params = array('institutions' => $institutions,
-                            'isInstitution' => true);
-        } 
-        else {
-            if($institutionSearchName = $request->get('institutionName')) {
-                $data = array('countryId' => $countryId,
-                                'cityId' => $cityId,
-                                'searchTerm' => $institutionSearchName);
-                $institutions = $this->get('services.institution')->getAllInstitutionByParams($data);
-                
-                $params = array('institutions' => $institutions,
-                                'isInstitution' => true);
-            }
+        $form = $this->createForm(new GenericRankingItemFormType());
+        $form->bind($request);
+        $data = $form->getData();
+        
+        $institutionMedicalCenter = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($data['id']);
+        if (!$institutionMedicalCenter){
+            throw $this->createNotFoundException('Invalid medical center');	
         }
-        $html = $this->renderView('AdminBundle:Ranking/Partials:view.html.twig', $params);
+        $institution = $institutionMedicalCenter->getInstitution();
+        $institutionMedicalCenter->setRankingPoints($data['rankingPoints']);
+        $this->get('services.institution_medical_center')->save($institutionMedicalCenter);
         
-        return new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
+        // check if this is a single center institution
+        $institutionService = $this->get('services.institution');
+        if ($institutionService->isSingleCenter($institution)){
+            // also set the ranking point for the parent institution
+            $institution->setTotalClinicRankingPoints($data['rankingPoints']);
+            $institutionService->save($institution);
+        }
+        
+        $responseData = array(
+            'id' => $institutionMedicalCenter->getId(),
+            'rankingPoints' => $institutionMedicalCenter->getRankingPoints(),
+            'error' => false
+        );
+        
+        //FIXME:  only flush the memcache related to this insitution and medical center
+        $this->get('services.memcache')->flush();
+        
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
     
-    public function ajaxUpdateInstitutionRankingAction(Request $request)
+    /**
+     * View ranking management page which mimics frontend search results
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function viewSearchResultsRankingAction()
     {
-        $type = $request->get('type');
-        $id = $request->get('id');
+        $rankingItemForm = $this->createForm(new GenericRankingItemFormType());
         
-        $institution = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->find($id);
-        
-        $currentRankingPts = $institution->getTotalClinicRankingPoints();
-        $institution->setTotalClinicRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
-        $this->save($institution);
-        
-        $response = array('data' => 'success', 'points' => $institution->getTotalClinicRankingPoints() ? $institution->getTotalClinicRankingPoints() : 0 );
-        
-        return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
+        return $this->render('AdminBundle:Ranking:searchResultsRanking.html.twig', array(
+        	'rankingItemForm' => $rankingItemForm->createView()
+        ));
     }
     
-    private function save($entity) {
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($entity);
-        $em->flush();
-    }
-    
-    public function ajaxUpdateInstitutionMedicalCenterRankingAction(Request $request)
+    /**
+     * Mimic frontend search process and get results for ranking management
+     * 
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @author acgvelarde
+     */
+    public function processSearchAction(Request $request)
     {
-        $type = $request->get('type');
-        $id = $request->get('id');
-
-        $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($id);
-        $currentRankingPts = $center->getRankingPoints();
-        $center->setRankingPoints( $type == 'inc' ? ($currentRankingPts + 1) : (($currentRankingPts != 0) ? ($currentRankingPts - 1) : NULL));
-        $this->save($center);
+        $searchParameterService = $this->get('services.search.parameters');
+        $compiledSearch = $searchParameterService->compileRequest($request);
+        $searchStateLabel = SearchStates::getSearchStateFromValue($compiledSearch->getSearchState());
         
-        $response = array('data' => 'success', 'points' => $center->getRankingPoints() ? $center->getRankingPoints() : 0);
+        $searchVariables = $compiledSearch->getVariables();
+        $searchService = $this->get('services.search');
         
-        return new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
+        // flag on what ranking point the search service is using
+        $isUsingInstitutionRankingPoints = false;
+        switch($searchStateLabel) {
+            // treatments only search
+            case SearchStates::SPECIALIZATION_SEARCH:
+                $specialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SPECIALIZATION_ID];
+                $results = $searchService->searchBySpecialization($specialization);
+                $isUsingInstitutionRankingPoints = false; // uses clinic ranking points
+                break;
+            case SearchStates::SUB_SPECIALIZATION_SEARCH:
+                $subSpecialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SUB_SPECIALIZATION_ID];
+                $results = $searchService->searchBySubSpecialization($subSpecialization);
+                $isUsingInstitutionRankingPoints = false; // uses clinic ranking points
+                break;
+            case SearchStates::TREATMENT_SEARCH:
+                $isUsingInstitutionRankingPoints = false; // uses clinic ranking points
+                $treatment = $searchVariables[SearchParameterService::PARAMETER_KEY_TREATMENT_ID];
+                $results = $searchService->searchByTreatment($treatment);
+                break;
+            // destinations only search
+        	case SearchStates::COUNTRY_SEARCH:
+        	    $isUsingInstitutionRankingPoints = true; // uses hospital ranking points
+        	    $country = $searchVariables[SearchParameterService::PARAMETER_KEY_COUNTRY_ID];
+        	    $results = $searchService->searchByCountry($country);
+        	    break;
+        	case SearchStates::CITY_SEARCH:
+        	    $city = $searchVariables[SearchParameterService::PARAMETER_KEY_CITY_ID];
+        	    $results = $searchService->searchByCity($city);
+        	    $isUsingInstitutionRankingPoints = true; // uses hospital ranking points
+        	    break;
+        	// combination search
+        	case SearchStates::COUNTRY_SPECIALIZATION_SEARCH:
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $specialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SPECIALIZATION_ID];
+        	    $country = $searchVariables[SearchParameterService::PARAMETER_KEY_COUNTRY_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($specialization, $country));
+        	    break;
+        	case SearchStates::COUNTRY_SUB_SPECIALIZATION_SEARCH:
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $subSpecialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SUB_SPECIALIZATION_ID];
+        	    $country = $searchVariables[SearchParameterService::PARAMETER_KEY_COUNTRY_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($subSpecialization, $country));
+        	    break;
+        	case SearchStates::COUNTRY_TREATMENT_SEARCH:
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $treatment = $searchVariables[SearchParameterService::PARAMETER_KEY_TREATMENT_ID];
+        	    $country = $searchVariables[SearchParameterService::PARAMETER_KEY_COUNTRY_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($treatment, $country));
+        	    break;
+        	case SearchStates::CITY_SPECIALIZATION_SEARCH:
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $city = $searchVariables[SearchParameterService::PARAMETER_KEY_CITY_ID];
+        	    $specialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SPECIALIZATION_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($specialization, $city));
+        	    break;
+        	case SearchStates::CITY_SUB_SPECIALIZATION_SEARCH:
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $subSpecialization = $searchVariables[SearchParameterService::PARAMETER_KEY_SUB_SPECIALIZATION_ID];
+        	    $city = $searchVariables[SearchParameterService::PARAMETER_KEY_CITY_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($subSpecialization, $city));
+        	    break;
+        	case SearchStates::CITY_TREATMENT_SEARCH;
+        	    $isUsingInstitutionRankingPoints = false;
+        	    $city = $searchVariables[SearchParameterService::PARAMETER_KEY_CITY_ID];
+        	    $treatment = $searchVariables[SearchParameterService::PARAMETER_KEY_TREATMENT_ID];
+        	    $results = $this->getDoctrine()->getManager()->getRepository('TermBundle:SearchTerm')
+        	       ->findByFilters(array($treatment, $city));
+        	    break;
+        }
+        
+        //TODO: for now, we only need the first page for ranking purposes
+        $pagerAdapter = new ArrayAdapter($results);
+        $pager = new Pager($pagerAdapter, array('page' => 1, 'limit' => 20));
+        
+        // we compose the response data
+        $responseData = array(
+        	'results' => array(),
+            'totalNumberOfResults' => \count($results),
+            'searchState' => $searchStateLabel
+        );
+        
+        foreach ($pager->getResults() as $searchTerm){
+            if ($searchTerm instanceof SearchTerm){
+                $institution = $searchTerm->getInstitution();
+                $institutionMedicalCenter = $searchTerm->getInstitutionMedicalCenter();
+            	$arr = array(
+    	           'institution' => array(
+	                   'id' => $institution->getId(),
+	                   'name' => $institution->getName(),
+	                   'totalClinicRankingPoints' => $institution->getTotalClinicRankingPoints() ? $institution->getTotalClinicRankingPoints() : 0
+            	   ),
+        	       'institutionMedicalCenter' => array(
+    	               'id' => $institutionMedicalCenter->getId(),
+    	               'name' => $institutionMedicalCenter->getName(),
+    	               'rankingPoints' => $institutionMedicalCenter->getRankingPoints() ? $institutionMedicalCenter->getRankingPoints() : 0 
+    	           )
+            	);
+            	$arr['isUsingInstitutionRankingPoints'] = $isUsingInstitutionRankingPoints;
+            	$arr['rankingPoints'] = $isUsingInstitutionRankingPoints
+            	   ? $arr['institution']['totalClinicRankingPoints']
+            	   : $arr['institutionMedicalCenter']['rankingPoints'];
+            	
+            	$responseData['results'][] = $arr;
+            }
+        	
+        }
+        
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
-    
 }

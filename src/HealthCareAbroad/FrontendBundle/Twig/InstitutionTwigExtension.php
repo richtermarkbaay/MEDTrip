@@ -55,7 +55,7 @@ class InstitutionTwigExtension extends \Twig_Extension
         else {
             $slug = $institution['slug'];
         }
-        $routeName = $this->institutionService->getInstitutionRouteName($institution);
+        $routeName = InstitutionService::getInstitutionRouteName($institution);
         $uri = $this->router->generate($routeName, array('institutionSlug' => $slug), true);
 
         return $uri;
@@ -82,7 +82,7 @@ class InstitutionTwigExtension extends \Twig_Extension
             $uri = $this->getInstitutionFrontendUrl($institution);
         }
         else {
-            $uri = $this->router->generate('frontend_institutionMedicaCenter_profile', array(
+            $uri = $this->router->generate('frontend_institutionMedicalCenter_profile', array(
                 'institutionSlug' => $institutionSlug,
                 'imcSlug' => $imcSlug
             ));

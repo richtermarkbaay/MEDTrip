@@ -1,0 +1,16 @@
+HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsAnnualIpAddresses:
+    type: entity
+    table: institution_statistics_annual_ip_addresses
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            column: institution_statistics_annual_id
+            generator:
+                strategy: NONE
+        ipAddresses:
+            type: text
+            nullable: false
+            column: ip_addresses
+    lifecycleCallbacks: {  }

@@ -240,7 +240,7 @@ class InstitutionService
      * @param Mixed <Institution, array> $institution
      * @return boolean
      */
-    public function isMultipleCenter($institution)
+    static function isMultipleCenter($institution)
     {
         if ($institution instanceof Institution) {
             $type = $institution->getType();
@@ -258,11 +258,11 @@ class InstitutionService
      * @param Mixed <Institution, array> $institution
      * @return route name
      */
-    public function getInstitutionRouteName( $institution)
+    static function getInstitutionRouteName($institution)
     {
-        return $this->isMultipleCenter($institution)
-            ? 'frontend_multiple_center_institution_profile'
-            : 'frontend_single_center_institution_profile';
+        return self::isMultipleCenter($institution)
+            ? 'frontend_institution_multipleCenter_profile'
+            : 'frontend_institution_singleCenter_profile';
     }
 
     /**
@@ -541,7 +541,7 @@ class InstitutionService
                 else {
                     $status = 'read';
                 }
-                //var_dump();
+
                 $inquiryArr[] = array(
                                 'sender' => $each->getInquirerName(),
                                 'email' => $each->getInquirerEmail(),

@@ -117,7 +117,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             gedmo:
                 - versioned
         rankingPoints:
-            type: integer
+            type: float
             nullable: true
             column: ranking_points
             gedmo:

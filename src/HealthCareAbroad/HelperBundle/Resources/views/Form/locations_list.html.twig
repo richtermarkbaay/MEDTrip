@@ -12,7 +12,7 @@
 
         <div class="fancy-dropdown-wrapper _country-autocomplete">
             <input type="hidden" id="{{ valueContainerId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
-            <input required="required" type="text" id="{{ widgetId }}" placeholder="Select Country" data-autocomplete-trigger="#{{ triggerId }}" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
+            <input required="required" type="text" id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
             <button id="{{ triggerId }}" class="btn hca-location-btn show_list_btn" type="button">
                 <span class="icon-chevron-down"></span>
             </button>
@@ -74,20 +74,9 @@
         <script type="text/javascript">
         (function($){
             $(function(){
-                var _inputElem = $('#{{ widgetId }}')
+                var _inputElem = $('#{{ widgetId }}');
             	var _valueContainer = $('#{{ valueContainerId }}');
                 var countryDependencyElement;
-
-            	{% if form.parent.country is defined and form.parent.country %}
-                    countryDependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
-                    countryValueElem = $('#{{ form.parent.country.vars.id }}');
-                {% endif %}
-
-                // Finds "country input widget" className within the form.
-                if(!countryDependencyElement) {
-                	countryDependencyElement = _inputElem.parents('form:first').find('._country-autocomplete input[data-autocomplete-trigger]:first');
-                	countryValueElem = $('#' + countryDependencyElement.attr('id').replace('_widget', ''));
-                }
 
                 Location.loadCitiesUrl = '{{ get_load_cities_api_uri() }}';
                 _inputElem.fancyAutocomplete({
@@ -97,35 +86,34 @@
                     autocomplete: {minLength: 0}
                 });
 
-                {% if form.parent.state is defined and form.parent.state %}
-                    var acceptCustomCityValue = _inputElem.data('fancyAutocomplete').options.acceptCustomValue;
-                    countryDependencyElement.on('selectedCountry', function(e){
-                        var cityWidget = $('#{{ widgetId }}');
- 
-                        Location.disableWidget(cityWidget, true);
-    
-                        // we should reset the source here to empty
-                        Location.resetWidgetValue(cityWidget);
+                var acceptCustomCityValue = _inputElem.data('fancyAutocomplete').options.acceptCustomValue;
 
+            	{% if form.parent.country is defined and form.parent.country %}
+                    countryDependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
+                    countryValueElem = $('#{{ form.parent.country.vars.id }}');
+
+                    countryDependencyElement.on('selectedCountry', function(e){
+                        Location.resetWidgetValue(_inputElem);
                         if(acceptCustomCityValue) {
-                            cityWidget.removeAttr('disabled');
+                            $('#{{ form.parent.city.vars.id }}_trigger').attr('disabled', 'disabled');
+                        } else {
+                            Location.disableWidget(_inputElem, true);
                         }
                     });
 
+                    // Finds "country input widget" className within the form.
+                    if(!countryDependencyElement) {
+                    	countryDependencyElement = _inputElem.parents('form:first').find('._country-autocomplete input[data-autocomplete-trigger]:first');
+                    	countryValueElem = $('#' + countryDependencyElement.attr('id').replace('_widget', ''));
+                    }
+                {% endif %}
+
+                {% if form.parent.state is defined and form.parent.state %}
                     var dependencyElement = $('#{{ form.parent.state.vars.id }}_widget');
                     var dependencyElementValueContainer = $('#{{ form.parent.state.vars.id }}');
-                    
-                    dependencyElement.on('selectedState', function(e){
-                        Location.loadCities(countryValueElem.val(), $('#{{ form.parent.state.vars.id }}').val(), $('#{{ widgetId }}'), 0);
-                    });
 
-                    // listener for reload of states source
-                    dependencyElement.on('reloadedDataSource', function(e){
-                        var statesSource = $(e.target).data('fancyAutocomplete').getSource(); 
-                        if (statesSource.length == 0){
-                            // country had no states
-                            dependencyElement.trigger('selectedState');
-                        }
+                    dependencyElement.on('selectedState', function(){
+                        Location.loadCities(countryValueElem.val(), dependencyElementValueContainer.val(), _inputElem, 0);
                     });
 
                     // there is a preset value in the state container
@@ -133,23 +121,17 @@
                         dependencyElement.trigger('selectedState');
                     }
 
-                    if(acceptCustomCityValue && dependencyElement.val()) {
-                        $('#{{ widgetId }}').removeAttr('disabled');
-                    }
-
-                {% else %}
-                    countryDependencyElement.on('selectedCountry', function(e){
-                        Location.loadCities(countryValueElem.val(), 0, $('#{{ widgetId }}'), 0);
-                    });
-                    Location.loadCities(countryValueElem.val(), 0, $('#{{ widgetId }}'), 0);
                 {% endif %}
-
+                
                 {% if cityFormValue %}
                     {#-- there is city value in form data --#}
-                    $('#{{ widgetId }}').val('{{ cityFormValue.name }}');
-                    $('#{{ valueContainerId }}').val('{{ cityFormValue.id }}');
+                    _inputElem.val('{{ cityFormValue.name }}');
+                    _valueContainer.val('{{ cityFormValue.id }}');
                 {% endif %}
 
+                if(acceptCustomCityValue) {
+                    _inputElem.removeAttr('disabled');
+                }
             });
         })(jQuery);
         </script>
@@ -186,51 +168,59 @@
                         widget.trigger('selectedState', widget);
                     },
                     onAutocompleteChangeCallback: function(widget) {
-                        $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
+                        var cityWidget = $('#{{ form.parent.city.vars.id }}_widget').autocomplete('enable');
                         if(typeof(widget.options.acceptCustomValue) == 'boolean' && widget.options.acceptCustomValue == true) {
                             var matchedItem = _inputElem.parent().find('.combolist-wrapper li a:contains("'+_inputElem.val()+'")');
                             if(matchedItem.length && matchedItem.html().length == _inputElem.val().length && matchedItem.data('value') != _valueContainer.val()) {
                                 matchedItem.click();
                             }
 
-                            if(_valueContainer.val() == ''){
-                                $('#{{ form.parent.city.vars.id }}_trigger').attr('disabled', 'disabled');
-                                $('#{{ form.parent.city.vars.id }}_widget').autocomplete('disable');
+                            if(_inputElem.val() == '') {
+                                _valueContainer.val('');
+                                Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, cityWidget, 0);
+                                cityWidget.autocomplete('enable');
+                            } else {
+                                if(!_valueContainer.val()) {
+                                    cityWidget.autocomplete('disable');
+                                    $('#{{ form.parent.city.vars.id }}').val('');
+                                    $('#{{ form.parent.city.vars.id }}_trigger').prop('disabled', true);
+                                }
                             }
                         }
                     }
                 });
 
                 {% if form.parent.country %}
-                
                     // state is dependent on country widget
                     var dependencyElement = $('#{{ form.parent.country.vars.id }}_widget');
-                    var dependencyElementValueContainer = $('#{{ form.parent.country.vars.id }}');
-                    
+
                     dependencyElement.on('selectedCountry', function(e){
                         var fancyAutocomplete = $(e.target).data('fancyAutocomplete');
                         var countryValue = fancyAutocomplete.options.valueContainer.val();
-                        var widget = $('#{{ widgetId }}');
-                        Location.loadStatesOfCountry(countryValue,widget, 0);
+                        Location.loadStatesOfCountry(countryValue, _inputElem, 0);
                     });
 
                     // country has a loaded value, trigger selctedCountry
-                    if (parseInt(dependencyElementValueContainer.val())){
+                    if (parseInt($('#{{ form.parent.country.vars.id }}').val())){
                         dependencyElement.trigger('selectedCountry');
                     }
-    
-                    {% if form.parent.vars.value.state %}
-                        {#-- there is state value in form data --#}
-                        /**_inputElem.on('reloadedDataSource', function(e){
-                            
-                            
-                        });**/
 
-                        $('#{{ widgetId }}').val('{{ form.parent.vars.value.state.name }}');
-                        $('#{{ valueContainerId }}').val('{{ form.parent.vars.value.state.id }}');
+                    {% if form.parent.vars.value.state %} 
+                        _inputElem.val('{{ form.parent.vars.value.state.name }}');
+                        _valueContainer.val('{{ form.parent.vars.value.state.id }}');
                     {% endif %}
-                    
+
                 {% endif %}
+
+                {% if form.parent.city %}
+                    _inputElem.on('reloadedDataSource', function(e) {
+                        if(!_valueContainer.val()) {
+                            selectedCityId = '{{ form.parent.vars.value.city ? form.parent.vars.value.city.id : 0 }}'; 
+                            Location.loadCities($('#{{ form.parent.country.vars.id }}').val(), 0, $('#{{ form.parent.city.vars.id }}_widget'), selectedCityId);
+                        }
+                    });
+                {% endif %}
+                
             });
         })(jQuery);
         </script>

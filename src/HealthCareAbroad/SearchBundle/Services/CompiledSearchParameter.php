@@ -30,4 +30,9 @@ class CompiledSearchParameter
         return $this->variables;
     }
     
+    public function getSearchState()
+    {
+        return $this->searchState;
+    }
+    
 }

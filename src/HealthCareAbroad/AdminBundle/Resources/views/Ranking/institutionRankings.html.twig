@@ -1,0 +1,122 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+
+    <!-- sidebar -->
+    <div class="span3">
+    {% include 'HelperBundle:Widgets:subMenu.html.twig' 
+        with { 
+            links: [
+                {name: 'hospital_page_rankings',url: path('admin_institution_ranking_index'), label: 'Hospital Rankings', icon: 'icon-list', 'active': true},
+                {name: 'clinic_page_rankings',url: path('admin_center_ranking_index'), label: 'Clinic Rankings', icon: 'icon-list', 'active': false},
+                {name: 'search_results_rankings', url: path('admin_view_search_results_ranking'), label: 'Simulate Search Results', icon: 'icon-list', 'active': false}
+            ] 
+        }  
+    %} 
+    </div>
+    
+    <div id="content" class="span9">
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: 'Hospital Rankings'
+            }  
+        %}
+            {% block sectionContent %}
+            
+                {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+                
+                {% set sortBy = app.request.get('sortBy') %}
+                {% set sortOrder = app.request.get('sortOrder') %}
+                {% set default = sortBy | length ? '' : 'sort-asc' %}
+                
+                <div id="ranking_form_container">
+                
+                    {% set sortBy = app.request.get('sortBy') %}
+                    {% set sortOrder = app.request.get('sortOrder') %}
+                    {% set default = sortBy | length ? '' : 'sort-asc' %}
+                    
+                    <fieldset>
+                        <legend>Manage hospital page ranking points</legend>
+                        
+                        <table class="table table-bordered sortable-list">
+                            <tr>
+                                <th id="column-name" width="400"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                                <th id="column-totalClinicRankingPoints" ><a href="{{ app.request.uri }}" class="{{ sortBy == 'totalClinicRankingPoints' ? 'sort-' ~ sortOrder : default }}">Points</a></th>
+                                <th width="180">Actions</th>
+                            </tr>
+                            
+                            {% for institution in institutions %}
+                                {% include 'AdminBundle:Ranking/Partials:rankingItemView.html.twig' with {
+                                    rankingItem: {
+                                        id: institution.id,
+                                        name: institution.name,
+                                        rankingPoints: institution.totalClinicRankingPoints
+                                    }
+                                } 
+                                %}
+                            {% endfor %}
+                       </table>
+                    </fieldset>
+                </div>
+                
+                <!-- Generic ranking item form -->
+                <form  action="{{ path('admin_ranking_institution_updateRanking') }}" id="{{ rankingItemForm.vars.id }}">
+                    {{ form_rest(rankingItemForm) }}
+                </form>
+                            
+            {% endblock %}
+            
+        {% endembed %}
+        
+        {% if pager.isPaginable %}
+           {{ paginate(pager, app.request.get('_route') , app.request.query.all) }}
+        {% endif %}
+        
+         
+    </div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript" src="{{ asset('bundles/helper/js/fancy_autocomplete.js') }}"></script>
+<script type="text/javascript">
+<!--
+(function($){
+    $(function(){
+
+        $('input.ranking_value_input').change(function(){
+            var val = parseFloat($(this).val());
+            $(this).val(val ? val.toFixed(3) : 0);
+        });
+
+        $('button.ranking_value_trigger').click(function(e){
+            e.preventDefault();
+            var btn = $(this);
+            var rankingPoints = btn.parents('tr.ranking_item_row').find('input.ranking_value_input').val();
+            var id = btn.data('ranking-item-id');
+            btn.prop('disabled', true).text('Processing...');
+
+            var form = $('#{{ rankingItemForm.vars.id }}');
+            $('#{{ rankingItemForm.id.vars.id }}').val(id);
+            $('#{{ rankingItemForm.rankingPoints.vars.id }}').val(rankingPoints);
+
+            $.ajax({
+                url: form.attr('action'),
+                data: form.serialize(),
+                type: 'PUT',
+                dataType: 'json',
+                success: function(response){
+                    btn.parents('tr.ranking_item_row').find('td.ranking_points_view').html(response.rankingPoints);
+                    btn.prop('disabled', false).text('Save changes');
+                },
+                error: function(xhr){
+                    btn.prop('disabled', false).text('Save changes');
+                }
+            });
+        });
+        
+    });
+})(jQuery);
+//-->
+</script>
+{% endblock %}

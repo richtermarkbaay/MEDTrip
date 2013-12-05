@@ -47,7 +47,8 @@ final class ListFilterFactory
     {
         return array(
             'admin_news_index' => 'NewsListFilter',
-            //'admin_city_index' => 'GlobalCityListFilter',
+            'admin_city_index' => 'GlobalCityListFilter',
+            'admin_state_index' => 'GlobalStateListFilter',
             'admin_doctor_index' => 'DoctorListFilter',
             'admin_country_index' => 'GlobalCountryListFilter',
             'admin_institution_index' => 'InstitutionListFilter',
@@ -72,7 +73,8 @@ final class ListFilterFactory
             'admin_feedback' => 'FeedbackListFilter',
             'admin_institution_ranking_index' => 'InstitutionRankingListFilter',
             'admin_center_ranking_index' => 'InstitutionMedicalCenterRankingListFilter',
-            'admin_institution_medicalCenters' => 'InstitutionMedicalCentersViewListFilter'
+            'admin_institution_medicalCenters' => 'InstitutionMedicalCentersViewListFilter',
+            'admin_statistics_institution' => 'InstitutionStatisticsListFilter'
                         //'institution_inquiries' => 'InstitutionInquiryListFilter'
         );
     }

@@ -110,6 +110,27 @@ services:
             - { name: kernel.event_listener, event: event.city.delete, method: onCommonLogAction }
 
     #
+    # listeners for state related events
+    #
+    listener.log.state.add:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.state.add, method: onCommonLogAction }
+
+    listener.log.state.edit:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.state.edit, method: onCommonLogAction }
+
+    listener.log.state.delete:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.state.delete, method: onCommonLogAction }
+
+    #
     # listeners for country related events
     #
     listener.log.country.add:

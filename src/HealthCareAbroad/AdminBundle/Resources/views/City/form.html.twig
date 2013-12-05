@@ -10,27 +10,53 @@
 	<div class="span9">
 	
 		{% embed 'HelperBundle:Widgets:section.html.twig' with { 
-                title: ( form.vars.value.id ? 'Edit ' : 'Add ' ) ~ citiesLabel.singular | title ,
+                title: ( form.vars.value.id is defined ? 'Edit ' : 'Add ' ) ~ citiesLabel.singular | title ,
                 actions: [{link: path('admin_city_index'), label: 'View all '~ citiesLabel.plural | title, 'icon' : 'icon-list' }]
             }
         %}
 
-		  {% block sectionContent %}
+        {% block sectionContent %}
 
-                {% include '::notice.admin.html.twig' %}
-                
+            {% include '::notice.admin.html.twig' %}
+
 			<form novalidate="novalidate" action="{{ formAction }}" method="post" {{ form_enctype(form) }} class="basic-form">
-
 				{{ form_row(form.name) }}
-				{{ form_row(form.country) }}
+				{{ form_row(form.geoCountry) }}
+                {{ form_row(form.geoState, {attr: {disabled: 'disabled'}}) }}
 				{{ form_row(form.status) }}
 				{{ form_rest(form) }}
  				
- 				<input type="submit" class="btn btn-large btn-primary" name="submit" value="Save"/>
+ 				<input type="submit" class="btn btn-large btn-primary" name="submit" value="Save" onclick="$(this).prop('disabled', true).val('Saving...')"/>
 			</form>
 	
             {% endblock %}
         {% endembed %}
     </div>
 
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+<script type="text/javascript">
+$(function(){
+    var loadStatesUrl = '{{ get_load_states_api_uri() }}';
+    var selectedState = '{{ form.vars.value.geoState is defined ? form.vars.value.geoState : "" }}';
+
+    $('#geoCity_geoCountry').change(function() {
+        var statesOptions = '';
+        $('#geoCity_geoState').html('<option>loading...<option>');
+        $.getJSON(loadStatesUrl, {country_id: $(this).val()}, function(response){
+
+            $.each(response.data, function(i, state){
+                statesOptions += '<option value="'+state.id+'">'+state.name+'</option>';
+            });
+            $('#geoCity_geoState').prop('disabled', false).html(statesOptions);
+            $('#geoCity_geoState').find('[value='+selectedState+']').prop('selected', true);
+        });
+    });
+
+    if($('#geoCity_geoCountry').val()) {
+        $('#geoCity_geoCountry').change();
+    }
+})
+</script>
 {% endblock %}

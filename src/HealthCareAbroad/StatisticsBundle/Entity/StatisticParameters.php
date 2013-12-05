@@ -29,6 +29,8 @@ final class StatisticParameters
     
     const TREATMENT_ID = 'treatment_id';
     
+    const IP_ADDRESS = 'ip_address';
+    
     /**
      * Helper function to encode statistic parameters
      * @param array $parameters

@@ -1,0 +1,29 @@
+HealthCareAbroad\StatisticsBundle\Entity\InstitutionStatisticsDaily:
+    type: entity
+    table: institution_statistics_daily
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        date:
+            type: date
+            nullable: false
+        institutionId:
+            type: integer
+            unsigned: true
+            nullable: false
+            column: institution_id
+        categoryId:
+            type: smallint
+            nullable: false
+            column: category_id
+        ipAddress:
+            type: string
+            length: 20
+            fixed: true
+            nullable: true
+            column: ip_address
+    lifecycleCallbacks: {  }

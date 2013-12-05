@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\FrontendBundle\Services;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -72,17 +74,10 @@ class FrontendBreadcrumbService
             return $breadcrumbs;
         }
         if ($data['institution']) {
-            switch ($data['institution']['type']) {
-                case InstitutionTypes::MULTIPLE_CENTER:
-                    $routeName = 'frontend_multiple_center_institution_profile';
-                    break;
-                case InstitutionTypes::SINGLE_CENTER:
-                    $routeName = 'frontend_single_center_institution_profile';
-                    break;
-            }
+            $routeName = InstitutionService::getInstitutionRouteName($data['institution']);
             $breadcrumbs[] = array(
-                            'label' => $data['institution']['name'],
-                            'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
+                'label' => $data['institution']['name'],
+                'url' => $this->generateUrl($routeName, array('institutionSlug' => $data['institution']['slug']))
             );
             if ($data['institutionMedicalCenter']) {
                 $breadcrumbs[] = array('label' => $data['institutionMedicalCenter']['name']);

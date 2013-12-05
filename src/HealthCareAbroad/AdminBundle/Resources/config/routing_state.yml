@@ -1,0 +1,39 @@
+admin_state_index:
+    pattern:  /admin/states
+    defaults: { _controller: AdminBundle:State:index }
+    requirements:
+        _method:  GET
+
+admin_state_add:
+    pattern:  /admin/states/add
+    defaults: { _controller: AdminBundle:State:add }
+    requirements:
+        _method:  GET
+
+admin_state_create:
+    pattern:  /admin/states/add
+    defaults: { _controller: AdminBundle:State:save }
+    requirements:
+         _method: POST
+
+admin_state_edit:
+    pattern:  /admin/states/edit/{id}
+    defaults: { _controller: AdminBundle:State:edit }
+    requirements:
+        id: \d+
+        _method: GET
+
+admin_state_update:
+    pattern:  /admin/states/edit/{id}
+    defaults: { _controller: AdminBundle:State:save }
+    requirements:
+        id: \d+
+        _method: POST
+
+admin_state_updateStatus:
+    pattern:  /admin/states/update-status/{id}
+    defaults: { _controller: AdminBundle:State:updateStatus }
+    requirements:
+        id: \d+
+        status: \d+
+        _method: POST

@@ -5,33 +5,34 @@ admin_country_index:
         _method:  GET
 
 admin_country_add:
-    pattern:  /admin/country/add
+    pattern:  /admin/countries/add
     defaults: { _controller: AdminBundle:Country:add }
     requirements:    
         _method:  GET
         
 admin_country_create:
-    pattern:  /admin/country/add
+    pattern:  /admin/countries/add
     defaults: { _controller: AdminBundle:Country:save }
     requirements:
          _method: POST
          
 admin_country_edit:
-    pattern:  /admin/country/edit/{id}
-    defaults: { _controller: AdminBundle:Country:edit, id: ~ }
+    pattern:  /admin/countries/edit/{id}
+    defaults: { _controller: AdminBundle:Country:edit }
     requirements:
         id: \d+
         _method:  GET
 
 admin_country_update:
-    pattern:  /admin/country/edit/{id}
-    defaults: { _controller: AdminBundle:Country:save}
+    pattern:  /admin/countries/edit/{id}
+    defaults: { _controller: AdminBundle:Country:save }
     requirements:
          id: \d+
          _method: POST
 
 admin_country_updateStatus:
-    pattern:  /admin/country/update-status/{id}
-    defaults: { _controller: AdminBundle:Country:updateStatus, id: ~ }
+    pattern:  /admin/countries/update-status/{id}
+    defaults: { _controller: AdminBundle:Country:updateStatus }
     requirements:
         id: \d+
+        _method: POST

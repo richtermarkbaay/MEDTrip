@@ -12,56 +12,51 @@
  	   {% embed 'HelperBundle:Widgets:section.html.twig' 
             with { 
                 title: cityLabel.plural | title,
-                actions: [{link: path('admin_city_add'), label: 'Add '~ cityLabel.singular | title, 'icon' : 'icon-ok' }] 
+                actions: [{link: path('admin_city_add'), label: 'Add '~ cityLabel.singular | title, 'icon' : 'icon-plus' }] 
             }  
         %}
     
  		{% block sectionContent %}
             
-            <div id="filter-wrapper2">
-                <form id="{{ filterForm.vars.id }}" action="#" method="get" class="form-search" novalidate>
-                    <label>Country:</label>
-                    {{ form_widget(filterForm.country, {attr:{placeholder: 'Select a country'} }) }}
-                    <label>State:</label>
-                    {{ form_widget(filterForm.state, {attr:{placeholder: 'Select a state'} }) }}
-                    <label>City name:</label><br />
-                    {{ form_widget(filterForm.name, {attr:{placeholder: 'Select by name'} }) }}
-        			<button class="btn btn-success" type="submit" >Go</button>
-                </form>
-        		
-            </div>
-                
+            {% autoescape false %} {{ listFilters is defined ? listFilters : '' }} {% endautoescape %}
+            {% set sortBy = app.request.get('sortBy') %}
+            {% set sortOrder = app.request.get('sortOrder') %}
+            {% set default = sortBy | length ? '' : 'sort-asc' %}
+            
             <table id="city-list" class="table table-bordered sortable-list">
-                <thead>
-                    <tr>
-                       <th id="column-name">Name</th>
-                       <th width="35%">Actions</th>
-                    </tr>
-                </thead>
-                
-                <tbody></tbody>
-            
+                <tr>
+                    <th id="column-name" width="300"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+
+            {% for each in cities %}
+                <tr>
+                    <td>
+                        {{ each.name }}
+                        {% if each.institutionId is defined %}
+                            <br><a href="{{ path('admin_institution_view', {institutionId: each.institutionId} ) }}" target="_blank">added by this institution</a>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <select class="update-status" style="width: 100px" data-update-url="{{ path('admin_city_updateStatus', {id:each.id}) }}">
+                            {% for status, statusLabel in statuses %}
+                            <option value="{{ status }}" {% if each.status is sameas(status) %}selected="selected"{% endif %}>{{ statusLabel }}</option>    
+                            {% endfor %}
+                        </select>
+
+                    </td>
+                     <td>
+                        <a href="{{ path('admin_city_edit', { id:each.id } ) }}"> <i class="icon-edit"></i> Edit</a> <br/>
+                    </td>
+                </tr>
+            {% endfor %}
             </table>
-            
-            <!-- Modal Institution Medical Center Specialist -->
-            <div id="_editCityName" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                    <h3>Edit City Name</h3>
-                    
-                </div>
-                <div class="modal-body">
-                    <form id="_editCityNameForm" novalidate="novalidate" action="{{ get_update_cities_url() }}" method="PUT" class="basic-form">
-                        {{ form_row(editCityNameForm.name) }}
-                        {{ form_widget(editCityNameForm._token)  }}
-                        <input type="hidden" name="id" id="city_id" value=""/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button aria-hidden="true" data-dismiss="modal" class="btn">Cancel</button>
-                    <button data-loader-text="Processing..." id="_editCitySubmitBtn" class="btn btn-primary submit-button">Submit</button>
-                </div>
-            </div>
+
+            {% if pager.isPaginable %}
+               {{ paginate(pager, 'admin_city_index', app.request.query.all) }}
+            {% endif %}
+    
         {% endblock %}
             
         {% endembed %}
@@ -71,71 +66,26 @@
 
 {% block inlineJavascriptCode %}
 <script type="text/javascript">
-<!--
-(function($){
-    $(function(){
-        var LOAD_CITIES_API = '{{ get_load_cities_api_uri() }}';
-        var UPDATE_CITIES_URL = '{{ get_update_cities_url() }}';
-        var loadingHtml = '<tr class="info"><td colspan="3">Loading...</td></tr>';
-        var prototype = '{{ getTemplateContents("AdminBundle:City:itemView.city.html.twig") | raw }}';
-        
-        $('#{{ filterForm.vars.id }}').submit(function(e){
-            e.preventDefault();
-            $('#city-list tbody').html(loadingHtml);
-
-            $.ajax({
-                url: LOAD_CITIES_API,
-                data: {country_id: $('#{{ filterForm.country.vars.id }}').val(), state_id: $('#{{ filterForm.state.vars.id }}').val(), name: $('#{{ filterForm.name.vars.id }}').val()},
-                type: 'get',
-                dataType: 'json',
-                success: function(response){
-                    $('#city-list tbody').html('');
-                    $.each(response.cities, function(k, cityData){
-                        var view = $(prototype);
-                        view.find('.data-name').html(cityData.name).attr('id','_city'+cityData.id);
-                        
-                        view.find('a.edit').attr('data-cityId', cityData.id).attr('data-cityName', cityData.name);
-                        $('#city-list tbody').append(view);
-                    });
-                }
+$(function(){
+    var loadStatesUrl = '{{ get_load_states_api_uri() }}';
+    $('#filter-country').change(function() {
+        var statesOptions = '<option value="all">All</option>';
+        $('#filter-state').prop('disabled', true).html('<option>loading...</option>');
+        $.getJSON(loadStatesUrl, {country_id: $(this).val()}, function(response){
+            $.each(response.data, function(i, state){
+                statesOptions += '<option value="'+state.id+'">'+state.name+'</option>';
             });
-        });
-
-
-        $('a.edit').live('click',function(){
-        	$('div#_editCityName').modal('show');
-        	var cityId = $(this).attr('data-cityId');
-            var cityName = $('#_city'+cityId).html();    	
-            $('#city_name').val(cityName);
-            $('#city_id').val(cityId);
-            
-            return false;
-        });
-
-        $('#_editCitySubmitBtn').click(function() {
-            //update data on the list
-            $('#_editCitySubmitBtn').html('Processing...');
-            if($('#city_name').val()) {
-                var cityId = $('#city_id').val()
-                $.ajax({
-                    url: UPDATE_CITIES_URL,
-                    data: $('#_editCityNameForm').serialize(),
-                    type: 'post',
-                    dataType: 'json',
-                    success: function(response){
-                        $('#_city'+cityId).html(response.geo_city.name);
-                        $('#city_name').val(response.geo_city.name);
-                        $('div#_editCityName').modal('hide');
-                        $('#_editCitySubmitBtn').html('Submit');
-                        
-                    }
-                });
-            }
-            return false;
+            $('#filter-state').prop('disabled', false).html(statesOptions);
         });
     });
-})(jQuery);
-//-->
+
+    $('select.update-status').change(function(){
+        var elem = $(this).prop('disabled', true);
+        elem.after('<span> updating status...</span>');
+        $.post($(this).data('update-url'), {status: $(this).val()}, function(response){
+            elem.prop('disabled', false).next().remove();
+        });
+    });    
+})
 </script>
 {% endblock %}
-

@@ -388,15 +388,16 @@ CREATE TABLE IF NOT EXISTS `business_hours` (
 DROP TABLE IF EXISTS `cities`;
 CREATE TABLE IF NOT EXISTS `cities` (
   `id` int(10) unsigned NOT NULL,
+  `state_id` bigint(20) unsigned DEFAULT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `name` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-  `slug` char(100) NOT NULL,
-  `geo_city_id` bigint(20) unsigned DEFAULT NULL,
-  `old_id` int(10) unsigned DEFAULT NULL,
+  `slug` char(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `institution_id` int(10) unsigned NOT NULL DEFAULT '0',
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `country_id_2` (`country_id`,`name`),
-  KEY `country_id` (`country_id`)
+  UNIQUE KEY `state_country_name` (`state_id`,`country_id`,`name`,`institution_id`),
+  KEY `country_id` (`country_id`),
+  KEY `state_id` (`state_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -451,6 +452,7 @@ CREATE TABLE IF NOT EXISTS `contact_details` (
 -- Table structure for table `countries`
 --
 
+
 DROP TABLE IF EXISTS `countries`;
 CREATE TABLE IF NOT EXISTS `countries` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -463,7 +465,7 @@ CREATE TABLE IF NOT EXISTS `countries` (
   `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=240 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `countries`
@@ -547,6 +549,28 @@ CREATE TABLE IF NOT EXISTS `doctor_contact_details` (
   PRIMARY KEY (`doctor_id`,`contact_detail_id`),
   KEY `contact_detail_id` (`contact_detail_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+--
+-- Database: `healthcareabroad`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `doctor_medical_specialities`
+--
+
+DROP TABLE IF EXISTS `doctor_medical_specialities`;
+CREATE TABLE IF NOT EXISTS `doctor_medical_specialities` (
+  `doctor_id` bigint(10) unsigned NOT NULL,
+  `medical_speciality_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`doctor_id`,`medical_speciality_id`),
+  KEY `doctor_id` (`doctor_id`),
+  KEY `medical_speciality_id` (`medical_speciality_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `doctor_specializations`
@@ -1494,6 +1518,104 @@ INSERT INTO `medical_provider_groups` (`id`, `name`, `description`, `date_create
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `medical_specialities`
+--
+
+DROP TABLE IF EXISTS `medical_specialities`;
+CREATE TABLE IF NOT EXISTS `medical_specialities` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(200) NOT NULL,
+  `specialization_id` int(10) unsigned NOT NULL,
+  `date_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`,`specialization_id`),
+  KEY `specialization_id` (`specialization_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=75 ;
+
+--
+-- Dumping data for table `medical_specialities`
+--
+
+INSERT INTO `medical_specialities` (`id`, `name`, `specialization_id`, `date_created`, `status`) VALUES
+(1, 'Accupressure', 84, '2013-10-23 01:43:02', 1),
+(2, 'Accupuncture', 84, '2013-10-23 01:43:02', 1),
+(3, 'Ayurvedic Medicine', 84, '2013-10-23 01:43:02', 1),
+(4, 'Chiropractic Therapy', 84, '2013-10-23 01:43:02', 1),
+(5, 'Hyperbaric & Underwater Medicine', 84, '2013-10-23 01:43:02', 1),
+(6, 'Traditional Chinese Medicine', 84, '2013-10-23 01:43:28', 1),
+(7, 'Anesthesiology', 3, '2013-10-23 01:47:11', 1),
+(8, 'Cardiothoracic Surgery', 3, '2013-10-23 01:47:11', 1),
+(9, 'Vascular Surgery', 3, '2013-10-23 01:47:11', 1),
+(10, 'Anti-Aging Medicine', 53, '2013-10-23 01:47:11', 1),
+(11, 'Oral and Maxillofacial Surgery', 59, '2013-10-23 01:47:11', 1),
+(12, 'Oral and Maxillofacial Radiology', 59, '2013-10-23 01:47:11', 1),
+(13, 'Endoscopy', 5, '2013-10-23 01:47:11', 1),
+(14, 'Adolescent Medicine', 93, '2013-10-23 01:47:11', 1),
+(15, 'Aviation Medicine', 93, '2013-10-23 01:47:11', 1),
+(16, 'Family Medicine', 93, '2013-10-23 01:47:11', 1),
+(17, 'Geriatric Medicine', 93, '2013-10-23 01:47:11', 1),
+(18, 'Breast Surgery', 42, '2013-10-23 01:51:05', 1),
+(19, 'Colorectal Surgery', 42, '2013-10-23 01:51:05', 1),
+(20, 'Endocrine Surgery', 42, '2013-10-23 01:51:05', 1),
+(21, 'Hepato-biliary Pancreatic Surgery', 42, '2013-10-23 01:51:05', 1),
+(22, 'Laparoscopic Surgery', 42, '2013-10-23 01:51:05', 1),
+(23, 'Organ Transplantation', 42, '2013-10-23 01:51:05', 1),
+(24, 'Surgical Oncology', 42, '2013-10-23 01:51:05', 1),
+(25, 'Trauma Surgery', 42, '2013-10-23 01:51:05', 1),
+(26, 'Urological Surgery', 42, '2013-10-23 01:51:05', 1),
+(27, 'Endocrinology, Diabetes and Metabolism', 75, '2013-10-23 01:51:05', 1),
+(28, 'Hepatology', 75, '2013-10-23 01:54:20', 1),
+(29, 'Rheumatology', 75, '2013-10-23 01:54:20', 1),
+(30, 'Neuromuscular Medicine', 19, '2013-10-23 01:54:20', 1),
+(31, 'Pain Medicine', 19, '2013-10-23 01:54:20', 1),
+(32, 'Parkinson and Movement Disorder', 19, '2013-10-23 01:54:20', 1),
+(33, 'Speech-Language Pathology', 19, '2013-10-23 01:54:20', 1),
+(34, 'Sleep Medicine', 19, '2013-10-23 01:54:20', 1),
+(35, 'Vascular Neurology (Stroke)', 19, '2013-10-23 01:54:20', 1),
+(36, 'Spine Surgery', 20, '2013-10-23 01:54:20', 1),
+(37, 'Interventional Nephrology', 50, '2013-10-23 01:54:20', 1),
+(38, 'Female Pelvic Medicine and Reconstructive Surgery', 72, '2013-10-23 01:57:27', 1),
+(39, 'Maternal and Fetal Medicine', 72, '2013-10-23 01:57:27', 1),
+(40, 'Dermato-oncology', 6, '2013-10-23 01:57:27', 1),
+(41, 'Gastrointestinal Oncology', 6, '2013-10-23 01:57:27', 1),
+(42, 'Gynecologic Oncology', 6, '2013-10-23 01:57:27', 1),
+(43, 'Hematologic Oncology', 6, '2013-10-23 01:57:27', 1),
+(44, 'Interventional Oncology', 6, '2013-10-23 01:57:27', 1),
+(45, 'Medical Oncology', 6, '2013-10-23 01:57:27', 1),
+(46, 'Neurologic Oncology', 6, '2013-10-23 01:57:27', 1),
+(47, 'Radiation Oncology', 6, '2013-10-23 01:57:27', 1),
+(48, 'Surgical Oncology', 6, '2013-10-23 02:00:35', 1),
+(49, 'Urologic Oncology', 6, '2013-10-23 02:00:35', 1),
+(50, 'Neuro-ophthalmology', 16, '2013-10-23 02:00:35', 1),
+(51, 'Ophthalmic Pathology', 16, '2013-10-23 02:00:35', 1),
+(52, 'Ophthalmic Surgery', 16, '2013-10-23 02:00:35', 1),
+(53, 'Orthopedic Surgery', 89, '2013-10-23 02:00:35', 1),
+(54, 'Podiatry', 89, '2013-10-23 02:00:35', 1),
+(55, 'Sports Medicine', 89, '2013-10-23 02:00:35', 1),
+(56, 'Audiology', 67, '2013-10-23 02:00:35', 1),
+(57, 'Pediatric Cardiology', 68, '2013-10-23 02:00:35', 1),
+(58, 'Pediatric Dermatology', 68, '2013-10-23 02:02:35', 1),
+(59, 'Pediatric Gastroenterology', 68, '2013-10-23 02:02:35', 1),
+(60, 'Pediatric Nephrology', 68, '2013-10-23 02:02:35', 1),
+(61, 'Pediatric Neurology', 68, '2013-10-23 02:02:35', 1),
+(62, 'Pediatric Neurosurgery', 68, '2013-10-23 02:02:35', 1),
+(63, 'Pediatric Oncology', 68, '2013-10-23 02:02:35', 1),
+(64, 'Pediatric Ophthalmology', 68, '2013-10-23 02:02:35', 1),
+(65, 'Pediatric Pulmonology', 68, '2013-10-23 02:02:35', 1),
+(66, 'Pediatric Surgery', 68, '2013-10-23 02:02:35', 1),
+(67, 'Pediatric Transplant', 68, '2013-10-23 02:02:35', 1),
+(68, 'Occupational Therapy', 24, '2013-10-23 02:05:50', 1),
+(69, 'Bariatric Surgery', 12, '2013-10-23 02:05:50', 1),
+(70, 'Cosmetic Surgery', 12, '2013-10-23 02:05:50', 1),
+(71, 'Hair Restoration', 12, '2013-10-23 02:05:50', 1),
+(72, 'Reconstructive Surgery', 12, '2013-10-23 02:05:50', 1),
+(73, 'Psychology', 50, '2013-10-23 02:05:50', 1),
+(74, 'Biology', 61, '2013-10-23 02:05:50', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `medical_term_suggestions`
 --
 
@@ -1715,21 +1837,25 @@ INSERT INTO `specializations` (`id`, `name`, `description`, `media_id`, `date_cr
 -- Table structure for table `states`
 --
 
+
 DROP TABLE IF EXISTS `states`;
 CREATE TABLE IF NOT EXISTS `states` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(225) NOT NULL,
+  `id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
   `country_id` int(10) unsigned NOT NULL,
   `administrative_code` varchar(3) DEFAULT NULL,
+  `institution_id` int(10) unsigned NOT NULL DEFAULT '0',
+  `status` smallint(1) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `country_id` (`country_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  UNIQUE KEY `name` (`name`,`country_id`,`institution_id`),
+  KEY `country_id` (`country_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `states`
 --
 
-INSERT INTO `fixtures_healthcareabroad`.`states` (`id`, `name`, `country_id`, `administrative_code`) VALUES ('1', 'test', '1', '01');
+INSERT INTO `fixtures_healthcareabroad`.`states` (`id`, `name`, `country_id`, `administrative_code`, `status`) VALUES ('1', 'test', '1', '01', '1');
 
 -- --------------------------------------------------------
 

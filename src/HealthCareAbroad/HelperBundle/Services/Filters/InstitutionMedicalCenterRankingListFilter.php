@@ -12,6 +12,10 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 class InstitutionMedicalCenterRankingListFilter extends DoctrineOrmListFilter
 {
+    protected $defaultParams = array(
+        'name' => ''
+    );
+    
     function __construct($doctrine)
     {
         parent::__construct($doctrine);
@@ -19,12 +23,23 @@ class InstitutionMedicalCenterRankingListFilter extends DoctrineOrmListFilter
         // Add country in validCriteria
         $this->addValidCriteria('country');
         $this->addValidCriteria('city');
+        $this->addValidCriteria('name');
     
     }
     function setFilterOptions()
     {
+        $this->setNameFilter();
         $this->setCountryFilterOption();
         $this->setCityFilterOption();
+    }
+    
+    public function setNameFilter()
+    {
+        $this->filterOptions['name'] = array(
+            'label' => 'Name',
+            'value' => '',
+            'placeholder' => 'Search by institution'
+        );
     }
     
     function setCountryFilterOption()
@@ -68,19 +83,29 @@ class InstitutionMedicalCenterRankingListFilter extends DoctrineOrmListFilter
     function setFilteredResults()
     {
         $this->queryBuilder =  $this->doctrine->getEntityManager()->createQueryBuilder();
-        $this->queryBuilder->select('a')->from('InstitutionBundle:InstitutionMedicalCenter', 'a');
-        $this->queryBuilder->andWhere('a.status = :approved_status')->setParameter('approved_status', InstitutionMedicalCenterStatus::APPROVED);
-        $this->queryBuilder->leftJoin('a.institution', 'b');
+        $this->queryBuilder
+            ->select('a, inst')
+            ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+            ->innerJoin('a.institution', 'inst');
+        
+        $this->queryBuilder->andWhere('inst.status = :approved_status')->setParameter('approved_status', InstitutionStatus::getBitValueForApprovedStatus());
+        
+        $name = \trim($this->queryParams['name']);
+        if ('' != $name){
+            $this->queryBuilder->andWhere('inst.name LIKE :name')
+            ->setParameter('name', "%{$name}%");
+            
+        }
         
         if ($this->queryParams['country'] != ListFilter::FILTER_KEY_ALL) {
             
-            $this->queryBuilder->andWhere('b.country = :country');
+            $this->queryBuilder->andWhere('inst.country = :country');
             $this->queryBuilder->setParameter('country', $this->queryParams['country']);
         }
         
         if ($this->queryParams['city'] != ListFilter::FILTER_KEY_ALL) {
             
-            $this->queryBuilder->andWhere('b.city = :city');
+            $this->queryBuilder->andWhere('inst.city = :city');
             $this->queryBuilder->setParameter('city', $this->queryParams['city']);
         }
         

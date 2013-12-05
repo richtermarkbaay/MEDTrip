@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\MailerBundle\Listener;
 
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionService;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use Symfony\Component\EventDispatcher\Event;
@@ -18,7 +20,7 @@ class InquiriesListener extends NotificationsListener
 
         if ($institutionMedicalCenter) {
             $facilityName = $institutionMedicalCenter->getName() . ' at ' . $institution->getName();
-            $urlFacility = $router->generate('frontend_institutionMedicaCenter_profile', array(
+            $urlFacility = $router->generate('frontend_institutionMedicalCenter_profile', array(
                 'institutionSlug' => $institution->getSlug(), 'imcSlug' => $institutionMedicalCenter->getSlug()), true
             );
 
@@ -26,16 +28,7 @@ class InquiriesListener extends NotificationsListener
 
         } else {
             $facilityName = $institution->getName();
-
-            switch ($institution->getType()) {
-                case InstitutionTypes::SINGLE_CENTER:
-                    $routeName = 'frontend_single_center_institution_profile';
-                    break;
-                case InstitutionTypes::MULTIPLE_CENTER:
-                    $routeName = 'frontend_multiple_center_institution_profile';
-                    break;
-            }
-
+            $routeName = InstitutionService::getInstitutionRouteName($institution);
             $urlFacility = $router->generate($routeName, array('institutionSlug' => $institution->getSlug()), true);
         }
 

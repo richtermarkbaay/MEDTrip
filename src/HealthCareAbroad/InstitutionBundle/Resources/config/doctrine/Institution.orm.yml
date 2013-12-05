@@ -81,7 +81,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             nullable: false
             column: paying_client
         totalClinicRankingPoints:
-            type: integer
+            type: float
             nullable: true
             column: total_clinic_ranking_points
             gedmo:

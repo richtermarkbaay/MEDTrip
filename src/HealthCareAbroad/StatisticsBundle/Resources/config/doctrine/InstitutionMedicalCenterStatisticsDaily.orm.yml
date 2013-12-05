@@ -1,0 +1,32 @@
+HealthCareAbroad\StatisticsBundle\Entity\InstitutionMedicalCenterStatisticsDaily:
+    type: entity
+    table: institution_medical_center_statistics_daily
+    fields:
+        id:
+            id: true
+            type: bigint
+            nullable: false
+            generator:
+                strategy: IDENTITY
+        date:
+            type: date
+            nullable: false
+        categoryId:
+            type: smallint
+            nullable: false
+            column: category_id
+        institutionId:
+            type: bigint
+            nullable: false
+            column: institution_id
+        institutionMedicalCenterId:
+            type: bigint
+            nullable: false
+            column: institution_medical_center_id
+        ipAddress:
+            type: string
+            length: 20
+            fixed: true
+            nullable: true
+            column: ip_address
+    lifecycleCallbacks: {  }

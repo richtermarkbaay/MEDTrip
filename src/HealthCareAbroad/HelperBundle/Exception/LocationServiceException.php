@@ -13,6 +13,11 @@ class LocationServiceException extends \Exception
         throw new self(\sprintf('%s is required when hydrating Country', $key));
     }
     
+    static public function missingRequiredStateDataKey($key)
+    {
+        throw new self(\sprintf('%s is required when hydrating State', $key));
+    }
+    
     static public function missingRequiredCityDataKey($key)
     {
         throw new self(\sprintf('%s is required when hydrating City', $key));

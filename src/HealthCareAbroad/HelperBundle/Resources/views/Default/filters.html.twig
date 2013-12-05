@@ -9,11 +9,10 @@
 			<select name="{{ name }}" id="filter-{{ name }}" class="filter-params styledselect_form_1">
 				{% for value, label in filter.options %}
 					<option value="{{ value }}" {{ value == filter.selected ? 'selected' : ''}}>{{ label }}</option>
-					
 				{% endfor %}
 			</select>
 			{% else %}
-			    <input type="text" id="filter-{{ name }}" class="filter-params styledselect_form_1 span2"  name ="{{ name }}" data-date-format="mm/dd/yyyy" value="{{ filter.value }}" >
+			     <input type="text" id="filter-{{ name }}" class="filter-params"  name ="{{ name }}" data-date-format="mm/dd/yyyy" value="{{ filter.value }}" {% if filter.placeholder is defined %} placeholder="{{ filter.placeholder }}" {% endif %} style="margin-bottom: 0"/>
 			{% endif %}
 		</div>
 	{% endfor %}

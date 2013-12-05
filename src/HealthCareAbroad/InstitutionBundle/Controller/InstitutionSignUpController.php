@@ -99,34 +99,6 @@ class InstitutionSignUpController extends InstitutionAwareController
     }
 
     /**
-     * TODO: THIS IS MISPLACED
-     * invite institutions
-     */
-    public function inviteAction()
-    {
-        $invitation = new InstitutionInvitation();
-        $form = $this->createForm(new InstitutionInvitationType(), $invitation);
-
-        $request = $this->getRequest();
-        if ($request->getMethod() == 'POST') {
-
-            $form->bindRequest($request);
-            if ($form->isValid()) {
-
-                //send institution invitation
-                $sendingResult = $this->get('services.invitation')->sendInstitutionInvitation($invitation);
-
-                $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_ADD_INSTITUTION_INVITATION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_INVITATION, $invitation));
-                $this->get('session')->setFlash('success', "Invitation sent to ".$invitation->getEmail());
-            }
-        }
-
-        return $this->render('InstitutionBundle:Token:create.html.twig', array(
-                'form' => $form->createView()
-        ));
-    }
-
-    /**
      * Sign up page handler
      *
      * @param Request $request
@@ -268,31 +240,34 @@ class InstitutionSignUpController extends InstitutionAwareController
                     $formRequestData['medicalProviderGroups'][0] = str_replace (array("\\'", '\\"'), array("'", '"'), $formRequestData['medicalProviderGroups'][0]);
                 }
             }
-            
+
             // Check If Custom State
             if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
                 $stateData = array(
                     'name' => $stateName,
-                    'country_id' => $formRequestData['country'],
-                    'institution_id' => $this->institution->getId());
+                    'geoCountry' => $formRequestData['country'],
+                    'institutionId' => $this->institution->getId());
 
-                $state = $this->get('services.location')->addNewState($stateData);
-                $formRequestData['state'] = $state->getId();
+                if($state = $this->get('services.location')->addNewState($stateData)) {
+                    $formRequestData['state'] = $state->getId();
+                }
             }
 
             // Check If Custom City
             if(!(int)$formRequestData['city'] && ($cityName = $request->get('custom_city'))) {
                 $cityData = array(
                     'name' => $cityName,
-                    'state_id' => $formRequestData['state'],
-                    'country_id' => $formRequestData['country'],
-                    'institution_id' => $this->institution->getId());
+                    'geoState' => $formRequestData['state'],
+                    'geoCountry' => $formRequestData['country'],
+                    'institutionId' => $this->institution->getId());
 
-                $city = $this->get('services.location')->addNewCity($cityData);
-                $formRequestData['city'] = $city->getId();
+                if($city = $this->get('services.location')->addNewCity($cityData)) {
+                    $formRequestData['city'] = $city->getId();                    
+                }
             }
 
             $form->bind($formRequestData);
+
             if ($form->isValid()) {
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institution);
 
@@ -358,23 +333,25 @@ class InstitutionSignUpController extends InstitutionAwareController
             if(!$formRequestData['state'] && ($stateName = $request->get('custom_state'))) {
                 $stateData = array(
                     'name' => $stateName, 
-                    'country_id' => $formRequestData['country'], 
-                    'institution_id' => $this->institution->getId());
+                    'geoCountry' => $formRequestData['country'], 
+                    'institutionId' => $this->institution->getId());
 
-                $state = $this->get('services.location')->addNewState($stateData);
-                $formRequestData['state'] = $state->getId();
+                if($state = $this->get('services.location')->addNewState($stateData)) {
+                    $formRequestData['state'] = $state->getId();                    
+                }
             }
 
             // Check If Custom City 
             if(!(int)$formRequestData['city'] && ($cityName = $request->get('custom_city'))) {
                 $cityData = array(
                     'name' => $cityName, 
-                    'state_id' => $formRequestData['state'], 
-                    'country_id' => $formRequestData['country'], 
-                    'institution_id' => $this->institution->getId());
+                    'geoState' => $formRequestData['state'], 
+                    'geoCountry' => $formRequestData['country'], 
+                    'institutionId' => $this->institution->getId());
 
-                $city = $this->get('services.location')->addNewCity($cityData);
-                $formRequestData['city'] = $city->getId();
+                if($city = $this->get('services.location')->addNewCity($cityData)) {
+                    $formRequestData['city'] = $city->getId();                    
+                }
             }
 
             $form->bind($formRequestData);
