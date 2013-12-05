@@ -15,6 +15,7 @@ class WidgetController extends Controller
     public function ajaxLoadSearchSourcesAction(Request $request)
     {
         $start = \microtime(true);
+
         $responseData = array();
         $defaultParameters = array(
             'destination' => null,
@@ -35,42 +36,49 @@ class WidgetController extends Controller
                 $responseData[$type] = $this->get('services.search')->getDestinations(new SearchParameterBag($defaultParameters));
                 break;
             default:
-                // defaults to loading all
-                $startDestinations = \microtime(true);
-                $destinations = $this->get('services.search')->getAllDestinations();
-                $endDestinations = \microtime(true);
-                $diffDestinations = $endDestinations-$startDestinations;
-                
-                $startTreatments = \microtime(true);
-                $treatments = $this->get('services.search')->getAllTreatments();
-                $endTreatments = \microtime(true);
-                $diffTreatments = $endTreatments-$startTreatments;
-                
+                $memcacheService = $this->get('services.memcache');
+
+                $memcacheKey = 'search.widget.controller.destinations.all';
+                $destinations = $memcacheService->get($memcacheKey);
+                if (!$destinations) {
+                    $startDestinations = \microtime(true);
+                    $destinations = $this->get('services.search')->getAllDestinations();
+                    $endDestinations = \microtime(true);
+                    $diffDestinations = $endDestinations-$startDestinations;
+
+                    $memcacheService->set($memcacheKey, $destinations);
+                }
+
+                $memcacheKey = 'search.widget.controller.treatments.all';
+                $treatments = $memcacheService->get($memcacheKey);
+
+                if (!$treatments) {
+                    $startTreatments = \microtime(true);
+                    $treatments = $this->get('services.search')->getAllTreatments();
+                    $endTreatments = \microtime(true);
+                    $diffTreatments = $endTreatments-$startTreatments;
+
+                    $memcacheService->set($memcacheKey, $treatments);
+                }
+
                 $responseData = array(
                     'treatments' => $treatments,
                     'destinations' => $destinations,
                 );
-                
-                $responseData['diffDestinations'] = $diffDestinations;
-                $responseData['diffTreatments'] = $diffTreatments;
         }
+
         $end = \microtime(true); $diff=$end-$start;
         $responseData['executionTime'] = $diff;
-        
-        
-        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
-    }
-    
-    private function getSearchParams(Request $request, $isAutoComplete = false)
-    {
-        $parameters = array(
-                        
-        );
-    
-        if ($isAutoComplete) {
-            $parameters['term'] = $request->get('term');
+
+        if (!$diffDestinations) {
+            $diffDestinations = 'Cache hit';
         }
-    
-        return ;
+        if (!$diffTreatments) {
+            $diffTreatments = 'Cache hit';
+        }
+        $responseData['destination_processing_time'] = $diffDestinations;
+        $responseData['treatment_processing_time'] = $diffTreatments;
+
+        return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }
 }
