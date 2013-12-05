@@ -36,50 +36,21 @@ class WidgetController extends Controller
                 $responseData[$type] = $this->get('services.search')->getDestinations(new SearchParameterBag($defaultParameters));
                 break;
             default:
-                $memcacheService = $this->get('services.memcache');
-                //4 hours x 60 x 60
-                $cacheExpiration = 14400;
+                $startDestinations = \microtime(true);
+                $destinations = $this->get('services.search')->getAllDestinations();
+                $endDestinations = \microtime(true);
+                $responseData['destination_processing_time'] = $endDestinations-$startDestinations;
 
-                $memcacheKey = 'search.widget.controller.destinations.all';
-                $destinations = $memcacheService->get($memcacheKey);
-                if (!$destinations) {
-                    $startDestinations = \microtime(true);
-                    $destinations = $this->get('services.search')->getAllDestinations();
-                    $endDestinations = \microtime(true);
-                    $diffDestinations = $endDestinations-$startDestinations;
+                $startTreatments = \microtime(true);
+                $treatments = $this->get('services.search')->getAllTreatments();
+                $endTreatments = \microtime(true);
+                $responseData['treatment_processing_time'] = $endTreatments-$startTreatments;
 
-                    $memcacheService->set($memcacheKey, $destinations, $cacheExpiration);
-                }
-
-                $memcacheKey = 'search.widget.controller.treatments.all';
-                $treatments = $memcacheService->get($memcacheKey);
-
-                if (!$treatments) {
-                    $startTreatments = \microtime(true);
-                    $treatments = $this->get('services.search')->getAllTreatments();
-                    $endTreatments = \microtime(true);
-                    $diffTreatments = $endTreatments-$startTreatments;
-
-                    $memcacheService->set($memcacheKey, $treatments, $cacheExpiration);
-                }
-
-                $responseData = array(
-                    'treatments' => $treatments,
-                    'destinations' => $destinations,
-                );
+                $responseData = array('treatments' => $treatments, 'destinations' => $destinations);
         }
 
-        $end = \microtime(true); $diff=$end-$start;
-        $responseData['executionTime'] = $diff;
-
-        if (!isset($diffDestinations)) {
-            $diffDestinations = 'Cache hit';
-        }
-        if (!isset($diffTreatments)) {
-            $diffTreatments = 'Cache hit';
-        }
-        $responseData['destination_processing_time'] = $diffDestinations;
-        $responseData['treatment_processing_time'] = $diffTreatments;
+        $end = \microtime(true);
+        $responseData['executionTime'] = $end-$start;
 
         return new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
     }

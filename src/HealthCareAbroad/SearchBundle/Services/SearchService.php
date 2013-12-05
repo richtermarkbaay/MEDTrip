@@ -1,14 +1,14 @@
 <?php
 namespace HealthCareAbroad\SearchBundle\Services;
+
+use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter;
-
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
-
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy;
 use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
 
 /**
@@ -28,6 +28,19 @@ class SearchService
     private $searchStrategy;
 
     /**
+     *
+     * @var MemcacheService
+     */
+    private $memcache;
+
+    /**
+     * Cache expiration in seconds
+     *
+     * @var int
+     */
+    private $cacheExpiration = 0;
+
+    /**
      * Constructor
      *
      * @param SearchStrategy $searchStrategy Strategy class to use
@@ -35,6 +48,16 @@ class SearchService
     public function __construct(SearchStrategy $searchStrategy)
     {
         $this->searchStrategy = $searchStrategy;
+    }
+
+    public function setMemcache(MemcacheService $memcache)
+    {
+        $this->memcache = $memcache;
+    }
+
+    public function setCacheExpiration($expiration = 0)
+    {
+        $this->cacheExpiration = $expiration;
     }
 
     /**
@@ -66,7 +89,15 @@ class SearchService
 
     public function getAllDestinations()
     {
-        return $this->searchStrategy->getAllDestinations();
+        $key = 'search.widget.controller.destinations.all';
+        $destinations = $this->memcache->get($key);
+
+        if (!$destinations) {
+            $destinations = $this->searchStrategy->getAllDestinations();
+            $this->memcache->set($key, $destinations, $this->cacheExpiration);
+        }
+
+        return $destinations;
     }
 
     /**
@@ -83,7 +114,15 @@ class SearchService
 
     public function getAllTreatments()
     {
-        return $this->searchStrategy->getAllTreatments();
+        $key = 'search.widget.controller.destinations.all';
+        $treatments = $this->memcache->get($key);
+
+        if (!$treatments) {
+            $treatments = $this->searchStrategy->getAllTreatments();
+            $this->memcache->set($key, $treatments, $this->cacheExpiration);
+        }
+
+        return $treatments;
     }
 
     public function loadSuggestions($parameters)

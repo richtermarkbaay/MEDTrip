@@ -4,6 +4,8 @@ parameters:
     services.search.default_strategy.class: HealthCareAbroad\SearchBundle\Services\SearchStrategy\DefaultSearchStrategy
     services.search.elastic_strategy.class: HealthCareAbroad\SearchBundle\Services\SearchStrategy\ElasticSearchStrategy
     enableElasticSearch: true
+    #4 days
+    search.cache_expiration: 14400
 
 services:
     services.search.listener:
@@ -41,7 +43,10 @@ services:
     services.search:
         class: %services.search.class%
         arguments: [@services.search.default_strategy]
-    
+        calls:
+            - [setMemcache, [@services.memcache]]
+            - [setCacheExpiration, [%search.cache_expiration%]]
+
     services.search.parameters:
         class: HealthCareAbroad\SearchBundle\Services\SearchParameterService
         calls:
