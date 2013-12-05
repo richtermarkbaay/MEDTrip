@@ -48,7 +48,7 @@ class WidgetController extends Controller
                     $endDestinations = \microtime(true);
                     $diffDestinations = $endDestinations-$startDestinations;
 
-                    $memcacheService->set($memcacheKey, $destinations, $expiration);
+                    $memcacheService->set($memcacheKey, $destinations, $cacheExpiration);
                 }
 
                 $memcacheKey = 'search.widget.controller.treatments.all';
@@ -60,7 +60,7 @@ class WidgetController extends Controller
                     $endTreatments = \microtime(true);
                     $diffTreatments = $endTreatments-$startTreatments;
 
-                    $memcacheService->set($memcacheKey, $treatments, $expiration);
+                    $memcacheService->set($memcacheKey, $treatments, $cacheExpiration);
                 }
 
                 $responseData = array(
