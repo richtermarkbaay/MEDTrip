@@ -37,6 +37,8 @@ class WidgetController extends Controller
                 break;
             default:
                 $memcacheService = $this->get('services.memcache');
+                //4 hours x 60 x 60
+                $cacheExpiration = 14400;
 
                 $memcacheKey = 'search.widget.controller.destinations.all';
                 $destinations = $memcacheService->get($memcacheKey);
@@ -46,7 +48,7 @@ class WidgetController extends Controller
                     $endDestinations = \microtime(true);
                     $diffDestinations = $endDestinations-$startDestinations;
 
-                    $memcacheService->set($memcacheKey, $destinations);
+                    $memcacheService->set($memcacheKey, $destinations, $expiration);
                 }
 
                 $memcacheKey = 'search.widget.controller.treatments.all';
@@ -58,7 +60,7 @@ class WidgetController extends Controller
                     $endTreatments = \microtime(true);
                     $diffTreatments = $endTreatments-$startTreatments;
 
-                    $memcacheService->set($memcacheKey, $treatments);
+                    $memcacheService->set($memcacheKey, $treatments, $expiration);
                 }
 
                 $responseData = array(
