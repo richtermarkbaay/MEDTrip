@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\SearchBundle\Twig;
 
+use HealthCareAbroad\SearchBundle\Services\SearchService;
+
 use HealthCareAbroad\SearchBundle\Exception\SearchWidgetException;
 
 use HealthCareAbroad\SearchBundle\Services\SearchParameterService;
@@ -13,9 +15,20 @@ class WidgetTwigExtension extends \Twig_Extension
      */
     private $twig;
 
+    /**
+     *
+     * @var SearchService
+     */
+    private $searchService;
+
     public function setTwig($v)
     {
         $this->twig = $v;
+    }
+
+    public function setSearchService(SearchService $service)
+    {
+        $this->searchService = $service;
     }
 
     public function getName()
@@ -68,12 +81,18 @@ class WidgetTwigExtension extends \Twig_Extension
         return $this->render_search_homepage_widget($options, 'SearchBundle:SearchForms:admin.customsearch.html.twig');
     }
 
-    public function render_search_homepage_widget(array $options=array(), $twigTemplate = null)
+    public function render_search_homepage_widget(array $options=array(), $twigTemplate = null, $preloadSearchTerms = false)
     {
         $twigTemplate = \is_null($twigTemplate) ? 'SearchBundle:SearchForms:form.homepage.html.twig' : $twigTemplate;
         $defaultOptions = array('attr' => array());
         $options = array_merge($defaultOptions, $options);
         $params = $options;
+
+        if ($preloadSearchTerms) {
+            $params['treatments'] = json_encode($this->searchService->getAllTreatments());
+            $params['destinations'] = json_encode($this->searchService->getAllDestinations());
+        }
+
         return $this->twig->render($twigTemplate, $params);
     }
 

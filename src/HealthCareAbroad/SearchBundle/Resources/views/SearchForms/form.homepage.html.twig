@@ -30,32 +30,29 @@
     </div>
 </form>
 
-
-
 <script type="text/javascript" src="{{ asset('bundles/search/js/widgets.js') }}"></script>
 <script type="text/javascript">
-<!--
-(function($){
-    $(function(){
-        
-        BroadSearchWidget
-            .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
-            .initializeForm($('form.broad_search_form'), {
-                treatments: {
-                    //'mainInputField': $('input#treatment_input_field'),
-                    'dropdownButton': $('#treatments_dropdown_button'),
-                    'autocompleteField': $('input#treatment_input_field'),
-                    'dropdown': $('#treatments_dropdown_menu') 
-                },
-                destinations: {
-                    //'mainInputField': $('input#destination_input_field'),
-                    'dropdownButton': $('#destinations_dropdown_button'),
-                    'autocompleteField': $('input#destination_input_field'),
-                    'dropdown': $('#destinations_dropdown_menu')
-                }
-            });
-            
+{% if destinations is defined %}
+BroadSearchWidget.preloadedDestinations = {{ destinations | raw }};
+{% endif %}
+{% if treatments is defined %}
+BroadSearchWidget.preloadedTreatments = {{ treatments | raw }};
+{% endif %}
+
+BroadSearchWidget
+    .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
+    .initializeForm($('form.broad_search_form'), {
+        treatments: {
+            //'mainInputField': $('input#treatment_input_field'),
+            'dropdownButton': $('#treatments_dropdown_button'),
+            'autocompleteField': $('input#treatment_input_field'),
+            'dropdown': $('#treatments_dropdown_menu')
+        },
+        destinations: {
+            //'mainInputField': $('input#destination_input_field'),
+            'dropdownButton': $('#destinations_dropdown_button'),
+            'autocompleteField': $('input#destination_input_field'),
+            'dropdown': $('#destinations_dropdown_menu')
+        }
     });
-})(jQuery);
-//-->
 </script>

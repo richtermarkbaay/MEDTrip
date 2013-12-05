@@ -34,12 +34,12 @@
                     <h1 class="logo">HealthcareAbroad</h1>
                 </a>
                 <!-- <span class="logo">HealthcareAbroad</span> -->
-                <h3>The resource for <span>Medical Tourism</span></h3> 
+                <h3>The resource for <span>Medical Tourism</span></h3>
             </div>
             {% block searchBox %}
                 {# set searchParams = searchParams|merge({context : app.request.attributes.get('_route')}) #}
-                
-                {{ render_search_homepage_widget() | raw }}
+
+                {{ render_search_homepage_widget({}, null, true) | raw }}
             {% endblock %}
         </div>
     </div>

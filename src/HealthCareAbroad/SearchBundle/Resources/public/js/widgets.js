@@ -4,11 +4,10 @@
 
 var BroadSearchWidget = {
     sourceUri: '',
-
+    preloadedDestinations: null,
+    preloadedTreatments: null,
     form: null,
-
     submitButton: null,
-
     inputboxCommonClass: '.type_in',
 
     formComponents: {
@@ -82,9 +81,9 @@ var BroadSearchWidget = {
     initializeComponents: function(){
 
         $.each(BroadSearchWidget.formComponents, function(type, componentOptions){
-            
+
             var listWrapper = componentOptions.autocompleteField.siblings('.combolist-wrapper:first');
-            
+
             componentOptions.dropdownButton.click(function(){
                 if (listWrapper.hasClass('hide')){
                     componentOptions.autocompleteField.autocomplete('search', '');
@@ -92,7 +91,7 @@ var BroadSearchWidget = {
                 else {
                     listWrapper.addClass('hide');
                 }
-            });            
+            });
 
             componentOptions.autocompleteField
                 // setup autocomplete
@@ -182,16 +181,22 @@ var BroadSearchWidget = {
         BroadSearchWidget.submitButton.attr('disabled', true);
         $.extend(true, BroadSearchWidget.formComponents, components);
 
-        $.ajax({
-            url: BroadSearchWidget.sourceUri,
-            data: {type:"all"},
-            dataType: 'json',
-            success: function(response) {
-                BroadSearchWidget.formComponents.treatments.dataSource = response.treatments;
-                BroadSearchWidget.formComponents.destinations.dataSource = response.destinations;
-                BroadSearchWidget.initializeComponents();
-            }
-         });
+        if (BroadSearchWidget.preloadedDestinations && BroadSearchWidget.preloadedTreatments) {
+            BroadSearchWidget.formComponents.treatments.dataSource = BroadSearchWidget.preloadedTreatments;
+            BroadSearchWidget.formComponents.destinations.dataSource = BroadSearchWidget.preloadedDestinations;
+            BroadSearchWidget.initializeComponents();
+        } else {
+            $.ajax({
+                url: BroadSearchWidget.sourceUri,
+                data: {type:"all"},
+                dataType: 'json',
+                success: function(response) {
+                    BroadSearchWidget.formComponents.treatments.dataSource = response.treatments;
+                    BroadSearchWidget.formComponents.destinations.dataSource = response.destinations;
+                    BroadSearchWidget.initializeComponents();
+                }
+            });
+        }
 
         return this;
     }
