@@ -70,10 +70,10 @@ class WidgetController extends Controller
         $end = \microtime(true); $diff=$end-$start;
         $responseData['executionTime'] = $diff;
 
-        if (!$diffDestinations) {
+        if (!isset($diffDestinations)) {
             $diffDestinations = 'Cache hit';
         }
-        if (!$diffTreatments) {
+        if (!isset($diffTreatments)) {
             $diffTreatments = 'Cache hit';
         }
         $responseData['destination_processing_time'] = $diffDestinations;
