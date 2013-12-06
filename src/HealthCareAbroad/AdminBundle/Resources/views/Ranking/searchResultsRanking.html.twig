@@ -27,11 +27,9 @@
                         'form_action': path('admin_ranking_process_search'),
                         'form_ajax_submit': true,
                         'form_ajax_submit_handler': 'resultsPageMetaOnSubmitHandler'
-                    }) | raw 
+                    },true) | raw 
                 }}
                 
-                
-                    
                 <table id="search_rankings_table" class="table table-bordered">
                     <thead>
                         <tr>

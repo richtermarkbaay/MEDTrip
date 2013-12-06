@@ -76,9 +76,9 @@ class WidgetTwigExtension extends \Twig_Extension
      * TODO - need to update HTML.
      * @param array $options
      */
-    public function render_admin_custom_search_widget(array $options=array())
+    public function render_admin_custom_search_widget(array $options=array(), $preloadSearchTerms = false)
     {
-        return $this->render_search_homepage_widget($options, 'SearchBundle:SearchForms:admin.customsearch.html.twig');
+        return $this->render_search_homepage_widget($options, 'SearchBundle:SearchForms:admin.customsearch.html.twig', $preloadSearchTerms);
     }
 
     public function render_search_homepage_widget(array $options=array(), $twigTemplate = null, $preloadSearchTerms = false)
