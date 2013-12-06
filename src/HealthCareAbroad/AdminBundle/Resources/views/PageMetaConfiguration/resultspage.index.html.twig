@@ -17,7 +17,7 @@
                         'form_action': path('admin_page_metas_process_search_parameters'),
                         'form_ajax_submit': true,
                         'form_ajax_submit_handler': 'resultsPageMetaOnSubmitHandler'
-                    }) | raw 
+                    },true) | raw 
                 }}
                 <div id="loader" style="display:none;"><img src="{{ asset('images/admin/ajax-loader.gif') }}" /></div>
                     

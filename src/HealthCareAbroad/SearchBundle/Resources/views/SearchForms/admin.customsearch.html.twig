@@ -41,6 +41,13 @@
         {% if form_ajax_submit is defined and form_ajax_submit and form_ajax_submit_handler is defined %}
             $('form.broad_search_form').on('submit', {{ form_ajax_submit_handler }});
         {% endif %}
+
+        {% if destinations is defined %}
+        BroadSearchWidget.preloadedDestinations = {{ destinations | raw }};
+        {% endif %}
+        {% if treatments is defined %}
+        BroadSearchWidget.preloadedTreatments = {{ treatments | raw }};
+        {% endif %}
         
         BroadSearchWidget
             .setSourceUri('{{ path("frontend_search_ajaxLoadAllSearchOptions") }}')
