@@ -115,7 +115,7 @@
         </ul>
     </li>
     {% endif %}
-    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRY', 'CAN_MANAGE_INQUIRY')") %}
+    {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_INQUIRIES', 'CAN_MANAGE_INQUIRY')") %}
     <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Site Inquiries <b class="caret"></b></a>
         <ul class="dropdown-menu">
@@ -136,10 +136,10 @@
             <li class="{{ selectedSubTab == 'institutionStatistics' ? 'active' : '' }}">
                 <a href="{{ path('admin_statistics_institution') }}">Institutions</a>
             </li>
-            {#
-            <li class="{{ selectedSubTab == 'institution_inquire_index' ? 'active' : '' }}">
+            
+            <li class="{{ selectedSubTab == 'institutionMedicalCenterStatistics' ? 'active' : '' }}">
                 <a href="{{ path('admin_statistics_institutionMedicalCenter') }}">Institution Medical Centers</a>
-            </li>#}
+            </li>
         </ul>
     </li>
     {% endif %}

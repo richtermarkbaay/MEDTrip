@@ -5,9 +5,13 @@
 
 namespace HealthCareAbroad\HelperBundle\Services\Filters;
 
+use Doctrine\ORM\Query;
+
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
+
 use HealthCareAbroad\StatisticsBundle\Entity\StatisticCategories;
 
-class InstitutionStatisticsListFilter extends NativeQueryListFilter
+class InstitutionMedicalCenterStatisticsListFilter extends NativeQueryListFilter
 {    
     function __construct($doctrine)
     {
@@ -19,13 +23,17 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
         $this->addValidCriteria('category');
         $this->addValidCriteria('name');
         $this->addValidCriteria('date');
+        $this->addValidCriteria('dateYear');
         $this->addValidCriteria('reportType');
+        $this->addValidCriteria('institution');
         $this->addValidCriteria('limit');
 
         $this->defaultParams['name'] = '';
-        $this->defaultParams['category'] = StatisticCategories::HOSPITAL_FULL_PAGE_VIEW;
+        $this->defaultParams['category'] = StatisticCategories::CLINIC_FULL_PAGE_VIEW;
         $this->defaultParams['date'] = date('Y-m-d');
+        $this->defaultParams['dateYear'] = '';
         $this->defaultParams['reportType'] = 1;
+        $this->defaultParams['institution'] = ListFilter::FILTER_KEY_ALL;
         $this->defaultParams['limit'] = $this->pagerDefaultOptions['limit'];
 
         $this->sortBy = 'date';
@@ -35,6 +43,7 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
     function setFilterOptions()
     {
         $this->setCategoryFilterOption();
+        $this->setInstitutionFilterOption();
         $this->setReportTypeOption();
         $this->setDateFilterOption();
         $this->setNameFilterOption();
@@ -43,13 +52,13 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
     
     function setNameFilterOption()
     {
-        $this->filterOptions['name'] = array('label' => 'Institution Name', 'value' => $this->queryParams['name']);
+        $this->filterOptions['name'] = array('label' => 'Center Name', 'value' => $this->queryParams['name']);
     }
 
     function setCategoryFilterOption()
     {
         $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
-        $options += StatisticCategories::getInstitutionCategories();
+        $options += StatisticCategories::getInstitutionMedicalCenterCategories();
 
         $this->filterOptions['category'] = array(
             'label' => 'Category',
@@ -75,6 +84,29 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
             'options' => array(1 => 'Daily', 2 => 'Annual')
         );
     }
+    
+    function setInstitutionFilterOption()
+    {
+        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
+        $qb->select('a.id, a.name')
+           ->from('InstitutionBundle:Institution', 'a')
+           ->where('a.status = :status')
+           ->orderBy('a.name', 'ASC')
+           ->setParameter('status', InstitutionStatus::getBitValueForActiveAndApprovedStatus());
+
+        $institutions = $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
+
+        $options = array(ListFilter::FILTER_KEY_ALL => ListFilter::FILTER_LABEL_ALL);
+        foreach($institutions as $each) {
+            $options[$each['id']] = $each['name'];
+        }
+        
+        $this->filterOptions['institution'] = array(
+            'label' => 'Institution',
+            'selected' => $this->queryParams['institution'],
+            'options' => $options
+        );
+    }
 
     function setLimitFilterOption()
     {
@@ -87,14 +119,18 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
 
     function setFilteredResults()
     {
-        $query = 'SELECT a.*, b.name, b.slug, b.institution_type FROM institution_statistics_annual a LEFT JOIN healthcareabroad.institutions b ON a.institution_id = b.id';
-        $countQuery = 'SELECT COUNT(*) as count from institution_statistics_annual a';
+        $query = 'SELECT a.*, b.name, b.slug, c.name AS institutionName, c.slug AS institutionSlug, c.institution_type AS institutionType 
+                  FROM institution_medical_center_statistics_annual a 
+                    LEFT JOIN healthcareabroad.institution_medical_centers b on a.institution_medical_center_id = b.id
+                    LEFT JOIN healthcareabroad.institutions c on a.institution_id = c.id';
+
+        $countQuery = 'select count(*) as count from institution_medical_center_statistics_annual a';
+
         $params = array();
 
         if($this->queryParams['date']) {
             $params['date'] = $this->queryParams['date'];
 
-            // IF ANNUAL REPORT
             if((int)$this->queryParams['reportType'] === 2) {
                 $yearFrom = $params['date'];
                 $yearTo = date('Y-m-d', strtotime("$yearFrom + 1 year"));
@@ -105,16 +141,20 @@ class InstitutionStatisticsListFilter extends NativeQueryListFilter
         if($this->queryParams['category'] != 'all') {
             $params['category_id'] = $this->queryParams['category'];
         }
+        
+        if($this->queryParams['institution'] != 'all') {
+            $params['a.institution_id'] = $this->queryParams['institution'];
+            $countQuery .= ' LEFT JOIN healthcareabroad.institutions c on a.institution_id = c.id';
+        }
 
         if($this->queryParams['name']) {
             $params['b.name'] = array('LIKE' => '%' . $this->queryParams['name'] . '%');
-            $countQuery .= ' LEFT JOIN healthcareabroad.institutions b ON a.institution_id = b.id';
+            $countQuery .= ' LEFT JOIN healthcareabroad.institution_medical_centers b ON a.institution_medical_center_id = b.id';
         }
 
         if((int)$this->queryParams['reportType'] === 2) {
             $query = str_replace(' FROM', ', SUM(total) as total_sum FROM', $query);
-            $groupBy = (int)$this->queryParams['reportType'] === 1 ? null : 'institution_id, YEAR(date)';
-
+            $groupBy = (int)$this->queryParams['reportType'] === 1 ? null : 'institution_medical_center_id, YEAR(date)';
             if($this->sortBy == 'total')
                 $this->sortBy = 'total_sum';
         } else {

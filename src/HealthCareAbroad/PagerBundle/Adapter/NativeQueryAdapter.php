@@ -65,8 +65,8 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
         if(!static::$totalResults) {
             $statement = $this->prepareStatement($this->countQuery);
             $statement->execute($this->queryParams);
-
-            static::$totalResults = $statement->fetchColumn(0);
+            
+            static::$totalResults = $statement->rowCount() > 1 ? $statement->rowCount() : $statement->fetchColumn(0);
         }
 
         return static::$totalResults;
@@ -99,8 +99,8 @@ class NativeQueryAdapter implements PagerNativeQueryAdapterInterface, \Countable
     public function getResults($offset, $limit, $params = array())
     { 
         $statement = $this->prepareStatement($this->query, $offset, $limit);
-
         $statement->execute($this->queryParams);
+
         $this->results = $statement->fetchAll();
 
         return $this->results;
