@@ -5,19 +5,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use Doctrine\Common\Util\Inflector;
-
-use HealthCareAbroad\HelperBundle\Services\LocationService;
-
-use Symfony\Component\Form\FormError;
-
-use Symfony\Component\HttpFoundation\Request;
-
-use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
+use HealthCareAbroad\StatisticsBundle\Entity\StatisticCategories;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Response;
-use HealthCareAbroad\HelperBundle\Entity\State;
-use HealthCareAbroad\HelperBundle\Form\StateFormType;
 use JMS\SecurityExtraBundle\Annotation\PreAuthorize;
 
 class StatisticsController extends Controller
@@ -29,7 +18,7 @@ class StatisticsController extends Controller
     {
         return $this->render('AdminBundle:Statistics:institutions.html.twig', array(
             'statsData' => $this->filteredResult,
-            'pager' => $this->pager
+            'categories' => StatisticCategories::getInstitutionCategories()
         ));
     }
 
@@ -38,9 +27,9 @@ class StatisticsController extends Controller
      */
     public function institutionMedicalCentersAction()
     {
-//         return $this->render('AdminBundle:Statistics:institutionMedicalCenters.html.twig', array(
-//             'statsData' => $this->filteredResult,
-//             'pager' => $this->pager
-//         ));
+        return $this->render('AdminBundle:Statistics:institutionMedicalCenters.html.twig', array(
+            'statsData' => $this->filteredResult,
+            'categories' => StatisticCategories::getInstitutionMedicalCenterCategories()
+        ));
     }
 }

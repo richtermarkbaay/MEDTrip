@@ -14,4 +14,24 @@ final class StatisticCategories
     const HOSPITAL_FULL_PAGE_VIEW = 5;
 
     const CLINIC_FULL_PAGE_VIEW = 6;
+    
+    
+    static function getAdsCategories()
+    {
+        
+    }
+    
+    static function getInstitutionCategories()
+    {
+        return array(
+            self::HOSPITAL_FULL_PAGE_VIEW => 'Hospital/Single clinic Full Page View'
+        );
+    }
+    
+    static function getInstitutionMedicalCenterCategories()
+    {
+        return array(
+            self::CLINIC_FULL_PAGE_VIEW => 'Clinic Full Page View'
+        );
+    }
 }

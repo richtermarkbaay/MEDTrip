@@ -36,6 +36,7 @@ class InstitutionRankingListFilter extends DoctrineOrmListFilter
         $this->filterOptions['name'] = array(
             'label' => 'Name',
             'value' => '',
+            'class' => '',
             'placeholder' => 'Search by institution name'
         );
     }

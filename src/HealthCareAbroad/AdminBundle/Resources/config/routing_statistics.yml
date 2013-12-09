@@ -6,6 +6,6 @@ admin_statistics_institution:
 
 admin_statistics_institutionMedicalCenter:
     pattern:  /admin/statistics/institution-medical-centers
-    defaults: { _controller: AdminBundle:Statistics:institutionMedicalCenter }
+    defaults: { _controller: AdminBundle:Statistics:institutionMedicalCenters }
     requirements:
         _method:  GET
