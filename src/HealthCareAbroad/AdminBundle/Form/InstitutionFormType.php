@@ -1,5 +1,12 @@
 <?php
+/**
+ * NOTE: Currently being used to update institutionStatus only!
+ */
 namespace HealthCareAbroad\AdminBundle\Form;
+
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
+
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCityListType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
@@ -56,18 +63,13 @@ class InstitutionFormType extends AbstractType
     );
     
     public function setDefaultOptions(OptionsResolverInterface $resolver)
-
     {
-
         $resolver->setDefaults(array(
             self::OPTION_REMOVED_FIELDS => array(),
             self::OPTION_BUBBLE_ALL_ERRORS => false,
             'is_hidden' => true,
-
             'data_class' => 'HealthCareAbroad\InstitutionBundle\Entity\Institution'
-
         ));
-
     }
     
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -84,8 +86,8 @@ class InstitutionFormType extends AbstractType
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true,'options'  => array( 'required' => false)));
-        $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
-        $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
+        $this->_add($builder, 'country', FancyCountryFieldType::NAME, array('label' => 'Country', 'error_bubbling' => false));
+        $this->_add($builder, 'city', GlobalCityListType::NAME, array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'state_list', array( 'error_bubbling' => false ,'label' => 'State / Province' ));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
@@ -102,9 +104,7 @@ class InstitutionFormType extends AbstractType
     }
     
     private function _isRemoved($fieldName)
-
     {
-
         return \in_array($fieldName, $this->options[self::OPTION_REMOVED_FIELDS]);
 
     }

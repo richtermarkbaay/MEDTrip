@@ -1,6 +1,7 @@
 <?php
-
 namespace HealthCareAbroad\FrontendBundle\Form;
+
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
 
 use HealthCareAbroad\FrontendBundle\Form\ListType\InquirySubjectListType;
 
@@ -29,7 +30,7 @@ class InquiryType extends AbstractType
     		->add('firstName', 'text', array('error_bubbling' => false))
     		->add('lastName', 'text', array('error_bubbling' => false))
     		->add('clinicName', 'text')
-    		->add('country', 'fancy_country')
+    		->add('country', FancyCountryFieldType::NAME)
     		->add('contactNumber','text')
     		->add('email', 'email', array('error_bubbling' => false))
     		->add('message', 'textarea', array('error_bubbling' => false))

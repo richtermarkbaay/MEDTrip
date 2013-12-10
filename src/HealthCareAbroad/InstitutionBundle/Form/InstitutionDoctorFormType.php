@@ -5,6 +5,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCountryListType;
+
 use HealthCareAbroad\DoctorBundle\Entity\Doctor;
 
 use HealthCareAbroad\TreatmentBundle\Form\ListType\SpecializationListType;
@@ -28,7 +30,7 @@ class InstitutionDoctorFormType extends AbstractType
         $gender = array(Doctor::GENDER_NONE => '--Select--',Doctor::GENDER_MALE => 'male', Doctor::GENDER_FEMALE => 'female');
         
         	$builder
-     		->add('country','globalCountry_list')
+     		->add('country', GlobalCountryListType::NAME)
     	    ->add('contactEmail', 'text', array('label' => 'Contact Email'))
     	    ->add('contactNumber', 'contact_number', array('label' => 'Contact Number'))
         	->add('gender', 'choice', array('choices'=>$gender));

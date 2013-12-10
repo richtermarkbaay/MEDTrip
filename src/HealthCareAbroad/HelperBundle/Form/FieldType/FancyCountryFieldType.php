@@ -19,6 +19,8 @@ use HealthCareAbroad\HelperBundle\Form\DataTransformer\CountryTransformer;
 
 class FancyCountryFieldType extends AbstractType
 {
+    const NAME = 'fancy_country';
+    
     /**
      * @var LocationService
      */
@@ -64,7 +66,7 @@ class FancyCountryFieldType extends AbstractType
 
     public function getName()
     {
-        return 'fancy_country';
+        return self::NAME;
     }
 
     public function getParent()

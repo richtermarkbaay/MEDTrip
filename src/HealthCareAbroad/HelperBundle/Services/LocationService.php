@@ -333,6 +333,9 @@ class LocationService
 	 */
 	public function addGlobalState(array $stateData)
 	{
+	    if(!isset($stateData['institutionId']) || is_null($stateData['institutionId']))
+	        $stateData['institutionId'] = 0;
+
 	    $response = $this->request->post($this->chromediaApiUri.'/states', array('geoState' => $stateData));
 
 	    return \json_decode($response->getBody(true), true);
@@ -558,8 +561,11 @@ class LocationService
 	 */
 	public function addGlobalCity(array $cityData)
 	{
+	    if(!isset($cityData['institutionId']) || is_null($cityData['institutionId'])) 
+	        $cityData['institutionId'] = 0;
+
 	    $response = $this->request->post($this->chromediaApiUri.'/cities', array('geoCity' => $cityData));
-	    //echo $response->getBody(true);
+
 	    return \json_decode($response->getBody(true), true);
 	}
 

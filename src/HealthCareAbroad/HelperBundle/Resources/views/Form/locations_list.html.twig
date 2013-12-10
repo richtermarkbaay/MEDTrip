@@ -4,12 +4,6 @@
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
 
-    	{% if form.parent.vars.value.country is defined %}
-            {% set countryFormValue = form.parent.vars.value.country %}
-        {% elseif (strpos(getClass(form.parent.vars.value), 'AdvertisementPropertyValue') is not sameas(false)) %}
-            {% set countryFormValue = form.parent.vars.value.value %}
-        {% endif %}
-
         <div class="fancy-dropdown-wrapper _country-autocomplete">
             <input type="hidden" id="{{ valueContainerId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}" />
             <input required="required" type="text" id="{{ widgetId }}" data-autocomplete-trigger="#{{ triggerId }}" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
@@ -39,9 +33,9 @@
                     });
                 	
                 	{# there is a data for current country #}
-                    {% if countryFormValue %}
-                        _valueContainer.val('{{ countryFormValue.id }}');
-                        _inputElem.val('{{ countryFormValue.name }}');
+                    {% if form.parent.vars.value.country is defined and form.parent.vars.value.country %}
+                        _valueContainer.val('{{ form.parent.vars.value.country.id }}');
+                        _inputElem.val('{{ form.parent.vars.value.country.name }}');
                     {% endif %}
                 });
             })(jQuery);
@@ -50,17 +44,11 @@
     {% endspaceless %}
 {% endblock %}
 
-{% block city_list_widget %}
+{% block globalCity_list_widget %}
     {% spaceless %}
         {% set valueContainerId = form.vars.id %}
         {% set widgetId = form.vars.id~'_widget' %}
         {% set triggerId = form.vars.id~'_trigger'%}
-
-    	{% if form.parent.vars.value.city is defined %}
-            {% set cityFormValue = form.parent.vars.value.city %}
-        {% elseif (strpos(getClass(form.parent.vars.value), 'AdvertisementPropertyValue') is not sameas(false)) %}
-            {% set cityFormValue = form.parent.vars.value.value %}
-        {% endif %}
 
         <div class="fancy-dropdown-wrapper">
             <input id="{{ valueContainerId }}" type="hidden" name="{{ form.vars.full_name }}"  value="{{ form.vars.data }}" data-elem="value">
@@ -122,11 +110,11 @@
                     }
 
                 {% endif %}
-                
-                {% if cityFormValue %}
-                    {#-- there is city value in form data --#}
-                    _inputElem.val('{{ cityFormValue.name }}');
-                    _valueContainer.val('{{ cityFormValue.id }}');
+
+                {#-- there is city value in form data --#}
+                {% if form.parent.vars.value.city is defined and form.parent.vars.value.city %}
+                    _inputElem.val('{{ form.parent.vars.value.city.name }}');
+                    _valueContainer.val('{{ form.parent.vars.value.city.id }}');
                 {% endif %}
 
                 if(acceptCustomCityValue) {

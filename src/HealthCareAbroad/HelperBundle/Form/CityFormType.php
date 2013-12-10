@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCountryListType;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -17,7 +19,7 @@ class CityFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{   
 		$builder->add('name');
-		$builder->add('geoCountry', 'globalCountry_list', array('empty_value' => 'Please select a country', 'label' => 'Country'));
+		$builder->add('geoCountry', GlobalCountryListType::NAME, array('empty_value' => 'Please select a country', 'label' => 'Country'));
 		$builder->add('geoState', 'choice', array('choices' => array(null => 'Please select a state'), 'label' => 'State'));
 		$builder->add('status', 'choice', array('choices' => $this->getStatuses()));
 	}

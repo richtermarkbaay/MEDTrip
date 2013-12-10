@@ -17,6 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class GlobalCountryListType extends AbstractType 
 {	
+    const NAME = 'globalCountry_list';
+    
     /**
      * @var LocationService
      */
@@ -51,6 +53,6 @@ class GlobalCountryListType extends AbstractType
 
     public function getName()
     {
-        return 'globalCountry_list';
+        return self::NAME;
     }
 }

@@ -144,7 +144,6 @@
                                 {% elseif valueObj.advertisementPropertyName.name == 'media_id' %}
         				            <div class="custom-property-values">
                                         {{ form_label(propertyValue.value) }}
-
     
                                         {% if propertyValue.value.get('data') and propertyValue.value.get('data').id %}
                                             {{ form_widget(propertyValue.value, {attr: {style: 'display:none;'}}) }}
@@ -206,12 +205,25 @@
         {% endembed %}
     </div>
 
-<script src="{{ asset('bundles/helper/js/Location.js') }}"></script>
 <script type="text/javascript">
-    Location.loadCitiesUrl = "{{ path('helper_loadCities') }}";
-    Location.loadNonGlobalCities = 1;
-
     $(function(){
+        var cityElem = $('.city-dropdown:first');
+        console.log(cityElem.val());
+        $('.country_dropdown').change(function(){
+            var params = {
+                countryId: $(this).val(),
+                loadNonGlobalCities: 1
+            };
+            var selectedCity = cityElem.val();
+            $('.city-dropdown:first').prop('disabled', true).html('<option>loading cities...</option>');
+            $.getJSON("{{ path('helper_loadCities') }}", params, function(response){
+                var options = '';
+                $.each(response.data, function(i, city){
+                    options += '<option value="'+city.id+'"'+ (city.id == selectedCity ? ' selected="selected"' : '') +'>' + city.name + '</option>';
+                });
+                $('.city-dropdown:first').prop('disabled', false).html(options);
+            });
+        }).change();
 
         {% if isEditMode is defined and isEditMode %}
             $('#advertisement_institution, #advertisement_advertisementType').mousedown(function(e){
@@ -281,9 +293,6 @@
             $(newHighlight).insertBefore($(this));
             newHighlight.fadeIn();
         });
-
-
-        $('.country-load-cities').change();
 
         $('.highlights > div > a.remove-highlight').click(function(){
             $(this).parent().fadeOut(function(){$(this).remove()});

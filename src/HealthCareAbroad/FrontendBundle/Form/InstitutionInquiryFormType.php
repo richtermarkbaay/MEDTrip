@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
@@ -17,7 +19,7 @@ class InstitutionInquiryFormType extends AbstractType
         $builder
             ->add('inquirerName', 'text', array('label' => 'Your Name' ))
             ->add('inquirerEmail','email', array('label' => 'Your Email Address'))
-            ->add('country','fancy_country', array('label' => 'Your Country'))
+            ->add('country', FancyCountryFieldType::NAME, array('label' => 'Your Country'))
             ->add('message', 'textarea', array('label' => 'Enter Your Message'))
             ->add('captcha', 'captcha', array('label'=>'Please type the code'))
             ->add('newsletterSubscription', 'checkbox', array('mapped' => false, 'label' => "Yes, I'd like to subscribe to the HealthcareAbroad newsletter."))

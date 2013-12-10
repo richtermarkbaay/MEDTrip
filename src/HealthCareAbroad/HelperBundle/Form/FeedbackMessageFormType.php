@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
+
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use HealthCareAbroad\HelperBundle\Entity\FeedbackMessage;
@@ -15,7 +17,7 @@ class FeedbackMessageFormType extends AbstractType
 		$builder->add('name', 'text', array('label' => 'Youre Name'));
 		$builder->add('emailAddress', 'text', array('label' => 'Your Email Address '));
 		$builder->add('message', 'textarea', array('label' => 'Enter your message '));
-		$builder->add('country', 'fancy_country', array('label' => 'Your Country'));
+		$builder->add('country', FancyCountryFieldType::NAME, array('label' => 'Your Country'));
 		$builder->add('captcha', 'captcha', array('label' => 'Please type the code '));
 	}
 

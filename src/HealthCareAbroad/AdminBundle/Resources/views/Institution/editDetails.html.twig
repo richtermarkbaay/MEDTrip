@@ -50,25 +50,26 @@
                               {{ form_errors(form.country) }}
                         </div>
                         
-                        <div class="state control-group {{ (form.city.vars.valid ? '' : 'error') }} span3">
+                        <div class="state control-group {{ (form.city.vars.valid ? '' : 'error') }} span4">
                             <label>State / Province </label>
                             {{ form_widget( form.state ) }}         
                             {{ form_errors(form.state) }}    
                         </div>
                         
-                    </div> 
-                    <div class="city control-group ">
-                        <label for="{{ form.children.city.vars.id }}">  City *  </label>
+                    </div>
+                    <div class="span12"> 
+                        <div class="city control-group span4">
+                            <label for="{{ form.children.city.vars.id }}">  City *  </label>
                             {{ form_widget( form.city ) }}
                             {{ form_errors(form.city) }}
-                    </div>     
-                    
-                    <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }}">
-                        <label for="{{ form.children.zipCode.vars.id }}">
-                         {{ form.children.zipCode.vars.label }} *</label>
-                         {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
-                         {{ form_errors(form.zipCode) }}
-                     </div>   
+                        </div>     
+                        <div class="zipCode control-group {{ (form.zipCode.vars.valid ? '' : 'error') }} span4">
+                            <label for="{{ form.children.zipCode.vars.id }}">
+                            {{ form.children.zipCode.vars.label }} *</label>
+                            {{ form_widget(form.zipCode, { attr: {class: 'span3 addressFields'} } )}}
+                            {{ form_errors(form.zipCode) }}
+                         </div>   
+                     </div>
                      <div class="control-group row-fluid">
                         {{ form_label(form.addressHint )}}
                         {{ form_widget(form.addressHint, { attr: {class: 'span12'} } )}}

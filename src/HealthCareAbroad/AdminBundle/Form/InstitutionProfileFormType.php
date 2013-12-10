@@ -2,6 +2,10 @@
 
 namespace HealthCareAbroad\AdminBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
+
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCityListType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
 
 use HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType;
@@ -108,8 +112,8 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder,'status', 'choice', array('label' => 'Status', 'choices' => $status));
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true,'options'  => array( 'required' => false)));
-        $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false));
-        $this->_add($builder, 'city', 'city_list', array('label' => 'City' , 'error_bubbling' => false));
+        $this->_add($builder, 'country', FancyCountryFieldType::NAME, array('label' => 'Country', 'error_bubbling' => false));
+        $this->_add($builder, 'city', GlobalCityListType::NAME, array('label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'state_list', array('label' => 'State / Province' ));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
