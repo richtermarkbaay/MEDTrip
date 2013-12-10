@@ -14,8 +14,6 @@ use HealthCareAbroad\HelperBundle\Entity\ContactDetail;
 
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionMediaService;
 
-use HealthCareAbroad\AdminBundle\Form\InstitutionFormType;
-
 use HealthCareAbroad\InstitutionBundle\Entity\MedicalProviderGroup;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOption;

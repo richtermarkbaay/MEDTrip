@@ -17,16 +17,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CountryListType extends AbstractType 
 {	
-    /**
-     * @var LocationService
-     */
-    private $locationService;
-    
-	public function setLocationService(LocationService $service)
-	{
-	    $this->locationService = $service;
-	}
-	
+    const NAME = 'country_list';
+
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 	    
@@ -39,8 +31,7 @@ class CountryListType extends AbstractType
             'class' => 'HealthCareAbroad\HelperBundle\Entity\Country',
             'query_builder' => function(EntityRepository $er){
                 return $er->createQueryBuilder('u') ->orderBy('u.name', 'ASC');
-            }
-            
+            }            
         ));
     }
 
@@ -51,6 +42,6 @@ class CountryListType extends AbstractType
 
     public function getName()
     {
-        return 'country_list';
+        return self::NAME;
     }
 }

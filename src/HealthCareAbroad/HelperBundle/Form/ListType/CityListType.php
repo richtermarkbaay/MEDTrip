@@ -1,54 +1,38 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form\ListType;
 
-use Symfony\Component\Form\FormEvents;
-
-use Symfony\Component\Form\FormEvent;
-
-use HealthCareAbroad\HelperBundle\Services\LocationService;
-
-use HealthCareAbroad\HelperBundle\Form\DataTransformer\CityTransformer;
-
-use Symfony\Component\Form\FormBuilderInterface;
-
-use HealthCareAbroad\HelperBundle\Entity\Country;
-
 use Doctrine\ORM\EntityRepository;
-
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CityListType extends AbstractType 
-{	
-    /**
-     * @var LocationService
-     */
-    private $service;
-    
-    public function __construct(LocationService $service)
-    {
-        $this->service = $service;
-    }
-    
+{
+    const NAME = 'city_list';
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer(new CityTransformer($this->service));
+
     }
-    
+
 	public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        
+        $resolver->setDefaults(array(
+            'property' => 'name',
+            'class' => 'HealthCareAbroad\HelperBundle\Entity\City',
+            'query_builder' => function(EntityRepository $er){
+                return $er->createQueryBuilder('a') ->orderBy('a.name', 'ASC');
+            }
+        ));
     }
-   
+
     public function getParent()
     {
-        //return 'custom_select';
-        return 'text';
+        return 'entity';
     }
 
     public function getName()
     {
-        return 'city_list';
+        return self::NAME;
     }
 }

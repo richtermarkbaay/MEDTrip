@@ -1,4 +1,8 @@
 services:
+    form.userType_list:
+        class: HealthCareAbroad\UserBundle\Form\ListType\AdminUserTypeListType
+        tags:
+            - { name: form.type, alias: userType_list }
     
     form.fancy_business_hours_widget:
         class: HealthCareAbroad\HelperBundle\Form\FieldType\FancyBusinessHourType
@@ -40,21 +44,19 @@ services:
         tags:
             - { name: form.type, alias: globalCountry_list }
 
+    form.globalCity_list:
+        class: HealthCareAbroad\HelperBundle\Form\ListType\GlobalCityListType
+        arguments: [@services.location]
+        tags:
+            - { name: form.type, alias: globalCity_list }
+
     form.country_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CountryListType
-        calls:
-            - [setLocationService, [@services.location]]
         tags:
             - { name: form.type, alias: country_list }
 
-    form.userType_list:
-        class: HealthCareAbroad\UserBundle\Form\ListType\AdminUserTypeListType
-        tags:
-            - { name: form.type, alias: userType_list }
-
     form.city_list:
         class: HealthCareAbroad\HelperBundle\Form\ListType\CityListType
-        arguments: [@services.location]
         tags:
             - { name: form.type, alias: city_list }
             

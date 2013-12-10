@@ -250,65 +250,6 @@
     {% endspaceless %}
 {% endblock %}
 
-{#
-{% block fancy_country_widget %}
-    {% spaceless %}
-   
-        <div class="fancy-dropdown-wrapper">
-            {% set cityField = form.parent.vars.value.city is defined ? form.parent.vars.value.city : false %}
-            {% set city = cityField ? form.parent.vars.value.city.id : 0 %}
-            {% set country = form.parent.vars.value.country.name is defined ? form.parent.vars.value.country.name : '' %}            
-            {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}
-            <input type="hidden" id="{{ elemId }}" name="{{ form.vars.full_name }}" value="{{ form.vars.value }}">
-            <input required="required" type="text" id="input-{{ elemId }}" data-autocomplete-trigger=".show_list_btn" {% for key, value in attr %} {{ key }}="{{ value }}" {% endfor %}> 
-            <button class="btn hca-location-btn show_list_btn" type="button">
-                <span class="icon-chevron-down"></span>
-            </button>
-            <div class="combolist-wrapper"></div>
-
-            {% set jsFiles = [asset('bundles/helper/js/fancy_autocomplete.js'), asset('bundles/helper/js/Location.js')] %}
-            {{ include_js_files(jsFiles) | raw }}
-
-            <!-- TODO: Need to move and improve js implementation -->
-            <script type="text/javascript">
-            (function($){
-                $(function(){
-                    var _inputElem = $('#input-{{ elemId }}');
-                	var _valueContainer = $('#{{ elemId }}');
-                	var _currentValue = _valueContainer.val();
-
-                    {% if cityField is not sameas(false) %}
-                        var _currentCity = '{{ city }}';
-                    	Location.loadCitiesUrl = '{{ path("helper_loadCities") }}';
-                    	if('{{ country }}' != '') {
-                            Location.loadCities(_valueContainer, _currentCity);
-                        }
-                    {% endif %}
-
-                	_inputElem.fancyAutocomplete({
-                        source: window.JSON.parse('{{ countries | raw }}'),
-                        maxItems: 0,
-                        valueContainer:  _valueContainer,
-                        autocomplete: {minLength: 0},
-                        onAutocompleteSelectCallback: function(){
-                        	{% if cityField is not sameas(false) %}
-                                Location.loadCities( _valueContainer, _currentCity);
-                            {% endif %}
-                        	_inputElem.data('fancyAutocomplete');
-                        }
-                    });
-            
-                    _inputElem.val('{{ country }}');
-                    _valueContainer.val(_currentValue);
-                });
-            })(jQuery);
-            </script>
-
-        </div>
-    {% endspaceless %}
-{% endblock %}
-#}
-
 {% block custom_select_widget %}
     {% spaceless %}
         {% set elemId = form.parent.vars.name ~ '_' ~ form.vars.name %}

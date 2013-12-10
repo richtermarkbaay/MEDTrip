@@ -1,6 +1,10 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
+
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCityListType;
+
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -33,8 +37,8 @@ class TestController extends Controller
         $validationGroups = array();
         
         $form = $this->createFormBuilder($institution, array('validation_groups' => $validationGroups))
-            ->add('country', 'fancy_country', array())
-            ->add('city', 'city_list',array('attr' => array('placeholder' => 'Select a city')))
+            ->add('country', FancyCountryFieldType::NAME, array())
+            ->add('city', GlobalCityListType::NAME, array('attr' => array('placeholder' => 'Select a city')))
             ->add('state', 'state_list',array('attr' => array('placeholder' => 'Select a state/province')))
         ->getForm();
         

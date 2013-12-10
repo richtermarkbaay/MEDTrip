@@ -1,6 +1,7 @@
 <?php
-
 namespace HealthCareAbroad\DoctorBundle\Form;
+
+use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
 
 use HealthCareAbroad\MediaBundle\Form\AdminMediaFileType;
 
@@ -31,7 +32,7 @@ class DoctorFormType extends AbstractType
      		->add('lastName', 'text', array('label' => 'Last name'))
      		->add('suffix', 'choice', array('choices' => $this->_getSuffix()))
      		->add('gender', 'choice', array('choices'=>$gender))
-     		->add('country','country_list')
+     		->add('country', CountryListType::NAME)
      		->add('details', 'textarea')
      		->add('media', new AdminMediaFileType($media), array('label' => 'Image'))
     	    ->add('specializations', 'doctorSpecializations_list', array('expanded' => true,'multiple' => true, 'constraints' => array(new NotBlank())))

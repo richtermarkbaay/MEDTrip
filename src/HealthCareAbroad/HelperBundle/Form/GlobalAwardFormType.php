@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\HelperBundle\Form;
 
+use HealthCareAbroad\HelperBundle\Form\ListType\CountryListType;
+
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -19,7 +21,7 @@ class GlobalAwardFormType extends AbstractType
 		$builder->add('type', 'choice', array('choices' => GlobalAwardTypes::getTypes(), 'expanded' => false, 'constraints'=>array(new NotBlank())));
 		$builder->add('name', 'text', array('constraints'=>array(new NotBlank())));
 		$builder->add('awardingBody', new AwardingBodyListType());
-		$builder->add('country', 'country_list', array('empty_value' => 'Choose Country'));
+		$builder->add('country', CountryListType::NAME, array('empty_value' => 'Choose Country'));
 		$builder->add('details', 'textarea');
 		$builder->add('status', 'choice', array('choices'=>$status));
 	}

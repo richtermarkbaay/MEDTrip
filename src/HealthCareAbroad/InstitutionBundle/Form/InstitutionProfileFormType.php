@@ -2,27 +2,17 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Form;
 
-use HealthCareAbroad\InstitutionBundle\Form\ListType\MedicalProviderGroupListType;
-
 use HealthCareAbroad\MediaBundle\Form\InstitutionMediaFileType;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
-use Symfony\Component\Validator\Constraints\NotBlank;
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
-
-use HealthCareAbroad\HelperBundle\Form\FieldType\LocationFieldType;
-
-use HealthCareAbroad\HelperBundle\Form\EventListener\LoadCitiesSubscriber;
-
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
-use HealthCareAbroad\InstitutionBundle\Exception\InstitutionFormException;
+use HealthCareAbroad\HelperBundle\Form\ListType\GlobalCityListType;
+use HealthCareAbroad\HelperBundle\Form\FieldType\FancyCountryFieldType;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionTypes;
+use HealthCareAbroad\InstitutionBundle\Exception\InstitutionFormException;
 
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\Form\AbstractType;
 
 /**
@@ -106,8 +96,8 @@ class InstitutionProfileFormType extends AbstractType
         $this->_add($builder, 'name', 'text');
         $this->_add($builder, 'description', 'textarea', array('required' => false));
         $this->_add($builder, 'medicalProviderGroups', 'collection', array('type' => 'medicalProviderGroup_list', 'allow_add' => true, 'allow_delete' => true,'options'  => array( 'required' => false)));
-        $this->_add($builder, 'country', 'fancy_country', array('label' => 'Country', 'error_bubbling' => false, 'attr' => array('placeholder' => 'Type or select your Country')));
-        $this->_add($builder, 'city', 'city_list', array('attr' => array('placeholder' => 'Type or select your City'),'label' => 'City' , 'error_bubbling' => false));
+        $this->_add($builder, 'country', FancyCountryFieldType::NAME, array('label' => 'Country', 'error_bubbling' => false, 'attr' => array('placeholder' => 'Type or select your Country')));
+        $this->_add($builder, 'city', GlobalCityListType::NAME, array('attr' => array('placeholder' => 'Type or select your City'),'label' => 'City' , 'error_bubbling' => false));
         $this->_add($builder, 'zipCode', 'text', array('label' => 'Zip / Postal Code'));
         $this->_add($builder, 'state', 'state_list', array('label' => 'State/Province','attr' => array('placeholder' => 'Type or select your State/Province')));
         $this->_add($builder, 'contactEmail', 'text', array('label' => 'Email Address ', 'required' => false));
