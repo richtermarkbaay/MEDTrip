@@ -21,7 +21,7 @@ class GlobalStateListFilter extends ArrayListFilter
 		$this->addValidCriteria('country');
 		
 		// set default filters
-		$this->defaultParams = array('status' => State::STATUS_ACTIVE, 'country' => 1, 'state' => 0, 'name' => '');
+		$this->defaultParams = array('status' => State::STATUS_ACTIVE, 'country' => 17, 'state' => 0, 'name' => '');
 	
 		//manually inject service for serviceDependencies
 		$this->serviceDependencies = array('services.location');
