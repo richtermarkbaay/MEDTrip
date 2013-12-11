@@ -22,7 +22,7 @@ class GlobalCityListFilter extends ArrayListFilter
 		$this->addValidCriteria('state');
 
 		// set default filters
-		$this->defaultParams = array('status' => City::STATUS_ACTIVE, 'country' => 1, 'state' => self::FILTER_KEY_ALL, 'name' => '');
+		$this->defaultParams = array('status' => City::STATUS_ACTIVE, 'country' => 17, 'state' => self::FILTER_KEY_ALL, 'name' => '');
 	
 		//manually inject service for serviceDependencies
 		$this->serviceDependencies = array('services.location');
