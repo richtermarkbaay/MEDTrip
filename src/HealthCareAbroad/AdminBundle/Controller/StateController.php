@@ -55,7 +55,7 @@ class StateController extends Controller
      */
     public function editAction($id)
     {
-        $state = $this->get('services.location')->findGlobalStateById($id); 
+        $state = $this->get('services.location')->getGlobalStateById($id); 
         if(isset($state['geoCountry'])) {
             $state['geoCountry'] = $state['geoCountry']['id'];
         }
