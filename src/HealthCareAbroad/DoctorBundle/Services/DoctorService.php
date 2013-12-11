@@ -148,8 +148,10 @@ class DoctorService
             foreach($doctor['specializations'] as $each) {
                 $specializations[$each['id']] = $each['name'];
             }
+
             foreach($doctor['medicalSpecialities'] as $each) {
-                $medicalSpecialities[$each['specialization']['id']][$each['id']] = $each['name'];
+                if(isset($each['specialization']))
+                    $medicalSpecialities[$each['specialization']['id']][$each['id']] = $each['name'];
             }
         }
 

@@ -172,6 +172,7 @@ class SearchTwigExtension extends \Twig_Extension
     public function getSearchResultItem($item)
     {
         $isInstitution = $item instanceof Institution;
+        
         if ($item instanceof InstitutionMedicalCenter) {
             $isInstitution = $item->getInstitution()->getType() == InstitutionTypes::SINGLE_CENTER;
             if ($isInstitution) {
@@ -184,7 +185,6 @@ class SearchTwigExtension extends \Twig_Extension
             $name = $item->getName();
             $description = strip_tags($item->getDescription());
             $supplementaryUrl = false;
-            $displayPhoto = $displayLogo = $item->getPayingClient() == 1;
             $featuredMedia = $item->getFeaturedMedia();
             $links = $this->getInstitutionLinks($item, $url);
 
@@ -193,19 +193,18 @@ class SearchTwigExtension extends \Twig_Extension
             $name = $item->getName();
             $description = strip_tags(strlen($item->getDescriptionHighlight()) ? $item->getDescriptionHighlight() : $item->getDescription());
             $supplementaryUrl = array('url' => $this->getInstitutionFrontendUrl($item->getInstitution()), 'name' => $item->getInstitution()->getName());
-
-            $displayPhoto = $displayLogo = false;
-            switch ($item->getPayingClient()) {
-                case PayingStatus::PHOTO_LISTING:
-                    $displayPhoto = true;
-                case PayingStatus::LOGO_LISTING:
-                    $displayLogo = true;
-                case PayingStatus::LINKED_LISTING:
-                case PayingStatus::FREE_LISTING:
-            }
-
             $featuredMedia = $item->getInstitution()->getFeaturedMedia();
             $links = $this->getCenterLinks($item, $url);
+        }
+
+        $displayPhoto = $displayLogo = false;
+        switch ($item->getPayingClient()) {
+            case PayingStatus::PHOTO_LISTING:
+                $displayPhoto = true;
+            case PayingStatus::LOGO_LISTING:
+                $displayLogo = true;
+            case PayingStatus::LINKED_LISTING:
+            case PayingStatus::FREE_LISTING:
         }
 
         return array(

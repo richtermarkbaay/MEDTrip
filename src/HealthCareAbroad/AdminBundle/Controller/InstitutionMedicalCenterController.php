@@ -152,7 +152,7 @@ class InstitutionMedicalCenterController extends Controller
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function viewAction(Request $request)
-    {
+    {        
         if($request->get('center')) {
             $this->institution = $request->get('institution');
             $this->institutionMedicalCenter = $request->get('center');
@@ -540,12 +540,12 @@ class InstitutionMedicalCenterController extends Controller
         $this->institutionMedicalCenter->setPayingClient((int)$request->get('payingClient'));
 
         try {
-            $em = $this->getDoctrine()->getEntityManager();
+            $em = $this->getDoctrine()->getEntityManagerForClass('InstitutionBundle:InstitutionMedicalCenter');
             $em->persist($this->institutionMedicalCenter);
             $em->flush($this->institutionMedicalCenter);
             
             $this->get('services.institution')
-                ->updatePayingClientStatus($this->institutionMedicalCenter->getInstitution());
+                ->updatePayingClientStatus($this->institutionMedicalCenter->getInstitution(), $this->institutionMedicalCenter->getPayingClient());
             
             $response = new Response(\json_encode(array('message' => 'ok')),200, array('content-type' => 'application/json'));
             

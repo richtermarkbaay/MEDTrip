@@ -89,20 +89,26 @@ class InstitutionService
         $this->timeAgoExt = $timeAgoExt;
     }
     
-    public function updatePayingClientStatus(Institution $institution)
+    public function updatePayingClientStatus(Institution $institution, $payingClientStatus)
     {
-        $dql = "SELECT COUNT(imc) as cnt FROM InstitutionBundle:InstitutionMedicalCenter imc WHERE imc.institution = :institutionId AND imc.payingClient != :freeListingStatus";
-        $cntCurrentPayingClinic = (int)$this->doctrine->getEntityManager()->createQuery($dql)
-            ->setParameter('institutionId', $institution->getId())
-            ->setParameter('freeListingStatus', PayingStatus::FREE_LISTING)
-            ->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
-        
-        $isPaying = $cntCurrentPayingClinic > 0;
-        $institution->setPayingClient($isPaying);
-        $em = $this->doctrine->getManager();
-        $em->persist($institution);
-        $em->flush();
-        
+        $qb = $this->doctrine->getEntityManagerForClass('InstitutionBundle:InstitutionMedicalCenter')->createQueryBuilder();
+        $qb->select('a.payingClient')
+           ->from('InstitutionBundle:InstitutionMedicalCenter', 'a')
+           ->where('a.status = :status')
+           ->andWhere('a.institution = :institutionId')
+           ->addOrderBy('a.payingClient', 'DESC')
+           ->setMaxResults(1)
+           ->setParameter('status', InstitutionMedicalCenterStatus::APPROVED)
+           ->setParameter('institutionId', $institution->getId());
+
+        $newInstitutionPayingClient = (int)$qb->getQuery()->getSingleScalarResult();
+
+        if((int)$institution->getPayingClient() != $newInstitutionPayingClient) {
+            $institution->setPayingClient($newInstitutionPayingClient);
+            $em = $this->doctrine->getEntityManagerForClass('InstitutionBundle:Institution');
+            $em->persist($institution);
+            $em->flush();
+        }
     }
 
     /**
