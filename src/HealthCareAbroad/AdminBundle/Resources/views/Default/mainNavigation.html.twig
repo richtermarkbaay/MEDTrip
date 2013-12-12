@@ -119,8 +119,11 @@
     <li class="dropdown {{ selectedTab == 'inquire' ? 'active' : '' }}">
         <a data-toggle="dropdown" class="dropdown-toggle" href="#">Site Inquiries <b class="caret"></b></a>
         <ul class="dropdown-menu">
+            <li class="{{ selectedSubTab == 'feedbackInquiries' ? 'active' : '' }}">
+                <a href="{{ path('admin_feedback') }}">Feedback / Inquiries</a>
+            </li>
             <li class="{{ selectedSubTab == 'inquire_index' ? 'active' : '' }}">
-                <a href="{{ path('admin_inquire') }}">Inquiries</a>
+                <a href="{{ path('admin_inquire') }}">Advertising Inquiries</a>
             </li>
             <li class="{{ selectedSubTab == 'institution_inquire_index' ? 'active' : '' }}">
                 <a href="{{ path('admin_institution_inquire') }}">Institution Inquiries</a>

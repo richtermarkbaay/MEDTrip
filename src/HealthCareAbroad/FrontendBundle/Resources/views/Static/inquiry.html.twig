@@ -7,13 +7,14 @@
 
         <p>This form is for medical providers inquiring about adding or editing their clinics to Healthcare Abroad, or for other account concerns. </p>
         <p>If you are a patient looking to send feedback to Healthcare Abroad, <a href ="#" id="feedback-form">please use this form</a>.</p>
-        {% if error %}
+
+        {% if hasErrors is defined %}
             <div class="alert alert-error">
-                {% for each in error_list %}
-                	{{ each }} <br>
-            	{% else %}
-            	    Please correct fields with red mark.
-                {% endfor %}
+                {% for each in form.children %}
+                    {% if each.vars.errors|length %}
+                	    {{ each.vars.errors[0].message }} <br>
+                	{% endif %}
+            	{% endfor %}
             </div>
         {% else %}
             {% for alert, message in app.session.flashes %}
@@ -35,12 +36,13 @@
         {% endif %}
         <div class="section row-fluid">
             <div class="section-content">
-                <div class="{{ (form.inquirySubject.vars.valid ? 'options-wrapper' : 'error') }}">
+                <div class="control-group options-wrapper {{ (form.inquirySubject.vars.valid ? '' : 'error') }}">
                     <label>I'm writing to: *</label>
+                    {# form_widget(form.inquirySubject) #}
                      {% for _key, _typeChoice in form.inquirySubject.vars.choices %}
                         {% set _inputId =  form.inquirySubject.vars.id ~ '_' ~ _key %}
                         <label class="required options" for="{{ _inputId }}">
-                            <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.inquirySubject.vars.full_name }}">
+                            <input id="{{ _inputId }}" type="radio" value="{{ _typeChoice.value }}" required="required" name="{{ form.inquirySubject.vars.full_name }}" {% if form.vars.value.inquirySubject and form.vars.value.inquirySubject.id == _typeChoice.value %} checked="checked"{% endif %}>
                             {{ _typeChoice.label }}
                         </label>
                     {% endfor %}

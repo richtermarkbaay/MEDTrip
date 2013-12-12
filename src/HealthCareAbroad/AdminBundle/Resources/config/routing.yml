@@ -172,7 +172,7 @@ admin_inquire:
         _method:  GET
         
 admin_feedback:
-    pattern: /admin/feedbacks
+    pattern: /admin/feedback-inquiries
     defaults: { _controller: AdminBundle:Feedback:index }
     requirements:
         _method:  GET

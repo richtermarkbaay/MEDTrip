@@ -32,14 +32,10 @@ class CommonPageController extends ResponseHeadersController
 
     public function saveInquiryAction(Request $request)
     {
-        
         $inquiry = new Inquiry();
         $form = $this->createForm(new InquiryType(), $inquiry);
         $inquirySubjects = $this->getDoctrine()->getRepository('AdminBundle:InquirySubject')->findAll();
-        $error = false;
-        $success = false;
-        $errorArr = array();
-        
+
         if($request->isMethod('POST')) {
             $form->bind($request);
             if($form->isValid()) {
@@ -58,22 +54,14 @@ class CommonPageController extends ResponseHeadersController
                 $this->get('event_dispatcher')->dispatch(FrontendBundleEvents::ADD_INQUIRY, $event);
                 
                 return $this->redirect($this->generateUrl('frontend_page_inquiry'));
-            }else {
-                $error = true;
-
-                $form_errors = $this->get('validator')->validate($form);
-                foreach ($form_errors as $_err) {
-                    $errorArr[] = $_err->getMessage();
-                }
-
+            } else {
+                $params['hasErrors'] = true;
             }
         }
 
-        return $this->render('FrontendBundle:Static:inquiry.html.twig',
-                        array('form' => $form->createView(),
-                              'inquirySubjects' => $inquirySubjects,
-                              'isInquiry' => 1,
-                              'error' => $error,
-                              'error_list' => $errorArr));
+        $params['form'] = $form->createView();
+        $params['inquirySubjects'] = $inquirySubjects;
+
+        return $this->render('FrontendBundle:Static:inquiry.html.twig', $params);
     }
 }

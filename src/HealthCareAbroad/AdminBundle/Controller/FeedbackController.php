@@ -22,7 +22,7 @@ class FeedbackController extends Controller
     public function indexAction()
     {
     	return $this->render('AdminBundle:Feedback:index.html.twig', array(
-            'feedbacks' => $this->filteredResult,
+            'feedback' => $this->filteredResult,
             'pager' => $this->pager
         ));
     }

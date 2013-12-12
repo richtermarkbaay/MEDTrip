@@ -18,6 +18,7 @@ class InquirySubjectListType extends AbstractType
         $resolver->setDefaults(array(
         	'property' => 'name',
 			'class' => 'HealthCareAbroad\AdminBundle\Entity\InquirySubject',
+            'required' => true,
 			'query_builder' => $this->container->get("services.inquire")->getActiveInquirySubjects()
         ));
     }

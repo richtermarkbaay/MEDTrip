@@ -26,14 +26,14 @@ class InquiryType extends AbstractType
         $cityId = 0;
 
     	$builder
-    	    ->add('inquirySubject', 'inquiry_subject_list',array('error_bubbling' => false, 'expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subject')))))
-    		->add('firstName', 'text', array('error_bubbling' => false))
-    		->add('lastName', 'text', array('error_bubbling' => false))
+    	    ->add('inquirySubject', 'inquiry_subject_list', array('expanded' => true,'multiple' => false,'constraints' => array(new NotBlank(array('message' => 'Please choose at least one from Inquiry Subject')))))
+    		->add('firstName', 'text')
+    		->add('lastName', 'text')
     		->add('clinicName', 'text')
     		->add('country', FancyCountryFieldType::NAME)
     		->add('contactNumber','text')
-    		->add('email', 'email', array('error_bubbling' => false))
-    		->add('message', 'textarea', array('error_bubbling' => false))
+    		->add('email', 'email')
+    		->add('message', 'textarea')
     		->add('captcha', 'captcha', array('label'=>'Please type the code *'))
     		;
     }
