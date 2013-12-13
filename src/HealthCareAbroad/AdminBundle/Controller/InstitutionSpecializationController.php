@@ -2,10 +2,11 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 
 use Symfony\Component\HttpFoundation\Response;
-
 use Symfony\Component\HttpFoundation\Request;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionSpecialization;
@@ -80,11 +81,19 @@ class InstitutionSpecializationController extends Controller
         }
         
         $this->institutionSpecialization->removeTreatment($treatment);
-        
-       if ($request->isMethod('POST')) {
+
+        if ($request->isMethod('POST')) {
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($this->institutionSpecialization);
             $em->flush();
+            
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $institutionMedicalCenter = $this->institutionSpecialization->getInstitutionMedicalCenter();
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($institutionMedicalCenter->getId()));
+
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($institutionMedicalCenter->getInstitution()->getId()));
+
             $response = new Response("Treatment removed", 200);
         }
         
@@ -113,14 +122,24 @@ class InstitutionSpecializationController extends Controller
                         }
                         $form = $this->createForm(new InstitutionSpecializationFormType(), $this->institutionSpecialization, array('default_choices' => $default_choices));
                         $form->bind($_data);
+
                         if ($form->isValid()) {
-                                $em->persist($this->institutionSpecialization);
-                                $em->flush();
-                                $output['html'] = $this->renderView('AdminBundle:InstitutionSpecialization:list.institutionTreatments.html.twig', array(
-                                                'institutionSpecialization' => $this->institutionSpecialization,
-                                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                                'institution' => $this->institution
-                                ));
+                            $em->persist($this->institutionSpecialization);
+                            $em->flush();
+
+                            // Invalidate InstitutionMedicalCenter Profile cache
+                            $institutionMedicalCenter = $this->institutionSpecialization->getInstitutionMedicalCenter();
+                            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($institutionMedicalCenter->getId()));
+
+                            // Invalidate Institution Profile cache
+                            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($institutionMedicalCenter->getInstitution()->getId()));
+
+                            $output['html'] = $this->renderView('AdminBundle:InstitutionSpecialization:list.institutionTreatments.html.twig', array(
+                                'institutionSpecialization' => $this->institutionSpecialization,
+                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                                'institution' => $this->institution
+                            ));
+
                             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                         }
                     }else{
@@ -187,13 +206,23 @@ class InstitutionSpecializationController extends Controller
                         }
                         $form = $this->createForm(new InstitutionSpecializationFormType(), $_institutionSpecialization, array('default_choices' => $default_choices));
                         $form->bind($_data);
+
                         if ($form->isValid()) {
                             $em->persist($_institutionSpecialization);
                             $em->flush();
+
+                            // Invalidate InstitutionMedicalCenter Profile cache
+                            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
                             
+                            // Invalidate Institution Profile cache
+                            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
                             return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
+                        } else {
+                            $request->getSession()->setFlash('notice', '<ul><li>Unable to save specializations. Please try again.</li></ul>');                            
                         }
-                    }else{
+
+                    } else {
                         $request->getSession()->setFlash('notice', '<ul><li> Please provide at least one treatment.</li></ul>');
                     }
                 }
@@ -274,7 +303,13 @@ class InstitutionSpecializationController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($institutionSpecialization);
             $em->flush();
-            
+
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
             $responseContent = array('id' => $_id);
             $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
         }

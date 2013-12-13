@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionStatus;
@@ -244,6 +246,9 @@ class InstitutionMedicalCenterController extends Controller
                     );
                 }
 
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+                
                 $response = new Response(\json_encode(array('success' => 'Status has been updated!')), 200, array('content-type' => 'application/json'));
 
             } else {
@@ -282,13 +287,14 @@ class InstitutionMedicalCenterController extends Controller
                 $this->institutionMedicalCenter = $form->getData();
                 $this->get('services.contact_detail')->removeInvalidContactDetails($this->institutionMedicalCenter);
                 $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
 
-                if(!$this->institutionMedicalCenter->getContactDetails()->count()) {
-                    $phoneNumber = new ContactDetail();
-                    $phoneNumber->setType(ContactDetailTypes::PHONE);
-                    $this->institutionMedicalCenter->addContactDetail($phoneNumber);
-                }
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
+                $request->getSession()->setFlash('success', '"'.$this->institutionMedicalCenter->getName().'" has been updated!');
             }
         }
         
@@ -355,6 +361,9 @@ class InstitutionMedicalCenterController extends Controller
                                     $this->get('events.factory')->create(InstitutionBundleEvents::ON_ADD_INSTITUTION_MEDICAL_CENTER, $this->institutionMedicalCenter, array('institutionId' => $this->institution->getId())
                                     ));
 
+                    // Invalidate InstitutionMedicalCenter Profile cache
+                    $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
                     $this->request->getSession()->setFlash('success', '"' . $this->institutionMedicalCenter->getName() . '"' . " has been created. You can now add Specializations to this center.");
 
                     return $this->redirect($this->generateUrl('admin_institution_medicalCenter_addSpecialization',array(
@@ -418,6 +427,12 @@ class InstitutionMedicalCenterController extends Controller
             $this->institutionMedicalCenter->addDoctor($specialist);
             $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
 
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
             $html = $this->renderView('AdminBundle:InstitutionMedicalCenter/Partials:row.medicalSpecialist.html.twig', array('institution' => $this->institution,'institutionMedicalCenter' => $this->institutionMedicalCenter,'doctors' => array($specialist)));
             $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
         }
@@ -438,6 +453,13 @@ class InstitutionMedicalCenterController extends Controller
                 $doctorId = $doctor->getId();
                 $this->institutionMedicalCenter->removeDoctor($doctor);
                 $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
+                
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
                 $response = new Response(\json_encode(array('id' => $doctorId)), 200, array('content-type' => 'application/json'));
         }
 
@@ -456,6 +478,12 @@ class InstitutionMedicalCenterController extends Controller
             if(!$media) {
                 $this->get('session')->setFlash('error', 'Unable to Upload Logo');
             }
+            
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+            
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
         }
 
         return $this->redirect($request->headers->get('referer'));
@@ -475,6 +503,12 @@ class InstitutionMedicalCenterController extends Controller
             if(!$media) {
                 $response = new Response('Error', 500);
             }
+
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+            
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
         }
 
         return $response;
@@ -522,6 +556,12 @@ class InstitutionMedicalCenterController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($this->institutionMedicalCenter);
                 $em->flush();
+                
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
             }
         }
 
@@ -546,7 +586,13 @@ class InstitutionMedicalCenterController extends Controller
             
             $this->get('services.institution')
                 ->updatePayingClientStatus($this->institutionMedicalCenter->getInstitution(), $this->institutionMedicalCenter->getPayingClient());
+
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
             
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
             $response = new Response(\json_encode(array('message' => 'ok')),200, array('content-type' => 'application/json'));
             
         }

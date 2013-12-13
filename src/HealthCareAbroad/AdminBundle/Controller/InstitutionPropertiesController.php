@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 
 use HealthCareAbroad\InstitutionBundle\Form\Transformer\InstitutionGlobalAwardExtraValueDataTransformer;
@@ -154,12 +156,15 @@ class InstitutionPropertiesController extends Controller
             
             try {
                 $em->flush();
-            
+
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
             }
         }
+
         return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view', array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId())));
     }
     
@@ -196,12 +201,16 @@ class InstitutionPropertiesController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-    
-                 $output = array(
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
+                $output = array(
                     'label' => 'Delete Service',
                     'href' => $this->generateUrl('admin_institution_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $property->getId() )),
                     '_isSelected' => true,
                 );
+
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
@@ -238,10 +247,13 @@ class InstitutionPropertiesController extends Controller
             $em->remove($property);
             $em->flush();
     
+            // Invalidate Institution Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
             $output = array(
-                            'label' => 'Add Service',
-                            'href' => $this->generateUrl('admin_institution_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),
-                            '_isSelected' => false,
+                'label' => 'Add Service',
+                'href' => $this->generateUrl('admin_institution_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),
+                '_isSelected' => false,
             );
     
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
@@ -281,11 +293,14 @@ class InstitutionPropertiesController extends Controller
                 $propertyService->save($property);
     
                 $html = $this->renderView('AdminBundle:InstitutionProperties/Partials:row.globalAward.html.twig', array(
-                                'institution' => $this->institution,
-                                'award' => $award,
-                                'property' => $property
+                    'institution' => $this->institution,
+                    'award' => $award,
+                    'property' => $property
                 ));
-    
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($request->get('institutionId')));
+
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
             catch (\Exception $e){
@@ -318,7 +333,10 @@ class InstitutionPropertiesController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-    
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                 $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
             }
             else{
@@ -355,10 +373,13 @@ class InstitutionPropertiesController extends Controller
                     $em->persist($property);
                     $em->flush();
                     $extraValue = \json_decode($property->getExtraValue(), true);
-    
+
+                    // Invalidate Institution Profile cache
+                    $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                     $output = array(
-                                    'targetRow' => '#globalAwardRow_'.$property->getId(),
-                                    'html' => $property->getExtraValue()
+                        'targetRow' => '#globalAwardRow_'.$property->getId(),
+                        'html' => $property->getExtraValue()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
@@ -413,14 +434,17 @@ class InstitutionPropertiesController extends Controller
             $form->bind($request);
             if ($form->isValid()) {
                 $this->get('services.institution_property')->save($form->getData());
-    
+
+                // Invalidate Institution Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                 return $this->redirect($formActionUrl);
             }
         }
     
         $params = array(
-                        'formAction' => $formActionUrl,
-                        'form' => $form->createView()
+            'formAction' => $formActionUrl,
+            'form' => $form->createView()
         );
         return $this->render('AdminBundle:InstitutionProperties:common.form.html.twig', $params);
     }
@@ -466,12 +490,15 @@ class InstitutionPropertiesController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-    
+
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+
                 $output = array(
-                                'label' => 'Delete Service',
-                                'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
-                                'ancillaryServicesData' => $ancillaryServicesData,
-                                '_isSelected' => true,
+                    'label' => 'Delete Service',
+                    'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $property->getId() )),
+                    'ancillaryServicesData' => $ancillaryServicesData,
+                    '_isSelected' => true,
                 );
                 $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
             }
@@ -515,11 +542,14 @@ class InstitutionPropertiesController extends Controller
             $em->remove($property);
             $em->flush();
     
+            // Invalidate InstitutionMedicalCenter Profile cache
+            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+
             $output = array(
-                            'label' => 'Add Service',
-                            'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
-                            'ancillaryServicesData' => $ancillaryServicesData,
-                            '_isSelected' => false,
+                'label' => 'Add Service',
+                'href' => $this->generateUrl('admin_institution_medicalCenter_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(),'imcId' => $this->institutionMedicalCenter->getId() ,'id' => $ancillaryService->getId() )),
+                'ancillaryServicesData' => $ancillaryServicesData,
+                '_isSelected' => false,
             );
     
             $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
@@ -560,7 +590,9 @@ class InstitutionPropertiesController extends Controller
                         $em = $this->getDoctrine()->getEntityManager();
                         $em->persist($property);
                         $em->flush();
-    
+
+                        // Invalidate InstitutionMedicalCenter Profile cache
+                        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
                     }
                     catch (\Exception $e){
                         $response = new Response($e->getMessage(), 500);
@@ -587,48 +619,18 @@ class InstitutionPropertiesController extends Controller
         }
     
         $output = array(
-                        'html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:view.ancillaryServices.html.twig', array(
-                                        'institution' => $this->institution,
-                                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                        'ancillaryServicesData' => $ancillaryServicesData,
-                                        '_isSelected' => true
-                        )),
-                        'error' => 0
+            'html' => $this->renderView('AdminBundle:InstitutionProperties/Partials:view.ancillaryServices.html.twig', array(
+                'institution' => $this->institution,
+                'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                'ancillaryServicesData' => $ancillaryServicesData,
+                '_isSelected' => true
+            )),
+            'error' => 0
         );
+
         return $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
     }
-    
-    /**
-     *Add GlobalAward to InstitutionMedicalCenter
-     *
-     * @param unknown_type $institutionId
-     * @param unknown_type $imcId
-     */
-//     public function addInstitutionMedicalCenterGlobalAwardsAction()
-//     {
-//         $form = $this->createForm(new InstitutionGlobalAwardFormType(),$this->institutionMedicalCenter);
-    
-//         if ($this->request->isMethod('POST')) {
-//             $form->bind($this->request);
-    
-//             if ($form->isValid()) {
-    
-//                 $this->institutionMedicalCenter = $this->get('services.institutionMedicalCenter')
-//                 ->saveAsDraft($form->getData());
-    
-//                 $this->request->getSession()->setFlash('success', "GlobalAward has been saved!");
-    
-//                 return $this->redirect($this->generateUrl('admin_institution_medicalCenter_view',
-//                                 array('imcId' => $this->institutionMedicalCenter->getId(), 'institutionId' => $this->institution->getId())));
-//             }
-//         }
-//         return $this->render('AdminBundle:InstitutionTreatments:addGlobalAward.html.twig', array(
-//                         'form' => $form->createView(),
-//                         'institutionMedicalCenter' => $this->institutionMedicalCenter,
-//                         'institution' => $this->institution
-//         ));
-//     }
-    
+
     /*
      * Ajax Handler that remove InstitutionMedicalCenter GlobalAwards
     */
@@ -649,7 +651,10 @@ class InstitutionPropertiesController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-    
+
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+
                 $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
             else{
@@ -682,10 +687,14 @@ class InstitutionPropertiesController extends Controller
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($imcProperty);
                     $em->flush();
+
+                    // Invalidate InstitutionMedicalCenter Profile cache
+                    $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+
                     $extraValue = \json_decode($imcProperty->getExtraValue(), true);
                     $output = array(
-                                    'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
-                                    'html' => $imcProperty->getExtraValue()
+                        'targetRow' => '#globalAwardRow_'.$imcProperty->getId(),
+                        'html' => $imcProperty->getExtraValue()
                     );
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
                 }
@@ -726,13 +735,16 @@ class InstitutionPropertiesController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-    
+
+                // Invalidate InstitutionMedicalCenter Profile cache
+                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+
                 $html = $this->renderView('AdminBundle:InstitutionMedicalCenterProperties/Partials:row.globalAward.html.twig', array(
-                                'award' => $award,
-                                'property' => $property,
-                                'institution' => $this->institution,
-                                'institutionMedicalCenter' => $this->institutionMedicalCenter,
-                                'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
+                    'award' => $award,
+                    'property' => $property,
+                    'institution' => $this->institution,
+                    'institutionMedicalCenter' => $this->institutionMedicalCenter,
+                    'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
                 ));
     
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
