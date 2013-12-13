@@ -180,7 +180,7 @@ class InstitutionMediaService extends MediaService
             $sizes = $this->getSizesByType(self::GALLERY_TYPE_IMAGE);
             $this->resize($media, $sizes);
 
-            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findOneByInstitution($institution->getId());
+            $gallery = $this->entityManager->getRepository('MediaBundle:Gallery')->findOneByInstitution($medicalCenter->getInstitution()->getId());
 
             if(!$gallery) {
                 $gallery = new Gallery();
