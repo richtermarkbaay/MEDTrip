@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 use HealthCareAbroad\InstitutionBundle\Event\InstitutionEvent;
@@ -364,6 +366,7 @@ class InstitutionController extends Controller
                     }
                 } 
     		$form->bind($formRequestData);
+
     		if ($form->isValid()) {
     			
     			$this->institution = $form->getData();   
@@ -373,7 +376,11 @@ class InstitutionController extends Controller
     			 
     			//create event on editInstitution and dispatch
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
-    		}else{
+
+    			// Invalidate Institution Profile cache
+    			$this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));    			
+
+    		} else {
         	    $error = true;
                 $form_errors = $this->get('validator')->validate($form);
                 if($form_errors){

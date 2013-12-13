@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use Symfony\Component\HttpFoundation\Request;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -41,10 +43,11 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
         $slug = $request->get('imcSlug', null);
         $institutionMedicalCenterId = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
             ->getInstitutionMedicalCenterIdBySlug($slug);
-        
-        $memcacheKey = 'frontend.controller.institutionMedicalCenter:profile.'.$institutionMedicalCenterId;
+
+        $memcacheKey = MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($institutionMedicalCenterId);
         $memcacheService = $this->get('services.memcache');
         $cachedData = $memcacheService->get($memcacheKey);
+
         if (!$cachedData) {
             $this->institutionMedicalCenter = $this->apiInstitutionMedicalCenterService->getInstitutionMedicalCenterPublicDataById($institutionMedicalCenterId);
             

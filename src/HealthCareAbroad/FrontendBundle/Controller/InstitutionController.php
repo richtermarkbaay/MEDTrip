@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
 
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
@@ -101,9 +103,10 @@ class InstitutionController extends ResponseHeadersController
         $this->apiInstitutionService = $this->get('services.api.institution');
         $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
         $memcacheService = $this->get('services.memcache');
-        $memcacheKey = 'frontend.controller.institution_profile.'.$institutionId;
+        $memcacheKey = MemcacheKeysHelper::generateInsitutionProfileKey($institutionId);
+        
         $cachedData = $memcacheService->get($memcacheKey);
-
+        
         if (!$cachedData) {
             
             $mediaExtensionService = $this->apiInstitutionService->getMediaExtension();
@@ -154,6 +157,8 @@ class InstitutionController extends ResponseHeadersController
                 PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($this->institution['specializationsList'],0, 10, true))
         )));        
         $params = array(
+            'memcacheKey' => $memcacheKey,
+            'cachedData' => $cachedData,
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $isSingleCenterInstitution,
             'institutionDoctors' => $this->institution['doctors'],
