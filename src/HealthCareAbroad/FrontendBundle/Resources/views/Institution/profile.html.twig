@@ -1,8 +1,6 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
 
 {% block content %}
-    {{ dump(memcacheKey) }}
-    {{ dump(cachedData) }}
     <!-- Set map coordinates by LatLong or Address -->
     {% if institution.coordinates %}
         {% set coordinates = institution.coordinates %}

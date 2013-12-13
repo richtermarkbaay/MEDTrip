@@ -157,8 +157,6 @@ class InstitutionController extends ResponseHeadersController
                 PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($this->institution['specializationsList'],0, 10, true))
         )));        
         $params = array(
-            'memcacheKey' => $memcacheKey,
-            'cachedData' => $cachedData,
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $isSingleCenterInstitution,
             'institutionDoctors' => $this->institution['doctors'],
