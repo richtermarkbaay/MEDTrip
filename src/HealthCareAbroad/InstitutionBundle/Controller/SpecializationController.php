@@ -146,6 +146,12 @@ class SpecializationController extends InstitutionAwareController
                         }
                     }
 
+                    // Invalidate InstitutionMedicalCenterProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                    // Invalidate InstitutionProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
                     $response = new Response(\json_encode($html), 200, array('content-type' => 'application/json'));
                 }
             } else {
@@ -183,6 +189,12 @@ class SpecializationController extends InstitutionAwareController
 
                 $responseContent = \json_encode(array('specializations' =>$specializationsWithTreatments));
 
+                // Invalidate InstitutionMedicalCenterProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
                 $response = new Response($responseContent, 200, array('content-type' => 'application/json'));
 
             } else {
@@ -219,6 +231,12 @@ class SpecializationController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($institutionSpecialization);
                 $em->flush();
+
+                // Invalidate InstitutionMedicalCenterProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
 
                 $responseContent = array('id' => $_id);
                 $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));

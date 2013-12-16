@@ -51,7 +51,7 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
             throw $this->createNotFoundException('Invalid medical center');
         }
     }
-    
+
     public function ajaxEditGlobalAwardAction()
     {
         $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId', 0));
@@ -70,6 +70,9 @@ class MedicalCenterPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($imcProperty);
                 $em->flush();
+
+                // Invalidate InstitutionMedicalCenterProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
 
                 $output = array(
                     'status' => true,

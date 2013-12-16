@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use Doctrine\ORM\AbstractQuery;
 
 use HealthCareAbroad\DoctorBundle\Entity\MedicalSpeciality;
@@ -259,6 +261,12 @@ class MedicalCenterController extends InstitutionAwareController
 
                         $responseContent = array('institutionMedicalCenter' => $formVariables);
                     }
+                    
+                    // Invalidate InstitutionMedicalCenterProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                    // Invalidate InstitutionProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
 
                     $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
 
@@ -295,6 +303,9 @@ class MedicalCenterController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($this->institutionMedicalCenter);
             $em->flush($this->institutionMedicalCenter);
+
+            // Invalidate InstitutionMedicalCenterProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
 
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
         }
@@ -339,6 +350,7 @@ class MedicalCenterController extends InstitutionAwareController
                 $this->get('event_dispatcher')->dispatch(
                     MailerBundleEvents::NOTIFICATIONS_CLINIC_CREATED,
                     new GenericEvent($this->institutionMedicalCenter, array('userEmail' => $request->getSession()->get('userEmail'))));
+
                 $response = new Response(\json_encode(array('redirect' => $output)), 200, array('content-type' => 'application/json'));
             }
             else {
@@ -375,6 +387,12 @@ class MedicalCenterController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($doctor);
                 $em->flush($doctor);
+
+                // Invalidate InstitutionMedicalCenterProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
 
                 $data = array(
                     'status' => true,
@@ -414,11 +432,18 @@ class MedicalCenterController extends InstitutionAwareController
         try {
             $this->institutionMedicalCenter->addDoctor($doctor);
             $this->service->save($this->institutionMedicalCenter);
+
             $result['status'] = true;
             $result['doctor'] = $this->get('services.doctor')->toArrayDoctor($doctor);
             $result['editDoctorUrl'] = $this->generateUrl('institution_medicalCenter_ajaxUpdateDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
             $result['removeDoctorUrl'] = $this->generateUrl('institution_medicalCenter_removeDoctor', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
             $result['uploadLogoUrl'] = $this->generateUrl('institution_doctor_logo_upload', array('imcId' => $this->institutionMedicalCenter->getId(), 'doctorId' => $doctor->getId()));
+
+            // Invalidate InstitutionMedicalCenterProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+            
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
 
         } catch (\Exception $e) {}
 
@@ -471,7 +496,13 @@ class MedicalCenterController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($doctor);
             $em->flush();
+
+            // Invalidate InstitutionMedicalCenterProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
             
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
+
             $data = array(
                 'status' => true,
                 'message' => 'Doctor info has been updated!',
@@ -505,8 +536,15 @@ class MedicalCenterController extends InstitutionAwareController
         try{
             $this->institutionMedicalCenter->removeDoctor($doctor);
             $this->service->save($this->institutionMedicalCenter);
+
             $result['status'] = true;
             $result['message'] = 'Doctor successfully removed from your clinic.';
+
+            // Invalidate InstitutionMedicalCenterProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
         }
         catch (\Exception $e) {}
 
@@ -528,64 +566,6 @@ class MedicalCenterController extends InstitutionAwareController
     }
 
     /**
-     * @author Chaztine Blance
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * Adding of Insitution GlobalAwards
-     * @deprecated
-     */
-    /*public function addGlobalAwardsAction(Request $request)
-    {
-        $form = $this->createForm(new InstitutionGlobalAwardsSelectorFormType());
-        $currentGlobalAwards = $this->get('services.institution_medical_center')->getGroupedMedicalCenterGlobalAwards($this->institutionMedicalCenter);
-        $autocompleteSource = $this->get('services.global_award')->getAutocompleteSource();
-        $editGlobalAwardForm = $this->createForm(new InstitutionGlobalAwardFormType());
-        return $this->render('InstitutionBundle:MedicalCenter:addGlobalAward.html.twig', array(
-            'form' => $form->createView(),
-            'editGlobalAwardForm' => $editGlobalAwardForm->createView(),
-            'commonDeleteForm' => $this->createForm(new CommonDeleteFormType())->createView(),
-            'institutionMedicalCenter' => $this->institutionMedicalCenter,
-            'isSingleCenter' => $this->get('services.institution')->isSingleCenter($this->institution),
-            'awardsSourceJSON' => \json_encode($autocompleteSource['award']),
-            'certificatesSourceJSON' => \json_encode($autocompleteSource['certificate']),
-            'affiliationsSourceJSON' => \json_encode($autocompleteSource['affiliation']),
-            'currentGlobalAwards' => $currentGlobalAwards
-        ));
-    }*/
-
-    /*
-     * @deprecated
-     */    
-    /*public function ajaxRemoveSpecialistAction(Request $request)
-    {
-       $doctor = $this->getDoctrine()->getRepository('DoctorBundle:Doctor')->find($request->get('id', 0));
-
-        if (!$doctor) {
-
-            throw $this->createNotFoundException('Invalid medical center property.');
-        }
-
-        $form = $this->createForm(new CommonDeleteFormType(), $doctor);
-
-        if ($request->isMethod('POST'))  {
-            $form->bind($request);
-            if ($form->isValid()) {
-
-                $this->institutionMedicalCenter->removeDoctor($doctor);
-                $this->get('services.institution_medical_center')->save($this->institutionMedicalCenter);
-                $calloutView = $this->_getEditMedicalCenterCalloutView();
-
-                $response = new Response(\json_encode(array('id' => $doctor->getId(), 'calloutView' => $calloutView)), 200, array('content-type' => 'application/json'));
-            }
-            else{
-                $response = new Response("Invalid form", 400);
-            }
-        }
-
-        return $response;
-    }*/
-
-    /**
      * Upload logo for Institution Medical Center
      * @param Request $request
      */
@@ -600,24 +580,14 @@ class MedicalCenterController extends InstitutionAwareController
                 $data['mediaSrc'] = $src;
             }
             $data['status'] = true;
+
+            // Invalidate InstitutionMedicalCenterProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($this->institutionMedicalCenter->getId()));
+
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institutionMedicalCenter->getInstitution()->getId()));
         }
 
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json'));
-        //return $this->redirect($this->getRequest()->headers->get('referer'));
     }
-    /*
-     *@deprecated 
-     */
-    /*private function _getEditMedicalCenterCalloutView()
-    {
-        $calloutParams = array(
-            '{CENTER_NAME}' => $this->institutionMedicalCenter->getName(),
-            '{ADD_CLINIC_URL}' => $this->generateUrl('institution_medicalCenter_add')
-        );
-        $calloutMessage = $this->get('services.institution.callouts')->get('success_edit_center', $calloutParams);
-        $calloutView = $this->renderView('InstitutionBundle:Widgets:callout.html.twig', array('callout' => $calloutMessage));
-
-        return $calloutView;
-    }*/
-
 }
