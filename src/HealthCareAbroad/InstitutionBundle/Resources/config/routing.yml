@@ -111,12 +111,6 @@ InstitutionBundle_confirmed_token:
     defaults: { _controller: InstitutionBundle:Token:confirmInvitationToken }
     requirements:
        _method: GET
-
-institution_addAncilliaryService:
-    pattern:  /institution/{institutionId}/add-ancilliary-service
-    defaults: { _controller: InstitutionBundle:InstitutionProperties:addAncilliaryService }
-    requirements:
-        institutionId: \d+
        
 institution_terms_of_use:
     pattern: /institution/termsofuse.html

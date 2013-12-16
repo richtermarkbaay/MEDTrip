@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+use HealthCareAbroad\FrontendBundle\Services\FrontendFrontendMemcacheKeysHelper;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 
@@ -158,7 +158,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate InstitutionMedicalCenter Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
             }
             catch (\Exception $e){
                 $response = new Response($e->getMessage(), 500);
@@ -203,7 +203,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate Institution Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
                 $output = array(
                     'label' => 'Delete Service',
@@ -248,7 +248,7 @@ class InstitutionPropertiesController extends Controller
             $em->flush();
     
             // Invalidate Institution Profile cache
-            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
             $output = array(
                 'label' => 'Add Service',
@@ -299,7 +299,7 @@ class InstitutionPropertiesController extends Controller
                 ));
 
                 // Invalidate Institution Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($request->get('institutionId')));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($request->get('institutionId')));
 
                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
             }
@@ -335,7 +335,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate Institution Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
                 $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
             }
@@ -375,7 +375,7 @@ class InstitutionPropertiesController extends Controller
                     $extraValue = \json_decode($property->getExtraValue(), true);
 
                     // Invalidate Institution Profile cache
-                    $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
                     $output = array(
                         'targetRow' => '#globalAwardRow_'.$property->getId(),
@@ -436,7 +436,7 @@ class InstitutionPropertiesController extends Controller
                 $this->get('services.institution_property')->save($form->getData());
 
                 // Invalidate Institution Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
                 return $this->redirect($formActionUrl);
             }
@@ -492,7 +492,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate InstitutionMedicalCenter Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
 
                 $output = array(
                     'label' => 'Delete Service',
@@ -543,7 +543,7 @@ class InstitutionPropertiesController extends Controller
             $em->flush();
     
             // Invalidate InstitutionMedicalCenter Profile cache
-            $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
 
             $output = array(
                 'label' => 'Add Service',
@@ -592,7 +592,7 @@ class InstitutionPropertiesController extends Controller
                         $em->flush();
 
                         // Invalidate InstitutionMedicalCenter Profile cache
-                        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
                     }
                     catch (\Exception $e){
                         $response = new Response($e->getMessage(), 500);
@@ -653,7 +653,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate InstitutionMedicalCenter Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
 
                 $response = new Response(\json_encode(array('id' => $request->get('id'))), 200, array('content-type' => 'application/json'));
             }
@@ -689,7 +689,7 @@ class InstitutionPropertiesController extends Controller
                     $em->flush();
 
                     // Invalidate InstitutionMedicalCenter Profile cache
-                    $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
 
                     $extraValue = \json_decode($imcProperty->getExtraValue(), true);
                     $output = array(
@@ -737,7 +737,7 @@ class InstitutionPropertiesController extends Controller
                 $em->flush();
 
                 // Invalidate InstitutionMedicalCenter Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($request->get('imcId')));
 
                 $html = $this->renderView('AdminBundle:InstitutionMedicalCenterProperties/Partials:row.globalAward.html.twig', array(
                     'award' => $award,

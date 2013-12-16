@@ -1,8 +1,8 @@
 <?php 
 
-namespace HealthCareAbroad\HelperBundle\Services;
+namespace HealthCareAbroad\FrontendBundle\Services;
 
-class MemcacheKeysHelper
+class FrontendMemcacheKeysHelper
 {
     const INSTITUTION_PROFILE_KEY = 'frontend.controller.institution_profile.{ID}';
 

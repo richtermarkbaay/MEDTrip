@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
 
 use Symfony\Component\EventDispatcher\GenericEvent;
 
@@ -378,7 +378,7 @@ class InstitutionController extends Controller
     			$this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $this->get('events.factory')->create(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $institution));
 
     			// Invalidate Institution Profile cache
-    			$this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));    			
+    			$this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));    			
 
     		} else {
         	    $error = true;
@@ -461,7 +461,7 @@ class InstitutionController extends Controller
         $this->get('event_dispatcher')->dispatch(InstitutionBundleEvents::ON_EDIT_INSTITUTION, $event);
 
         // Invalidate Institution Profile cache
-        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
         return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
     }
@@ -487,7 +487,7 @@ class InstitutionController extends Controller
                 $response = new Response(\json_encode(array('html' => '<strong>Success!</strong> Updated status for '.$this->institution->getName().'.', 'status' => $this->institution->getStatus())),200, array('content-type' => 'application/json'));
                 
                 // Invalidate Institution Profile cache
-                $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
             }
             else {
                 $response = new Response(\json_encode(array('error' => 'Please fill up the form propery')),400, array('content-type' => 'application/json'));
@@ -519,7 +519,7 @@ class InstitutionController extends Controller
    	        }
 
    	        // Invalidate Institution Profile cache
-   	        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+   	        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
    	    }
 
    	    return $this->redirect($request->headers->get('referer'));
@@ -539,7 +539,7 @@ class InstitutionController extends Controller
    	        }
 
    	        // Invalidate Institution Profile cache
-   	        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+   	        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
    	    }
    	
    	    return $this->redirect($request->headers->get('referer'));
@@ -561,7 +561,7 @@ class InstitutionController extends Controller
    	        }
 
    	        // Invalidate Institution Profile cache
-   	        $this->get('services.memcache')->delete(MemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+   	        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
    	    }
    	
    	    return $response;

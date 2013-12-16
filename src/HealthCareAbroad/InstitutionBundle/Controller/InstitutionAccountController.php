@@ -5,6 +5,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\HelperBundle\Entity\City;
@@ -227,6 +229,9 @@ class InstitutionAccountController extends InstitutionAwareController
                         $responseContent = array('institution' => $formRequestData);
                     }
 
+                    // Invalidate InstitutionProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                     $response = new Response(\json_encode($responseContent), 200, array('content-type' => 'application/json'));
 
                 } else {
@@ -256,6 +261,9 @@ class InstitutionAccountController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->persist($this->institution);
             $em->flush($this->institution);
+            
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
             return new Response(\json_encode(true),200, array('content-type' => 'application/json'));
         }
@@ -274,6 +282,9 @@ class InstitutionAccountController extends InstitutionAwareController
         $center->setContactEmail($institution->getContactEmail());
         $center->setWebsites($institution->getWebsites());
         $center->setDateUpdated($institution->getDateModified());
-        $this->get('services.institution_medical_center')->save($center);        
+        $this->get('services.institution_medical_center')->save($center);
+
+        // Invalidate InstitutionMedicalCenterProfile memcache
+        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($center->getId()));
     }
 }

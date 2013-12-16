@@ -58,7 +58,7 @@
                             <td>
                                 <div class="btn-group">
                                     <a href="#edit-media-{{ each.id }}" class="btn btn-misc edit-media-btn" data-toggle="modal" style="color:#FE6500" data-medica-center-ids="{{ hasClinics ? json_encode(photosLinkedToMedicalCenter[each.id]) : [] }}" onclick="HCA.closeAlertMessage()"><i class="icon-edit"></i>edit</a>
-                                    <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}" onclick="HCA.closeAlertMessage()"><i class="icon-trash"></i>delete</a>
+                                    <a href="#delete-media" class="btn btn-misc delete-media" data-toggle="modal" style="color:#FE6500" data-media_id="{{ each.id }}" data-medica-center-ids="{{ hasClinics ? (photosLinkedToMedicalCenter[each.id]|keys)|join(',') : [] }}" onclick="HCA.closeAlertMessage()"><i class="icon-trash"></i>delete</a>
                                 </div>
 
                                 {% include 'InstitutionBundle:MediaGallery/Widgets:editModalForm.html.twig' with {media: each, selectedClinics: hasClinics ? photosLinkedToMedicalCenter[each.id] : [] } %}

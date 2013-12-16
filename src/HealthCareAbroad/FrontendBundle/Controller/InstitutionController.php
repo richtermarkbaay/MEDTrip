@@ -8,7 +8,7 @@ namespace HealthCareAbroad\FrontendBundle\Controller;
 
 use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
 
-use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
 
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
 
@@ -105,7 +105,7 @@ class InstitutionController extends ResponseHeadersController
         $this->apiInstitutionService = $this->get('services.api.institution');
         $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
         $memcacheService = $this->get('services.memcache');
-        $memcacheKey = MemcacheKeysHelper::generateInsitutionProfileKey($institutionId);
+        $memcacheKey = FrontendMemcacheKeysHelper::generateInsitutionProfileKey($institutionId);
         
         $cachedData = $memcacheService->get($memcacheKey);
         

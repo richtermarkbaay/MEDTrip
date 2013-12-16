@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use Doctrine\Tests\DBAL\Types\VarDateTimeTest;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
@@ -56,69 +58,6 @@ class InstitutionPropertiesController extends InstitutionAwareController
         $this->request = $this->getRequest();
     }
     
-//     public function addAncilliaryServiceAction(Request $request)
-//     {
-//         $offeredServicesArray = $this->getRequest()->get('offeredServicesData');
-//         if($request->get('imcId')) {
-//             $center = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
-//             $imcProperty = $this->get('services.institution_medical_center_property.formFactory')->buildFormByInstitutionMedicalCenterPropertyTypeName($this->institution, $center, 'ancilliary_service_id')->getData();
-//             $imcProperty->setValue($offeredServicesArray);
-//             $this->get('services.institution_medical_center_property')->createInstitutionMedicalCenterPropertyByServices($imcProperty);
-//         }
-//         else {
-//             $institutionProperty = $this->get('services.institution_property.formFactory')->buildFormByInstitutionPropertyTypeName($this->institution, 'ancilliary_service_id')->getData();
-//             $institutionProperty->setValue($offeredServicesArray);
-//             $this->get('services.institution_property')->createInstitutionPropertyByServices($institutionProperty);
-//         }
-//         return $this->_jsonResponse(array('success' => 1));
-//     }
-    
-//     /** This is an old codes for adding insititution global awards
-//      * Add a GlobalAward
-//      * 
-//      * @param Request $request
-//      * @return \HealthCareAbroad\InstitutionBundle\Controller\Response
-//      */
-//     public function ajaxAddGlobalAwardAction(Request $request)
-//     {
-//         return new Response(\json_encode(array('html' => 'test')), 200, array('content-type' => 'application/json'));
-        
-//         $award = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($request->get('id'));
-//         if (!$award) {
-//             throw $this->createNotFoundException();
-//         }
-    
-//         $propertyService = $this->get('services.institution_property');
-//         $propertyType = $propertyService->getAvailablePropertyType(InstitutionPropertyType::TYPE_GLOBAL_AWARD);
-    
-//         // check if this medical center already have this property
-//         if ($this->get('services.institution')->hasPropertyValue($this->institution, $propertyType, $award->getId())) {
-//             $response = new Response("Property value {$award->getId()} already exists.", 500);
-//         }
-//         else {
-//             $property = $propertyService->createInstitutionPropertyByName($propertyType->getName(), $this->institution);
-//             $property->setValue($award->getId());
-//             try {
-//                 $em = $this->getDoctrine()->getEntityManager();
-//                 $em->persist($property);
-//                 $em->flush();
-    
-//                 $html = $this->renderView('InstitutionBundle:Institution/Partials:row.globalAward.html.twig', array(
-//                     'institution' => $this->institution,
-//                     'award' => $award,
-//                     'property' => $property
-//                 ));
-    
-//                 $response = new Response(\json_encode(array('html' => $html)), 200, array('content-type' => 'application/json'));
-//             }
-//             catch (\Exception $e){
-//                 $response = new Response($e->getMessage(), 500);
-//             }
-//         }
-    
-//         return $response;
-//     }
-    
     public function ajaxEditGlobalAwardAction(Request $request)
     {
         $property = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionProperty')->find($request->get('propertyId', 0));
@@ -127,7 +66,7 @@ class InstitutionPropertiesController extends InstitutionAwareController
         if (!$property) {
             throw $this->createNotFoundException('Invalid property.');
         }
-//         echo $this->request->get('globalAwardId');exit;
+
         $globalAward = $this->getDoctrine()->getRepository('HelperBundle:GlobalAward')->find($this->request->get('globalAwardId'));
         
         if (!$globalAward) {
@@ -148,6 +87,9 @@ class InstitutionPropertiesController extends InstitutionAwareController
                     $em = $this->getDoctrine()->getEntityManager();
                     $em->persist($property);
                     $em->flush();
+
+                    // Invalidate InstitutionProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
                     $output = array('status' => true, 'extraValue' => $property->getExtraValue());
                     $response = new Response(\json_encode($output), 200, array('content-type' => 'application/json'));
@@ -186,7 +128,10 @@ class InstitutionPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->remove($property);
                 $em->flush();
-        
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                 $response = new Response(\json_encode(array('id' => $request->get('id', 0))), 200, array('content-type' => 'application/json'));
             }
             else{
@@ -229,7 +174,10 @@ class InstitutionPropertiesController extends InstitutionAwareController
                 $em = $this->getDoctrine()->getEntityManager();
                 $em->persist($property);
                 $em->flush();
-    
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
                 $output = array(
                     'label' => 'Delete Service',
                     'href' => $this->generateUrl('institution_ajaxRemoveAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $property->getId() )),
@@ -270,7 +218,10 @@ class InstitutionPropertiesController extends InstitutionAwareController
             $em = $this->getDoctrine()->getEntityManager();
             $em->remove($property);
             $em->flush();
-            
+
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
             $output = array(
                     'label' => 'Add Service',
                     'href' => $this->generateUrl('institution_ajaxAddAncillaryService', array('institutionId' => $this->institution->getId(), 'id' => $ancillaryService->getId() )),

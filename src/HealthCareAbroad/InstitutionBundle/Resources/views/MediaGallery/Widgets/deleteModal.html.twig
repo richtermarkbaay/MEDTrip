@@ -23,9 +23,11 @@
 <script type="text/javascript">
 $(function(){
 	var mediaId;
+	var institutionMedicalCenterIds;
     $(".delete-media").click(function(){
         HCA.closeAlertMessage();
         mediaId = $(this).attr('data-media_id');
+        institutionMedicalCenterIds = $(this).attr('data-medica-center-ids');
         var deleteWrapperElem = $('#delete-media');
 
         clinicListElem = deleteWrapperElem.find('ul.clinic-list:first').empty();
@@ -44,6 +46,9 @@ $(function(){
     $('#confirm-delete-media-btn').click(function(){
 
         var params = {mediaId: mediaId};
+        if(institutionMedicalCenterIds) {
+            params.institutionMedicalCenterIds = institutionMedicalCenterIds; 
+        }
         deleteBtn = $(this).attr('disabled', 'disabled').text('Deleting...');
         $.post("{{ path('institution_mediaGallery_delete', {institutionId: institution.id}) }}", params, function(response){
             if(response) {

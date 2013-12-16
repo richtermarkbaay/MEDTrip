@@ -7,6 +7,10 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\PayingStatus;
+
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use HealthCareAbroad\MediaBundle\Services\ImageSizes;
 
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionUserFormType;
@@ -41,13 +45,14 @@ class InstitutionController extends InstitutionAwareController
 	    
 	    $users = $this->get('services.institution')->getAllStaffOfInstitution($this->institution);
 	    $userTypes = $this->getDoctrine()->getRepository('UserBundle:InstitutionUserType')->getAllEditable($this->institution);
-	    //         echo $this->institution->getId();
+
 	    $institutionUser = new InstitutionUser();
 	    $form = $this->createForm(new InstitutionUserFormType(), $institutionUser);
+
 	    return $this->render('InstitutionBundle:InstitutionUser:viewAll.html.twig', array(
-	                    'users' => $users,
-	                    'userTypes' => $userTypes,
-	                    'form' => $form->createView()
+            'users' => $users,
+            'userTypes' => $userTypes,
+            'form' => $form->createView()
 	    ));
 	}
 	
@@ -64,9 +69,13 @@ class InstitutionController extends InstitutionAwareController
 	            }
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
+
+	            // Invalidate InstitutionProfile memcache
+	            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 	        }
 	        $data['status'] = true;
 	    }
+
         return new Response(\json_encode($data), 200, array('content-type' => 'application/json')); 
 	}
 	
@@ -84,6 +93,18 @@ class InstitutionController extends InstitutionAwareController
 	            }
 	            $src = $this->get('services.institution')->mediaTwigExtension->getInstitutionMediaSrc($media->getName(), $imageSize);
 	            $data['mediaSrc'] = $src;
+
+	            // Invalidate InstitutionProfile memcache
+	            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+	            
+	            // Check if institution is paying client 
+	            if($this->institution->getPayingClient()) {
+
+	                // Invalidate all InstitutionMedicalCenterProfile memcache
+	                foreach($this->institution->getInstitutionMedicalCenters() as $each) {
+	                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($each->getId()));
+	                }
+	            }
 	        }
 	        $data['status'] = true;
 	    }

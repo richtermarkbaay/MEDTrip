@@ -1,6 +1,8 @@
 <?php 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -36,6 +38,9 @@ class MediaGalleryController extends InstitutionAwareController
             if($media) {
                 $result['status'] = true;
                 $result['mediaId'] = $media->getId();               
+
+                // Invalidate InstitutionProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
             }
         }
         
@@ -58,9 +63,15 @@ class MediaGalleryController extends InstitutionAwareController
                     $each->addMedia($medium);
                     $em->persist($each);
                 }
+
+                // Invalidate InstitutionMedicalCenterProfile memcache
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($each->getId()));
             }
         }
         $em->flush();
+        
+        // Invalidate InstitutionProfile memcache
+        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
         $request->getSession()->setFlash('success', "Photo has been successfully uploaded and linked to clinics!");
 
@@ -86,14 +97,23 @@ class MediaGalleryController extends InstitutionAwareController
                 if(in_array($each->getId(), $newMedicalCenterIds)) {
                     $each->addMedia($media);
                     $em->persist($each);
+
+                    // Invalidate InstitutionMedicalCenterProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($each->getId()));
                 }
 
                 if(in_array($each->getId(), $removeMedicalCenterIds)) {
                     $each->removeMedia($media);
                     $em->persist($each);
+
+                    // Invalidate InstitutionMedicalCenterProfile memcache
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($each->getId()));
                 }
             }
             $em->flush();
+            
+            // Invalidate InstitutionProfile memcache
+            $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
 
             $request->getSession()->setFlash('success', "Photo has been updated!");
         }
@@ -105,8 +125,21 @@ class MediaGalleryController extends InstitutionAwareController
     {
         $em = $this->getDoctrine()->getEntityManagerForClass('MediaBundle:Media');
         $media = $em->getRepository('MediaBundle:Media')->find($request->get('mediaId'));
+        $stringCenterIds = $request->get('institutionMedicalCenterIds', '');
+
         $em->remove($media);
         $em->flush();
+
+        // Invalidate InstitutionProfile memcache
+        $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
+        // Invalidate InstitutionMedicalCenterProfile memcache if any
+        if($stringCenterIds) {
+            $centerIds = explode(',', $stringCenterIds);
+            foreach($centerIds as $centerId) {
+                $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($centerId));
+            }
+        }
 
         $result['status'] = true;
         $result['message'] = 'Photo has been deleted!';
