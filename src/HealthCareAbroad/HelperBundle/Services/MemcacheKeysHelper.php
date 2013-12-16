@@ -6,7 +6,7 @@ class MemcacheKeysHelper
 {
     const INSTITUTION_PROFILE_KEY = 'frontend.controller.institution_profile.{ID}';
 
-    const INSTITUTION_MEDICAL_CENTER_PROFILE_KEY = 'frontend.controller.institutionMedicalCenter:profile';
+    const INSTITUTION_MEDICAL_CENTER_PROFILE_KEY = 'frontend.controller.institutionMedicalCenter:profile.{ID}';
 
 
     static function generateInsitutionProfileKey($instititionId = '')
