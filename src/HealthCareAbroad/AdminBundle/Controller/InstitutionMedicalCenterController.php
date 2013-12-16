@@ -302,6 +302,7 @@ class InstitutionMedicalCenterController extends Controller
             'institutionMedicalCenter' => $this->institutionMedicalCenter,
             'institution' => $this->institution,
             'form' => $form->createView(),
+            'sideBarUsed' => '',
             'formAction' => $this->generateUrl('admin_institution_medicalCenter_edit',array('imcId' => $this->institutionMedicalCenter->getId(),
             'institutionId' => $this->institution->getId()))
         ));
@@ -516,13 +517,14 @@ class InstitutionMedicalCenterController extends Controller
 
     public function addMediaAction(Request $request)
     {
-        $formParams = array('institutionId' => $this->institution->getId());
+        $formParams = array('institutionId' => $this->institution->getId(), 'imcId' => $this->institutionMedicalCenter->getId());
 
         $formParams['imcId'] = $request->get('imcId');
         $uploadFormAction = $this->generateUrl('admin_institution_medicalCenter_media_upload', $formParams);
 
         return $this->render('AdminBundle:Institution:addMedia.html.twig', array(
                         'institution' => $this->institution,
+                        'institutionMedicalCenter' => $this->institutionMedicalCenter,
                         'uploadFormAction' => $uploadFormAction,
                         'multiUpload' => $request->get('multiUpload')
         ));

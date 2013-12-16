@@ -6,6 +6,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\HelperBundle\Entity\GlobalAwardTypes;
+
 use HealthCareAbroad\HelperBundle\Services\MemcacheKeysHelper;
 
 use HealthCareAbroad\ApiBundle\Services\InstitutionMedicalCenterApiService;
@@ -155,7 +157,8 @@ class InstitutionController extends ResponseHeadersController
                 PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE => \count($this->institution['specializationsList']),
                 // get the first 10 as list
                 PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE => \implode(', ',  \array_slice($this->institution['specializationsList'],0, 10, true))
-        )));        
+        )));
+
         $params = array(
             'institution' => $this->institution,
             'isSingleCenterInstitution' => $isSingleCenterInstitution,
@@ -164,6 +167,7 @@ class InstitutionController extends ResponseHeadersController
             'form' => $this->createForm(new InstitutionInquiryFormType(), new InstitutionInquiry())->createView(),
             'institutionAwards' => $this->institution['globalAwards'],
             'institutionServices' => $this->institution['offeredServices'],
+            'awardTypes' => GlobalAwardTypes::getTypes(),
             'photos' => $this->get('services.institution.gallery')->getInstitutionPhotos($this->institution['id']),
         );        
         
