@@ -48,42 +48,16 @@
         
     </div>
     <aside class="span4 aside-wrapper">
-        {% if institutionMedicalCenter.coordinates %}
-            {% set coordinates = institutionMedicalCenter.coordinates %}
-        {% else %}
-            {% set coordinates = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'country', 'zipCode']) %}
-        {% endif %}
-    
-        {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: coordinates }%}
-    
+        {% set coordinates = institutionMedicalCenter.coordinates ?: medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'country', 'zipCode']) %}
+
+        {% include 'FrontendBundle:Widgets:profileLocationAside.html.twig' with {coordinates: coordinates} %}
+
         {% include 'FrontendBundle:Widgets:profileMediaAside.html.twig' with { photos: institutionMedicalCenter.media.photos } %}
-        {% if institutionMedicalCenter.businessHours %}
-        <section class="widget-wrapper">
-            <h4 class="widget-heading">
-                Clinic Schedule
-            </h4>
-            <ul class="clinic-schedule" id="businessHoursView" >
-        		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
-                    <li>Open 24/7</li>
-        		{% else %}
-        		    {% for each in institutionMedicalCenter.businessHours %}
-            		   <li>
-            		        {% set _bhData =  business_hours_to_view_data(each) %}
-                            <span class="fbh_selected_days_label">{{ _bhData.daysLabel | upper }}</span>
-                            <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
-                            <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
-                        </li>
-        			{% endfor %}
-        		{% endif %}
-            </ul>
-        </section>
-        {% endif %}
-        <section id="form_feedback" class="widget-wrapper">
-            <h4 class="widget-heading">
-                Email this Clinic
-            </h4>
-            {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {form: form} %}
-        </section>
+
+        {% include 'FrontendBundle:Widgets:profileScheduleAside.html.twig' %}
+
+        {% include 'FrontendBundle:Institution/Widgets:inquiryFormAside.html.twig' with {title: 'Email this Clinic', form: form} %}
+        
     </aside> <!--End of aside_content-->
    <div class="span12">
             <p>Copyright 2013, <b>{{ institutionMedicalCenter.name }}</b> 

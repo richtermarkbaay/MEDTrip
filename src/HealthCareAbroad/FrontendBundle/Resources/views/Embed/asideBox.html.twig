@@ -1,4 +1,4 @@
-<section class="widget-wrapper">
+<section class="widget-wrapper" {% if sectionId is defined %} id="{{ sectionId }}" {% endif %}>
     {% if title is defined and title|length %}
 	    <h4 class="widget-heading {{ headingClass is defined ? headingClass : ''}}">{{ title | raw }}</h4>
 	{% endif %}
