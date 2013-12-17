@@ -2,38 +2,21 @@
 
     {% embed 'FrontendBundle:Embed:asideBox.html.twig' with {title: 'Clinic Schedule'} %}
         {% block asideContent %}
-        
             <ul class="clinic-schedule" id="businessHoursView" >
-        		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
-                    <li class="always-open">Open 24/7</li>
-        		{% else %}
-        		    {% for each in institutionMedicalCenter.businessHours %}
-            		   <li>
-            		        {% set _bhData =  business_hours_to_view_data(each) %}
+                {% if institutionMedicalCenter.businessHours|length %}
+                    {% for each in institutionMedicalCenter.businessHours %}
+                       <li>
+                            {% set _bhData =  business_hours_to_view_data(each) %}
                             <span class="fbh_selected_days_label">{{ _bhData.daysLabel | upper }}</span>
                             <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
                             <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
                         </li>
-        			{% endfor %}
-        		{% endif %}
+                    {% endfor %}
+                {% elseif institutionMedicalCenter.isAlwaysOpen %}
+                    <li class="always-open">Open 24/7</li>
+                {% endif %}
             </ul>
-            {#
-    		<table class="schedule-wrapper">
-        		{% if institutionMedicalCenter.isAlwaysOpen %}
-                    <tr><td class="open247">Open 24/7</td></tr>
-        		{% else %}
-        		    {% for each in institutionMedicalCenter.businessHours %}
-            		    <tr>
-            		        {% set _bhData =  business_hours_to_view_data(each) %}
-                            <td>{{ _bhData.daysLabel | upper }}</td>
-                            <td>{{ _bhData.startTime }}</td><td>-</td><td>{{ _bhData.endTime }}</td>
-                        </tr>
-        			{% endfor %}
-        		{% endif %}
-    		</table>
-    		#}
-
-    	{% endblock %}
+        {% endblock %}
     {% endembed %}
 
 {% endif %}
