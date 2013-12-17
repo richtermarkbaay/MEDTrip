@@ -488,6 +488,12 @@ class InstitutionController extends Controller
                 
                 // Invalidate Institution Profile cache
                 $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionProfileKey($this->institution->getId()));
+
+                // Invalidate All InstitutionMedicalCenterProfile cache
+                $centers = $this->institution->getInstitutionMedicalCenters();
+                foreach($centers as $each) {
+                    $this->get('services.memcache')->delete(FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($each->getId()));                    
+                }
             }
             else {
                 $response = new Response(\json_encode(array('error' => 'Please fill up the form propery')),400, array('content-type' => 'application/json'));
