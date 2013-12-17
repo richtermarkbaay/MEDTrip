@@ -5,7 +5,7 @@
         
             <ul class="clinic-schedule" id="businessHoursView" >
         		{% if institutionMedicalCenter.isAlwaysOpen != 0 %}
-                    <li>Open 24/7</li>
+                    <li class="always-open">Open 24/7</li>
         		{% else %}
         		    {% for each in institutionMedicalCenter.businessHours %}
             		   <li>

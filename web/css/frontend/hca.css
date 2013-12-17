@@ -3308,6 +3308,11 @@ ul.error {
 #content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li:last-child {
   border-bottom: none;
 }
+
+#content-wrapper .aside-wrapper .widget-wrapper ul.clinic-schedule li.always-open {
+	padding: 10px;
+	text-transform: uppercase;
+}
 /*fixed inline list when only one data for social media account located in the banner and contact details at the bottom of the main content*/
 .btn-contact-list {
   text-align:right;

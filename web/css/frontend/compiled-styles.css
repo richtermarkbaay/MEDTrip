@@ -51,7 +51,7 @@
   font-family: 'Gafata';
   font-style: normal;
   font-weight: 400;
-  src: local('Gafata'), local('Gafata-Regular'), url(http://themes.googleusercontent.com/static/fonts/gafata/v3/o-DwOh1jynFSAy8preUMxw.ttf) format('truetype');
+  src: local('Gafata'), local('Gafata-Regular'), url(http://themes.googleusercontent.com/static/fonts/gafata/v2/o-DwOh1jynFSAy8preUMxw.ttf) format('truetype');
 }
 @font-face {
   font-family: 'PT Sans';
