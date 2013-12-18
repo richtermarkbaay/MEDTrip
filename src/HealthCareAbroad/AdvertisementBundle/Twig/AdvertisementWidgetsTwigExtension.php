@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Twig;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
 
 use HealthCareAbroad\ApiBundle\Services\HcaBlogApiService;
@@ -28,7 +30,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     /**
      * @var MemcacheService
      */
-    protected $memcache;
+    protected $memcacheService;
     
     public function __construct(\Twig_Environment $twig, Retriever $retriever, HcaBlogApiService $hcaBlogApiService)
     {
@@ -42,9 +44,9 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         $this->session = $v;
     }
     
-    public function setMemcacheService(MemcacheService $v)
+    public function setMemcacheService(MemcacheService $memcache)
     {
-        $this->memcache = $v;
+        $this->memcacheService = $memcache;
     }
 
     public function getFunctions()
@@ -71,37 +73,66 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function render_homepage_premier_ad()
     {
-        $this->twig->addGlobal('highlight', $this->retrieverService->getHomepagePremierAdvertisements());
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_PREMIER_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
 
-        return $this->twig->display('AdvertisementBundle:Frontend:homepage.premierAdvertisements.html.twig');            
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepagePremierAdvertisements();
+            $this->memcacheService->set($memcacheKey, $ads);
+        }
+
+        //$this->twig->addGlobal('highlight', $ads);
+
+        return $this->twig->display('AdvertisementBundle:Frontend:homepage.premierAdvertisements.html.twig', array('highlight' => $ads));            
     }
 
 
     public function renderHomepageFeaturedClinicsAds()
     {
-        $ads = $this->retrieverService->getHomepageFeaturedClinics();
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
+
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepageFeaturedClinics();
+            $this->memcacheService->set($memcacheKey, $ads);            
+        }
+
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredClinics.html.twig', array(
             'featuredClinicsAds' => $ads
         ));
-        
+
         return $template;
     }
 
 
     public function renderHomepageFeaturedDestinationsAds()
     {
-        $ads = $this->retrieverService->getHomepageFeaturedDestinations();
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
+
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepageFeaturedDestinations();
+            $this->memcacheService->set($memcacheKey, $ads);
+        }
+
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredDestinations.html.twig', array(
             'featuredDestinationsAds' => $ads
         ));
-        
+
         return $template;
     }
 
 
     public function renderHomepageFeaturedPostsAds()
     {
-        $ads = $this->retrieverService->getHomepageFeaturedPosts();
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
+
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepageFeaturedPosts();
+            $this->memcacheService->set($memcacheKey, $ads);
+        }
+
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredPosts.html.twig', array(
             'featuredPostsAds' => $ads
         ));
@@ -112,7 +143,14 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageCommonTreatmentsAds()
     {
-        $ads = $this->retrieverService->getHomepageCommonTreatments();
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENT_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
+
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepageCommonTreatments();
+            $this->memcacheService->set($memcacheKey, $ads);
+        }
+
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.commonTreatments.html.twig', array(
             'commonTreatmentsAds' => $ads
         ));
@@ -123,11 +161,17 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageFeaturedVideoAd()
     {
-//         $this->twig->addGlobal('featuredVideoAd', $this->retrieverService->getHomepageFeaturedVideo());
-        
-//         return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig');
-        
-        $ads = $this->retrieverService->getHomepageFeaturedVideo();
+        // $this->twig->addGlobal('featuredVideoAd', $this->retrieverService->getHomepageFeaturedVideo());
+        // return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig');
+
+        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
+        $ads = $this->memcacheService->get($memcacheKey);
+
+        if(!$ads) {
+            $ads = $this->retrieverService->getHomepageFeaturedVideo();
+            $this->memcacheService->set($memcacheKey, $ads);
+        }
+
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig', array(
             'featuredVideoAd' => $ads
         ));
@@ -152,6 +196,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         foreach ($ads as $_ad) {
             $featuredInstitutionIds[] = $_ad->getInstitution()->getId();
         }
+
         // add the ids in current session. adding as global here won't work on already loaded twig templates
         // https://github.com/chromedia/healthcareabroad/issues/510
         $inSessionFeaturedInstitutions = $this->session->get($this->getFeaturedInstitutionsSessionKey());

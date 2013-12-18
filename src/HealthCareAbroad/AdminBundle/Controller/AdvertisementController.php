@@ -6,6 +6,8 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementMediaService;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
@@ -198,6 +200,11 @@ class AdvertisementController extends Controller
         if ($form->isValid()) {
             $this->saveMedia($advertisement);
             $this->get('services.advertisement')->save($advertisement);
+
+            // Invalidate Advertisement cache by advertisementType
+            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
+            $this->get('services.memcache')->delete($memcacheKey);
+            
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
             return $this->redirect($this->generateUrl('admin_advertisement_index'));
@@ -286,6 +293,10 @@ class AdvertisementController extends Controller
                 }                
             }
         }
+
+        // Invalidate Advertisement cache by advertisementType
+        $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
+        $this->get('services.memcache')->delete($memcacheKey);
     }
 
     public function ajaxDeleteImageAction($advertisementPropertyValueId)
@@ -325,6 +336,10 @@ class AdvertisementController extends Controller
             $em->persist($advertisementDenormolized);
             $em->flush();
             $result = true;
+
+            // Invalidate Advertisement cache by advertisementType
+            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
+            $this->get('services.memcache')->delete($memcacheKey);
         }
 
 		$response = new Response(json_encode($result));
@@ -346,6 +361,10 @@ class AdvertisementController extends Controller
             $advertisement->setStatus($status);
             $em->persist($advertisement);
             $em->flush();
+
+            // Invalidate Advertisement cache by advertisementType
+            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
+            $this->get('services.memcache')->delete($memcacheKey);
 
             // dispatch event
             //$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_CITY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_CITY, $city));
