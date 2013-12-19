@@ -293,10 +293,6 @@ class AdvertisementController extends Controller
                 }                
             }
         }
-
-        // Invalidate Advertisement cache by advertisementType
-        $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
-        $this->get('services.memcache')->delete($memcacheKey);
     }
 
     public function ajaxDeleteImageAction($advertisementPropertyValueId)
