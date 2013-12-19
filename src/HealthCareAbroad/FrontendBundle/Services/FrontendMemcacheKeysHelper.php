@@ -14,7 +14,7 @@ class FrontendMemcacheKeysHelper
     const HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY = 'frontend.homepage_featured_destinations_ads';
     const HOMEPAGE_FEATURED_POSTS_ADS_KEY = 'frontend.homepage_featured_posts_ads';
     const HOMEPAGE_FEATURED_VIDEO_ADS_KEY = 'frontend.homepage_featured_video_ads';
-    const HOMEPAGE_COMMON_TREATMENT_ADS_KEY = 'frontend.homepage_common_treatments_ads';
+    const HOMEPAGE_COMMON_TREATMENTS_ADS_KEY = 'frontend.homepage_common_treatments_ads';
 
     // Institution/InstitutionMedicalCenter Memcache Keys
     const INSTITUTION_PROFILE_KEY = 'frontend.controller.institution_profile.{ID}';
@@ -42,7 +42,7 @@ class FrontendMemcacheKeysHelper
             AdvertisementTypes::HOMEPAGE_FEATURED_DESTINATION => self::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY,
             AdvertisementTypes::HOMEPAGE_FEATURED_POST => self::HOMEPAGE_FEATURED_POSTS_ADS_KEY,
             AdvertisementTypes::HOMEPAGE_FEATURED_VIDEO => self::HOMEPAGE_FEATURED_VIDEO_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_COMMON_TREATMENT => self::HOMEPAGE_COMMON_TREATMENT_ADS_KEY
+            AdvertisementTypes::HOMEPAGE_COMMON_TREATMENT => self::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY
         );
 
         return isset($types[$advertisementType->getId()]) ? $types[$advertisementType->getId()] : null; 

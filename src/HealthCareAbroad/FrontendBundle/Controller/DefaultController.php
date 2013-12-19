@@ -51,7 +51,7 @@ class DefaultController extends ResponseHeadersController
         $featuredClinicsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
         $featuredDestinationsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
         $featuredPostsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
-        $commonTreatmentsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENT_ADS_KEY;
+        $commonTreatmentsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY;
         $featuredVideoCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
 
         if(!($ads['homepagePremier'] = $memcacheService->get($homepagePremierAdsCacheKey))) {
