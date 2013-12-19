@@ -166,25 +166,26 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $payingClient = $institutionMedicalCenter['institution']['payingClient'];
         }
         
+        
         // Default image
         $hasAttrClass = isset($options['attr']['class']);
-        $html = '<span class="hca-sprite clinic-default-logo logo '. $hasAttrClass ? $options['attr']['class'] : '' .'"></span>';
+        $html = '<span class="hca-sprite clinic-default-logo logo '. ($hasAttrClass ? $options['attr']['class'] : '') .'"></span>';
 
         // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.
         $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
+        $logo = $centerLogo ?: $institutionLogo;
 
-        if($centerLogo && ($payingClient || $isAdsContext)) {
-            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($centerLogo, $options['size']);
+        if($logo && ($payingClient || $isAdsContext)) {
+            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($logo, $options['size']);
 
         } else if($options['context'] == self::SEARCH_RESULTS_CONTEXT ||$options['context'] == self::ADS_CONTEXT) {
-            if ($payingClient) {
-                $logo = $centerLogo ?: $institutionLogo;
+            if ($logo && $payingClient) {
                 $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($logo, ImageSizes::SMALL);
             }
         }
-
-        if(isset($mediaSrc)) {
-            $html = '<img src="'.$mediaSrc.'" alt="clinic logo" '. $hasAttrClass ? $options['attr']['class'] : '' .'>';
+        
+        if(isset($mediaSrc)) { 
+            $html = '<img src="'.$mediaSrc.'" alt="clinic logo" class="'. ($hasAttrClass ? $options['attr']['class'] : '') .'">';
         }
 
         return $html;
