@@ -52,7 +52,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'render_homepage_premier_ad' => new \Twig_Function_Method($this, 'render_homepage_premier_ad'),
+            'render_homepage_premier_ad' => new \Twig_Function_Method($this, 'renderHomepagePremierAds'),
             'render_homepage_featured_clinics_ads' => new \Twig_Function_Method($this, 'renderHomepageFeaturedClinicsAds'),
             'render_homepage_featured_destinations_ads' => new \Twig_Function_Method($this, 'renderHomepageFeaturedDestinationsAds'),
             'render_homepage_featured_posts_ads' => new \Twig_Function_Method($this, 'renderHomepageFeaturedPostsAds'),
@@ -71,31 +71,21 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     }
 
 
-    public function render_homepage_premier_ad()
+    public function renderHomepagePremierAds()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_PREMIER_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
+        $ads = $this->retrieverService->getHomepagePremierAdvertisements();
 
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepagePremierAdvertisements();
-            $this->memcacheService->set($memcacheKey, $ads);
-        }
+        $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.premierAdvertisements.html.twig', 
+            array('highlight' => $ads)
+        );  
 
-        //$this->twig->addGlobal('highlight', $ads);
-
-        return $this->twig->display('AdvertisementBundle:Frontend:homepage.premierAdvertisements.html.twig', array('highlight' => $ads));            
+        return $template;
     }
 
 
     public function renderHomepageFeaturedClinicsAds()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
-
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepageFeaturedClinics();
-            $this->memcacheService->set($memcacheKey, $ads);            
-        }
+        $ads = $this->retrieverService->getHomepageFeaturedClinics();
 
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredClinics.html.twig', array(
             'featuredClinicsAds' => $ads
@@ -107,13 +97,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageFeaturedDestinationsAds()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
-
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepageFeaturedDestinations();
-            $this->memcacheService->set($memcacheKey, $ads);
-        }
+        $ads = $this->retrieverService->getHomepageFeaturedDestinations();
 
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredDestinations.html.twig', array(
             'featuredDestinationsAds' => $ads
@@ -125,13 +109,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageFeaturedPostsAds()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
-
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepageFeaturedPosts();
-            $this->memcacheService->set($memcacheKey, $ads);
-        }
+        $ads = $this->retrieverService->getHomepageFeaturedPosts();
 
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredPosts.html.twig', array(
             'featuredPostsAds' => $ads
@@ -143,13 +121,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageCommonTreatmentsAds()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENT_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
-
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepageCommonTreatments();
-            $this->memcacheService->set($memcacheKey, $ads);
-        }
+        $ads = $this->retrieverService->getHomepageCommonTreatments();
 
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.commonTreatments.html.twig', array(
             'commonTreatmentsAds' => $ads
@@ -161,28 +133,19 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderHomepageFeaturedVideoAd()
     {
-        // $this->twig->addGlobal('featuredVideoAd', $this->retrieverService->getHomepageFeaturedVideo());
-        // return $this->twig->display('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig');
-
-        $memcacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
-        $ads = $this->memcacheService->get($memcacheKey);
-
-        if(!$ads) {
-            $ads = $this->retrieverService->getHomepageFeaturedVideo();
-            $this->memcacheService->set($memcacheKey, $ads);
-        }
+        $ads = $this->retrieverService->getHomepageFeaturedVideo();
 
         $template = $this->twig->render('AdvertisementBundle:Frontend:homepage.featuredVideo.html.twig', array(
             'featuredVideoAd' => $ads
         ));
-        
+
         return $template;
     }
 
     public function render_search_results_featured_posts()
     {
         $this->twig->addGlobal('featuredPosts', $this->hcaBlogApiService->getBlogs());
-    
+
         return $this->twig->display('AdvertisementBundle:Frontend:featuredPosts.html.twig');
     }
 

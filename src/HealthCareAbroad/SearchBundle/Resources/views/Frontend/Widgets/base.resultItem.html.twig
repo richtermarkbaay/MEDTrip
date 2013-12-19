@@ -6,7 +6,7 @@
                 url: searchResultItem.url,
                 html: searchResultItem.isInstitution ?
                     render_institution_logo(searchResultItem.dataObject, {attr: {alt: 'hospital logo', class: 'small'}}) :
-                    render_institution_medical_center_logo(searchResultItem.dataObject, {attr: {class: 'small', alt: 'clinic logo'}}),
+                    render_institution_medical_center_logo(searchResultItem.dataObject),
                 class: 'small-logo-wrapper' }}
            %}
         </div>

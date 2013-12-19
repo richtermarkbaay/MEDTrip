@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
 
 use HealthCareAbroad\SearchBundle\Services\SearchUrlGenerator;
@@ -43,25 +45,44 @@ class DefaultController extends ResponseHeadersController
     public function indexAction(Request $request)
     {
         $start = \microtime(true);
+        $memcacheService = $this->get('services.memcache');
 
-        $key = 'ads.homepage.all';
-        $memcache = $this->get('services.memcache');
-        $cachedData = $memcache->get($key);
-        if (!$cachedData) {
-            $twigExtension = $this->get('twig.advertisement_widgets');
-            $ads = array(
-                'featuredClinics' => $twigExtension->renderHomepageFeaturedClinicsAds(),
-                'featuredDestinations' => $twigExtension->renderHomepageFeaturedDestinationsAds(),
-                'featuredPosts' => $twigExtension->renderHomepageFeaturedPostsAds(),
-                'commonTreatments' => $twigExtension->renderHomepageCommonTreatmentsAds(),
-                'featuredVideo' => $twigExtension->renderHomepageFeaturedVideoAd(),
-            );
+        $homepagePremierAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_PREMIER_ADS_KEY;
+        $featuredClinicsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
+        $featuredDestinationsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
+        $featuredPostsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
+        $commonTreatmentsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENT_ADS_KEY;
+        $featuredVideoCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
 
-            $memcache->set($key, $ads);
+        if(!($ads['homepagePremier'] = $memcacheService->get($homepagePremierAdsCacheKey))) {
+            $ads['homepagePremier'] = $this->get('twig.advertisement_widgets')->renderHomepagePremierAds();
+            $memcacheService->set($homepagePremierAdsCacheKey, $ads['homepagePremier']);
         }
-        else {
-            $ads = $cachedData;
+
+        if(!($ads['featuredClinics'] = $memcacheService->get($featuredClinicsAdsCacheKey))) {
+            $ads['featuredClinics'] = $this->get('twig.advertisement_widgets')->renderHomepageFeaturedClinicsAds();
+            $memcacheService->set($featuredClinicsAdsCacheKey, $ads['featuredClinics']);
         }
+
+        if(!($ads['featuredDestinations'] = $memcacheService->get($featuredDestinationsAdsCacheKey))) {
+            $ads['featuredDestinations'] = $this->get('twig.advertisement_widgets')->renderHomepageFeaturedDestinationsAds();
+            $memcacheService->set($featuredDestinationsAdsCacheKey, $ads['featuredDestinations']);
+        }
+        
+        if(!($ads['featuredPosts'] = $memcacheService->get($featuredPostsCacheKey))) {
+            $ads['featuredPosts'] = $this->get('twig.advertisement_widgets')->renderHomepageFeaturedPostsAds();
+            $memcacheService->set($featuredPostsCacheKey, $ads['featuredPosts']);
+        }
+
+        if(!($ads['commonTreatments'] = $memcacheService->get($commonTreatmentsCacheKey))) {
+            $ads['commonTreatments'] = $this->get('twig.advertisement_widgets')->renderHomepageCommonTreatmentsAds();
+            $memcacheService->set($commonTreatmentsCacheKey, $ads['commonTreatments']);
+        }
+
+        if(!($ads['featuredVideo'] = $memcacheService->get($featuredVideoCacheKey))) {
+            $ads['featuredVideo'] = $this->get('twig.advertisement_widgets')->renderHomepageFeaturedVideoAd();
+            $memcacheService->set($featuredVideoCacheKey, $ads['featuredVideo']);
+        }        
 
         $response = $this->setResponseHeaders($this->render('FrontendBundle:Default:index.optimized.html.twig', array('ads' => $ads)));
         $end = \microtime(true);$diff = $end-$start;

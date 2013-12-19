@@ -7,6 +7,8 @@
 
 namespace HealthCareAbroad\AdvertisementBundle\Repository;
 
+use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementTypes;
+
 use Doctrine\ORM\Query;
 
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
@@ -18,11 +20,12 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getActiveAdvertisementsByType(array $types)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c,co,ci')
+        $qb->select('a,b,c,d,co,ci')
         ->leftJoin('a.institution', 'b')
         ->leftJoin('b.country', 'co')
         ->leftJoin('b.city', 'ci')
         ->leftJoin('a.media', 'c')
+        ->leftJoin('a.advertisementType', 'd')
         ->where('a.status = :status')
         ->andWhere('a.dateExpiry > :dateExpiry')
         ->andWhere($qb->expr()->in('a.advertisementType', ':advertisementTypes'))
@@ -37,13 +40,15 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getActiveFeaturedClinicByCriteria(array $criteria = array(), $limit = null, $hydrationMode=Query::HYDRATE_OBJECT)
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a,b,c,d,co,ci, imcLogo')
+        $qb->select('a,b,c,d,e,f,co,ci, imcLogo')
            ->leftJoin('a.institution', 'b')
            ->leftJoin('b.country', 'co')
            ->leftJoin('b.city', 'ci')
            ->innerJoin('a.institutionMedicalCenter', 'c')
            ->leftJoin('c.logo', 'imcLogo')
            ->leftJoin('a.media', 'd')
+           ->leftJoin('b.logo', 'f')
+           ->leftJoin('a.advertisementType', 'e')
            ->andWhere('a.institutionMedicalCenterId IS NOT NULL')
            ->andWhere('a.status = :status')
            ->andWhere('a.dateExpiry > :dateExpiry')
@@ -59,7 +64,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
             $qb->setMaxResults($limit);
         }
 
-        $result = $qb->getQuery()->getResult($hydrationMode);
+        $result = $qb->getQuery()->getResult();
 
         return $result;
     }
@@ -114,7 +119,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
     public function getCommonTreatments()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->select('a, b, c,d')
+        $qb->select('a, b, c, d')
         ->leftJoin('a.institution', 'b')
         ->leftJoin('a.media', 'c')
         ->leftJoin('a.treatment', 'd')
@@ -122,7 +127,7 @@ class AdvertisementDenormalizedPropertyRepository extends EntityRepository
         ->andWhere('a.status = :status')
         ->andWhere('a.dateExpiry > :dateExpiry')
         ->orderBy('a.dateExpiry', 'ASC')
-        ->setParameter('type', 7)
+        ->setParameter('type', AdvertisementTypes::HOMEPAGE_COMMON_TREATMENT)
         ->setParameter('status', AdvertisementStatuses::ACTIVE)
         ->setParameter('dateExpiry', new \DateTime());
 

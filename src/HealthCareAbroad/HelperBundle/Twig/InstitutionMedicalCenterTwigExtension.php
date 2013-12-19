@@ -139,7 +139,8 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
     }
 
     /**
-     *
+     * NOTE: This helper is for search result and ads context only!
+     * 
      * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
      * @param array $options
      */
@@ -151,46 +152,39 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
             $options['context'] = self::SEARCH_RESULTS_CONTEXT;
         }
 
-        if(!isset($options['attr']['class'])) {
-            $options['attr']['class'] = '';
+        if(!isset($options['attr'])) {
+            $options['attr'] = array();
         }
 
-        $institution = $institutionMedicalCenter->getInstitution();
-
+        if($institutionMedicalCenter instanceof InstitutionMedicalCenter) {
+            $centerLogo = $institutionMedicalCenter->getLogo();
+            $institutionLogo = $institutionMedicalCenter->getInstitution()->getLogo();
+            $payingClient = $institutionMedicalCenter->getInstitution()->getPayingClient();
+        } else {
+            $centerLogo = $institutionMedicalCenter['logo'];
+            $institutionLogo = $institutionMedicalCenter['institution']; 
+            $payingClient = $institutionMedicalCenter['institution']['payingClient'];
+        }
+        
         // Default image
-        $html = '<span class="hca-sprite clinic-default-logo logo '.$options['attr']['class'].'"></span>';
-
+        $hasAttrClass = isset($options['attr']['class']);
+        $html = '<span class="hca-sprite clinic-default-logo logo '. $hasAttrClass ? $options['attr']['class'] : '' .'"></span>';
 
         // TODO - Clinic Logo for non-paying client is temporarily enabled in ADS section.
         $isAdsContext = isset($options['context']) && $options['context'] == self::ADS_CONTEXT;
 
-        if($institutionMedicalCenter->getLogo() && ($institution->getPayingClient() || $isAdsContext)) {
-            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institutionMedicalCenter->getLogo(), $options['size']);
-        } else {
-            switch($options['context']) {
+        if($centerLogo && ($payingClient || $isAdsContext)) {
+            $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($centerLogo, $options['size']);
 
-                case self::FULL_PAGE_CONTEXT:
-                case self::LIST_CONTEXT:
-                    $institutionSpecialization = InstitutionMedicalCenterService::getFirstInstitutionSpecialization($institutionMedicalCenter);
-
-                    if ($institutionSpecialization && $institutionSpecialization->getSpecialization()->getMedia()) {
-                        $specialization = $institutionSpecialization->getSpecialization();
-                        $mediaSrc = $this->mediaExtension->getSpecializationMediaSrc($specialization->getMedia(), ImageSizes::SPECIALIZATION_DEFAULT_LOGO);
-                    }
-                    break;
-
-                case self::SEARCH_RESULTS_CONTEXT:
-                case self::ADS_CONTEXT:
-                    if (($institutionLogo = $institution->getLogo()) && $institution->getPayingClient()) {
-                        $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($institution->getLogo(), ImageSizes::SMALL);
-                    }
-                    break;
+        } else if($options['context'] == self::SEARCH_RESULTS_CONTEXT ||$options['context'] == self::ADS_CONTEXT) {
+            if ($payingClient) {
+                $logo = $centerLogo ?: $institutionLogo;
+                $mediaSrc = $this->mediaExtension->getInstitutionMediaSrc($logo, ImageSizes::SMALL);
             }
         }
 
         if(isset($mediaSrc)) {
-            // $html = '<img src="'.$mediaSrc.'" alt="" class="'.$options['attr']['class'].'">';
-            $html = '<img src="'.$mediaSrc.'" alt="">';
+            $html = '<img src="'.$mediaSrc.'" alt="clinic logo" '. $hasAttrClass ? $options['attr']['class'] : '' .'>';
         }
 
         return $html;

@@ -13,7 +13,7 @@
     		    
     		    {% if each.institutionMedicalCenter and each.institutionMedicalCenter.id > 0 %}
                     {% set primaryUrl = get_institution_medical_center_frontend_url(each.institutionMedicalCenter) %}
-                    {% set primaryLogo = render_institution_medical_center_logo(each.institutionMedicalCenter, {attr: {class: 'small', alt: 'clinic logo'}}) %}
+                    {% set primaryLogo = render_institution_medical_center_logo(each.institutionMedicalCenter) %}
                     {% set secondaryUrl = get_institution_frontend_url(each.institution) %}
                 {% else %}
                     {% set primaryLogo = render_institution_logo(each.institution, {attr: {class: 'small', alt: 'hospital logo'}}) %}

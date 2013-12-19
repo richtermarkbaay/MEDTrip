@@ -18,17 +18,18 @@ class Retriever
     
     private $adevertisementDenormalizedRepo;
     
-    // FIXME: inappropriate, just quick implementation
-    private $staticHomepageAdvertisementTypes = array(
-        1 => 'Premier Home Page Feature',
-        3 => 'Home Page Featured Destination',
-        5 => 'Home Page Featured Video',
-        6 => 'Featured Post',
-    );
-    
     private $retrievedAdvertisementsByType = array();
-    
-    
+
+    static function getHomepageAdvertisementTypes()
+    {
+        return array(
+            AdvertisementTypes::HOMEPAGE_PREMIER => 'Premier Home Page Feature',
+            AdvertisementTypes::HOMEPAGE_FEATURED_DESTINATION => 'Home Page Featured Destination',
+            AdvertisementTypes::HOMEPAGE_FEATURED_VIDEO => 'Home Page Featured Video',
+            AdvertisementTypes::HOMEPAGE_FEATURED_POST => 'Home Page Featured Post'
+        );
+    }
+
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
@@ -39,7 +40,7 @@ class Retriever
     // Homepage Premier Homepage Ads
     public function getHomepagePremierAdvertisements()
     {
-        $ads = $this->getHomepageAdvertisementByType(1);
+        $ads = $this->getHomepageAdvertisementByType(AdvertisementTypes::HOMEPAGE_PREMIER);
         $key = array_rand($ads);
 
         return count($ads) ? $ads[$key] : null;
@@ -48,7 +49,7 @@ class Retriever
     // Homepage Featured Clinics
     public function getHomepageFeaturedClinics()
     {
-        $criteria = array('advertisementType' => 2);
+        $criteria = array('advertisementType' => AdvertisementTypes::HOMEPAGE_FEATURED_CLINIC);
 
         return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinicByCriteria($criteria);
     }
@@ -56,13 +57,13 @@ class Retriever
     // Homepage Featured Destinations Ads
     public function getHomepageFeaturedDestinations()
     {
-        return $this->getHomepageAdvertisementByType(3);
+        return $this->getHomepageAdvertisementByType(AdvertisementTypes::HOMEPAGE_FEATURED_DESTINATION);
     }
     
     // Homepage Featured Posts Ads
     public function getHomepageFeaturedPosts()
     {
-        return $this->getHomepageAdvertisementByType(6);
+        return $this->getHomepageAdvertisementByType(AdvertisementTypes::HOMEPAGE_FEATURED_POST);
     }
 
     // Homepage Common Treatments Ads
@@ -75,7 +76,7 @@ class Retriever
     public function getHomepageFeaturedVideo()
     {
         $video = null;
-        $videos = $this->getHomepageAdvertisementByType(5);
+        $videos = $this->getHomepageAdvertisementByType(AdvertisementTypes::HOMEPAGE_FEATURED_VIDEO);
         $key = array_rand($videos);
         
         if(count($videos) && $youtubeId = $this->_getYoutubeId($videos[$key])) {
@@ -100,21 +101,33 @@ class Retriever
         }
 
         if(isset($criteria['specializationId'])) {
-            $criteria['advertisementType'] = 8;
-            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
-                $criteria['advertisementType'] = isset($criteria['countryId']) ? 15 : 18;
+
+            $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_SPECIALIZATION_FEATURE;
+            
+            if(isset($criteria['countryId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_COUNTRY_SPECIALIZATION_FEATURE; 
+            } else if(isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_CITY_SPECIALIZATION_FEATURE; 
             }
 
         } else if(isset($criteria['subSpecializationId'])) {
-            $criteria['advertisementType'] = 9;
-            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
-                $criteria['advertisementType'] = isset($criteria['countryId']) ? 16 : 19;
+
+            $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_SUBSPECIALIZATION_FEATURE;
+            
+            if(isset($criteria['countryId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_COUNTRY_SUBSPECIALIZATION_FEATURE;
+            } else if(isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_CITY_SUBSPECIALIZATION_FEATURE;
             }
 
         } else if(isset($criteria['treatmentId'])) {
-            $criteria['advertisementType'] = 10;
-            if(isset($criteria['countryId']) || isset($criteria['cityId'])) {
-                $criteria['advertisementType'] = isset($criteria['countryId']) ? 17 : 20;
+
+            $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_TREATMENT_FEATURE;
+            
+            if(isset($criteria['countryId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_COUNTRY_TREATMENT_FEATURE; 
+            } else if(isset($criteria['cityId'])) {
+                $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_CITY_TREATMENT_FEATURE;
             }
         }
 
@@ -124,15 +137,15 @@ class Retriever
     // Search Results Featured Clinic by Criteria
     public function getSearchResultsFeaturedInstitutionByCriteria(array $criteria = array(), $limit = 1)
     {
-        if(!count($criteria)) {
+        if(empty($criteria)) {
             return null;
         }
 
         if(isset($criteria['countryId'])) {
-            $criteria['advertisementType'] = 11;
+            $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_COUNTRY_FEATURE;
     
         } else if(isset($criteria['cityId'])) {
-            $criteria['advertisementType'] = 12;
+            $criteria['advertisementType'] = AdvertisementTypes::SEARCH_RESULTS_CITY_FEATURE;
         }
 
         return $this->adevertisementDenormalizedRepo->getActiveFeaturedInstitutionByCriteria($criteria, $limit);
@@ -147,19 +160,20 @@ class Retriever
             : array();
     }
     
+    
     private function _retrieveHomepageAds()
     {
         static $hasFetched = false;
         if ($hasFetched) {
             return;
         }
-        
-        $adTypeIds = \array_keys($this->staticHomepageAdvertisementTypes);
+
+        $adTypeIds = \array_keys(self::getHomepageAdvertisementTypes());
         $advertisements = $this->adevertisementDenormalizedRepo->getActiveAdvertisementsByType($adTypeIds);
 
         foreach ($advertisements as $each){
             $typeId = $each->getAdvertisementType()->getId();
-            if (!\array_key_exists($typeId, $this->retrievedAdvertisementsByType)) {
+            if(!isset($this->retrievedAdvertisementsByType[$typeId])) {
                 $this->retrievedAdvertisementsByType[$typeId] = array();
             }
             $this->retrievedAdvertisementsByType[$typeId][] = $each;
