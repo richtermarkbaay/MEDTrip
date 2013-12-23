@@ -134,7 +134,7 @@ class Retriever
         return $this->adevertisementDenormalizedRepo->getActiveFeaturedClinicByCriteria($criteria, $limit);
     }
     
-    // Search Results Featured Clinic by Criteria
+    // Search Results Featured Intitution by Criteria
     public function getSearchResultsFeaturedInstitutionByCriteria(array $criteria = array(), $limit = 1)
     {
         if(empty($criteria)) {

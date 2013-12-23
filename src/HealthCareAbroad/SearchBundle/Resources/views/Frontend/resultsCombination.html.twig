@@ -24,7 +24,11 @@
     <aside class="aside-wrapper span4">
         <!-- Specialization/Treatment Descriptions Section -->
         {% include 'SearchBundle:Frontend/Widgets:sidebar.treatmentDescriptions.html.twig' %}
+
+        <!-- Cached View Data -->
         {{ render_search_results_featured_posts() }}
+
+        <!-- Cached View Data -->
         {{ render_search_results_image_ad() }}
     </aside>
 {% endblock %}

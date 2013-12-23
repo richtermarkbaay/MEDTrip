@@ -4,7 +4,8 @@
     <div class="search-results-wrapper span8">
         {% include 'SearchBundle:Frontend/Widgets:resultsHeader.html.twig' with {type: 'destination'} %}
 
-        {{ render_search_results_featured_institution_ad(featuredClinicParams) }}
+        <!-- Cached View Data -->
+        {{ render_search_results_featured_institution_ad(featuredClinicParams) | raw }}
 
         {% set _featuredInstitutionIds = get_featured_institutions_by_search_parameters(featuredClinicParams) %}
 
@@ -26,7 +27,10 @@
     </div> <!--End of main_content-->
 
     <aside class="aside-wrapper span4">
-        {{ render_search_results_featured_posts() }}
+        <!-- Cached View Data -->
+        {{ render_search_results_featured_posts() | raw }}
+        
+        <!-- Cached View Data -->
         {{ render_search_results_image_ad() }}
     </aside>
 {% endblock %}

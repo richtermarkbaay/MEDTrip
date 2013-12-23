@@ -6,6 +6,12 @@
  */
 namespace HealthCareAbroad\AdminBundle\Controller;
 
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementDenormalizedProperty;
+
+use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementTypes;
+
+use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType;
+
 use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
 
 use HealthCareAbroad\AdvertisementBundle\Services\AdvertisementMediaService;
@@ -201,10 +207,9 @@ class AdvertisementController extends Controller
             $this->saveMedia($advertisement);
             $this->get('services.advertisement')->save($advertisement);
 
-            // Invalidate Advertisement cache by advertisementType
-            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
-            $this->get('services.memcache')->delete($memcacheKey);
-            
+            // Invalidate Advertisement cache
+            $this->invalidateAdsCache($advertisement);
+
             $request->getSession()->setFlash("success", "Successfully created advertisement. You may now generate invoice.");
 
             return $this->redirect($this->generateUrl('admin_advertisement_index'));
@@ -333,9 +338,8 @@ class AdvertisementController extends Controller
             $em->flush();
             $result = true;
 
-            // Invalidate Advertisement cache by advertisementType
-            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
-            $this->get('services.memcache')->delete($memcacheKey);
+            // Invalidate Advertisement cache
+            $this->invalidateAdsCache($advertisementDenormolized);
         }
 
 		$response = new Response(json_encode($result));
@@ -358,9 +362,9 @@ class AdvertisementController extends Controller
             $em->persist($advertisement);
             $em->flush();
 
-            // Invalidate Advertisement cache by advertisementType
-            $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisement->getAdvertisementType());
-            $this->get('services.memcache')->delete($memcacheKey);
+            // Invalidate Advertisement cache
+            $this->invalidateAdsCache($advertisement);
+
 
             // dispatch event
             //$this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_EDIT_CITY, $this->get('events.factory')->create(AdminBundleEvents::ON_EDIT_CITY, $city));
@@ -394,5 +398,52 @@ class AdvertisementController extends Controller
         }
 
         return $mediaArray;
+    }
+
+    /**
+     * 
+     * @param Advertisement or AdvertisementDenormalizedProperty $advertisement
+     */
+    private function invalidateAdsCache($advertisement)
+    {
+        $advertisementType = $advertisement->getAdvertisementType()->getId();        
+        $memcacheKey = FrontendMemcacheKeysHelper::getAdvertisementKeyByType($advertisementType);
+
+        if(!$memcacheKey) {
+
+            $denormalizedAd = ($advertisement instanceof AdvertisementDenormalizedProperty)
+                ? $advertisement
+                : $this->get('services.advertisement')->getDenomralizedPropertyById($advertisement->getId());
+
+            switch($advertisementType)
+            {
+                case AdvertisementTypes::SEARCH_RESULTS_CITY_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityFeaturedAdsKey($denormalizedAd->getCityId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_CITY_SPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCitySpecializationFeaturedAdsKey($denormalizedAd->getCityId(), $denormalizedAd->getSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_CITY_SUBSPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCitySubSpecializationFeaturedAdsKey($denormalizedAd->getCityId(), $denormalizedAd->getSubSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_CITY_TREATMENT_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityTreatmentFeaturedAdsKey($denormalizedAd->getCityId(), $denormalizedAd->getTreatmentId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_COUNTRY_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountryFeaturedAdsKey($denormalizedAd->getCountryId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_COUNTRY_SPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountrySpecializationFeaturedAdsKey($denormalizedAd->getCountryId(), $denormalizedAd->getSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_COUNTRY_SUBSPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountrySubSpecializationFeaturedAdsKey($denormalizedAd->getCountryId(), $denormalizedAd->getSubSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_COUNTRY_TREATMENT_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountryTreatmentFeaturedAdsKey($denormalizedAd->getCountryId(), $denormalizedAd->getTreatmentId());
+                    break;
+            }            
+        }
+
+        $this->get('services.memcache')->delete($memcacheKey);
     }
 }

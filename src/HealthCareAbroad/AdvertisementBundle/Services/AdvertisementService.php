@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Services;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+
 use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementStatuses;
 
 use HealthCareAbroad\AdvertisementBundle\Exception\AdvertisementPropertyException;
@@ -26,6 +28,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class AdvertisementService
 {    
+    /**
+     * 
+     * @var Registry
+     */
     private $doctrine;
     
     /**
@@ -38,7 +44,7 @@ class AdvertisementService
      */
     private $repository;
     
-    public function __construct($doctrine)
+    public function __construct(Registry $doctrine)
     {
         $this->doctrine = $doctrine;
         $this->em = $doctrine->getEntityManager();
@@ -59,6 +65,11 @@ class AdvertisementService
 
         // Update Denormalized Advertisement Data
         $this->updateAdvertisementDenormalizedData($advertisement);
+    }
+    
+    public function getDenomralizedPropertyById($advertisementId)
+    {
+        return $this->doctrine->getRepository('AdvertisementBundle:AdvertisementDenormalizedProperty')->find($advertisementId);
     }
 
 

@@ -59,8 +59,8 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             'render_homepage_common_treatments_ads' => new \Twig_Function_Method($this, 'renderHomepageCommonTreatmentsAds'),
             'render_homepage_featured_video_ad' => new \Twig_Function_Method($this, 'renderHomepageFeaturedVideoAd'),
 
-            'render_search_results_featured_posts' => new \Twig_Function_Method($this, 'render_search_results_featured_posts'),
-            'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_institution_ad'),
+            'render_search_results_featured_posts' => new \Twig_Function_Method($this, 'rendeSearchResultsFeaturedPosts'),
+            'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'renderSearchResultsFeaturedInstitutionAd'),
             'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad'),
             'render_search_results_image_ad' => new \Twig_Function_Method($this, 'render_search_results_image_ad'),
             'generate_ads_search_results_parameters_session_key' => new \Twig_Function_Method($this, 'generateSearchResultsParametersSessionKey'),
@@ -142,31 +142,53 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         return $template;
     }
 
-    public function render_search_results_featured_posts()
+    public function rendeSearchResultsFeaturedPosts()
     {
-        $this->twig->addGlobal('featuredPosts', $this->hcaBlogApiService->getBlogs());
+        $memcacheKey = FrontendMemcacheKeysHelper::SEARCH_RESULTS_BLOG_POSTS_ADS_KEY;
+        $searchResultsFeaturedPosts = $this->memcacheService->get($memcacheKey);
 
-        return $this->twig->display('AdvertisementBundle:Frontend:featuredPosts.html.twig');
-    }
-
-    public function render_search_results_featured_institution_ad($params)
-    {
-        $ads = $this->retrieverService->getSearchResultsFeaturedInstitutionByCriteria($params);
-        $this->twig->addGlobal('featuredAds', $ads);
-        
-        // added quick patch for filtering out displayed results items to exclude those institutions that are in featured ad
-        $featuredInstitutionIds = array();
-        foreach ($ads as $_ad) {
-            $featuredInstitutionIds[] = $_ad->getInstitution()->getId();
+        // Check if data is not yet Cached
+        if(!($searchResultsFeaturedPosts)) {
+            $searchResultsFeaturedPosts = $this->twig->render('AdvertisementBundle:Frontend:featuredPosts.html.twig', array(
+                'featuredPosts' => $this->hcaBlogApiService->getBlogs())
+            );
+            $this->memcacheService->set($memcacheKey, $searchResultsFeaturedPosts);
         }
 
-        // add the ids in current session. adding as global here won't work on already loaded twig templates
-        // https://github.com/chromedia/healthcareabroad/issues/510
-        $inSessionFeaturedInstitutions = $this->session->get($this->getFeaturedInstitutionsSessionKey());
-        $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)] = $featuredInstitutionIds;
-        $this->session->set($this->getFeaturedInstitutionsSessionKey(), $inSessionFeaturedInstitutions);
-        
-        return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
+        return $searchResultsFeaturedPosts;
+    }
+
+    public function renderSearchResultsFeaturedInstitutionAd($params)
+    {
+        if(isset($params['cityId'])) {
+            $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityFeaturedAdsKey($params['cityId']);
+        } else if($params['countryId']) {
+            $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountryFeaturedAdsKey($params['countryId']);
+        }
+
+        $searchResultsFeaturedInstitutions = $this->memcacheService->get($memcacheKey);
+
+        if(!$searchResultsFeaturedInstitutions) {
+            $ads = $this->retrieverService->getSearchResultsFeaturedInstitutionByCriteria($params);
+
+            // added quick patch for filtering out displayed results items to exclude those institutions that are in featured ad
+            $featuredInstitutionIds = array();
+            foreach ($ads as $_ad) {
+                $featuredInstitutionIds[] = $_ad->getInstitution()->getId();
+            }
+
+            // add the ids in current session. adding as global here won't work on already loaded twig templates
+            // https://github.com/chromedia/healthcareabroad/issues/510
+            $inSessionFeaturedInstitutions = $this->session->get($this->getFeaturedInstitutionsSessionKey());
+            $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)] = $featuredInstitutionIds;
+            $this->session->set($this->getFeaturedInstitutionsSessionKey(), $inSessionFeaturedInstitutions);            
+            
+            $searchResultsFeaturedInstitutions = $this->twig->render('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig', array(
+                'featuredAds' => $ads)
+            );
+        }
+
+        return $searchResultsFeaturedInstitutions;
     }
 
     public function render_search_results_featured_clinic_ad($params)
