@@ -106,13 +106,13 @@ class FrontendMemcacheKeysHelper
     }
 
     /** 
-     * @param AdvertisementType $advertisementType
+     * @param AdvertisementType or integer $advertisementType
      * @return Ambigous <NULL, string>
      */
-    static function getAdvertisementKeyByType(AdvertisementType $advertisementType)
+    static function getAdvertisementKeyByType($advertisementType)
     {
-        $type = (int)$advertisementType->getId();
-         
+        $type = (int)($advertisementType instanceof AdvertisementType ? $advertisementType->getId() : $advertisementType);
+
         $advertisementTypesKeys = array(
             AdvertisementTypes::HOMEPAGE_PREMIER => self::HOMEPAGE_PREMIER_ADS_KEY,
             AdvertisementTypes::HOMEPAGE_FEATURED_CLINIC => self::HOMEPAGE_FEATURED_CLINICS_ADS_KEY,
