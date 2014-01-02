@@ -176,10 +176,10 @@
 
     <aside class="aside-wrapper span4">
         <!-- Cached View Data -->
-        {{ render_search_results_featured_posts() }}
+        {{ render_search_results_featured_posts() | raw }}
 
         {# include 'SearchBundle:Frontend/Widgets:sidebar.newSearch.html.twig' with { context: 'treatments' } #}
         <!-- Cached View Data -->
-        {{ render_search_results_image_ad() }}
+        {{ render_search_results_image_ad() | raw }}
     </aside>
 {% endblock %}

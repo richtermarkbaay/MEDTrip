@@ -50,8 +50,8 @@
 
     </div><!--End of main_content-->
     <aside class="aside-wrapper span4">
-        {{ render_search_results_featured_posts() }}
-        {{ render_search_results_image_ad() }}
+        {{ render_search_results_featured_posts() | raw }}
+        {{ render_search_results_image_ad() | raw }}
     </aside>
 <!--End of content-->
 {% endblock %}

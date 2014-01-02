@@ -61,8 +61,8 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
             'render_search_results_featured_posts' => new \Twig_Function_Method($this, 'rendeSearchResultsFeaturedPosts'),
             'render_search_results_featured_institution_ad' => new \Twig_Function_Method($this, 'renderSearchResultsFeaturedInstitutionAd'),
-            'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'render_search_results_featured_clinic_ad'),
-            'render_search_results_image_ad' => new \Twig_Function_Method($this, 'render_search_results_image_ad'),
+            'render_search_results_featured_clinic_ad' => new \Twig_Function_Method($this, 'renderSearchResultsFeaturedClinicAd'),
+            'render_search_results_image_ad' => new \Twig_Function_Method($this, 'renderSearchResultsImageAd'),
             'generate_ads_search_results_parameters_session_key' => new \Twig_Function_Method($this, 'generateSearchResultsParametersSessionKey'),
             'get_featured_institutions_by_search_parameters' => new \Twig_Function_Method($this, 'getFeaturedInstitutionsBySearchParameters'),
             'get_featured_clinics_by_search_parameters' => new \Twig_Function_Method($this, 'getFeaturedClinicsBySearchParameters'),
@@ -162,7 +162,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
     {
         if(isset($params['cityId'])) {
             $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityFeaturedAdsKey($params['cityId']);
-        } else if($params['countryId']) {
+        } else if(isset($params['countryId'])) {
             $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountryFeaturedAdsKey($params['countryId']);
         }
 
@@ -183,38 +183,85 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)] = $featuredInstitutionIds;
             $this->session->set($this->getFeaturedInstitutionsSessionKey(), $inSessionFeaturedInstitutions);            
             
-            $searchResultsFeaturedInstitutions = $this->twig->render('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig', array(
-                'featuredAds' => $ads)
-            );
+            $searchResultsFeaturedInstitutions = $this->twig->render('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig', array('featuredAds' => $ads));
+
+            $this->memcacheService->set($memcacheKey, $searchResultsFeaturedInstitutions);
         }
 
         return $searchResultsFeaturedInstitutions;
     }
 
-    public function render_search_results_featured_clinic_ad($params)
+    public function renderSearchResultsFeaturedClinicAd($params)
     {
-        $ads = $this->retrieverService->getSearchResultsFeaturedClinicByCriteria($params);
-        $this->twig->addGlobal('featuredAds', $ads);
-        
-        // https://github.com/chromedia/healthcareabroad/issues/510
-        $featuredClinicIds = array();
-        foreach ($ads as $ad) {
-            $featuredClinicIds[] = $ad->getInstitutionMedicalCenter()->getId();
-        }
-        $inSession = $this->session->get($this->getFeaturedClinicsSessionKey());
-        $inSession[$this->generateSearchResultsParametersSessionKey($params)] = $featuredClinicIds;
-        $this->session->set($this->getFeaturedClinicsSessionKey(), $inSession);
+        var_dump($params);
+        if(isset($params['treatmentId'])) {
+            if(isset($params['cityId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityTreatmentFeaturedAdsKey($params['cityId'], $params['treatmentId']);
+            } elseif(isset($params['countryId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountryTreatmentFeaturedAdsKey($params['countryId'], $params['treatmentId']);
+            } else {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsTreatmentFeaturedAdsKey($params['treatmentId']);
+            }
 
-        return $this->twig->display('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig');
+        } else if(isset($params['subSpecializationId'])) {
+            if(isset($params['cityId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCitySubSpecializationFeaturedAdsKey($params['cityId'], $params['subSpecializationId']);
+            } elseif(isset($params['countryId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountrySubSpecializationFeaturedAdsKey($params['countryId'], $params['subSpecializationId']);
+            } else {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsSubSpecializationFeaturedAdsKey($params['subSpecializationId']);
+            }
+
+        } else if(isset($params['specializationId'])) {
+            if(isset($params['cityId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCitySpecializationFeaturedAdsKey($params['cityId'], $params['specializationId']);
+            } elseif(isset($params['countryId'])) {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCountrySpecializationFeaturedAdsKey($params['countryId'], $params['specializationId']);
+            } else {
+                $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsSpecializationFeaturedAdsKey($params['specializationId']);
+            }
+        }
+        
+        var_dump($memcacheKey);
+
+        $searchResultsFeaturedClinics = $this->memcacheService->get($memcacheKey);
+        
+        var_dump($searchResultsFeaturedClinics);
+
+        if(!$searchResultsFeaturedClinics) {
+            $ads = $this->retrieverService->getSearchResultsFeaturedClinicByCriteria($params);
+            
+            // https://github.com/chromedia/healthcareabroad/issues/510
+            $featuredClinicIds = array();
+            foreach ($ads as $ad) {
+                $featuredClinicIds[] = $ad->getInstitutionMedicalCenter()->getId();
+            }
+            $inSession = $this->session->get($this->getFeaturedClinicsSessionKey());
+            $inSession[$this->generateSearchResultsParametersSessionKey($params)] = $featuredClinicIds;
+            $this->session->set($this->getFeaturedClinicsSessionKey(), $inSession);
+
+            $searchResultsFeaturedClinics = $this->twig->render('AdvertisementBundle:Frontend:searchResultsFeaturedAds.html.twig', array('featuredAds' => $ads));
+
+            $this->memcacheService->set($memcacheKey, $searchResultsFeaturedClinics);      
+        }
+
+        return $searchResultsFeaturedClinics;
     }
 
 
-    public function render_search_results_image_ad($params = array())
+    public function renderSearchResultsImageAd($params = array())
     {
-        $ads = $this->retrieverService->getSearchResultsImageAds($params);
-        $this->twig->addGlobal('imageAds', $ads);
+        $memcacheKey = FrontendMemcacheKeysHelper::SEARCH_RESULTS_IMAGE_ADS_KEY;
+        $imageAds = $this->memcacheService->get($memcacheKey);
+        
+        if(!$imageAds) {
+            $ads = $this->retrieverService->getSearchResultsImageAds($params);
+            $imageAds = $this->twig->render('AdvertisementBundle:Frontend:imageAd.html.twig', array('imageAds' => $ads));
 
-        return $this->twig->display('AdvertisementBundle:Frontend:imageAd.html.twig');
+            $this->memcacheService->set($memcacheKey, $imageAds);
+        }
+
+        return $imageAds; 
     }
     
     public function getName()
@@ -227,7 +274,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         $inSessionFeaturedInstitutions =  $this->session->get($this->getFeaturedInstitutionsSessionKey());
         
         return $inSessionFeaturedInstitutions[$this->generateSearchResultsParametersSessionKey($params)];
-    }
+    } 
     
     public function getFeaturedInstitutionsSessionKey()
     {
