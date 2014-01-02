@@ -417,6 +417,15 @@ class AdvertisementController extends Controller
 
             switch($advertisementType)
             {
+                case AdvertisementTypes::SEARCH_RESULTS_SPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsSpecializationFeaturedAdsKey($denormalizedAd->getSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_SUBSPECIALIZATION_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsSubSpecializationFeaturedAdsKey($denormalizedAd->getSubSpecializationId());
+                    break;
+                case AdvertisementTypes::SEARCH_RESULTS_TREATMENT_FEATURE :
+                    $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsTreatmentFeaturedAdsKey($denormalizedAd->getTreatmentId());
+                    break;
                 case AdvertisementTypes::SEARCH_RESULTS_CITY_FEATURE :
                     $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityFeaturedAdsKey($denormalizedAd->getCityId());
                     break;
