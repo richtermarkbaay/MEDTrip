@@ -160,7 +160,6 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderSearchResultsFeaturedInstitutionAd($params)
     {
-        var_dump($params);
         if(isset($params['cityId'])) {
             $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityFeaturedAdsKey($params['cityId']);
         } else if(isset($params['countryId'])) {
@@ -168,9 +167,6 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
         }
 
         $searchResultsFeaturedInstitutions = $this->memcacheService->get($memcacheKey);
-
-        var_dump($searchResultsFeaturedInstitutions);
-
         if(!$searchResultsFeaturedInstitutions) {
 
             if($ads = $this->retrieverService->getSearchResultsFeaturedInstitutionByCriteria($params)) {
@@ -197,7 +193,6 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderSearchResultsFeaturedClinicAd($params)
     {
-        var_dump($params);
         if(isset($params['treatmentId'])) {
             if(isset($params['cityId'])) {
                 $memcacheKey = FrontendMemcacheKeysHelper::generateSearchResultsCityTreatmentFeaturedAdsKey($params['cityId'], $params['treatmentId']);
@@ -226,11 +221,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
             }
         }
 
-        var_dump($memcacheKey);
-
         $searchResultsFeaturedClinics = $this->memcacheService->get($memcacheKey);
-        
-        var_dump($searchResultsFeaturedClinics);
 
         if(!$searchResultsFeaturedClinics) {
             if($ads = $this->retrieverService->getSearchResultsFeaturedClinicByCriteria($params)) {
