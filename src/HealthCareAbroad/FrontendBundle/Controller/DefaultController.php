@@ -2,7 +2,7 @@
 
 namespace HealthCareAbroad\FrontendBundle\Controller;
 
-use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeys;
 
 use HealthCareAbroad\HelperBundle\Services\PageMetaConfigurationService;
 
@@ -47,12 +47,12 @@ class DefaultController extends ResponseHeadersController
         $start = \microtime(true);
         $memcacheService = $this->get('services.memcache');
 
-        $homepagePremierAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_PREMIER_ADS_KEY;
-        $featuredClinicsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
-        $featuredDestinationsAdsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
-        $featuredPostsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
-        $commonTreatmentsCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY;
-        $featuredVideoCacheKey = FrontendMemcacheKeysHelper::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
+        $homepagePremierAdsCacheKey = FrontendMemcacheKeys::HOMEPAGE_PREMIER_ADS_KEY;
+        $featuredClinicsAdsCacheKey = FrontendMemcacheKeys::HOMEPAGE_FEATURED_CLINICS_ADS_KEY;
+        $featuredDestinationsAdsCacheKey = FrontendMemcacheKeys::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY;
+        $featuredPostsCacheKey = FrontendMemcacheKeys::HOMEPAGE_FEATURED_POSTS_ADS_KEY;
+        $commonTreatmentsCacheKey = FrontendMemcacheKeys::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY;
+        $featuredVideoCacheKey = FrontendMemcacheKeys::HOMEPAGE_FEATURED_VIDEO_ADS_KEY;
 
         if(!($ads['homepagePremier'] = $memcacheService->get($homepagePremierAdsCacheKey))) {
             $ads['homepagePremier'] = $this->get('twig.advertisement_widgets')->renderHomepagePremierAds();

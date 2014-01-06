@@ -1,7 +1,7 @@
 <?php
 namespace HealthCareAbroad\AdminBundle\Controller;
 
-use HealthCareAbroad\FrontendBundle\Services\FrontendFrontendMemcacheKeysHelper;
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
 
 use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 

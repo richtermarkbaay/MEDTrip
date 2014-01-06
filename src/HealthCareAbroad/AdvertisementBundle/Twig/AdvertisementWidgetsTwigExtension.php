@@ -1,6 +1,8 @@
 <?php
 namespace HealthCareAbroad\AdvertisementBundle\Twig;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeys;
+
 use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
 
 use HealthCareAbroad\MemcacheBundle\Services\MemcacheService;
@@ -144,7 +146,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function rendeSearchResultsFeaturedPosts()
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::SEARCH_RESULTS_BLOG_POSTS_ADS_KEY;
+        $memcacheKey = FrontendMemcacheKeys::SEARCH_RESULTS_BLOG_POSTS_ADS_KEY;
         $searchResultsFeaturedPosts = $this->memcacheService->get($memcacheKey);
 
         // Check if data is not yet Cached
@@ -246,7 +248,7 @@ class AdvertisementWidgetsTwigExtension extends \Twig_Extension
 
     public function renderSearchResultsImageAd($params = array())
     {
-        $memcacheKey = FrontendMemcacheKeysHelper::SEARCH_RESULTS_IMAGE_ADS_KEY;
+        $memcacheKey = FrontendMemcacheKeys::SEARCH_RESULTS_IMAGE_ADS_KEY;
         $imageAds = $this->memcacheService->get($memcacheKey);
         
         if(!$imageAds) {

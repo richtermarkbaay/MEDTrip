@@ -1,6 +1,6 @@
 <?php 
 /**
- * Frontend memcache keys and helper functions
+ * Frontend generate memcache keys helper functions
  * 
  * @author Adelbert D. Silla
  *
@@ -15,70 +15,41 @@ use HealthCareAbroad\AdvertisementBundle\Entity\AdvertisementType;
 
 class FrontendMemcacheKeysHelper
 {
-    // Institution/InstitutionMedicalCenter Profile Keys
-    const INSTITUTION_PROFILE_KEY = 'frontend.controller.institution_profile.{ID}';
-    const INSTITUTION_MEDICAL_CENTER_PROFILE_KEY = 'frontend.controller.institutionMedicalCenter:profile.{ID}';
-
-
-    // ADS Memcache Keys
-    const HOMEPAGE_PREMIER_ADS_KEY = 'frontend.homepage_premier_ads';
-    const HOMEPAGE_FEATURED_CLINICS_ADS_KEY = 'frontend.homepage_featured_clinics_ads';
-    const HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY = 'frontend.homepage_featured_destinations_ads';
-    const HOMEPAGE_FEATURED_POSTS_ADS_KEY = 'frontend.homepage_featured_posts_ads';
-    const HOMEPAGE_FEATURED_VIDEO_ADS_KEY = 'frontend.homepage_featured_video_ads';
-    const HOMEPAGE_COMMON_TREATMENTS_ADS_KEY = 'frontend.homepage_common_treatments_ads';
-    
-    const SEARCH_RESULTS_BLOG_POSTS_ADS_KEY = 'frontend.search_results_blog_posts_ads';
-
-    const SEARCH_RESULTS_CITY_FEATURED_ADS_KEY = 'frontend.search_results_city_featured_ads.{CITY_ID}';
-    const SEARCH_RESULTS_COUNTRY_FEATURED_ADS_KEY = 'frontend.search_results_country_featured_ads.{COUNTRY_ID}';
-    const SEARCH_RESULTS_SPECIALIZATION_FEATURED_ADS_KEY = 'frontend.search_results_specialization_featured_ads.{SPECIALIZATION_ID}';
-    const SEARCH_RESULTS_SUBSPECIALIZATION_FEATURED_ADS_KEY = 'frontend.search_results_subspecialization_featured_ads.{SUBSPECIALIZATION_ID}';
-    const SEARCH_RESULTS_TREATMENT_FEATURED_ADS_KEY = 'frontend.search_results_treatment_featured_ads.{TREATMENT_ID}';
-    const SEARCH_RESULTS_CITY_SPECIALIZATION_FEATURED_ADS_KEY = 'frontend.search_results_city_specialization_featured_ads.{CITY_ID}.{SPECIALIZATION_ID}';
-    const SEARCH_RESULTS_CITY_SUBSPECIALIZATION_FEATURED_ADS_KEY = 'frontend.search_results_city_subspecialization_featured_ads.{CITY_ID}.{SUBSPECIALIZATION_ID}';
-    const SEARCH_RESULTS_CITY_TREATMENT_FEATURED_ADS_KEY = 'frontend.search_results_city_treatment_featured_ads.{CITY_ID}.{TREATMENT_ID}';
-    const SEARCH_RESULTS_COUNTRY_SPECIALIZATION_ADS_KEY = 'frontend.search_results_country_specialization_featured_ads.{COUNTRY_ID}.{SPECIALIZATION_ID}';
-    const SEARCH_RESULTS_COUNTRY_SUBSPECIALIZATION_ADS_KEY = 'frontend.search_results_country_subspecialization_featured_ads.{COUNTRY_ID}.{SUBSPECIALIZATION_ID}';
-    const SEARCH_RESULTS_COUNTRY_TREATMENT_ADS_KEY = 'frontend.search_results_country_treatment_featured_ads.{COUNTRY_ID}.{TREATMENT_ID}';
-    
-    const SEARCH_RESULTS_IMAGE_ADS_KEY = 'frontend.search_results_image_ads';
-
     static function generateInsitutionProfileKey($instititionId = '')
     {
-        return str_replace('{ID}', $instititionId, self::INSTITUTION_PROFILE_KEY);
+        return str_replace('{ID}', $instititionId, FrontendMemcacheKeys::INSTITUTION_PROFILE_KEY);
     }
 
     static function generateInsitutionMedicalCenterProfileKey($centerId = '')
     {
-        return str_replace('{ID}', $centerId, self::INSTITUTION_MEDICAL_CENTER_PROFILE_KEY);
+        return str_replace('{ID}', $centerId, FrontendMemcacheKeys::INSTITUTION_MEDICAL_CENTER_PROFILE_KEY);
     }
 
 
     // ADS MEMCACHE KEYS FUNCTIONS 
     static function generateSearchResultsCityFeaturedAdsKey($cityId)
     {
-        return str_replace('{CITY_ID}', $cityId, self::SEARCH_RESULTS_CITY_FEATURED_ADS_KEY);
+        return str_replace('{CITY_ID}', $cityId, FrontendMemcacheKeys::SEARCH_RESULTS_CITY_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsCountryFeaturedAdsKey($countryId)
     {
-        return str_replace('{COUNTRY_ID}', $countryId, self::SEARCH_RESULTS_COUNTRY_FEATURED_ADS_KEY);
+        return str_replace('{COUNTRY_ID}', $countryId, FrontendMemcacheKeys::SEARCH_RESULTS_COUNTRY_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsSpecializationFeaturedAdsKey($specializationId)
     {
-        return str_replace('{SPECIALIZATION_ID}', $specializationId, self::SEARCH_RESULTS_SPECIALIZATION_FEATURED_ADS_KEY);
+        return str_replace('{SPECIALIZATION_ID}', $specializationId, FrontendMemcacheKeys::SEARCH_RESULTS_SPECIALIZATION_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsSubSpecializationFeaturedAdsKey($subSpecializationId)
     {    
-        return str_replace('{SUBSPECIALIZATION_ID}', $subSpecializationId, self::SEARCH_RESULTS_SUBSPECIALIZATION_FEATURED_ADS_KEY);
+        return str_replace('{SUBSPECIALIZATION_ID}', $subSpecializationId, FrontendMemcacheKeys::SEARCH_RESULTS_SUBSPECIALIZATION_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsTreatmentFeaturedAdsKey($treatmentId)
     {
-        return str_replace('{TREATMENT_ID}', $treatmentId, self::SEARCH_RESULTS_TREATMENT_FEATURED_ADS_KEY);
+        return str_replace('{TREATMENT_ID}', $treatmentId, FrontendMemcacheKeys::SEARCH_RESULTS_TREATMENT_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsCitySpecializationFeaturedAdsKey($cityId, $specializationId)
@@ -86,7 +57,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{CITY_ID}', '{SPECIALIZATION_ID}');
         $replaceWith = array($cityId, $specializationId);
     
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_CITY_SPECIALIZATION_FEATURED_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_CITY_SPECIALIZATION_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsCitySubSpecializationFeaturedAdsKey($cityId, $subSpecializationId)
@@ -94,7 +65,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{CITY_ID}', '{SUBSPECIALIZATION_ID}');
         $replaceWith = array($cityId, $subSpecializationId);
 
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_CITY_SUBSPECIALIZATION_FEATURED_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_CITY_SUBSPECIALIZATION_FEATURED_ADS_KEY);
     }
 
     static function generateSearchResultsCityTreatmentFeaturedAdsKey($cityId, $treatmentId)
@@ -102,7 +73,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{CITY_ID}', '{TREATMENT_ID}');
         $replaceWith = array($cityId, $treatmentId);
 
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_CITY_TREATMENT_FEATURED_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_CITY_TREATMENT_FEATURED_ADS_KEY);
     }
     
     static function generateSearchResultsCountrySpecializationFeaturedAdsKey($countryId, $specializationId)
@@ -110,7 +81,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{COUNTRY_ID}', '{SPECIALIZATION_ID}');
         $replaceWith = array($countryId, $specializationId);
 
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_COUNTRY_SPECIALIZATION_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_COUNTRY_SPECIALIZATION_ADS_KEY);
     }
 
     static function generateSearchResultsCountrySubSpecializationFeaturedAdsKey($countryId, $subSpecializationId)
@@ -118,7 +89,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{COUNTRY_ID}', '{SUBSPECIALIZATION_ID}');
         $replaceWith = array($countryId, $subSpecializationId);
     
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_COUNTRY_SUBSPECIALIZATION_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_COUNTRY_SUBSPECIALIZATION_ADS_KEY);
     }
     
     static function generateSearchResultsCountryTreatmentFeaturedAdsKey($countryId, $treatmentId)
@@ -126,7 +97,7 @@ class FrontendMemcacheKeysHelper
         $searchKeys = array('{COUNTRY_ID}', '{TREATMENT_ID}');
         $replaceWith = array($countryId, $treatmentId);
 
-        return str_replace($searchKeys, $replaceWith, self::SEARCH_RESULTS_COUNTRY_TREATMENT_ADS_KEY);
+        return str_replace($searchKeys, $replaceWith, FrontendMemcacheKeys::SEARCH_RESULTS_COUNTRY_TREATMENT_ADS_KEY);
     }
 
     /** 
@@ -138,15 +109,14 @@ class FrontendMemcacheKeysHelper
         $type = (int)($advertisementType instanceof AdvertisementType ? $advertisementType->getId() : $advertisementType);
 
         $advertisementTypesKeys = array(
-            AdvertisementTypes::HOMEPAGE_PREMIER => self::HOMEPAGE_PREMIER_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_FEATURED_CLINIC => self::HOMEPAGE_FEATURED_CLINICS_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_FEATURED_DESTINATION => self::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_FEATURED_POST => self::HOMEPAGE_FEATURED_POSTS_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_FEATURED_VIDEO => self::HOMEPAGE_FEATURED_VIDEO_ADS_KEY,
-            AdvertisementTypes::HOMEPAGE_COMMON_TREATMENT => self::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY
+            AdvertisementTypes::HOMEPAGE_PREMIER => FrontendMemcacheKeys::HOMEPAGE_PREMIER_ADS_KEY,
+            AdvertisementTypes::HOMEPAGE_FEATURED_CLINIC => FrontendMemcacheKeys::HOMEPAGE_FEATURED_CLINICS_ADS_KEY,
+            AdvertisementTypes::HOMEPAGE_FEATURED_DESTINATION => FrontendMemcacheKeys::HOMEPAGE_FEATURED_DESTINATIONS_ADS_KEY,
+            AdvertisementTypes::HOMEPAGE_FEATURED_POST => FrontendMemcacheKeys::HOMEPAGE_FEATURED_POSTS_ADS_KEY,
+            AdvertisementTypes::HOMEPAGE_FEATURED_VIDEO => FrontendMemcacheKeys::HOMEPAGE_FEATURED_VIDEO_ADS_KEY,
+            AdvertisementTypes::HOMEPAGE_COMMON_TREATMENT => FrontendMemcacheKeys::HOMEPAGE_COMMON_TREATMENTS_ADS_KEY
         );
         
         return isset($advertisementTypesKeys[$type]) ? $advertisementTypesKeys[$type] : null; 
     }
-
 }

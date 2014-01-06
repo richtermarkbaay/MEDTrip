@@ -2,6 +2,8 @@
 
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\FrontendBundle\Services\FrontendMemcacheKeysHelper;
+
 use HealthCareAbroad\InstitutionBundle\Form\InstitutionGlobalAwardFormType;
 
 use Symfony\Component\HttpFoundation\Response;
