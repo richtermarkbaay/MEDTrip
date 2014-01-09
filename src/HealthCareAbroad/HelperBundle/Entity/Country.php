@@ -26,14 +26,14 @@ class Country
     private $name;
 
     /**
-     * @var string $abbr
+     * @var string $ccIso
      */
-    private $abbr;
+    private $ccIso;
 
     /**
-     * @var string $code
+     * @var string $countryCode
      */
-    private $code;
+    private $countryCode;
 
     /**
      * @var string $slug
@@ -100,47 +100,48 @@ class Country
     }
 
     /**
-     * Set abbr
+     * Set ccIso
      *
-     * @param string $abbr
+     * @param string $ccIso
      * @return Country
      */
-    public function setAbbr($abbr)
+    public function setCcIso($ccIso)
     {
-        $this->abbr = $abbr;
+        $this->ccIso = $ccIso;
+
         return $this;
     }
 
     /**
-     * Get abbr
+     * Get ccIso
      *
      * @return string 
      */
-    public function getAbbr()
+    public function getCcIso()
     {
-        return $this->abbr;
+        return $this->ccIso;
     }
 
     /**
-     * Set code
+     * Set countryCode
      *
-     * @param string $code
+     * @param string $countryCode
      * @return Country
      */
-    public function setCode($code)
+    public function setCountryCode($countryCode)
     {
-        $this->code = $code;
+        $this->countryCode = $countryCode;
         return $this;
     }
 
     /**
-     * Get code
+     * Get countryCode
      *
      * @return string 
      */
-    public function getCode()
+    public function getCountryCode()
     {
-        return $this->code;
+        return $this->countryCode;
     }
 
     /**

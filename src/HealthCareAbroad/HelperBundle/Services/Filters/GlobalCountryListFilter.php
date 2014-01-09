@@ -27,7 +27,14 @@ class GlobalCountryListFilter extends ArrayListFilter
     function setFilterOptions()
     {
         $this->setNameFilterOption();
-        $this->setStatusFilterOption();
+        
+        $statuses = array(
+            Country::STATUS_NEW => 'New',
+            Country::STATUS_ACTIVE => 'Active',
+            Country::STATUS_INACTIVE => 'Inactive',
+            self::FILTER_KEY_ALL => self::FILTER_LABEL_ALL
+        );
+        $this->setStatusFilterOption($statuses);
     }
 
     function setNameFilterOption()

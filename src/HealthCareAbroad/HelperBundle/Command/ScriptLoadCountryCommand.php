@@ -1,7 +1,9 @@
 <?php
 /**
+ * FIXME: Outdated script!
+ * 
  * @author Alnie Jacobe
-*/
+**/
 
 namespace HealthCareAbroad\HelperBundle\Command;
 

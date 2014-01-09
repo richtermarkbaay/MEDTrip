@@ -1,5 +1,7 @@
 <?php
 /**
+ * FIXME: Outdated Script!
+ * 
  * @author Alnie Jacobe
 */
 

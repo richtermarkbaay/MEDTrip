@@ -88,8 +88,8 @@ class LocationService
 	        $em = $this->doctrine->getEntityManagerForClass('HelperBundle:Country');
 
 	        $countryObj->setName($data['name']);
-	        $countryObj->setAbbr($data['abbr']);
-	        $countryObj->setCode($data['code']);
+	        $countryObj->setCcIso($data['ccIso']);
+	        $countryObj->setCountryCode($data['countryCode']);
 	        $countryObj->setSlug($data['slug']);
 	        $countryObj->setStatus($data['status']);
 	
@@ -230,8 +230,8 @@ class LocationService
 	    $country->setId($data['id']);
 	    $country->setName($data['name']);
 	    $country->setSlug($data['slug']);
-	    $country->setAbbr(isset($data['abbr']) ? $data['abbr'] : '');
-	    $country->setCode(isset($data['code']) ? $data['code'] : '');
+	    $country->setCcIso(isset($data['ccIso']) ? $data['ccIso'] : '');
+	    $country->setCountryCode(isset($data['countryCode']) ? $data['countryCode'] : '');
 	    $country->setStatus(isset($data['code']) ? $data['code'] : Country::STATUS_ACTIVE);
 
 	    return $country;
