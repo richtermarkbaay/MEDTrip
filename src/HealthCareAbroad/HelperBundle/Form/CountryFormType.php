@@ -17,8 +17,8 @@ class CountryFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options)
 	{
 		$builder->add('name', 'text');
-		$builder->add('ccIso', 'text', array('label' => 'Abbr'));
-		$builder->add('countryCode', 'text');
+		$builder->add('abbr', 'text');
+		$builder->add('code', 'text');
 		$builder->add('status', 'choice', array('choices'=>$this->_getStatuses()));
 	}
 
