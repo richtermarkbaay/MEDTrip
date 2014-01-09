@@ -1,7 +1,7 @@
 {% if doctors | length %}
 	<ul class="person-info-list">
 	    {% for doctor in doctors %}
-		<li>
+		<li itemprop="employee" itemscope itemtype="http://schema.org/Person">
 		    <div class="thumbnail-wrapper pull-left img-polaroid">
     			{% if doctor.media %}
     			    {# media(doctor.media, doctor, 'default', {thumbnail: true}) | raw #}
@@ -11,7 +11,9 @@
     			{% endif %}
 		    </div>
 
-			<a class="name">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</a>
+			<a class="name">
+			 <span itemprop="name">Dr. {{ doctor.firstName }} {{ doctor.middleName }} {{ doctor.lastName }}</span>
+		    </a>
 			<p class="info">
 			    {{ doctor_specializations_to_string(doctor) }}
 			</p>

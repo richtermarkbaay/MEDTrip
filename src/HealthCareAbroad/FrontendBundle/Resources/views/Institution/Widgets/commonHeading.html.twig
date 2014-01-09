@@ -9,7 +9,13 @@
 
 <div class="cover-photo-wrapper">
 
-    <h1>{{ viewData.headerText }}
+    {#
+    <!-- 
+        FIXME! we have to point itemprop="name" to viewData.headerText only, 
+        right now if we wrap it with span, design changes  
+    -->
+    #}
+    <h1 itemprop="name">{{ viewData.headerText }}
        {% if viewData.subHeader is defined %} 
            <span><a href="{{ viewData.subHeader.url }}">{{ viewData.subHeader.text }}</a></span> 
        {% endif %}
@@ -54,10 +60,10 @@
             </ul>
         </div>
 
-        <div class="address">
+        <div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress" class="address">
             <span class="hca-sprite address-icon pull-left"></span>
             <address>
-                {{ viewData.streetAddress }}, {{ viewData.mainAddress }}
+                {{ viewData.streetAddress | raw }}, {{ viewData.mainAddress | raw}}
             </address>
         </div>
     </div>    

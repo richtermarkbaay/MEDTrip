@@ -216,8 +216,15 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *
      * @param Mixed <Institution, array> $institution
      */
-    public function institutionAddressToArray($institution, array $includedKeys=array())
+    public function institutionAddressToArray($institution, array $includedKeys=array(), $options=array())
     {
+        // default options to tweak returned format
+        $defaultOptions = array(
+            // wrap values in span containing microdata markup @see http://schema.org/PostalAddress
+            'wrapWithMicrodata' => false, 
+        );
+        $options = \array_merge($defaultOptions, $options);
+        
         $elements = array();
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : self::$institutionDefaultAddressKeys);
 
@@ -246,23 +253,35 @@ class MiscellaneousTwigExtension extends \Twig_Extension
             $this->_removeEmptyValueInArray($street_address);
             if (\count($street_address)) {
                 $elements['address1'] = preg_replace('/\,+$/','', \trim(\implode(', ', $street_address)));
+                // wrap in microdata
+                $elements['address1'] = $options['wrapWithMicrodata']
+                    ? '<span itemprop="streetAddress">'.$elements['address1'].'</span>'
+                    : $elements['address1'];
             }
         }
 
         if (isset($includedKeys['city']) && $addressData['city']) {
-            $elements['city'] = $addressData['city'];
+            $elements['city'] = $options['wrapWithMicrodata'] 
+                ? '<span itemprop="addressLocality">'.$addressData['city'].'</span>'
+                : $addressData['city'];
         }
 
         if (isset($includedKeys['state']) && $addressData['state']) {
-            $elements['state'] = $addressData['state'];
+            $elements['state'] = $options['wrapWithMicrodata']
+                ? '<span itemprop="addressRegion">'.$addressData['state'].'</span>'
+                : $addressData['state'];
         }
 
         if (isset($includedKeys['country']) && $addressData['country']) {
-            $elements['country'] = $addressData['country'];
+            $elements['country'] = $options['wrapWithMicrodata']
+                ? '<span itemprop="addressCountry">'.$addressData['country'].'</span>' 
+                : $addressData['country'];
         }
 
         if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
-            $elements['zipCode'] = $addressData['zipCode'];
+            $elements['zipCode'] = $options['wrapWithMicrodata']
+                ? '<span itemprop="postalCode">'.$addressData['zipCode'].'</span>' 
+                : $addressData['zipCode'];
         }
 
         return $elements;
@@ -278,9 +297,9 @@ class MiscellaneousTwigExtension extends \Twig_Extension
      *
      * @param Mixed <Institution, array> $institution
      */
-    public function formatInstitutionAddressToString($institution, array $includedKeys=array(), $glue = ', ')
+    public function formatInstitutionAddressToString($institution, array $includedKeys=array(), $glue = ', ', $options=array())
     {
-        $arrAddress = $this->institutionAddressToArray($institution, $includedKeys);
+        $arrAddress = $this->institutionAddressToArray($institution, $includedKeys, $options);
 
         $zipCode = '';
         if(isset($arrAddress['zipCode'])) {

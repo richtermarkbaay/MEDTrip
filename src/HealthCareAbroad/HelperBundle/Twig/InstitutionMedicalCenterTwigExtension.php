@@ -204,11 +204,18 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
      * @param array $includedKeys
      * @return array
      */
-    public function getCompleteAddressAsArray($institutionMedicalCenter, array $includedKeys=array() )
+    public function getCompleteAddressAsArray($institutionMedicalCenter, array $includedKeys=array(), $options=array() )
     {
         $returnVal = array();
         $defaultIncludedKeys = array('address', 'city', 'state', 'country', 'zipCode');
         $includedKeys = \array_flip(!empty($includedKeys) ? $includedKeys : $defaultIncludedKeys);
+        
+        // default options to tweak returned format
+        $defaultOptions = array(
+            // wrap values in span containing microdata markup @see http://schema.org/PostalAddress
+            'wrapWithMicrodata' => false,
+        );
+        $options = \array_merge($defaultOptions, $options);
 
         if ($institutionMedicalCenter instanceof InstitutionMedicalCenter){
             $institution = $institutionMedicalCenter->getInstitution();
@@ -256,23 +263,36 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                     }
                 }
             }
+            
+            // wrap in microdata
+            $returnVal['address'] = $options['wrapWithMicrodata']
+                ? '<span itemprop="streetAddress">'.$returnVal['address'].'</span>'
+                : $returnVal['address'];
         }
 
         if (isset($includedKeys['city']) && $addressData['city']) {
-            $returnVal['city'] = $addressData['city'];
+            $returnVal['city'] = $options['wrapWithMicrodata'] 
+                ? '<span itemprop="addressLocality">'.$addressData['city'].'</span>'
+                : $addressData['city'];
         }
 
         if (isset($includedKeys['state']) && $addressData['state']) {
-            $returnVal['state'] = $addressData['state'];
+            $returnVal['state'] = $options['wrapWithMicrodata'] 
+                ? '<span itemprop="addressRegion">'.$addressData['state'].'</span>'
+                : $addressData['state'];
         }
 
         if (isset($includedKeys['country'])  && $addressData['country']) {
-            $returnVal['country'] = $addressData['country'];
+            $returnVal['country'] = $options['wrapWithMicrodata'] 
+                ? '<span itemprop="addressCountry">'.$addressData['country'].'</span>'
+                : $addressData['country'];
         }
 
 
         if (isset($includedKeys['zipCode']) && (0 != $addressData['zipCode'] || '' != $addressData['zipCode'] )) {
-            $returnVal['zipCode'] = $addressData['zipCode'];
+            $returnVal['zipCode'] = $options['wrapWithMicrodata'] 
+                ? '<span itemprop="postalCode">'.$addressData['zipCode'].'</span>'
+                : $addressData['zipCode'];
         }
 
         return $returnVal;
@@ -288,9 +308,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
      *
      * @param Mixed <InstitutionMedicalCenter, array> $institutionMedicalCenter
      */
-    public function getCompleteAddressAsString($institutionMedicalCenter, array $includedKeys=array(), $glue = ', ')
+    public function getCompleteAddressAsString($institutionMedicalCenter, array $includedKeys=array(), $glue = ', ', $options=array())
     {
-        $arrAddress = $this->getCompleteAddressAsArray($institutionMedicalCenter, $includedKeys);
+        $arrAddress = $this->getCompleteAddressAsArray($institutionMedicalCenter, $includedKeys, $options);
 
         $zipCode = '';
         if(isset($arrAddress['zipCode'])) {
@@ -334,7 +354,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 'weekdayBitValue' => $businessHour->getWeekdayBitValue(),
                 'startTime' => $businessHour->getOpening()->format('h:i A'),
                 'endTime' => $businessHour->getClosing()->format('h:i A'),
-                'notes' => $businessHour->getNotes()
+                'notes' => $businessHour->getNotes(),
+                'startTimeDbFormat' => $businessHour->getOpening()->format('h:i'),
+                'endTimeDbFormat' => $businessHour->getClosing()->format('h:i'),
             );
         }
         else {
@@ -342,18 +364,23 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
                 'weekdayBitValue' => $businessHour['weekdayBitValue'],
                 'startTime' => $businessHour['opening']->format('h:i A'),
                 'endTime' => $businessHour['closing']->format('h:i A'),
-                'notes' => $businessHour['notes']
+                'notes' => $businessHour['notes'],
+                'startTimeDbFormat' => $businessHour['opening']->format('h:i'),
+                'endTimeDbFormat' => $businessHour['closing']->format('h:i'),
             );
         }
         $days = $this->institutionMedicalCenterService->extractDaysFromWeekdayBitValue($data['weekdayBitValue']);
         $daysLabel = '';
+        
         if (count($days) > 1 ) {
             $currentDay = null;
             $previousDay = null;
             $leastDay = null;
             $groupedWeekdaysLabel = array();
+            $data['days']['twoLetter'] = array();
             foreach ($days as $_day_attr) {
                 $currentDay = $_day_attr;
+                $data['days']['twoLetter'][] = substr($_day_attr['short'], 0, 2);
                 if(null == $previousDay) {
                     $previousDay = $currentDay;
                     $leastDay = $currentDay;
@@ -374,8 +401,9 @@ class InstitutionMedicalCenterTwigExtension extends \Twig_Extension
         }
         elseif (count($days) == 1) {
             $daysLabel = $days[0]['short'];
+            $data['days']['twoLetter'] = array(substr($days[0]['short'], 0, 2));
         }
-
+        
         $data['daysLabel'] = $daysLabel;
 
         return $data;
