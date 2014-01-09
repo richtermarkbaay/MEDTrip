@@ -27,7 +27,7 @@
                 <table id="country-list" class="table table-bordered sortable-list">
                     <tr>
                         <th id="column-name"><a href="{{ app.request.uri }}" class="{{ sortBy == 'name' ? 'sort-' ~ sortOrder : default }}">Name</a></th>
-                         <th>Abbr</th>
+                         <th>Abbr (CCISO)</th>
                          <th>Country Code</th>
                          <th>Status</th>
                         <th width="15%">Actions</th>
@@ -35,8 +35,8 @@
                     {% for each in countries %}
                     <tr>
                         <td>{{ each.name }}</td>
-                        <td>{{ each.abbr is defined ? each.abbr : '' }}</td>
-                        <td>{{ each.code is defined ? each.code : '' }}</td>
+                        <td>{{ each.ccIso is defined ? each.ccIso : '' }}</td>
+                        <td>{{ each.countryCode is defined ? each.countryCode : '' }}</td>
                         <td>
                             <select class="update-status" style="width: 100px" data-update-url="{{ path('admin_country_updateStatus', {id:each.id}) }}">
                                 {% for status, statusLabel in statuses %}

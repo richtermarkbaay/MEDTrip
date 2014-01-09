@@ -21,7 +21,7 @@ class CountryController extends Controller
     {
         return $this->render('AdminBundle:Country:index.html.twig', array(
             'countries' => $this->filteredResult,
-            'statuses' => array(Country::STATUS_ACTIVE => 'Active', Country::STATUS_INACTIVE => 'Inactive'),
+            'statuses' => array(Country::STATUS_ACTIVE => 'Active', Country::STATUS_INACTIVE => 'Inactive', Country::STATUS_NEW => 'New'),
             'pager' => $this->pager
         ));
     }

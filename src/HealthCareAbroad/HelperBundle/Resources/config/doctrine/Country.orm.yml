@@ -16,17 +16,19 @@ HealthCareAbroad\HelperBundle\Entity\Country:
             fixed: false
             nullable: false
             
-        abbr:
+        ccIso:
             type: string
             length: 10
             fixed: false
             nullable: false
+            column: cc_iso
             
-        code:
+        countryCode:
             type: string
             length: 11
             fixed: false
             nullable: false
+            column: country_code
             
         slug:
             type: string

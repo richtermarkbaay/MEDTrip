@@ -56,7 +56,7 @@ class FancyCountryFieldType extends AbstractType
         foreach ($countries as $each){
             $result[] =  array(
                 'id' => $each['id'],
-                'custom_label' => "<span class='flag16 ".strtolower($each['abbr'])."'> </span> " . "<span class='item-label'>" .$each['name']. "</span>",
+                'custom_label' => "<span class='flag16 ".strtolower($each['ccIso'])."'> </span> " . "<span class='item-label'>" .$each['name']. "</span>",
                 'label' => $each['name']
             );
         }
