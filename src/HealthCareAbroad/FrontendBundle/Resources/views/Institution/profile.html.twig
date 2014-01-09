@@ -1,5 +1,5 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
-{% set mainContentItemType = isSingleCenterInstitution ? 'http://schema.org/Hospital' : 'http://schema.org/MedicalClinic'%}
+{% set mainContentItemType = isSingleCenterInstitution ? 'http://schema.org/MedicalClinic' : 'http://schema.org/Hospital'%}
 {% block content %}
     <!-- Set map coordinates by LatLong or Address -->
     {% if institution.coordinates %}
