@@ -144,7 +144,6 @@ class PageMetaConfigurationController extends Controller
             $metaConfigurationService->save($metaConfiguration);
         }
         
-        var_dump($metaConfiguration);exit;
         $form = $this->createForm(new PageMetaConfigurationFormType(), $metaConfiguration);
         $html = $this->renderView('AdminBundle:PageMetaConfiguration:form.html.twig', array('form' => $form->createView()));
         
