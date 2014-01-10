@@ -3,6 +3,7 @@
 {% include 'HelperBundle:Widgets:subMenu.html.twig' 
     with { 
         links: [
+            {name: 'home_page_meta',url: path('admin_homepage_metas_index'), label: 'Home Page Meta Configuration', icon: 'icon-list', 'active': activeSideBar == 'home_page_meta'},
             {name: 'results_page_meta',url: path('admin_page_metas_index'), label: 'Results Pages Meta Configuration', icon: 'icon-list', 'active': activeSideBar == 'results_page_meta'},
             {name: 'institution_page_meta',url: path('admin_page_metas_institution'), label: 'Hospital and Clinic Pages Meta Configuration', icon: 'icon-list', 'active': activeSideBar == 'institution_page_meta'},
         ] 
