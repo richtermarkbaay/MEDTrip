@@ -37,7 +37,7 @@ class SimpleContactDetailFieldType extends AbstractType
         $builder->addEventSubscriber(new ContactDetailDataSubscriber());
         $countryChoices = array();
         foreach ($this->locationService->getActiveCountries() as $country) {
-            $code = (int)$country['code'];
+            $code = (int)$country['countryCode'];
             $countryChoices[$country['id']] = $country['name']." (+{$code})";    
         }
 
