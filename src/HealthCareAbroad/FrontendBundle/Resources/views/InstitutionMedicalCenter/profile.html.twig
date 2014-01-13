@@ -1,6 +1,8 @@
 {% extends 'FrontendBundle::layout.html.twig' %}
-{% set streetAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['address']) %}
-{% set mainAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode']) %}
+{% set mainContentItemType = 'http://schema.org/MedicalClinic' %}
+
+{% set streetAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['address'], ', ', {wrapWithMicrodata: true}) %}
+{% set mainAddress = medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode'], ', ', {wrapWithMicrodata: true}) %}
 
 {% block content %}
     {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
@@ -36,14 +38,27 @@
         {% if institutionMedicalCenter.doctors|length %}
             {% embed 'FrontendBundle:Embed:profileSection.html.twig' with {title: 'Doctors', class: 'doctors' } %}
                 {% block sectionContent %}
-                    {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { doctors: institutionMedicalCenter.doctors } %}
+                    {% include 'FrontendBundle:Widgets:profileDoctorsList.html.twig' with { 
+                        doctors: institutionMedicalCenter.doctors 
+                    } %}
                 {% endblock %}                
             {% endembed %}
         {% endif %}
         
+        {#
+        <!--
+        FIXME: streetAddress and mainAddress are of different format from above since the one above has microdata format 
+         -->
+         #}
         {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institutionMedicalCenter.socialMediaSites,
-            contactEmail:institutionMedicalCenter.contactEmail,contactNumber: institutionMedicalCenter.mainContactNumber,website:institutionMedicalCenter.websites, } 
+            with { 
+                streetAddress: medical_center_complete_address_to_string(institutionMedicalCenter, ['address']), 
+                mainAddress: medical_center_complete_address_to_string(institutionMedicalCenter, ['city', 'state', 'country', 'zipCode']),
+                social: institutionMedicalCenter.socialMediaSites,
+                contactEmail:institutionMedicalCenter.contactEmail,
+                contactNumber: institutionMedicalCenter.mainContactNumber,
+                website:institutionMedicalCenter.websites 
+            } 
         %}
         
     </div>

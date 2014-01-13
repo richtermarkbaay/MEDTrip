@@ -14,7 +14,8 @@
             {% if center.id not in _featuredClinicIds %}
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                   'statisticsDataObject': searchResultVo.institutionMedicalCenter,
-                  'searchResultItem' : get_search_result_item(center)
+                  'searchResultItem' : get_search_result_item(center),
+                  'resultItemSchemaType' : 'http://schema.org/MedicalClinic'
               }%}
            {% endif %}
         {% endfor %}

@@ -7,8 +7,14 @@
                     {% for each in institutionMedicalCenter.businessHours %}
                        <li>
                             {% set _bhData =  business_hours_to_view_data(each) %}
-                            <span class="fbh_selected_days_label">{{ _bhData.daysLabel | upper }}</span>
-                            <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
+                            
+                            <time itemprop="openingHours" datetime="{{ _bhData.days.twoLetter | join(',') }} {{ _bhData.startTimeDbFormat }}-{{ _bhData.endTimeDbFormat }}">
+                                <span class="fbh_selected_days_label">
+                                    {{ _bhData.daysLabel | upper }}
+                                </span>
+                                <b class="fbh_selected_time_label">{{ _bhData.startTime }} - {{ _bhData.endTime }}</b>
+                            </time>
+                            
                             <p class="fbh_selected_item_notes"> {{ each.notes }} </p>
                         </li>
                     {% endfor %}

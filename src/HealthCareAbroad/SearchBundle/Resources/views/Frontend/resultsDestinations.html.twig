@@ -15,7 +15,8 @@
             {% if institution.id not in _featuredInstitutionIds %}
                 {% include 'SearchBundle:Frontend/Widgets:base.resultItem.html.twig' with {
                        'statisticsDataObject': searchResultVo.institution,
-                       'searchResultItem' : get_search_result_item(institution)
+                       'searchResultItem' : get_search_result_item(institution),
+                       'resultItemSchemaType' : 'http://schema.org/Hospital'
               }%}
             {% endif %}
         {% endfor %}
