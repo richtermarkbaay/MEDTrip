@@ -28,6 +28,10 @@ class PageMetaConfigurationController extends Controller
         $request->getSession()->setFlash('redirect_url', $this->generateUrl($request->attributes->get('_route')));
         
         $metaConfiguration = $this->get('services.helper.page_meta_configuration')->findOneByUrl('/');
+        if (!$metaConfiguration) {
+            $metaConfiguration= new PageMetaConfiguration();
+            $metaConfiguration->setUrl('/');
+        }
         $form = $this->createForm(new PageMetaConfigurationFormType(), $metaConfiguration);
         
         return $this->render('AdminBundle:PageMetaConfiguration:homepage.html.twig', array('form' => $form->createView()));

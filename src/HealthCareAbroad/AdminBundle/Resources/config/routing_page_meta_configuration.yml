@@ -1,5 +1,5 @@
 admin_page_metas_index:
-    pattern:  /admin/page_metas/index.html
+    pattern:  /admin/page_metas/results-page
     defaults: { _controller: AdminBundle:PageMetaConfiguration:pageMetaConfiguration }
 
 admin_page_metas_process_search_parameters:
@@ -23,5 +23,5 @@ admin_page_metas_save:
          _method: POST
          
 admin_homepage_metas_index:
-    pattern:  /admin/homepage_metas/index.html
+    pattern:  /admin/page_metas/homepage
     defaults: { _controller: AdminBundle:PageMetaConfiguration:index }
