@@ -131,7 +131,7 @@ class ContactDetailService
             $number = new ContactDetail();
             $number->setType($type);
             if ($country){
-                $number->setCountryCode($country->getCode());
+                $number->setCountryCode($country->getCountryCode());
                 $number->setCountry($country);
             }
             $parentObject->addContactDetail($number);

@@ -22,7 +22,7 @@ class ContactDetailDataSubscriber implements EventSubscriberInterface
         $contactDetail = $event->getData();
         $country = $contactDetail->getCountry();
         if ($country instanceof Country) {
-            $code = (int)$country->getCode();
+            $code = (int)$country->getCountryCode();
             $contactDetail->setCountryCode($code);
         }
     }
