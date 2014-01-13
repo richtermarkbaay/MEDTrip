@@ -22,7 +22,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PageMetaConfigurationController extends Controller
 {
+    
     public function indexAction(Request $request)
+    {
+        $request->getSession()->setFlash('redirect_url', $this->generateUrl($request->attributes->get('_route')));
+        
+        $metaConfiguration = $this->get('services.helper.page_meta_configuration')->findOneByUrl('/');
+        if (!$metaConfiguration) {
+            $metaConfiguration= new PageMetaConfiguration();
+            $metaConfiguration->setUrl('/');
+        }
+        $form = $this->createForm(new PageMetaConfigurationFormType(), $metaConfiguration);
+        
+        return $this->render('AdminBundle:PageMetaConfiguration:homepage.html.twig', array('form' => $form->createView()));
+    }
+    
+    public function pageMetaConfigurationAction(Request $request)
     {
         return $this->resultsPageMetaConfigurationAction($request);
     }
@@ -156,7 +171,7 @@ class PageMetaConfigurationController extends Controller
         $form->bind($request);
         $redirectUrl = $request->getSession()->hasFlash('redirect_url')
             ? $request->getSession()->getFlash('redirect_url')
-            : $this->generateUrl('admin_page_metas_index');
+            : $this->generateUrl('admin_homepage_metas_index');
         
         if ($form->isValid()) {
             $this->get('services.helper.page_meta_configuration')

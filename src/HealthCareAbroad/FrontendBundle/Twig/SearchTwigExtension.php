@@ -251,6 +251,6 @@ class SearchTwigExtension extends \Twig_Extension
         }
 
         return $this->router->generate('frontend_institutionMedicalCenter_profile', array(
-            'institutionSlug' => $institutionSlug, 'imcSlug' => $imcSlug));
+            'institutionSlug' => $institutionSlug, 'imcSlug' => $imcSlug), true);
     }
 }

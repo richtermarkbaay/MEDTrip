@@ -1,5 +1,5 @@
-{% set streetAddress = institution_address_to_string(institution, ['address1']) %}
-{% set mainAddress = institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode']) %}
+{% set streetAddress = institution_address_to_string(institution, ['address1'], ', ', {wrapWithMicrodata: true}) %}
+{% set mainAddress = institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode'], ', ', {wrapWithMicrodata: true}) %}
 
 {% include 'FrontendBundle:Institution/Widgets:commonHeading.html.twig' with {viewData: {
         headerText: institution.name,
@@ -40,9 +40,20 @@
     {% endif %}
     <!-- End of Tabs Content -->
     
+    {#
+    <!--
+    FIXME: streetAddress and mainAddress are of different format from above since the one above has microdata format 
+     -->
+     #}
     {% include 'FrontendBundle:Institution/Widgets:commonContactAndAddress.html.twig' 
-            with { streetAddress: streetAddress, mainAddress: mainAddress,social: institution.socialMediaSites,
-            contactEmail: institution.contactEmail,contactNumber: institution.mainContactNumber,website: institution.websites, } 
+            with { 
+                streetAddress: institution_address_to_string(institution, ['address1']), 
+                mainAddress: institution_address_to_string(institution, ['city', 'state', 'country', 'zipCode']),
+                social: institution.socialMediaSites,
+                contactEmail: institution.contactEmail,
+                contactNumber: institution.mainContactNumber,
+                website: institution.websites, 
+            } 
         %}
 </div>
 

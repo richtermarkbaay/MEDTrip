@@ -4,7 +4,7 @@
         <ul>
             {% for each in institutionSpecializations %}
                 {% set specialization = each.specialization %}
-                <li class="specialization">
+                <li class="specialization"  >
                 
                     {% if specialization.media and specialization.media.src %}
                         <img class="thumbnail-wrapper default img-polaroid pull-left" src="{{ specialization.media.src }}" />
@@ -12,8 +12,10 @@
                         <span class="thumbnail-wrapper default img-polaroid pull-left"></span>
                     {% endif %}
                     
-                    
-                    <a>{{ specialization.name }}</a>
+                    {# <!-- itemscope is limited only to this a tag since in schema.org, medicalprocedure is listed as a separate property, that is availableService --> #}
+                    <a itemprop="medicalSpecialty" itemscope itemtype="http://schema.org/MedicalSpecialty">
+                        <span itemprop="name">{{ specialization.name }}</span>
+                    </a>
                     
                     {% set _groupedTreatments = group_treatments_by_subspecialization(each.treatments) %}
 
@@ -30,7 +32,9 @@
                                     <ul class="treatment">
                                         {% for treatment in _groupedData.treatments %}
                                         <li>
-                                            <a>{{ treatment.name }}</a>
+                                            <a itemprop="availableService" itemscope itemtype="http://schema.org/MedicalProcedure">
+                                                <span itemprop="name">{{ treatment.name }}</span>
+                                            </a>
                                         </li>
                                         {% endfor %}
                                     </ul><!-- .treatment -->

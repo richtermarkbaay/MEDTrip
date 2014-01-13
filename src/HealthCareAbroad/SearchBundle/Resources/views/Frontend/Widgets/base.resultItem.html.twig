@@ -1,4 +1,5 @@
-<div class="item-wrapper {{ get_impression_tracker_class() }}" {{ get_statistics_parameter_attribute_name() }} = ~ encode_search_result_item_impression_parameters(statisticsDataObject) }}>
+{% set resultItemSchemaType = resultItemSchemaType is defined ? resultItemSchemaType : 'http://schema.org/LocalBusiness' %} 
+<div itemscope itemtype="http://schema.org/Hospital" class="item-wrapper {{ get_impression_tracker_class() }}" {{ get_statistics_parameter_attribute_name() }} = ~ encode_search_result_item_impression_parameters(statisticsDataObject) }}>
 
     {% if searchResultItem.displayLogo %}
         <div class="left-column-wrapper">
@@ -23,7 +24,11 @@
             </div>
         {% endif %}
 
-        <h3 class="heading"><a href="{{ searchResultItem.url }}">{{ searchResultItem.name }}</a></h3>
+        <h3 class="heading">
+            <a itemprop="url" content="{{ searchResultItem.url }}" href="{{ searchResultItem.url }}">
+                <span itemprop="name">{{ searchResultItem.name }}</span>
+            </a>
+        </h3>
 
         {% if searchResultItem.supplementaryUrl %}
             <h4 class="heading"><a href="{{ searchResultItem.supplementaryUrl.url }}">{{ searchResultItem.supplementaryUrl.name }}</a></h4>
@@ -31,7 +36,10 @@
 
         {% if searchResultItem.description | length > 0 %}
             <p>
+                <span itemprop="description">
                 {{ (searchResultItem.description | length > 200 ? (searchResultItem.description | slice(0, 200) | trim) ~ '...' : searchResultItem.description) | raw }}
+                </span>
+                
                 {% include 'StatisticsBundle:Tracker/Widgets:searchResultItem.clickthroughLink.html.twig' with { 'link': {
                     url: searchResultItem.url, html: 'More Info', class: '' }} %}
             </p>

@@ -1,0 +1,26 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+    
+    {% include 'AdminBundle:PageMetaConfiguration/Widgets:sidebar.html.twig' with {'activeSideBar' : 'home_page_meta'} %}
+    
+    <div id="content" class="span9">
+        
+        {% embed 'HelperBundle:Widgets:section.html.twig' 
+            with { 
+                title: 'Home Page Meta Configuration'
+            }  
+        %}
+         {% block sectionContent %}
+         
+            <div id="meta_form_container">
+                {% include 'AdminBundle:PageMetaConfiguration:form.html.twig' %}
+            </div>    
+                    
+            {% endblock %}
+            
+        {% endembed %}
+    </div>
+{% endblock %}
+
