@@ -77,9 +77,6 @@ class InstitutionTwigExtension extends \Twig_Extension
             'render_institution_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_suggestions'),
             'render_institution_single_center_suggestions' =>  new \Twig_Function_Method($this, 'render_institution_single_center_suggestions'),
             'render_incomplete_clinic_profile' =>  new \Twig_Function_Method($this, 'render_incomplete_clinic_profile'),
-            'render_institution_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_inquiries'),
-            'render_institution_unread_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_unread_inquiries'),
-            'render_institution_read_inquiries' =>  new \Twig_Function_Method($this, 'render_institution_read_inquiries'),
             'contact_label_type' =>   new \Twig_Function_Method($this, 'contact_label_type')
         );
     }
@@ -176,30 +173,8 @@ class InstitutionTwigExtension extends \Twig_Extension
             }
         }        
         return $incompleteClinics;
-    }    
-    
-    public function render_institution_inquiries(Institution $institution)
-    {
-        $inquiries = $this->institutionService->getInstitutionInquiries($institution);
+    }
 
-        return $inquiries;
-    }
-    
-    public function render_institution_unread_inquiries(Institution $institution)
-    {
-        $unread_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD);
-        
-        return $unread_inquiries;
-    }
-    
-    public function render_institution_read_inquiries(Institution $institution)
-    {
-        $read_inquiries = $this->institutionService->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ);
-        
-        return $read_inquiries;
-    }
-    
-    
     public function renderInstitutionContactDetails(Institution $institution, $asJSON=false)
     {
         

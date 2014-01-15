@@ -49,7 +49,7 @@ class InstitutionInquiryApiController extends ApiController
         //$form->bind($this->getRequest());
         
         if ($form->isValid()) {
-            $this->get('services.institution.institutionInquiry')->save($institutionInquiry);
+            $this->get('services.institution.inquiry')->save($institutionInquiry);
             $response = $this->createResponseAsJson(InstitutionInquiryService::toArray($institutionInquiry), 200);
         }
         else {
@@ -69,7 +69,7 @@ class InstitutionInquiryApiController extends ApiController
         }
         $oldId = $institutionInquiry->getId();
         
-        $this->get('services.institution.institutionInquiry')->delete($institutionInquiry);
+        $this->get('services.institution.inquiry')->delete($institutionInquiry);
         $response = $this->createResponseAsJson(array ('id' => $oldId), 200);
         
         return $response;

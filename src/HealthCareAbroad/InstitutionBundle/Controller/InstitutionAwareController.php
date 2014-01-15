@@ -7,6 +7,8 @@
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
+
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
@@ -30,6 +32,7 @@ abstract class InstitutionAwareController extends Controller
     public function preExecute()
     {
         $institutionId = $this->getRequest()->getSession()->get('institutionId', 0);
+        
         if ($institutionId) {
 
             // Temporarily eagerLoad in ProfileView
@@ -50,10 +53,19 @@ abstract class InstitutionAwareController extends Controller
     {
         $this->institution = $institution;
         $this->isSingleCenter = $this->get('services.institution')->isSingleCenter($this->institution);
+
         $this->get('twig')->addGlobal('institution', $this->institution);
         $this->get('twig')->addGlobal('isSingleCenter', $this->isSingleCenter);
         $this->get('twig')->addGlobal('institutionLabel', $this->isSingleCenter ? 'Clinic' : 'Hospital');
-        
+
+        $unreadInquiries = $this->getRequest()->getSession()->get('unreadInquiries');
+
+        if(!is_array($unreadInquiries)) {
+            $unreadInquiries = $this->get('services.institution.inquiry')->getInquiriesByInstitutionAndStatus($institution, InstitutionInquiry::STATUS_UNREAD);
+            $this->getRequest()->getSession()->set('unreadInquiries', $unreadInquiries);
+            $this->getRequest()->getSession()->set('unreadInquiriesCount', count($unreadInquiries));
+        }
+
 //         if($this->get('security.context')->getToken()->getUser()){
 //             $loggedUser = $this->get('security.context')->getToken()->getUser();
 //             $this->get('twig')->addGlobal('userName',$loggedUser);

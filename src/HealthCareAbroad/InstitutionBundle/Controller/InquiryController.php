@@ -1,7 +1,8 @@
 <?php
 /**
  * Controller that handles all Inquiries
- * @author Chaztine
+ * 
+ * @author Adelbert Silla - updated on 01-15-2014
  */
 namespace HealthCareAbroad\InstitutionBundle\Controller;
 
@@ -26,15 +27,10 @@ class InquiryController extends InstitutionAwareController
     
     public function viewAllInquiriesAction(Request $request)
     {
-        $tab = $request->get('tabName','all');
-        $template = "InstitutionBundle:Inquiry:inquiries.html.twig";
-        $inquiries = $this->get('services.institution')->getInstitutionInquiriesBySelectedTab($this->institution, $tab);
-        
-        return $this->render($template, array(
-                        'institution' => $this->institution,
-                        'inquiries' => \json_encode($inquiries, JSON_HEX_APOS),
-                        'isInquiry' => true,
-                        'tabName' => $tab
+        $inquiries = $this->get('services.institution.inquiry')->getInquiriesByInstitution($this->institution);
+
+        return $this->render('InstitutionBundle:Inquiry:inquiries.html.twig', array(
+            'inquiries' => $inquiries
         ));
     }
     
@@ -43,12 +39,17 @@ class InquiryController extends InstitutionAwareController
         if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
             throw $this->createNotFoundException('Invalid Inquiry');
         }
-        $this->get('services.institution')->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_READ);
-    
+
+        if($inquiry->getStatus() == InstitutionInquiry::STATUS_UNREAD) {
+            $this->get('services.institution.inquiry')->updateInquiryStatus($inquiry, InstitutionInquiry::STATUS_READ);
+            $this->clearUnreadInquiriesSession();
+            $currentCount = $this->getRequest()->getSession()->get('unreadInquiriesCount');
+            $this->getRequest()->getSession()->set('unreadInquiriesCount', ($currentCount-1));
+        }
+
         return $this->render('InstitutionBundle:Inquiry:view_inquiry.html.twig', array(
-                        'inquiry' => $inquiry,
-                        'isInquiry' => true,
-                        'prevPath' => $this->getRequest()->headers->get('referer')
+            'inquiry' => $inquiry,
+            'prevPath' => $this->getRequest()->headers->get('referer')
         ));
     }
     
@@ -58,36 +59,40 @@ class InquiryController extends InstitutionAwareController
         if(!$inquiry = $this->inquiryRepo->findOneById($request->get('id'))) {
             throw $this->createNotFoundException('Invalid Inquiry');
         }
+
+        if($inquiry->getStatus() == InstitutionInquiry::STATUS_UNREAD) {
+            $this->clearUnreadInquiriesSession();
+        }
+
+        $this->get('services.institution.inquiry')->updateInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
+        $responseText = array('status' => 1);
         
-        $institutionService->setInstitutionInquiryStatus($inquiry, InstitutionInquiry::STATUS_DELETED);
-        $output = array('inquiryList' => $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $request->get('tabName')),
-                        'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
-                        'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
-        
-        $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
-    
+
+
+        $response = new Response(\json_encode($responseText), 200, array('content-type' => 'application/json'));
+
         return $response;
     
     }
     
-    public function ajaxSetInstitutionInquiryStatusAction(Request $request)
+    public function ajaxUpdateInquiriesStatusAction(Request $request)
     {
-        $institutionService = $this->get('services.institution');
-        
-        $inquiryStatus = InstitutionInquiry::STATUS_READ;
-        if($request->get('status') != InstitutionInquiry::STATUS_READ) {
-            $inquiryStatus = InstitutionInquiry::STATUS_UNREAD;
+        $response = array('status' => 0);
+
+        if($inquiryIds = $request->get('inquiry_ids')) {
+            $institutionInquitryService = $this->get('services.institution.inquiry');
+            $inquiries = $institutionInquitryService->updateInquiriesStatus($inquiryIds, $request->get('status'));
+            $response['status'] = 1;
+            $this->clearUnreadInquiriesSession();
         }
-        
-        if($inquiryList = $request->get('inquiryListArr')) {
-            $inquiries = $institutionService->setInstitutionInquiryListStatus($inquiryList, $inquiryStatus);
-        }
-       
-        $output = array('inquiryList' => $institutionService->getInstitutionInquiriesBySelectedTab($this->institution, $request->get('tabName')),
-                        'readCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_READ),
-                        'unreadCntr' => $institutionService->getInstitutionInquiriesByStatus($this->institution, InstitutionInquiry::STATUS_UNREAD));
-        $response = new Response(\json_encode($output, JSON_HEX_APOS),200, array('content-type' => 'application/json'));
+
+        $response = new Response(\json_encode($response), 200, array('content-type' => 'application/json'));
     
         return $response;
+    }
+    
+    private function clearUnreadInquiriesSession()
+    {
+        $this->getRequest()->getSession()->set('unreadInquiries', null);
     }
 }

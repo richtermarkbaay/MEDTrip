@@ -289,6 +289,27 @@ hr {
     margin-left: -8px;
 }
 
+#content section.section.inquiries .nav.nav-pills.inquiries-nav {
+    margin-top: 10px;
+}
+
+#content section.section.inquiries .nav.nav-pills.inquiries-nav > li > a:hover {
+    background: #EFEFEF;
+}
+
+#content section.section.inquiries .nav.nav-pills.inquiries-nav > li.active > a:hover {
+    background: #0088CC;
+}
+
+#content section.section.inquiries ul.hca-inquiries > li.read p a {
+	font-weight: normal;
+}
+
+.nav.nav-pills.inquiries-nav li.active > a, 
+.nav.nav-pills.inquiries-nav li.active > a:active {
+    color: #FFFFFF;
+}
+
 #content section.section.clinic-schedule hr {
     margin: 15px 0;
 }
@@ -814,8 +835,10 @@ ul.hca-notifications span,ul.hca-inquiries span {
 
 ul.hca-notifications span.sender-details,ul.hca-inquiries span.sender-details {
     width: 200px;
+    vertical-align: top;
     display: inline-block;
 }
+
 
 ul.hca-notifications span.msg-details,ul.hca-inquiries span.msg-details {
     width: 550px;
@@ -837,7 +860,7 @@ ul.hca-notifications li,ul.hca-inquiries li {
 ul.hca-notifications li:hover ul.actions,ul.hca-inquiries li:hover ul.actions {
     display: block;
     position: absolute;
-    margin-left: 790px;
+    margin-left: 810px;
     margin-top: -34px;
 }
 
@@ -2913,7 +2936,17 @@ form input[type=radio],form input[type=checkbox],.aside-box .row .progress .pull
     color: #6e6e6e;
 }
 
-#content section h4 a,#content section h5 a,#content section.section p a,.aside-box p a,.single-listing a,.table.hca-inquiry td:nth-child(2),.thumbnails li div.medicalcenter-name .progress-box .btn-link,.thumbnails li span.medicalcenter-name .progress-box .btn-link,.thumbnails li a.medicalcenter-name .progress-box .btn-link,.thumbnails li div.medicalcenter-name p a,.thumbnails li span.medicalcenter-name p a,.thumbnails li a.medicalcenter-name p a {
+#content section h4 a,
+#content section h5 a,
+#content section.section p a,
+.aside-box p a,.single-listing a,
+.table.hca-inquiry td:nth-child(2),
+.thumbnails li div.medicalcenter-name .progress-box .btn-link,
+.thumbnails li span.medicalcenter-name .progress-box .btn-link,
+.thumbnails li a.medicalcenter-name .progress-box .btn-link,
+.thumbnails li div.medicalcenter-name p a,
+.thumbnails li span.medicalcenter-name p a,
+.thumbnails li a.medicalcenter-name p a {
     font-weight: 700;
 }
 

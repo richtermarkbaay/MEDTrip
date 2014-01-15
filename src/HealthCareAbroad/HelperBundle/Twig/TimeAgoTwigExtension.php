@@ -21,14 +21,15 @@ class TimeAgoTwigExtension extends \Twig_Extension
         );
     }
 
-    public function time_ago_in_words($from_time)
+    public function time_ago_in_words(\DateTime $date)
     {
+        
         $day = 60*60*24;
         $now = time();
         
-        $from_time = strtotime($from_time->format('Y-m-d'));
+        $fromTime = strtotime($date->format('Y-m-d'));
         
-        $datediff = $now - $from_time;
+        $datediff = $now - $fromTime;
         $days =  floor($datediff/$day);
         if($days > 1) {
             $daysAgo = $days . " days ago";
@@ -37,7 +38,7 @@ class TimeAgoTwigExtension extends \Twig_Extension
             $daysAgo = $days . " day ago";
         }
         else {
-            $daysAgo = "today";
+            $daysAgo = "today - " . $date->format('H:ma');
         }
         
         return $daysAgo;

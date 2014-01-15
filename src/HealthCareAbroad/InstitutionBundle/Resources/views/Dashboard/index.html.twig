@@ -66,15 +66,14 @@
             
             <section class="section row-fluid">
                 <h2>Latest Inquiries</h2>
-                {% set _inquiries = render_institution_inquiries(institution) %}
-                {% if _inquiries is not empty %}
+                {% if app.request.session.get('unreadInquiries') is not empty %}
                 <table class="table table-hover hca-inquiry">
-                    {% for inquiry in _inquiries %}
+                    {% for inquiry in app.request.session.get('unreadInquiries') %}
                     <tr>
                         <td><i class="icon-envelope icon-2x hca-earth"></i></td>
                         <td><a href="{{ path('institution_view_inquiry', {id : inquiry.id}) }}">{{ inquiry.inquirerName }}</a></td>
                         <td>{{ inquiry.message }}</td>
-                        <td>{{ inquiry.dateCreated | date("m/d/Y") }}</td>
+                        <td>{{ time_ago_in_words(inquiry.dateCreated) }}</td>
                     </tr>
                     {% endfor %}
                 {% else %}
@@ -86,8 +85,4 @@
 
         {% endblock %}        
     {% endembed %}
-{% endblock %}
-
-{% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/institutionInquiry.js') }}"></script>
 {% endblock %}
