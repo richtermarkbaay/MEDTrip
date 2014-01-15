@@ -52,7 +52,8 @@ class InstitutionInquiryService
         ->add('where', 'a.status != :status')
         ->andWhere('a.institution = :institution')
         ->setParameter('status', InstitutionInquiry::STATUS_DELETED)
-        ->setParameter('institution', $institution);
+        ->setParameter('institution', $institution)
+        ->orderBy('a.dateCreated', 'DESC');
 
         return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
@@ -92,7 +93,8 @@ class InstitutionInquiryService
         ->where('a.status = :status')
         ->andWhere('a.institution = :institution')
         ->setParameter('status', $status)
-        ->setParameter('institution', $institution);
+        ->setParameter('institution', $institution)
+        ->orderBy('a.dateCreated', 'DESC');
 
         return $qb->getQuery()->getResult(Query::HYDRATE_ARRAY);
     }
