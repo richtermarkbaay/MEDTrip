@@ -1,0 +1,19 @@
+api_institutionInquiry_index:
+    pattern: /institution-inquiries
+    defaults: {_controller: ApiBundle:InstitutionInquiryApi:index }
+    requirements:
+        _method: GET
+        
+api_institutionInquiry_putEdit:
+    pattern: /institution-inquiries/{id}
+    defaults: {_controller: ApiBundle:InstitutionInquiryApi:putEdit, id: 0 }
+    requirements:
+        _method: PUT
+        id: \d+
+        
+api_institutionInquiry_delete:
+    pattern: /institution-inquiries/{id}
+    defaults: {_controller: ApiBundle:InstitutionInquiryApi:delete, id: 0 }
+    requirements:
+        _method: DELETE
+        id: \d+

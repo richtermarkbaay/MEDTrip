@@ -1,0 +1,1 @@
+var Channel = _.extend({}, Backbone.Events);

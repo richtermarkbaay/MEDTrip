@@ -1,0 +1,24 @@
+{% raw %}
+<tr>
+    <td>
+        <input type="checkbox" class="select-toggle" value="{{ institutionInquiry.id }}">
+    <td>
+        {{ institutionInquiry.institution.name }}
+    </td>
+    <td>
+        {{ institutionInquiry.inquirerName }} / {{ institutionInquiry.inquirerEmail }}
+    </td>
+    <td>
+        {{ institutionInquiry.message }}
+    </td>
+    <td>
+        {{ institutionInquiry.dateCreated.date }}
+    </td>
+    <td>
+        <!-- 
+        <button class="btn btn-success btn-small approve-trigger">Approve</button>
+        <button class="btn btn-danger btn-small  delete-trigger">Delete&nbsp;</button>
+         -->
+    </td>
+</tr>
+{% endraw %}

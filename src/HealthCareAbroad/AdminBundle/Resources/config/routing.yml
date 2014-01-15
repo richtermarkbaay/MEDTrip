@@ -143,6 +143,11 @@ AdminBundle_medical_provider_group.yml_text:
 AdminBundle_statistics:
     resource: "@AdminBundle/Resources/config/routing_statistics.yml"
     prefix:   /
+    
+# Routes for Inquiry #
+AdminBundle_inquiry:
+    resource: "@AdminBundle/Resources/config/routing_inquiry.yml"
+    prefix:   /admin
 
 ## -- edits history
 admin_history_index:
@@ -159,17 +164,7 @@ admin_showEditHistory:
         objectId: \d+
 ## -------------
 
-admin_institution_inquire:
-    pattern: /admin/institution-inquiries
-    defaults: { _controller: AdminBundle:Inquiry:viewInstitutionInquiries }
-    requirements:
-        _method:  GET
 
-admin_inquire:
-    pattern: /admin/inquiries
-    defaults: { _controller: AdminBundle:Inquiry:viewInquiries }
-    requirements:
-        _method:  GET
         
 admin_feedback:
     pattern: /admin/feedback-inquiries

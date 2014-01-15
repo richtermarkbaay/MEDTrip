@@ -19,7 +19,10 @@ class InstitutionInquiryFormType extends AbstractType
         $builder
             ->add('inquirerName', 'text', array('label' => 'Your Name' ))
             ->add('inquirerEmail','email', array('label' => 'Your Email Address'))
-            ->add('country', FancyCountryFieldType::NAME, array('label' => 'Your Country'))
+            ->add('country', FancyCountryFieldType::NAME, array(
+                'label' => 'Your Country',
+                'constraints' => array(new NotBlank(array('message' => 'Please provide your country')))
+            ))
             ->add('message', 'textarea', array('label' => 'Enter Your Message'))
             ->add('captcha', 'captcha', array('label'=>'Please type the code'))
             ->add('newsletterSubscription', 'checkbox', array('mapped' => false, 'label' => "Yes, I'd like to subscribe to the HealthcareAbroad newsletter."))

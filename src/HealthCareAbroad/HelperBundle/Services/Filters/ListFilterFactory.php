@@ -67,7 +67,7 @@ final class ListFilterFactory
         	'admin_awardingBody_index' => 'AwardingBodyListFilter',
         	'admin_global_award_index' => 'GlobalAwardListFilter',
             'admin_inquire' => 'InquiryListFilter',
-        	'admin_institution_inquire' => 'InstitutionInquiryListFilter',
+        	'admin_inquiry_institutionInquiries' => 'InstitutionInquiryListFilter',
             'admin_institution_contactInfoList' => 'InstitutionContactDetailListFilter',
             'admin_error_reports' => 'ErrorReportListFilter',
             'admin_feedback' => 'FeedbackListFilter',

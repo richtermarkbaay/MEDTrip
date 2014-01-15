@@ -1,0 +1,11 @@
+<div class="span3">
+{% set activeSideBar = activeSideBar is defined ? activeSideBar : 'institution_inquiries' %}
+{% include 'HelperBundle:Widgets:subMenu.html.twig' 
+    with { 
+        links: [
+            {name: 'unapproved_institution_inquiries',url: path('admin_inquiry_unapprovedInstitutionInquiries'), label: 'Unapproved Institution Inquiries', icon: 'icon-list', 'active': activeSideBar == 'unapproved_institution_inquiries'},
+            {name: 'institution_inquiries',url: path('admin_inquiry_institutionInquiries'), label: 'Institution Inquiries', icon: 'icon-list', 'active': activeSideBar == 'institution_inquiries'},
+        ] 
+    }  
+%} 
+</div>

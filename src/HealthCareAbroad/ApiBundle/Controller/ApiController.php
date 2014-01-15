@@ -5,6 +5,8 @@ namespace HealthCareAbroad\ApiBundle\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use HealthCareAbroad\HelperBundle\Services\ErrorValidationHelper;
+use Symfony\Component\Form\Form;
 
 /**
  * 
@@ -18,13 +20,29 @@ abstract class ApiController extends Controller
      * 
      * @param array $data
      * @param int $statusCode
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function createResponseAsJson(array $data, $statusCode)
     {
         $response = $this->setResponseHeaders(
             new Response(\json_encode($data), $statusCode, array('content-type' => 'application/json'))
         );
+        
+        return $response;
+    }
+    
+    
+    /**
+     * 
+     * @param AbstractType $form
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function createResponseFromFormErrors(Form $form)
+    {
+        $errors = array();
+        ErrorValidationHelper::processFormErrorsDeeply($form, $errors);
+        
+        $response = $this->createResponseAsJson($errors, 400);
         
         return $response;
     }
@@ -40,7 +58,10 @@ abstract class ApiController extends Controller
         $response->setPublic();
         $response->setMaxAge($seconds);
         $response->setSharedMaxAge($seconds);
+        $response->headers->addCacheControlDirective('must-revalidate', true);
+        $response->setETag(md5($response->getContent()));
         $response->setVary(array('Accept-Encoding'));
+        $response->isNotModified($this->getRequest());
         
         return $response;
     }

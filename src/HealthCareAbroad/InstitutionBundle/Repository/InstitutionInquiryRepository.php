@@ -13,6 +13,7 @@ use HealthCareAbroad\HelperBundle\Classes\QueryOptionBag;
 use HealthCareAbroad\InstitutionBundle\Entity\Institution;
 
 use Doctrine\ORM\EntityRepository;
+use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 
 /**
  * InstitutionRepository
@@ -22,5 +23,51 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionInquiryRepository extends EntityRepository
 {
+    /**
+     * Get all unapproved institution inquiries
+     * 
+     * @param array $filters
+     * @param int $hydrationMode
+     * @return array
+     */
+    public function getUnapprovedInstitutionInquiries($hydrationMode=Query::HYDRATE_OBJECT)
+    {
+        return $this->getResultByFilters(array('status' => InstitutionInquiry::STATUS_UNAPPROVED), $hydrationMode);
+    }
     
+    public function getResultByFilters($filters=array(), $hydrationMode=Query::HYDRATE_OBJECT)
+    {
+        $qb = $this->getEagerlyLoadedQueryBuilder();
+        
+        $knownFilters = array(
+        	'status' => $qb->expr()->eq('inq.status', ':status')
+        );
+        
+        foreach ($filters as $key => $value) {
+            if (isset($knownFilters[$key])) {
+                $qb->andWhere($knownFilters[$key])
+                    ->setParameter($key, $value);
+            }
+        }
+        
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+    
+    /**
+     * Get eagerly loaded query builder
+     * 
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getEagerlyLoadedQueryBuilder()
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('inq, inst, imc')
+        ->from('InstitutionBundle:InstitutionInquiry', 'inq')
+        ->innerJoin('inq.institution', 'inst')
+        ->leftJoin('inq.institutionMedicalCenter', 'imc')
+        ->where('1=1');
+        
+        
+        return $qb;
+    }
 }

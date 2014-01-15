@@ -1,0 +1,95 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set with_backbone = true %}
+{% set selectedTab = 'inquire' %}
+{% set selectedSubTab = 'institution_inquire_index'%}
+{% set inquiryLabel = getClassLabel('inquiry')  %}
+
+{% block content %}
+
+    {% include 'AdminBundle:Inquiry/Widgets:sideNav.institutionInquiries.html.twig' with {'activeSideBar' : 'unapproved_institution_inquiries'}%}
+
+    <div id="app_canvass" class="span9">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Unapproved Institution ' ~ inquiryLabel.plural | title } %}
+            {% block sectionContent %}
+            
+            <div class="pull-right" style="margin-bottom: 10px;">
+                With selected: 
+                <button disabled class="btn btn-success mass-approve-trigger">Approve Selected</button>
+                <button disabled class="btn btn-danger mass-delete-trigger">Delete Selected</button>
+            </div>
+            
+            <table  class="table table-bordered sortable-list">
+                <thead>
+                    <tr>
+                        <th width="3%">
+                            <input type="checkbox" class="toggle-all">
+                        </th>
+                        <th>Hospital/Clinic</th>
+                        <th>Inquirer Details</th>
+                        <th>Message</th>
+                        <th>Time</th>
+                        <th width="22%">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="collection_canvass">
+                    <tr id="loader">
+                        <td colspan="6">
+                            <img src="/images/admin/ajax-loader.gif">
+                            Loading inquiries
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            {% endblock %}
+        {% endembed %}
+    </div>
+    <div id="{{ institutionInquiryForm.vars.id }}">
+        {{ form_row(institutionInquiryForm._token) }}
+    </div>
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+
+    <!-- institution inquiry view prototype -->
+    <script id="institution_inquiry_view_prototype" type="text/html">{% include 'AdminBundle:Inquiry/Widgets:prototype.institutionInquiryView.js.twig'%}</script>
+    
+    <!-- common modal prototype -->
+    <script id="common_confirm_modal_prototype" type="text/html">
+    {% include 'AdminBundle:Embed:modalBox.base.html.twig' with { modal: 
+        {
+            id: null,
+            modalBody: null,
+            footerBody: null,
+            title: null
+        }
+    }%}
+    </script>
+
+    {% javascripts
+        'bundles/helper/js/view/commonConfirmModal.js'
+        'bundles/admin/js/institutionInquiry/entity/institutionInquiry.js'
+        'bundles/admin/js/institutionInquiry/view/institutionInquiryView.js'
+		'bundles/admin/js/institutionInquiry/unapprovedInstitutionInquiries.app.js'
+        output='js/compiled-admin-unapprovedInstitutionInquiries.js'
+    %}
+
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+
+    <script type="text/javascript">
+    <!--
+    (function($){
+        $(function(){
+            var app = new UnapprovedInstitutionInquiriesApp({
+                el: $('#app_canvass'),
+                collectionUrl: '{{ path("api_institutionInquiry_index", {status: 0, ts: "now" | date("U")}) | raw }}',
+                modelUrl: '{{ path("api_institutionInquiry_index") }}',
+                csrfToken: $('#{{ institutionInquiryForm._token.vars.id }}').val()
+            });
+        });
+    })(jQuery);
+    //-->
+    </script>
+    
+{% endblock %}

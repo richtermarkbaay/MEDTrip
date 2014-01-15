@@ -5,3 +5,7 @@ ApiBundle_institution:
 ApiBundle_hcaBlog:
     resource: "@ApiBundle/Resources/config/routing.hcaBlog.yml"
     prefix:   /api
+    
+ApiBundle_institutionInquiry:
+    resource: "@ApiBundle/Resources/config/routing.institutionInquiry.yml"
+    prefix:   /api

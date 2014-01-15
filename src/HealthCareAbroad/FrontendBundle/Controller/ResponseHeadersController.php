@@ -8,15 +8,15 @@ class ResponseHeadersController extends Controller
 {
     protected function setResponseHeaders(Response $response, array $options = array())
     {
-        $response->setPublic();
-        $response->setMaxAge(600);
-        $response->setSharedMaxAge(600);
-        //$response->setVary(array('Accept-Encoding', 'User-Agent'));
-        $response->setVary(array('Accept-Encoding'));
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setETag(md5($response->getContent()));
-        //$response->setLastModified($date);
-        $response->isNotModified($this->getRequest());
+//         $response->setPublic();
+//         $response->setMaxAge(600);
+//         $response->setSharedMaxAge(600);
+//         //$response->setVary(array('Accept-Encoding', 'User-Agent'));
+//         $response->setVary(array('Accept-Encoding'));
+//         $response->headers->addCacheControlDirective('must-revalidate', true);
+//         $response->setETag(md5($response->getContent()));
+//         //$response->setLastModified($date);
+//         $response->isNotModified($this->getRequest());
 
         return $response;
     }

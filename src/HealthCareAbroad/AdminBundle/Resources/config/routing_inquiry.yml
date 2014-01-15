@@ -1,0 +1,18 @@
+admin_inquiry_unapprovedInstitutionInquiries:
+    pattern: /institution-inquiries/unapproved
+    defaults: { _controller: AdminBundle:Inquiry:viewUnapprovedInstitutionInquiries }
+    requirements:
+        _method:  GET
+
+admin_inquiry_institutionInquiries:
+    pattern: /institution-inquiries
+    defaults: { _controller: AdminBundle:Inquiry:viewInstitutionInquiries }
+    requirements:
+        _method:  GET
+
+
+admin_inquire:
+    pattern: /inquiries
+    defaults: { _controller: AdminBundle:Inquiry:viewInquiries }
+    requirements:
+        _method:  GET
