@@ -19,8 +19,6 @@ use HealthCareAbroad\HelperBundle\Twig\TimeAgoExtension;
 
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
-use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
-
 use Doctrine\ORM\Query\Expr\Join;
 
 use HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenterStatus;
@@ -447,148 +445,11 @@ class InstitutionService
         return $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllGlobalAwardsByInstitution($institution);
     }
 
-
-    /** TODO - Improved!
-     * Get Filtered/Unique Institution Doctors
-     *
-     * @author Adelbert Silla
-     * @param Institution $institution
-     * @return array Doctor
-     */
-    public function getAllDoctors(Institution $institution)
-    {
-        $institutionDoctors = array();
-        // use repository instead: edit by Chris
-        $qb = $this->doctrine->getRepository('DoctorBundle:Doctor')
-            ->getAllDoctorsByInstitution($institution);
-        $institutionDoctors = $qb->getQuery()->getResult();
-
-        /**foreach($institution->getInstitutionMedicalCenters() as $each) {
-            $doctors = $each->getDoctors();
-
-            foreach($doctors as $doctor) {
-                if(!isset($institutionDoctors[$doctor->getId()])) {
-                    $institutionDoctors[$doctor->getId()] = $doctor;
-                }
-            }
-        }**/
-
-        return $institutionDoctors;
-    }
-
-//     public function getBranches(Institution $institution)
-//     {
-//         $groupCriteria = array('medicalProviderGroups' => $this->institution->getMedicalProviderGroups()->first());
-//         $institutionBranches = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->findBy($groupCriteria);
-
-//         $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-
-//         $qb->select('a')->from('InstitutionBundle:Institution')
-//            ->leftJoin('a.medicalProviderGroups', 'b')
-//            ->where($qb->expr()->in('a.id', $qb1->getDQL()));
-//     }
-
     public function getAllInstitutionByParams($params)
     {
         $result = $this->doctrine->getRepository('InstitutionBundle:Institution')->getAllInstitutionByParams($params);
 
         return $result;
-    }
-
-
-    /**
-     * @deprecated
-     * @param Institution $institution
-     * @param unknown_type $stepStatus
-     */
-    public function updateSignupStepStatus(Institution $institution, $stepStatus)
-    {
-//         if($stepStatus != $institution->getSignupStepStatus() && $institution->getSignupStepStatus() > 0) {
-//             $institution->setSignupStepStatus($stepStatus);
-//             $em = $this->doctrine->getEntityManager();
-
-//             $em->persist($institution);
-//             $em->flush($institution);
-//         }
-    }
-
-    public function getInstitutionInquiries(Institution $institution)
-    {
-
-        $qb = $this->doctrine->getEntityManager()->createQueryBuilder();
-        $qb->select('a')
-        ->from('InstitutionBundle:InstitutionInquiry', 'a')
-        ->add('where', 'a.status != :status')
-        ->andWhere('a.institution = :institution')
-        ->setParameter('status', InstitutionInquiry::STATUS_DELETED)
-        ->setParameter('institution', $institution);
-
-        return $qb->getQuery()
-        ->getResult();
-    }
-
-    public function getInstitutionInquiriesBySelectedTab(Institution $institution, $tab)
-    {
-        if($tab == "all") {
-            $inquiries = $this->getInstitutionInquiries($institution);
-        }
-        elseif ($tab == "read") {
-            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_READ);
-        }
-        else {
-            $inquiries = $this->getInstitutionInquiriesByStatus($institution, InstitutionInquiry::STATUS_UNREAD);
-        }
-        $inquiryArr = array();
-        if(count($inquiries) != 0  ) {
-            foreach ($inquiries as $each) {
-                if($each->getStatus() == '1') {
-                    $status = 'unread';
-                }
-                else {
-                    $status = 'read';
-                }
-
-                $inquiryArr[] = array(
-                                'sender' => $each->getInquirerName(),
-                                'email' => $each->getInquirerEmail(),
-                                'id' => $each->getId(),
-                                'message' => \addcslashes($each->getMessage(), "\r\n"),
-                                'status' => $status,
-                                'timeAgo' => $this->timeAgoExt->time_ago_in_words($each->getDateCreated()),
-                                'viewPath' => $this->router->generate('institution_view_inquiry', array('id' => $each->getId())),
-                                'removePath' => $this->router->generate('institution_delete_inquiry', array('id' => $each->getId())));
-
-            }
-        }
-
-        return $inquiryArr;
-    }
-
-    public function setInstitutionInquiryStatus(InstitutionInquiry $inquiry, $status)
-    {
-        $inquiry->setStatus($status);
-        $em = $this->doctrine->getEntityManager();
-        $em->persist($inquiry);
-
-        return $em->flush();
-    }
-
-    public function setInstitutionInquiryListStatus($inquiryList, $status)
-    {
-        $inquiryResultsList = $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findById($inquiryList);
-        $em = $this->doctrine->getEntityManager();
-
-        foreach($inquiryResultsList as $inquiry) {
-            $inquiry->setStatus($status);
-            $em->persist($inquiry);
-        }
-
-        return $em->flush();
-    }
-
-    public function getInstitutionInquiriesByStatus(Institution $institution, $status)
-    {
-        return $this->doctrine->getRepository('InstitutionBundle:InstitutionInquiry')->findBy(array('institution' => $institution, 'status' => $status));
     }
 
     /**

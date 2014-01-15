@@ -1,43 +1,83 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'Inquiries'} %}
-{% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
+
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
+
         {% block wrappedContent %}
-            {#% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %#}
             <div id="mainInquiryDiv" class="span12">
                 {% include 'InstitutionBundle:Inquiry:inquiries_section.html.twig' %}
             </div>
             <!--End of one columns data-->
-                    
         {% endblock %}
         
     {% endembed %}
 {% endblock %}
+
 {% block inlineJavascriptCode %}
-    <script src="{{ asset('bundles/institution/js/institutionInquiry.js') }}"></script>
     <script type="text/javascript">
+
+    function updateInquiriesMessageCount() {
+        var unreadCount = $('#inquiryList > ul.hca-inquiries > li.unread').length;
+        $('#readTab > span').text($('#inquiryList > ul.hca-inquiries > li.read').length);
+        $('#unreadTab > span, #inquiry_banner_cntr > span').text(unreadCount);
+
+        if(unreadCount) {
+            $('#inquiry_banner_cntr > span').show();
+        } else {
+            $('#inquiry_banner_cntr > span').hide();
+        }
+    }
+
     $(function() {
-    	var _inquiries = $.parseJSON('{{ inquiries | raw}}');
-    	var _prototype = '{{ getTemplateContents("InstitutionBundle:Inquiry/Widgets:listItem.inquiry.html.twig") | raw }}';
-    	
-    	InstitutionInquiry._tab = '{{ tabName }}';
-    	InstitutionInquiry._divId = '#inquiryList';
-    	
-    	InstitutionInquiry._inquiryBannerCntrId = '#inquiry_banner_cntr';
-    	InstitutionInquiry.setInquiryData(_inquiries);
-    	InstitutionInquiry.setTemplatePrototype(_prototype);
-    	InstitutionInquiry._loadContent();
+        $('.inquiries-nav li').click(function() {
+            var msgFilter = $(this).data('filter');
+            $('.inquiries-nav li').removeClass('active');
+            $(this).addClass('active');
 
-    	$('.inquiry_showMore').click(function() {
-    	    _cntr = parseInt(_cntr) + parseInt(_cntr);
-    	    $('#inquiryCntr').val(_cntr);
-    	    InstitutionInquiry._loadContent();
-
-    	    return false;
+            if(msgFilter == 'all') {
+                $('#inquiryList > ul.hca-inquiries > li').show();
+            } else {
+                $('#inquiryList > ul.hca-inquiries > li').hide();
+                $('#inquiryList > ul.hca-inquiries > li.'+ msgFilter).show();
+            }
         });
-    	    	
+
+        $('#mainInquiryDiv a.btn.mark-message').click(function(){
+        	_selected = new Array();
+        	_status =  $(this).data('statusinquiry');
+
+        	$('#inquiryList .hca-inquiries input.inquiry_checkList:checked').each(function() {
+        		_selected.push($(this).val());
+        	});
+
+        	$.post($(this).data('url'), { inquiry_ids: _selected , status: _status }, function(response){
+                $('#inquiryList > ul.hca-inquiries input.inquiry_checkList:checked').each(function(){
+                    $(this).parent().attr('class', _status == 2 ? 'message-item read' : 'message-item unread');
+                });
+
+                $('.inquiries-nav li.active').click();
+                updateInquiriesMessageCount();
+            });        
+        });
+
+        $('#inquiryList .message-item .inquiry_remove').click(function(e){
+            e.preventDefault();
+            var msgElem = $(this).parents('.message-item:first');
+            $.post($(this).prop('href'), {}, function(){
+                msgElem.fadeOut(500, function(){
+                    $(this).remove();
+                    updateInquiriesMessageCount();
+                });
+            });
+        });
+
+        $('#inquiryCheckAll').click(function(){
+            $('#inquiryList .message-item .inquiry_checkList').prop('checked', $(this).prop('checked'));
+        });
     });
+
+    updateInquiriesMessageCount();
+
     </script>
 {% endblock %}
-

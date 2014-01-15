@@ -1,41 +1,48 @@
 <section class="section inquiries">
-    <h1>
-        Inquiries
-    </h1>
-    <ul class="breadcrumb messages-box">
-        <li>
-            <a href="{{ path('institution_inquiries') }}"><b>ALL</b></a>
-            <span class="divider">
-                |
-            </span>
-        </li>
-        <li>
-            <a id="readTab" href="{{ path('institution_view_readInquiries', {'tabName' : 'read'}) }}"><b>Read Messages</b><span>({{ render_institution_read_inquiries(institution) | length }})</span></a>
-            <span class="divider">
-                |
-            </span>
-        </li>
-        <li>
-            <a id="unreadTab" href="{{ path('institution_view_unreadInquiries', {'tabName' : 'unread'}) }}">Unread Messages<span>({{ render_institution_unread_inquiries(institution) | length }})</span></a>
-        </li>
+    <h1>Inquiries</h1>
+    <ul class="nav nav-pills inquiries-nav">
+        <li data-filter="all" class="active"><a href="#">All</a></li>
+        <li data-filter="read"><a id="readTab" href="#" >Read Messages(<span></span>)</a></li>
+        <li data-filter="unread"><a id="unreadTab" href="#">Unread Messages(<span></span>)</a></li>
     </ul>
+
+    {% if inquiries|length %}
     <div class="span12 row"> 
-        <input id="inquiryCheckAll" data-mainDivId="#mainInquiryDiv" data-divId="#inquiryList" data-tab="{{ tabName }}" onclick="InstitutionInquiry.selectAllInquiry($(this)); " class="pull-left" type="checkbox">
+        <input id="inquiryCheckAll" class="pull-left" type="checkbox">
         <div class="span11 btn-group">
-            <a href="{{ path('institution_mark_inquiry') }}" data-checkAllId="#inquiryCheckAll" data-statusInquiry="2" data-divId="#inquiryList" onclick="InstitutionInquiry._doInquiry($(this)); return false;" class="btn">
+            <a href="javascript:void(0)" data-url="{{ path('institution_mark_inquiry') }}" data-statusInquiry="2" class="btn mark-message">
                 Mark as read
             </a>
-            <a href="{{ path('institution_mark_inquiry') }}" data-checkAllId="#inquiryCheckAll" data-statusInquiry="1" data-divId="#inquiryList" onclick="InstitutionInquiry._doInquiry($(this)); return false;" class="btn">
+            <a href="javascript:void(0)" data-url="{{ path('institution_mark_inquiry') }}" data-statusInquiry="1" class="btn mark-message">
                 Mark as unread
             </a>
         </div>
     </div>
+    {% endif %}
+
     <div id="inquiryList">
         <ul class="hca-inquiries">
+            {% for each in inquiries %}
+            <li class="message-item {{ each.status == 1 ? 'unread' : 'read' }}">
+                <input type="checkbox" class="inquiry_checkList" value="{{ each.id }}">
+                <span class="sender-details">
+                    <p><a class="_inquirySender" href="{{ path('institution_view_inquiry', {id: each.id}) }}">{{ each.inquirerName }}</a></p>
+                    <a href="{{ path('institution_view_inquiry', {id: each.id}) }}" class="_inquiryEmail">{{ each.inquirerEmail }}</a>
+                    <small>{{ time_ago_in_words(each.dateCreated) }}</small>
+                </span>
+                <span class="msg-details">
+                   <p><a class="inquiry_message" href="{{ path('institution_view_inquiry', {id: each.id}) }}">{{ (each.message|length > 150 ? substr(each.message, 0 , 230) ~ '...' : each.message)  | raw }}</a></p>
+                </span>
+                <ul class="actions msg">
+                    <li class="view">
+                        <div class="btn-group">
+                            <a class="btn inquiry_view btn-misc" href="{{ path('institution_view_inquiry', {id: each.id}) }}"><i class="icon-search"></i></a>
+                            <a href="{{ path('institution_delete_inquiry', {id: each.id}) }}" class="btn inquiry_remove btn-misc" href="#"><i class="icon-trash"></i></a>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            {% endfor %}
         </ul>
     </div>
-    <br>
-    {% if inquiries is empty %}
-    <a class="btn inquiry_showMore pull-right">Show More</a>
-    {% endif %}
 </section>

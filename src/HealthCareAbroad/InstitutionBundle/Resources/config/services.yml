@@ -76,3 +76,8 @@ services:
         class: HealthCareAbroad\InstitutionBundle\Services\InstitutionGalleryService
         calls:
             - [setDoctrine, [@doctrine]]
+
+    services.institution.inquiry:
+        class: HealthCareAbroad\InstitutionBundle\Services\InstitutionInquiryService
+        calls:
+            - [setDoctrine, [@doctrine]]

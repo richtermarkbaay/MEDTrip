@@ -20,7 +20,7 @@
                     </script>
                     <ul class="nav">
                         <li>
-                            <a id="inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ render_institution_unread_inquiries(institution) | length}} </span></a>
+                            <a id="inquiry_banner_cntr" href="{{ path ('institution_inquiries')}}"><i class="icon-envelope-alt"></i>Inquiries<span class="badge badge-warning"> {{ app.request.session.get('unreadInquiriesCount') }} </span></a>
                         </li>
                         <!-- li>
                             <a href="clinic-listing-all.html"><i class="icon-flag"></i>Notifications<span class="badge badge-warning"> 10 </span></a>

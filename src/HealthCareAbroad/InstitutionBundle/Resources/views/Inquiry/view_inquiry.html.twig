@@ -1,32 +1,17 @@
 {% extends 'InstitutionBundle::layout.html.twig' %}
 {% set mainNavigation = {selected: 'inquiries'} %}
-{% set _inquiries = render_institution_inquiries(institution) %}
-{% set _unread_inquiries = render_institution_unread_inquiries(institution) %}
-{% set _read_inquiries = render_institution_read_inquiries(institution) %}
+
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.authenticated.html.twig' %}
         {% block wrappedContent %}
             {#% include 'InstitutionBundle:Widgets:institution_banner.html.twig' %#}
             <h1>
-                Inquiries
+                Enquiry Message
             </h1>
             <div class="span8">
                 <section class="section account-info">
-                    <ul class="messages">
-                        <li class="message header">
-                            <span class="messages-returnbox">
-                                <i class="icon-arrow-left">
-                                </i><a href="{{ prevPath }}">Return</a>
-                            </span>
-                            <!--  >span class="messages-actions">
-                                <div class="btn-group">
-                                    <button class="btn">
-                                        Mark as unread
-                                    </button>
-                                </div>
-                            </span-->
-                        </li>
-                    </ul>
+                    <i class="icon-arrow-left"></i>
+                    <a href="{{ prevPath }}">Return</a>
                 </section>
                 <section>
                     <div class="row-fluid">
@@ -34,15 +19,12 @@
                             {{ inquiry.inquirerName }}
                             <br><small>wrote {{ time_ago_in_words(inquiry.dateCreated)}} </small>
                         </h4>
-                        
-                        <p>
-                            {{ inquiry.message }}
-                        </p>
+                        <p>{{ inquiry.message }}</p>
                     </div>
                 </section>
             </div>
             <aside class="span4">
-                <section class="aside-box default dashboard-side">
+                <!-- section class="aside-box default dashboard-side">
                     <h2>
                         Couple of things need to be done.
                         <br>
@@ -83,7 +65,7 @@
                             </div>
                         </div>
                     </div>
-                </section>
+                </section -->
             </aside>
         {% endblock %}
         
