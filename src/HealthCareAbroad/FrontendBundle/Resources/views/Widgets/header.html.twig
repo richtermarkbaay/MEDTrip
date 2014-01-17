@@ -30,8 +30,14 @@
     <div id="top-content-wrapper"> <!--Hero Unit-->
         <div class="container">
             <div class="row">
+                {#<!-- add itemprops for WebPage -->#}
+                <meta itemprop="image" content="{{ app.request.getSchemeAndHttpHost() ~ asset('images/frontend/logo.png') }}">
+                <meta itemprop="name" content="HealthcareAbroad.com">
+                <meta itemprop="description" content="Patients from all over the world are searching HealthcareAbroad.com">
                 <a href="{{ path('frontend_main_homepage') }}">
-                    <h1 class="logo">HealthcareAbroad</h1>
+                    <h1 class="logo" >
+                        HealthcareAbroad
+                    </h1>
                 </a>
                 <!-- <span class="logo">HealthcareAbroad</span> -->
                 <h3>The resource for <span>Medical Tourism</span></h3>
