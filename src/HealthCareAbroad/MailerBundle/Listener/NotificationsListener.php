@@ -220,14 +220,17 @@ abstract class NotificationsListener
             return true;
         }
 
+        // if template is disabled check debug mode
         if (!$this->debugMode ) {
             return false;
         }
 
+        // if in debug mode check if email is allowed
         if (!in_array(strtolower($data['to']), $this->allowedRecipients)) {
             return false;
         }
 
+        // lastly remove cc if not in allowed list
         if (isset($data['cc']) && !in_array(strtolower($data['cc'], $this->allowedRecipients))) {
             unset($data['cc']);
         }

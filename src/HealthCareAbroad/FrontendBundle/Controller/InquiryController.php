@@ -80,6 +80,7 @@ class InquiryController extends Controller
         $form = $this->createForm(new InstitutionInquiryFormType(), $institutionInquiry);
 
         $form->bindRequest($request);
+
         if ($form->isValid()) {
             if($request->get('imcId')) {
                 $imc = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')->find($request->get('imcId'));
@@ -97,6 +98,8 @@ class InquiryController extends Controller
             $em->persist($institutionInquiry);
             $em->flush();
 
+            /* Moved to InstitutionInquiryApiBundle; we will only dispatch event when inquiry has been approved.
+
             //Listener for NOTIFICATIONS_INQUIRIES events is configured to rethrow any exceptions encountered.
             try {
                 $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
@@ -104,6 +107,7 @@ class InquiryController extends Controller
                 //TODO: Mark this inquiry as having failed to send notifications
                 //ignored for now
             }
+            */
 
             $subscribed = false;
             if ($form->get('newsletterSubscription')->getData()) {
