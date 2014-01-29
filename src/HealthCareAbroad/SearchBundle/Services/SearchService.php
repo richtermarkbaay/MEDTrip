@@ -124,6 +124,18 @@ class SearchService
 
         return $treatments;
     }
+    
+    public function getAllSpecializations()
+    {
+        $key = 'search.widget.controller.specializations.all';
+        $data = $this->memcache->get($key);
+        if (!$data) {
+            $data = $this->searchStrategy->getAllSpecializations();
+            $this->memcache->set($key, $data, $this->cacheExpiration);
+        }
+        
+        return $data;
+    }
 
     public function loadSuggestions($parameters)
     {

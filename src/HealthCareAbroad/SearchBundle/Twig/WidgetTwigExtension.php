@@ -89,7 +89,7 @@ class WidgetTwigExtension extends \Twig_Extension
         $params = $options;
 
         if ($preloadSearchTerms) {
-            $params['treatments'] = json_encode($this->searchService->getAllTreatments());
+            $params['treatments'] = json_encode($this->searchService->getAllSpecializations());
             $params['destinations'] = json_encode($this->searchService->getAllDestinations());
         }
 

@@ -16,6 +16,7 @@ use HealthCareAbroad\SearchBundle\Services\SearchParameterBag;
 use HealthCareAbroad\SearchBundle\Services\SearchStrategy\SearchStrategy;
 use HealthCareAbroad\TermBundle\Entity\TermDocument;
 use HealthCareAbroad\TermBundle\Entity\SearchTerm;
+use HealthCareAbroad\TermBundle\Entity\Term;
 
 /**
  * DefaultSearchStrategy
@@ -679,6 +680,24 @@ class DefaultSearchStrategy extends SearchStrategy
 
         $stmt->execute();
 
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllSpecializations()
+    {
+        $connection = $this->container->get('doctrine')->getEntityManager()->getConnection();
+        $specializationType = TermDocument::TYPE_SPECIALIZATION;
+        $stmt = $connection->query("
+                SELECT a.id AS value, a.name AS label
+                FROM terms AS a
+                INNER JOIN search_terms AS b ON a.id = b.term_id
+                WHERE b.status = {$this->searchTermActiveStatus}
+                AND b.type = {$specializationType}
+                GROUP BY a.name
+                ORDER BY a.name ASC");
+        
+                $stmt->execute();
+        
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
