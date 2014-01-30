@@ -47,26 +47,28 @@ class InstitutionSpecializationListType extends AbstractType
             'empty_value' => '<-- select specialization -->',
             'class' => 'HealthCareAbroad\TreatmentBundle\Entity\Specialization',
             'query_builder' => function(EntityRepository $er) use ($params) {
-                $qb = $er->createQueryBuilder('a');
                 
-                $qb1 = $qb->getEntityManager()->createQueryBuilder();
-                $qb1->select('d.id')
-                    ->from('InstitutionBundle:InstitutionSpecialization', 'b')
-                    ->leftJoin('b.institutionMedicalCenter', 'c')
-                    ->leftJoin('b.specialization', 'd')
-                    ->where('c.institution = :institution')
-                    ->groupBy('b.specialization');
+                return $er->getQueryBuilderForActiveSpecializations();
+//                 $qb = $er->createQueryBuilder('a');
+                
+//                 $qb1 = $qb->getEntityManager()->createQueryBuilder();
+//                 $qb1->select('d.id')
+//                     ->from('InstitutionBundle:InstitutionSpecialization', 'b')
+//                     ->leftJoin('b.institutionMedicalCenter', 'c')
+//                     ->leftJoin('b.specialization', 'd')
+//                     ->where('c.institution = :institution')
+//                     ->groupBy('b.specialization');
 
-                if($params['filter'] == $params['unselected']) {
-                    $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
+//                 if($params['filter'] == $params['unselected']) {
+//                     $qb->where($qb->expr()->notIn('a.id', $qb1->getDQL()));
 
-                } else if($params['filter'] == $params['selected']) {
-                    $qb->where($qb->expr()->in('a.id', $qb1->getDQL()));                    
-                }                
+//                 } else if($params['filter'] == $params['selected']) {
+//                     $qb->where($qb->expr()->in('a.id', $qb1->getDQL()));                    
+//                 }                
 
-                $qb->setParameter('institution', $params['institution']->getId());
+//                 $qb->setParameter('institution', $params['institution']->getId());
 
-                return $qb;
+//                 return $qb;
             }
         ));
     }
