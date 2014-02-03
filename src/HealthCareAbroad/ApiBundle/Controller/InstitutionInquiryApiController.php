@@ -7,6 +7,7 @@ use HealthCareAbroad\InstitutionBundle\Entity\InstitutionInquiry;
 use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
 use HealthCareAbroad\InstitutionBundle\Form\Api\InstitutionInquiryApiFormType;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionInquiryService;
+use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
 
 class InstitutionInquiryApiController extends ApiController
 {
