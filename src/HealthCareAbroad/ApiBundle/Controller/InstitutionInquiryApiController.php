@@ -46,16 +46,24 @@ class InstitutionInquiryApiController extends ApiController
         $form = $this->createForm(new InstitutionInquiryApiFormType(), $institutionInquiry);
         $contentData = \json_decode($request->getContent(false), true);
         $formData = $contentData[$form->getName()];
+        
+        $oldStatus = $institutionInquiry->getStatus();
         $form->bind($formData);
         //$form->bind($this->getRequest());
 
         if ($form->isValid()) {
+            
+            
             $this->get('services.institution.inquiry')->save($institutionInquiry);
+            
             $response = $this->createResponseAsJson(InstitutionInquiryService::toArray($institutionInquiry), 200);
 
             //Listener for NOTIFICATIONS_INQUIRIES events is configured to rethrow any exceptions encountered.
             try {
-                $inquiry = $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
+                // only fire mailer event if status was changed from unapproved
+                if ($oldStatus == InstitutionInquiry::STATUS_UNAPPROVED && $institutionInquiry->getStatus() != InstitutionInquiry::STATUS_UNAPPROVED) {
+                    $inquiry = $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
+                }
             } catch (\Exception $e) {
                 //TODO: Mark this inquiry as having failed to send notifications
                 //ignored for now
