@@ -11,6 +11,10 @@ services:
         class: HealthCareAbroad\TreatmentBundle\Form\SpecializationType
         tags:
             - { name: form.type, alias: specialization_form }
+    form.treatment_list:
+        class: HealthCareAbroad\TreatmentBundle\Form\ListType\TreatmentListType
+        tags:
+            - { name: form.type, alias: treatment_list }
     form.subSpecialization_list:
         class: "%services.subSpecialization_list%"
         tags:
