@@ -55,8 +55,7 @@ class InstitutionInquiryApiController extends ApiController
 
         if ($form->isValid()) {
             
-            
-            //$this->get('services.institution.inquiry')->save($institutionInquiry);
+            $this->get('services.institution.inquiry')->save($institutionInquiry);
             
             $response = $this->createResponseAsJson(InstitutionInquiryService::toArray($institutionInquiry), 200);
 
