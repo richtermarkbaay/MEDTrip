@@ -8,6 +8,7 @@ use HealthCareAbroad\FrontendBundle\Form\InstitutionInquiryFormType;
 use HealthCareAbroad\InstitutionBundle\Form\Api\InstitutionInquiryApiFormType;
 use HealthCareAbroad\InstitutionBundle\Services\InstitutionInquiryService;
 use HealthCareAbroad\MailerBundle\Event\MailerBundleEvents;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 class InstitutionInquiryApiController extends ApiController
 {
@@ -55,7 +56,7 @@ class InstitutionInquiryApiController extends ApiController
         if ($form->isValid()) {
             
             
-            $this->get('services.institution.inquiry')->save($institutionInquiry);
+            //$this->get('services.institution.inquiry')->save($institutionInquiry);
             
             $response = $this->createResponseAsJson(InstitutionInquiryService::toArray($institutionInquiry), 200);
 
