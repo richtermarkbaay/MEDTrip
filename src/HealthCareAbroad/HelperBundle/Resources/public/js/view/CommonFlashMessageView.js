@@ -12,6 +12,9 @@ var CommonFlashMessageView = Backbone.View.extend({
             case 'error': 
                 this.className = this.className+' alert-error';
                 break;
+            case 'warning':
+                this.className = this.className+' alert-warning';
+                break;
             default:
                 this.className = this.className+' alert-success';
                 break;
