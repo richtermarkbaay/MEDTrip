@@ -23,19 +23,18 @@ BEGIN
     SET @ACTIVE_SEARCH_TERM_STATUS = 1;
     SET @INACTIVE_SEARCH_TERM_STATUS = 0;
     
-    -- clinic status has been changed from NON-ACTIVE to ACTIVE 
-    IF OLD.`status` != @ACTIVE_CLINIC_STATUS AND NEW.`status` = @ACTIVE_CLINIC_STATUS THEN
-    
-        -- update statuses of existing search terms referencing this medical center to ACTIVE_SEARCH_TERM_STATUS
-        UPDATE `search_terms` SET `status` = @ACTIVE_SEARCH_TERM_STATUS 
-        WHERE `institution_medical_center_id` = OLD.`id`; 
-        
-    -- clinic status has been changed from ACTIVE to NON-ACTIVE
-    ELSEIF OLD.`status` = @ACTIVE_CLINIC_STATUS AND NEW.`status` != @ACTIVE_CLINIC_STATUS THEN
-        -- update statuses of existing search terms referencing this medical center to INACTIVE_SEARCH_TERM_STATUS
-        UPDATE `search_terms` SET `status` = @INACTIVE_SEARCH_TERM_STATUS 
-        WHERE `institution_medical_center_id` = OLD.`id`;
-    END IF;  
+    IF OLD.`status` != NEW.`status` THEN
+        IF NEW.`status` =  @ACTIVE_CLINIC_STATUS THEN
+            -- update statuses of existing search terms referencing this medical center to ACTIVE_SEARCH_TERM_STATUS
+            UPDATE `search_terms` SET `status` = @ACTIVE_SEARCH_TERM_STATUS 
+            WHERE `institution_medical_center_id` = OLD.`id`;
+        ELSE
+            -- update statuses of existing search terms referencing this medical center to INACTIVE_SEARCH_TERM_STATUS
+            UPDATE `search_terms` SET `status` = @INACTIVE_SEARCH_TERM_STATUS 
+            WHERE `institution_medical_center_id` = OLD.`id`;
+        END IF;
+    END IF;
+      
     
 END; $$
 ### end institution_medical_centers_au trigger definition
