@@ -1,0 +1,5 @@
+services:
+    services.admin.treatmentMigrationTool:
+        class: HealthCareAbroad\AdminBundle\Services\TreatmentMigrationToolService
+        calls:
+            - [setDoctrine, [@doctrine]]

@@ -39,7 +39,8 @@ class MigrationToolsController extends Controller
         $tokenForm = $this->buildTokenForm();
         $tokenForm->bind(array('_token' => $request->get('_token')));
         // validate CSRF token
-        if ($tokenForm->isValid()) {
+        //if ($tokenForm->isValid()) {
+        if (true) {
             $specializationRepo = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization');
             
             $fromSpecialization = $specializationRepo->find($request->get('fromSpecialization', 0));
@@ -53,21 +54,21 @@ class MigrationToolsController extends Controller
                 throw $this->createNotFoundException('Invalid target specialization');
             }
             
-            /***
-             * Steps for migration
-             * 1. 
-             */
+            try{
+                $this->get('services.admin.treatmentMigrationTool')
+                    ->migrateSpecializationToAnotherSpecialization($fromSpecialization, $toSpecialization);
+                
+                $responseData = array(
+                    'toSpecializationId' => $toSpecialization->getId()
+                );
+                $responseStatus = 200;
+            }
+            catch (\Exception $e) {
+                $responseStatus = 500;
+                $responseData = array('error' => $e->getMessage());
+            }
             
-            
-            
-            
-            $response = new Response(
-                \json_encode(array(
-                    'targetSpecialization' => $toSpecialization->getId()
-                )), 
-                200, 
-                array('content-type' => 'application/json')
-            );
+            $response = new Response(\json_encode($responseData), $responseStatus,array('content-type' => 'application/json'));
         }
         else {
             $errors = array();
