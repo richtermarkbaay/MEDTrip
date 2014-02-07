@@ -42,7 +42,8 @@ class TreatmentMigrationToolService
          *      a. Check if institution_medical_center_id - $toSpecialization.id combination already exists
          *      b. If institution_medical_center_id - $toSpecialization.id combination exists, update institution_treatments of this IMC with institution specialization belonging to $fromSpecialization
          * 2. Move all treatments of fromSpecialization to toSpecialization. Considerations:
-         *      a. Link these treatments to the converted subspecialization [the old fromSpecialization]
+         *      a. Check for existing treatments.name - specialization.id combination in treatments table
+         *      b. Link these treatments to the converted subspecialization [the old fromSpecialization]
          */
         
         $connection = $this->doctrine->getConnection();
@@ -102,10 +103,26 @@ class TreatmentMigrationToolService
             ->where('inst_sp.specialization = :fromSpecialization')
             ->setParameter('fromSpecialization', $fromSpecialization);
         $qb->getQuery()->execute();
-        
         //----- end of step 1
+        //-------------------
         
         //----- step 2
+        
+        // we check first for already existing $toSpecialization-treatment name combination
+        $sql = "SELECT  fromSp.id 
+            FROM `treatments` fromSp
+            INNER JOIN
+            (SELECT * FROM `treatments` WHERE `specialization_id` = :toSpecializationId ) toSp
+            WHERE toSp.`name` = fromSp.`name`
+            AND fromSp.specialization_id = :fromSpecializationId";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue('fromSpecializationId', $fromSpecialization->getId());
+        $statement->bindValue('toSpecializationId', $toSpecialization->getId());
+        $statement->execute();
+        $existingTreatments = array();
+        while ($row = $statement->fetch()){
+            $existingTreatments[] = $row['id'];
+        }
         
         // create sub specialization based on $fromSpecialization
         $subSpecialization = new SubSpecialization();
@@ -114,10 +131,6 @@ class TreatmentMigrationToolService
         $subSpecialization->setSpecialization($toSpecialization); // set to $toSpecialization
         $subSpecialization->setStatus($fromSpecialization->getStatus());
         $em->persist($subSpecialization);
-        
-        // we check first for duplicate $toSpecialization-treatment name combination
-        
-        
         
         foreach ($fromSpecialization->getTreatments() as $treatment) {
         	//if ($treatment instanceof Treatment){}
@@ -132,10 +145,17 @@ class TreatmentMigrationToolService
             
             // set specialization to $toSpecialization
             $treatment->setSpecialization($toSpecialization);
+            
+            // if treatment name already exists in $toSpecialization, rename it
+            if (\in_array($treatment->getId(), $existingTreatments)){
+            	$newName = \trim($treatment->getName().' - '.$fromSpecialization->getName());
+            	$treatment->setName($newName);
+            }
         	
         	$em->persist($treatment);
         }
         
+        // delete all subspecializations of $fromSpecialization
         foreach ($fromSpecialization->getSubSpecializations() as $oldSub) {
         	$em->remove($oldSub);
         }
