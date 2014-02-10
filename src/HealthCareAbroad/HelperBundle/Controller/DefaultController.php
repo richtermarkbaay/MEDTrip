@@ -20,6 +20,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
+    public function apiUtilityJavascriptAction()
+    {
+        $response = $this->render('HelperBundle:Default:apiUtility.js.twig');
+        $response->headers->set('content-type', 'application/javascript');
+        $response->headers->addCacheControlDirective('no-cache', true);
+        $response->headers->addCacheControlDirective('no-store', true);
+        
+        return $response;
+    }
+    
     public function error403Action()
     {
         return $this->render('HelperBundle:Default:error403.html.twig');

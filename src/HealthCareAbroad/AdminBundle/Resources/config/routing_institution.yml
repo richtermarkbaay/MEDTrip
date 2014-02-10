@@ -23,27 +23,27 @@ admin_institution_newlyAddedClinics:
     defaults: { _controller: AdminBundle:Institution:viewNewlyAddedClinics }
 
 admin_institution_add:
-    pattern:  /admin/institution/add
+    pattern:  /admin/institutions/add
     defaults: { _controller: AdminBundle:Institution:add }
     requirements:
          _method: POST|GET
          
 admin_institution_add_details:
-    pattern:  /admin/institution/{institutionId}/add-details
+    pattern:  /admin/institutions/{institutionId}/add-details
     defaults: { _controller: AdminBundle:Institution:addDetails}
     requirements:
          institutionId: \d+
          _method: GET|POST   
          
 admin_institution_view:
-    pattern:  /admin/institution/{institutionId}/view
+    pattern:  /admin/institutions/{institutionId}/view
     defaults: { _controller: AdminBundle:Institution:view }
     requirements:
          institutionId: \d+
          _method: GET
 
 admin_institution_edit_details:
-    pattern:  /admin/institution/{institutionId}/edit
+    pattern:  /admin/institutions/{institutionId}/edit
     defaults: { _controller: AdminBundle:Institution:editDetails}
     requirements:
          institutionId: \d+

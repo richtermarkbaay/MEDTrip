@@ -1,0 +1,5 @@
+api_institutionSpecialization_list:
+    pattern: /institution-specializations
+    defaults: {_controller: ApiBundle:InstitutionSpecializationApi:list }
+    requirements:
+        _method: GET

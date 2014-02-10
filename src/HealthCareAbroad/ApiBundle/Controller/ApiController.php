@@ -54,15 +54,36 @@ abstract class ApiController extends Controller
      */
     protected function setResponseHeaders(Response $response)
     {
-        $seconds = 600;
-        $response->setPublic();
-        $response->setMaxAge($seconds);
-        $response->setSharedMaxAge($seconds);
-        $response->headers->addCacheControlDirective('must-revalidate', true);
-        $response->setETag(md5($response->getContent()));
-        $response->setVary(array('Accept-Encoding'));
-        $response->isNotModified($this->getRequest());
+//         $seconds = 600;
+//         $response->setPublic();
+//         $response->setMaxAge($seconds);
+//         $response->setSharedMaxAge($seconds);
+//         $response->headers->addCacheControlDirective('must-revalidate', true);
+//         $response->setETag(md5($response->getContent()));
+//         $response->setVary(array('Accept-Encoding'));
+//         $response->isNotModified($this->getRequest());
         
         return $response;
+    }
+    
+    /**
+     * Apply filters from request based on $knownFilters
+     * 
+     * @param array $knownFilters
+     * @return array
+     */
+    protected function applyFiltersFromRequest(array $knownFilters)
+    {
+        $request = $this->getRequest();
+        $appliedFilters = array();
+        foreach ($knownFilters as $filterName) {
+            $filterValue = $request->get($filterName, null);
+            if (null !== $filterValue) {
+                $appliedFilters[$filterName] = $filterValue;
+            }
+        }
+        
+        
+        return $appliedFilters;
     }
 }
