@@ -1,0 +1,5 @@
+api_treatment_list:
+    pattern: /treatments
+    defaults: {_controller: ApiBundle:TreatmentApi:list }
+    requirements:
+        _method: GET

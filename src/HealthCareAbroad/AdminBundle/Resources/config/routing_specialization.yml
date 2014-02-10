@@ -5,33 +5,40 @@ admin_specialization_index:
         _method:  GET
 
 admin_specialization_add:
-    pattern:  /admin/specialization/add
+    pattern:  /admin/specializations/add
     defaults: { _controller: AdminBundle:Specialization:add }
     requirements:    
         _method:  GET
         
 admin_specialization_create:
-    pattern:  /admin/specialization/add
+    pattern:  /admin/specializations/add
     defaults: { _controller: AdminBundle:Specialization:save }
     requirements:
          _method: POST
          
-admin_specialization_edit:
-    pattern:  /admin/specialization/edit/{id}
-    defaults: { _controller: AdminBundle:Specialization:edit, id: ~ }
+admin_specialization_manage:
+    pattern:  /admin/specializations/{id}/manage
+    defaults: { _controller: AdminBundle:Specialization:manage }
     requirements:
         id: \d+
         _method:  GET
 
+admin_specialization_edit:
+    pattern:  /admin/specializations/{id}/edit
+    defaults: { _controller: AdminBundle:Specialization:edit, id: ~ }
+    requirements:
+        id: \d+
+        _method:  GET
+        
 admin_specialization_update:
-    pattern:  /admin/specialization/edit/{id}
+    pattern:  /admin/specializations/{id}/edit
     defaults: { _controller: AdminBundle:Specialization:save}
     requirements:
          id: \d+
          _method: POST
 
 admin_specialization_updateStatus:
-    pattern:  /admin/specialization/update-status/{id}
+    pattern:  /admin/specializations/{id}/update-status
     defaults: { _controller: AdminBundle:Specialization:updateStatus, id: ~ }
     requirements:
         id: \d+

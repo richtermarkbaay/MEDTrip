@@ -1,12 +1,12 @@
 admin_institution_medicalCenter_index:
-    pattern:  /admin/institution/{institutionId}/medical-centers
+    pattern:  /admin/institutions/{institutionId}/medical-centers
     defaults: { _controller: AdminBundle:InstitutionMedicalCenter:index }
     requirements:
          institutionId: \d+
          _method: GET
          
 admin_institution_medicalCenter_view:
-    pattern:  /admin/institution/{institutionId}/medical-center/view/{imcId}
+    pattern:  /admin/institutions/{institutionId}/medical-centers/{imcId}
     defaults: { _controller: AdminBundle:InstitutionMedicalCenter:view, imcId: ~ }
     requirements:
         institutionId: \d+

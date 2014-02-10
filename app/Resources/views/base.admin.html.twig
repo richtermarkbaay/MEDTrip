@@ -18,6 +18,7 @@
         {% endjavascripts %}
         
         {% if with_backbone %}
+            <script type="text/javascript" src="{{ path('helper_default_apiUtilityJavascript') }}"></script>
             {% javascripts 
                 'js/lib/underscore-min.js'
                 'js/lib/backbone-min.js'
