@@ -15,14 +15,14 @@ admin_subSpecialization_create:
          _method: POST
 
 admin_subSpecialization_edit:
-    pattern:  /admin/sub-specialization/edit/{id}
+    pattern:  /admin/sub-specializations/{id}/edit
     defaults: { _controller: AdminBundle:SubSpecialization:edit }
     requirements:
          id: \d+
          _method: GET
 
 admin_subSpecialization_update:
-    pattern:  /admin/sub-specialization/edit/{id}
+    pattern:  /admin/sub-specializations/{id}/edit
     defaults: { _controller: AdminBundle:SubSpecialization:save}
     requirements:
          id: \d+

@@ -3,33 +3,33 @@ admin_treatment_index:
     defaults: { _controller: AdminBundle:Treatment:index }
 
 admin_treatment_add:
-    pattern:  /admin/treatment/add
+    pattern:  /admin/treatments/add
     defaults: { _controller: AdminBundle:Treatment:add }
     requirements:
          _method: GET
 
 admin_treatment_create:
-    pattern:  /admin/treatment/add
+    pattern:  /admin/treatments/add
     defaults: { _controller: AdminBundle:Treatment:save }
     requirements:
          _method: POST
 
 admin_treatment_edit:
-    pattern:  /admin/treatment/edit/{id}
+    pattern:  /admin/treatments/{id}/edit
     defaults: { _controller: AdminBundle:Treatment:edit }
     requirements:
          id: \d+
          _method: GET
 
 admin_treatment_update:
-    pattern:  /admin/treatment/edit/{id}
+    pattern:  /admin/treatments/{id}/edit
     defaults: { _controller: AdminBundle:Treatment:save}
     requirements:
          id: \d+
          _method: POST
 
 admin_treatment_updateStatus:
-    pattern:  /admin/treatment/update-status/{id}
+    pattern:  /admin/treatments/{id}/update-status
     defaults: { _controller: AdminBundle:Treatment:updateStatus }
     requirements:
          id: \d+

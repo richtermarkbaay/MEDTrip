@@ -8,6 +8,10 @@
         {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Manage Specialization - '~specialization.name } %}
             {% block sectionContent %}
             
+            <div class="pull-right">
+                <a href="{{ path('admin_specialization_edit', {id: specialization.id}) }}" class="btn btn-success">Edit {{ specialization.name }}</a>
+            </div>
+            
             
             <ul class="nav nav-tabs">
                 <li  class="active"><a href="#treatments" data-toggle="tab">Treatments</a></li>
