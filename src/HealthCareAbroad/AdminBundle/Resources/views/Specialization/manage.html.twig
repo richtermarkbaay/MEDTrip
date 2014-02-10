@@ -20,11 +20,24 @@
             
             <div class="tab-content">
                 <div class="tab-pane active" id="treatments">
+                    
+                    <div class="row-fluid treatment-filters">
+                        <div class="controls pull-right">
+                            <select name="sub-specialization"></select>
+                            {#
+                            <!-- 
+                            <select name="status" class="input-small"></select>
+                             --> #}
+                            
+                            <button type="button" class="btn btn-primary submit-filter"> Go </button>
+                        </div>
+                    </div>
+                
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Sub Specializations</th>
+                                <th width="25%">Sub Specializations</th>
                                 <th>Description</th>
                                 <th width="10%">Status</th>
                                 <th></th>
@@ -71,6 +84,7 @@
     {% javascripts
         'bundles/helper/js/view/commonConfirmModal.js'
         'bundles/treatment/js/entity/treatment.entity.js'
+        'bundles/treatment/js/entity/subSpecialization.entity.js'
         'bundles/institution/js/entity/institutionSpecialization.entity.js'
         'bundles/admin/js/treatment/view/treatment.view.js'
         'bundles/admin/js/institutionSpecialization/view/institutionSpecialization.view.js'

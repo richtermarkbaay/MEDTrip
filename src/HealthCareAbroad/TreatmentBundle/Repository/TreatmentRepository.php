@@ -32,6 +32,7 @@ class TreatmentRepository extends EntityRepository
         
         $knownFilters = array(
         	'specialization' => $qb->expr()->eq('tr.specialization', ':specialization'),
+            'subSpecialization' => $qb->expr()->eq('subSp.id', ':subSpecialization'),
             'status' => $qb->expr()->eq('tr.status', ':status')
         );
         

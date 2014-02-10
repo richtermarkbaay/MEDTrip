@@ -7,7 +7,7 @@ class TreatmentApiController extends ApiController
 {
     public function listAction(Request $request)
     {
-        $knownFilters = array('status', 'specialization');
+        $knownFilters = array('status', 'specialization', 'subSpecialization');
         $appliedFilters = $this->applyFiltersFromRequest($knownFilters);
                 
         $result = $this->getDoctrine()->getRepository('TreatmentBundle:Treatment')

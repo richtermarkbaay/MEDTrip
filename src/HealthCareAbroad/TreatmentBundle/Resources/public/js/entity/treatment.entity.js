@@ -20,4 +20,4 @@ var TreatmentCollection = Backbone.Collection.extend({
     parse: function(response) {
         return response['treatments'];
     }
-})
+});

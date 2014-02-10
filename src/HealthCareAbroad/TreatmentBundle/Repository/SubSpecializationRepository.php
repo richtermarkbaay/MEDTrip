@@ -12,6 +12,8 @@ use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\LockMode;
+use Doctrine\ORM\Query;
+use HealthCareAbroad\HelperBundle\Services\Helpers\QueryHelper;
 /**
  * SubSpecializationRepository
  *
@@ -20,6 +22,25 @@ use Doctrine\DBAL\LockMode;
  */
 class SubSpecializationRepository extends EntityRepository
 {
+    public function getResultByFilters(array $filters=array(), $hydrationMode=Query::HYDRATE_ARRAY)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('subSp, sp')
+            ->from('TreatmentBundle:SubSpecialization', 'subSp')
+            ->innerJoin('subSp.specialization', 'sp')
+            ->where('1=1');
+        
+        $knownFilters = array(
+        	'status' => $qb->expr()->eq('subSp.status', ':status'),
+            'specialization' => $qb->expr()->eq('subSp.specialization', ':specialization')
+        );
+        
+        $qb = QueryHelper::applyQueryBuilderFilters($qb, $knownFilters, $filters);
+        $qb->orderBy('subSp.name', 'ASC');
+        
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+    
     /**
      * Overrides find() accepting either id or slug.
      *
