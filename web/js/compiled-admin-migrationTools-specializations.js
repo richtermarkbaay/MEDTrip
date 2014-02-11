@@ -106,6 +106,7 @@ var MigrateSpecializationApp = Backbone.View.extend({
         this.migrationForm.find('button[type="submit"]').prop('disabled', true);
         var selectedSpecializationId = $(e.target).val();
         
+        var manageLink = $(e.target).parents('div.control-group').find('a.manage-specialization-link');
         if (selectedSpecializationId != 0){
             // rebuild the toSpecialization dropdown
             this.specializationCollection.each(function(model, key, list){
@@ -116,6 +117,15 @@ var MigrateSpecializationApp = Backbone.View.extend({
             }, this);
             toSpecialization.prop('disabled', false);
             this.migrationForm.find('button[type="submit"]').prop('disabled', false);
+            
+            manageLink
+                .prop('href', ApiUtility.getRootUrl()+'/admin/specializations/'+selectedSpecializationId+'/manage')
+                .show();
+        }
+        else {
+            manageLink
+            .prop('href', '#')
+            .hide();
         }
         
     },

@@ -4,9 +4,7 @@
 
 {% block content %}
 
-    {% include 'AdminBundle:Inquiry/Widgets:sideNav.institutionInquiries.html.twig' with {'activeSideBar' : 'unapproved_institution_inquiries'}%}
-
-    <div id="app_canvass" class="span9">
+    <div id="app_canvass" class="span12">
         {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Migrate Specialization' } %}
             {% block sectionContent %}
             
@@ -18,6 +16,7 @@
                             <select id="from_specialization" name="from_specialization"></select>
                             <span class="help">This will be the specialization that will be migrated as Sub Specialization</span>
                         </div>
+                        <a href="#" class="manage-specialization-link hidden" target="_blank">View Specialization Details</a>
                     </div>
                     
                     <div class="control-group">
