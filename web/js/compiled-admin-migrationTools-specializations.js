@@ -139,7 +139,8 @@ var MigrateSpecializationApp = Backbone.View.extend({
     },
     
     startMigration: function(){
-        this.migrationForm.find('button[type="submit"]').prop('disabled', true);
+        var btn = this.migrationForm.find('button[type="submit"]');
+        btn.prop('disabled', true);
         
         var flash = new CommonFlashMessageView({type: 'warning', message: 'Migration started! Do not close this window until the process is completed!'});
         flash.show();
@@ -156,13 +157,19 @@ var MigrateSpecializationApp = Backbone.View.extend({
             success: function(response){
                 var flash = new CommonFlashMessageView({
                     type: 'success', 
-                    message: 'Failed to migrate. '
+                    message: 'Migration successfull.'
                 });
+                
                 flash.show();
+                if (response.redirectUrl) {
+                    window.location.href = response.redirectUrl;
+                }
             },
             error: function(xhr, response){
                 var flash = new CommonFlashMessageView({type: 'error', message: 'Failed to migrate. '});
                 flash.show();
+                
+                btn.prop('disabled', false);
             }
         });
     }

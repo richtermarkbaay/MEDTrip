@@ -29,6 +29,12 @@ services:
         arguments: [@service_container]
         tags:
             - { name: kernel.event_listener, event: event.admin_user.login, method: onCommonLogAction }
+            
+    listener.admin.migrate_specialization:
+        class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
+        arguments: [@service_container]
+        tags:
+            - { name: kernel.event_listener, event: event.admin.migrate_specialization, method: onCommonLogAction }
 
     listener.log.admin_user.change_password:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener

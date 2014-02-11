@@ -5,6 +5,8 @@ use Doctrine\ORM\Query;
 use Symfony\Component\HttpFoundation\Request;
 use HealthCareAbroad\HelperBundle\Services\ErrorValidationHelper;
 use Symfony\Component\HttpFoundation\Response;
+use HealthCareAbroad\LogBundle\Entity\LogEventData;
+use HealthCareAbroad\AdminBundle\Event\AdminBundleEvents;
 class MigrationToolsController extends Controller
 {
     public function viewSpecializationMigrationAction()
@@ -55,11 +57,27 @@ class MigrationToolsController extends Controller
             }
             
             try{
+                $fromSpecializationOldData = array(
+                	'id' => $fromSpecialization->getId(),
+                    'name' => $fromSpecialization->getName()
+                );
+                
+                
                 $this->get('services.admin.treatmentMigrationTool')
                     ->migrateSpecializationToAnotherSpecialization($fromSpecialization, $toSpecialization);
                 
+                $eventData = new LogEventData();
+                $eventData->setMessage(sprintf("Migrated %s to %s", $fromSpecializationOldData['name'], $toSpecialization->getName()));
+                $eventData->setData(array(
+                	'fromSpecialization' => $fromSpecializationOldData['id'],
+                    'toSpecialization' => $toSpecialization->getId()
+                ));
+                
+                $this->get('event_dispatcher')->dispatch(AdminBundleEvents::ON_ADMIN_MIGRATE_SPECIALIZATION, $this->get('events.factory')->create(AdminBundleEvents::ON_ADMIN_MIGRATE_SPECIALIZATION, $eventData));
+                
                 $responseData = array(
-                    'toSpecializationId' => $toSpecialization->getId()
+                    'toSpecializationId' => $toSpecialization->getId(),
+                    'redirectUrl' => $this->generateUrl('admin_specialization_manage', array('id' => $toSpecialization->getId()))
                 );
                 $responseStatus = 200;
             }

@@ -16,6 +16,7 @@ use HealthCareAbroad\LogBundle\Services\LogService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Doctrine\Bundle\DoctrineBundle\Registry;
+use HealthCareAbroad\LogBundle\Entity\LogEventData;
 
 abstract class BaseCommonListener
 {
@@ -72,16 +73,22 @@ abstract class BaseCommonListener
      */
     public function onCommonLogAction(BaseEvent $event)
     {
-        $eventObject = $event->getData();
+        
+        $eventData = $event->getData();
         $logAction = $this->getLogActionOfEventName($event->getName());
-        $logClass = $this->logService->getLogClassByName(\get_class($event->getData()));
-
         $log = new Log();
         $log->setAccountId($this->loggedAccountId);
         $log->setAction($logAction);
         $log->setApplicationContext($this->applicationContext);
-        $log->setObjectId($eventObject->getId());
-        $log->setLogClass($logClass);
+        
+        if ($eventData instanceof LogEventData) {
+        	$log->setMessage($eventData->getMessage());
+        	$log->setData(\json_encode($eventData->getData()));
+        }
+        else {
+            // for BC
+        }
+
         $this->logService->save($log);
     }
 
