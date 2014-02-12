@@ -84,12 +84,13 @@ abstract class BaseCommonListener
         if ($eventData instanceof LogEventData) {
         	$log->setMessage($eventData->getMessage());
         	$log->setData(\json_encode($eventData->getData()));
+        	
+        	// we only cater those with LogEventData
+        	$this->logService->save($log);
         }
         else {
             // for BC
-        }
-
-        $this->logService->save($log);
+        }        
     }
 
     /**
