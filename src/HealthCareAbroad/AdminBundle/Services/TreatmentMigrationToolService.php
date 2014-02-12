@@ -4,6 +4,7 @@ use Doctrine\Bundle\DoctrineBundle\Registry;
 use HealthCareAbroad\TreatmentBundle\Entity\Specialization;
 use HealthCareAbroad\TreatmentBundle\Entity\SubSpecialization;
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
+use Doctrine\ORM\Query;
 
 /**
  * Migration tool for data in treatment bundle
@@ -124,13 +125,29 @@ class TreatmentMigrationToolService
             $existingTreatments[] = $row['id'];
         }
         
-        // create sub specialization based on $fromSpecialization
-        $subSpecialization = new SubSpecialization();
-        $subSpecialization->setName($fromSpecialization->getName());
-        $subSpecialization->setDescription($fromSpecialization->getDescription());
-        $subSpecialization->setSpecialization($toSpecialization); // set to $toSpecialization
-        $subSpecialization->setStatus($fromSpecialization->getStatus());
-        $em->persist($subSpecialization);
+        // check if subspecialization with $fromSpecialization->getName() already exists for $toSpecialization
+        $qb = $em->createQueryBuilder();
+        $qb->select('subSp')
+            ->from('TreatmentBundle:SubSpecialization', 'subSp')
+            ->where('subSp.specialization = :toSpecialization')
+                ->setParameter('toSpecialization', $toSpecialization)
+            ->andWhere('subSp.name = :subSpecializationName')
+                ->setParameter('subSpecializationName', $fromSpecialization->getName());
+        $existingSubSpecializationWithSameName = $qb->getQuery()->getOneOrNullResult();
+        if (!$existingSubSpecializationWithSameName) {
+            // create sub specialization based on $fromSpecialization
+            $subSpecialization = new SubSpecialization();
+            $subSpecialization->setName($fromSpecialization->getName());
+            $subSpecialization->setDescription($fromSpecialization->getDescription());
+            $subSpecialization->setSpecialization($toSpecialization); // set to $toSpecialization
+            $subSpecialization->setStatus($fromSpecialization->getStatus());
+            $em->persist($subSpecialization);
+        }
+        else {
+            // use the existing sub specialization
+            $subSpecialization = $existingSubSpecializationWithSameName;
+        }
+        
         
         foreach ($fromSpecialization->getTreatments() as $treatment) {
         	//if ($treatment instanceof Treatment){}
