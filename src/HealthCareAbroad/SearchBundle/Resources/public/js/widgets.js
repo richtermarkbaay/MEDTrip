@@ -164,7 +164,7 @@ var BroadSearchWidget = {
             componentOptions.autocompleteField.data('ui-autocomplete')._renderMenu = function(ul, data) {
                 var _cnt = 0;
                 $.each( data, function( index, item ) {
-                    if (_cnt > 50) {
+                    if (_cnt > 100) {
                         return false;
                     }
                     componentOptions.autocompleteField.data('ui-autocomplete')._renderItemData( ul, item );
