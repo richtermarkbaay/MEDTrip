@@ -49,8 +49,15 @@ class SearchTermRepository extends EntityRepository
             ->innerJoin('sp.treatments', 'tr')
             ->leftJoin('tr.subSpecializations', 'sub_sp')
             ->where($qb->expr()->in('tr.id', ':treatmentIds'))
+            ->andWhere('sp.status = :specializationStatus')
+            ->andWhere('tr.status = :treatmentStatus')
+            ->andWhere('sub_sp.status = :subSpecializationStatus')
+
             ->orderBy('sp.name, tr.name')
-            ->setParameter('treatmentIds', $treatmentIds);
+            ->setParameter('treatmentIds', $treatmentIds)
+            ->setParameter('specializationStatus', Specialization::STATUS_ACTIVE)
+            ->setParameter('treatmentStatus', Treatment::STATUS_ACTIVE)
+            ->setParameter('subSpecializationStatus', SubSpecialization::STATUS_ACTIVE);
 
         return $qb->getQuery()->getResult();
     }
