@@ -10,3 +10,18 @@ admin_migrationTools_processSpecializationMigration:
     defaults: { _controller: AdminBundle:MigrationTools:processSpecializationMigration }
     requirements:    
         _method:  POST
+        
+        
+admin_migrationTools_viewMergeTreatment:
+    pattern: /migration-tools/merge-treatment
+    defaults: { _controller: AdminBundle:MigrationTools:viewMergeTreatment }
+    requirements:    
+        _method:  GET
+        
+        
+admin_migrationTools_processMergeTreatment:
+    pattern: /migration-tools/merge-treatment
+    defaults: { _controller: AdminBundle:MigrationTools:processMergeTreatment }
+    requirements:    
+        _method:  POST
+        

@@ -184,4 +184,44 @@ class TreatmentMigrationToolService
         
         //----- end of step 2
     }
+    
+    /**
+     * Merge $fromTreatment to $toTreatment
+     * 
+     * @param Treatment $fromTreatment
+     * @param Treatment $toTreatment
+     */
+    public function mergeTreatmentToAnotherTreatment(Treatment $fromTreatment,Treatment $toTreatment)
+    {
+        /***
+         * Steps for merge
+         * 1. Move all institution_treatments of $fromTreatment to $toTreatment. Considerations:
+         *      a. Consider existing institution_treatments.institution_id and institution_treatments.toTreatment combination
+         * 2. Delete $fromTreatment
+         */
+        
+        $connection = $this->doctrine->getConnection();
+        $em = $this->doctrine->getManager();
+        
+        // step 1
+        $sql = "UPDATE IGNORE `institution_treatments` inst_tr 
+                SET inst_tr.`treatment_id` = :toTreatmentId
+                WHERE inst_tr.`treatment_id` = :fromTreatmentId";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue('fromTreatmentId', $fromTreatment->getId());
+        $statement->bindValue('toTreatmentId', $toTreatment->getId());
+        $statement->execute();
+        
+        // remove the remaining institutions $fromTreatment with existing $toTreatment that were left out from the above operation
+        $sql = "DELETE FROM `institution_treatments` WHERE `treatment_id` = :fromTreatmentId";
+        $statement = $connection->prepare($sql);
+        $statement->bindValue('fromTreatmentId', $fromTreatment->getId());
+        $statement->execute();
+        
+        // step 2
+        // remove $fromTreatment
+        $em->remove($fromTreatment);
+        $em->flush(); 
+        
+    }
 }

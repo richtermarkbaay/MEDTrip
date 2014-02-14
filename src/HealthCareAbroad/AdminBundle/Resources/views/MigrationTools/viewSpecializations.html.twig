@@ -3,8 +3,21 @@
 {% set selectedTab = 'manageHcaData' %}
 
 {% block content %}
+    
+    <div class="span3">
+    {% set activeSideBar = activeSideBar is defined ? activeSideBar : 'institution_inquiries' %}
+    {% include 'HelperBundle:Widgets:subMenu.html.twig' 
+        with { 
+            links: [
+                {name: 'migrate_specialization',url: path('admin_migrationTools_viewSpecializations'), label: 'Migrate Specialization', icon: 'icon-list', 'active': true},
+                {name: 'merge_treatment',url: path('admin_migrationTools_viewMergeTreatment'), label: 'Merge Treatment', icon: 'icon-list', 'active':false},
+            ] 
+        }  
+    %} 
+    </div>
 
-    <div id="app_canvass" class="span12">
+
+    <div id="app_canvass" class="span9">
         {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Migrate Specialization' } %}
             {% block sectionContent %}
             

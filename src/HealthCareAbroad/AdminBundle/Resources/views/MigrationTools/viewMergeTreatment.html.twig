@@ -1,0 +1,100 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set with_backbone = true %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+    
+    <div class="span3">
+        {% set activeSideBar = activeSideBar is defined ? activeSideBar : 'institution_inquiries' %}
+        {% include 'HelperBundle:Widgets:subMenu.html.twig' 
+            with { 
+                links: [
+                    {name: 'migrate_specialization',url: path('admin_migrationTools_viewSpecializations'), label: 'Migrate Specialization', icon: 'icon-list', 'active': false},
+                    {name: 'merge_treatment',url: path('admin_migrationTools_viewMergeTreatment'), label: 'Merge Treatment', icon: 'icon-list', 'active':true},
+                ] 
+            }  
+        %} 
+    </div>
+
+
+    <div id="app_canvass" class="span9">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Merge Treatment' } %}
+            {% block sectionContent %}
+            
+            <div>
+                <form id="merge_treatment_form" action="{{ path('admin_migrationTools_processMergeTreatment') }}" method="post">
+                    <div class="control-group">
+                        <label> Select specialization </label>
+                        <div class="controls">
+                            <select id="specialization" name="specialization"></select>
+                        </div>
+                        <a href="#" class="manage-specialization-link hide" target="_blank">View Specialization Details</a>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label> Select treatment to migrate </label>
+                        <div class="controls">
+                            <select id="from_treatment" name="from_treatment"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label> Select target treatment </label>
+                        <div class="controls">
+                            <select id="to_treatment" name="to_treatment"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group row">
+                        <div class="controls pull-right">
+                            <a href="#" class="btn">Cancel</a>
+                            <button type="submit" class="btn btn-primary" disabled>Merge</button>
+                        </div>
+                        
+                    </div>
+                    
+                    {{ form_rest(tokenForm) }}
+                </form>
+            </div>
+            
+            {% endblock %}
+        {% endembed %}
+    </div>
+    
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+
+    <!-- common modal prototype -->
+    <script id="common_confirm_modal_prototype" type="text/html">
+    {% include 'AdminBundle:Embed:modalBox.base.html.twig' with { modal: 
+        {
+            id: null,
+            modalBody: null,
+            footerBody: null,
+            title: null
+        }
+    }%}
+    </script>
+
+    {% javascripts
+        'bundles/helper/js/view/commonConfirmModal.js'
+        'bundles/treatment/js/entity/treatment.entity.js'
+        'bundles/admin/js/specialization/entity/specialization.js'
+        'bundles/admin/js/migrationTools/mergeTreatment.app.js'
+        output='js/compiled-admin-merge-treatment.js'
+    %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    
+<script type="text/javascript">
+<!--
+(function($){
+    var app = new MergeTreatmentApp({
+        'specializations': window.JSON.parse('{{ specializationsJSON | raw }}')
+    });
+})(jQuery);
+//-->
+</script>
+    
+{% endblock %}

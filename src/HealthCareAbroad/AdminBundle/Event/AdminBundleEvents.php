@@ -20,6 +20,7 @@ final class AdminBundleEvents
     const ON_DELETE_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.delete_role';
     
     const ON_ADMIN_MIGRATE_SPECIALIZATION = 'event.admin.migrate_specialization';
+    const ON_ADMIN_MERGE_TREATMENT = 'event.admin.merge_treatment';
 
     const ON_ADD_ADVERTISEMENT = 'event.advertisement.add';
     const ON_EDIT_ADVERTISEMENT = 'event.advertisement.edit';
