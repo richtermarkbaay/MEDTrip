@@ -73,7 +73,7 @@ abstract class BaseCommonListener
      */
     public function onCommonLogAction(BaseEvent $event)
     {
-        
+        // event data is expected to be an instance of LogEventData
         $eventData = $event->getData();
         $logAction = $this->getLogActionOfEventName($event->getName());
         $log = new Log();
@@ -83,7 +83,15 @@ abstract class BaseCommonListener
         
         if ($eventData instanceof LogEventData) {
         	$log->setMessage($eventData->getMessage());
+        	
         	$log->setData(\json_encode($eventData->getData()));
+        	
+        	// quick fix for login since no logged accountId is set yet
+        	$dataArr = $eventData->getData();
+        	if (isset($dataArr['accountId']) && $dataArr['accountId']) {
+        		$log->setAccountId($dataArr['accountId']);
+        	}
+        	
         	
         	// we only cater those with LogEventData
         	$this->logService->save($log);
