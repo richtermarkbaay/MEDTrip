@@ -37,11 +37,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: event.admin.migrate_specialization, method: onCommonLogAction }
             
-    listener.admin.merge_template:
+    listener.admin.merge_treatment:
         class: HealthCareAbroad\LogBundle\Listener\Admin\AdminBundleCommonListener
         arguments: [@service_container]
         tags:
-            - { name: kernel.event_listener, event: event.admin.merge_template, method: onCommonLogAction }
+            - { name: kernel.event_listener, event: event.admin.merge_treatment, method: onCommonLogAction }
             
     ## //--- migrations
 
