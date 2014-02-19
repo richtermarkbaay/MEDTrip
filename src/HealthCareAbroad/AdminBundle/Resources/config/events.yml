@@ -22,6 +22,7 @@ parameters:
 
     # admin migration
     event.admin.migrate_specialization: HealthCareAbroad\AdminBundle\Event\AdminMigrationEvent
+    event.admin.merge_treatment: HealthCareAbroad\AdminBundle\Event\AdminMigrationEvent
     
     #
     # admin user type related events
