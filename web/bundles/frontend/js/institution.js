@@ -56,11 +56,30 @@ var InstitutionInquiry = {
             type: 'POST',
             dataType: 'json',
             success: function(response){
+                
                 InstitutionInquiry.institutionInquiryComponents.submitButton
                 .html(InstitutionInquiry.institutionInquiryComponents.submitButton.attr('data-html'))
                 .attr('disabled', false);
                 InstitutionInquiry.showAlertSuccess(response);
                 InstitutionInquiry.resetForm();
+                
+                // track as google event
+                if (_gaq) {
+                    var inquiryDataResponse = response.institutionInquiry;
+                    var _gaqData = {
+                        id: inquiryDataResponse.id,
+                        institution: {id: inquiryDataResponse.institution.id},
+                        institutionMedicalCenter: null
+                    };
+                    
+                    if (inquiryDataResponse.institutionMedicalCenter){
+                        _gaqData.institutionMedicalCenter = {id: inquiryDataResponse.institutionMedicalCenter.id};
+                    }
+                    
+                    _gaq.push(['_trackEvent', 'institutionInquiry', 'save', window.JSON.stringify(_gaqData), inquiryDataResponse.institution.id]);
+                }
+                //<!-- end google event tracking -->
+                
                 window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
             },
             error: function(response){

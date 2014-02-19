@@ -24,6 +24,7 @@ use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use HealthCareAbroad\InstitutionBundle\Services\InstitutionInquiryService;
 class InquiryController extends Controller
 {
     /**
@@ -98,23 +99,15 @@ class InquiryController extends Controller
             $em->persist($institutionInquiry);
             $em->flush();
 
-            /* Moved to InstitutionInquiryApiBundle; we will only dispatch event when inquiry has been approved.
-
-            //Listener for NOTIFICATIONS_INQUIRIES events is configured to rethrow any exceptions encountered.
-            try {
-                $this->get('event_dispatcher')->dispatch(MailerBundleEvents::NOTIFICATIONS_INQUIRIES, new GenericEvent($institutionInquiry));
-            } catch (\Exception $e) {
-                //TODO: Mark this inquiry as having failed to send notifications
-                //ignored for now
-            }
-            */
-
             $subscribed = false;
             if ($form->get('newsletterSubscription')->getData()) {
                 $subscribed = $this->get('services.mailchimp')->listSubscribe($institutionInquiry->getInquirerEmail());
             }
-
-            $response = new Response(\json_encode(array('id' => $institutionInquiry->getId(), 'subscribed' => $subscribed)), 200, array('content-type' => 'application/json'));
+            $responseData = array(
+                'institutionInquiry' => InstitutionInquiryService::toArray($institutionInquiry),
+                'subscribed' => !($subscribed === false)
+            );
+            $response = new Response(\json_encode($responseData), 200, array('content-type' => 'application/json'));
         }
         else {
 
