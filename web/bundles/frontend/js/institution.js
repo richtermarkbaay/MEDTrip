@@ -71,12 +71,13 @@ var InstitutionInquiry = {
                         institution: {id: inquiryDataResponse.institution.id},
                         institutionMedicalCenter: null
                     };
-                    
+                    var _gaqLabel = 'Institution: '+inquiryDataResponse.institution.id;
                     if (inquiryDataResponse.institutionMedicalCenter){
                         _gaqData.institutionMedicalCenter = {id: inquiryDataResponse.institutionMedicalCenter.id};
+                        _gaqLabel = _gaqLabel +' Medical Center: '+inquiryDataResponse.institutionMedicalCenter.id;
                     }
                     
-                    _gaq.push(['_trackEvent', 'institutionInquiry', 'save', window.JSON.stringify(_gaqData), inquiryDataResponse.institution.id]);
+                    _gaq.push(['_trackEvent', 'Institution Inquiry', 'Send Inquiry', _gaqLabel]);
                 }
                 //<!-- end google event tracking -->
                 
