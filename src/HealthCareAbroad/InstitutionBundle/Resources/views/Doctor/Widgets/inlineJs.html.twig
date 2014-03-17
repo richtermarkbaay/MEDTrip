@@ -161,7 +161,7 @@
         var middleNameElem = $("#{{ doctorForm.getChild('middleName').vars.id }}");
         var suffixElem = $("#{{ doctorForm.getChild('suffix').vars.id }}");
         var fullName = getInputFullName();
-        var siteName = "{{ siteName }}";
+        var siteName = "{{ site_name }}";
     
         $('#doctorForm').ajaxForm({
             beforeSend: function(e) {
