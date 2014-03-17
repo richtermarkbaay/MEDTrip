@@ -30,6 +30,7 @@ services:
             - { name: twig.extension }
         calls:
             - [setPageMetaConfigurationService, [@services.helper.page_meta_configuration]]
+            - [setSiteName, [%site_name%]]
 
     frontend.search_twig_extension:
         class: HealthCareAbroad\FrontendBundle\Twig\SearchTwigExtension

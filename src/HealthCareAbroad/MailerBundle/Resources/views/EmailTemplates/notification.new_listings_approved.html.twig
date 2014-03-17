@@ -1,11 +1,11 @@
 {#
 ***This should be sent upon NEW listing approval (not an edit to an existing listing)
-Auto-notification subject line: Patients can now find your clinic on HealthcareAbroad.com!
+Auto-notification subject line: Patients can now find your clinic on {{ site_name }}!
 Auto-notification From address: support@healthcareabroad.com
 #}
 {% block subject %}
     {% autoescape false %}
-Patients can now find your clinic on HealthcareAbroad.com!
+Patients can now find your clinic on {{ site_name }}!
     {% endautoescape %}
 {% endblock %}
 
@@ -14,7 +14,7 @@ Patients can now find your clinic on HealthcareAbroad.com!
 
 Your clinic listing has been approved!
 
-Patients will find your clinic on HealthcareAbroad.com when they search for:
+Patients will find your clinic on {{ site_name }} when they search for:
 
 - Any of your Specializations
 - Treatments you selected under those specializations
@@ -31,17 +31,17 @@ To ensure prospective patients find complete and relevant information about ever
 
 To update your clinic profile please login at: {{ url.login }}
 
-If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }} .
+If you need assistance or guidance on what type of information to include, please contact us at {{ email.support }}.
 
 IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information: {{ url.contact_info }}
 
-We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from HealthcareAbroad.com. Packages start at less than $1 per day, and can have an immediate impact. For full details of all available features, visit: {{ url.advertising_guide }} .
+We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from {{ site_name }}. Packages start at less than $1 per day, and can have an immediate impact. For full details of all available features, visit: {{ url.advertising_guide }} .
 
 Please take the time to review your listing and double check your email address. If changes are required please login at {{ url.login }} to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
 
 All the best,
 
-The HealthcareAbroad.com Team
+The {{ site_name }} Team
 
     {% endautoescape %}
 {% endblock %}
@@ -51,7 +51,7 @@ The HealthcareAbroad.com Team
 Your clinic listing has been approved!
 <br/><br/>
 
-Patients will find your clinic on HealthcareAbroad.com when they search for:
+Patients will find your clinic on {{ site_name }} when they search for:
 <ul>
     <li>Any of your Specializations</li>
     <li>Treatments you selected under those specializations</li>
@@ -76,11 +76,11 @@ If you need assistance or guidance on what type of information to include, pleas
 <br/><br/>
 IMPORTANT: To make sure you don't miss any inquiries, list and double check your contact information >> <a href="{{ url.contact_info }}">{{ url.contact_info }}</a>
 <br/><br/>
-We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from HealthcareAbroad.com. <b>Packages start at less than $1 per day,</b> and can have an immediate impact. For full details of all available features, visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>.
+We would love the opportunity to discuss how employing some advanced features for your listing can increase the amount of leads you receive from {{ site_name }}. <b>Packages start at less than $1 per day,</b> and can have an immediate impact. For full details of all available features, visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>.
 <br/><br/>
 Please take the time to review your listing and double check your email address. If changes are required please login at <a href="{{ url.login }}">{{ url.login }}</a> to edit your account or contact {{ email.support }} . Please note that future edits are subject to review and approval.
 <br/><br/>
 All the best,
 <br/><br/>
-The HealthcareAbroad.com Team
+The {{ site_name }} Team
 {% endblock %}

@@ -6,7 +6,7 @@
         <!-- Mobile -->
 
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-        <title>{% block title %}HealthCareAbroad{% endblock %}</title>
+        <title>{% block title %}{{ site_name }}{% endblock %}</title>
 
         {% javascripts
             output='js/compiled-splash.js'
@@ -23,13 +23,13 @@
 
     <body>
         <div id="main-wrapper">
-    		<h1 id="logo">HealthcareAbroad</h1>
+    		<h1 id="logo">{{ site_name }}</h1>
     		<h2 id="caption">THE RESOURCE FOR GLOBAL <b>HEALTHCARE</b>
     			<br>
     			A comprehensive, <b>unbiased</b> directory for <b>Medical Tourism</b>
     		</h2>
     		<div id="signup">
-    			<span class="signup-heading">Do you want to be notified when we launch HealthcareAbroad?</span>
+    			<span class="signup-heading">Do you want to be notified when we launch {{ site_name }}?</span>
     			
                 <form id="newsletterForm" action="{{ path('frontend_newsletter_new') }}" method="POST" {{ form_enctype(form) }} class="basic-form">
                  {{ form_errors(form) }}
@@ -41,7 +41,7 @@
                 {% include '::frontend.notice.admin.html.twig' %}
     		</div>
     		<div class="blog-link">
-			    For updates and resources on Medical Tourism, please visit our <a href="http://www.healthcareabroad.com/blog" class="blog-link">BLOG</a>
+			    For updates and resources on Medical Tourism, please visit our <a href="/blog" class="blog-link">BLOG</a>
 		    </div>
     	</div>
 

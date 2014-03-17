@@ -18,6 +18,12 @@ class AdvertisingInquiryMailListener
      */
     private $twig;
     
+    /** 
+     * @var string
+     */
+    private $siteName;
+    
+    
     public function setMailer(\Swift_Mailer $mailer)
     {
         $this->mailer = $mailer;
@@ -28,6 +34,11 @@ class AdvertisingInquiryMailListener
         $this->twig = $v;
     }
     
+    public function setSiteName($siteName)
+    {
+        $this->siteName = $siteName;
+    }
+    
     public function onAddInquiry(InquiryEvent $event)
     {
         $inquiry = $event->getData();
@@ -35,7 +46,7 @@ class AdvertisingInquiryMailListener
             return; // do nothing
         }
         
-        $subject = 'New HCA Advertising Inquiry';
+        $subject = 'New ' . $this->siteName . ' Advertising Inquiry';
         $message = $this->twig->render('FrontendBundle:Mail:addInquiryMessage.txt.twig', array('inquiry' => $inquiry));
         //echo "<textarea rows='15' cols='30'>{$message}</textarea>"; exit;
         

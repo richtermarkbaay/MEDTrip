@@ -16,7 +16,7 @@
             <a href="{{ path('frontend_destination_list') }}">Destinations</a>
         </li>
         <li>
-            <a href="http://www.healthcareabroad.com/blog/">Medical Toursim News</a>
+            <a href="{{ site_url }}/blog/">Medical Toursim News</a>
         </li>
     </ul>
     {#--
@@ -32,8 +32,8 @@
             <div class="row">
                 {#<!-- add itemprops for WebPage -->#}
                 <meta itemprop="image" content="{{ app.request.getSchemeAndHttpHost() ~ asset('images/frontend/logo.png') }}">
-                <meta itemprop="name" content="HealthcareAbroad.com">
-                <meta itemprop="description" content="Patients from all over the world are searching HealthcareAbroad.com">
+                <meta itemprop="name" content="{{ site_name }}">
+                <meta itemprop="description" content="Patients from all over the world are searching "{{ site_name }}>
                 <a href="{{ path('frontend_main_homepage') }}">
                     <h1 class="logo" >
                         HealthcareAbroad

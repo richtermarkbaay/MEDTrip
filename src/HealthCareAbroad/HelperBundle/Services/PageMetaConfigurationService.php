@@ -36,9 +36,19 @@ class PageMetaConfigurationService
      */
     private $doctrine;
     
+    /** 
+     * @var string
+     */
+    private $siteName;
+    
     public function setDoctrine(Registry $v)
     {
         $this->doctrine = $v;
+    }
+    
+    public function setSiteName($siteName)
+    {
+        $this->siteName = $siteName;
     }
     
     /**
@@ -86,7 +96,6 @@ class PageMetaConfigurationService
         $title = '';
         $description = '';
         $keywords = '';
-        $siteName = 'HealthcareAbroad.com';
         
         switch ($searchStateValue) {
             // singe searches - destination
@@ -94,28 +103,28 @@ class PageMetaConfigurationService
             case SearchStates::CITY_SEARCH:
                 $destinationArr = $this->_extractDestinationValues($pageMetaVariables);
                 $destination = \implode(', ',$destinationArr);
-                $title = 'Healthcare and Dental Clinics in '.$destination.' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer medical specialties in '.$destination.'. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = 'Healthcare and Dental Clinics in '.$destination.' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer medical specialties in '.$destination.'. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = $destination.', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             // single searches - specialization
             case SearchStates::SPECIALIZATION_SEARCH:
-                $title = $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION] .' in different countries. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION] .' in different countries. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             // single searches - Sub-specialization
             case SearchStates::SUB_SPECIALIZATION_SEARCH:
                 $treatmentsArr = $this->_extractTreatmentValues($pageMetaVariables);
-                $title = \implode(' - ', $treatmentsArr).' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION] .' in different countries. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = \implode(' - ', $treatmentsArr).' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION] .' in different countries. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = \implode(', ', $treatmentsArr).', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             // single searches - treatment
             case SearchStates::TREATMENT_SEARCH:
                 $treatmentsArr = $this->_extractTreatmentValues($pageMetaVariables);
-                $title = \implode(' - ', $treatmentsArr).' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT] .' clinics in different countries. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = \implode(' - ', $treatmentsArr).' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT] .' clinics in different countries. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = \implode(', ', $treatmentsArr).', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             // combination search - destination + specialization
@@ -123,8 +132,8 @@ class PageMetaConfigurationService
             case SearchStates::CITY_SPECIALIZATION_SEARCH:
                 $destinationArr= $this->_extractDestinationValues($pageMetaVariables);
                 $destination = \implode(', ', $destinationArr);
-                $title = $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].' in '.$destination.' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION] .' in '.$destination.'. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].' in '.$destination.' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION] .' in '.$destination.'. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = $destination.', '.$pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SPECIALIZATION].', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             case SearchStates::COUNTRY_SUB_SPECIALIZATION_SEARCH:
@@ -132,8 +141,8 @@ class PageMetaConfigurationService
                 $destinationArr = $this->_extractDestinationValues($pageMetaVariables);
                 $treatmentsArr = $this->_extractTreatmentValues($pageMetaVariables);
                 $destination = \implode(', ', $destinationArr);
-                $title = \implode(' - ', $treatmentsArr).' in '.$destination.' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION] .' in '.$destination.'. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = \implode(' - ', $treatmentsArr).' in '.$destination.' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} clinics that offer '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_SUB_SPECIALIZATION] .' in '.$destination.'. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = $destination.', '.\implode(', ',$treatmentsArr).', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
             case SearchStates::COUNTRY_TREATMENT_SEARCH:
@@ -141,8 +150,8 @@ class PageMetaConfigurationService
                 $destinationArr = $this->_extractDestinationValues($pageMetaVariables);
                 $treatmentsArr = $this->_extractTreatmentValues($pageMetaVariables);
                 $destination = \implode(', ', $destinationArr);
-                $title = \implode(' - ', $treatmentsArr).' in '.$destination.' - '.$siteName;
-                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT] .' clinics in '.$destination.'. '.$siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
+                $title = \implode(' - ', $treatmentsArr).' in '.$destination.' - '.$this->siteName;
+                $description = 'Compare {'.PageMetaConfigurationService::CLINIC_RESULTS_COUNT_VARIABLE.'} '. $pageMetaVariables[SearchUrlGenerator::SEARCH_URL_PARAMETER_TREATMENT] .' clinics in '.$destination.'. '.$this->siteName.' is an unbiased international directory of Healthcare and Dental Clinics';
                 $keywords = $destination.', '.\implode(', ',$treatmentsArr).', Medical tourism, compare, international, abroad, doctor, dr, dentist';
                 break;
         }
@@ -175,11 +184,11 @@ class PageMetaConfigurationService
             $location = (isset($institution['city']) ? $institution['city']['name'].', ' : '').$institution['country']['name'];
         }
         
-        // title: #HospitalName #city, #country - HealthcareAbroad.com
-        $metaConfig->setTitle("{$institutionName} {$location} - HealthcareAbroad.com");
-        // description: #HospitalName in #city, #country offers treatments in #NumberOfSubSpecialities Specialities at #NumberOfClinics Clinics. Find your treatment at HealthcareAbroad.com
-        $metaConfig->setDescription("{$institutionName} in {$location} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE."} Specialties at {".PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE."} Clinics. Find your treatment at HealthcareAbroad.com");
-        // keywords: #HospitalName, #City, #Country,  (up to 10) #Speciality, medical tourism, Doctor, Dentist
+        // title: #HospitalName #city, #country - site_name
+        $metaConfig->setTitle("{$institutionName} {$location} - " . $this->siteName);
+        // description: #HospitalName in #city, #country offers treatments in #NumberOfSubSpecialities Specialities at #NumberOfClinics Clinics. Find your treatment at site_name
+        $metaConfig->setDescription("{$institutionName} in {$location} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_COUNT_VARIABLE."} Specialties at {".PageMetaConfigurationService::ACTIVE_CLINICS_COUNT_VARIABLE."} Clinics. Find your treatment at " . $this->siteName);
+        // keywords: #HospitalName, #City, #Country,  (up to 10) #Sp`eciality, medical tourism, Doctor, Dentist
         $metaConfig->setKeywords("{$institutionName}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
         $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION);
         
@@ -198,8 +207,8 @@ class PageMetaConfigurationService
         $location = ($institution->getCity() ? $institution->getCity().', ' : '').$institution->getCountry();
         
         $metaConfig = new PageMetaConfiguration();
-        $metaConfig->setTitle("{$institutionMedicalCenter->getName()} - {$institution->getName()} {$location} - HealthcareAbroad.com");
-        $metaConfig->setDescription("{$institutionMedicalCenter->getName()} at {$institution->getName()} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."} in {$location}. Get details at HealthcareAbroad.com");
+        $metaConfig->setTitle("{$institutionMedicalCenter->getName()} - {$institution->getName()} {$location} - " . $this->siteName);
+        $metaConfig->setDescription("{$institutionMedicalCenter->getName()} at {$institution->getName()} offers treatments in {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."} in {$location}. Get details at " . $this->siteName);
         $metaConfig->setKeywords("{$institution->getName()}, {$institutionMedicalCenter->getName()}, {$location}, {".PageMetaConfigurationService::SPECIALIZATIONS_LIST_VARIABLE."}, medical tourism, Doctor, Dentist");
         $metaConfig->setPageType(PageMetaConfiguration::PAGE_TYPE_INSTITUTION_MEDICAL_CENTER);
         

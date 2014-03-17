@@ -1,21 +1,21 @@
 {#
 RULES: This should be sent upon Hospital Profile submission/creation. Sent to account owner.
 Assumptions: No Clinics, No Dr profiles nor any public info have yet to be added to the database.
-Auto-notification subject line: #Hospital_Name# has been added to HealthcareAbroad.com
+Auto-notification subject line: #Hospital_Name# has been added to {{ site_name }}
 Auto-notification From address: support@healthcareabroad.com
 #}
 {% block subject %}
     {% autoescape false %}
-{{ institution_name }} has been added to HealthcareAbroad.com
+{{ institution_name }} has been added to {{ site_name }}
     {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}
     {% autoescape false %}
 
-Thank you for creating a profile for {{ institution_name }} on HealthcareAbroad.com!
+Thank you for creating a profile for {{ institution_name }} on {{ site_name }}!
 
-The next step for patients to find you on HealthcareAbroad.com is to get your hospital’s clinics listed in our international directory.
+The next step for patients to find you on {{ site_name }} is to get your hospital’s clinics listed in our international directory.
 
 To make sure that they find complete and relevant information about everything that you have to offer, we suggest that you:
 
@@ -29,17 +29,17 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
 
 All the best,
 
-The Healthcare Abroad Team
+The {{ site_name }} Team
 
     {% endautoescape %}
 {% endblock %}
 
 {% block body_html %}
 
-Thank you for creating a profile for {{ institution_name }} on HealthcareAbroad.com!
+Thank you for creating a profile for {{ institution_name }} on {{ site_name }}!
 <br/><br/>
 
-The next step for patients to find you on HealthcareAbroad.com is to get your hospital’s clinics listed in our international directory.
+The next step for patients to find you on {{ site_name }} is to get your hospital’s clinics listed in our international directory.
 <br/><br/>
 
 To make sure that they find complete and relevant information about everything that you have to offer, we suggest that you:
@@ -60,6 +60,6 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
 All the best,
 <br/><br/>
 
-The Healthcare Abroad Team
+The {{ site_name }} Team
 
 {% endblock %}

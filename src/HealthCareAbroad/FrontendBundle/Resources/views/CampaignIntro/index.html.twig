@@ -4,7 +4,7 @@
     <div id="home_superslide">
 
         <div class="container">
-            <a href="http://www.healthcareabroad.com/" targe="_blank"><img src="{{ asset('images/frontend/campaign/healthcareabroad-logo-big.png') }}" alt="client_1" /></a>
+            <a href="{{ path('frontend_main_default') }}" targe="_blank"><img src="{{ asset('images/frontend/campaign/healthcareabroad-logo-big.png') }}" alt="client_1" /></a>
             <h1>
                 the resource for global
                 <span>
@@ -66,20 +66,20 @@
         <div class="pattern_glow">
             <div class="container">
                 <h1>
-                    <small>Advertising Guide for</small> HealthCareAbroad.com
+                    <small>Advertising Guide for</small> {{ site_name }}
                 </h1>
                 <h3>What We Do</h3>
-                <p><b>HealthcareAbroad.com</b> is a high-quality, targeted B2C medical tourism portal and marketing platform. Our mission is to provide a no-cost, comprehensive and unbiased directory to assist patients in matching international healthcare options with their medical needs. We are <em>not</em> a medical tourism facilitator.</p>
+                <p><b>{{ site_name }}</b> is a high-quality, targeted B2C medical tourism portal and marketing platform. Our mission is to provide a no-cost, comprehensive and unbiased directory to assist patients in matching international healthcare options with their medical needs. We are <em>not</em> a medical tourism facilitator.</p>
                 <h3>Why We Do It</h3>
-                <p>Today’s patients are mobile and willing to travel for high quality, affordable healthcare.  HealthcareAbroad.com fills the information void in Medical Tourism by creating a central source to help educate patients, instil confidence and build awearness of the industry.  Through our collaborations with hospitals, clinics, and government agencies, we create value for our clients, your patients, and the Medical Tourism industry as a whole.</p>
-                <h3>How HealthcareAbroad.com Works for Patients</h3>
-                <p>Patients search HealthcareAbroad.com for specific treatments and/or destination. Our search engine returns matched clinic and hospital profiles side-by-side with paid upgraded profiles and features.</p>
-                <h3>How HealthcareAbroad.com Works for Hospitals and Clinics</h3>
+                <p>Today’s patients are mobile and willing to travel for high quality, affordable healthcare.  {{ site_name }} fills the information void in Medical Tourism by creating a central source to help educate patients, instil confidence and build awearness of the industry.  Through our collaborations with hospitals, clinics, and government agencies, we create value for our clients, your patients, and the Medical Tourism industry as a whole.</p>
+                <h3>How {{ site_name }} Works for Patients</h3>
+                <p>Patients search {{ site_name }} for specific treatments and/or destination. Our search engine returns matched clinic and hospital profiles side-by-side with paid upgraded profiles and features.</p>
+                <h3>How {{ site_name }} Works for Hospitals and Clinics</h3>
                 <div class="media">
                     <h3 class="pull-left">1.</h3>
                     <div class="media-body">
-                        <h4>Get your clinic/hospital Profile on HealthcareAbroad.com (FREE)</h4>
-                        <p>Clinic and Hospital Profiles are Forever Free. YES, Free! With no subscriptions, affiliation agreements, commissions, hidden fees, setup costs nor expiration dates. Additionally you maintain full control of your profile. Add and access your profile through our management system by visiting: <a href="https://www.healthcareabroad.com/institution/register.html" taget="_blank"></a>http://healthcareabroad.com</a></p>
+                        <h4>Get your clinic/hospital Profile on {{ site_name }} (FREE)</h4>
+                        <p>Clinic and Hospital Profiles are Forever Free. YES, Free! With no subscriptions, affiliation agreements, commissions, hidden fees, setup costs nor expiration dates. Additionally you maintain full control of your profile. Add and access your profile through our management system by visiting: <a href="https://www.{{ site_name }}/institution/register.html" taget="_blank"></a>http://{{ site_name }}</a></p>
                     </div>
                 </div>
                 <div class="media">
@@ -119,7 +119,7 @@
                             </div> #}
                         </div>
                         {# <div class="alert alert-info">
-                                    <h5><strike>For as little as $1 a day clinics can greatly increase the amount of quality leads generated from HealthcareAbroad.com</strike></h5>
+                                    <h5><strike>For as little as $1 a day clinics can greatly increase the amount of quality leads generated from {{ site_name }}</strike></h5>
                                 </div> #}
                     </div>
                 </div>
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <br><br>
-                <p>Our team is always available for questions or assistance. <a href="mailto:help@healthcareabroad.com" target="_top">help@healthcareabroad.com</a>
+                <p>Our team is always available for questions or assistance. <a href="mailto:help@{{ site_name }}" target="_top">help@{{ site_name }}</a>
             </div>
         <!-- // Container -->
             <div class="clr">&nbsp;</div>
@@ -169,7 +169,7 @@
                     <div id="parts-images">
                         {# <a data-toggle="popover" data-content="<h2><i class='icon-link'></i>Quick Links</h2>Links to see all of the treatments and destinations displayed alphabetically. Allows users to narrow down their search in multiple ways, based on their personal style and technological comfort level." 
                         class="circle a-home">A</a> #}
-                        <a data-toggle="popover" data-content="<h2><i class='icon-search'></i>Modern, clear, search function</h2>Predictive text and drop boxes provide fast, easy, and accurate access to HealthcareAbroad.com directories. Multiple input methods allow users to search in whatever manner is most natural and intuitive to them."
+                        <a data-toggle="popover" data-content="<h2><i class='icon-search'></i>Modern, clear, search function</h2>Predictive text and drop boxes provide fast, easy, and accurate access to {{ site_name }} directories. Multiple input methods allow users to search in whatever manner is most natural and intuitive to them."
                         class="circle b-home">A</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-asterisk'></i>The Showcase Feature</h2>This is the most visible spot on the entire site. A compact, targeted feature with the most important text, rotating photos, and logo on the whole site. The only spot that is guaranteed to be seen upon first loading the page. This rotates with other showcased features and links directly to a hospital or clinic listing. Subscription is on an annual basis. Limited to 6 features." class="circle c-home">B</a>
                         <a data-toggle="popover" data-content="<h2><i class='icon-file-alt'></i>Instant Access to high quality content</h2>Links to guides, news, travel information, and educational pieces add value for site visitors, and help educate and encourage further exploration."
@@ -216,7 +216,7 @@
                             Modern, clear, search function
                             <br>
                             <small>
-                                 Predictive text and drop boxes provide fast, easy, and accurate access to HealthcareAbroad.com directories.  Multiple input methods allow prospective patients to search in whatever manner is most natural and intuitive to them.
+                                 Predictive text and drop boxes provide fast, easy, and accurate access to {{ site_name }} directories.  Multiple input methods allow prospective patients to search in whatever manner is most natural and intuitive to them.
                             </small>
                         </h4>
                         <p>
@@ -1417,7 +1417,7 @@
                     class="circle a-hospital">A</a>
                     <a data-toggle="popover" data-content="<h2><i class='icon-picture'></i>Logo</h2>Your logo for the entire organization. Logos allows you to establish brand recognition and builds trust and credibility with site users. Available with enhanced listing."
                     class="circle b-hospital">B</a>
-                    <a data-toggle="popover" data-content="<h2><i class='icon-envelope'></i>Contact Information -</h2> Healthcare Abroad makes it easy for site users to get in contact with you. With just a click, they can send you a contact email, get the contact number, and find your physical location. Additionally, all of these inquiries are logged and presented in the tools to manage your listing, which are provided with every Healthcare Abroad listing. Phone contact Available with enhanced listing."
+                    <a data-toggle="popover" data-content="<h2><i class='icon-envelope'></i>Contact Information -</h2> {{ site_name }} makes it easy for site users to get in contact with you. With just a click, they can send you a contact email, get the contact number, and find your physical location. Additionally, all of these inquiries are logged and presented in the tools to manage your listing, which are provided with every Healthcare Abroad listing. Phone contact Available with enhanced listing."
                     class="circle c-hospital">C</a>
                     <a data-toggle="popover" data-content="<h2><i class='icon-columns'></i>Tabbed Navigation</h2>Users can easily switch between howing an overview of the hospital to a list of all the doctors that work at the hospital, along with their corresponding specialties."
                     class="circle d-hospital">D</a>
@@ -1482,7 +1482,7 @@
                         Contact Information
                         <br>
                         <small>
-                            Healthcare Abroad makes it easy for site users to get in contact with
+                            {{ site_name }} makes it easy for site users to get in contact with
                             you. With just a click, they can send you a contact email, get the contact
                             number, and find your physical location. Additionally, all of these inquiries
                             are logged and presented in the tools to manage your listing, which are
@@ -1939,7 +1939,7 @@
             <div class="container">
 
 
- <h3>HealthcareAbroad.com’s philosophy of internet marketing:</h3>
+ <h3>{{ site_name }}’s philosophy of internet marketing:</h3>
                 <div class="media">
                     <h3 class="pull-left"><i class="icon-asterisk"></i></h3>
                     <div class="media-body">
@@ -1970,31 +1970,31 @@
                     <h3 class="pull-left"><i class="icon-asterisk"></i></h3>
                     <div class="media-body">
                         <h4>Prospective patients respond poorly to multiple fonts, rapid movement, and other visual clutter. </h4>
-                        <p>The simple but elegant aesthetic of HealthcareAbroad.com is one of the most important aspects of our design. The spacing and layout are designed to keep prospective patients from becoming overwhelmed, and the structure helps guide </p>
+                        <p>The simple but elegant aesthetic of {{ site_name }} is one of the most important aspects of our design. The spacing and layout are designed to keep prospective patients from becoming overwhelmed, and the structure helps guide </p>
                     </div>
                 </div> <div class="media">
                     <h3 class="pull-left"><i class="icon-asterisk"></i></h3>
                     <div class="media-body">
                         <h4>Prospective patients respond best to branding and logos. </h4>
-                        <p>HealthcareAbroad.com keeps your logo together with your clinic profiles and photos, so prospective patients make an instant brand connection between your clinic and the treatments you offer.</p>
+                        <p>{{ site_name }} keeps your logo together with your clinic profiles and photos, so prospective patients make an instant brand connection between your clinic and the treatments you offer.</p>
                     </div>
                 </div>
 
 
                 <h1>
-                    Who is HealthcareAbroad.com
+                    Who is {{ site_name }}
                 </h1>
                 <h2>
                     History
                 </h2>
                 <p>
-                    HealthcareAbroad.com was conceptualized from the co-owners positive personal
+                    {{ site_name }} was conceptualized from the co-owners positive personal
                     international healthcare experiences and their frustrations in searching
                     for information on the internet.
                 </p>
                 <p>
                     After a decade living, working and starting our families abroad while
-                    building the online directory GoAbroad.com, HealthcareAbroad.com's co-founders
+                    building the online directory GoAbroad.com, {{ site_name }}'s co-founders
                     asked "why can't we take the business experience learned at GoAbroad.com
                     and apply it towards Global Healthcare?". It seemed impossible that in
                     the early 2010's all the existing sources on the internet were referral
@@ -2005,7 +2005,7 @@
                     that a quality internet portal was needed.
                 </p>
                 <p>
-                    For over 14 years, the team behind HealthcareAbroad.com has been creating
+                    For over 14 years, the team behind {{ site_name }} has been creating
                     successful international directories. Building advanced, modern technologies
                     with easy to use web sites the team created a comprehensive directory of
                     unbiased healthcare providers worldwide. Research and planning began in
@@ -2018,7 +2018,7 @@
                     <a href="http://www.chromedia.com/#who" target="_blank">http://www.chromedia.com/#who</a>
                 </p>
                 <p>
-                    HealthcareAbroad.com Inc. is an American corporation based in Colorado
+                    {{ site_name }} Inc. is an American corporation based in Colorado
                     and a wholly owned subsidiary of Chromedia Inc.
                 </p>
                 <div class="row-fluid">
@@ -2073,7 +2073,7 @@
             <!-- Container starts -->
             <div class="container">
                 <div class="footer_copy">
-                    &copy; 2013 <a href="{{path('frontend_main_homepage')}}" target="_blank">HealthCareAbroad.com</a> All rights reserved.
+                    &copy; 2013 <a href="{{path('frontend_main_homepage')}}" target="_blank">{{ site_name }}</a> All rights reserved.
                 </div>
             </div>
             <!-- // Container -->

@@ -1,5 +1,5 @@
 {% extends 'InstitutionBundle::unauthenticated.layout.html.twig' %}
-{% block title %} Healthcareabroad Client Privacy Policy {% endblock %}
+{% block title %} {{ site_name }} Client Privacy Policy {% endblock %}
 
 {% block content %}
     {% embed 'InstitutionBundle:Embed:contentWrapper.unauthenticated.html.twig' 
@@ -16,14 +16,14 @@
                             Do we disclose any information to outside parties?
                         </h4>
                         <p>
-                            As a healthcare provider, HealthcareAbroad.com will ask you for personal
+                            As a healthcare provider, {{ site_name }} will ask you for personal
                             information in order to register on this site. This information will mostly
                             be identifiable information (Clinic name, address, contact information,
-                            etc.). HealthcareAbroad.com will place this portions of this information
+                            etc.). {{ site_name }} will place this portions of this information
                             on your viewable profile page and will also use this information to facilitate
                             contact between prospective patients and healthcare providers and to contact
                             you about the services and features of this website. Outside of this specific
-                            use of your information, HealthcareAbroad.com will not share any of your
+                            use of your information, {{ site_name }} will not share any of your
                             personal information without prior approval from you, except as stated
                             below.
                         </p>
@@ -159,13 +159,13 @@
                             </div>
                             <div class="media-body">
                                 <h4>
-                                    Medical Tourism Newsletter Subscriptions for Clinics on HealthCare Abroad
+                                    Medical Tourism Newsletter Subscriptions for Clinics on {{ site_name }}
                                 </h4>
                                 <p>
-                                    Occasionally HealthcareAbroad.com will send an internal newsletter to
+                                    Occasionally {{ site_name }} will send an internal newsletter to
                                     the clinics listed on our directory. These newsletters will contain valuable
                                     information about our industry or announce changes and advancements of
-                                    the HealthcareAbroad.com system. Newsletters are sent to the same email
+                                    the {{ site_name }} system. Newsletters are sent to the same email
                                     addresses inquiries are sent to. We must keep this communication channel
                                     open to notify you of important changes to your account and the site. If
                                     you wish not to receive these notifications you must archive or delete
@@ -203,7 +203,7 @@
                                     Please also visit our Terms and Conditions section establishing the use,
                                     disclaimers, and limitations of liability governing the use of our website
                                     at
-                                    <a href="termsofuse.html">CLIENT TERMS OF USE</a>
+                                    <a href="{{ path('institution_terms_of_use') }}">CLIENT TERMS OF USE</a>
                                 </p>
                             </div>
                         </div>

@@ -21,9 +21,21 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
      */
     private $pageMetaConfigurationService;
     
+    /** 
+     * @var string
+     */
+    private $siteName;
+    
+    
+    
     public function setPageMetaConfigurationService(PageMetaConfigurationService $v)
     {
         $this->pageMetaConfigurationService = $v;
+    }
+    
+    public  function setSiteName($sitName)
+    {
+        $this->siteName = $sitName;
     }
     
     public function getName()
@@ -42,6 +54,7 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
     {
         $url = $request->getPathInfo();
         $metaConfig = $this->pageMetaConfigurationService->findOneByUrl($url);
+
         // we have no saved configuration yet
         if (!$metaConfig) {
             // TODO: this is just a temporary approach
@@ -73,10 +86,13 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
             else {
                 // we don't have dynamic ways for adding other pages
                 $metaConfig = new PageMetaConfiguration();
+
                 // set to default metas
-                $metaConfig->setTitle('HealthcareAbroad.com - Global Medical Tourism Directory');
+                $metaConfig->setTitle($this->siteName . ' - Global Medical Tourism Directory');
                 $metaConfig->setDescription('');
                 $metaConfig->setKeywords('');
+                
+                var_dump($metaConfig->getTitle());
             }
         }
         

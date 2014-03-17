@@ -4,5 +4,6 @@ services:
         calls:
             - [setMailer, [@mailer]]
             - [setTwig, [@twig]]
+            - [setSiteName, [%site_name%]]
         tags:
             - {name: kernel.event_listener, event: event.frontend.add_inquiry, method: onAddInquiry }

@@ -161,6 +161,7 @@
         var middleNameElem = $("#{{ doctorForm.getChild('middleName').vars.id }}");
         var suffixElem = $("#{{ doctorForm.getChild('suffix').vars.id }}");
         var fullName = getInputFullName();
+        var siteName = "{{ siteName }}";
     
         $('#doctorForm').ajaxForm({
             beforeSend: function(e) {
@@ -233,7 +234,7 @@
                     });
                 } else {
                     $('#doctor-search-results .notEmpty').hide();
-                    $('#matchedDoctorList').html("<div class='alert results empty'>We don't have Dr. "+ ucwords(firstNameElem.val()) +" "+ ucwords(lastNameElem.val())+ " listed on HealthcareAbroad.com yet.<br>Please double-check the name spelling before clicking on ADD DOCTOR.</div>");
+                    $('#matchedDoctorList').html("<div class='alert results empty'>We don't have Dr. "+ ucwords(firstNameElem.val()) +" "+ ucwords(lastNameElem.val())+ " listed on " + siteName + " yet.<br>Please double-check the name spelling before clicking on ADD DOCTOR.</div>");
                     $('#search-doctor-btn').hide();
                     $('#add-doctor-btn').fadeIn();
                 }

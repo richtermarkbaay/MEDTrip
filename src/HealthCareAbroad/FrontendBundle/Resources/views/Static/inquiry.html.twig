@@ -5,8 +5,8 @@
     <div class="page-content-wrapper">
     <form novalidate="novalidate" method="POST" action="{{ path('frontend_page_inquiry') }}" class="span8">
 
-        <p>This form is for medical providers inquiring about adding or editing their clinics to Healthcare Abroad, or for other account concerns. </p>
-        <p>If you are a patient looking to send feedback to Healthcare Abroad, <a href ="#" id="feedback-form">please use this form</a>.</p>
+        <p>This form is for medical providers inquiring about adding or editing their clinics to {{ site_name }}, or for other account concerns. </p>
+        <p>If you are a patient looking to send feedback to {{ site_name }}, <a href ="#" id="feedback-form">please use this form</a>.</p>
 
         {% if hasErrors is defined %}
             <div class="alert alert-error">

@@ -1,11 +1,11 @@
 {#
 Use: Clinic has received an inquiry from a prospective patient on HCA
-Subject:  This Prospective Patient Inquiry is from HealthcareAbroad.com:
+Subject:  This Prospective Patient Inquiry is from {{ site_name }}:
 Sent from: inquiry@healthcareabroad.com
 #}
 {% block subject %}
     {% autoescape false %}
-This Prospective Patient Inquiry is from HealthcareAbroad.com
+This Prospective Patient Inquiry is from {{ site_name }}
     {% endautoescape %}
 {% endblock %}
 
@@ -13,7 +13,7 @@ This Prospective Patient Inquiry is from HealthcareAbroad.com
     {% autoescape false %}
 
 --------------------------------------------------------------------------------
-You have received this email inquiry because {{ facility_name }} has a listing on HealthcareAbroad.com. To view your listing visit : {{ url.facility }}
+You have received this email inquiry because {{ facility_name }} has a listing on {{ site_name }}. To view your listing visit : {{ url.facility }}
 --------------------------------------------------------------------------------
 
 Facility: {{ facility_name }}
@@ -27,7 +27,7 @@ Message:  {{ inquiry.message }}
 --------------------------------------------------------------------------------
 View a history of inquiries and manage your clinic profiles by visiting:  {{ url.login }}
 
-If you are interested in increasing the amount of leads you receive from HealthcareAbroad.com, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: {{ url.advertising_guide }}
+If you are interested in increasing the amount of leads you receive from {{ site_name }}, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: {{ url.advertising_guide }}
 
 Need help?  Contact Support at {{ email.support }} or visit {{ url.support }} .
 
@@ -39,7 +39,7 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }} .
 
 <div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
 You have received this email inquiry because {{ facility_name }} has a listing
-on HealthcareAbroad.com.
+on {{ site_name }}.
 <br/>
 To view your listing visit : <a href="{{ url.facility }}">{{ url.facility }}</a>
 <div style="width: 100%; height: 1px; border-top: 2px dotted #000000;"></div>
@@ -56,7 +56,7 @@ Message:  {{ inquiry.message }}
 <br/>
 View a history of inquiries and manage your clinic profiles by visiting:  <a href="{{ url.login }}">{{ url.login }}</a>
 <br/><br/>
-If you are interested in increasing the amount of leads you receive from HealthcareAbroad.com, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>
+If you are interested in increasing the amount of leads you receive from {{ site_name }}, or have questions please contact Greg Mogab at greg.mogab@healthcareabroad.com or visit: <a href="{{ url.advertising_guide }}">{{ url.advertising_guide }}</a>
 <br/><br/>
 Need help?  Contact Support at {{ email.support }} or visit <a href="{{ url.support }}">{{ url.support }}</a>.
 

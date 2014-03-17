@@ -1,21 +1,21 @@
 {#
 RULES: This should be sent upon clinic listing submission/creation. Sent to email address of person who added the listing. Copy sent to account owner.
 Assumptions: Hospital profile has been created IF not a single clinic.
-Auto-notification subject line: #Clinic_Name# has been added to HealthcareAbroad.com
-    changed to: #Clinic_Name# is AWAITING APPROVAL on HealthcareAbroad.com
+Auto-notification subject line: #Clinic_Name# has been added to {{ site_name }}
+    changed to: #Clinic_Name# is AWAITING APPROVAL on {{ site_name }}
 Auto-notification From address: support@healthcareabroad.com
 #}
 
 {% block subject %}
     {% autoescape false %}
-{{ clinic_name }} is AWAITING APPROVAL on HealthcareAbroad.com
+{{ clinic_name }} is AWAITING APPROVAL on {{ site_name }}
     {% endautoescape %}
 {% endblock %}
 
 {% block body_text %}
     {% autoescape false %}
 
-Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on HealthcareAbroad.com!
+Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on {{ site_name }}!
 
 AWAITING APPROVAL: For quality assurance purposes, your submission is subject to review. This process is usually completed in a few hours but may take up to 2 days.
 
@@ -37,14 +37,14 @@ Please take the time to review your listing and double check your email address.
 
 All the best,
 
-The Healthcare Abroad Team
+The {{ site_name }} Team
 
     {% endautoescape %}
 {% endblock %}
 
 {% block body_html %}
 
-Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on HealthcareAbroad.com!
+Thank you for creating a profile for {{ clinic_name }} at {{ institution_name }} on {{ site_name }}!
 <br/><br/>
 AWAITING APPROVAL: For quality assurance purposes, your submission is subject to review. This process is usually completed in a few hours but may take up to 2 days.
 <br/><br/>
@@ -70,6 +70,6 @@ Please take the time to review your listing and double check your email address.
 <br/><br/>
 All the best,
 <br/><br/>
-The Healthcare Abroad Team
+The {{ site_name }} Team
 
 {% endblock %}

@@ -1,7 +1,7 @@
 {#
 RULES: Sent immediately following a new account creation. Sent to email address of account owner.
 ASSUMPTIONS: No hospital nor clinic data has been added yet.
-SUBJECT: Welcome to HealthcareAbroad.com!
+SUBJECT: Welcome to {{ site_name }}!
 FROM: support@healthcareabroad.com
 #}
 
@@ -14,11 +14,11 @@ FROM: support@healthcareabroad.com
 {% block body_text %}
     {% autoescape false %}
 
-Welcome to HealthcareAbroad.com!
+Welcome to {{ site_name }}!
 
 Your account has successfully been created. The email address you entered for future logins is: {{ email.user_login }}
 
-Soon patients will be able to find your hospital or clinic on HealthcareAbroad.com, make sure that they find complete and relevant information about everything that you have to offer.
+Soon patients will be able to find your hospital or clinic on {{ site_name }}, make sure that they find complete and relevant information about everything that you have to offer.
 
 Complete your profile >> {{ url.complete_profile }}
 Add all your units or departments >> {{ url.add_centers }}
@@ -35,17 +35,17 @@ Need help?  Contact Support at {{ email.support }} or visit {{ url.support }}.
 
 All the best,
 
-The Healthcare Abroad Team
+The {{ site_name }} Team
     {% endautoescape %}
 {% endblock %}
 
 {% block body_html %}
 
-Welcome to HealthcareAbroad.com!
+Welcome to {{ site_name }}!
 
 Your account has successfully been created. The email address you entered for future logins is: {{ email.user_login }}.<br/><br/>
 
-Soon patients will be able to find your hospital or clinic on HealthcareAbroad.com, make sure that they find complete and relevant information about everything that you have to offer.<br/><br/>
+Soon patients will be able to find your hospital or clinic on {{ site_name }}, make sure that they find complete and relevant information about everything that you have to offer.<br/><br/>
 
 <ul>
     <li><a href='{{ url.complete_profile }}'>Complete your profile >></a></li>
@@ -68,6 +68,6 @@ Need help?  Contact Support at {{ email.support }} or visit <a href='{{ url.supp
 
 All the best,<br/><br/>
 
-The Healthcare Abroad Team
+The {{ site_name }} Team
 
 {% endblock %}

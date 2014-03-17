@@ -14,7 +14,7 @@
                    <h2>
                        Personal Contact Information<br>
                        </h2>
-                       <h4 style="font-weight:normal; color:#999;">None of the Account Manager details will be published on our site. This data is used only for internal communications between your organization and HealthcareAbroad.com</h4>
+                       <h4 style="font-weight:normal; color:#999;">None of the Account Manager details will be published on our site. This data is used only for internal communications between your organization and {{ site_name }}</h4>
                     <div class="row-fluid">
                         <div class="span12">
                             <div class="span6">
@@ -60,7 +60,7 @@
                     <div class="row-fluid tooltip-wrap">
                         <div class="span12" style="padding-bottom:0">
   <!--                                   <div class="tooltip-content">
-            <i class="icon-envelope icon-2x pull-left"></i>This is the email address you use to login to the <b>HealthcareAbroad.com</b> system. It is also the email address we send all internal account communications from the HealthcareAbroad.com admin team to your organization.
+            <i class="icon-envelope icon-2x pull-left"></i>This is the email address you use to login to the <b>{{ site_name }}</b> system. It is also the email address we send all internal account communications from the {{ site_name }} admin team to your organization.
         </div> -->
                         <div class="control-group row-field {{ (form.email.vars.valid ? '' : 'error') }}">
                                 <label for="institutionSignUp_email">  Your Email address *
@@ -123,7 +123,7 @@
                     <div class="row-fluid terms">
                         <div class="span12 control-group row-field {{ (form.agree_to_terms.vars.valid ? '' : 'error') }}">
                             <label class="checkbox">
-                                {{ form_widget(form.agree_to_terms) }} I agree to Healthcare Abroad's 
+                                {{ form_widget(form.agree_to_terms) }} I agree to {{ site_name }}'s 
                                 <a href="{{ path('institution_terms_of_use') }}" target="_blank">Terms of Use</a> and 
                                 <a href="{{ path('frontend_page_privacy_policy') }}" target="_blank">Privacy Policy</a> *.
                             </label>

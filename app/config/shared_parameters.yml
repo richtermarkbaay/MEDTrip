@@ -7,7 +7,7 @@ parameters:
     mailchimp_connection: http
 
     site_url: http://www.healthcareabroad.com
-    site_name: www.HealthCareAbroad.com
+    site_name: MEDtrip.com
     domain_name: healthcareabroad.com
 
     cfe_site_url: http://www.chromedia.com
@@ -76,14 +76,7 @@ parameters:
         remove_linebreaks: false
         inline_styles: false
         convert_fonts_to_spans: false
-        
-    site_url: http://www.healthcareabroad.com
-    site_name: www.HealthCareAbroad.com
 
-    cfe_site_url: http://www.chromedia.com
-    cfe_site_name: www.Chromedia.com
-    cfe_company_name: Chromedia Far East Inc.    
-    
     imageplaceholder:
         specializationDefaultLogo: /images/institution/default-specialization-logo.png
         institutionFeaturedImage: /images/default-hospital-featured-image.png 
