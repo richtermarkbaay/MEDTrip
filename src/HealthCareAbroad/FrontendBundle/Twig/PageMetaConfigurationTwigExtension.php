@@ -91,8 +91,6 @@ class PageMetaConfigurationTwigExtension extends \Twig_Extension
                 $metaConfig->setTitle($this->siteName . ' - Global Medical Tourism Directory');
                 $metaConfig->setDescription('');
                 $metaConfig->setKeywords('');
-                
-                var_dump($metaConfig->getTitle());
             }
         }
         
