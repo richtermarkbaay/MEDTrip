@@ -34,17 +34,17 @@
 </div>
 <div id="footer-wrapper2">
     <div class="bottom-content-wrapper container"> <!--This is for the lower part of footer-->
-        <ul class="socials-nav pull-right inline-list">
+        <!-- ul class="socials-nav pull-right inline-list">
             <li><a href="https://plus.google.com/u/0/111671188601151092646/posts" class="hca-sprite social-icon google-plus" target="_blank"></a></li>
             <li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank" class="hca-sprite social-icon facebook"></a></li>
             <li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
-        </ul>
+        </ul> -->
 
-        <p>&copy; Copyright 2014, Medtrip.com Inc. All rights reserved</p>
+        <p>&copy; Copyright 2014, {{ site_name }}. All rights reserved</p>
         <ul class="site-nav unstyled inline-list">
             <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
             <li class="divider">/</li>
-            <li><a href="http://www.medtrip.com/blog/" target="_blank">Medical Tourism News</a></li>
+            <li><a href="/blog/" target="_blank">Medical Tourism News</a></li>
             <li class="divider">/</li>
             <li>  <a id="feedback-message" href="#">Feedback</a>
                 {{ render_feedback_form() | raw }}
