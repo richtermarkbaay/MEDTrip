@@ -79,7 +79,7 @@
                     <h3 class="pull-left">1.</h3>
                     <div class="media-body">
                         <h4>Get your clinic/hospital Profile on {{ site_name }} (FREE)</h4>
-                        <p>Clinic and Hospital Profiles are Forever Free. YES, Free! With no subscriptions, affiliation agreements, commissions, hidden fees, setup costs nor expiration dates. Additionally you maintain full control of your profile. Add and access your profile through our management system by visiting: <a href="https://www.{{ site_name }}/institution/register.html" taget="_blank"></a>http://{{ site_name }}</a></p>
+                        <p>Clinic and Hospital Profiles are Forever Free. YES, Free! With no subscriptions, affiliation agreements, commissions, hidden fees, setup costs nor expiration dates. Additionally you maintain full control of your profile. Add and access your profile through our management system by visiting: <a href="{{ path('institution_signUp') }}" taget="_blank"></a>{{ site_name }}</a></p>
                     </div>
                 </div>
                 <div class="media">
@@ -134,7 +134,7 @@
                     </div>
                 </div>
                 <br><br>
-                <p>Our team is always available for questions or assistance. <a href="mailto:help@{{ site_name }}" target="_top">help@{{ site_name }}</a>
+                <p>Our team is always available for questions or assistance. <a href="mailto:help@{{ domain_name }}" target="_top">help@{{ domain_name }}</a>
             </div>
         <!-- // Container -->
             <div class="clr">&nbsp;</div>
@@ -2018,7 +2018,7 @@
                     <a href="http://www.chromedia.com/#who" target="_blank">http://www.chromedia.com/#who</a>
                 </p>
                 <p>
-                    {{ site_name }} Inc. is an American corporation based in Colorado
+                    {{ site_name }} is an American corporation based in Colorado
                     and a wholly owned subsidiary of Chromedia Inc.
                 </p>
                 <div class="row-fluid">
