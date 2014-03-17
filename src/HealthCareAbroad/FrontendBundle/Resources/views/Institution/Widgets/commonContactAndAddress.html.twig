@@ -5,7 +5,7 @@
     <div class="row-fluid">
         <div class="span5">
             <div class="media">
-                <i class="icon-map-marker icon-2x pull-left orange"></i>
+                <i class="icon-map-marker icon-2x pull-left blue"></i>
                 <div class="media-body">
                     {{ streetAddress }}, {{ mainAddress }}
                 </div>
@@ -15,15 +15,15 @@
             <ul class="unstyled inline-list">
                 {% if contactNumber %}
                 <li>
-                     <a href="#" id="example1" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
+                     <a href="#" id="example1" rel="popover" class="btn blue"><i class="icon-phone"></i> Call Us</a>
                 </li>
                 {% endif %}
                 <li>
-                    <a role="button" href="#form_feedback" class="btn orange"><i class="icon-envelope-alt"></i>  Email Us</a>
+                    <a role="button" href="#form_feedback" class="btn blue"><i class="icon-envelope-alt"></i>  Email Us</a>
                 </li>
                 {% if website %}
                 <li>
-                    <a href="{{ website }}" class="btn orange" id="visit_website" target="_blank"><i class="icon-globe"></i> Visit Website</a>
+                    <a href="{{ website }}" class="btn blue" id="visit_website" target="_blank"><i class="icon-globe"></i> Visit Website</a>
                 </li>
                 {% endif %}
             </ul>
@@ -32,7 +32,7 @@
                 {% if value %}
                     {% set iconClass = type == 'googleplus' ? 'icon-google-plus' : 'icon-' ~ type  %}
                     <li>
-                        <a class="btn orange" href="{{ value }}" target="_blank">Visit <i class="{{ iconClass }}"></i></a>
+                        <a class="btn blue" href="{{ value }}" target="_blank">Visit <i class="{{ iconClass }}"></i></a>
                     </li>
                 {% endif %}
             {% endfor %}

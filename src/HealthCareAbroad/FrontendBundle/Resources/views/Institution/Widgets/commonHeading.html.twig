@@ -35,15 +35,15 @@
             <ul class="unstyled inline-list">
                 {% if viewData.contactNumber %}
                 <li>
-                    <a href="#" id="hospital-contact" rel="popover" class="btn orange"><i class="icon-phone"></i> Call Us</a>
+                    <a href="#" id="hospital-contact" rel="popover" class="btn blue"><i class="icon-phone"></i> Call Us</a>
                 </li>
                 {% endif %}
                 <li>
-                    <a class="btn orange" href="#form_feedback" role="button" ><i class="icon-envelope-alt"></i>  Email Us</a>
+                    <a class="btn blue" href="#form_feedback" role="button" ><i class="icon-envelope-alt"></i>  Email Us</a>
                 </li>
                 {% if viewData.website %}
                 <li>
-                     <a id="visit_website" class="btn orange" href="{{ viewData.website }}" target="_blank"><i class="icon-globe"></i> Visit Website</a>
+                     <a id="visit_website" class="btn blue" href="{{ viewData.website }}" target="_blank"><i class="icon-globe"></i> Visit Website</a>
                 </li>
                 {% endif %}
             </ul>
@@ -53,7 +53,7 @@
                 {% if value %}
                     {% set iconClass = type == 'googleplus' ? 'icon-google-plus' : 'icon-' ~ type  %}
                     <li>
-                        <a class="btn orange" href="{{ value }}" target="_blank">Visit <i class="{{ iconClass }}"></i></a>
+                        <a class="btn blue" href="{{ value }}" target="_blank">Visit <i class="{{ iconClass }}"></i></a>
                     </li>
                 {% endif %}
             {% endfor %}
