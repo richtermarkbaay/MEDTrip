@@ -6,7 +6,7 @@
        	    	<span class="pull-right">
        	    	    <a href="https://twitter.com/HCAbroad" class="twitter-follow-button" data-show-count="false" data-lang="en">Follow @HCAbroad</a>
                 </span>
-       	    	<a class="twitter-timeline" href="https://twitter.com/HCAbroad" data-tweet-limit="3" data-border-color="#AAAAAA" height="150" data-chrome="noheader nofooter transparent" data-widget-id="329771659437424641">Tweets by @HCAbroad</a>
+       	    	<a class="twitter-timeline" href="https://twitter.com/HCAbroad" data-tweet-limit="3" data-border-color="#AAAAAA" height="150" data-chrome="noheader nofooter transparent" data-widget-id="329771659437424641">Tweets by @Medtrip</a>
                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		    </div>
 		</div>
@@ -19,7 +19,7 @@
 			{{ render_newsletter_subscription_form() |raw }}
 			<div class="register row">
                 <h4 class="bordered">Want to list your Clinic?</h4>
-                <p>Patients from all over the world are searching <a href="http://www.healthcareabroad.com">HealthcareAbroad.com</a> - make sure they can find you!</p>
+                <p>Patients from all over the world are searching <a href="http://www.medtrip.com">Medtrip.com</a> - make sure they can find you!</p>
                 <a href="{{ path('institution_signUp') }}" class="sign-up">Sign Up</a>
                 <div class="hca-sprite or-option"></div>
                 <a href="{{ path('institution_login') }}" class="sign-up">Sign In</a>                
@@ -27,21 +27,22 @@
 			</div>
 		</div>
 	</div>
+</div>
+<div id="footer-wrapper2">
+    <div class="bottom-content-wrapper container"> <!--This is for the lower part of footer-->
+        <ul class="socials-nav pull-right inline-list">
+            <li><a href="https://plus.google.com/u/0/111671188601151092646/posts" class="hca-sprite social-icon google-plus" target="_blank"></a></li>
+            <li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank" class="hca-sprite social-icon facebook"></a></li>
+            <li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
+        </ul>
 
-	<div class="bottom-content-wrapper container"> <!--This is for the lower part of footer-->
-		<ul class="socials-nav pull-right inline-list">
-			<li><a href="https://plus.google.com/u/0/111671188601151092646/posts" class="hca-sprite social-icon google-plus" target="_blank"></a></li>
-			<li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank" class="hca-sprite social-icon facebook"></a></li>
-			<li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
-		</ul>
-
-        <p>&copy; Copyright 2013, Healthcareabroad.com Inc. All rights reserved</p>
-		<ul class="site-nav unstyled inline-list">
-		    <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
-		    <li class="divider">/</li>
-			<li><a href="http://www.healthcareabroad.com/blog/" target="_blank">Blog</a></li>
-			<li class="divider">/</li>
-		    <li>  <a id="feedback-message" href="#">Feedback</a>
+        <p>&copy; Copyright 2014, Medtrip.com Inc. All rights reserved</p>
+        <ul class="site-nav unstyled inline-list">
+            <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
+            <li class="divider">/</li>
+            <li><a href="http://www.medtrip.com/blog/" target="_blank">Medical Tourism News</a></li>
+            <li class="divider">/</li>
+            <li>  <a id="feedback-message" href="#">Feedback</a>
                 {{ render_feedback_form() | raw }}
             </li>
             <li class="divider">/</li>
@@ -50,14 +51,13 @@
             </li>
             <li class="divider">/</li>
             <li> <a href="{{ path('frontend_campaign_intro') }}">Advertise</a> </li>
-		    <li class="divider">/</li>
-			<li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
-			<li class="divider">/</li>
-			<li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
-		</ul>
-	</div>
-</div>
-
+            <li class="divider">/</li>
+            <li><a href="{{ path('frontend_page_terms_of_use') }}">Terms of Use</a></li>
+            <li class="divider">/</li>
+            <li><a href="{{ path('frontend_page_privacy_policy') }}">Privacy Policy</a></li>
+        </ul>
+    </div>
+ </div>
 {% block inlineJavascriptCode %}
     <script src="{{ asset('bundles/frontend/js/Feedback.js') }}"></script>
     <script type="text/javascript">

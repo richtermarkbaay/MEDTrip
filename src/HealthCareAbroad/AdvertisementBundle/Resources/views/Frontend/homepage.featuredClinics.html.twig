@@ -48,12 +48,12 @@
                         </div>
                     {% endif %}
 
-					<a href="{{ clinicUrl }}" class="btn green {{ get_clickthrough_tracker_class() }} pull-right" {{ _clickThroughStatisticParametersAttribute }}> 
+					<a href="{{ clinicUrl }}" class="btn blue {{ get_clickthrough_tracker_class() }} pull-right" {{ _clickThroughStatisticParametersAttribute }}> 
 					    <span class="white-icon-search"></span> Learn More 
 				    </a>
 
     			</div>
-     			<div class="ad-highlights-wrapper bg-green row-fluid">
+     			<div class="ad-highlights-wrapper row-fluid">
                     {% set clinicHighlights = json_decode(each.highlights) %}    
                     {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
                     {% for clinicHighlight in clinicHighlights %}

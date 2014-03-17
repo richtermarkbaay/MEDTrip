@@ -48,15 +48,15 @@
 		        statisticsDataObject: highlight,
 		        link: {
 		            url: institutionUrl,
-    			    class: 'btn white feature-btn',
-    			    html: '<span class="orange-icon-search"></span> Learn More'
+    			    class: 'btn blue feature-btn',
+    			    html: '<span class="white-icon-search"></span> Learn More'
 		        }
 		    }
 		%}
 
 	</div> <!--End of carousel slide-->
 
-	<div class="ad-highlights-wrapper bg-orange row-fluid">		
+	<div class="ad-highlights-wrapper row-fluid">		
         {% set highlights = json_decode(highlight.highlights) %}
         {% set iconSize = constant('HealthCareAbroad\\MediaBundle\\Services\\ImageSizes::MINI') %}
         {% for each in highlights %}
