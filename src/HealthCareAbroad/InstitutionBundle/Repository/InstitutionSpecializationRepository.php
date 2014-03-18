@@ -27,6 +27,7 @@ use Proxies\__CG__\HealthCareAbroad\InstitutionBundle\Entity\InstitutionTreatmen
 use HealthCareAbroad\TreatmentBundle\Entity\Treatment;
 
 use Doctrine\ORM\EntityRepository;
+use HealthCareAbroad\HelperBundle\Services\Helpers\QueryHelper;
 
 /**
  * InstitutionSpecializationRepository
@@ -36,6 +37,27 @@ use Doctrine\ORM\EntityRepository;
  */
 class InstitutionSpecializationRepository extends EntityRepository
 {
+    public function getResultByFilters(array $filters=array(), $hydrationMode=Query::HYDRATE_ARRAY)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('inst_sp, inst, imc, sp')
+            ->from('InstitutionBundle:InstitutionSpecialization', 'inst_sp')
+            ->innerJoin('inst_sp.institutionMedicalCenter', 'imc')
+            ->innerJoin('imc.institution', 'inst')
+            ->innerJoin('inst_sp.specialization', 'sp')
+            ->where('1=1');
+        
+        $knownFilters = array(
+        	'specialization' => $qb->expr()->eq('inst_sp.specialization', ':specialization') 
+        );
+        
+        $qb = QueryHelper::applyQueryBuilderFilters($qb, $knownFilters, $filters);
+        
+        $qb->orderBy('inst.name', 'ASC');
+        
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+    
     public function getCountByMedicalCenterId($medicalCenterId) {
         $qb = $this->_em->createQueryBuilder();
 

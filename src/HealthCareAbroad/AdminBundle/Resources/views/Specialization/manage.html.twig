@@ -1,0 +1,114 @@
+{% extends 'AdminBundle::layout.html.twig' %}
+{% set with_backbone = true %}
+{% set selectedTab = 'manageHcaData' %}
+
+{% block content %}
+
+    <div id="app_canvass" class="span12">
+        {% embed 'HelperBundle:Widgets:section.html.twig' with { title: 'Manage Specialization - '~specialization.name } %}
+            {% block sectionContent %}
+            
+            <div class="pull-right">
+                <a href="{{ path('admin_specialization_edit', {id: specialization.id}) }}" class="btn btn-success">Edit {{ specialization.name }}</a>
+            </div>
+            
+            
+            <ul class="nav nav-tabs">
+                <li  class="active"><a href="#treatments" data-toggle="tab">Treatments</a></li>
+                <li><a href="#linked-institutions" data-toggle="tab">Linked Institutions</a></li>
+            </ul>
+            
+            <div class="tab-content">
+                <div class="tab-pane active" id="treatments">
+                    
+                    <div class="row-fluid treatment-filters">
+                        <div class="controls pull-right">
+                            <select name="sub-specialization"></select>
+                            {#
+                            <!-- 
+                            <select name="status" class="input-small"></select>
+                             --> #}
+                            
+                            <button type="button" class="btn btn-primary submit-filter"> Go </button>
+                        </div>
+                    </div>
+                
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th width="25%">Sub Specializations</th>
+                                <th>Description</th>
+                                <th width="10%">Status</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="treatment-collection">
+                            <tr class="loader">
+                                <td colspan="5">
+                                    <img src="/images/admin/ajax-loader.gif">
+                                    Loading treatments
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- #treatments -->
+                
+                <div class="tab-pane" id="linked-institutions">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Institution Name</th>
+                                <th>Clinic</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="institution-specialization-collection">
+                            <tr class="loader">
+                                <td colspan="3">
+                                    <img src="/images/admin/ajax-loader.gif">
+                                    Loading institutions
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div><!-- #linked-institutions -->
+            </div>
+            {% endblock %}
+        {% endembed %}
+    </div>
+    
+{% endblock %}
+
+{% block inlineJavascriptCode %}
+    {% javascripts
+        'bundles/helper/js/view/commonConfirmModal.js'
+        'bundles/treatment/js/entity/treatment.entity.js'
+        'bundles/treatment/js/entity/subSpecialization.entity.js'
+        'bundles/institution/js/entity/institutionSpecialization.entity.js'
+        'bundles/admin/js/treatment/view/treatment.view.js'
+        'bundles/admin/js/institutionSpecialization/view/institutionSpecialization.view.js'
+        'bundles/admin/js/specialization/manageSpecialization.app.js'
+        output='js/compiled-admin-specialization-manage.js'
+    %}
+
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+    <!--
+    (function($){
+        $(function(){
+            var app = new ManageSpecializationApp({
+                specialization: {
+                    id: {{ specialization.id }},
+                    name: '{{ specialization.name }}'
+                }
+            });
+            
+        });
+    })(jQuery);
+    //-->
+    </script>
+{% endblock %}
+
+

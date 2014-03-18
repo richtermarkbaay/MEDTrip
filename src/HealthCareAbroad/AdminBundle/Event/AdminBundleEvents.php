@@ -18,6 +18,9 @@ final class AdminBundleEvents
     const ON_DELETE_ADMIN_USER_TYPE = 'event.admin_user_type.delete';
     const ON_ADD_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.add_role';
     const ON_DELETE_ADMIN_USER_TYPE_ROLE = 'event.admin_user_type.delete_role';
+    
+    const ON_ADMIN_MIGRATE_SPECIALIZATION = 'event.admin.migrate_specialization';
+    const ON_ADMIN_MERGE_TREATMENT = 'event.admin.merge_treatment';
 
     const ON_ADD_ADVERTISEMENT = 'event.advertisement.add';
     const ON_EDIT_ADVERTISEMENT = 'event.advertisement.edit';
@@ -78,4 +81,7 @@ final class AdminBundleEvents
     const ON_ADD_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.add';
     const ON_EDIT_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.edit';
     const ON_DELETE_MEDICAL_PROVIDER_GROUP = 'event.medical_provider_group.delete';
+    
+    
+    
 }

@@ -1,0 +1,27 @@
+admin_migrationTools_viewSpecializations:
+    pattern: /migration-tools/specializations
+    defaults: { _controller: AdminBundle:MigrationTools:viewSpecializationMigration }
+    requirements:    
+        _method:  GET
+        
+        
+admin_migrationTools_processSpecializationMigration:
+    pattern: /migration-tools/specializations
+    defaults: { _controller: AdminBundle:MigrationTools:processSpecializationMigration }
+    requirements:    
+        _method:  POST
+        
+        
+admin_migrationTools_viewMergeTreatment:
+    pattern: /migration-tools/merge-treatment
+    defaults: { _controller: AdminBundle:MigrationTools:viewMergeTreatment }
+    requirements:    
+        _method:  GET
+        
+        
+admin_migrationTools_processMergeTreatment:
+    pattern: /migration-tools/merge-treatment
+    defaults: { _controller: AdminBundle:MigrationTools:processMergeTreatment }
+    requirements:    
+        _method:  POST
+        

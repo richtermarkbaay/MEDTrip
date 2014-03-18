@@ -1,3 +1,9 @@
+helper_default_apiUtilityJavascript:
+    pattern: /helper/api-utility.js
+    defaults: { _controller: HelperBundle:Default:apiUtilityJavascript }
+    requirements:
+        _method: GET
+
 HelperBundle_securedRoutes:
     resource: "@HelperBundle/Resources/config/routing_secured.yml"
     prefix:   /secured-utilities

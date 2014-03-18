@@ -23,16 +23,16 @@ BEGIN
     
     SET otherTermDocumentsCnt = (SELECT COUNT(*) cnt FROM `search_terms` a WHERE a.`document_id` = NEW.`document_id` AND a.`type` = NEW.`type`);
 
-    IF otherTermDocumentsCnt > 0 THEN
-        -- insert this term document with values from insitution medical centers that already used the document_id and type 
-        INSERT INTO `search_terms` (`term_id`, `institution_id`, `institution_medical_center_id`, `term_document_id`, `document_id`, `type`, `specialization_id`, `sub_specialization_id`, `treatment_id`, `country_id`, `city_id`, `specialization_name`, `sub_specialization_name`, `treatment_name`, `country_name`, `city_name`, `status`)
-        SELECT NEW.`term_id`, `institution_id`, `institution_medical_center_id`, NEW.`id` as term_document_id, NEW.`document_id`, NEW.`type`, `specialization_id`, `sub_specialization_id`, `treatment_id`, `country_id`, `city_id`, `specialization_name`, `sub_specialization_name`, `treatment_name`, `country_name`, `city_name`, `status`
-        FROM `search_terms` a
-        WHERE a.`document_id` = NEW.`document_id`
-        AND a.`type` = NEW.`type`;
-        
-        -- else statement here is most likely not to happen since we will be populating search_terms from actual entity names
-    END IF;
+    #IF otherTermDocumentsCnt > 0 THEN
+    #    -- insert this term document with values from insitution medical centers that already used the document_id and type 
+    #    INSERT INTO `search_terms` (`term_id`, `institution_id`, `institution_medical_center_id`, `term_document_id`, `document_id`, `type`, `specialization_id`, `sub_specialization_id`, `treatment_id`, `country_id`, `city_id`, `specialization_name`, `sub_specialization_name`, `treatment_name`, `country_name`, `city_name`, `status`)
+    #    SELECT NEW.`term_id`, `institution_id`, `institution_medical_center_id`, NEW.`id` as term_document_id, NEW.`document_id`, NEW.`type`, `specialization_id`, `sub_specialization_id`, `treatment_id`, `country_id`, `city_id`, `specialization_name`, `sub_specialization_name`, `treatment_name`, `country_name`, `city_name`, `status`
+    #    FROM `search_terms` a
+    #    WHERE a.`document_id` = NEW.`document_id`
+    #    AND a.`type` = NEW.`type`;
+    #    
+    #    -- else statement here is most likely not to happen since we will be populating search_terms from actual entity names
+    #END IF;
 END; $$
 ### end term_documents_ai trigger definition
 

@@ -9,3 +9,19 @@ ApiBundle_hcaBlog:
 ApiBundle_institutionInquiry:
     resource: "@ApiBundle/Resources/config/routing.institutionInquiry.yml"
     prefix:   /api
+    
+ApiBundle_treatment:
+    resource: "@ApiBundle/Resources/config/routing.treatment.yml"
+    prefix:   /api
+    
+ApiBundle_institutionSpecialization:
+    resource: "@ApiBundle/Resources/config/routing.institutionSpecialization.yml"
+    prefix:   /api
+    
+ApiBundle_subSpecialization:
+    resource: "@ApiBundle/Resources/config/routing.subSpecialization.yml"
+    prefix:   /api
+    
+api_default_apiBase:
+    pattern: /api
+    defaults: {_controller: ApiBundle:Default:apiBase }

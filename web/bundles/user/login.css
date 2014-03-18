@@ -1,0 +1,11 @@
+form.user { font-size: 16px; }
+form.user div { margin-bottom: 20px; }
+form.user label { float: left; margin-right: 10px; text-align: right; width: 100px; font-weight: bold; vertical-align: top; padding-top: 10px; }
+form.user input[type="email"],
+form.user input[type="password"]
+    { width: 500px; line-height: 26px; font-size: 20px; min-height: 26px; }
+form.user textarea { width: 500px; height: 150px; line-height: 26px; font-size: 20px; }
+form.user select { width: 100px; line-height: 26px; font-size: 20px; }
+form.user input[type="submit"] { margin-left: 110px; width: 508px; line-height: 26px; font-size: 20px; min-height: 26px; }
+form.user ul li { color: #ff0000; margin-bottom: 5px; }
+

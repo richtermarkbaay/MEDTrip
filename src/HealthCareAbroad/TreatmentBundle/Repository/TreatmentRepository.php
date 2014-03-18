@@ -12,6 +12,7 @@ use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\DBAL\LockMode;
+use HealthCareAbroad\HelperBundle\Services\Helpers\QueryHelper;
 /**
  * TreatmentRepository
  *
@@ -20,6 +21,28 @@ use Doctrine\DBAL\LockMode;
  */
 class TreatmentRepository extends EntityRepository
 {
+    public function getResultByFilters($filters=array(), $hydrationMode=Query::HYDRATE_OBJECT)
+    {
+        $qb = $this->_em->createQueryBuilder();
+        $qb->select('tr, sp, subSp')
+            ->from('TreatmentBundle:Treatment', 'tr')
+            ->innerJoin('tr.specialization', 'sp')
+            ->leftJoin('tr.subSpecializations', 'subSp')
+            ->where('1=1');
+        
+        $knownFilters = array(
+        	'specialization' => $qb->expr()->eq('tr.specialization', ':specialization'),
+            'subSpecialization' => $qb->expr()->eq('subSp.id', ':subSpecialization'),
+            'status' => $qb->expr()->eq('tr.status', ':status')
+        );
+        
+        $qb = QueryHelper::applyQueryBuilderFilters($qb, $knownFilters, $filters);
+        
+        $qb->orderBy('tr.name', 'ASC');
+        
+        return $qb->getQuery()->getResult($hydrationMode);
+    }
+    
     /**
      * Overrides find() accepting either id or slug.
      *

@@ -475,4 +475,15 @@ class InstitutionService
         return $this->institutionUserService->getAccountData($institution->getInstitutionUsers()->first());
         //return $this->institutionUserService->getAccountDataById($institution->getInstitutionUsers()->first()->getAccountId());
     }
+    
+    static public function institutionToArray(Institution $institution)
+    {
+        $data = array(
+        	'id' => $institution->getId(),
+            'name' => $institution->getName()
+        );
+        
+        return $data;
+        
+    }
 }

@@ -16,3 +16,50 @@ else c[b]?console.error("Invalid name: "+b+"."):c.templates[b]?console.error('Te
 g.type||"text/x-icanhaz"===g.type))c.addTemplate(g.id,a(g.innerHTML)),h.unshift(g);b=0;for(d=h.length;b<d;b++)h[b].parentNode.removeChild(h[b])}};"undefined"!==typeof exports?("undefined"!==typeof module&&module.exports&&(exports=module.exports=c),exports.ich=c):this.ich=c;"undefined"!==typeof document&&(c.$?c.$(function(){c.grabTemplates()}):document.addEventListener("DOMContentLoaded",function(){c.grabTemplates()},!0))})()})();
 
 var Channel = _.extend({}, Backbone.Events);
+var CommonFlashMessageView = Backbone.View.extend({
+    tagName: 'div',
+    
+    className: 'alert',
+    
+    /**
+     * 
+     */
+    initialize: function(options){
+        this.message = options.message || '';
+        switch(options.type || 'success'){
+            case 'error': 
+                this.className = this.className+' alert-error';
+                break;
+            case 'warning':
+                this.className = this.className+' alert-warning';
+                break;
+            default:
+                this.className = this.className+' alert-success';
+                break;
+        }
+        
+    },
+    
+    /**
+     * 
+     */
+    render: function(){
+        
+        this.$el.text(this.message);
+        this.$el.attr('style', 'position: fixed;bottom: 1em;right: 1em;');
+        this.$el.attr('class', this.className);
+        
+        return this;
+    },
+    
+    /**
+     * 
+     */
+    show: function(){
+        this.render();
+        $('body').append(this.$el);
+        
+        var _this = this;
+        setTimeout(function(){_this.remove()}, 3500);
+    }
+});

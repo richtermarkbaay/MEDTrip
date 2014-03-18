@@ -12,6 +12,7 @@ use HealthCareAbroad\UserBundle\Entity\AdminUserRole;
 use HealthCareAbroad\UserBundle\Entity\SiteUser;
 use HealthCareAbroad\UserBundle\Services\Exception\InvalidInstitutionUserOperationException;
 use HealthCareAbroad\UserBundle\Entity\AdminUser;
+use HealthCareAbroad\LogBundle\Entity\LogEventData;
 
 class AdminUserService extends UserService
 {
@@ -31,39 +32,6 @@ class AdminUserService extends UserService
         return $returnVal;
     }
 
-    /**
-     * This is subject for removal.
-     */
-    /*public function login($email, $password)
-    {
-        $user = $this->findByEmailAndPassword($email, $password);
-        if ($user) {
-            $userRoles = $user->getAdminUserType()->getAdminUserRoles();
-
-            $roles = array();
-            foreach ($userRoles as $userRole) {
-                // compare bitwise status for active
-                if ($userRole->getStatus() & AdminUserRole::STATUS_ACTIVE) {
-                    $roles[] = $userRole->getName();
-                }
-            }
-            // add generic role for an admin user
-            $roles[] = 'ROLE_ADMIN';
-
-            $securityToken = new UsernamePasswordToken($user->__toString(),$user->getPassword() , 'admin_secured_area', $roles);
-            $this->session->set('_security_admin_secured_area',  \serialize($securityToken));
-//             $this->securityContext->setToken($securityToken);
-            $this->container->get('security.context')->setToken($securityToken);
-            $this->session->set('accountId', $user->getAccountId());
-
-            // dispatch event
-            $this->eventDispatcher->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->eventFactory->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
-
-            return true;
-        }
-
-        return false;
-    }*/
     
     /**
      * @inheritDoc
@@ -88,7 +56,11 @@ class AdminUserService extends UserService
         $this->session->set('accountId', $user->getAccountId());
 
         // dispatch event
-        $this->eventDispatcher->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->eventFactory->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $user));
+        $eventData = new LogEventData();
+        $eventData->setMessage(\sprintf("%s login to admin", $user->getEmail()))
+            ->setData(array('accountId' => $user->getAccountId()));
+        
+        $this->eventDispatcher->dispatch(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $this->eventFactory->create(AdminBundleEvents::ON_LOGIN_ADMIN_USER, $eventData));
     }
 
     /**

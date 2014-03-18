@@ -17,7 +17,7 @@
                 </li>
 
                 {% set groupedSpecializations = group_treatments_by_subspecialization(specialization.treatments) %}
-                {% for subSpecializationName,each in groupedSpecializations %}
+                {% for subSpecializationName,each in groupedSpecializations if each.treatments|length %}
                 <li>
                     <ul class="match">
                     {% if each.subSpecialization %}
