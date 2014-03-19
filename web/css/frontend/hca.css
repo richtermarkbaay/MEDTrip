@@ -360,10 +360,10 @@ a:hover {
   color: #f9f9f9;
   /*font-size: 12px;*/
   margin: 8px 20px 0 0px;
-  float:left;
+  /*float:left;*/
 }
 #footer-wrapper2 .bottom-content-wrapper ul.site-nav {
-  margin-left: 0px;
+  margin-left: 10px;
   margin-top:7px;
 }
 #footer-wrapper2 .bottom-content-wrapper li a {
