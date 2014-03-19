@@ -16,18 +16,28 @@
 			<h4>Like Us on Facebook</h4>
           <iframe src="http://www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fhealthcareabroadcom&amp;width=287&amp;height=410&amp;show_faces=true&amp;colorscheme=light&amp;stream=false&amp;border_color&amp;header=false&amp;scrolling=no"></iframe>
 		</div -->
-
-		<div class="span6">
-			<div class="register row">
+              {#   <div class="span4">
+            <div class="register row">
                 <h4 class="bordered">Want to list your Clinic?</h4>
                 <p>Patients from all over the world are searching <br/> <a href="{{ path('frontend_main_default') }}">{{ site_name }}</a> - make sure they can find you!</p>
                 <a href="{{ path('institution_signUp') }}" class="sign-up">Sign Up</a>
                 <div class="hca-sprite or-option" style="margin-left: 80px"></div>
                 <a href="{{ path('institution_login') }}" class="sign-up">Sign In</a>                
                 <!-- <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a> --> 
+            </div>
+        </div> #}
+
+		<div class="span8">
+			<div class="register row">
+                <h4>Want to list your Clinic?</h4>
+                <p>Patients from all over the world are searching <a href="{{ path('frontend_main_default') }}">{{ site_name }}</a> - make sure they can find you!</p>
+                <a href="{{ path('institution_signUp') }}" class="btn blue pull-left">Sign Up</a>
+                {# <div class="hca-sprite or-option" class="pull-left"></div> #}
+                <a href="{{ path('institution_login') }}" class="btn green">Sign In</a>                
+                <!-- <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a> --> 
 			</div>
 		</div>
-		<div class="subscribe-section span4 offset2" style="margin-top:15px"> <!--This is for the Subscriptions-->
+		<div class="subscribe-section span4"> <!--This is for the Subscriptions-->
 			{{ render_newsletter_subscription_form() |raw }}
 		</div>
 	</div>
@@ -39,7 +49,9 @@
             <li><a href="https://www.facebook.com/healthcareabroadcom" target="_blank" class="hca-sprite social-icon facebook"></a></li>
             <li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
         </ul> -->
-
+    <a href="{{ path('frontend_main_homepage') }}">
+            <h1 class="logo2 pull-left">HealthcareAbroad</h1>
+        </a>
         <p>&copy; Copyright 2014, {{ site_name }}. All rights reserved</p>
         <ul class="site-nav unstyled inline-list">
             <li><a href="{{ path('frontend_page_about_us') }}">About Us</a></li>
@@ -49,8 +61,8 @@
             <li>  <a id="feedback-message" href="#">Feedback</a>
                 {{ render_feedback_form() | raw }}
             </li>
-            <li class="divider">/</li>
-            <!-- li> <a href="https://brandfolder.com/healthcareabroad" class="brandfolder">Press/Media</a> </li>
+            <!-- <li class="divider">/</li>
+            li> <a href="https://brandfolder.com/healthcareabroad" class="brandfolder">Press/Media</a> </li>
             <li class="divider">/</li>
             <li> <a href="{{ path('frontend_campaign_intro') }}">Advertise</a> </li> -->
             <li class="divider">/</li>

@@ -38,6 +38,16 @@ h1.logo {
   height: 31px;
   width: 275px;
 }
+h1.logo2 {
+  display: inline-block;
+  margin-top: 1px;
+  text-indent: -100000px;
+  background: url("/images/frontend/sprite.png") no-repeat scroll -637px -125px transparent;
+  font-size: 25px;
+  line-height: 1em;
+  height: 31px;
+  width: 135px;
+}
 a {
   text-decoration: none;
 }
@@ -265,7 +275,7 @@ a:hover {
   background-position: 0 -142px;
 }
 .profile-widget-wrapper > h5 {
-  color: #fe6500;
+  color: #278acd;
   font-size: 12px;
   text-align: center;
   font-weight: normal;
@@ -292,11 +302,11 @@ a:hover {
 
 /* Footer Layout */
 #footer-wrapper {
-  padding: 20px 0 20px;
+  padding: 20px 0 0 0;
   color: #eee;
 }
 #footer-wrapper .top-content-wrapper {
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 #footer-wrapper .top-content-wrapper > div:first-child {
   margin-left: 0;
@@ -347,12 +357,14 @@ a:hover {
 }
 
 #footer-wrapper2 .bottom-content-wrapper p {
-  color: #95b1c9;
-  font-size: 12px;
-  margin: 0 0 0 0px;
+  color: #f9f9f9;
+  /*font-size: 12px;*/
+  margin: 8px 20px 0 0px;
+  float:left;
 }
 #footer-wrapper2 .bottom-content-wrapper ul.site-nav {
   margin-left: 0px;
+  margin-top:7px;
 }
 #footer-wrapper2 .bottom-content-wrapper li a {
   color: #95b1c9;
@@ -683,7 +695,7 @@ ul.nav-tabs li.active {
 }
 ul.nav-tabs li.active a {
   border-bottom: none;
-  color: #fe6500;
+  color: #01568f;
   background-color: #fff;
 }
 ul.nav-tabs li.active a:hover {
@@ -741,7 +753,7 @@ ul.nav-tabs li.active a:hover {
 }
 .media .icon-map-marker {
   display: block;
-  color: #fe6500;
+  color: #367aaf;
   margin: 2px 0.3em;
 }
 .media .media {
@@ -770,11 +782,11 @@ ul.nav-tabs li.active a:hover {
 }
 
 #footer-wrapper {
-  background-color: #014c85;
+  background-color: #e5e5e5;
 }
 #footer-wrapper2 {
   background-color: #004579;
-  padding:20px 0 5px 0;
+  padding:20px 0 15px 0;
 }
 #footer-wrapper .bottom-content-wrapper {
   background-color: #004579;
@@ -1705,7 +1717,7 @@ form.home-search > button.btn:active {
   margin-left: 0;
   position: relative;
   border: white solid 1px;
-  background-color:#f2f2f2;
+  background-color:#f9f9f9;
 }
 .ad-highlights-wrapper > .item-wrapper {
   margin: 0;
@@ -2289,7 +2301,7 @@ div.register {
   margin-left: -10px;
   display: block;
   position: relative;
-  text-align: center;
+  /*text-align: center;*/
 }
 div.register h5 {
   font-family: "PT Sans",sans-serif;
@@ -2299,14 +2311,15 @@ div.register h5 {
   margin-bottom: 30px;
   margin-left: -20px;
 }
-div.register h4.bordered {
-  padding-bottom: 15px;
-  border-bottom: #848783 solid 1px;
+div.register h4 {
+  padding-bottom: 10px;
+  margin-left:10px;
+  color:#666;
 }
 div.register a {
   font-size: 22px;
   color: #7b7e7a;
-  margin-left: -26px;
+  margin-left: 10px;
 }
 div.register a.btn {
   color: #fff;
@@ -2317,11 +2330,13 @@ div.register a:hover {
   text-decoration: none;
 }
 div.register p {
-  margin: 15px;
-  text-align: center;
-  margin-bottom: 30px;
-  margin-left: -5px;
-  padding: 0 20px;
+  margin: 0 10px;
+  /*text-align: center;*/
+  margin-bottom: 20px;
+  /*margin-left: -5px;*/
+  /*padding: 0 20px;*/
+  font-size:16px;
+  color:#aaa;
 }
 div.register p a {
   font-size: 14px;
@@ -2335,18 +2350,19 @@ div.register p a:hover {
 .newsletter-box {
   margin-left: -18px;
   padding: 10px 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   /*border: #848783 solid 1px;*/
-  background-color: #014273;
+  background-color: #c9c9c9;
   -webkit-border-radius: 2px !important;
   -moz-border-radius: 2px !important;
   border-radius: 2px !important;
   background-clip: padding-box;
 }
-.newsletter-box h5.heading {
-  margin: 0 0 15px;
+.newsletter-box h5 {
+  margin: 6px 0;
   font-size: 16px;
   font-weight: 400;
+  color:#666;
   /*text-shadow: 1px 1px 0 rgba(245, 245, 245, 0.5);*/
 }
 .newsletter-box > form {
@@ -2526,7 +2542,7 @@ div.register p a:hover {
 }
 .hca-sprite.or-option {
   background-position: 33px -43px;
-  display: block;
+  display: inline-block;
   height: 41px;
   width: 270px;
 }
