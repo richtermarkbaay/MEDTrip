@@ -1,0 +1,5 @@
+api_subSpecialization_list:
+    pattern: /sub-specializations
+    defaults: {_controller: ApiBundle:SubSpecializationApi:list }
+    requirements:
+        _method: GET

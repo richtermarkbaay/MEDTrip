@@ -10,7 +10,7 @@
             'js/jquery/jquery-ui-1.9.0.custom.js'
             'js/bootstrap.min.js'
             'bundles/helper/js/Common.js'
-			'bundles/helper/js/CustomSelect.js'
+            'bundles/helper/js/CustomSelect.js'
             output='js/compiled-admin.js'
         %}
 
@@ -18,11 +18,13 @@
         {% endjavascripts %}
         
         {% if with_backbone %}
+            <script type="text/javascript" src="{{ path('helper_default_apiUtilityJavascript') }}"></script>
             {% javascripts 
                 'js/lib/underscore-min.js'
                 'js/lib/backbone-min.js'
                 'js/lib/ICanHaz.min.js'
                 'bundles/helper/js/Channel.js'
+                'bundles/helper/js/view/CommonFlashMessageView.js'
         		output='js/compiled-admin-backbone-based.js'
             %}
                 <script type="text/javascript" src="{{ asset_url }}"></script>

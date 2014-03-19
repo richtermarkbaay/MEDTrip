@@ -1,0 +1,19 @@
+{#
+<!-- This will be rendered as a javascript file -->
+<!--
+Will contain miscellaneous utilities that can be reused by applications 
+ -->
+#}
+
+var ApiUtility = {
+
+    getRootUrl: function() {
+        var apiRootUrl = ApiUtility.getApiRootUrl();
+        
+        return apiRootUrl.replace(/\/api$/, '');
+    },
+
+    getApiRootUrl: function(){
+        return '{{ path("api_default_apiBase") | raw }}';
+    }
+};

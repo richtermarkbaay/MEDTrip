@@ -53,6 +53,14 @@
              <li class="{{ selectedSubTab == 'manage_medical_provider_group' ? 'active' : '' }}">
                 <a href="{{ path('admin_medical_provider_group_index') }}"> Medical Provider Group</a>
             </li>
+            
+            {% if is_expr_granted("hasAnyRole('SUPER_ADMIN', 'CAN_VIEW_SPECIALIZATIONS')") %}
+            <li class="divider"></li>
+            <li>
+                <a href="{{ path('admin_migrationTools_viewSpecializations') }}">Migration Tools</a>
+            </li>
+            {% endif %}
+            
             <li class="divider"></li>
             
             <li class="{{ selectedSubTab == 'page_rankings' ? 'active' : '' }}" >

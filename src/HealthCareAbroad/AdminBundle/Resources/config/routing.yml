@@ -1,3 +1,7 @@
+AdminBundle_migrationTools:
+    resource: "@AdminBundle/Resources/config/routing_migrationTools.yml"
+    prefix:   /admin
+
 # Routest for Admin PageMetaConfigurationController
 AdminBundle_pageMetaConfiguration:
     resource: "@AdminBundle/Resources/config/routing_page_meta_configuration.yml"

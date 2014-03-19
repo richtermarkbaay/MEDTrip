@@ -1,0 +1,30 @@
+.pager{
+    text-align: right;
+    padding: 0px;
+    list-style: none;
+    margin: 20px 0 20px;
+}
+
+.pager li {
+    display: inline;
+    margin-right: 3px;
+    padding: 0px;
+}
+
+.pager li:last-child {
+    margin-right: 0;
+}
+
+.pager a, 
+.pager b {
+    color: #aaa;
+    padding: 2px 7px;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.pager a:hover,
+.pager b {
+    border: 1px solid #ddd;
+    color: #ff9346;
+}

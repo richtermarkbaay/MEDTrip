@@ -24,6 +24,23 @@ class SpecializationController extends Controller
         
         return $this->render('AdminBundle:Specialization:index.html.twig', $params);
     }
+    
+    /**
+     * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")
+     */
+    public function manageAction(Request $request)
+    {
+        $specialization = $this->getDoctrine()->getRepository('TreatmentBundle:Specialization')
+            ->find($request->get('id'));
+        
+        if (!$specialization){
+        	throw $this->createNotFoundException('Invalid specialization');
+        }
+        
+        return $this->render('AdminBundle:Specialization:manage.html.twig', array(
+                'specialization' => $specialization
+        ));
+    }
 
     /**
      * @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'CAN_MANAGE_SPECIALIZATION')")

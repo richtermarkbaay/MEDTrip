@@ -7,7 +7,7 @@ parameters:
     mailchimp_connection: http
 
     site_url: http://www.healthcareabroad.com
-    site_name: MEDtrip
+    site_name: MEDtrip.com
     domain_name: healthcareabroad.com
 
     cfe_site_url: http://www.chromedia.com

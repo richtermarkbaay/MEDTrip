@@ -4,45 +4,45 @@ namespace HealthCareAbroad\LogBundle\Entity;
 class Log
 {
     /**
-     * @var bigint $id
+     * @var integer
      */
     private $id;
 
     /**
-     * @var bigint $accountId
+     * @var integer
      */
     private $accountId;
 
     /**
-     * @var integer $applicationContext
+     * @var integer
      */
     private $applicationContext;
 
     /**
-     * @var string $action
+     * @var string
      */
     private $action;
 
     /**
-     * @var bigint $objectId
+     * @var string
      */
-    private $objectId;
+    private $message;
 
     /**
-     * @var datetime $dateCreated
+     * @var string
+     */
+    private $data;
+
+    /**
+     * @var \DateTime
      */
     private $dateCreated;
-
-    /**
-     * @var HealthCareAbroad\LogBundle\Entity\LogClass
-     */
-    private $logClass;
 
 
     /**
      * Get id
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getId()
     {
@@ -52,19 +52,20 @@ class Log
     /**
      * Set accountId
      *
-     * @param bigint $accountId
+     * @param integer $accountId
      * @return Log
      */
     public function setAccountId($accountId)
     {
         $this->accountId = $accountId;
+    
         return $this;
     }
 
     /**
      * Get accountId
      *
-     * @return bigint 
+     * @return integer 
      */
     public function getAccountId()
     {
@@ -80,6 +81,7 @@ class Log
     public function setApplicationContext($applicationContext)
     {
         $this->applicationContext = $applicationContext;
+    
         return $this;
     }
 
@@ -102,6 +104,7 @@ class Log
     public function setAction($action)
     {
         $this->action = $action;
+    
         return $this;
     }
 
@@ -116,68 +119,71 @@ class Log
     }
 
     /**
-     * Set objectId
+     * Set message
      *
-     * @param bigint $objectId
+     * @param string $message
      * @return Log
      */
-    public function setObjectId($objectId)
+    public function setMessage($message)
     {
-        $this->objectId = $objectId;
+        $this->message = $message;
+    
         return $this;
     }
 
     /**
-     * Get objectId
+     * Get message
      *
-     * @return bigint 
+     * @return string 
      */
-    public function getObjectId()
+    public function getMessage()
     {
-        return $this->objectId;
+        return $this->message;
+    }
+
+    /**
+     * Set data
+     *
+     * @param string $data
+     * @return Log
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+    
+        return $this;
+    }
+
+    /**
+     * Get data
+     *
+     * @return string 
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
      * Set dateCreated
      *
-     * @param datetime $dateCreated
+     * @param \DateTime $dateCreated
      * @return Log
      */
     public function setDateCreated($dateCreated)
     {
         $this->dateCreated = $dateCreated;
+    
         return $this;
     }
 
     /**
      * Get dateCreated
      *
-     * @return datetime 
+     * @return \DateTime 
      */
     public function getDateCreated()
     {
         return $this->dateCreated;
-    }
-
-    /**
-     * Set logClass
-     *
-     * @param HealthCareAbroad\LogBundle\Entity\LogClass $logClass
-     * @return Log
-     */
-    public function setLogClass(\HealthCareAbroad\LogBundle\Entity\LogClass $logClass = null)
-    {
-        $this->logClass = $logClass;
-        return $this;
-    }
-
-    /**
-     * Get logClass
-     *
-     * @return HealthCareAbroad\LogBundle\Entity\LogClass 
-     */
-    public function getLogClass()
-    {
-        return $this->logClass;
     }
 }

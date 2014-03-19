@@ -35,13 +35,20 @@ class InstitutionInquiryService
     
     static public function toArray(InstitutionInquiry $institutionInquiry)
     {
-        return array(
+        $data = array(
         	'id' => $institutionInquiry->getId(),
             'inquirerEmail' => $institutionInquiry->getInquirerEmail(),
             'inquirerName' => $institutionInquiry->getInquirerName(),
             'dateCreated' => $institutionInquiry->getDateCreated(),
-            'country' => $institutionInquiry->getCountry()
+            'country' => $institutionInquiry->getCountry(),
+            'institution' => InstitutionService::institutionToArray($institutionInquiry->getInstitution()),
         );
+        
+        if ($imc=$institutionInquiry->getInstitutionMedicalCenter()) {
+        	$data['institutionMedicalCenter'] = InstitutionMedicalCenterService::institutionMedicalCenterToArray($imc);
+        }
+        
+        return $data;
     }
 
     public function getInquiriesByInstitution(Institution $institution)

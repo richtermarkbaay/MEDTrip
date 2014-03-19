@@ -627,4 +627,14 @@ class InstitutionMedicalCenterService
     
         return $emptyFields;
     }
+    
+    static public function institutionMedicalCenterToArray(InstitutionMedicalCenter $institutionMedicalCenter)
+    {
+        $data = array(
+        	'id' => $institutionMedicalCenter->getId(),
+            'name' => $institutionMedicalCenter->getName()
+        );
+
+        return $data;
+    }
 }
