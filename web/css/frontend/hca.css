@@ -36,13 +36,13 @@ h1.logo {
   font-size: 25px;
   line-height: 1em;
   height: 31px;
-  width: 275px;
+  width: 155px;
 }
 h1.logo2 {
   display: inline-block;
   margin-top: 1px;
   text-indent: -100000px;
-  background: url("/images/frontend/sprite.png") no-repeat scroll -637px -125px transparent;
+  background: url("/images/frontend/sprite.png") no-repeat scroll -637px -150px transparent;
   font-size: 25px;
   line-height: 1em;
   height: 31px;
