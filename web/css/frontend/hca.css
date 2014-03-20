@@ -1109,13 +1109,13 @@ ul.small-thumbnail-list li {
   margin: 4px;
 }
 #main-top-wrapper {
-background: #a3d4a7;
+background: #b0e1f1;
 }
 #top-content-wrapper {
   margin-bottom: 15px;
   padding: 0 0 10px 0;
   color: #797979;
-  margin-top:-75px; 
+  margin-top:-77px; 
   background-position:center;
   background-repeat:no-repeat;
   /*background-image:url('/images/frontend/homepage-bg.gif');*/
@@ -1227,8 +1227,8 @@ form.home-search {
   margin: 10px 30px -60px 30px;
   position: relative;
   padding:20px 22px 8px 22px;
-  box-shadow: 0 0 0px 1px #c0c6c0, 0 0 0 7px rgba(0, 37, 85, 0.09);
-  background-color: #014c85;
+  box-shadow: 0 0 0px 1px #c0c6c0, 0 0 0 4px rgba(0, 37, 85, 0.09);
+  background-color: #1666a3;
   border-radius:10px;
 }
 form.home-search .helper-link {
@@ -1344,11 +1344,11 @@ form.home-search > button.btn {
   font-family: "PT Sans",sans-serif;
   opacity: 0.9;
   font-size: 24px;
-  color: #ffffff;
+  color: #666666;
   height: 50px;
   width: 140px;
-  background: #51a6dc; /* Old browsers */
-  box-shadow: inset 0 -1px 0 0px rgba(255, 255, 255, 0.05), 0 0 0px 1px #51a6dc, 0 0 0 5px rgba(157, 191, 214, 0.05);
+  background: #a1d4a8; /* Old browsers */
+  box-shadow: inset 0 -1px 0 0px rgba(255, 255, 255, 0.05), 0 0 0px 1px #a1d4a8, 0 0 0 5px rgba(157, 191, 214, 0.05);
 }
 form.home-search > button.btn:hover {
   background: #449de1;
