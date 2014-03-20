@@ -1351,10 +1351,10 @@ form.home-search > button.btn {
   box-shadow: inset 0 -1px 0 0px rgba(255, 255, 255, 0.05), 0 0 0px 1px #a1d4a8, 0 0 0 5px rgba(157, 191, 214, 0.05);
 }
 form.home-search > button.btn:hover {
-  background: #449de1;
+  background: #6fc281;
 }
 form.home-search > button.btn:active {
-  background: #50b9ea;
+  background: #a1d4a8;
   border-bottom: 1px solid #fe8c3c;
 }
 
