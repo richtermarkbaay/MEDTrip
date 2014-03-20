@@ -64,6 +64,8 @@ var InstitutionInquiry = {
                 InstitutionInquiry.resetForm();
                 
                 // track as google event
+                /**
+                <!-- commented by acgvelarde: wait for new tracking settings for MEDtrip -->
                 if (_gaq) {
                     var inquiryDataResponse = response.institutionInquiry;
                     var _gaqData = {
@@ -78,7 +80,8 @@ var InstitutionInquiry = {
                     }
                     
                     _gaq.push(['_trackEvent', 'Institution Inquiry', 'Send Inquiry', _gaqLabel]);
-                }
+                }**/
+                
                 //<!-- end google event tracking -->
                 
                 window.location =  InstitutionInquiry.institutionInquiryComponents.form.find('a.captcha_reload').attr('href');
