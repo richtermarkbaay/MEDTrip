@@ -24,8 +24,8 @@
     RewriteRule ^test/ - [L]
 
     # rewrite index.html and index.php to /
-    RewriteRule ^index\.html$ / [NC,R,L]
-    RewriteRule ^index\.php$ / [NC,R,L]
+    RewriteRule ^index\.html$ / [NC,R=301,L]
+    RewriteRule ^index\.php$ / [NC,R=301,L]
 
     RewriteCond %{REQUEST_FILENAME} !-f
     #RewriteRule ^(.+)/$ http://%{HTTP_HOST}/$1 [R=301,L]
