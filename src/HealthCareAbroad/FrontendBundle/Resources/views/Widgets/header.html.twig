@@ -3,7 +3,7 @@
     <div class="container">
     {% if isHomePage is not defined or status_code is defined %} <!-- added condition for error pages (status_code)-->
         <a href="{{ path('frontend_main_homepage') }}">
-            <h1 class="logo">HealthcareAbroad</h1>
+            <h1 class="logo">{{ site_name }}</h1>
         </a>
     {% endif %}
     <ul class="inline-list pull-right">
@@ -36,10 +36,9 @@
                 <meta itemprop="description" content="Patients from all over the world are searching "{{ site_name }}>
                 <a href="{{ path('frontend_main_homepage') }}">
                     <h1 class="logo" >
-                        HealthcareAbroad
+                        {{ site_name }}
                     </h1>
                 </a>
-                <!-- <span class="logo">HealthcareAbroad</span> -->
                 <h3>A global directory and resource for <span>Medical Tourism</span></h3>
             </div>
             {% block searchBox %}

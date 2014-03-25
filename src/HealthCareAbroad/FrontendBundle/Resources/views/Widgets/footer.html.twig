@@ -22,8 +22,7 @@
                 <p>Patients from all over the world are searching <br/> <a href="{{ path('frontend_main_default') }}">{{ site_name }}</a> - make sure they can find you!</p>
                 <a href="{{ path('institution_signUp') }}" class="sign-up">Sign Up</a>
                 <div class="hca-sprite or-option" style="margin-left: 80px"></div>
-                <a href="{{ path('institution_login') }}" class="sign-up">Sign In</a>                
-                <!-- <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a> --> 
+                <a href="{{ path('institution_login') }}" class="sign-up">Sign In</a>                 
             </div>
         </div> #}
 
@@ -33,8 +32,7 @@
                 <p>Patients from all over the world are searching <a href="{{ path('frontend_main_default') }}">{{ site_name }}</a> - make sure they can find you!</p>
                 <a href="{{ path('institution_signUp') }}" class="btn blue pull-left">Sign Up</a>
                 {# <div class="hca-sprite or-option" class="pull-left"></div> #}
-                <a href="{{ path('institution_login') }}" class="btn green">Sign In</a>                
-                <!-- <a class="btn green" href="{{ path('frontend_page_inquiry') }}">Contact HealthcareAbroad</a> --> 
+                <a href="{{ path('institution_login') }}" class="btn green">Sign In</a>                 
 			</div>
 		</div>
 		<div class="subscribe-section span4"> <!--This is for the Subscriptions-->
@@ -50,7 +48,7 @@
             <li><a href="https://twitter.com/HCAbroad" target="_blank" class="hca-sprite social-icon twitter"></a></li>
         </ul> -->
     <a href="{{ path('frontend_main_homepage') }}">
-            <h1 class="logo2 pull-left">HealthcareAbroad</h1>
+            <h1 class="logo2 pull-left">{{ site_name }}</h1>
         </a>
         <p>&copy; Copyright 2014, {{ site_name }}. All rights reserved</p>
         <ul class="site-nav unstyled inline-list">
