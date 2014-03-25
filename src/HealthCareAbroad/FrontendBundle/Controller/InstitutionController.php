@@ -101,6 +101,9 @@ class InstitutionController extends ResponseHeadersController
         $start = \microtime(true);
         $slug = $request->get('institutionSlug', null);
         $institutionId = $this->getDoctrine()->getRepository('InstitutionBundle:Institution')->getInstitutionIdBySlug($slug);
+        if (!$institutionId) {
+        	throw $this->createNotFoundException('Invalid institution');
+        }
 
         $this->apiInstitutionService = $this->get('services.api.institution');
         $this->apiInstitutionMedicalCenterService = $this->get('services.api.institutionMedicalCenter');
@@ -110,7 +113,6 @@ class InstitutionController extends ResponseHeadersController
         $cachedData = $memcacheService->get($memcacheKey);
         
         if (!$cachedData) {
-            
             $mediaExtensionService = $this->apiInstitutionService->getMediaExtension();
             $this->institution = $this->apiInstitutionService->getInstitutionPublicDataById($institutionId);
 
