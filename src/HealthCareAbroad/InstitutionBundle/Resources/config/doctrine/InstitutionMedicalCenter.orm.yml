@@ -130,6 +130,7 @@ HealthCareAbroad\InstitutionBundle\Entity\InstitutionMedicalCenter:
             gedmo:
               slug:
                 separator: -
+                updatable: false
                 fields:
                   - name
     oneToMany:
