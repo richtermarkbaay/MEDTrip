@@ -42,6 +42,10 @@ class InstitutionMedicalCenterController extends ResponseHeadersController
         $slug = $request->get('imcSlug', null);
         $institutionMedicalCenterId = $this->getDoctrine()->getRepository('InstitutionBundle:InstitutionMedicalCenter')
             ->getInstitutionMedicalCenterIdBySlug($slug);
+        
+        if (!$institutionMedicalCenterId) {
+        	throw $this->createNotFoundException('Invalid clinic.');
+        }
 
         $memcacheKey = FrontendMemcacheKeysHelper::generateInsitutionMedicalCenterProfileKey($institutionMedicalCenterId);
         $memcacheService = $this->get('services.memcache');

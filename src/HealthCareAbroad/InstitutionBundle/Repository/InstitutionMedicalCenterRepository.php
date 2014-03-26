@@ -42,8 +42,15 @@ class InstitutionMedicalCenterRepository extends EntityRepository
             ->from('InstitutionBundle:InstitutionMedicalCenter', 'imc')
             ->where('imc.slug = :slug')
                 ->setParameter('slug', $slug);
-        
-        return (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
+        // Fix by acgvelarde - 03/25/2014
+        // Query::HYDRATE_SINGLE_SCALAR will throw Doctrine\ORM\NoResultException for null results
+        $result = $qb->getQuery()->getOneOrNullResult();
+        $id = 0;
+        if (null !== $result) {
+            $id = $result['id'];
+        }
+        return $id;
+        //return (int)$qb->getQuery()->getOneOrNullResult(Query::HYDRATE_SINGLE_SCALAR);
     }
     
     /**
