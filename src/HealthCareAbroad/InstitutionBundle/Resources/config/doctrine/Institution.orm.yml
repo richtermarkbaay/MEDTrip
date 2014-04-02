@@ -106,7 +106,7 @@ HealthCareAbroad\InstitutionBundle\Entity\Institution:
             gedmo:
               slug:
                 separator: -
-                updatable: false
+                updatable: true
                 fields:
                   - name
         isFromInternalAdmin:
